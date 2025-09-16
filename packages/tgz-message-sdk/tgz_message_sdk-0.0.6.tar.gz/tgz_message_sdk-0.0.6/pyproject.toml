@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tgz-message-sdk"
+version = "0.0.6"
+description = "An Official Python SDK from TechGenzi for sending messages across multiple channels like WhatsApp, Email, and SMS."
+readme = "README.md"
+authors = [{ name = "Suwethan M", email = "suwethan.tgz@gmail.com" }]
+license = { text = "MIT" }
+dependencies = [
+    'requests>=2.28,<3.0'
+]
+requires-python = ">=3.7"

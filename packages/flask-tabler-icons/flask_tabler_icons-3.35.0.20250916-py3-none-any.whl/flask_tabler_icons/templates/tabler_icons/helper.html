@@ -1,0 +1,51 @@
+{% macro fill_css(value="", prefix="", yes_value="", postfix="") %}
+  {% if value %}
+    {% if yes_value %} {{ yes_value }}
+    {% else %} {{ prefix }}{{ value }}{{ postfix }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+{% macro render_icon(icon="") %}
+  {% if icon %}
+    {% set class = "" %}
+    {% set bold = " font-weight: bold;" if kwargs.bold else "" %}
+    {% set animation_css = fill_css(kwargs.animation, ' icon-') %}
+    {% set css_color = "color: %s;"|format(kwargs.css_color) if kwargs.css_color else "" %}
+    {% set tag = kwargs.tag or "span" %}
+
+    {% if kwargs.color or kwargs.class %}
+      {% set class = "%s %s"|format(kwargs.class, ("text-" + kwargs.color) if kwargs.color else "") %}
+    {% endif %}
+    {% if not kwargs.hide_tag %}
+      <{{ tag }}
+        {% if class %}class="{{ class }}"{% endif %}
+        {% if css_color or bold or kwargs.style %}
+          style="{{ css_color }}{{ bold }} {{ kwargs.style or '' }} "
+        {% endif %}
+      >
+    {% endif %}
+      {% if kwargs.svg %}
+        {{ render_svg(kwargs.svg, icon_size=kwargs.icon_size, **(kwargs.svg_kw or {})) }}
+      {% else %}
+        {% set url_key = "filled" if "filled-" in icon else "normal" %}
+        <svg
+          class="{% if kwargs.icon_size %} icon icon-{{ kwargs.icon_size }}{% endif %}
+          {{ animation_css }} {{ kwargs.svg_class or kwargs.icon_class or '' }}"
+          width="{{ kwargs.size or config.TABLER_ICON_SIZE}}"
+          height="{{ kwargs.size or config.TABLER_ICON_SIZE }}"
+          >
+          <use xlink:href="{{ tabler_icons.get_url(url_key) }}#tabler-{{ icon }}" />
+        </svg>
+      {% endif %}
+    {% if not kwargs.hide_tag %}</{{ tag }}>{% endif %}
+  {% endif %}
+{% endmacro %}
+
+{% macro render_svg(svg) %}
+  {% if kwargs.endpoint %}
+    <img class="{% if kwargs.icon_size %} icon icon-{{ kwargs.icon_size }}{% endif %}" src="{{ url_for(kwargs.endpoint + '.static', filename='%s.svg'|format(svg)) }}" />
+  {% else %}
+    <img class="{% if kwargs.icon_size %} icon icon-{{ kwargs.icon_size }}{% endif %}" src="{{ url_for('static', filename='%s.svg'|format(svg)) }}" />
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,508 @@
+Metadata-Version: 2.4
+Name: minimcp
+Version: 0.3.0
+Summary: A minimal, stateless, and lightweight MCP server designed for easy integration into any Python application.
+Author-email: Sreenath Somarajapuram <somarajapuram@gmail.com>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+License-File: LICENSE
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.12.3
+Description-Content-Type: text/markdown
+
+<div align="center">
+
+<!-- omit in toc -->
+# ✨ MiniMCP
+
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![PyPI version](https://img.shields.io/pypi/v/minimcp.svg)](https://pypi.org/project/minimcp/)
+
+A **minimal, stateless, and lightweight** framework for building remote MCP servers.
+</div>
+
+_MiniMCP is designed with simplicity in mind. It provides a single asynchronous function to handle MCP messages—just pass in the request message, and you’ll get the response back_ ⭐ _While MiniMCP supports bidirectional messaging, it’s not a mandatory requirement—So you can use plain HTTP for communication_ ⭐ _MiniMCP is primarily built for remote MCP servers but works just as well for local servers_ ⭐ _MiniMCP ships with built-in transport mechanisms (stdio, HTTP via Starlette, and Streamable HTTP via Starlette). These wrap your handler, but you’re free to use them directly or implement your own_ ⭐ _MiniMCP is built on the [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk), ensuring standardized context and resource sharing._
+
+## What is MCP?
+
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is a powerful, standardized way for AI applications to connect with external data sources and tools. It follows a client–server architecture, where communication happens through well-defined MCP messages in the JSON-RPC 2.0 format. The key advantage of MCP is interoperability: once a server supports MCP, any MCP-compatible AI client can connect to it without custom integration code. The official MCP Python SDK provides a low-level implementation of the protocol, while [FastMCP](https://github.com/jlowin/fastmcp) offers a higher-level, Pythonic interface.
+
+## Why MiniMCP?
+
+MiniMCP rethinks the MCP server from the ground up, keeping the core functionality lightweight and independent of the transport layer, bidirectional communication, session management, and auth mechanisms. Additionally, instead of a stream-based interface, MiniMCP exposes a simple asynchronous handle function that takes a JSON-RPC 2.0 message string as input and returns a JSON-RPC 2.0 message string as output.
+
+- **Stateless:** Scalability, simplicity, and reliability are crucial for remote MCP servers. MiniMCP is stateless at its core, making it robust, easy to scale, and straightforward to maintain.
+- **Bidirectional is optional:** Many use cases work perfectly with a simple request–response channel without needing bidirectional communication. MiniMCP was built with this in mind and provides a simple HTTP transport while adhering to the specification.
+- **Embeddable:** Already have an application built with FastAPI (or another framework)? You can embed a MiniMCP server under a single endpoint—or multiple servers under multiple endpoints—_Unlike with mounting, you can use your existing dependency injection system._
+- **Scope and Context:** MiniMCP provides a type-checked scope object that travels with each message. This allows you to pass extra details such as authentication, user info, session data, or database handles. Inside the handler, the scope is available in the context—_so you’re free to use your preferred session or user management mechanisms._
+- **Security:** MiniMCP encourages you to use your existing battle-tested security mechanism instead of enforcing one - _A MiniMCP server built with FastAPI can be as secure as any FastAPI application!_
+- **Stream on Demand:** MiniMCP comes with a smart Streamable HTTP implementation. If the handler just returns a response, the server replies with a normal JSON HTTP response. An event stream is only opened when the server actually needs to push notifications to the client.
+- **Separation of Concerns:** The transport layer is fully decoupled from message handling. This makes it easy to adapt MiniMCP to different environments and protocols without rewriting your core business logic.
+- **Minimal Dependencies:** MiniMCP keeps its footprint small, depending only on the official MCP SDK. This makes it lightweight, easy to maintain, and less prone to dependency conflicts.
+
+### Currently Supported Features
+
+The following features are already available in MiniMCP.
+
+- 🧩 Server primitives - Tools, Prompts and Resources
+- 🔗 Transports - stdio, HTTP, Streamable HTTP
+- 🔄 Server to client messages - Progress notification
+- 🛠 Typed scope and handler context
+- ⚡ Asynchronous - stateless message processing
+- 📝 Easy handler registration for different MCP message types
+- ⏱️ Enforces idle time and concurrency limits
+- 📦 Web frameworks - In-built support for Starlette/FastAPI
+
+### Planned (if needed)
+
+These features may be added in the future if the need arises.
+
+- ⚠️ Server-initiated messaging
+- ⚠️ Client primitives - Sampling, Elicitation, Logging
+- ⚠️ Pagination
+- ⚠️ Resumable Streamable HTTP with GET method support
+- ⚠️ MCP Client (_As shown in the [integration tests](https://github.com/sreenaths/minimcp/tree/main/tests/integration), MiniMCP works seamlessly with existing MCP clients, and there’s currently no need for a custom client_)
+
+### Unlikely
+
+These features are not expected to be built into MiniMCP in the foreseeable future.
+
+- 🚫 Session management
+- 🚫 Authentication
+
+## Using MiniMCP
+
+The snippets below provide a quick overview of how to use MiniMCP. Checkout the [examples](https://github.com/sreenaths/minimcp/tree/main/examples) for more.
+
+### Installation
+
+```bash
+pip install minimcp
+```
+
+### Basic MiniMCP
+
+The following example demonstrates simple registration and basic message processing using the handle function.
+
+```python
+mcp = MiniMCP(name="MathServer")
+
+# Tool
+@mcp.tool()
+def add(a:int, b:int) -> int:
+    "Add two numbers"
+    return a + b
+
+# Prompt
+@math_mcp.prompt()
+def problem_solving(problem_description: str) -> str:
+    "Prompt to systematically solve math problems."
+    return f"""You are a math problem solver. Solve the following problem step by step.
+Problem: {problem_description}
+"""
+
+# Resource
+@mcp.resource("math://constants/pi")
+def pi_value() -> float:
+    """Value of π (pi) to be used"""
+    return 3.14
+
+request_msg = '{"jsonrpc": "2.0", "id": "1", "method": "ping"}'
+response_msp = await mcp.handle(request_msg, scope={...})
+# response_msp = '{"jsonrpc": "2.0", "id": "1", "result": {}}'
+```
+
+### FastAPI Integration
+
+This minimal example shows how to expose an MCP tool over HTTP using FastAPI.
+
+```python
+from fastapi import FastAPI, Request
+from minimcp import MiniMCP, starlette
+
+# This can be an existing FastAPI/Starlette app (with authentication, middleware, etc.)
+app = FastAPI()
+
+# Create an MCP instance
+mcp = MiniMCP(name="MathServer")
+
+# Register a simple tool
+@mcp.tool(description="Add two numbers")
+def add(a:int, b:int) -> int:
+    return a + b
+
+# Define the MCP endpoint
+@app.post("/mcp")
+async def handle_mcp_request(request: Request):
+    return await starlette.http_transport(math_mcp.handle, request)
+```
+
+## Transports
+
+The official MCP specification currently defines two standard transport mechanisms: [stdio](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#stdio) and [Streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http). It also provides flexibility in implementations and also permits custom transports. MiniMCP uses this flexibility to introduce a third option: [HTTP transport](https://github.com/sreenaths/minimcp/blob/main/docs/transport-specification-compliance.md#2-http-transport).
+
+HTTP is a subset of Streamable HTTP and doesn't support bidirectional communication. However, as shown in the integration example, it can be added as a RESTful API endpoint in any Python application to host remote MCP servers. Importantly, it remains compatible with Streamable HTTP MCP clients.
+
+MiniMCP also provides a smart Streamable HTTP implementation. It adapts to usage patterns: if the handler simply returns a response, the server replies with a normal JSON HTTP response. An event stream is opened only when the server needs to push notifications to the client. To keep things simple and stateless, this is currently implemented using polling to keep the stream alive, with the option to support fully resumable Streamable HTTP in the future.
+
+For more details on supported transports, please check the [specification compliance](https://github.com/sreenaths/minimcp/blob/main/docs/transport-specification-compliance.md) document.
+
+You can use the transports as shown below, or wrap `math_mcp.handle` in a custom function to pass a scope or manage lifecycle:
+
+```python
+# Stdio
+anyio.run(stdio_transport, math_mcp.handle)
+
+# HTTP
+await starlette.http_transport(math_mcp.handle, request)
+
+# Streamable HTTP
+await starlette.streamable_http_transport(math_mcp.handle, request)
+```
+
+## API Reference
+
+This section provides an overview of the key classes, their functions, and the arguments they accept.
+
+### MiniMCP
+
+As the name suggests, MiniMCP is the core class for creating a server. It requires a server name as its only mandatory argument; all other arguments are optional. You can also specify the type of the scope object, which is passed through the system.
+
+MiniMCP provides:
+
+- Tool, Prompt, and Resource managers — used to register handlers.
+- A Context manager — accessible inside handlers.
+
+The handle function processes incoming messages. It accepts a JSON-RPC 2.0 message string and two optional parameters: a send function and a scope object.
+
+MiniMCP controls how many handlers can run at the same time and how long each handler can remain idle. By default, idle_timeout is set to 30 seconds and max_concurrency to 100.
+
+```python
+# Instantiation
+mcp = MiniMCP[ScopeT](name, [version, instructions, idle_timeout, max_concurrency, raise_exceptions])
+
+# Managers
+mcp.tool
+mcp.prompt
+mcp.resource
+mcp.context
+
+# Message handling
+response = await mcp.handle(message, [send, scope])
+```
+
+### Primitive Managers/Decorators
+
+MiniMCP supports three server primitives, each managed by its own primitive manager. These managers are implemented as callable classes that can be used as decorators for registering handler functions.
+
+When called, a manager accepts a primitive definition. If none is provided, the definition is automatically inferred from the handler function.
+
+In addition to decorator usage, all three primitive managers also expose methods to add, list, remove, and invoke handlers programmatically.
+
+#### Tool Manager
+
+```python
+# A a decorator
+@mcp.tool([name, title, description, annotations, meta])
+def handler_fun(...):...
+
+# Methods for programmatic access
+mcp.tool.add(func, [name, title, description, annotations, meta])
+mcp.tool.remove(name)
+mcp.tool.list()
+mcp.tool.call(name, args)
+```
+
+#### Prompt Manager
+
+```python
+# A a decorator
+@mcp.prompt([name, title, description, meta])
+def handler_fun(...):...
+
+# Methods for programmatic access
+mcp.prompt.add(func, [name, title, description, meta])
+mcp.prompt.remove(name)
+mcp.prompt.list()
+mcp.prompt.get(name, args)
+```
+
+#### Resource Manager
+
+```python
+# A a decorator
+@mcp.resource(url, [name, title, description, mime_type, annotations, meta])
+def handler_fun(...):...
+
+# Methods for programmatic access
+mcp.resource.add(func, url, [name, title, description, annotations, meta])
+mcp.resource.remove(name)
+mcp.resource.list()
+mcp.resource.list_templates()
+mcp.resource.read(uri)
+mcp.resource.read_by_name(name, args)
+```
+
+### Context Manager
+
+The context manager keeps track of the current handler context. From inside a handler, you can call `mcp_instance.context.get()` to access the associated context. If called outside of a handler, it will raise a NoContext error.
+
+```python
+# Context structure
+Context(Generic[ScopeT]):
+    message: JSONRPCMessage      # Parsed request message
+    time_limiter: TimeLimiter    # To reset handler idle timeout
+    scope: ScopeT | None         # Scope object passed while calling handle()
+    responder: Responder | None  # To send notifications back to the client
+
+# Accessing context
+mcp.context.get() -> Context[ScopeT]
+
+# Following syntactic sugar is also provided for use without null check
+mcp.context.get_scope() -> ScopeT
+mcp.context.get_responder() -> Responder
+```
+
+## Examples
+
+The [examples](https://github.com/sreenaths/minimcp/blob/main/examples) include a [Math MCP server](https://github.com/sreenaths/minimcp/blob/main/examples/math_mcp_server/math_mcp.py) with four tools—add, subtract, multiply, and divide—demonstrating how MiniMCP works with different transport mechanisms and frameworks.
+
+To run the examples, you’ll need a MiniMCP development setup. After cloning this repository, run the following command from the project root to set up the environment:
+
+```bash
+uv sync --frozen --all-extras --dev
+```
+
+The table below lists the available examples along with the commands to run them.
+
+| # | Transport | Command |
+|---|---|---|
+| 1 | Stdio | `uv run -m examples.math_mcp_server.stdio` |
+| 2 | HTTP with FastAPI | `uv run uvicorn examples.math_mcp_server.fastapi_http:app --reload` |
+| 3 | Streamable HTTP with FastAPI | `uv run uvicorn examples.math_mcp_server.fastapi_streamable_http:app --reload` |
+
+Claude desktop can be configured to run the stdio example as follows.
+
+```json
+{
+    "mcpServers":
+    {
+        "math-server":
+        {
+            "command": "uv",
+            "args":
+            [
+                "--directory",
+                "/path/to/minimcp",
+                "run",
+                "-m",
+                "examples.math_mcp_server.stdio"
+            ]
+        }
+    }
+}
+```
+
+## License
+
+[Apache License, Version 2.0](https://github.com/sreenaths/minimcp/blob/main/LICENSE)

@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentSpec Instruction Schema",
+  "description": "Schema for validating AgentSpec instructions",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the instruction",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the instruction",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags for categorizing and filtering instructions",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "content": {
+      "type": "string",
+      "description": "The instruction content",
+      "minLength": 10
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Optional conditions for when this instruction applies",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["project_type", "technology", "file_exists", "dependency_exists"]
+          },
+          "value": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["equals", "contains", "matches", "not_equals"]
+          }
+        },
+        "required": ["type", "value", "operator"]
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Optional parameters for instruction customization",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "array"]
+          },
+          "default": {},
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["name", "type"]
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Other instructions this one depends on",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the instruction",
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Primary category for the instruction"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Priority level (1-10, higher is more important)"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the instruction"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the instruction was created"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the instruction was last updated"
+        }
+      }
+    }
+  },
+  "required": ["id", "version", "tags", "content", "metadata"],
+  "additionalProperties": false
+}

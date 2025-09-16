@@ -1,0 +1,149 @@
+{
+  "id": "python-api",
+  "name": "Python REST API",
+  "description": "Template for Python REST API applications with FastAPI/Flask, database integration, and best practices",
+  "version": "1.0.0",
+  "project_type": "api",
+  "technology_stack": [
+    "python",
+    "fastapi",
+    "flask",
+    "sqlalchemy",
+    "pydantic",
+    "uvicorn",
+    "gunicorn",
+    "postgresql",
+    "redis"
+  ],
+  "default_tags": [
+    "backend",
+    "api",
+    "python",
+    "database",
+    "testing",
+    "security",
+    "performance",
+    "documentation"
+  ],
+  "required_instructions": [
+    "python_project_structure",
+    "api_framework_setup",
+    "database_configuration",
+    "authentication_setup",
+    "testing_framework"
+  ],
+  "optional_instructions": [
+    "caching_setup",
+    "logging_configuration",
+    "monitoring_setup",
+    "containerization",
+    "ci_cd_pipeline"
+  ],
+  "excluded_instructions": [
+    "frontend_setup",
+    "react_configuration",
+    "client_side_routing"
+  ],
+  "parameters": {
+    "framework": {
+      "type": "string",
+      "default": "fastapi",
+      "description": "Python web framework to use",
+      "required": true,
+      "options": ["fastapi", "flask", "django", "tornado"]
+    },
+    "database": {
+      "type": "string",
+      "default": "postgresql",
+      "description": "Database system to use",
+      "required": false,
+      "options": ["postgresql", "mysql", "sqlite", "mongodb"]
+    },
+    "orm": {
+      "type": "string",
+      "default": "sqlalchemy",
+      "description": "ORM/ODM to use",
+      "required": false,
+      "options": ["sqlalchemy", "tortoise", "peewee", "mongoengine"]
+    },
+    "authentication": {
+      "type": "string",
+      "default": "jwt",
+      "description": "Authentication method",
+      "required": false,
+      "options": ["jwt", "oauth2", "session", "api-key"]
+    },
+    "caching": {
+      "type": "string",
+      "default": "redis",
+      "description": "Caching solution",
+      "required": false,
+      "options": ["redis", "memcached", "in-memory", "none"]
+    },
+    "deployment": {
+      "type": "string",
+      "default": "docker",
+      "description": "Deployment method",
+      "required": false,
+      "options": ["docker", "kubernetes", "serverless", "traditional"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "requirements.txt",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "pyproject.toml",
+      "operator": "exists",
+      "weight": 0.7
+    },
+    {
+      "type": "dependency_exists",
+      "value": "fastapi",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "dependency_exists",
+      "value": "flask",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "dependency_exists",
+      "value": "django",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "main.py",
+      "operator": "exists",
+      "weight": 0.6
+    },
+    {
+      "type": "file_exists",
+      "value": "app.py",
+      "operator": "exists",
+      "weight": 0.6
+    },
+    {
+      "type": "technology_detected",
+      "value": "python",
+      "operator": "equals",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "backend",
+    "complexity": "intermediate",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["backend", "api", "rest", "python"]
+  }
+}

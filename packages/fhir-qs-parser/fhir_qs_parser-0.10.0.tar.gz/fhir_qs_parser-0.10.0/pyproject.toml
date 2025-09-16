@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fhir-qs-parser"
+description = "Parse FHIR query strings"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.8"
+license = { text = "GNU General Public License v3 or later (GPLv3+)" }
+authors = [{ name = "teffalump", email = "chris@teffalump.com" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "pendulum>=3",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/xjodoin/fhir_parse_qs"
+Repository = "https://github.com/xjodoin/fhir_parse_qs"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["fhir_parse_qs*"]
+
+[tool.setuptools.dynamic]
+version = { file = "fhir_parse_qs/VERSION" }
+
+# uv project configuration
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "black>=24",
+]
+
+[tool.uv]
+default-groups = ["dev"]

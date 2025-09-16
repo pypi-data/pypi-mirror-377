@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: stapax
+Version: 0.1.6
+Summary: Add your description here
+Author-email: Benedict Armstrong <benedict.armstrong@inf.ethz.ch>, Philipp Nazari <philipp.nazari@tuebingen.mpg.de>
+License-File: LICENSE
+Requires-Python: >=3.12
+Requires-Dist: coloredlogs>=15.0.1
+Requires-Dist: dacite
+Requires-Dist: equinox>=0.13.0
+Requires-Dist: hydra-core
+Requires-Dist: jax>=0.7.1
+Requires-Dist: jaxtyping>=0.3.2
+Requires-Dist: lightning>=2.5.5
+Requires-Dist: matplotlib>=3.10.6
+Requires-Dist: numpy>=2.3.3
+Requires-Dist: omegaconf
+Requires-Dist: optax>=0.2.6
+Provides-Extra: cu12
+Requires-Dist: jax[cuda12]>=0.5.3; extra == 'cu12'
+Description-Content-Type: text/markdown
+
+# Stax
+
+Training library for SSMs

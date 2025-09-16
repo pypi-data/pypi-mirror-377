@@ -1,0 +1,111 @@
+Metadata-Version: 2.4
+Name: transformers_crf
+Version: 0.3.2
+Summary: Transformers CRF: CRF Token Classification for Transformers
+Home-page: https://bitbucket.org/avisourgente/transformers_crf
+Author: Eduardo Garcia - Datalawyer
+License: Apache License 2.0
+Platform: any
+Requires-Python: >=3.7.0
+Description-Content-Type: text/markdown
+Requires-Dist: transformers==4.56.1
+Requires-Dist: datasets>=1.8.0
+Requires-Dist: onnx
+Requires-Dist: onnxruntime
+Requires-Dist: optimum
+Requires-Dist: seqeval
+Requires-Dist: evaluate
+Requires-Dist: accelerate
+Requires-Dist: wandb
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: platform
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Tranformers-CRF
+
+For training BERT-CRF models with the huggingface Transformers libary
+
+### Instalation
+
+```bash
+    git clone https://bitbucket.org/avisourgente/transformers_crf.git
+    cd transformers_crf
+    pip install -e .
+```
+
+### Train example
+
+Train script is in examples/run_ner.py
+It follows the api of https://github.com/huggingface/transformers/blob/main/examples/pytorch/token-classification/run_ner.py
+New args:
+```
+    --learning_rate_ner LEARNING_RATE_NER
+                Custom initial learning rate for the CRF and Linear layers on AdamW. (default: None)
+    --weight_decay_ner WEIGHT_DECAY_NER
+                Custom weight decay for the CRF and Linear layers on AdamW. (default: None)
+    --use_crf  
+                Will enable to use CRF layer. (default: False)
+    --no_constrain_crf
+                Set to not to constrain crf outputs to labeling scheme (default: False)
+    --break_docs_to_max_length [BREAK_DOCS_TO_MAX_LENGTH]
+                Whether to chunck docs into sentences with the max seq length of tokenizer. (default: False)
+    --convert_to_iobes [CONVERT_TO_IOBES]
+                Convert a IOB2 input to IOBES. (default: False)
+```
+
+Example:
+
+```bash
+python run_ner.py \
+  --model_name_or_path neuralmind/bert-base-portuguese-cased \
+  --dataset_name eduagarcia/portuguese_benchmark \
+  --dataset_config_name harem-default \
+  --per_device_train_batch_size 16 \
+  --per_device_eval_batch_size 16 \
+  --num_train_epochs 15 \
+  --learning_rate 5e-5 \
+  --do_train \
+  --do_eval \
+  --do_predict \
+  --evaluation_strategy steps \
+  --eval_steps 500 \
+  --output_dir /workspace/models/test-transformers-crf \
+  --max_seq_length 128 \
+  --break_docs_to_max_length \
+  --overwrite_output_dir \
+  --learning_rate_ner 5e-3 \
+  --convert_to_iobes \
+  --use_crf
+```
+    
+
+### Usage example
+
+```python
+    import torch
+    from transformers_crf import CRFTokenizer, AutoModelForEmbedderCRFTokenClassification
+
+    model_path = "./model"
+
+    device = torch.device('cpu') 
+    tokenizer = CRFTokenizer.from_pretrained(model_path)
+    model = AutoModelForEmbedderCRFTokenClassification.from_pretrained(model_path).to(device)
+
+    tokens = [["Esse", "é", "um", "exemplo"], ["Esse", "é", "um", "segundo", "exemplo"]]
+    batch = tokenizer(tokens, max_length=512).to(device)
+    output = model(**batch, reorder=True)
+    predicts_id = output.predicts.detach().cpu().numpy()
+    preds = [[model.config.id2label[p] for p in pred_seq][:len(token_seq)] for (pred_seq, token_seq) in zip(predicts_id, tokens)]
+```
+
+### Pip upload package ###
+
+python setup.py bdist_wheel
+
+python -m twine upload dist/*

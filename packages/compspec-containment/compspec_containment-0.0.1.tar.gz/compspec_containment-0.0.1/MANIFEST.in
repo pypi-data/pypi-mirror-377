@@ -1,0 +1,8 @@
+include README.md LICENSE
+recursive-include compspec_containment *
+prune OLD*
+prune env*
+global-exclude .env
+global-exclude *.py[co]
+recursive-exclude .git *
+global-exclude __pycache__

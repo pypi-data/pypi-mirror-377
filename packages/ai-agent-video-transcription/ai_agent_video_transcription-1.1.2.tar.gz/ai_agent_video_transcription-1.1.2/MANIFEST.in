@@ -1,0 +1,52 @@
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+include CHANGELOG.md
+include AUTHORS.md
+include CONTRIBUTING.md
+recursive-include src *.py
+recursive-include src *.yaml
+recursive-include src *.yml
+recursive-include src *.json
+recursive-exclude src __pycache__
+recursive-exclude src *.pyc
+recursive-exclude src *.pyo
+recursive-exclude src *.pyd
+recursive-exclude src .git*
+recursive-exclude src *.log
+recursive-exclude src *.tmp
+recursive-exclude src *.temp
+recursive-exclude src *.mp4
+recursive-exclude src *.avi
+recursive-exclude src *.mov
+recursive-exclude src *.wav
+recursive-exclude src *.mp3
+recursive-exclude src *.flac
+recursive-exclude src *.aac
+recursive-exclude src *.ogg
+recursive-exclude src *.m4a
+recursive-exclude src *.srt
+recursive-exclude src *.vtt
+recursive-exclude src *.txt
+recursive-exclude src *.db
+recursive-exclude src *.sqlite3
+recursive-exclude src chroma_db
+recursive-exclude src output
+recursive-exclude src memory
+recursive-exclude src temp
+recursive-exclude src logs
+recursive-exclude src .cache
+recursive-exclude src whisper_cache
+recursive-exclude src models_cache
+recursive-exclude src .DS_Store
+recursive-exclude src .gitignore
+recursive-exclude src .env
+recursive-exclude src .env.example
+recursive-exclude src demo_*
+recursive-exclude src test_*
+recursive-exclude src *_test.py
+recursive-exclude src setup.bat
+recursive-exclude src setup.sh
+recursive-exclude src start_agent.py
+recursive-exclude src transcriptor.py

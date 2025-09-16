@@ -1,0 +1,141 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sys-design-diagram"
+dynamic = ["version"]
+description = "A package for generating architecture diagrams using PlantUML, diagrams, and Mermaid."
+authors = [
+    { name = "Aydin Abdi", email = "ayd.abd@gmail.com" },
+]
+readme = "README.rst"
+requires-python = ">=3.9"
+license = "MIT"
+keywords = [
+    "architecture",
+    "diagrams",
+    "uml",
+    "plantuml",
+    "mermaid",
+    "system",
+    "design",
+]
+dependencies = [
+    "click",
+    "diagrams",
+    "loguru",
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Documentation",
+    "Typing :: Typed",
+]
+
+[tool.hatch.version]
+source = "vcs"
+[tool.hatch.build.hooks.vcs]
+version-file = "src/sys_design_diagram/_version.py"
+
+[project.scripts]
+sys-design-diagram = "sys_design_diagram.cli:cli"
+
+[tool.hatch.envs.dev]
+[tool.hatch.envs.dev.scripts]
+sys-design-diagram = "sys_design_diagram.cli:cli"
+
+[tool.hatch.envs.test]
+dependencies = [
+    "coverage",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-asyncio",
+    "pytest-xdist",
+]
+
+[tool.hatch.envs.test.scripts]
+test-cov = "pytest -n auto"
+all = ["test-cov"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+junit_suite_name = "sys-design-diagram"
+junit_logging = "system-out"
+addopts = [
+    "-rf",
+    "--strict-markers",
+    "--cov=sys_design_diagram",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    "--cov-report=html",
+    "--junitxml=tmp-output/report/junit.xml",
+    "--color=yes",
+    "-vv",
+]
+
+[tool.coverage.run]
+data_file = "tmp-output/.coverage"
+branch = true
+parallel = true
+omit = [
+    "**/tests/**",
+    "**/__init__.py",
+    "**/site-packages/**",
+    "**/distutils/**",
+]
+disable_warnings = ["no-data-collected"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+skip_covered = false
+precision = 0
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "pragma: no cover",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "return NotImplemented",
+  "return NotImplementedError",
+]
+
+[tool.coverage.xml]
+output = "tmp-output/coverage.xml"
+
+[tool.ruff.lint]
+select = ["D"]
+ignore = [
+    "INP001",
+    "BLE001",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff]
+line-length = 120
+include = ["pyproject.toml", "src/sys_design_diagram/**/*.py", "tests/**/*.py"]
+exclude = ["**/site-packages/**", "**/distutils/**"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-third-party = ["click", "diagrams", "loguru"]
+known-first-party = ["sys_design_diagram"]
+
+[tool.mypy]
+no_implicit_optional = true
+cache_dir = ".mypy_cache"
+files = ["src/sys-design-diagram/**/*.py"]
+ignore_missing_imports = true

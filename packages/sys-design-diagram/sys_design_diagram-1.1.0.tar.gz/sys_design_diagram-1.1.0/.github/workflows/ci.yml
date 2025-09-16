@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci
+  cancel-in-progress: true
+
+env:
+  MICROMAMBA_VERSION: '1.5.6-0'
+  ENVIRONMENT_FILE: '.githooks.d/pre-commit_environment.yml'
+  PRE_COMMIT_CONFIG: '.githooks.d/.pre-commit-config.yaml'
+  TESTS_DATA: 'tests-data'
+  MICORMAMBA_ENV_NAME: mamba-githook
+  # Cache key base on github cache rules between branch and pull request
+  MICROMAMBA_CACHE_KEY: micromamba-env-key-${{ github.head_ref }}-${{ github.event_name }}
+
+jobs:
+  prepare-micromamba-cache:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup micromamba and cache
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          micromamba-version: ${{ env.MICROMAMBA_VERSION }}
+          environment-file: ${{ env.ENVIRONMENT_FILE }}
+          cache-environment: true
+          cache-downloads: false
+          cache-environment-key: ${{ env.MICROMAMBA_CACHE_KEY }}
+  
+  run-lint-tests:
+    needs: prepare-micromamba-cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          micromamba-version: ${{ env.MICROMAMBA_VERSION }}
+          environment-file: ${{ env.ENVIRONMENT_FILE }}
+          cache-environment: true
+          cache-downloads: false
+          cache-environment-key: ${{ env.MICROMAMBA_CACHE_KEY }}
+
+      - name: Run pre-commit
+        run: micromamba run -n ${{ env.MICORMAMBA_ENV_NAME }} pre-commit run --all-files -c ${{ env.PRE_COMMIT_CONFIG }}
+
+  build-docker-image:
+    needs: run-lint-tests
+    strategy:
+      matrix:
+        platform: [ linux/amd64, linux/arm64 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build docker test image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: ${{ matrix.platform }}
+          push: false
+          load: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          tags: test-image:latest
+
+      - name: Cache Docker Buildx
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache-new
+          key: buildx-cache-${{ runner.os }}-${{ matrix.platform }}-${{ github.sha }}
+          restore-keys: |
+            buildx-cache-${{ runner.os }}-${{ matrix.platform }}-
+      
+      - name: Test docker image
+        run: |
+          docker run --rm test-image:latest --version
+          docker run --rm test-image:latest --help
+          mkdir -p /tmp/tests-output
+          docker run --rm -v ${{ env.TESTS_DATA }}:/home/sdd-user/tests-data -v /tmp/tests-output:/home/sdd-user/sdd-out test-image:latest process-all -d /home/sdd-user/tests-data -o /home/sdd-user/sdd-out

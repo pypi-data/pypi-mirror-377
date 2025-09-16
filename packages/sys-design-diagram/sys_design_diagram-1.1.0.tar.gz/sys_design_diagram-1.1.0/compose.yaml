@@ -1,0 +1,56 @@
+# This file is used to run the sys-design-diagram service in a container
+# usage: docker compose up --build
+# The output will be saved in the sdd-output folder in the current directory
+# test-data folder contains the design files in puml and python format(diagrams library)
+services:
+  sdd-process-all:
+    image: sdd-test:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./sdd-outputs/sdd-all:/home/sdd-user/sdd-all
+      - ./tests-data:/home/sdd-user/tests-data
+    networks:
+      - sdd-network
+    command: ["process-all", -d, "/home/sdd-user/tests-data", -o, "/home/sdd-user/sdd-all"]
+
+  sdd-plantuml:
+    image: sdd-test:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./sdd-outputs/sdd-plantuml:/home/sdd-user/sdd-plantuml
+      - ./tests-data:/home/sdd-user/tests-data
+    networks:
+      - sdd-network
+    command: ["plantuml", -d, "/home/sdd-user/tests-data", -o, "/home/sdd-user/sdd-plantuml"]
+
+  sdd-diagrams:
+    image: sdd-test:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./sdd-outputs/sdd-diagrams:/home/sdd-user/sdd-diagrams
+      - ./tests-data:/home/sdd-user/tests-data
+    networks:
+      - sdd-network
+    command: ["diagrams", -d, "/home/sdd-user/tests-data", -o, "/home/sdd-user/sdd-diagrams"]
+  
+  sdd-build-locally:
+    image: sdd-local:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile_local
+    volumes:
+      - ./sdd-local-outputs:/home/sdd-user/sdd-local-outputs
+      - ./tests-data:/home/sdd-user/tests-data
+    networks:
+      - sdd-local-network
+    command: ["process-all", -d, "/home/sdd-user/tests-data", -o, "/home/sdd-user/sdd-local-outputs"]
+
+networks:
+  sdd-network: {}
+  sdd-local-network: {}

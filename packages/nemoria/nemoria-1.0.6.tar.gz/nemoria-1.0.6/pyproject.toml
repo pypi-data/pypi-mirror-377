@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nemoria"
+dynamic = ["version"]
+description = "Async TCP in-memory datastore with secure client-server protocol, supporting real-time multi-client CRUD operations."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Moh-Dehghan", email = "m.dehghan.2003@outlook.com" }]
+keywords = [
+    "asyncio",
+    "memory",
+    "crud",
+    "store",
+    "server",
+    "client",
+    "tcp",
+    "protocol",
+]
+dependencies = ["cryptography>=41.0.0", "pyyaml>=6.0.0", "pyroute>=1.0.0"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: AsyncIO",
+    "Operating System :: OS Independent",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://github.com/moh-dehghan/nemoria"
+Repository = "https://github.com/moh-dehghan/nemoria"
+Issues = "https://github.com/moh-dehghan/nemoria/issues"
+
+[tool.hatch.version]
+path = "nemoria/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["nemoria/**", "README.md", "LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["nemoria"]
+include = ["nemoria/py.typed"]

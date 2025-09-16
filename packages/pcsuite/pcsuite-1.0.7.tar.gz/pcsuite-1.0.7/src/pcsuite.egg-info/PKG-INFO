@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: pcsuite
+Version: 1.0.7
+Summary: Open-source Windows cleanup, startup, optimization, and security toolkit
+Author: PCSuite Contributors
+License: MIT
+Keywords: windows,cleanup,optimization,security,startup
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer>=0.12.0
+Requires-Dist: rich>=13.7.1
+Requires-Dist: psutil>=5.9.8
+Requires-Dist: pywin32>=306
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: Send2Trash>=1.8.2
+Dynamic: license-file
+
+# PCSuite
+
+A modular PC cleaner and optimizer suite for Windows.
+
+## Features
+- Cleaning Windows temp files, browser caches, update leftovers
+- Startup and service management
+- Security and optimization tools
+- Rich CLI and TUI
+ - Firewall status/toggle, Defender scan, file reputation check
+ - Network stack and power plan tuning (what-if/apply)
+
+## Structure
+See the `src/pcsuite/` directory for modules.

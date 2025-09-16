@@ -1,0 +1,160 @@
+name: Test - Dependencies
+on:
+  workflow_call:
+  workflow_dispatch:  # to trigger manually
+
+permissions:
+  contents: read
+
+jobs:
+
+  coola:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.13', '3.12', '3.11', '3.10' ]
+        coola-version: [ 0.9.0 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: true
+
+      - name: Install invoke
+        run: |
+          make install-invoke
+
+      - name: Install packages
+        run: |
+          inv install --all-deps
+
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.3.4
+        with:
+          package-name: 'coola'
+          package-version: ${{ matrix.coola-version }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Show python config
+        run: |
+          inv show-python-config
+
+      - name: Show installed packages
+        run: |
+          inv show-installed-packages
+
+      - name: Run unit tests
+        run: |
+          inv unit-test
+
+
+  numpy:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.13', '3.12', '3.11', '3.10' ]
+        numpy-version: [
+          2.3.2,
+          2.2.6,
+          2.1.3,
+          2.0.2,
+        ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: true
+
+      - name: Install invoke
+        run: |
+          make install-invoke
+
+      - name: Install packages
+        run: |
+          inv install --all-deps
+
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.3.4
+        with:
+          package-name: 'numpy'
+          package-version: ${{ matrix.numpy-version }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Show python config
+        run: |
+          inv show-python-config
+
+      - name: Show installed packages
+        run: |
+          inv show-installed-packages
+
+      - name: Run unit tests
+        run: |
+          inv unit-test
+
+
+  polars:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ '3.13', '3.12', '3.11', '3.10' ]
+        polars-version: [ 1.33.0, 1.0.0 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: true
+
+      - name: Install invoke
+        run: |
+          make install-invoke
+
+      - name: Install packages
+        run: |
+          inv install --all-deps
+
+      - name: Install valid package version
+        uses: durandtibo/pip-install-package-action@v0.3.4
+        with:
+          package-name: 'polars'
+          package-version: ${{ matrix.polars-version }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Show python config
+        run: |
+          inv show-python-config
+
+      - name: Show installed packages
+        run: |
+          inv show-installed-packages
+
+      - name: Run unit tests
+        run: |
+          inv unit-test

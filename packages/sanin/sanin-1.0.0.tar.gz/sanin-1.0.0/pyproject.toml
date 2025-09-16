@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sanin"
+version = "1.0.0"
+description = "Synthetic anomaly injection for time series with auto baseline estimation."
+authors = [{name = "Mateus Paape"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ["numpy>=1.22", "pandas>=1.5"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sanin*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

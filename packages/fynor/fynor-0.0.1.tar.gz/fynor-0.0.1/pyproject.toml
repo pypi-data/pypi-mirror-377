@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fynor"
+version = "0.0.1"
+description = "Fynor – a fast, lightweight micro backend framework"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name="Your Team", email="you@example.com" }
+]
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["."]

@@ -1,0 +1,62 @@
+[project]
+name = "dfdrift"
+version = "0.3.0"
+description = "DataFrame schema drift detection and alerting"
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+license = "MIT"
+authors = [
+    {name = "Keisuke Ogaki", email = "ogaki@example.com"}
+]
+keywords = ["pandas", "dataframe", "schema", "drift", "validation", "monitoring"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "pandas>=1.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Hi-king/dfdrift"
+Repository = "https://github.com/Hi-king/dfdrift"
+Issues = "https://github.com/Hi-king/dfdrift/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "tox>=4.0",
+]
+slack = [
+    "slack-sdk>=3.19.0",
+]
+gcs = [
+    "google-cloud-storage>=2.18.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["dfdrift*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=dfdrift --cov-report=term-missing --cov-report=html --cov-report=xml"
+
+[dependency-groups]
+dev = [
+    "tox>=4.0",
+]

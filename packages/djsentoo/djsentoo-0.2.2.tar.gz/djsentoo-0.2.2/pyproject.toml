@@ -1,0 +1,79 @@
+[project]
+name = "djsentoo"
+readme = "README.md"
+urls = { Homepage = "https://github.com/rhymiz/djsentoo", GitHub = "https://github.com/rhymiz/djsentoo" }
+dynamic = ["version"]
+description = "A reusable Django app for integrating with the Sentoo payment gateway."
+authors = [{ name = "Lemi Boyce", email = "lemuel@vokality.com" }]
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = ["django>=5.2.1", "sentoo>=0.2.0"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Django :: 5",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+]
+keywords = [
+    "sentoo",
+    "payments",
+    "django",
+    "ecommerce",
+    "payment gateway",
+    "aruba",
+    "bonaire",
+    "curacao",
+    "sint maarten",
+    "sint eustatius",
+]
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
+
+[tool.ruff]
+exclude = [".venv"]
+line-length = 100
+indent-width = 4
+target-version = "py313"
+respect-gitignore = true
+
+[tool.ruff.lint]
+select = ["E", "I", "B", "ASYNC"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+"tests.py" = ["F"]
+"migrations/**" = ["D"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "parents"
+
+[tool.ruff.analyze]
+detect-string-imports = true
+
+[tool.pyright]
+typeCheckingMode = "basic"
+reportAttributeAccessIssue = false
+
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["pyright>=1.1.405", "ruff>=0.13.0"]

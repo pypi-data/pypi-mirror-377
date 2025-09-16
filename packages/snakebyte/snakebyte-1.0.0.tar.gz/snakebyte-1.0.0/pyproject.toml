@@ -1,0 +1,27 @@
+[project]
+name = "snakebyte"
+version = "1.0.0"
+description = "A terminal-based snake game with levels, power-ups, and high score tracking."
+authors = [
+  { name = "Manav Sharma", email = "manavs19102006@gmail.com" }
+]
+requires-python = ">=3.7"
+dependencies = [
+  "numpy>=1.26.0",
+  "pyfiglet>=0.8.post1",
+  "appdirs>=1.4.4",
+  "windows-curses>=2.4.1; platform_system == 'Windows'"
+]
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/HattoriMan/SnakeByte"
+Repository = "https://github.com/HattoriMan/SnakeByte"
+Issues = "https://github.com/HattoriMan/SnakeByte/issues"
+
+[project.scripts]
+snake = "snakebyte.game:run_game"
+
+[build-system]
+requires = ["setuptools<81", "wheel"]
+build-backend = "setuptools.build_meta"

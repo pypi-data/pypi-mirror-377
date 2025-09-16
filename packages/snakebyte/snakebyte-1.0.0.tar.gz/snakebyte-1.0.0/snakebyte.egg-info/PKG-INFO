@@ -1,0 +1,172 @@
+Metadata-Version: 2.4
+Name: snakebyte
+Version: 1.0.0
+Summary: A terminal-based snake game with levels, power-ups, and high score tracking.
+Author-email: Manav Sharma <manavs19102006@gmail.com>
+Project-URL: Homepage, https://github.com/HattoriMan/SnakeByte
+Project-URL: Repository, https://github.com/HattoriMan/SnakeByte
+Project-URL: Issues, https://github.com/HattoriMan/SnakeByte/issues
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: pyfiglet>=0.8.post1
+Requires-Dist: appdirs>=1.4.4
+Requires-Dist: windows-curses>=2.4.1; platform_system == "Windows"
+Dynamic: license-file
+
+# 🐍 SnakeByte - Terminal Snake Game
+
+A feature-rich, interactive Snake game playable entirely in your terminal! Built with Python and the `curses` module, this game supports color display, multiple levels, power-ups, score tracking, key remapping, and pause functionality.
+
+---
+
+## 🎮 Features
+
+* 🟩 **Colorful terminal graphics**
+* 🧠 **Multiple difficulty levels**: Easy, Medium, Hard
+* ⚡ **Power-ups** with dynamic effects:
+
+  * `▲` Speed Up
+  * `▼` Slow Down
+  * `×` Shrink Snake
+  * `+` Bonus Score
+  * `-` Score Penalty
+* ⌨️ **Customizable controls** via `key_config.json`
+* ⏸️ **Pause menu** with instructions
+* 💾 **High score tracking** per difficulty level
+* 📜 **Gameplay logs** stored in JSON format
+* 🔁 Seamless restart from game over
+
+---
+
+## 🚀 Getting Started
+
+### 🔧 Prerequisites
+
+* Python 3.7 or higher
+* Compatible with Linux, macOS, and Windows (Windows installs `windows-curses`)
+
+---
+
+### 📦 Installation
+
+Install via `pip`:
+
+```bash
+pip install snakebyte
+```
+
+Or clone manually and install dependencies:
+
+```bash
+git clone https://github.com/HattoriMan/SnakeByte
+cd SnakeByte
+pip install -r requirements.txt
+```
+
+---
+
+### ▶️ Run the Game
+
+From source:
+
+```bash
+python game.py
+```
+
+Or if installed via pip (from anywhere):
+
+```bash
+snake
+```
+
+Optional debug mode:
+
+```bash
+python game.py --debug
+```
+
+---
+
+## 🎮 Controls
+
+| **Action**     | **Default Keys** |
+| -------------- | ---------------- |
+| Move Up        | `W` / `↑`        |
+| Move Down      | `S` / `↓`        |
+| Move Left      | `A` / `←`        |
+| Move Right     | `D` / `→`        |
+| Pause / Resume | `P`              |
+| Instructions   | `I`              |
+| Quit           | `Q` / `Esc`      |
+
+---
+
+### 🔧 Customize Keys
+
+You can customize key bindings in the `key_config.json` file.
+
+---
+
+## 🗂️ Project Structure
+
+```
+snakebyte/
+├── snakebyte/              # Main game package
+│   ├── __init__.py
+│   ├── game.py             # Main game logic and entry point
+│   ├── utils.py            # Game utilities
+│   ├── config.py           # Game configuration
+│   └── key_config.py       # Key handling logic
+├── key_config.json         # User-customizable key bindings
+├── logs/                   # Game logs and high scores (auto-created on run)
+├── pyproject.toml          # Modern Python packaging configuration
+├── MANIFEST.in             # Package data inclusion rules
+├── README.md               # Project documentation
+└── LICENSE                 # MIT License file
+
+```
+
+---
+
+## 🧪 Levels & Gameplay
+
+* **Levels**: Easy, Medium, Hard
+* Snake wraps around screen edges
+* Avoid biting your own body
+* Collect food (`◉`) to grow and score
+* Power-ups spawn periodically
+
+---
+
+## 📝 Logging
+
+* Game history: `logs/app.jsonl`
+* High scores: `logs/score.json`
+* Error traces: `logs/error_traceback.log`
+
+---
+
+## 🔜 Upcoming Features
+
+✨ Planned enhancements:
+
+* 🔊 Sound effects
+* 💾 Save/Load game state
+* 🧩 Challenges & achievements
+* 🌐 Online high score leaderboard
+
+---
+
+## 📄 License
+
+MIT License – free to use, modify, and distribute.
+
+---
+
+## 🙌 Acknowledgements
+
+Thanks to the Python community and open-source contributors for making this possible. Inspired by the classic Snake game we all loved.
+
+---

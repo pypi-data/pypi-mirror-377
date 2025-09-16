@@ -1,0 +1,34 @@
+# makefile prototype for the EDIM package (assuming GAP >= 4.12) Frank Lübeck
+
+# GAPPATH is found in `configure`, GAParch, GAP and GAC are set in sysinfo.gap
+GAPPATH=/Users/runner/sage-local/lib/gap/
+include $(GAPPATH)/sysinfo.gap
+
+.PHONY: doc clean cleanlast distclean docclean test
+
+bin/$(GAParch)/ediv.so: src/ediv.c Makefile
+	@mkdir -p bin/$(GAParch)
+	$(GAC) -d -p "$(CPPFLAGS)" -p "$(CFLAGS)" -P "$(LDFLAGS)" -o bin/$(GAParch)/ediv.so src/ediv.c
+
+doc:
+	$(GAP)  makedocrel.g
+
+# for compatibility with other packages
+clean:
+	rm -rf bin/$(GAParch) *~
+# clean last build
+cleanlast:
+	rm -rf bin/$(GAParch) Makefile *~
+# clean all builds
+distclean:
+	rm -rf bin/* Makefile Makefile-*
+
+docclean:
+	(cd  doc; ./clean)
+
+test:
+	$(GAP) -b -q -r < tst/test.g
+
+# regenerate Makefile if any of its inputs changed
+Makefile: configure Makefile.in $(GAPPATH)/sysinfo.gap
+	./configure $(GAPPATH)

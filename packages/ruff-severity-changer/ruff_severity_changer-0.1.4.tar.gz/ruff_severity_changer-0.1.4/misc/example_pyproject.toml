@@ -1,0 +1,18 @@
+[project]
+name = "RuffSeverityChanger"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[tool.ruff]
+output-format = "gitlab"
+line-length = 90
+lint.extend-select = ["I", "W", "E501", "N"]
+
+[tool.mypy]
+check_untyped_defs = true
+
+[tool.ruff_severity_changer]
+N = "info"
+E = "minor"
+F = "info"
+E741 = "major"

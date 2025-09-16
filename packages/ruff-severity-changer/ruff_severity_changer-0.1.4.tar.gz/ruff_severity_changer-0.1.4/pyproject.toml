@@ -1,0 +1,41 @@
+[project]
+name = "ruff-severity-changer"
+version = "0.1.4"
+authors = [
+    {name="OokamiTheLord", email="kuba@axod.pl"}
+]
+description = "Script modifying severity in Ruff code quality reports"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+license = { file = "LICENSE" }
+
+[project.urls]
+Repository = "https://gitlab.com/cammiesoft/ruff-severity-changer"
+Issues = "https://gitlab.com/cammiesoft/ruff-severity-changer/-/issues"
+
+[project.scripts]
+ruff-severity-changer = "ruff_severity_changer.ruff_severity_changer:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ruff_severity_changer"]
+
+[tool.ruff]
+output-format = "gitlab"
+line-length = 90
+lint.extend-select = ["I", "W", "E501", "N"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/ruff_severity_changer/__init__.py" = ["N999"]
+
+[tool.mypy]
+check_untyped_defs = true

@@ -1,0 +1,218 @@
+[build-system]
+requires = ["hatchling", "packaging>=23.1"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gac"
+dynamic = ["version"]
+description = "AI-powered Git commit message generator with multi-provider support"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "cellwebb", email = "cellwebb@users.noreply.github.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+    # AI components - base providers
+    "aisuite",
+    "anthropic",
+    "cerebras_cloud_sdk",
+    "groq",
+    "ollama",
+    "openai",
+    "tiktoken",
+    
+    # Core functionality
+    "pydantic",
+    "python-dotenv",
+    "docstring_parser",  # needed by aisuite but not in their deps
+    
+    # CLI and formatting
+    "click",
+    "halo",
+    "questionary",
+    "rich",
+    
+    # Code formatting
+    "black",
+    "isort",
+]
+
+[project.scripts]
+gac = "gac.cli:cli"
+
+[project.optional-dependencies]
+dev = [
+    # Version management
+    "bump-my-version",
+    
+    # Testing
+    "pytest",
+    "pytest-cov",
+    "codecov",
+    
+    # Linting and formatting
+    "ruff",
+    
+    # Release tools
+    "build",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://github.com/cellwebb/gac"
+Documentation = "https://github.com/cellwebb/gac#readme"
+Repository = "https://github.com/cellwebb/gac.git"
+Issues = "https://github.com/cellwebb/gac/issues"
+Changelog = "https://github.com/cellwebb/gac/blob/main/CHANGELOG.md"
+Source = "https://github.com/cellwebb/gac"
+
+[tool.black]
+line-length = 120
+target-version = ["py310", "py311", "py312", "py313"]
+
+[tool.coverage.run]
+source_pkgs = ["gac"]
+branch = true
+parallel = true
+omit = [
+  "src/gac/__version__.py",
+  "src/gac/main.py",
+]
+
+[tool.coverage.paths]
+gac = ["src/gac", "*/gac/src/gac"]
+tests = ["tests", "*/gac/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "pragma: no cover",
+  "def __repr__",
+  "raise NotImplementedError",
+  "pass",
+  "raise ImportError",
+  "except ImportError"
+]
+
+[tool.flake8]
+max-line-length = 120
+exclude = [".git", "__pycache__", ".venv", "venv", "build", "dist"]
+per-file-ignores = "__init__.py:F401"
+ignore = "E203,W503,E501"
+
+[tool.hatch.version]
+path = "src/gac/__version__.py"
+
+[tool.hatch.build]
+only-packages = true
+skip-excluded = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gac"]
+include-files = []
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github",
+    "/docs",
+    "tests/",
+    "*.tests",
+    "*.tests.*",
+]
+include = [
+    "src/gac/",
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+    # AI components
+    "aisuite",
+    "anthropic",
+    "openai",
+    "groq",
+  
+    # Core functionality
+    "pydantic",
+    
+    # CLI and formatting
+    "halo",
+    
+    # Code formatting
+    "black",
+    "isort",
+    
+    # Testing
+    "pytest",
+    "pytest-cov",
+    "codecov",
+    
+    # Linting
+    "flake8",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests} && coverage report"
+lint = [
+    "black .",
+    "isort .",
+    "flake8 .",
+]
+format = [
+    "black .",
+    "isort .",
+]
+
+[tool.hatch.env]
+path = ".venv"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[template.plugins.default]
+tests = true
+src-layout = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=7.0.0",
+]

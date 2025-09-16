@@ -1,0 +1,69 @@
+Metadata-Version: 2.4
+Name: django-lti-dynamic-registration
+Version: 0.1.2
+Summary: Add-on to django-lti to support dynamic registration.
+Author-email: Harvard University Academic Technology <academictechnology@harvard.edu>
+Project-URL: Homepage, https://github.com/Harvard-University-iCommons/django-lti-dynamic-registration
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Django :: 5.1
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: django>=4.2
+Requires-Dist: django-lti>=0.5.0
+Dynamic: license-file
+
+# django-lti-dynamic-registration
+
+Add-on to django-lti to support dynamic registration.
+
+See: https://www.imsglobal.org/spec/lti-dr/v1p0
+
+More details to come.
+
+## Using
+
+```python
+from lti_dynamic_registration.views import DynamicRegistrationBaseView
+from lti_dynamic_registration.types import (
+    CanvasLtiMessage,
+    CanvasLtiRegistration,
+    CanvasLtiToolConfiguration,
+)
+from django.shortcuts import redirect, render
+
+
+class DynamicRegistrationView(DynamicRegistrationBaseView):
+    tool_friendly_name = "Tool Name"
+
+    def get(self, request, *args, **kwargs) -> HttpResponse:
+        # Return a form to the user where they can customize the registration
+        return render(request, 'registration.html')
+
+
+    def post(self, request, *args, **kwargs) -> HttpResponse:
+        # Perform the registration steps. Typically this would involve:
+        # 1. Register the platform in the tool
+        # 2. Register the tool in the platform
+        # 3. Update the platform registration with the client ID returned in step 2
+
+
+        # Return a page containing javascript that calls a special
+        # platform postMessage endpoint
+        return self.success_response()
+```

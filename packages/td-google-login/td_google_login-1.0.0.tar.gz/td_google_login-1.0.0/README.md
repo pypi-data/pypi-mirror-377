@@ -1,0 +1,260 @@
+# TD Google Login - Django Package
+
+A plug-and-play Django package for Google OAuth 2.0 authentication that works seamlessly with any Django backend.
+
+## Features
+
+- 🚀 **Plug-and-play**: Minimal setup required
+- 🔐 **Secure**: Uses Google OAuth 2.0 with proper token verification
+- 🎯 **Flexible**: Supports both traditional and SPA authentication flows
+- 📱 **Frontend Ready**: Works perfectly with React/Next.js frontends
+- 🛡️ **Production Ready**: Includes security features, caching, and error handling
+- 🎨 **Admin Integration**: Django admin interface for user management
+
+## Installation
+
+```bash
+pip install td-google-login
+```
+
+## Quick Setup
+
+### 1. Add to Django Settings
+
+```python
+# settings.py
+INSTALLED_APPS = [
+    # ... your other apps
+    'td_google_login',
+]
+
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID = 'your-google-client-id'
+GOOGLE_CLIENT_SECRET = 'your-google-client-secret'
+GOOGLE_REDIRECT_URI = 'http://localhost:8000/auth/google/callback/'
+
+# Optional: Customize redirect URLs
+TDG_LOGIN_REDIRECT_URL = '/dashboard/'
+TDG_LOGOUT_REDIRECT_URL = '/'
+```
+
+### 2. Add URLs
+
+```python
+# urls.py
+from django.urls import path, include
+
+urlpatterns = [
+    # ... your other URLs
+    path('auth/google/', include('td_google_login.urls')),
+]
+```
+
+### 3. Run Migrations
+
+```bash
+python manage.py migrate
+```
+
+### 4. Environment Variables (Recommended)
+
+Create a `.env` file:
+
+```env
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback/
+```
+
+## Usage
+
+### Traditional Web Flow
+
+For traditional web applications, users can be redirected to:
+
+```
+GET /auth/google/login/
+```
+
+This will redirect to Google's OAuth consent screen, and after authorization, redirect back to your callback URL.
+
+### SPA/API Flow
+
+For Single Page Applications (React, Vue, etc.), send the Google ID token to:
+
+```javascript
+// Frontend JavaScript
+fetch('/auth/google/callback/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        token: googleIdToken  // From Google OAuth response
+    })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        // User is logged in
+        console.log('Welcome,', data.user.first_name);
+    }
+});
+```
+
+### Available Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/auth/google/login/` | GET | Initiate Google OAuth flow |
+| `/auth/google/callback/` | GET/POST | Handle OAuth callback |
+| `/auth/google/user-info/` | GET | Get current user info |
+| `/auth/google/logout/` | POST | Logout user |
+| `/auth/google/health/` | GET | Health check |
+
+## Configuration Options
+
+All settings can be configured via Django settings or environment variables:
+
+```python
+# Required Settings
+GOOGLE_CLIENT_ID = 'your-client-id'
+GOOGLE_CLIENT_SECRET = 'your-client-secret'
+
+# Optional Settings
+GOOGLE_REDIRECT_URI = 'http://localhost:8000/auth/google/callback/'
+TDG_LOGIN_REDIRECT_URL = '/'
+TDG_LOGOUT_REDIRECT_URL = '/'
+TDG_CREATE_UNKNOWN_USER = True  # Create new users automatically
+TDG_UPDATE_USER_INFO = True     # Update user info on login
+TDG_SESSION_KEY_PREFIX = 'tdg_'
+TDG_VERIFY_TOKEN_EXPIRY = True
+TDG_TOKEN_CACHE_TIMEOUT = 3600  # 1 hour
+TDG_GOOGLE_OAUTH_SCOPES = ['openid', 'email', 'profile']
+TDG_FRONTEND_SUCCESS_URL = None  # For SPA redirects
+TDG_FRONTEND_ERROR_URL = None    # For SPA error redirects
+```
+
+## Google OAuth Setup
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API
+4. Create credentials (OAuth 2.0 Client ID)
+5. Add your domain to authorized origins
+6. Add your callback URL to authorized redirect URIs
+
+Example authorized redirect URIs:
+- `http://localhost:8000/auth/google/callback/` (development)
+- `https://yourdomain.com/auth/google/callback/` (production)
+
+## Signals
+
+The package provides Django signals for custom integration:
+
+```python
+from td_google_login.signals import user_google_login
+
+@receiver(user_google_login)
+def handle_google_login(sender, user, user_info, created, request, **kwargs):
+    if created:
+        # New user created
+        print(f"New user registered: {user.email}")
+    else:
+        # Existing user logged in
+        print(f"User logged in: {user.email}")
+    
+    # Access Google user info
+    google_id = user_info.get('sub')
+    picture_url = user_info.get('picture')
+```
+
+## Models
+
+### GoogleUserProfile
+
+Extended profile information for Google-authenticated users:
+
+```python
+from td_google_login.models import GoogleUserProfile
+
+# Access user's Google profile
+user = request.user
+if hasattr(user, 'google_profile'):
+    profile = user.google_profile
+    print(f"Google ID: {profile.google_id}")
+    print(f"Picture: {profile.picture_url}")
+    print(f"Locale: {profile.locale}")
+```
+
+## Management Commands
+
+Clean up expired OAuth states:
+
+```bash
+python manage.py cleanup_oauth_states --hours 24
+```
+
+## Security Features
+
+- ✅ CSRF protection for POST endpoints
+- ✅ OAuth state parameter validation
+- ✅ ID token signature verification
+- ✅ Token expiry validation
+- ✅ Secure session management
+- ✅ Automatic cleanup of expired OAuth states
+
+## Error Handling
+
+The package includes comprehensive error handling:
+
+```python
+# Example error response
+{
+    "success": false,
+    "error": "Invalid ID token",
+    "message": "Token signature verification failed"
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Invalid client ID**: Check your `GOOGLE_CLIENT_ID` setting
+2. **Redirect URI mismatch**: Ensure your callback URL matches Google Console
+3. **Token verification failed**: Check system time and Google API connectivity
+
+### Debug Mode
+
+Enable Django debug logging:
+
+```python
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'td_google_login': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support, please open an issue on GitHub or contact support@tdsolutions.com.

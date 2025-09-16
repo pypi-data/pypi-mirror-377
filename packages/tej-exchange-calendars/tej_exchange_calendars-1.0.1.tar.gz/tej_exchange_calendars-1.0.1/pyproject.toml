@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tej-exchange-calendars"
+description = "Calendars for securities exchanges"
+authors = [
+    { name = 'tej' },
+    { email = 'tej@tej.com.tw' }
+]
+maintainers = [
+    { name = 'tej api Development Team' },
+    { email = 'tej@tej.com.tw' }
+]
+
+readme = "README.md"
+license = { text = 'Apache-2.0'}
+keywords = ["finance", "security", "calendar", "exchange"]
+requires-python = "~=3.8"
+classifiers = [
+	"Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=2",
+    "pandas>=2.0.0",
+    "pyluach",
+    "toolz",
+    "tzdata",
+    "korean_lunar_calendar",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "flake8",
+    "hypothesis",
+    "pytest",
+    "pytest-benchmark",
+    "pytest-xdist",
+    "pip-tools",
+]
+
+[project.scripts]
+ecal = "exchange_calendars.ecal:main"
+
+[project.urls]
+homepage = 'https://tquant.tejwin.com/'
+repository = 'https://github.com/tejtw/exchange_calendars'
+
+[tool.setuptools.packages.find]
+include = ["exchange_calendars", "exchange_calendars.*"]
+
+[tool.setuptools_scm]
+write_to = "exchange_calendars/_version.py"
+
+[tool.black]
+line-length = 88
+target-version = ['py38','py39', 'py310', 'py311','py312']

@@ -1,0 +1,72 @@
+{
+  "header": {
+    "author": "Zaihua Ji, zji@ucar.edu",
+    "date": "09/05/2005",
+    "description": "table of gdex data usage information tranferred to Zenedo"
+  },
+  "database": "rdadb",
+  "schema": "dssdb",
+  "name": "gdexzenodo",
+  "pkey": "aidx",
+  "column": [
+    {
+      "name": "zidx",
+      "type": "serial",
+      "pkey": "PRIMARY KEY",
+      "notnull": "NOT NULL",
+      "comment": "auto generated gdexzenodo index, internal use"
+    },
+    {
+      "name": "zdsid",
+      "type": "varchar(20)",
+      "comment": "reference to xenedo dsid"
+    },
+    {
+      "name": "date",
+      "type": "date",
+      "comment": "date data accessed"
+    },
+    {
+      "name": "time",
+      "type": "time",
+      "default": "'00:00:00'",
+      "comment": "time data accessed"
+    },
+    {
+      "name": "quarter",
+      "type": "smallint",
+      "comment": "quarter of the year data accessed"
+    },
+    {
+      "name": "size",
+      "type": "bigint",
+      "comment": "bytes of data accessed"
+    },
+    {
+      "name": "method",
+      "type": "varchar(20)",
+      "comment": "delv. methods: MSS,Web,Ftp,Tape,Cd,Disk,Paper,cArt,Micro"
+    },
+    {
+      "name": "source",
+      "type": "char(1)",
+      "comment": "W - wusage, M - mssusage, O - ordusage"
+    },
+    {
+      "name": "ip",
+      "type": "varchar(39)",
+      "comment": "IP address"
+    }
+  ],
+  "index": [
+    {
+      "name": "gdexzenodo_idx_1",
+      "column": "date"
+    },
+    {
+      "name": "gdexzenedo_idx_2",
+      "column": "zdsid"
+    }
+  ],
+  "comment": "ZENEDO DATA USAGE"
+}

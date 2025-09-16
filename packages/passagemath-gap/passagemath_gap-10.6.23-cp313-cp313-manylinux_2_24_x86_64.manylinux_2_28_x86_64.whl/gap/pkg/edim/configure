@@ -1,0 +1,35 @@
+#!/bin/sh
+# (C) Frank Lübeck     2018
+# configure script for EDIM with GAP > 4.11 (different build system for GAP)
+
+# some tools on OS X made locale related problems, so:
+export LANG=C
+export LC_ALL=C
+
+# GAP path
+GAPPATH=../..
+while test "$#" -ge 1 ; do
+  option="$1" ; shift
+  case "$option" in
+    --with-gaproot=*) GAPPATH=${option#--with-gaproot=}; ;;
+    -*)               echo "ERROR: unsupported argument $option" ; exit 1;;
+    *)                GAPPATH="$option" ;;
+  esac
+done
+echo "Using $GAPPATH as GAP build directory."
+
+if [ -e "$GAPPATH/sysinfo.in" ]; then
+  # GAP version < 4.9, use old configure script
+  echo "Old version (<4.9) of GAP ..."
+  ./configure.old $*
+  exit
+fi
+
+# Reading variables from GAP build directory
+. "$GAPPATH/sysinfo.gap"
+
+echo "Using bin path: $GAParch"
+
+# Creating Makefile
+sed -e "s|@GAPPATH@|$GAPPATH|g" < Makefile.in > Makefile
+

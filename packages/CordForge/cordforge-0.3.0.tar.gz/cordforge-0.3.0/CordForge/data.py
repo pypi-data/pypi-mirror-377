@@ -1,0 +1,92 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING: from .cord import Cord
+
+from asyncio import sleep
+from os.path import exists, join
+from os import mkdir, listdir, remove
+
+from discord import Member
+from .user import User
+
+usersDirectory = join("Data", "users")
+
+class Data:
+    cord:Cord
+    autosave_interval:int
+    def __init__(_, cord:Cord, autosave:bool=False):
+        object.__setattr__(_, "cord", cord)
+        _.autosave_interval = 15
+        if not exists("Data"):
+            mkdir("Data")
+        if not exists(usersDirectory):
+            mkdir(usersDirectory)
+        
+        if autosave:
+            _.autosave()
+
+
+    def __setattr__(_, name, value):
+        if name == "cord":
+            raise AttributeError(f"Cannot modify Data.cord.")
+        
+        if isinstance(value, dict) or name in ["autosave_interval"]:
+            super().__setattr__(name, value)
+        else:
+            raise AttributeError(f"Data attributes can only be dictonaries")
+
+
+    async def autosave(_) -> None:
+        while True:
+            await sleep(_.autosave_interval)
+            print("Autosaving")
+            user:User
+            for user in _.cord.users.values():
+                with open(join(usersDirectory, f"{user.id}.cf"), "w") as file:
+                    data_string = ""
+                    for name, value in user.data.items():
+                        data_string += f"{name}={value}\n"
+                    data_string = data_string[:-1]
+                    file.write(data_string)
+
+            name:str
+            data_dict:dict
+            for name, data_dict in _.__dict__.items():
+                if name not in ["cord", "autosave_interval"]:
+                    with open(join("Data", f"{name}.cf")) as file:
+                        data_string = ""
+                        for name, value in data_dict.items():
+                            data_string += f"{name}={value}\n"
+                        data_string = data_string[:-1]
+                        file.write(data_string)
+
+
+    async def load_data(_) -> None:
+        print("Loading data")
+        for file in listdir(usersDirectory):
+            id = int(file[:-3])
+            with open(join(usersDirectory, file), 'r') as file:
+                contents = [line.strip() for line in file.readlines() if line != ""]
+                for guild in _.cord.guilds:
+                    member = guild.get_member(id)
+                
+                if member:
+                    user = User(member)
+                    _.cord.users.update({id:user})
+                    for line in contents:
+                        name, value = line.split("=")
+                        if value.replace(".", "").isdecimal():
+                            value = float(value)
+                        elif value.isdecimal():
+                            value = int(value)
+                        user.__setattr__(name, value)
+                    print(f"Loaded {member.name}'s Data")
+
+
+    async def reset_user(_, user:User) -> None:
+        user_file_path = join(usersDirectory, f"{user.id}.cf")
+        if exists(user_file_path):
+            remove(user_file_path)
+            print("Reset User")
+        else:
+            print("Tried to reset a user's file that did not exist.")

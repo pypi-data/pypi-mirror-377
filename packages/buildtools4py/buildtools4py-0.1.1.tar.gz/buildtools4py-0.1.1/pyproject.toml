@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 Michael Pöhn <michael@poehn.at>
+# SPDX-License-Identifier: CC0-1.0
+
+[tool.poetry]
+name = "buildtools4py"
+version = "0.1.1"
+description = "python wrapper for (some) Android build-tools"
+authors = ["Michael Pöhn <michael@poehn.at>"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{include = "buildtools4py"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

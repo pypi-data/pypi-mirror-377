@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deflect"
+version = "0.1.0"
+description = "Official Deflect Bot Protection SDK for Python"
+readme = "README.md"
+authors = [{name = "Deflect"}]
+license = {text = "MIT"}
+keywords = ["deflect", "bot", "security", "antibot"]
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Security"
+]
+dependencies = [
+  "httpx>=0.27.0,<0.28.0"
+]
+
+[project.optional-dependencies]
+async = ["httpx[http2]>=0.27.0,<0.28.0"]
+test = ["pytest>=6.0", "pytest-asyncio>=0.21.0"]
+
+[project.urls]
+Homepage = "https://docs.deflect.bot/"
+Source = "https://github.com/deflectbot/deflect-python"
+Issues = "https://github.com/deflectbot/deflect-python/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["deflect"]
+branch = true
+
+[tool.ruff]
+line-length = 100
+select = ["E","F","I","B","UP","ASYNC","S","N","A","BLE","C4","SIM","T20"]
+ignore = ["S311","S101"]
+

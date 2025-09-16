@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "oak-agent-core"
+version = "0.1.5"
+description = "A shared Python library for an agentic tool with a modular architecture, including a RAG service and financial data models."
+authors = ["Pumulo Sikaneta <pumulo@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/pumulo/oak-agent-core"
+repository = "https://github.com/pumulo/oak-agent-core"
+documentation = "https://oak-agent-core.readthedocs.io"
+keywords = ["agentic", "finance", "rag", "embeddings", "ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Correct location for the packages table
+packages = [
+    { include = "oak", from = "src" }
+]
+
+[tool.poetry.dependencies]
+celery = {extras = ["redis"], version = "^5.3.6"}
+fastapi = "^0.103.1"
+fastembed = "^0.7.3"
+Jinja2 = "^3.1.6"
+langchain = "0.3.27"  
+psycopg2-binary = "^2.9.7"
+python = "^3.13.7"
+python-dotenv = "^1.0.0"
+redis = "^5.0.1"
+sqlalchemy = "^2.0.21"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+testcontainers = "^4.1.0"
+pytest-asyncio = "^0.23.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

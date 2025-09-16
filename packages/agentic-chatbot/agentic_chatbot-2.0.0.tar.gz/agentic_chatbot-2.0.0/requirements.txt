@@ -1,0 +1,39 @@
+    # Core dependencies - Required for basic functionality
+    # streamlit>=1.49.0
+    openai>=1.102.0
+    python-dotenv>=1.0.0
+    requests>=2.31.0
+
+    # LangChain core - Required for agent functionality
+    langchain>=0.3.27
+    langchain-community>=0.3.29
+    langchain-openai>=0.3.32
+    # langchain-anthropic>=0.3.20  # Commented out - not used in current demo
+    # langchain-google-genai>=2.0.10  # Commented out - not used in current demo
+    # transformers>=4.56.0  # Commented out - not used in current demo
+
+    # Vector stores and embeddings (for RAG functionality) - REQUIRED for RAG
+    sentence-transformers>=5.1.0
+    chromadb>=1.0.20
+    faiss-cpu>=1.12.0
+    langchain-chroma>=0.2.5
+
+    # History backends (for persistent storage) - OPTIONAL
+    # redis>=6.4.0  # Commented out - only needed for Redis backend
+    # pymongo>=4.15.0  # Commented out - only needed for MongoDB backend
+    # psycopg2-binary>=2.9.10  # Commented out - only needed for PostgreSQL backend
+
+    # Additional LLM providers - OPTIONAL
+    # anthropic>=0.67.0  # Commented out - only needed for Anthropic models
+    # google-generativeai>=0.8.5  # Commented out - only needed for Google models
+
+    # Tools and utilities (for enhanced capabilities) - REQUIRED for tools
+    wikipedia>=1.4.0
+
+    # Google Search (most accurate results) - REQUIRED for Google Search
+    google-api-python-client>=2.181.0
+    google-auth>=2.40.3
+
+    # Development and testing - OPTIONAL
+    # pytest>=7.0.0  # Commented out - only needed for testing
+    # pytest-asyncio>=0.21.0  # Commented out - only needed for testing

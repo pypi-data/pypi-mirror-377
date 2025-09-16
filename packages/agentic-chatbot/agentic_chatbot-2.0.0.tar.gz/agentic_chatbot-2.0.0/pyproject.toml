@@ -1,0 +1,197 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-chatbot"
+version = "2.0.0"
+authors = [
+    {name = "Dhruv Yadav", email = "dhruv.y@deuexsolutions.com"},
+]
+description = "Enterprise-grade AI agents for enhanced chatbot capabilities with RAG, security, and multi-user support"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Communications :: Chat",
+    "Topic :: Security",
+    "Topic :: Database",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+keywords = [
+    "ai", "agents", "chatbot", "security", "context", "model-selection",
+    "openai", "gpt", "llm", "machine-learning", "nlp", "conversational-ai",
+    "rag", "retrieval-augmented-generation", "enterprise", "multi-user",
+    "conversation-memory", "vector-store", "chromadb", "redis", "postgresql",
+    "anthropic", "claude", "google-gemini", "ollama", "langchain",
+    "streaming", "async", "tools", "function-calling", "monitoring", "analytics"
+]
+dependencies = [
+    "streamlit>=1.49.0",
+    "openai>=1.102.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.29",
+    "langchain-openai>=0.3.32",
+    "langchain-anthropic>=0.3.20",
+    "langchain-google-genai>=2.0.10",
+    "transformers>=4.56.0",
+    "sentence-transformers>=5.1.0",
+    "chromadb>=1.0.20",
+    "faiss-cpu>=1.12.0",
+    "langchain-chroma>=0.2.5",
+    "redis>=6.4.0",
+    "pymongo>=4.15.0",
+    "psycopg2-binary>=2.9.10",
+    "anthropic>=0.67.0",
+    "google-generativeai>=0.8.5",
+    "wikipedia>=1.4.0",
+    "google-api-python-client>=2.181.0",
+    "google-auth>=2.40.3",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+demo = [
+    "streamlit>=1.28.0",
+]
+docs = [
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0",
+    "myst-parser>=1.0.0",
+]
+enterprise = [
+    "redis>=6.4.0",
+    "pymongo>=4.15.0",
+    "psycopg2-binary>=2.9.10",
+]
+rag = [
+    "sentence-transformers>=5.1.0",
+    "chromadb>=1.0.20",
+    "faiss-cpu>=1.12.0",
+    "langchain-chroma>=0.2.5",
+]
+tools = [
+    "wikipedia>=1.4.0",
+    "google-api-python-client>=2.181.0",
+    "google-auth>=2.40.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/deuex-solutions/Agentic-Boilerplate"
+Documentation = "https://github.com/deuex-solutions/Agentic-Boilerplate#readme"
+Repository = "https://github.com/deuex-solutions/Agentic-Boilerplate"
+"Bug Tracker" = "https://github.com/deuex-solutions/Agentic-Boilerplate/issues"
+
+[project.scripts]
+ai-agents-demo = "examples.streamlit_demo:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agentic_chatbot*", "examples*", "tests*"]
+exclude = ["venv*", "build*", "dist*", "*.egg-info*"]
+
+[tool.setuptools.package-data]
+agentic_chatbot = ["*.py", "**/*.py"]
+examples = ["*.py", "*.md", "*.jsonl"]
+tests = ["*.py"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=ai_agents",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "langchain.*",
+    "langchain_community.*",
+    "langchain_openai.*",
+    "langchain_anthropic.*",
+    "langchain_google_genai.*",
+    "chromadb.*",
+    "faiss.*",
+    "redis.*",
+    "pymongo.*",
+    "psycopg2.*",
+    "anthropic.*",
+    "google.*",
+    "wikipedia.*",
+    "transformers.*",
+    "sentence_transformers.*",
+]
+ignore_missing_imports = true

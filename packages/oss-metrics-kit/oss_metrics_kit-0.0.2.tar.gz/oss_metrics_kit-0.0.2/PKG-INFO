@@ -1,0 +1,204 @@
+Metadata-Version: 2.4
+Name: oss-metrics-kit
+Version: 0.0.2
+Summary: Unified toolkit to fetch, normalize, score, and export OSS contribution metrics.
+Project-URL: Homepage, https://github.com/refactoring-my-path/oss-metrics-kit
+Project-URL: Repository, https://github.com/refactoring-my-path/oss-metrics-kit
+Project-URL: Issues, https://github.com/refactoring-my-path/oss-metrics-kit/issues
+Project-URL: Documentation, https://github.com/refactoring-my-path/oss-metrics-kit/tree/main/docs
+Author: refactoring-my-path
+License: Apache-2.0
+License-File: LICENSE
+Keywords: cli,github,metrics,oss,parquet,scoring
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Typing :: Typed
+Requires-Python: >=3.11
+Requires-Dist: httpx>=0.27
+Requires-Dist: pydantic>=2
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: rich>=13
+Requires-Dist: structlog>=24.1
+Requires-Dist: tenacity>=8.2
+Requires-Dist: typer>=0.12
+Provides-Extra: all
+Requires-Dist: duckdb>=1.0; extra == 'all'
+Requires-Dist: pyarrow>=15; extra == 'all'
+Provides-Extra: exporters-parquet
+Requires-Dist: pyarrow>=15; extra == 'exporters-parquet'
+Provides-Extra: exporters-postgres
+Requires-Dist: psycopg[binary]>=3.2; extra == 'exporters-postgres'
+Provides-Extra: github-app
+Requires-Dist: pyjwt[crypto]>=2.9; extra == 'github-app'
+Provides-Extra: llm-anthropic
+Requires-Dist: anthropic>=0.34; extra == 'llm-anthropic'
+Provides-Extra: llm-openai
+Requires-Dist: openai>=1.40; extra == 'llm-openai'
+Provides-Extra: metrics
+Requires-Dist: opentelemetry-api>=1.24; extra == 'metrics'
+Requires-Dist: prometheus-client>=0.20; extra == 'metrics'
+Provides-Extra: redis
+Requires-Dist: redis>=5; extra == 'redis'
+Provides-Extra: sentry
+Requires-Dist: sentry-sdk>=2.13; extra == 'sentry'
+Provides-Extra: storage-duckdb
+Requires-Dist: duckdb>=1.0; extra == 'storage-duckdb'
+Requires-Dist: pyarrow>=15; extra == 'storage-duckdb'
+Description-Content-Type: text/markdown
+
+# oss-metrics-kit
+
+Toolkit to fetch, normalize, score, and export OSS contribution data — end to end.
+
+Status: early stage; CLI and core models are available and expanding.
+
+What you can do in 5 minutes
+- Analyze a GitHub user’s activity and get a simple score summary.
+- Save scores into SQLite or Postgres for dashboards.
+- Export scores to Parquet for data tools.
+- Optionally, let an LLM suggest a rules TOML from your events.
+
+## Quick Start (Beginner-friendly)
+
+1) Install the package (pick one)
+
+- pip (recommended for users): `pip install oss-metrics-kit`
+- uv (recommended for devs): `uv venv .venv && source .venv/bin/activate && uv sync --dev`
+
+2) Set a GitHub token (read-only is enough)
+
+```
+export GITHUB_TOKEN=ghp_xxx   # or GH_TOKEN
+```
+
+3) Analyze your account and print results
+
+```
+ossmk analyze-user <your_github_login> --since 90d --api auto --out -
+```
+
+4) Save scores (SQLite for a quick try)
+
+```
+ossmk analyze-user <your_github_login> --out scores.json
+ossmk save sqlite:///./metrics.db --input scores.json
+```
+
+5) Export scores to Parquet (for data tools)
+
+```
+pip install "oss-metrics-kit[exporters-parquet]"
+ossmk analyze-user <your_github_login> --out parquet:./scores.parquet
+```
+
+That’s it. See Getting Started for more step‑by‑step details.
+
+## Getting Started (Step-by-step)
+
+If you are new to Python tools or GitHub APIs, read:
+- docs/getting-started.md — a gentle, copy‑paste tutorial with expected outputs.
+- docs/usage.md — command reference with CI examples.
+
+## Install (development)
+
+Use a virtual environment (venv/conda/uv) and install editable:
+
+- `pip install -e .` or `python -m pip install -e .`
+- Check CLI help with `ossmk --help`
+
+Note: Running `ossmk` requires installation. For direct runs during development, either install editable or set `PYTHONPATH=src` and run the entry point.
+
+## Dev environment (uv recommended)
+
+1) Install uv
+- macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- Homebrew: `brew install uv`
+- pipx: `pipx install uv`
+
+2) Create venv and sync deps
+- `uv venv .venv` → `source .venv/bin/activate`
+- `uv sync --dev`
+- All extras: `uv sync --dev --extra all`
+
+3) Run
+- `ossmk --help` (in venv) or `uv run ossmk --help`
+
+## Install from PyPI (users)
+
+- Stable: `pip install oss-metrics-kit`
+- With Postgres exporter: `pip install "oss-metrics-kit[exporters-postgres]"`
+
+## Examples
+
+- Persist scores to Postgres:
+
+```
+export OSSMK_PG_DSN="postgresql://user:pass@host:5432/db"
+ossmk analyze-user <your_github_login> --save-pg
+```
+
+- Load proprietary rules (TOML):
+
+```
+export OSSMK_RULES_FILE=/absolute/path/to/private/rules.toml
+ossmk analyze-user <your_github_login> --out -
+```
+
+## Usage (overview)
+
+- Version: `ossmk version`
+- Analyze GitHub user (parallel fetch, since/GraphQL aware): `ossmk analyze-user <login> --since 90d --api auto --out -`
+- Fetch repo events: `ossmk fetch --provider github --repo owner/name --since 30d --out -`
+- Save scores: `ossmk save postgresql://... --input scores.json` or `ossmk save sqlite:///./metrics.db --input scores.json`
+
+Storage is selected via DSN (Postgres/SQLite). Parquet output is available as an optional exporter.
+
+### LLM-assisted rules (optional)
+
+- Suggest rules: `ossmk rules-llm --input events.json --provider openai --model gpt-4o-mini --out rules.toml`
+- Extras: `pip install "oss-metrics-kit[llm-openai]"` or `oss-metrics-kit[llm-anthropic]`
+- See `docs/LLM_RULES.md`
+
+## Security & operations
+
+- Keep tokens in env (`GITHUB_TOKEN`/`GH_TOKEN`) and never log them.
+- Rate limiting is a backend responsibility; a simple example is provided at `ossmk.security.ratelimit.RateLimiter` (use Redis for production).
+- Store private rule TOMLs outside the repo and point `OSSMK_RULES_FILE` to them. `rules=auto|default` will load it.
+- Optional features (Postgres/Parquet/LLM) are separated as extras.
+
+See `docs/INTEGRATION.md` for backend integration. Development typing/lint policy: `docs/dev.md`. Detailed usage: `docs/usage.md`. A beginner tutorial is in `docs/getting-started.md`.
+
+## Environment variables
+
+- `GITHUB_TOKEN` or `GH_TOKEN`: GitHub API token (required)
+- `OSSMK_RULES_FILE`: path to a private rules TOML (optional)
+- `OSSMK_PG_DSN` or `DATABASE_URL`: Postgres DSN (if persisting)
+- `REDIS_URL`: Redis rate limiter (optional)
+- `OSSMK_MAX_SINCE_DAYS`: max backward window for `since` (default 180)
+
+## Publishing to PyPI (maintainers)
+
+See `docs/RELEASING.md` for the full release flow (versioning, tagging, CI-based publish, and manual alternatives).
+
+## Design highlights
+
+- `src/` layout with `py.typed` for type distribution.
+- Thin CLI with Typer; business logic in `ossmk.core`.
+- Providers/exporters/storage/rules via entry points.
+
+## Troubleshooting
+
+- `pip._vendor.tomli.TOMLDecodeError: Invalid initial character...`
+  - Cause: malformed leading section in `pyproject.toml`
+  - Fix: ensure first section is `[build-system]`, reinstall `pip install -e .`
+
+- `ossmk: command not found`
+  - Cause: not installed or wrong environment activated.
+  - Fix: `pip install -e .` in the repo, and activate the same environment.
+  - With uv: `uv sync --dev` then `source .venv/bin/activate`, or `uv run ossmk --help`.
+
+## License
+
+Apache-2.0

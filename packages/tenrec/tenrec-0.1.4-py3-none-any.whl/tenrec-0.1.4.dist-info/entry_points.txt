@@ -1,0 +1,13 @@
+[console_scripts]
+tenrec = tenrec.__main__:main
+
+[tenrec.plugins]
+bytes = tenrec.plugins.plugins:BytesPlugin
+comments = tenrec.plugins.plugins:CommentsPlugin
+entries = tenrec.plugins.plugins:EntriesPlugin
+functions = tenrec.plugins.plugins:FunctionsPlugin
+names = tenrec.plugins.plugins:NamesPlugin
+segments = tenrec.plugins.plugins:SegmentsPlugin
+strings = tenrec.plugins.plugins:StringsPlugin
+types = tenrec.plugins.plugins:TypesPlugin
+xrefs = tenrec.plugins.plugins:XrefsPlugin

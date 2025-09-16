@@ -1,0 +1,52 @@
+[project]
+name = "parts"
+version = "4.0.0"
+description = """\
+    Minimal library that enables partitioning \
+    of iterable collections in a concise manner.\
+    """
+license = "MIT"
+authors = [
+    {name = "Andrei Lapets"},
+    {email = "a@lapets.io"}
+]
+readme = "README.rst"
+requires-python = ">=3.9"
+
+[project.urls]
+Repository = "https://github.com/lapets/parts"
+Documentation = "https://parts.readthedocs.io"
+
+[project.optional-dependencies]
+docs = [
+    "toml~=0.10.2",
+    "sphinx~=7.4",
+    "sphinx-rtd-theme~=3.0",
+    "sphinx-autodoc-typehints~=2.3"
+]
+test = [
+    "pytest~=7.4; python_version < '3.12'",
+    "pytest~=8.4; python_version >= '3.12'",
+    "pytest-cov~=4.1; python_version < '3.12'",
+    "pytest-cov~=7.0; python_version >= '3.12'"
+]
+lint = [
+    "pylint~=2.17.0; python_version < '3.12'",
+    "pylint~=3.3.0; python_version >= '3.12'"
+]
+coveralls = [
+    "coveralls~=4.0"
+]
+publish = [
+    "build~=0.10",
+    "twine~=4.0"
+]
+
+[build-system]
+requires = [
+    "setuptools>=77.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --ignore=docs --cov=parts --cov-report term-missing"

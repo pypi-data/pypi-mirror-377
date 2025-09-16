@@ -1,0 +1,31 @@
+
+[coveralls]
+coveralls~=4.0
+
+[docs]
+toml~=0.10.2
+sphinx~=7.4
+sphinx-rtd-theme~=3.0
+sphinx-autodoc-typehints~=2.3
+
+[lint]
+
+[lint:python_version < "3.12"]
+pylint~=2.17.0
+
+[lint:python_version >= "3.12"]
+pylint~=3.3.0
+
+[publish]
+build~=0.10
+twine~=4.0
+
+[test]
+
+[test:python_version < "3.12"]
+pytest~=7.4
+pytest-cov~=4.1
+
+[test:python_version >= "3.12"]
+pytest~=8.4
+pytest-cov~=7.0

@@ -1,0 +1,4 @@
+
+# geopysc module
+
+::: geopysc.geopysc

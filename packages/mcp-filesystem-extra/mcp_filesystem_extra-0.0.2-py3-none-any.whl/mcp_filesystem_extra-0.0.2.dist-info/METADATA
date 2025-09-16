@@ -1,0 +1,85 @@
+Metadata-Version: 2.4
+Name: mcp-filesystem-extra
+Version: 0.0.2
+Summary: MCP server exposing additional filesystem tools.
+Author: AI/Run Team
+Maintainer: AI/Run Team
+License: MIT
+License-File: LICENSE
+License-File: NOTICE
+Keywords: append,filesystem,mcp
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: mcp[cli]>=1.9.2
+Requires-Dist: pydantic>=2.0.0
+Description-Content-Type: text/markdown
+
+# Filesystem Extra Tools MCP Server
+
+---
+
+A Model Context Protocol (MCP) server implementation for file operation such append text/structured text (JSON) 
+for existing files.
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)
+![MCP Protocol](https://img.shields.io/badge/MCP-Compatible-green)
+
+---
+
+# Table of Contents
+
+1. [Overview](#overview)
+3. [Configuration](#configuration)
+4. [Available Tools](#available-tools)
+    - [run_command](#run_command)
+    - [show_security_rules](#show_security_rules)
+9. [License](#license)
+
+---
+
+## Configuration
+
+Configure the server using environment variables:
+
+| Variable             | Description                               | Default  |
+|----------------------|-------------------------------------------|----------|
+| `ALLOWED_DIR`        | Base directory for files modification     | Required |
+| `PROJECT_BOOTSTRAP`  | Directory in project with bootstrap files | Required |
+
+## Available Tools
+
+### read_bootstrap_file
+
+Read file that contains initial project values.
+
+### read_file_lines
+
+Reads a region from a file between startLine and endLine. Provide an absolute path to a file.
+
+### append_file
+
+Creates a file with a given content if it doesn't exists yet - or appends content to the file.  
+For JSON data - provide a single structured JSON object as a content 
+(without enclosing it into the array or adding any extra delimiters)   
+Only works within allowed directories.
+
+### append_structured_file
+
+Adds a single valid JSON object to the file. The file is treated as an list of JSON objects.  
+Pass a file name and a single valid JSON object as a content.  
+Creates a file with a proper structure if not exists yet. Only works within allowed directories.
+
+### search_files_by_regex
+
+Recursively search for files and directories for entries matching a regular expression.  
+Searches through all subdirectories from the starting path. Returns full paths to all 
+matching items as a JSON array. Only searches within allowed directories.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+ ---
+
+For more information or support, please open an issue on the project repository.

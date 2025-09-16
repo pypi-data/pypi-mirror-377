@@ -1,0 +1,23 @@
+[project]
+name = "mr-creosote"
+version = "1.0.0"
+description = "I'll have the lot."
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+scripts = { mr-creosote = "mr_creosote:main" }
+
+[build-system]
+requires = ["setuptools>=69", "psutil", "pip", "ijson", "packaging"]
+build-backend = "setuptools.build_meta:__legacy__"
+
+[tool.setuptools]
+# This package must be installed from source to get the dynamic behavior
+zip-safe = false
+
+[tool.setuptools.package-data]
+"*" = ["compatible_packages.json"]
+
+# Exclude analysis scripts and data from the package
+[tool.setuptools.packages.find]
+exclude = ["analysis*", "tests*"]

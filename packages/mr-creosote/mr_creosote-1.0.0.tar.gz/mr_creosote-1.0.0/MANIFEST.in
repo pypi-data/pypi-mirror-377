@@ -1,0 +1,22 @@
+# Include essential files
+include README.md
+include compatible_packages.json
+include pyproject.toml
+include setup.py
+
+# Exclude analysis scripts and development files
+exclude analyze_packages.py
+exclude manage_valkey.py
+exclude analysis/*
+exclude .gitignore
+exclude makefile
+
+# Exclude any cache/temporary files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.cache
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude *.log
+global-exclude *.pid
+global-exclude *.rdb

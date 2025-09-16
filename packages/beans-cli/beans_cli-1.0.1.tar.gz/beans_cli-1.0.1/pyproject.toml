@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "beans-cli"
+version = "1.0.1"
+authors = [
+  { name="Arkadiusz Hypki" },
+]
+description = "BEANS python scripts, and helper classes"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://gitlab.com/beans-code/beans-cli"
+Issues = "https://gitlab.com/beans-code/beans-cli/-/issues/"
+
+[project.scripts]
+beans-cli = "beans.beans:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/beans"]

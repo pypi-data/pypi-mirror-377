@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(SECRET_KEY=test-key-long-enough uv run:*)",
+      "Bash(PYTHONPATH=/Users/nick/github/nijaru/zenith python -m py_compile /tmp/test-verification-api/app.py)",
+      "Bash(__NEW_LINE__ echo \"Testing hello world...\")",
+      "Bash(SECRET_KEY=test-key-long-enough timeout 2s uv run python examples/00-hello-world.py)",
+      "Bash(/dev/null)",
+      "Bash(__NEW_LINE__ echo \"Testing context system...\")",
+      "Bash(SECRET_KEY=test-key-long-enough timeout 2s uv run python examples/03-context-system.py)",
+      "Bash(__NEW_LINE__ echo \"Testing SQLModel API...\")",
+      "Bash(SECRET_KEY=test-key-long-enough timeout 2s uv run python examples/14-modern-sqlmodel-api.py)",
+      "Bash(__NEW_LINE__ echo \"Testing router grouping...\")",
+      "Bash(SECRET_KEY=test-key-long-enough timeout 2s uv run python examples/15-router-grouping.py)",
+      "Bash(__NEW_LINE__ echo \"Testing database todo API...\")",
+      "Bash(SECRET_KEY=test-key-long-enough timeout 2s uv run python examples/09-database-todo-api/app.py)",
+      "Bash(__NEW_LINE__ echo \"6️⃣ Testing critical imports one more time...\")",
+      "Bash(pkill:*)",
+      "Bash(uv tree:*)",
+      "Bash(find:*)",
+      "Bash(SECRET_KEY=test-secret-key-that-is-long-enough-for-testing uv run:*)",
+      "Bash(SECRET_KEY=test-secret-key-that-is-long-enough-for-testing timeout 3s uv run python examples/00-hello-world.py)",
+      "Bash(if [ -d .jj ])",
+      "Bash(then jj describe -m \"refactor: clean up JSON API by making internal functions private\n\n- Renamed zenith_json_dumps to _json_dumps (internal use only)\n- Renamed zenith_json_loads to _json_loads (internal use only)  \n- Updated all imports across 5 files:\n  • zenith/web/responses.py\n  • zenith/middleware/cache.py  \n  • zenith/sessions/redis.py\n  • zenith/middleware/logging.py\n  • zenith/core/routing/response_processor.py (removed unused import)\n\nBenefits:\n- Cleaner public API surface\n- Clear indication these are internal optimizations\n- Maintains same 10-15% performance boost\n- All tests passing\")",
+      "Bash(git commit:*)",
+      "Bash(fi)",
+      "Bash(python:*)",
+      "Bash(SECRET_KEY=test-secret-key-that-is-long-enough-for-testing timeout 3s uv run python examples/03-context-system.py)",
+      "Bash(then jj describe -m \"checkpoint: framework analysis complete - ready for refactoring\n\nCurrent state:\n- JSON API cleaned up (private functions) \n- Performance optimizations active (10-15% boost)\n- Pydantic v2 deprecations fixed\n- All tests passing (285/285)\n\nNext: Systematic refactoring of identified issues:\n1. CLI template extraction (1,310 line file)\n2. Parameter naming standardization  \n3. Error handling improvements\n4. Main file refactoring\n5. Documentation improvements\")",
+      "Read(//private/tmp/**)",
+      "Bash(SECRET_KEY=test-secret-key-that-is-long-enough-for-testing timeout 3s uv run python examples/14-modern-sqlmodel-api.py)",
+      "Bash(then jj describe:*)",
+      "Bash(SECRET_KEY=test-secret-key-that-is-long-enough-for-testing timeout 2s uv run python examples/00-hello-world.py)",
+      "Bash(uv run:*)",
+      "Bash(PYTHONPATH=/Users/nick/github/nijaru/zenith python -c \"\nimport sys\nsys.path.insert(0, ''/Users/nick/github/nijaru/zenith'')\nfrom zenith.sessions import store, manager\nprint(''✅ Sessions modules imported successfully'')\nprint(''✅ No circular import runtime errors'')\n\")",
+      "Bash(pip install:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

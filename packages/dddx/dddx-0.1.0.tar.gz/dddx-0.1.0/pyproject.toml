@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dddx"
+version = "0.1.0"
+description = "Domain-Driven Design base classes and contracts"
+authors = [
+  { name = "Ariana Maghsoudi", email = "ariana.maghsoudi82@gmail.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "underpyx>=0.1.1"
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "assertpy"]
+
+[tool.setuptools.packages.find]
+include = ["ddd*"]
+exclude = ["tests*"]

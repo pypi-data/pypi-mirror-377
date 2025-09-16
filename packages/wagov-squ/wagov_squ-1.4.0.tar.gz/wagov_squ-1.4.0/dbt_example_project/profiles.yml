@@ -1,0 +1,10 @@
+default:
+  outputs:
+    dev:
+      type: duckdb
+      path: target/dev.duckdb
+      plugins: 
+        - module: nbdev_squ.api
+          alias: squ
+
+  target: dev

@@ -1,0 +1,12 @@
+{
+	"name": "wagov-dtt devcontainer-base",
+	"image": "ghcr.io/wagov-dtt/devcontainer-base",
+	"privileged": true,
+	"runArgs": [
+		"--cgroupns=host"
+	],
+	"mounts": [
+		"source=dind-var-lib-docker,target=/var/lib/docker,type=volume"
+	],
+	"remoteUser": "vscode"
+}

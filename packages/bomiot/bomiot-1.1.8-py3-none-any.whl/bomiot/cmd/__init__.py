@@ -1,0 +1,1 @@
+from bomiot.cmd.cmd import cmd

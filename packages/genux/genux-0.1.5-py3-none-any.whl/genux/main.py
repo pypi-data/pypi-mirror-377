@@ -1,0 +1,59 @@
+# genos/main.py
+
+import os
+from .orchestrator import MultiAgentOrchestrator
+from .utils import get_multiline_input
+from langchain_groq import ChatGroq
+from langchain_community.tools.tavily_search import TavilySearchResults
+
+
+def main():
+    """Main CLI entrypoint for genos"""
+    groq_api_key = os.environ.get("GROQ_API_KEY")
+    if not groq_api_key:
+        groq_api_key = input("Enter your GROQ API Key: ").strip()
+        if not groq_api_key:
+            print("❌ GROQ API Key is required. Exiting.")
+            return
+
+    # Get Tavily API key
+    tavily_api_key = os.environ.get("TAVILY_API_KEY")
+    if not tavily_api_key:
+        tavily_api_key = input("Enter your Tavily API Key: ").strip()
+        if not tavily_api_key:
+            print("❌ Tavily API Key is required. Exiting.")
+            return
+
+    # Initialize LLM + tools
+    llm = ChatGroq(
+        api_key=os.environ.get("GROQ_API_KEY"),
+        model="deepseek-r1-distill-llama-70b",
+        temperature=0.3,
+    )
+
+    tavily_search = TavilySearchResults(
+        api_key=os.environ.get("TAVILY_API_KEY"),
+        max_results=10,
+    )
+
+    orchestrator = MultiAgentOrchestrator(llm, tavily_search)
+
+    print("🎯 Welcome to the Multi-Agent Linux Command System!")
+    print("Choose an input method:")
+    print("1) Single line text input")
+    print("2) Multi-line text input")
+
+    choice = input("Enter 1 or 2: ").strip()
+
+    if choice == "1":
+        user_input = input("Enter your request: ").strip()
+    elif choice == "2":
+        user_input = get_multiline_input()
+    else:
+        print("❌ Invalid choice. Exiting.")
+        return
+
+    if user_input:
+        orchestrator.process_request(user_input)
+    else:
+        print("❌ No input provided. Exiting.")

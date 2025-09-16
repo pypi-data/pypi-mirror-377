@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pwntools_util"
+version = "0.0.2"
+authors = [
+    {name = "Mario Chao", email = "az0112mario@gmail.com"},
+]
+description = "pwntools wrapper with bytes casting and common utils"
+readme = "ReadMe.md"
+keywords = ["pwntools", "exploit", "ctf", "flag"]
+
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "pwntools >= 4.14.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/MarioChao/pwntools_util"
+Issues = "https://github.com/MarioChao/pwntools_util/issues"

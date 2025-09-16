@@ -1,0 +1,175 @@
+Metadata-Version: 2.4
+Name: lightwheel_sdk
+Version: 0.14
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: tqdm
+Requires-Dist: termcolor
+Requires-Dist: pyyaml
+Requires-Dist: click
+
+# Lightwheel SDK Python
+
+A Python SDK for interacting with the Lightwheel API to access Lightwheel assets and services.
+
+## Features
+
+- **Authentication**: Secure login with credential caching
+- **CLI Tool**: Command-line interface for easy authentication
+- **Floorplan Loading**: Download and cache USD floorplan files
+- **Object Loading**: Load USD and MJCF objects from floorplans
+- **Caching**: Automatic caching of downloaded files for improved performance
+
+## Installation
+
+```bash
+pip install lightwheel_sdk
+```
+
+## Quick Start
+
+### CLI Authentication
+
+```bash
+# Login interactively (will prompt for username/password)
+lightwheel login
+
+# Or provide credentials directly
+lightwheel login --username your_username --password your_password
+```
+
+### Python Authentication
+
+```python
+from lightwheel_sdk.loader import login_manager
+
+# Login interactively (will prompt for username/password)
+headers = login_manager.login()
+
+# Or use environment variables
+# Set LW_API_ENDPOINT, LoaderUserName, and LoaderToken
+headers = login_manager.get_headers()
+```
+
+### Loading Floorplans
+
+```python
+from lightwheel_sdk.loader import floorplan_loader
+
+# Load a USD floorplan asynchronously
+future = floorplan_loader.acquire_usd(layout_id=1, style_id=4)
+usd_file_path, metadata = future.result()  # Returns path and metadata
+
+# Load a USD floorplan synchronously
+usd_file_path, metadata = floorplan_loader.get_usd(
+    scene="robocasakitchen",
+    layout_id=1, 
+    style_id=4,
+    backend="robocasa"
+)
+
+# Load by version ID
+usd_file_path, metadata = floorplan_loader.get_usd_by_id("version-uuid-here")
+
+# Load with exclusions
+future = floorplan_loader.acquire_usd(
+    layout_id=1,
+    style_id=4,
+    exclude_layout_ids=[1, 2, 3],
+    exclude_style_ids=[10, 11]
+)
+```
+
+### Loading Objects
+
+```python
+from lightwheel_sdk.loader import object_loader
+
+# Load objects by relative path
+usd_path = object_loader.acquire_object("level1/level2/object_name", "USD")
+mjcf_path = object_loader.acquire_object("level1/level2/object_name", "MJCF")
+
+# Load objects by file version ID
+usd_path, object_name, metadata = object_loader.acquire_by_file_version("file-version-id")
+
+# Advanced object queries using registry
+usd_path, object_name, metadata = object_loader.acquire_by_registry(
+    registry_type="objects",
+    registry_name=["kitchen", "appliances"],
+    file_type="USD",
+    file_name="refrigerator",
+    source=["source_name"]
+)
+
+# List available registries
+registries = object_loader.list_registry()
+print(registries)
+```
+
+## Configuration
+
+### Environment Variables
+
+- `LW_API_ENDPOINT`: API endpoint URL (default: `https://api.lightwheel.net`)
+- `LoaderUserName`: Username for authentication
+- `LoaderToken`: Authentication token
+
+### Cache Locations
+
+- Login cache: `~/.cache/lightwheel_sdk/login/`
+- Floorplan cache: `~/.cache/lightwheel_sdk/floorplan/`
+- Object cache: `~/.cache/lightwheel_sdk/object/`
+
+## API Reference
+
+### CLI Commands
+
+- `lightwheel login [--username USERNAME] [--password PASSWORD]`: Authenticate with the Lightwheel API
+- `lightwheel --help`: Show help information
+- `lightwheel --version`: Show version information
+
+### Login Manager
+
+- `login(force_login=False, username=None, password=None)`: Authenticate with the API
+- `get_headers()`: Get authentication headers
+
+### Floorplan Loader
+
+- `acquire_usd(layout_id=None, style_id=None, scene="robocasakitchen", backend="robocasa", cancel_previous_download=True, version=None, exclude_layout_ids=None, exclude_style_ids=None)`: Download USD floorplan asynchronously (returns Future)
+- `get_usd(scene, layout_id=None, style_id=None, backend="robocasa", version=None, exclude_layout_ids=None, exclude_style_ids=None)`: Synchronous USD download (returns tuple of file_path, metadata)
+- `get_usd_by_id(id)`: Get USD floorplan by version UUID
+
+### Object Loader
+
+- `acquire_object(rel_path, file_type, version=None)`: Download object files by relative path (USD or MJCF)
+- `acquire_by_registry(registry_type, registry_name=[], exclude_registry_name=[], eqs=None, contains=None, file_type="USD", file_name="", source=[])`: Advanced object query using registry
+- `acquire_by_file_version(file_version_id)`: Download object by file version ID (returns tuple of file_path, object_name, metadata)
+- `list_registry()`: List all available registries
+
+### Registry Query (Advanced Object Loading)
+
+The `RegistryQuery` class provides advanced filtering capabilities for object loading:
+
+```python
+from lightwheel_sdk.loader.object import RegistryQuery
+
+# Create a query for kitchen objects
+query = RegistryQuery(
+    registry_type="objects",
+    registry_name=["kitchen", "appliances"],
+    exclude_registry_name=["outdoor"],
+    equals={"category": "furniture"},
+    contains={"description": "stainless steel"}
+)
+
+# Use with object loader
+query_dict = query.query_file("USD", "refrigerator", source=["level1/level2"])
+```
+
+## License
+
+Apache License 2.0
+
+## Support
+
+For support and questions, please contact the Lightwheel team.

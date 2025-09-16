@@ -1,0 +1,11 @@
+defaults:
+    # NOTE: removed the sequence_mixer from this config since this should be set in the experiment config. I am, f.e., now putting also the LinOSSA sequence mixer into the linoss encoder.
+    #- sequence_mixer: linoss
+    - _self_
+
+name: 'linoss_encoder'
+num_blocks: 2
+hidden_dim: 32
+# TODO: this is not used anywhere in the python code... Maybe it should?!
+#sequence_mixer:
+#    sequence_mixer_size: 64

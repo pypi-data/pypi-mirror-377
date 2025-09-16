@@ -1,0 +1,22 @@
+# sample makefile
+CC ?= cc
+GAPARCH=x86_64-pc-linux-musl-default64-kv9
+
+all: default
+
+default: bin/$(GAPARCH)/hello
+
+bin/$(GAPARCH)/hello: src/hello.c
+	mkdir -p bin/$(GAPARCH)
+	$(CC) -o bin/$(GAPARCH)/hello src/hello.c $(CFLAGS) $(LDFLAGS)
+
+clean:
+	rm -rf bin
+
+distclean: clean
+	rm -rf Makefile
+
+doc:
+	gap -A -q -T < makedocrel.g
+
+.PHONY: all default clean distclean doc

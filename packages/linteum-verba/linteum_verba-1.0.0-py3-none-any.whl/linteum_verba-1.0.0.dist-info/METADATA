@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: linteum-verba
+Version: 1.0.0
+Summary: A rich text editor with syntax highlighting, code folding, and advanced editing features
+Home-page: https://github.com/yourusername/linteum-verba
+Author: Linteum
+Author-email: 
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Text Editors :: Integrated Development Environments (IDE)
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: ttkbootstrap (>=1.10.1)
+Requires-Dist: pygments (>=2.15.0)
+Requires-Dist: pillow (>=8.2.0)
+Provides-Extra: dev
+Requires-Dist: pytest (>=7.3.1) ; extra == 'dev'
+Requires-Dist: pytest-cov (>=4.1.0) ; extra == 'dev'
+Requires-Dist: mypy (>=1.3.0) ; extra == 'dev'
+Requires-Dist: flake8 (>=6.0.0) ; extra == 'dev'
+Requires-Dist: toml (>=0.10.2) ; extra == 'dev'
+
+# Linteum Verba - Rich Text Editor
+
+A feature-rich text editor built with Tkinter and TTK Bootstrap using the Canvas widget.
+
+## Features
+
+- Line numbers
+- Code folding
+- Syntax highlighting
+- Text selection and editing
+- Modern UI with TTK Bootstrap
+
+## Requirements
+
+- Python 3.7+
+- ttkbootstrap>=1.10.1
+- pygments>=2.15.0
+
+## Installation
+
+1. Clone this repository
+2. Install the required packages:
+   ```
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+Run the main application:
+```
+python Source/Python/main.py
+```

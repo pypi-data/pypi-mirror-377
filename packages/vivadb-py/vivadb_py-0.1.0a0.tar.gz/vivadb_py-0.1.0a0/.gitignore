@@ -1,0 +1,39 @@
+# Binaries for programs and plugins
+main
+vivadb
+*.exe
+*.exe~
+*.so
+*.dylib
+*.dll
+
+# Ignore binary output folders
+bin/
+
+# Ignore common editor/system specific metadata
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# ENV
+.env
+.env.local
+
+# vweb and database
+*.db
+*.js
+
+# docker compose
+.vivadb/compose.yaml
+
+# migrations
+migrations/
+
+# python
+.venv/
+dist/
+build/
+*_cache/
+__pycache__/
+.python-version

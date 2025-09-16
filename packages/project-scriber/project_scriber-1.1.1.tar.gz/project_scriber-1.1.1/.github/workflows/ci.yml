@@ -1,0 +1,28 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install uv
+        run: pipx install uv
+
+      - name: Install dependencies
+        run:  uv pip install -e .[dev] --system
+
+      - name: Run tests
+        run: pytest

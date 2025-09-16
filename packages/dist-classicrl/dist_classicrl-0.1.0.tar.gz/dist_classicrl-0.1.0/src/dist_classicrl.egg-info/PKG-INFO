@@ -1,0 +1,94 @@
+Metadata-Version: 2.4
+Name: dist_classicrl
+Version: 0.1.0
+Summary: A high-performance Python package for distributed classical reinforcement learning algorithms with support for single-threaded, parallel, and MPI-distributed Q-Learning training.
+Author-email: Javier Moralejo Piñas <j.moralejo.pinas@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/j-moralejo-pinas/dist_classicrl
+Project-URL: Source, https://github.com/j-moralejo-pinas/dist_classicrl
+Project-URL: Tracker, https://github.com/j-moralejo-pinas/dist_classicrl/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.13
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+License-File: AUTHORS.rst
+Requires-Dist: gymnasium
+Requires-Dist: matplotlib
+Requires-Dist: mpi4py
+Requires-Dist: numpy
+Provides-Extra: dev
+Requires-Dist: pyright; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pydoclint; extra == "dev"
+Requires-Dist: docformatter; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pyupgrade; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Provides-Extra: code-quality
+Requires-Dist: ruff; extra == "code-quality"
+Requires-Dist: pydoclint; extra == "code-quality"
+Requires-Dist: pyright; extra == "code-quality"
+Provides-Extra: format
+Requires-Dist: ruff; extra == "format"
+Requires-Dist: docformatter; extra == "format"
+Requires-Dist: pyupgrade; extra == "format"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinx-autoapi; extra == "docs"
+Requires-Dist: sphinx_rtd_theme; extra == "docs"
+Requires-Dist: sphinxcontrib-napoleon; extra == "docs"
+Dynamic: license-file
+
+==============
+dist_classicrl
+==============
+
+A Python package for distributed classical reinforcement learning algorithms.
+
+.. image:: https://img.shields.io/pypi/v/dist_classicrl.svg
+    :alt: PyPI-Server
+    :target: https://pypi.org/project/dist_classicrl/
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :alt: License
+    :target: https://github.com/j-moralejo-pinas/dist_classicrl/blob/main/LICENSE.txt
+.. image:: https://img.shields.io/badge/python-3.8+-blue.svg
+    :alt: Python Version
+    :target: https://www.python.org/downloads/
+
+|
+
+🎯 **Project Description**
+--------------------------
+
+**dist_classicrl** provides high-performance, scalable implementations of classic reinforcement learning algorithms with support for distributed training. The library focuses on Q-Learning with multiple execution modes: single-threaded, parallel (multiprocessing), and distributed (MPI) training.
+
+🚀 **Key Features**
+-------------------
+
+- 🚀 **Multiple Execution Modes**: Single-threaded, parallel, and MPI-distributed training
+- ⚡ **High Performance**: Optimized implementations with vectorized operations and performance benchmarking
+- 🎮 **Multi-Agent Support**: Built-in support for multi-agent environments
+- 🔧 **Flexible Architecture**: Abstract base classes for easy extension and custom environments
+- 🌐 **Standards Compliant**: Compatible with Gymnasium and PettingZoo environments (coming soon)
+
+📚 **Documentation**
+--------------------
+
+**Essential Guides:**
+
+- 📦 `Installation Guide <docs/installation.rst>`_ - Setup instructions and requirements
+- 📊 `Performance Benchmarks <docs/benchmarks.rst>`_ - Benchmarking results and analysis
+- 📚 `Tutorials <docs/tutorials.rst>`_ - Step-by-step guides for using the library
+- 🤝 `Contributing Guidelines <CONTRIBUTING.rst>`_ - Development standards and contribution process
+- 📄 `License <LICENSE.txt>`_ - License terms and usage rights
+- 👥 `Authors <AUTHORS.rst>`_ - Project contributors and maintainers
+- 📜 `Changelog <CHANGELOG.rst>`_ - Project history and version changes
+- 📜 `Code of Conduct <CODE_OF_CONDUCT.rst>`_ - Guidelines for participation and conduct
+
+---

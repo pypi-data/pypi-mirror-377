@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: groupdocs-redaction-net
+Version: 25.5
+Summary: GroupDocs.Redaction is a comprehensive API designed to remove or mask classified or sensitive content from a wide range of document formats within your applications. It supports various redaction types, including text, metadata, annotations, and images. GroupDocs.Redaction is highly versatile and supports over 50 document types, making it an essential tool for organizations that handle sensitive data.
+Home-page: https://products.groupdocs.com/redaction
+Author: GroupDocs
+License: Other/Proprietary License
+Keywords: redaction,document-redaction,text-redaction,metadata-redaction,image-redaction,pdf,word,excel,powerpoint,docx,xlsx,pptx
+Platform: macos_arm64
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Unix
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Requires-Python: >=3.5,<3.14
+Description-Content-Type: text/markdown
+
+# File Redaction Python API
+
+[Product Page](https://products.groupdocs.com/redaction/python-net/) | [Docs](https://docs.groupdocs.com/redaction/python-net/) | [Demos](https://products.groupdocs.app/redaction/family) | [API Reference](https://references.groupdocs.com/redaction/) | [Blog](https://blog.groupdocs.com/category/redaction/) | [Search](https://search.groupdocs.com/) | [Free Support](https://forum.groupdocs.com/c/redaction) | [Temporary License](https://purchase.groupdocs.com/temporary-license) | [Release Notes](https://releases.groupdocs.com/redaction/python-net)
+
+[GroupDocs.Redaction for Python via .NET](https://products.groupdocs.com/redaction/python-net/) is a powerful API designed to remove or mask classified or sensitive content from a wide range of document formats within your .NET applications. It supports various redaction types, including text, metadata, annotations, and images. The API also integrates with OCR engines to redact text within images and offers the ability to remove entire pages or embedded images, ensuring thorough protection of confidential information. GroupDocs.Redaction is highly versatile and supports over 50 document types, making it an essential tool for organizations that handle sensitive data.
+
+>GroupDocs.Redaction for Python is intended for use with the Python programming language. If you are working with Java or .NET, we recommend using [GroupDocs.Redaction for Java](https://products.groupdocs.com/redaction/java/) or [GroupDocs.Redaction for .NET](https://products.groupdocs.com/redaction/net/) to ensure full compatibility with your development environment.
+
+## View API Features
+
+GroupDocs.Redaction for Python via .NET provides these popular features:
+- Search and redact specific words or phrases with optional case sensitivity.
+- Apply redactions using regular expressions for advanced text pattern matching.
+- Implement custom redactions with support for AI-based logic.
+- Redact right-to-left languages such as Arabic and Hebrew.
+- Remove sensitive metadata fields using regular expressions.
+- Delete annotations, comments, and markup elements from documents.
+- Redact targeted cells or entire columns in Excel spreadsheets.
+- Mask specific areas of images (e.g., headers or footers) with a solid color box.
+- Process and redact content within PDFs and email attachments.
+- Use Optical Character Recognition (OCR) to detect and redact text inside images.
+- Remove selected pages from documents including PDFs, slides, and spreadsheets. 
+
+
+## Supported File Formats
+
+With GroupDocs.Redaction for Python via .NET enables developers to process files in widely used business formats: 
+
+- Portable: PDF
+- Microsoft Word: DOC, DOT, DOCX, DOCM, DOTX, DOTM, RTF
+- Microsoft Excel: XLSX, XLSM, XLTM, XLT, XLTX, XLS, CSV
+- Microsoft PowerPoint: PPTX, PPTM, PPSX, PPSM, POTX, POTM, PPT, PPS
+- Image: JPG/JPEG, PNG, GIF, TIF/TIFF, BMP 
+- Other: DJVU, RTF, CSV 
+
+## Platform Independence
+
+GroupDocs.Redaction for Python via .NET supports the development of 32-bit and 64-bit applications across multiple operating systems, including Windows, Linux, and macOS, where Python 3.5 or later is installed. 
+
+## Get Started
+
+Ready to try GroupDocs.Redaction for Python via .NET?
+
+Install **GroupDocs.Redaction** package with the following command: `pip install groupdocs-redaction-net`
+
+If you already have it installed and want to upgrade to the latest version, run: `pip install --upgrade groupdocs-redaction-net` 
+
+For detailed usage and integration guidance, check out the [documentation](http://docs.groupdocs.com/redaction/python-net/)).  
+
+## Add a Text Redaction to a Document
+
+```py
+import groupdocs.redaction as gr
+import groupdocs.redaction.redactions as grr
+from groupdocs.pydrawing import Color
+
+# Specify the redaction options
+color = Color.from_argb(128, 255, 0, 0)
+replo = grr.ReplacementOptions(color)
+epred = grr.ExactPhraseRedaction("John Doe", replo)
+
+# Load the document to be redacted
+with gr.Redactor("document.pdf") as redactor:
+
+    # Apply the redaction
+    result = redactor.apply(epred)
+
+    # Save the redacted document
+    redactor.save()
+```
+
+[Product Page](https://products.groupdocs.com/redaction/python-net/) | [Docs](https://docs.groupdocs.com/redaction/python-net/) | [Demos](https://products.groupdocs.app/redaction/family) | [API Reference](https://references.groupdocs.com/redaction/) | [Blog](https://blog.groupdocs.com/category/redaction/) | [Search](https://search.groupdocs.com/) | [Free Support](https://forum.groupdocs.com/c/redaction) | [Temporary License](https://purchase.groupdocs.com/temporary-license)
+

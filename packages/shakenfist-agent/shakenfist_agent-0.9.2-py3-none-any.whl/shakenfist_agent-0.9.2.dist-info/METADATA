@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: shakenfist_agent
+Version: 0.9.2
+Summary: The in-guest agent for ShakenFist instances
+Project-URL: Homepage, https://shakenfist.com
+Project-URL: Bug Tracker, https://github.com/shakenfist/agent-python/issues
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: click>=8.0.0
+Requires-Dist: oslo.concurrency
+Requires-Dist: distro
+Requires-Dist: linux-utils
+Requires-Dist: psutil>5.9.0
+Requires-Dist: shakenfist-utilities
+Requires-Dist: symbolicmode>=2.0
+Requires-Dist: setproctitle
+Requires-Dist: protobuf==5.29.5
+Requires-Dist: grpcio==1.70.0
+Requires-Dist: grpcio-status==1.70.0
+Requires-Dist: grpcio-tools==1.70.0
+Requires-Dist: googleapis-common-protos==1.70.0
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: testtools; extra == "test"
+Requires-Dist: mock; extra == "test"
+Requires-Dist: stestr; extra == "test"
+Requires-Dist: tox; extra == "test"
+Requires-Dist: flake8; extra == "test"
+Dynamic: license-file
+
+Python side channel agent for Shaken Fist
+=========================================
+
+This is a python side channel in-guest agent for [Shaken Fist](https://github.com/shakenfist/shakenfist).

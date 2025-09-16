@@ -1,0 +1,48 @@
+__all__ = ["encounter_mapping", "encounter_references"]
+
+encounter_mapping = {
+    "date": "date",
+    "identifier": "token",
+    "patient": "reference",
+    "type": "token",
+    "account": "reference",
+    "appointment": "reference",
+    "based-on": "reference",
+    "class": "token",
+    "diagnosis": "reference",
+    "episode-of-care": "reference",
+    "length": "quantity",
+    "location": "reference",
+    "location-period": "date",
+    "part-of": "reference",
+    "participant": "reference",
+    "participant-type": "token",
+    "practitioner": "reference",
+    "reason-code": "token",
+    "reason-reference": "reference",
+    "service-provider": "reference",
+    "special-arrangement": "token",
+    "status": "token",
+    "subject": "reference",
+}
+
+encounter_references = {
+    "patient": ["Patient"],
+    "account": ["Account"],
+    "appointment": ["Appointment"],
+    "based-on": ["ServiceRequest"],
+    "diagnosis": ["Condition", "Procedure"],
+    "episode-of-care": ["EpisodeOfCare"],
+    "location": ["Location"],
+    "part-of": ["Encounter"],
+    "participant": ["Practitioner", "PractitionerRole", "RelatedPerson"],
+    "practitioner": ["Practitioner"],
+    "reason-reference": [
+        "Condition",
+        "Observation",
+        "Procedure",
+        "ImmunizationRecommendation",
+    ],
+    "service-provider": ["Organization"],
+    "subject": ["Group", "Patient"],
+}

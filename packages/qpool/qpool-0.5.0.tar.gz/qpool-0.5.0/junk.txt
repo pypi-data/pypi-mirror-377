@@ -1,0 +1,19 @@
+Object of type Worker is not serializable
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/ipc/utilities.py", line 52, in default_encoder (Current frame)
+    raise TypeError(f"Object of type {type(obj).__name__} is not serializable")
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/ipc/queues/smqueue.py", line 346, in put_nowait
+    data = msgpack.packb(item, default=default_encoder, use_bin_type=True)
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/ipc/queues/trait_queue.py", line 122, in put
+    self.queue.put_nowait(payload)
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/worker.py", line 214, in _send_task_result
+    result_queue.put(task_result)
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/worker.py", line 581, in execute_task
+    await self._send_task_result(task)
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/worker.py", line 616, in _process_and_execute_task
+    await self.execute_task(
+  File "/home/super/Repos/mine/qpool/src/wombat/multiprocessing/worker.py", line 771, in start_event_loop
+    self.runtime_state.loop.run_until_complete(
+  File "<string>", line 1, in <module>
+TypeError: Object of type Worker is not serializable
+
+{'task_id': UUID('17a392bf-ca02-468d-8f40-0ef2e11fe69e'), 'action': 'wombat.multiprocessing.logging.log_task', 'status': <TaskState.success: 'success'>, 'result': {'id': UUID('000ea89c-b66b-41a9-bff1-4c9778cd1497'), 'action': 'wombat.multiprocessing.logging.log_task', 'args': [<wombat.multiprocessing.worker.Worker object at 0x7f06c89ac980>], 'kwargs': {'message': 'worker=worker-0 | Worker __init__ in pid=3136582', 'level': 10, 'props': {'logger': {'initializer': <wombat.multiprocessing.orchestrator._LoggerInitializer object at 0x7f06c89ae7b0>, 'instance': <Logger WombatLogger (INFO)>, 'exit_stack': None, 'use_context_manager': False}}}, 'status': <TaskState.create: 'create'>, 'result': None, 'metadata': None, 'traits': [{'requires_traits': None, 'depends_on': None, 'requires_props': None, 'forbids_traits': None, 'include_all_props': False, 'trait_name': 'pinned', 'worker_name': 'log-worker-0'}, {'requires_traits': None, 'depends_on': None, 'requires_props': ['logger'], 'forbids_traits': ['uncounted'], 'include_all_props': False, 'trait_name': 'log_carrier'}]}, 'metadata': {}, 'traits': [{'requires_traits': None, 'depends_on': None, 'requires_props': None, 'forbids_traits': None, 'include_all_props': False, 'trait_name': 'pinned', 'worker_name': 'log-worker-0'}, {'requires_traits': None, 'depends_on': None, 'requires_props': ['logger'], 'forbids_traits': ['uncounted'], 'include_all_props': False, 'trait_name': 'log_carrier'}]}

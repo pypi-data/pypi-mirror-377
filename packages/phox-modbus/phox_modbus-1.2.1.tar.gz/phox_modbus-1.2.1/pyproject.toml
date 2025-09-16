@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "phox-modbus"
+version = "1.2.1"
+license = "MIT"
+authors = [{ name="Aurelien PLANTIN", email="a.plantin@phoxene.com"}]
+dependencies = ["pyserial>=3.5"]
+keywords = ["python", "phoxene", "Sx-IP", "SxIP", "Sx-LED"] 
+description = "Basic drivers to manage PHOXENE flash devices"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+	"Programming Language :: Python :: 3.7",
+	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+	"Intended Audience :: Developers",
+]
+
+[project.optional-dependencies]
+# List of dependencies used for package developpement
+# Allows to install the package and all developpement dependencies using: pip install -e .[dev]
+dev = ["build", "twine", "sphinx", "sphinx-rtd-theme", "unittest"]
+# List of dependencies used for building the documentation
+# Allows to install the package and all documentation dependencies using: pip install -e .[docs
+docs = [
+    "sphinx>=7.0",
+    "sphinx-rtd-theme",
+    "myst-parser",
+    "sphinx-autodoc-typehints",
+]
+
+[project.urls]
+"Homepage" = "https://www.phoxene.com"

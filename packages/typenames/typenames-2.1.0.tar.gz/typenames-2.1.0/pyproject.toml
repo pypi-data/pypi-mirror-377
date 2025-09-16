@@ -1,0 +1,105 @@
+[project]
+name = "typenames"
+version = "2.1.0"
+description = "String representations of type annotations."
+readme = "README.md"
+authors = [{ name = "Jay Qi", email = "jayqi.opensource@gmail.com" }]
+license = { file = "LICENSE" }
+keywords = ["typing", "type hints", "type annotations", "pep 585", "pep 604"]
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+tests = ["pytest>=6"]
+
+[project.urls]
+"Homepage" = "https://typenames.drivendata.org/"
+"Repository" = "https://github.com/drivendataorg/typenames"
+"Documentation" = "https://typenames.drivendata.org/"
+"Bug Tracker" = "https://github.com/drivendataorg/typenames/issues"
+"Changelog" = "https://typenames.drivendata.org/stable/changelog/"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+## DEV
+
+[dependency-groups]
+dev = [
+  { include-group = "lint" },
+  { include-group = "docs" },
+  "ipython",
+  "reprexlite",
+  "vspect",
+]
+lint = [
+  "ruff",
+]
+typecheck = [
+  "mypy",
+]
+tests = [
+  "pytest",
+  "coverage",
+  "pytest-cov",
+]
+docs = [
+  "markdown-callouts",
+  "mkdocs",
+  "mkdocs-macros-plugin",
+  "mkdocs-material>=9.5.0",
+  "mike",
+  "mkdocstrings[python]",
+  "mdx-truly-sane-lists",
+]
+inspect-types = [
+  "ipykernel",
+  "nbconvert",
+]
+
+## TOOLS ##
+
+[tool.ruff]
+line-length = 99
+src = ["typenames", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", # Pyflakes
+  "F", # Pycodestyle
+  "I", # isort
+]
+unfixable = ["F"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["typenames"]
+force-sort-within-sections = true
+
+[tool.mypy]
+files = ["typenames", "tests/typechecks.py"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov=typenames --cov-report=term --cov-report=html --cov-report=xml"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["typenames"]
+
+[tool.coverage.paths]
+typenames = [
+  "typenames/",
+  "*/site-packages/typenames/"
+]

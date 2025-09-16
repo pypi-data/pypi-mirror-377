@@ -1,0 +1,111 @@
+site_name: typenames
+site_url: https://typenames.drivendata.org/
+site_description: String representations of Python type annotations
+repo_url: https://github.com/drivendataorg/typenames
+
+nav:
+  - Home: "index.md"
+  - API Reference: "api-reference.md"
+  - Changelog: "changelog.md"
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.png
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  custom_dir: overrides/
+
+extra_css:
+  - css/extra.css
+
+markdown_extensions:
+  - github-callouts:
+  - pymdownx.highlight:
+  - pymdownx.superfences:
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - mdx_truly_sane_lists:
+  - tables:
+
+plugins:
+  - search:
+  - macros:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            # Headings options
+            heading_level: 2
+            show_root_toc_entry: false
+            show_root_full_path: false
+            show_root_heading: false
+            show_category_heading: true
+            # Members options
+            filters: ["!^_(?!_init__)"]
+            group_by_category: true
+            # Docstrings options
+            show_if_no_docstring: false
+            # Signatures/annotation options
+            show_signature_annotations: true
+            # Additional options
+            show_source: true
+  - mike:
+      alias_type: copy
+      canonical_version: stable
+      version_selector: true
+
+extra:
+  version:
+    provider: mike
+    default: stable
+    alias: true
+  social:
+    - icon: fontawesome/solid/square-poll-horizontal
+      link: https://www.drivendata.org/
+      name: DrivenData.org
+    - icon: fontawesome/solid/laptop-code
+      link: https://www.drivendata.co/
+      name: DrivenData Labs
+    - icon: fontawesome/brands/github
+      link: https://github.com/drivendataorg
+      name: DrivenData on GitHub
+    - icon: fontawesome/brands/bluesky
+      link: https://bsky.app/profile/drivendata.org
+      name: DrivenData on Bluesky
+  generator: False
+
+copyright: |
+  <a href="https://drivendata.co/open-source/"><img style="height: 1.618em;" src="https://drivendata-public-assets.s3.us-east-1.amazonaws.com/logo-white.svg"></a>
+  <br>typenames is a <strong><a href="https://drivendata.co/open-source/">DrivenData</a></strong> project
+  </div><div>Documentation made with <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>
+
+watch:
+  - "../typenames"
+  - "../README.md"
+  - "../CHANGELOG.md"
+  - "./main.py"

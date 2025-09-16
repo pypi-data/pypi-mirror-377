@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mbr-test-pckg-Yurii-1"
+version = "1.1.1"
+description = "My test package."
+authors = [
+{ name = "Yurii Oros", email = "noemail@gmail.com" }
+]
+
+[project.scripts]
+mbr_bash_cmd = "mbr_test_pckg.__main__:main"

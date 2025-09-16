@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qatest"
+version = "1.0.1"
+authors = [
+    {name = "QATest Team"},
+]
+description = "Test case management tool for uploading JSON test cases to QATest"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "click>=8.1.0",
+    "requests>=2.31.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.0.0",
+    "pyyaml>=6.0.0",
+]
+keywords = ["testing", "qa", "test-cases", "test-management", "json-upload"]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/qatest-cli"
+"Bug Reports" = "https://github.com/yourusername/qatest-cli/issues"
+"Source" = "https://github.com/yourusername/qatest-cli"
+
+[project.scripts]
+qatest = "qatest.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["qatest*"]
+exclude = ["tests*", "example*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yml", "*.yaml"]
+
+[tool.pyright]
+pythonVersion = "3.8"
+pythonPlatform = "All"
+include = ["qatest", "tests"]
+exclude = ["**/node_modules", "**/__pycache__", "venv", "example"]
+reportMissingImports = true
+reportMissingTypeStubs = false
+reportUnusedImport = true
+reportUnusedClass = true
+reportUnusedFunction = true
+reportUnusedVariable = true
+reportDuplicateImport = true
+reportOptionalMemberAccess = false
+reportGeneralTypeIssues = true
+reportUntypedFunctionDecorator = false
+typeCheckingMode = "standard"
+
+[tool.ruff]
+target-version = "py38"
+line-length = 100
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "venv",
+    "example",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+    "W293",  # blank line contains whitespace (in docstrings)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "S101", "S105"]  # Ignore docstrings and asserts in tests
+"__init__.py" = ["F401"]  # Ignore unused imports in __init__ files

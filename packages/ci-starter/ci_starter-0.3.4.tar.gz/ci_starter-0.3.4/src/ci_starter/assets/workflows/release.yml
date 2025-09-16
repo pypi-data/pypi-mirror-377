@@ -1,0 +1,102 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      new-release-detected:
+        required: true
+        type: string
+      semantic-release-config-file:
+        required: true
+        type: string
+      distribution-artifacts-name:
+        required: true
+        type: string
+      distribution-artifacts-dir:
+        required: true
+        type: string
+      lock-file-artifact:
+        required: true
+        type: string
+
+    outputs:
+      new-version-released:
+        value: ${{ jobs.release.outputs.released }}
+      new-release-version:
+        value: ${{ jobs.release.outputs.version }}
+      new-release-tag:
+        value: ${{ jobs.release.outputs.tag }}
+
+
+jobs:
+  release:
+    name: Release on GitHub
+    runs-on: ubuntu-latest
+
+    if: ${{ inputs.new-release-detected == 'true' }}
+
+    concurrency:
+      group: ${{ github.workflow }}-release-${{ github.ref_name }}
+      cancel-in-progress: false
+
+    permissions:
+      contents: write
+
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      new-release-version: ${{ steps.release.outputs.version }}
+      new-release-tag: ${{ steps.release.outputs.tag }}
+
+    env:
+      UV_LOCKED: true
+      UV_NO_MANAGED_PYTHON: true
+
+    steps:
+      - name: Setup | Checkout Repository on Release Branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup | Force release branch to be at workflow sha
+        run: git reset --hard ${{ github.sha }}
+
+      - name: Setup | Install Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c  # v6.0.0
+        with:
+          python-version-file: .python-version
+
+      - name: Setup | Install uv
+        uses: astral-sh/setup-uv@557e51de59eb14aaaba2ed9621916900a91d50c6  # v6.6.1
+
+      - name: Setup | Install python-semantic-release
+        run: uv tool install python-semantic-release
+
+      - name: Setup | Install Project
+        run: uv sync
+
+      - name: Setup | Download Build Artifacts
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0  # v5.0.0
+        id: artifact-download
+        with:
+          name: ${{ inputs.distribution-artifacts-name }}
+          path: ${{ inputs.distribution-artifacts-dir }}
+
+      - name: Setup | Download Lock File Artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0  # v5.0.0
+        with:
+          name: ${{ inputs.lock-file-artifact }}
+
+      - name: Setup | Stage Lock File for Version Commit
+        run: git add ${{ inputs.lock-file-artifact }}
+
+      - name: Release | Create Release
+        id: release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UV_LOCKED: false
+        run: |
+          ./.github/workflows/verify-upstream-has-not-changed.sh
+          uv run -- semantic-release --config ${{ inputs.semantic-release-config-file }} --verbose --strict version --skip-build
+          uv run -- semantic-release --config ${{ inputs.semantic-release-config-file }} publish

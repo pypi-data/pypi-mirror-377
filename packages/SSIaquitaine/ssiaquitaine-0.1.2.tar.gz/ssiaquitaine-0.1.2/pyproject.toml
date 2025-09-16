@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "SSIaquitaine"
+version = "0.1.2"
+authors = [
+  { name="Mohamed Redha Abdessemed", email="mohamed.abdessemed@eurocybersecurite.fr" },
+]
+description = "Un outil de gestion de projet pour un SSI (Système de Sécurité Informatique)."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Framework :: Setuptools Plugin",
+]
+dependencies = [
+    "pytest",
+    "colorama",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/tuteur1/SSIaquitaine"
+"Bug Tracker" = "https://github.com/tuteur1/SSIaquitaine/issues"
+
+[project.scripts]
+ssiaquitaine-welcome = "ssiaquitaine.core:cli_welcome"

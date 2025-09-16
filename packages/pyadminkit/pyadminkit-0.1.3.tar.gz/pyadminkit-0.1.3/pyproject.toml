@@ -1,0 +1,175 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyadminkit"
+version = "0.1.3"
+description = "A lightweight and highly extensible Python admin system middleware"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "PyAdminKit Team", email = "admin@pyadminkit.com"}
+]
+maintainers = [
+    {name = "PyAdminKit Team", email = "admin@pyadminkit.com"}
+]
+keywords = [
+    "admin", "dashboard", "cms", "management", "database", "orm",
+    "fastapi", "flask", "django", "async", "mysql", "postgresql",
+    "sqlite", "mongodb", "crud", "api", "web", "framework"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Office/Business",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Framework :: AsyncIO",
+    "Framework :: FastAPI",
+    "Framework :: Flask",
+    "Framework :: Django",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pydantic>=2.0.0",
+    "typing-extensions>=4.0.0",
+]
+
+[project.optional-dependencies]
+mysql = ["aiomysql>=0.2.0"]
+postgresql = ["asyncpg>=0.28.0"]
+sqlite = ["aiosqlite>=0.19.0"]
+mongodb = ["motor>=3.3.0"]
+fastapi = ["fastapi>=0.100.0"]
+flask = ["flask>=2.0.0"]
+django = ["django>=4.0.0"]
+full = [
+    "aiomysql>=0.2.0",
+    "asyncpg>=0.28.0", 
+    "aiosqlite>=0.19.0",
+    "motor>=3.3.0",
+    "fastapi>=0.100.0",
+    "flask>=2.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.0.0",
+    "twine>=4.0.0",
+    "build>=0.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/pyadminkit/pyadminkit"
+Documentation = "https://pyadminkit.readthedocs.io/"
+Repository = "https://github.com/pyadminkit/pyadminkit.git"
+"Bug Reports" = "https://github.com/pyadminkit/pyadminkit/issues"
+Changelog = "https://github.com/pyadminkit/pyadminkit/blob/main/CHANGELOG.md"
+
+[project.scripts]
+pyadminkit = "pyadminkit.cli:main"
+
+[tool.setuptools]
+packages = ['pyadminkit','pyadminkit.core','pyadminkit.core.database']
+
+[tool.setuptools.package-data]
+pyadminkit = [
+    "ui/templates/*.html",
+    "ui/static/css/*.css", 
+    "ui/static/js/*.js",
+    "ui/static/images/*",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["pyadminkit"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "aiomysql.*",
+    "asyncpg.*",
+    "aiosqlite.*",
+    "motor.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["pyadminkit"]
+omit = [
+    "*/tests/*",
+    "*/examples/*", 
+    "*/usage_examples/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

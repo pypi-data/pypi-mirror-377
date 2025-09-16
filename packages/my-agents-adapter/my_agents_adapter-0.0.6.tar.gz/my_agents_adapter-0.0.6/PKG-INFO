@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: my-agents-adapter
+Version: 0.0.6
+Summary: test version for agents adapter
+Author: Microsoft Corporation
+Requires-Python: >=3.10
+Requires-Dist: azure-monitor-opentelemetry
+Requires-Dist: azure-ai-projects
+Requires-Dist: azure-identity
+Requires-Dist: starlette
+Requires-Dist: uvicorn
+Provides-Extra: agentframework
+Requires-Dist: agent-framework; extra == "agentframework"
+Provides-Extra: langgraph
+Requires-Dist: langchain; extra == "langgraph"
+Requires-Dist: langchain-openai; extra == "langgraph"
+Requires-Dist: langgraph; extra == "langgraph"
+Dynamic: author
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

@@ -1,0 +1,176 @@
+Changes
+~~~~~~~
+
+.. towncrier release notes start
+
+1.8.0 (2025-09-16)
+------------------
+
+**Features**
+
+- Odoo 19 support. (`#70 <https://github.com/acsone/click-odoo/issues/70>`_)
+
+
+1.7.0 (2024-10-23)
+------------------
+
+**Features**
+
+- Use ``odoo.modules.registry.Registry()`` instead of the now deprecated `odoo.registry()`. (`#60 <https://github.com/acsone/click-odoo/issues/60>`_)
+
+
+1.6.0 (2022-09-21)
+------------------
+
+**Feature**
+
+- Add CI tests for Odoo 16 and Python 3.10. (`#51 <https://github.com/acsone/click-odoo/issues/51>`_)
+
+**Deprecations and Removals**
+
+- Drop support for python < 3.6 and Odoo 8, 9, 10. (`#48 <https://github.com/acsone/click-odoo/issues/48>`_)
+
+
+1.5.0 (2021-10-08)
+------------------
+
+**Features**
+
+- Silenced a noisy warning about Environment.manage() being a no-op in Odoo 15. (`#43 <https://github.com/acsone/click-odoo/issues/43>`_)
+
+
+1.4.3 (2020-09-30)
+------------------
+
+**Features**
+
+- Refined ImportError detection in ``from click_odoo import odoo``, for
+  easier diagnostic of Odoo installation issues. (`#36 <https://github.com/acsone/click-odoo/issues/36>`_)
+
+
+1.4.2 (2019-10-01)
+------------------
+- Odoo 8 unconditionally registers wsgi handlers, which has the surprising
+  side effect to start a server in some circumstances, for instance when
+  calling ``env["ir.module.module"].update_list()`` in ``click-odoo-initdb``.
+  Disable them in click-odoo initialization, since they are useless and
+  other Odoo version do not install them.
+- Support Odoo saas versions.
+
+1.4.1 (2019-01-24)
+------------------
+- revert change to logging made in 1.4.0
+
+1.4.0 (pulled)
+--------------
+- add support for launching with ``python -m click_odoo``. Fixes #20.
+- apply ``--log-level`` to the root logger, so it works more
+  intuitively by applying to the script too, and not only to the ``odoo``
+  namespace. *This may change the log output of some scripts*.
+  In particular, ``--log-level=debug`` will now apply debug logging
+  to every python library used, and not only to Odoo.
+  Fine tuning is available through the ``log_handler`` configuration item.
+- support Odoo config files with multiple comma separate databases names
+  in db_name config entry.
+
+1.3.0 (2018-11-21)
+------------------
+- pass click ctx to environment_manager
+
+1.2.0 (2018-11-18)
+------------------
+- refactor ``@click_odoo.env_options`` to allow propagating ``env``
+  to subcommands through the click context. Fixes #16.
+- do not log click Exit exception, which may be raised by subcommands as
+  a result of --help.
+
+Upgrading:
+- click-odoo now requires click>=7
+
+1.1.1 (2018-11-01)
+------------------
+- add ``with_addons_path`` option to ``@click_odoo.env_options``
+  to control the presence of the ``--addons-path`` option. Defaults to False.
+  Enabled for the ``click-odoo`` CLI.
+
+1.1.0 (2018-10-31)
+------------------
+- add ``environment_manager`` to ``@click_odoo.env_options``, providing
+  a hook on ``odoo.api.Environment`` creation.
+- add ``--addons-path`` option to the CLI.
+- add ``database_must_exist`` option to ``@click_odoo.env_options``
+  so scripts can behave how they please in case the database is absent.
+
+1.0.4 (2018-10-07)
+------------------
+- silence deprecation warning
+- adapt tests for Odoo 12
+
+1.0.3 (2018-06-05)
+------------------
+- clarify the behaviour of ``@env_option`` ``with_database`` and ``database_required``
+  parameters; in particular, when ``with_database`` and ``database_required``
+  are both set (the default), the ``--database`` option can be omitted
+  as long as a database is declared in the Odoo configuration file.
+
+1.0.2 (2018-06-01)
+------------------
+- refactor the OdooEnvironment class: it is much cleaner when
+  it leaves the global Odoo config alone, so we completely move
+  responsibility to initialize the Odoo config to the CLI part.
+
+1.0.1 (2018-05-27)
+------------------
+- better error logging and handling: all exceptions occuring
+  in scripts under click_odoo.env_options are logged and converted
+  to ClickException so we are sure they are both in the log file
+  and on the console (handled by click) for the user to see.
+  The OdooEnvironment context manager does not do additional logging,
+  leaving that responsibility to the caller.
+
+1.0.0 (2018-05-20)
+------------------
+- close db connections when releasing OdooEnvironment
+- expose click_odoo.odoo_bin (odoo or openerp-server depending on Odoo series).
+  not documented yet, because it should ideally be a full path corresponding
+  to the installed click_odoo.odoo, and I'm not sure how best to detect it yet.
+
+1.0.0b4 (2018-05-17)
+--------------------
+- minor documentation improvements
+- add the possibility to run script without ``--database`` (ie without env,
+  but with a properly initialized Odoo library such as addons path)
+- be more resilient in case we can't obtain a context for the user
+
+1.0.0b3 (2018-03-22)
+--------------------
+- click_odoo now exports the odoo namespace: ``from click_odoo import odoo``
+  is an alias for ``import odoo`` (>9) or ``import openerp as odoo`` (<=9)
+- add a ``with_rollback`` option to the ``env_options`` decorator, to control
+  the presence of the rollback option
+- document the ``env_options`` decorator
+
+1.0.0b2 (2018-03-21)
+--------------------
+- commit in case of success, so users do not need to commit in their
+  scripts, therefore making scripts easier to compose in larger transactions
+- add a --rollback option
+- interactive mode forces --rollback
+
+1.0.0b1 (2018-03-20)
+--------------------
+- clear cache when starting environment (mostly useful for tests)
+- simplify and test transaction and exception handling
+- when leaving the env, log the exception to be sure it is visible
+  when using ``--logfile``
+
+1.0.0a2 (2018-03-19)
+--------------------
+- improve transaction management: avoid some rare deadlock
+- avoid masking original exception in case of error during rollback
+- make sure scripts launched by click-odoo have ``__name__ == '__main__'``
+- add ``--logfile option``
+
+1.0.0a1 (2018-03-19)
+--------------------
+- first alpha

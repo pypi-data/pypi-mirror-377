@@ -1,0 +1,45 @@
+#
+# Makefile rules for the cvec package
+#
+
+timingflag = 
+checkflag = -DDEBUG_LEVEL=0
+printflag = -DDEBUG_PRINT_LEVEL=0
+
+KEXT_NAME = ferret
+KEXT_SOURCES = src/cppmapper.cc src/ferret.cc
+KEXT_LDFLAGS = -lstdc++
+KEXT_CXXFLAGS = $(timingflag) $(checkflag) \
+    -std=gnu++14 \
+    -Wall \
+    -Wextra \
+    -Wno-implicit-fallthrough \
+    -Wno-unused-parameter \
+    -Wno-missing-field-initializers \
+    -g \
+    -IYAPB++/source \
+    -Igap_cpp_headers
+
+KEXT_USE_AUTOCONF = 1
+
+# include shared GAP package build system
+GAPPATH = /Users/runner/sage-local/lib/gap
+include Makefile.gappkg
+
+symmetry_detect: .FORCE
+	g++ -std=gnu++11 -std=gnu++11 $(KEXT_CXXFLAGS) \
+	    YAPB++/simple_graph/symmetry_detect.cc \
+	    YAPB++/simple_graph/symmetry_parse.cc \
+	    YAPB++/simple_graph/gason/gason.cpp \
+	    YAPB++/simple_graph/simple_graph.cc \
+	    YAPB++/simple_graph/simple_parser.cc \
+	    $(timingflag) $(checkflag) $(OPT) $(printflag) \
+	    -I YAPB++/source \
+	    -o $@
+
+all: ferret.vars
+ferret.vars: ferret.vars.in config.status
+	./config.status $@
+
+.FORCE:
+.PHONY: .FORCE

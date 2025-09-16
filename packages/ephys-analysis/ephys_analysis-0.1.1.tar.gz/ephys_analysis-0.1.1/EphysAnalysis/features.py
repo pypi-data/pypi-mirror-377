@@ -1,0 +1,100 @@
+features_spike = [
+    "file",
+    "Rin (MΩ)",
+    "RMP (mV)",
+    "Tau (ms)",
+    "Sag ratio",
+    "Cm (pF)",
+    "Rheobase (pA)",
+    "Threshold (mV)",
+    "Peak (mV)",
+    "Trough (mV)",
+    "Height (mV)",
+    "FWHM (ms)",
+    "Upstroke/Downstroke",
+    "AHP amplitude (mV)",
+    "Adaptation index",
+    "Delay",
+    "Pause",
+    "Burst",
+    "Silence",
+    "Delay Ratio",
+    "Burst Index",
+    "No. of Burst",
+    "Single",
+    "FI Curve Slope",
+    "Spike Frequency - 0.0 pA (Hz)",
+    "Spike Frequency - 5.0 pA (Hz)",
+    "Spike Frequency - 10.0 pA (Hz)",
+    "Spike Frequency - 15.0 pA (Hz)",
+    "Spike Frequency - 20.0 pA (Hz)",
+    "Spike Frequency - 25.0 pA (Hz)",
+    "Spike Frequency - 30.0 pA (Hz)",
+    "Spike Frequency - 35.0 pA (Hz)",
+    "Spike Frequency - 40.0 pA (Hz)",
+    "Spike Frequency - 45.0 pA (Hz)",
+    "Spike Frequency - 50.0 pA (Hz)",
+    "Spike Frequency - 55.0 pA (Hz)",
+    "Spike Frequency - 60.0 pA (Hz)",
+    "Spike Frequency - 65.0 pA (Hz)",
+    "Spike Frequency - 70.0 pA (Hz)",
+    "Spike Frequency - 75.0 pA (Hz)",
+    "Spike Frequency - 80.0 pA (Hz)",
+    "Spike Frequency - 85.0 pA (Hz)",
+    "Spike Frequency - 90.0 pA (Hz)",
+    "Spike Frequency - 95.0 pA (Hz)",
+    "Spike Frequency - 100.0 pA (Hz)",
+    
+]
+
+features_voltage = [
+    "file",
+    "Rin (MΩ)",
+    "Access resistance (MΩ)",
+    "Tau_vclamp (ms)",
+    "Cm (pF)",
+    "Inward current peak - -70.0 mV (pA)",
+    "Inward current peak - -60.0 mV (pA)",
+    "Inward current peak - -50.0 mV (pA)",
+    "Inward current peak - -40.0 mV (pA)",
+    "Inward current peak - -30.0 mV (pA)",
+    "Inward current peak - -20.0 mV (pA)",
+    "Inward current peak - -10.0 mV (pA)",
+    "Inward current peak - 0.0 mV (pA)",
+    "Inward current peak - 10.0 mV (pA)",
+    "Inward current peak - 20.0 mV (pA)",
+    "Inward current peak - 30.0 mV (pA)",
+    "Inward current peak - 40.0 mV (pA)",
+]
+
+features_PSCs = [
+    "file",
+    "Mean Amplitude (pA)",
+    "Mean Frequency (Hz)",
+    "Max Amplitude (pA)",
+    "Mean FWHM (msec)",
+    "Rise time 10 - 90 (msec)",
+    "Decay time 10 - 90 (msec)",
+    "Decay time constant (msec)"
+]
+
+features_PSPs = [
+    "file",
+    "Mean Amplitude (pA)",
+    "Mean Frequency (Hz)",
+    "Max Amplitude (pA)",
+    "Mean Amplitude of sAPs (pA)",
+    "Mean Frequency of sAPs (Hz)",
+    "Mean FWHM (msec)",
+    "Rise time 10 - 90 (msec)",
+    "Decay time 10 - 90 (msec)",
+    "Decay time constant (msec)"
+]
+
+
+features_list = {
+    'Evoked action potentials/Subthreshold': features_spike,
+    'Voltage clamp - membrane currents': features_voltage,
+    'Post-synaptic currents': features_PSCs,
+    'Post-synaptic potentials/sAP': features_PSPs
+}

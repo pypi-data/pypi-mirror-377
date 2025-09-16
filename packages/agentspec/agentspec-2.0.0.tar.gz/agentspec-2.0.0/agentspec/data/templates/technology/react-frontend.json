@@ -1,0 +1,133 @@
+{
+  "id": "react_app",
+  "name": "React Web Application",
+  "description": "Template for modern React web applications with TypeScript, testing, and best practices",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "react",
+    "typescript",
+    "javascript",
+    "html",
+    "css",
+    "node.js",
+    "npm",
+    "webpack",
+    "babel"
+  ],
+  "default_tags": [
+    "frontend",
+    "react",
+    "typescript",
+    "testing",
+    "performance",
+    "accessibility",
+    "security",
+    "code-quality"
+  ],
+  "required_instructions": [
+    "react_component_structure",
+    "typescript_configuration",
+    "testing_setup",
+    "build_optimization"
+  ],
+  "optional_instructions": [
+    "state_management",
+    "routing_setup",
+    "api_integration",
+    "styling_framework",
+    "pwa_configuration"
+  ],
+  "excluded_instructions": [
+    "backend_setup",
+    "database_configuration",
+    "server_deployment"
+  ],
+  "inheritance": {
+    "parent": "web-application",
+    "override_mode": "merge"
+  },
+  "parameters": {
+    "ui_framework": {
+      "type": "string",
+      "default": "none",
+      "description": "UI component framework to use",
+      "required": false,
+      "options": ["none", "material-ui", "ant-design", "chakra-ui", "bootstrap"]
+    },
+    "state_management": {
+      "type": "string",
+      "default": "context",
+      "description": "State management solution",
+      "required": false,
+      "options": ["context", "redux", "zustand", "recoil"]
+    },
+    "styling_approach": {
+      "type": "string",
+      "default": "css-modules",
+      "description": "CSS styling approach",
+      "required": false,
+      "options": ["css-modules", "styled-components", "emotion", "tailwind", "sass"]
+    },
+    "testing_framework": {
+      "type": "string",
+      "default": "jest",
+      "description": "Testing framework to use",
+      "required": false,
+      "options": ["jest", "vitest", "cypress"]
+    },
+    "bundler": {
+      "type": "string",
+      "default": "vite",
+      "description": "Build tool and bundler",
+      "required": false,
+      "options": ["vite", "webpack", "parcel", "rollup"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "package.json",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "dependency_exists",
+      "value": "react",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "file_exists",
+      "value": "src/App.jsx",
+      "operator": "exists",
+      "weight": 0.7
+    },
+    {
+      "type": "file_exists",
+      "value": "src/App.tsx",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "public/index.html",
+      "operator": "exists",
+      "weight": 0.6
+    },
+    {
+      "type": "technology_detected",
+      "value": "react",
+      "operator": "equals",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "frontend",
+    "complexity": "intermediate",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["frontend", "spa", "modern", "typescript"]
+  }
+}

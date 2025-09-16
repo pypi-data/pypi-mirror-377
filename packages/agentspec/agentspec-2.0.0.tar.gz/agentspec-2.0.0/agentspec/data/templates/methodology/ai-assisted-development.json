@@ -1,0 +1,217 @@
+{
+  "id": "ai-assisted-development",
+  "name": "AI-Assisted Development Workflow",
+  "description": "Template for projects using AI-assisted development with best practices for prompt engineering and code quality",
+  "version": "1.0.0",
+  "project_type": "generic",
+  "technology_stack": [
+    "ai-assistant",
+    "code-generation",
+    "automated-testing",
+    "quality-assurance"
+  ],
+  "default_tags": [
+    "ai-assisted",
+    "prompt-engineering",
+    "code-quality",
+    "automated-testing",
+    "validation"
+  ],
+  "required_instructions": [
+    "human_in_the_loop_architect",
+    "rich_scratchpad_context",
+    "continuous_validation_loop",
+    "avoid_vibe_coding",
+    "never_commit_unknown_code",
+    "productivity_risk_paradox",
+    "validation_guardrails",
+    "clarity_context_constraints"
+  ],
+  "optional_instructions": [
+    "chain_of_thought_prompting",
+    "persona_based_prompting",
+    "decomposition_prompting",
+    "ai_driven_tdd",
+    "automated_accessibility_audits",
+    "ai_enhanced_ci_cd",
+    "logical_error_detection_focus",
+    "crawl_walk_run_strategy"
+  ],
+  "domain_specific_instructions": {
+    "devops": [
+      "ai_enhanced_ci_cd",
+      "proactive_vulnerability_management",
+      "intelligent_monitoring_observability",
+      "ai_asset_versioning"
+    ],
+    "frontend": [
+      "accelerated_design_to_code",
+      "intelligent_component_generation",
+      "automated_accessibility_audits",
+      "frontend_performance_optimization"
+    ],
+    "backend": [
+      "ai_architectural_brainstorming",
+      "ai_driven_tdd",
+      "api_data_model_generation",
+      "backend_incremental_complexity"
+    ],
+    "security": [
+      "validation_guardrails",
+      "regulatory_compliance_guardrails",
+      "alignment_guardrails",
+      "enterprise_guardrail_implementation"
+    ],
+    "optimization": [
+      "automated_refactoring_code_smells",
+      "performance_profiling_tuning",
+      "legacy_code_modernization",
+      "code_quality_standards_enforcement"
+    ]
+  },
+  "parameters": {
+    "implementation_maturity": {
+      "type": "string",
+      "default": "intermediate",
+      "description": "Organizational AI maturity level",
+      "required": true,
+      "options": ["beginner", "intermediate", "advanced", "expert"]
+    },
+    "security_level": {
+      "type": "string",
+      "default": "enterprise",
+      "description": "Required security implementation level",
+      "required": true,
+      "options": ["basic", "intermediate", "enterprise", "mission_critical"]
+    },
+    "primary_domains": {
+      "type": "array",
+      "default": ["general"],
+      "description": "Primary development domains to focus on",
+      "required": true,
+      "options": ["general", "devops", "frontend", "backend", "security", "optimization"]
+    },
+    "adoption_strategy": {
+      "type": "string",
+      "default": "crawl_walk_run",
+      "description": "AI adoption strategy for organization",
+      "required": true,
+      "options": ["crawl_walk_run", "gradual", "comprehensive"]
+    },
+    "compliance_requirements": {
+      "type": "array",
+      "default": [],
+      "description": "Regulatory compliance requirements",
+      "required": false,
+      "options": ["gdpr", "hipaa", "sox", "pci_dss", "iso27001"]
+    },
+    "team_experience": {
+      "type": "string",
+      "default": "mixed",
+      "description": "Team's experience level with AI tools",
+      "required": true,
+      "options": ["junior", "mixed", "senior", "expert"]
+    }
+  },
+  "framework_components": {
+    "foundational_principles": [
+      "human_in_the_loop_architect",
+      "rich_scratchpad_context",
+      "continuous_validation_loop",
+      "avoid_vibe_coding"
+    ],
+    "prompt_engineering": [
+      "clarity_context_constraints",
+      "chain_of_thought_prompting",
+      "persona_based_prompting",
+      "decomposition_prompting"
+    ],
+    "security_guardrails": [
+      "productivity_risk_paradox",
+      "validation_guardrails",
+      "regulatory_compliance_guardrails",
+      "alignment_guardrails"
+    ],
+    "organizational_adoption": [
+      "never_commit_unknown_code",
+      "crawl_walk_run_strategy",
+      "devex_team_leadership",
+      "security_upskilling_investment"
+    ],
+    "quality_assurance": [
+      "logical_error_detection_focus",
+      "ai_driven_tdd",
+      "automated_refactoring_code_smells",
+      "research_disclosure_attribution"
+    ]
+  },
+  "implementation_phases": [
+    {
+      "phase": "foundation",
+      "description": "Establish core AI collaboration principles and basic security",
+      "instructions": [
+        "human_in_the_loop_architect",
+        "rich_scratchpad_context",
+        "never_commit_unknown_code",
+        "clarity_context_constraints"
+      ],
+      "duration": "2-4 weeks"
+    },
+    {
+      "phase": "security",
+      "description": "Implement security guardrails",
+      "instructions": [
+        "productivity_risk_paradox",
+        "validation_guardrails",
+        "regulatory_compliance_guardrails",
+        "enterprise_guardrail_implementation"
+      ],
+      "duration": "4-6 weeks"
+    },
+    {
+      "phase": "domain_specialization",
+      "description": "Apply domain-specific AI best practices",
+      "instructions": "domain_specific_based_on_parameters",
+      "duration": "6-8 weeks"
+    },
+    {
+      "phase": "optimization",
+      "description": "Optimization techniques and continuous improvement",
+      "instructions": [
+        "formal_methods_exploration",
+        "automated_refactoring_code_smells",
+        "performance_profiling_tuning"
+      ],
+      "duration": "ongoing"
+    }
+  ],
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": ".ai-config.json",
+      "operator": "exists",
+      "weight": 1.0
+    },
+    {
+      "type": "technology_detected",
+      "value": "ai-assistant",
+      "operator": "equals",
+      "weight": 0.9
+    },
+    {
+      "type": "file_exists",
+      "value": ".agentspec/ai-config.json",
+      "operator": "exists",
+      "weight": 0.7
+    }
+  ],
+  "metadata": {
+    "category": "ai-comprehensive",
+    "complexity": "advanced",
+    "author": "Research Integration",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["comprehensive", "enterprise", "research-based", "multi-domain"],
+    "research_source": "Architecting Intelligence: A Comprehensive Framework of Best Practices for AI Coding Agents"
+  }
+}

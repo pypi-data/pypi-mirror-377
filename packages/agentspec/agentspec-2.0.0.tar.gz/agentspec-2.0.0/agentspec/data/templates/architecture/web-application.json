@@ -1,0 +1,84 @@
+{
+  "id": "web-application",
+  "name": "Web Application",
+  "description": "Base template for web applications with common setup and best practices",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "html",
+    "css",
+    "javascript",
+    "node.js",
+    "npm"
+  ],
+  "default_tags": [
+    "frontend",
+    "web",
+    "performance",
+    "accessibility",
+    "security",
+    "testing",
+    "code-quality"
+  ],
+  "required_instructions": [
+    "project_structure",
+    "build_system",
+    "testing_framework",
+    "code_quality_tools"
+  ],
+  "optional_instructions": [
+    "pwa_configuration",
+    "seo_optimization",
+    "analytics_integration"
+  ],
+  "parameters": {
+    "build_tool": {
+      "type": "string",
+      "default": "vite",
+      "description": "Build tool to use",
+      "required": false,
+      "options": ["vite", "webpack", "parcel", "rollup"]
+    },
+    "package_manager": {
+      "type": "string",
+      "default": "npm",
+      "description": "Package manager to use",
+      "required": false,
+      "options": ["npm", "yarn", "pnpm"]
+    },
+    "linting": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable code linting",
+      "required": false
+    },
+    "formatting": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable code formatting",
+      "required": false
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "package.json",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "index.html",
+      "operator": "exists",
+      "weight": 0.6
+    }
+  ],
+  "metadata": {
+    "category": "frontend",
+    "complexity": "beginner",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["base", "web", "foundation"]
+  }
+}

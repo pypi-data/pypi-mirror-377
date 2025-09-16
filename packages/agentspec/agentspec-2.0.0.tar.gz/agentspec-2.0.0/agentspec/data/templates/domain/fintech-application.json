@@ -1,0 +1,76 @@
+{
+  "id": "fintech-application",
+  "name": "Fintech Application",
+  "description": "Template for financial technology applications with regulatory compliance, security, and real-time processing",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "react",
+    "node.js",
+    "postgresql",
+    "redis",
+    "kafka",
+    "encryption",
+    "compliance"
+  ],
+  "default_tags": [
+    "fintech",
+    "security",
+    "compliance",
+    "real-time",
+    "encryption",
+    "audit"
+  ],
+  "required_instructions": [
+    "financial_data_security",
+    "regulatory_compliance",
+    "audit_logging",
+    "real_time_processing",
+    "fraud_detection"
+  ],
+  "optional_instructions": [
+    "blockchain_integration",
+    "ai_risk_assessment",
+    "automated_reporting",
+    "kyc_aml_integration"
+  ],
+  "parameters": {
+    "compliance_frameworks": {
+      "type": "array",
+      "default": ["pci_dss"],
+      "description": "Financial compliance frameworks",
+      "required": true,
+      "options": ["pci_dss", "sox", "basel_iii", "mifid_ii", "gdpr"]
+    },
+    "payment_processing": {
+      "type": "string",
+      "default": "stripe",
+      "description": "Payment processing provider",
+      "required": false,
+      "options": ["stripe", "adyen", "worldpay", "custom"]
+    },
+    "risk_engine": {
+      "type": "string",
+      "default": "rule_based",
+      "description": "Risk assessment engine type",
+      "required": false,
+      "options": ["rule_based", "ml_based", "hybrid", "third_party"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "dependency_exists",
+      "value": "stripe",
+      "operator": "exists",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "fintech",
+    "complexity": "advanced",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["fintech", "security", "compliance", "payments"]
+  }
+}

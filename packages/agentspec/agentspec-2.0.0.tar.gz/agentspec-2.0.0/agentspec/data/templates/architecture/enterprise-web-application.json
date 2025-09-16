@@ -1,0 +1,85 @@
+{
+  "id": "enterprise-web-application",
+  "name": "Enterprise Web Application",
+  "description": "Template for large-scale enterprise web applications with security, compliance, and AI-assisted development practices",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "react",
+    "typescript",
+    "node.js",
+    "postgresql",
+    "redis",
+    "docker",
+    "kubernetes",
+    "nginx"
+  ],
+  "default_tags": [
+    "enterprise",
+    "security",
+    "scalability",
+    "compliance",
+    "ai-enhanced",
+    "testing",
+    "monitoring"
+  ],
+  "required_instructions": [
+    "enterprise_architecture",
+    "security_implementation",
+    "compliance_setup",
+    "monitoring_observability",
+    "testing_strategy"
+  ],
+  "optional_instructions": [
+    "ai_enhanced_development",
+    "performance_optimization",
+    "accessibility_compliance",
+    "internationalization"
+  ],
+  "parameters": {
+    "compliance_requirements": {
+      "type": "array",
+      "default": ["gdpr"],
+      "description": "Regulatory compliance requirements",
+      "required": false,
+      "options": ["gdpr", "hipaa", "sox", "pci_dss", "iso27001"]
+    },
+    "authentication_provider": {
+      "type": "string",
+      "default": "azure_ad",
+      "description": "Enterprise authentication provider",
+      "required": true,
+      "options": ["azure_ad", "okta", "auth0", "saml", "ldap"]
+    },
+    "deployment_strategy": {
+      "type": "string",
+      "default": "blue_green",
+      "description": "Deployment strategy for production",
+      "required": true,
+      "options": ["blue_green", "canary", "rolling", "recreate"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "project_structure",
+      "value": "monorepo",
+      "operator": "contains",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "security-policy.md",
+      "operator": "exists",
+      "weight": 0.7
+    }
+  ],
+  "metadata": {
+    "category": "enterprise",
+    "complexity": "advanced",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+
+    "tags": ["enterprise", "security", "compliance", "scalable"]
+  }
+}

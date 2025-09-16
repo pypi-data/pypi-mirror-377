@@ -1,0 +1,59 @@
+[project]
+name = "cowsee"
+version = "0.1.1"
+description = "Visualize geometry data in the command line, along with the famous talking cow."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dask-geopandas>=0.5.0",
+    "pillow>=11.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13.0",
+]
+
+[project.scripts]
+cowsee = "cowsee.cli:main"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    # pycodestyle warnings
+    "W",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # Ruff-specific rules
+    "RUF",
+    # isort
+    "I",
+    # annotations
+    "ANN",
+    # pydocstyle
+    "D",
+]
+
+ignore = [
+    # undocumented-public-package
+    "D104",
+    # undocumented-public-module
+    "D100",
+     # missing-blank-line-after-summary
+    "D205"
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

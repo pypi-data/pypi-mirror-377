@@ -1,0 +1,20 @@
+[build-system]
+requires = [
+  "setuptools>=42",
+  "wheel"]
+
+[project]
+name = "Tintegrals"
+version = "1.1"
+authors = [
+    {name = "Henning Bahl",      email = "bahl@thphys.uni-heidelberg.de"},
+    {name = "Johannes Braathen", email = "johannes.braathen@desy.de"},
+    {name = "Martin Gabelmann",  email = "martin.gabelmann@desy.de"},
+]
+requires-python = ">=3.5"
+dependencies = [
+  "numpy>=1.13.0",
+  "scipy",
+  "mpmath",
+  "sympy",
+]

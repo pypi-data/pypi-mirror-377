@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "hitide-backfill-tool"
+version = "0.12.0"
+
+description = "Backfill footprints and images for HiTIDE collections"
+authors = ["PO.DAAC <podaac@jpl.nasa.gov>"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/podaac/hitide-backfill-tool"
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+exclude = ['contrib', 'docs', 'tests', 'jenkins']
+packages = [
+    { include = "podaac" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.27.1"
+boto3 = "^1.35.0"
+pyyaml = "^6.0"
+fuzzywuzzy = "^0.18.0"
+python-Levenshtein = "^0.26.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.1"
+moto = {extras = ["sns"], version = "^5.0.25"}
+flake8 = "^7.0.0"
+pylint = "^3.0.3"
+pytest-cov = "^6"
+
+[tool.poetry.scripts]
+backfill = "podaac.hitide_backfill_tool.cli:main"
+backfill_replay = "podaac.hitide_backfill_tool.replay:main"
+backfill_regression = "podaac.hitide_backfill_tool.regression:main"
+backfill_memory_profiler = "podaac.hitide_backfill_tool.memory_profiler:main"
+"create-backfill-config" = "podaac.hitide_backfill_tool.config_creator:create_config"
+
+[tool.pytest.ini_options]
+markers = [ "e2e" ]
+
+[build-system]
+requires = ["poetry"]
+build-backend = "poetry.masonry.api"

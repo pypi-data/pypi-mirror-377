@@ -1,0 +1,399 @@
+"""Display utilities for the CLI interface.
+
+All rendering occurs on the event loop thread.
+Streaming segments use Live Markdown; transient status and SQL blocks are also
+rendered with Live.
+"""
+
+import json
+from typing import Sequence, Type
+
+from pydantic_ai.messages import ModelResponsePart, TextPart
+from rich.columns import Columns
+from rich.console import Console, ConsoleOptions, RenderResult
+from rich.live import Live
+from rich.markdown import CodeBlock, Markdown
+from rich.panel import Panel
+from rich.spinner import Spinner
+from rich.syntax import Syntax
+from rich.table import Table
+from rich.text import Text
+
+
+class _SimpleCodeBlock(CodeBlock):
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        code = str(self.text).rstrip()
+        yield Syntax(
+            code,
+            self.lexer_name,
+            theme=self.theme,
+            background_color="default",
+            word_wrap=True,
+        )
+
+
+class LiveMarkdownRenderer:
+    """Handles Live markdown rendering with segment separation.
+
+    Supports different segment kinds: 'assistant', 'thinking', 'sql'.
+    Adds visible paragraph breaks between segments and renders code fences
+    with nicer formatting.
+    """
+
+    _patched_fences = False
+
+    def __init__(self, console: Console):
+        self.console = console
+        self._live: Live | None = None
+        self._status_live: Live | None = None
+        self._buffer: str = ""
+        self._current_kind: Type[ModelResponsePart] | None = None
+
+    def prepare_code_blocks(self) -> None:
+        """Patch rich Markdown fence rendering once for nicer code blocks."""
+        if LiveMarkdownRenderer._patched_fences:
+            return
+        # Guard with class check to avoid re-patching if already applied
+        if Markdown.elements.get("fence") is not _SimpleCodeBlock:
+            Markdown.elements["fence"] = _SimpleCodeBlock
+        LiveMarkdownRenderer._patched_fences = True
+
+    def ensure_segment(self, kind: Type[ModelResponsePart]) -> None:
+        """
+        Ensure a markdown Live segment is active for the given kind.
+
+        When switching kinds, end the previous segment and add a paragraph break.
+        """
+        # If a transient status is showing, clear it first (no paragraph break)
+        if self._status_live is not None:
+            self.end_status()
+        if self._live is not None and self._current_kind == kind:
+            return
+        if self._live is not None:
+            self.end()
+            self.paragraph_break()
+
+        self._start()
+        self._current_kind = kind
+
+    def append(self, text: str | None) -> None:
+        """Append text to the current markdown segment and refresh."""
+        if not text:
+            return
+        if self._live is None:
+            # default to assistant if no segment was ensured
+            self.ensure_segment(TextPart)
+
+        self._buffer += text
+        self._live.update(Markdown(self._buffer))
+
+    def end(self) -> None:
+        """Finalize and stop the current Live segment, if any."""
+        if self._live is None:
+            return
+        if self._buffer:
+            self._live.update(Markdown(self._buffer))
+        self._live.stop()
+        self._live = None
+        self._buffer = ""
+        self._current_kind = None
+
+    def end_if_active(self) -> None:
+        self.end()
+
+    def paragraph_break(self) -> None:
+        self.console.print()
+
+    def start_sql_block(self, sql: str) -> None:
+        """Render a SQL block using a transient Live markdown segment."""
+        if not sql or not isinstance(sql, str) or not sql.strip():
+            return
+        # Separate from surrounding content
+        self.end_if_active()
+        self.paragraph_break()
+        self._buffer = f"```sql\n{sql}\n```"
+        # Use context manager to auto-stop and persist final render
+        with Live(
+            Markdown(self._buffer),
+            console=self.console,
+            vertical_overflow="visible",
+            refresh_per_second=12,
+        ):
+            pass
+
+    def start_status(self, message: str = "Crunching data...") -> None:
+        """Show a transient status line with a spinner until streaming starts."""
+        if self._status_live is not None:
+            # Update existing status text
+            self._status_live.update(self._status_renderable(message))
+            return
+        live = Live(
+            self._status_renderable(message),
+            console=self.console,
+            transient=True,  # disappear when stopped
+            refresh_per_second=12,
+        )
+        self._status_live = live
+        live.start()
+
+    def end_status(self) -> None:
+        live = self._status_live
+        if live is None:
+            return
+        live.stop()
+        self._status_live = None
+
+    def _status_renderable(self, message: str):
+        spinner = Spinner("dots", style="yellow")
+        text = Text(f" {message}", style="yellow")
+        return Columns([spinner, text], expand=False)
+
+    def _start(self, initial_markdown: str = "") -> None:
+        if self._live is not None:
+            self.end()
+        self._buffer = initial_markdown or ""
+        live = Live(
+            Markdown(self._buffer),
+            console=self.console,
+            vertical_overflow="visible",
+            refresh_per_second=12,
+        )
+        self._live = live
+        live.start()
+
+
+class DisplayManager:
+    """Manages display formatting and output for the CLI."""
+
+    def __init__(self, console: Console):
+        self.console = console
+        self.live = LiveMarkdownRenderer(console)
+
+    def _create_table(
+        self,
+        columns: Sequence[str | dict[str, str]],
+        header_style: str = "bold blue",
+        title: str | None = None,
+    ) -> Table:
+        """Create a Rich table with specified columns."""
+        table = Table(show_header=True, header_style=header_style, title=title)
+        for col in columns:
+            if isinstance(col, dict):
+                table.add_column(
+                    col["name"], style=col.get("style"), justify=col.get("justify")
+                )
+            else:
+                table.add_column(col)
+        return table
+
+    def show_tool_executing(self, tool_name: str, tool_input: dict):
+        """Display tool execution details."""
+        # Normalized leading blank line before tool headers
+        self.show_newline()
+        if tool_name == "list_tables":
+            self.console.print(
+                "[dim bold]:gear: Discovering available tables[/dim bold]"
+            )
+        elif tool_name == "introspect_schema":
+            pattern = tool_input.get("table_pattern", "all tables")
+            self.console.print(
+                f"[dim bold]:gear: Examining schema for: {pattern}[/dim bold]"
+            )
+        elif tool_name == "execute_sql":
+            # For streaming, we render SQL via LiveMarkdownRenderer; keep Syntax
+            # rendering for threads show/resume. Controlled by include_sql flag.
+            query = tool_input.get("query", "")
+            self.console.print("[dim bold]:gear: Executing SQL:[/dim bold]")
+            self.show_newline()
+            syntax = Syntax(query, "sql", background_color="default", word_wrap=True)
+            self.console.print(syntax)
+
+    def show_text_stream(self, text: str):
+        """Display streaming text."""
+        if text is not None:  # Extra safety check
+            self.console.print(text, end="", markup=False)
+
+    def show_query_results(self, results: list):
+        """Display query results in a formatted table."""
+        if not results:
+            return
+
+        self.console.print(
+            f"\n[bold magenta]Results ({len(results)} rows):[/bold magenta]"
+        )
+
+        # Create table with columns from first result
+        all_columns = list(results[0].keys())
+        display_columns = all_columns[:15]  # Limit to first 15 columns
+
+        # Show warning if columns were truncated
+        if len(all_columns) > 15:
+            self.console.print(
+                f"[yellow]Note: Showing first 15 of {len(all_columns)} columns[/yellow]"
+            )
+
+        table = self._create_table(display_columns)
+
+        # Add rows (show first 20 rows)
+        for row in results[:20]:
+            table.add_row(*[str(row[key]) for key in display_columns])
+
+        self.console.print(table)
+
+        if len(results) > 20:
+            self.console.print(
+                f"[yellow]... and {len(results) - 20} more rows[/yellow]"
+            )
+
+    def show_error(self, error_message: str):
+        """Display error message."""
+        self.console.print(f"\n[bold red]Error:[/bold red] {error_message}")
+
+    def show_processing(self, message: str):
+        """Display processing message."""
+        self.console.print()  # Add newline
+        return self.console.status(
+            f"[yellow]{message}[/yellow]", spinner="bouncingBall"
+        )
+
+    def show_newline(self):
+        """Display a newline for spacing."""
+        self.console.print()
+
+    def show_table_list(self, tables_data: str | dict):
+        """Display the results from list_tables tool."""
+        try:
+            data = (
+                json.loads(tables_data) if isinstance(tables_data, str) else tables_data
+            )
+
+            # Handle error case
+            if "error" in data:
+                self.show_error(data["error"])
+                return
+
+            tables = data.get("tables", [])
+            total_tables = data.get("total_tables", 0)
+
+            if not tables:
+                self.console.print("[yellow]No tables found in the database.[/yellow]")
+                return
+
+            self.console.print(
+                f"\n[bold green]Database Tables ({total_tables} total):[/bold green]"
+            )
+
+            # Create a rich table for displaying table information
+            columns = [
+                {"name": "Schema", "style": "cyan"},
+                {"name": "Table Name", "style": "white"},
+                {"name": "Type", "style": "yellow"},
+            ]
+            table = self._create_table(columns)
+
+            # Add rows
+            for table_info in tables:
+                schema = table_info.get("schema", "")
+                name = table_info.get("name", "")
+                table_type = table_info.get("type", "")
+
+                table.add_row(schema, name, table_type)
+
+            self.console.print(table)
+
+        except json.JSONDecodeError:
+            self.show_error("Failed to parse table list data")
+        except Exception as e:
+            self.show_error(f"Error displaying table list: {str(e)}")
+
+    def show_schema_info(self, schema_data: str | dict):
+        """Display the results from introspect_schema tool."""
+        try:
+            data = (
+                json.loads(schema_data) if isinstance(schema_data, str) else schema_data
+            )
+
+            # Handle error case
+            if "error" in data:
+                self.show_error(data["error"])
+                return
+
+            if not data:
+                self.console.print("[yellow]No schema information found.[/yellow]")
+                return
+
+            self.console.print(
+                f"\n[bold green]Schema Information ({len(data)} tables):[/bold green]"
+            )
+
+            # Display each table's schema
+            for table_name, table_info in data.items():
+                self.console.print(f"\n[bold cyan]Table: {table_name}[/bold cyan]")
+
+                # Show columns
+                table_columns = table_info.get("columns", {})
+                if table_columns:
+                    # Create a table for columns
+                    columns = [
+                        {"name": "Column Name", "style": "white"},
+                        {"name": "Type", "style": "yellow"},
+                        {"name": "Nullable", "style": "cyan"},
+                        {"name": "Default", "style": "dim"},
+                    ]
+                    col_table = self._create_table(columns, title="Columns")
+
+                    for col_name, col_info in table_columns.items():
+                        nullable = "✓" if col_info.get("nullable", False) else "✗"
+                        default = (
+                            str(col_info.get("default", ""))
+                            if col_info.get("default")
+                            else ""
+                        )
+                        col_table.add_row(
+                            col_name, col_info.get("type", ""), nullable, default
+                        )
+
+                    self.console.print(col_table)
+
+                # Show primary keys
+                primary_keys = table_info.get("primary_keys", [])
+                if primary_keys:
+                    self.console.print(
+                        f"[bold yellow]Primary Keys:[/bold yellow] {', '.join(primary_keys)}"
+                    )
+
+                # Show foreign keys
+                foreign_keys = table_info.get("foreign_keys", [])
+                if foreign_keys:
+                    self.console.print("[bold magenta]Foreign Keys:[/bold magenta]")
+                    for fk in foreign_keys:
+                        self.console.print(f"  • {fk}")
+
+        except json.JSONDecodeError:
+            self.show_error("Failed to parse schema data")
+        except Exception as e:
+            self.show_error(f"Error displaying schema information: {str(e)}")
+
+    def show_markdown_response(self, content: list):
+        """Display the assistant's response as rich markdown in a panel."""
+        if not content:
+            return
+
+        # Extract text from content blocks
+        text_parts = []
+        for block in content:
+            if isinstance(block, dict) and block.get("type") == "text":
+                text = block.get("text", "")
+                if text:
+                    text_parts.append(text)
+
+        # Join all text parts and display as markdown in a panel
+        full_text = "".join(text_parts).strip()
+        if full_text:
+            self.console.print()  # Add spacing before panel
+            markdown = Markdown(full_text)
+            panel = Panel.fit(markdown, border_style="green")
+            self.console.print(panel)
+            self.console.print()  # Add spacing after panel

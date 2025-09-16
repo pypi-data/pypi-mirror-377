@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: shakenfist_client
+Version: 0.8.1
+Summary: The command line client for Shaken Fist
+Project-URL: Homepage, https://shakenfist.com
+Project-URL: Bug Tracker, https://github.com/shakenfist/shakenfist/issues
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: click>=8.0.0
+Requires-Dist: prettytable
+Requires-Dist: requests>=2.31.0
+Requires-Dist: requests_toolbelt>=1.0.0
+Requires-Dist: chardet>=5.0.0
+Requires-Dist: urllib3>=1.26.14
+Requires-Dist: tqdm
+Requires-Dist: shakenfist-utilities
+Requires-Dist: pyyaml
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: testtools; extra == "test"
+Requires-Dist: mock; extra == "test"
+Requires-Dist: stestr; extra == "test"
+Requires-Dist: tox; extra == "test"
+Requires-Dist: flake8; extra == "test"
+Dynamic: license-file
+
+Python REST API client for Shaken Fist
+======================================
+
+This is a python REST API client and command line client for the minimal cloud [Shaken Fist](https://github.com/shakenfist/shakenfist).
+
+The library is a complete interface to the Shaken Fist HTTP API.

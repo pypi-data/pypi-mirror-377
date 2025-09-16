@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling>=1.0.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "explainable"
+dynamic = ["version"]
+description = "Visualise complex data structures in real time"
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Numan Team", email = "kostya@numan.ai" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+    "websockets>=14.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/numan-ai/explainable"
+Documentation = "https://example.com"
+Repository = "https://github.com/numan-ai/explainable.git"
+Issues = "https://github.com/numan-ai/explainable/issues"
+Changelog = "https://github.com/numan-ai/explainable/blob/master/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/explainable/__init__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/explainable tests}"
+
+[tool.coverage.run]
+source_pkgs = ["explainable", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/explainable/__about__.py",
+]
+
+[tool.coverage.paths]
+explainable = ["src/explainable", "*/explainable/src/explainable"]
+tests = ["tests", "*/explainable/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.hatch.build.targets.sdist]
+core-metadata-version = "2.4"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/explainable"]

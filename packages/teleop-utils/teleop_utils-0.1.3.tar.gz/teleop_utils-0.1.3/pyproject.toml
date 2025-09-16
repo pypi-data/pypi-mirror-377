@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teleop-utils"
+version = "0.1.3"
+description = "Teleoperation utilities for Robotics"
+authors = [{ name = "Yihuai Gao", email = "yihuai@stanford.edu" }]
+dependencies = [
+    "numpy",
+    "transforms3d",
+    "click",
+    "robotmq",
+    "flask",
+    "flask-socketio",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+spacemouse_server = "teleop_utils.spacemouse.spacemouse_server:run_spacemouse_server"
+keyboard_server = "teleop_utils.keyboard.keyboard_server:run_keyboard_server"
+mocap_server = "teleop_utils.mocap.mocap_server:run_mocap_server"
+iphone_server = "teleop_utils.iphone.iphone_server:run_iphone_server"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = [
+    "teleop_utils*",
+    "teleop_utils/iphone/*",
+    "teleop_utils/mocap/*",
+    "teleop_utils/spacemouse/*",
+    "teleop_utils/keyboard/*",
+    "teleop_utils/utils/*",
+]
+
+[project.urls]
+Homepage = "https://github.com/yihuai-gao/teleop-utils"

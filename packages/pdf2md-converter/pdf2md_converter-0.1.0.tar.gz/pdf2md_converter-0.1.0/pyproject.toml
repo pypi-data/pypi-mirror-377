@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdf2md-converter"
+version = "0.1.0"
+authors = [
+    { name="Pratik", email="pratikpradhan64@gmail.com" },
+]
+description = "A PDF to clean, pagewise Markdown converter."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "Pillow",
+    "PyMuPDF",
+    "torch",
+    "transformers", # For development and testing
+    "pytest",
+    "protobuf>=6.32.1",
+    "torchvision>=0.23.0",
+    "sentencepiece>=0.2.1",
+    "pytesseract>=0.3.13",
+]
+
+[project.optional-dependencies]
+all = [
+    "easyocr",
+    "pytesseract",
+    "layoutparser[detectron2]"
+]
+test = [
+    "pytest",
+    "pytest-mock",
+    "psutil" # For memory checks
+]
+
+[project.scripts]
+pdf2md = "pdf2md.cli:main"

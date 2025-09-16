@@ -1,0 +1,24 @@
+import asyncio
+from typing import Any, Callable, Optional, Union
+from qtpy.QtWidgets import QWidget, QVBoxLayout, QFrame
+from qtpy.QtCore import Qt, Signal, Slot, Property, QTimer
+from ..button import Button, LoadingButton
+from .rhf_submit import SubmitButton
+from .rhf_text_field import RHFTextField
+from .rhf_autocomplete import RHFAutocomplete
+from .rhf_select import RHFSelect
+from .rhf_radio_group import RHFRadioGroup
+from .rhf_switch import RHFSwitch
+from .rhf_rating import RHFRating
+from .rhf_checkbox import RHFCheckbox, RHFMultiCheckbox
+from .rhf_slider import RHFSlider
+from .rhf_upload import RHFUploadAvatar
+from .types import ResolverType, UseFormType
+class FormProvider:
+    def __init__(self, id: str, onSubmit: Callable, validateSignal: Signal, schema: object, children: object, methods: UseFormType): ...
+    def _set_control_value(self, control, value): ...
+    def _on_reset(self): ...
+    def _on_submit(self): ...
+    def get_form_data(self): ...
+    def validate(self, field): ...
+    def on_value_changed(self, name, value): ...

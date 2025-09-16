@@ -1,0 +1,49 @@
+[project]
+name = "genie-git"
+version = "0.1.0"
+description = "An AI-powered tool to suggest conventional git commit messages."
+readme = "README.md"
+authors = [
+    { name = "Majed Lutfi", email = "majedelutfi@hotmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "gitpython>=3.1.45",
+    "google-genai>=1.36.0",
+]
+
+[project.scripts]
+genie-git = "genie_git.main:main"
+
+# Ruff
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "W",  # pycodestyle warnings
+    "I",  # isort
+    "N",  # pep8-naming
+    "D",  # pydocstyle
+]
+ignore = [
+    "D203", # Conflicts with D211
+    "D213", # Conflicts with D212
+]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"
+skip-magic-trailing-comma = false
+
+[build-system]
+requires = ["uv_build>=0.8.4,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+]

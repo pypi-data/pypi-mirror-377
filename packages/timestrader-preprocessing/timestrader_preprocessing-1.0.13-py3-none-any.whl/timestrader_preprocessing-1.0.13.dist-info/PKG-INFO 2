@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: timestrader-preprocessing
+Version: 1.0.9
+Summary: TimeStrader Preprocessing Package for Historical Data Processing and Normalization
+Author-email: TimeStrader Team <team@timestrader.com>
+License: MIT
+Project-URL: Homepage, https://github.com/your-org/timestrader
+Project-URL: Documentation, https://timestrader.readthedocs.io
+Project-URL: Repository, https://github.com/your-org/timestrader
+Project-URL: Issues, https://github.com/your-org/timestrader/issues
+Keywords: trading,preprocessing,timesnet,normalization,machine-learning
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: pydantic>=1.10.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: pandas-ta>=0.3.14b
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: build>=0.10.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"

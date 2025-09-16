@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "android-mobile-mcp"
+version = "0.0.0"
+description = "Android Mobile MCP"
+readme = "README.md"
+authors = [
+    { name="erichung0906", email="rthung96@gmail.com" }
+]
+
+dependencies = [
+    "uiautomator2",
+    "fastmcp",
+]
+
+keywords = ["android", "mobile", "mcp", "mobile-mcp", "android-mcp"]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/erichung9060/Android-Mobile-MCP/issues"
+"Repository" = "https://github.com/erichung9060/Android-Mobile-MCP"
+
+[project.scripts]
+android-mobile-mcp = "main:main"
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"

@@ -1,0 +1,11 @@
+
+{%- macro MSQL_TARGET_PROFILE_PROPERTY_VALUE_SELECTOR( target_name, int_or_float_string, isdefault, isunlimited ) -%}
+    {%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+    {%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+        {{target_name}}  UNLIMITED
+    {%- elif not int_or_float_string|float  -%}
+    {%- elif int_or_float_string|float >= 0 -%}
+        {{target_name}} {{int_or_float_string}}
+    {%- endif -%}
+{%- endmacro -%}
+

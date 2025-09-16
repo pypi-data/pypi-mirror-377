@@ -1,0 +1,27 @@
+[project]
+name = "flask_topassets"
+authors = [{ name = "lix", email = "xuzenglin@gmail.com" }]
+description = "a package on top of flask-assets"
+readme = "README.md"
+requires-python = ">=3.10"
+license-files = ["LICENSE.txt"]
+keywords = ["flask-assets"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+]
+dependencies = ["flask", "flask_assets"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "flask_topassets.__version__" }
+
+[project.urls]
+"Homepage" = "https://github.com/lixxu/flask_topassets"
+"Bug Tracker" = "https://github.com/lixxu/flask_topassets/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

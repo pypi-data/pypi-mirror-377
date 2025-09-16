@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: Ketzal
+Version: 0.0.1
+Summary: Experimental framework inspired by Laravel
+Author-email: Héctor <danielramirezr27@gmail.com>
+License: MIT
+Keywords: framework,web,ketzal,laravel-like
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: rich>=12.0.0
+Requires-Dist: click>=8.1.3
+Requires-Dist: watchdog>=6.0.0
+Requires-Dist: python-dotenv>=1.1.1
+
+# 📦 Ketzal
+
+Ketzal is a lightweight and easy-to-use HTTP router and microframework written in Python.  
+It is inspired by [Laravel](https://laravel.com/) and aims to bring simplicity and clarity to building web applications in Python.
+
+> ⚠️ **In Development**: Ketzal is currently in development and **not suitable for production use**.
+
+## Features
+
+- **Simple Routing**: Define routes using `Router.get`, `Router.post`, etc., similar to Laravel syntax.
+- **Lambda and Controller Support**: Routes can point to simple lambda functions or full controller methods.
+- **Auto-Reload**: Watch your routes and source files, and automatically reload the server on changes.
+## Installation
+
+> ⚠️ Ketzal is **in development**. Use only for learning, prototyping, or experimentation, not in production environments.
+
+Install via pip:
+
+
+```bash
+pip install Ketzal
+```

@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PythonMetaTrader5"
+version = "2.01"
+description = "Connect MT5 with Python"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "CC BY-NC 4.0"}
+
+authors = [{ name = "Wiktor Jelen", email = "wiktorjn@gmail.com" }]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "MetaTrader5",
+    "loguru",
+    "pyautogui"
+]
+
+[project.urls]
+Homepage = "https://github.com/Akinzou/MetaTrader5-Python"
+"Bug Tracker" = "https://github.com/Akinzou/MetaTrader5-Python/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+

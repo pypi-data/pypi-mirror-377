@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling==1.26.3"]
+build-backend = "hatchling.build"
+
+[project]
+name = "daniel_eos"
+version = "1.0"
+authors = [
+  { name="Daniel Chen", email="cdmstrong123@gmail.com"},
+]
+description = "daniel_eos is a package for eos to yidongyun "
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+        "aiohttp",
+        "requests",
+        "boto3==1.35.92",
+        "pydantic",
+    ]
+
+[project.urls]
+"Homepage" = "https://github.com/NickYi1990/juans"
+
+[tool.setuptools.packages.find]
+where = ["daniel_eos"]  # 查找src目录下的包

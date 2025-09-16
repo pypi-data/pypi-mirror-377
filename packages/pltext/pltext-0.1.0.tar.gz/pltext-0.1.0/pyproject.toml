@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pltext"
+version = "0.1.0"
+description = "PLText API wrapper for Python"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name="Your Name" }]
+keywords = ["pltext", "api", "plagiarism", "wrapper"]
+dependencies = [
+    "requests",
+    "python-dotenv"
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/pltext/"
+Source = "https://github.com/yourusername/pltext"

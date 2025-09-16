@@ -1,0 +1,35 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "freeq"
+version = "0.0.21"
+description = "Zero-setup queue with e2e encryption for free in 1 line of code"
+readme = "README.md"
+authors = [
+    { name = "Viktor Hronec", email = "zamr666@gmail.com" },
+]
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+keywords = ["queue", "easy", "message queue", "zero-setup"]
+dependencies = [
+    "certifi==2025.8.3",
+    "cffi==2.0.0",
+    "charset-normalizer==3.4.3",
+    "cryptography==45.0.7",
+    "idna==3.10",
+    "pycparser==2.23",
+    "requests==2.32.5",
+    "urllib3==2.5.0",
+    "zstandard==0.25.0"
+]
+requires-python = ">=3.8"
+
+[project.urls]
+"Homepage" = "https://github.com/hronecviktor/freeq"
+"Bug Tracker" = "https://github.com/hronecviktor/freeq/issues"

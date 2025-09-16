@@ -1,0 +1,27 @@
+[build-system]
+requires = [ "setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netdevice"
+version = "1.3.6"
+description='Python modules to execute command on remote network device based on pexpect.'
+readme = "README.rst"
+dependencies = [
+    "Pillow>=3.0.0",
+    "ipaddress",
+    "pexpect",
+    "lxml",
+    "IPy",
+    "xmltodict",
+    "dpkt",
+    "simplejson"
+]
+authors = [
+    {name = "Yongping Guo", email = "guoyoooping@163.com"}
+]
+keywords = ["pexpect", "netdevice"]
+license = {text = "GPLv3"}
+
+[project.urls]
+"Homepage" = 'https://github.com/guoyoooping/networkdevice'

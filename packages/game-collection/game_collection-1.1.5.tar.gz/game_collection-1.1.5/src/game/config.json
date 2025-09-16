@@ -1,0 +1,92 @@
+{
+  "display": {
+    "width": 1400,
+    "height": 1000,
+    "fullscreen": false,
+    "fps": 60
+  },
+  "controls": {
+    "snake": {
+      "up": "UP",
+      "down": "DOWN",
+      "left": "LEFT",
+      "right": "RIGHT",
+      "pause": "SPACE"
+    },
+    "tetris": {
+      "left": "LEFT",
+      "right": "RIGHT",
+      "down": "DOWN",
+      "rotate": "UP",
+      "drop": "SPACE",
+      "pause": "ESCAPE"
+    },
+    "arkanoid": {
+      "left": "LEFT",
+      "right": "RIGHT",
+      "launch": "SPACE",
+      "pause": "ESCAPE"
+    },
+    "pacman": {
+      "up": "UP",
+      "down": "DOWN",
+      "left": "LEFT",
+      "right": "RIGHT",
+      "pause": "SPACE"
+    }
+  },
+  "game_settings": {
+    "snake": {
+      "speed": 10,
+      "grid_size": 20,
+      "initial_length": 3
+    },
+    "tetris": {
+      "speed": 1,
+      "grid_width": 10,
+      "grid_height": 20,
+      "drop_speed": 0.5
+    },
+    "arkanoid": {
+      "paddle_speed": 8,
+      "ball_speed": 5,
+      "lives": 3,
+      "block_rows": 5,
+      "block_cols": 10
+    },
+    "pacman": {
+      "speed": 3,
+      "ghost_speed": 2,
+      "dots_per_row": 19,
+      "dots_per_col": 21,
+      "lives": 3
+    }
+  },
+  "audio": {
+    "enabled": true,
+    "volume": 0.7,
+    "music_volume": 0.5,
+    "sound_effects_volume": 0.8
+  },
+  "difficulty": {
+    "easy": {
+      "snake_speed": 8,
+      "tetris_speed": 0.8,
+      "arkanoid_ball_speed": 4,
+      "pacman_ghost_speed": 1.5
+    },
+    "normal": {
+      "snake_speed": 10,
+      "tetris_speed": 1.0,
+      "arkanoid_ball_speed": 5,
+      "pacman_ghost_speed": 2.0
+    },
+    "hard": {
+      "snake_speed": 12,
+      "tetris_speed": 1.2,
+      "arkanoid_ball_speed": 6,
+      "pacman_ghost_speed": 2.5
+    }
+  },
+  "current_difficulty": "normal"
+}

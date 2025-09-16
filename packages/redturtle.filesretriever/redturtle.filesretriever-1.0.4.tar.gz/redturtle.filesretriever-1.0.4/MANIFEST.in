@@ -1,0 +1,14 @@
+graft src/redturtle
+prune src/redturtle/filesretriever/browser/static/react/dist/dev
+graft docs
+include *.rst
+global-exclude *.pyc
+include *.GPL
+include *.js
+include *.json
+include *.lock
+include *.txt
+include *.yml
+exclude tox.ini
+exclude .babelrc
+exclude .nvmrc

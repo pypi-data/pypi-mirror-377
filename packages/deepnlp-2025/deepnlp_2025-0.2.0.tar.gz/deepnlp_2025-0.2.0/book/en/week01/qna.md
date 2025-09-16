@@ -1,0 +1,69 @@
+# Transformer, Mamba, RWKV, Jamba Architecture Q&A
+
+## Transformer Architecture
+
+**Q:** What are the main advantages of Self-Attention in Transformer? Also, where does the bottleneck occur during inference?
+
+**A:** The biggest advantage of **Self-Attention (self-attention)** mechanism, which is the core of **Transformer**, is that it can **process input sequences in parallel**. Unlike RNNs, there is no recurrent structure, so all token relationships are calculated simultaneously, allowing efficient learning of **long dependencies** and fast training speed. However, **bottlenecks** occur during the **inference** stage because **attention with all previous tokens** must be calculated every time a new token is generated. For example, if the sequence length is $L$, when generating the current token, attention with all $L$ past tokens must be computed, so generating one token requires $O(L)$ operations, and overall, the generation process experiences **bottlenecks that slow down with length**. Due to this, Transformer models have limitations where **inference speed decreases** and **memory usage** greatly increases as context length increases.
+
+**Q:** Explain the difference between Transformer encoder-decoder structure and decoder-only structure like GPT.
+
+**A:** **Transformer encoder-decoder models** consist of two parts: **encoder** and **decoder**. The encoder receives input sequences and converts them into internal **context representations**, and the decoder generates output sequences token by token by referring to this context and previously generated tokens. In decoder layers, **masked self-attention** is applied to prevent seeing future tokens, and **encoder-decoder attention (cross-attention)** is used to reference the encoder's context. On the other hand, **decoder-only structures like GPT** are **single-stream** structures with **no encoder**, consisting of only one decoder. They predict the next token using only **self-attention** on previous tokens, with no separate encoder input or cross-attention. In summary, encoder-decoder models are structures where **input and output sequences are separated** and interact (cross-attention), while decoder-only models are structures that perform only **sequential generation** in **one sequence**.
+
+**Q:** How do Transformer's time complexity and space complexity scale with sequence length $L$?
+
+**A:** In **Transformer**, the **time complexity** of Self-Attention operations increases as **$O(L^2)$** with sequence length. This is because similarity is calculated for every token pair, so computational cost is proportional to the square of the number of tokens. Similarly, **memory (space) complexity** also scales as **$O(L^2)$** because attention weight matrices must be stored. For example, if the number of tokens $L$ doubles, computational cost and memory usage increase by four times, so Transformer is inefficient in terms of computational cost and memory when processing very long sequences.
+
+## Mamba Architecture
+
+**Q:** What is Mamba's biggest advantage over Transformer? Explain how Mamba can avoid the $O(n^2)$ bottleneck of attention.
+
+**A:** **Mamba** is a **new sequence model** proposed in 2024, and its biggest advantage is that it can effectively process long sequences **without attention**. It uses a **Selective State Space Model (Selective SSM)** based recurrent structure designed so that processing time increases **linearly with sequence length**, allowing it to handle long contexts without calculating for every token pair like Transformers. Mamba internally **updates hidden states token by token like RNNs**, but introduced **hardware-friendly parallelization algorithms** to solve sequential processing bottlenecks. As a result, it can exchange information between tokens **while avoiding the $O(n^2)$ computation of attention**, and reports show that **inference processing speed is 5x higher than Transformer**. In summary, thanks to Mamba's structure, **sequences of nearly infinite length** can be handled practically, and it is **excellent in computational efficiency and memory usage** even in long contexts.
+
+**Q:** What does "selective" behavior mean in Mamba's Selective SSM? What effects did this achieve in language models?
+
+**A:** In **Selective SSM**, "**selective**" means that **state space model coefficients (e.g., state transition matrices) are dynamically determined as functions of input tokens**. That is, instead of updating states in the same way at all time points, **how much to maintain or forget previous information is controlled according to the current token's content**. This operates like **gates** in RNNs, **long retaining important information and quickly forgetting unnecessary information**. Thanks to this selective state control, Mamba can effectively express **content-based dependencies between tokens** and achieve high performance even in **discrete token data like natural language** that was difficult with fixed SSMs.
+
+**Q:** Mention performance-related characteristics shown by the Mamba-3B model (e.g., comparison with same-size Transformer, comparison with twice-larger Transformer, etc.).
+
+**A:** **Mamba-3B** is a Mamba model with 300 million parameters, and it reportedly showed **superior performance to same-size Transformers** and achieved **performance comparable to Transformers with twice the parameters**. This suggests that thanks to Mamba architecture's efficiency, **Transformer performance can be exceeded or matched even with smaller models**. In other words, Mamba-3B had better language modeling capabilities than 3B-scale Transformers and showed similar results to 6B-scale Transformers, proving **outstanding performance efficiency relative to model size**. These results show that Mamba's **architectural innovation** led to actual model performance improvement.
+
+## RWKV Architecture
+
+**Q:** Explain what shortcomings of Transformer RWKV architecture was designed to solve. Also, how did it combine the advantages of Transformer and RNN respectively?
+
+**A:** **RWKV** is a model designed to **overcome Transformer limitations**, emerging as an alternative to **long context processing and high resource consumption** problems. Transformers have limitations in **context length** due to attention operation constraints and require large GPU resources, but RWKV introduces **RNN series** ideas to support **virtually unlimited context length**. It fully accepts **Transformer's advantage** of **parallel learning** capability, ensuring GPU efficiency by processing entire sequences at once during training (converted to special attention formulas), and combines **RNN's advantage** of **sequential inference efficiency** to generate tokens **one by one like RNNs** during inference. In summary, RWKV is a hybrid architecture that takes advantage of both structures by making it **fast like Transformer during training** and **light like RNN during inference**.
+
+**Q:** How does RWKV's inference method differ from Transformer, and what benefits does this provide? (Hint: KV cache vs hidden state)
+
+**A:** **Transformer** stores **KV cache** of all previous tokens during inference and takes the approach of calculating **attention with the entire cache** at each generation step. On the other hand, **RWKV** has each layer maintain **its own hidden state**, and when a new token comes in, it operates by **updating the previous state**. Therefore, there's no need to store all previous token information in a huge KV cache, just **maintaining a fixed-size hidden state**. The biggest benefit from this difference is **memory efficiency and speed**. RWKV's memory usage hardly increases even as context lengthens, and **computation per token is constant** (not increasing with token count like attention), so it **maintains consistent speed even with very long inputs**. In other words, RWKV is **advantageous for long document processing** compared to Transformers and allows **large LLMs to run relatively smoothly even on low-spec devices**.
+
+**Q:** What does RWKV's name mean, and briefly summarize the roles of Time-mix and Channel-mix.
+
+**A:** **RWKV** stands for **Receptance, Weight, Key, Value**, derived from the names of the four main parameters of the network. Here, **Receptance (R)** acts as a **gate that accepts past information**, **Weight (W)** is an **exponential time weight applied to past information** (coefficient that gradually decreases previous influence over time), and **Key (K)** and **Value (V)** are key/value vectors representing **information conveyed by the current token**.
+
+Each layer of the RWKV architecture is divided into two stages: **Time-mix** stage and **Channel-mix** stage. **Time-mix** is the stage that **mixes current token input with accumulated Key/Value information from previous tokens**, using R and W gates to **decay previous states and integrate new information**. This can be seen as replacing the role of **attention integrating temporal information** in Transformers.
+
+Next, **Channel-mix** is the stage that performs **channel (feature) direction transformation** for each token, applying **token-wise nonlinear transformation** like typical **Feed-Forward Network (FFN)**. During this process, some output from previous tokens is also used as input for **adjustment through gates**, serving a similar role to Transformer's FFN. In summary, RWKV's Time-mix is responsible for **sequential information mixing** (temporal processing), and Channel-mix is responsible for **feature dimension mixing** (channel processing), designed to **perform both token dependencies and internal token transformations without attention**.
+
+## Jamba Architecture
+
+**Q:** In what ratio are Transformer layers and Mamba layers arranged in Jamba architecture? Explain what advantages this design provides in terms of memory and speed.
+
+**A:** **Jamba** is a **hybrid architecture** that **mixes Transformer layers and Mamba layers**. Specifically, it stacks in a form where **several Mamba layers** follow one Transformer (Attention) layer, with **"1:7 ratio"** being the representative configuration. For example, in a Jamba model with 32 layers, only **4 layers use attention**, and the remaining **28 layers are Mamba**.
+
+By **sparsely inserting attention** and filling most with Mamba, **global pattern processing** is handled by occasionally appearing attention layers, and **remaining interactions are processed by efficient Mamba layers**. This design **greatly improves memory usage and speed**, especially since there are few attention layers, **reducing the number of layers that need to store KV cache, making the overall memory footprint smaller**, and **when processing long contexts**, only a few attentions need to be calculated, so **much faster token processing speed compared to Transformer** can be obtained. According to actual reports, Jamba **uses only 1/2 level memory compared to same-scale general Transformers** while **generating text 3x faster for 128K token length inputs**.
+
+**Q:** Why did Jamba introduce MoE? Explain using the concepts of active parameters and total parameters.
+
+**A:** **Jamba** introduced **MoE (Mixture-of-Experts)** technique to maintain efficiency while increasing model capacity. Specifically, some Transformer **MLP layers are replaced with MoE layers** to have **multiple Expert networks**, and **only the top few Experts are activated for each token**. For example, in Jamba, there are 16 Expert MLPs in one MoE layer, designed so that **only the 2 most relevant Experts are activated for each token (top-2 gating)**.
+
+Here, **total parameters** means the total number of parameters of the entire model including all Experts, and **active parameters** means **the number of parameters actually activated and used in computation during one inference**. In Jamba's case, with MoE introduction, **total parameter count increases very greatly (e.g., 5.2B → 52B, etc.)**, but since **only a very small part (e.g., top 2 Experts)** of parameters are used for each token, **actual active parameter scale is limited**. For example, the Jamba 7B model has **about 52B total parameters** through MoE, but **only about 12B are actually activated**.
+
+By doing this, **total model capacity** can be greatly increased to **improve performance**, while **inference computation and memory usage are suppressed to active parameter levels** to maintain efficiency. In short, with MoE introduction, Jamba achieved the effect of **"having the intelligence of a large model but paying only the cost of a small model"**.
+
+**Q:** What is the maximum context length that Jamba supports, and what is the secret to maintaining performance while processing such long contexts?
+
+**A:** **Jamba** supports an ultra-long **context window** of **256K (256,000) tokens**. This is among the **longest context processing capabilities** of currently available Transformer series models, and thanks to this, it's possible to input very long documents at once to perform Q&A or summarization.
+
+The secret to maintaining performance while handling such long contexts lies in the aforementioned design elements. First, since **attention layer count is minimized** and most are composed of Mamba, **burden from attention operations is very small for long inputs**. Also, Mamba layers operate in **linear time**, so computational cost doesn't increase much even as context length increases. In actual experiments, Jamba **processed 128K token inputs on a single 80GB GPU**, and while same-scale general Transformers couldn't process this due to memory limitations, Jamba **operated without difficulty while maintaining output quality at latest LLM levels**. In summary, Jamba's architecture is **specialized to efficiently process long contexts**, and thanks to this, it can **achieve both fast inference and excellent performance even with long inputs**.

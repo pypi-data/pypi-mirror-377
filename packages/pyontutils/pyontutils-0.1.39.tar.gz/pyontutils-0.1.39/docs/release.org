@@ -1,0 +1,733 @@
+# -*- org-adapt-indentation: nil; org-edit-src-content-indentation: 0; orgstrap-cypher: sha256; orgstrap-norm-func-name: orgstrap-norm-func--dprp-1-0; orgstrap-block-checksum: da498441731d4accf814f380d24d0d9a6bb76880bf9a4e22f9a7b8747623e996; -*-
+# [[orgstrap][jump to the orgstrap block for this file]]
+#+TITLE: Python release workflow
+#+OPTIONS: num:nil
+
+#+name: orgstrap-shebang
+#+begin_src bash :eval never :results none :exports none
+set -e "-C" "-e" "-e"
+{ null=/dev/null;} > "${null:=/dev/null}"
+{ args=;file=;MyInvocation=;__p=$(mktemp -d);touch ${__p}/=;chmod +x ${__p}/=;__op=$PATH;PATH=${__p}:$PATH;} > "${null}"
+$file = $MyInvocation.MyCommand.Source
+{ file=$0;PATH=$__op;rm ${__p}/=;rmdir ${__p};} > "${null}"
+emacs -batch -no-site-file -eval "(let (vc-follow-symlinks) (defun org-restart-font-lock ()) (defun orgstrap--confirm-eval (l _) (not (memq (intern l) '(elisp emacs-lisp)))) (let ((file (pop argv)) enable-local-variables) (find-file-literally file) (end-of-line) (when (eq (char-before) ?\^m) (let ((coding-system-for-read 'utf-8)) (revert-buffer nil t t)))) (let ((enable-local-eval t) (enable-local-variables :all) (major-mode 'org-mode) find-file-literally) (require 'org) (org-set-regexps-and-options) (hack-local-variables)))" "${file}" -- ${args} "${@}"
+exit
+<# powershell open
+#+end_src
+
+* Using this file :noexport:
+To tangle the contents of this file to disk run =sh release.org tangle=.
+
+The core functionality is tangled to [[file:./../bin/python-release-functions.sh]].
+It can be sourced in a shell or from a script using =source path/to/bin/python-release-functions.sh=
+to make the functions defined in this file available for use.
+
+* Python release process
+Release workflow.
+
+Don't tag a release on GitHub until all the tests pass,
+the package contents are what we want and expect, and
+you have run =push-release= to pypi testing and checked it.
+Once they do, tag it with the version that you set below
+so that everything is on the same page. If there are multiple
+packages per repo the tag is usually prefixed with the module name.
+
+Note that if you use the =--local ~/path/to/my/working/repo= option as the source repo
+then =git pull= is called with =--force= since the assumption is that =git commit --amend=
+may be used in certain cases.
+
+*NEVER USE THESE FUNCTIONS ON YOUR WORKING REPO, YOU WILL LOOSE ANY STASHED WORK OR UNTRACKED FILES*
+
+*WHEN YOU PUSH TO TEST*
+Inspect _everything_ at =https://test.pypi.org/project/${packagename}=.
+MAKE SURE THE HASHES MATCH (tail hashes vs curl output)
+You can also check https://test.pypi.org/project/ontquery/#files
+** Example release
+#+NAME: release-examples
+#+CAPTION: examples, this is horrible and dangerous, never do this this way run the 3 commands separately
+#+begin_src bash :eval never :noweb yes
+source ~/git/pyontutils/bin/python-release-functions.sh
+SOMEVAR=some-value \
+build-release org repo folder packagename version --some-arg
+PYTHONPATH=~/git/pyontutils: SCICRUNCH_API_KEY=$(cat ~/ni/dev/secrets.yaml | grep tgbugs-travis | awk '{ print $2 }') \
+build-release tgbugs ontquery ontquery ontquery 0.1.0 --release
+exit  # if try to copy paste this block terminate here to prevent dumbs
+push-release ontquery ~/nas/software-releases ontquery 0.1.0
+# DO GitHub RELEASE HERE
+are-you-sure && \
+final-release ~/nas/software-releases ontquery 0.1.0
+#+end_src
+
+
+This is a reasonable time to tag the release on GitHub.
+* Config files
+#+CAPTION: [[file:${HOME}/.pypirc]] on the release host (only need to create once)
+#+begin_src toml
+[distutils]
+index-servers =
+pypi
+test
+
+[pypi]
+repository: https://upload.pypi.org/legacy/
+username: your-username
+
+[test]
+repository: https://test.pypi.org/legacy/
+username: your-username
+password: set-this-one-for-simplicity
+#+end_src
+* Code
+** Python release functions
+Tangle this block so you can source [[file:./../bin/python-release-functions.sh]]
+#+NAME: all-blocks
+#+CAPTION: run this to export all the things
+#+HEADER: :tangle ../bin/python-release-functions.sh :comments noweb
+#+begin_src bash :eval never :noweb no-export
+<<&build-release>>
+<<&push-release>>
+# TODO github-release
+<<&final-release>>
+#+end_src
+** Build release
+# XXX FIXME AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA absolute insanity where this is parsed as an emacs float and embedded as such so the trailing zero is lost temp fix is to use string
+#+name: &default-python-version
+: "3.10"
+
+#+NAME: &vars-build-release
+#+begin_src bash :eval never :exports code :noweb yes
+local POSITIONAL=()
+local INTEGRATION_PACKAGES=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+case $key in
+    -l|--local)           local CLONEFROM="$2"; shift; shift ;;
+    -f|--artifact-folder) local ARTIFACT_FOLDER="$2"; shift; shift ;;
+    -p|--base-path)       local BASE_PATH="$2"; shift; shift ;;
+    -b|--branch)          local BRANCH="$2"; shift; shift ;;
+    -i|--install-package) local INTEGRATION_PACKAGES+=("$2"); shift; shift ;;
+    --python)             local PYTHON_VERSION="$2"; shift; shift ;;
+    --tag-no-rename)      local TAG_NO_RENAME=YES; shift ;;
+    --tag-prefix)         local TAG_PREFIX=YES; shift ;;
+    --keep-artifacts)     local KEEP_ARTIFACTS=YES; shift ;;
+    --no-test)            local NO_TEST=YES; shift;;
+    --debug)              local DEBUG=YES; shift ;;
+    ,*)                    local POSITIONAL+=("$1"); shift ;;
+esac
+done
+
+local PYTHON_VERSION=${PYTHON_VERSION:-<<&default-python-version()>>}
+local org=${POSITIONAL[0]}
+local repo=${POSITIONAL[1]}
+local folder=${POSITIONAL[2]}
+local packagename=${POSITIONAL[3]}
+local version=${POSITIONAL[4]}
+local REST=${POSITIONAL[@]:5}  # remaining position passed along
+echo $REST
+
+if [[ ${folder} == *"/"* || -n ${TAG_PREFIX} ]]; then
+    local tag=${packagename}-${version}
+    local clone_target=${repo}-${packagename}-${PYTHON_VERSION}  # prevent git lock collisions
+    folder="${clone_target}/${folder#*/}"
+else
+    local tag=${version}
+    local clone_target=${repo}-${PYTHON_VERSION}
+    folder=${clone_target}
+fi
+
+# TODO make sure no vars are null
+
+: ${BASE_PATH:=/tmp/python-releases}  # allow override for cases where /tmp causes test failure
+
+[ -d "${BASE_PATH}" ] || mkdir -p "${BASE_PATH}"
+
+echo $org $repo $clone_target $folder $packagename $version $tag $CLONEFROM $ARTIFACT_FOLDER $BASE_PATH ${INTEGRATION_PACKAGES[@]}
+#+end_src
+
+#+NAME: &build-release
+#+begin_src bash :eval never :exports code :noweb yes
+build-release () {
+    # example
+    # build-release org    repo     folder   packagename version
+    # build-release tgbugs ontquery ontquery ontquery    0.0.8
+
+    <<&vars-build-release>>
+
+    cd ${BASE_PATH}  # ensure we are always working in tmp for the rest of the time
+
+    TEST_PATH="${BASE_PATH}/release-testing/${PYTHON_VERSION}-${packagename}"  # allow multiple builds at the same time
+
+    if [ -d ${repo} ]; then
+        rm -rf "${TEST_PATH}"
+    fi
+    mkdir -p "${TEST_PATH}"
+
+    if [ -d ${clone_target} ]; then
+        pushd ${clone_target}
+        rurl="$(git remote get-url origin)" || return $?
+        if [[ -z ${CLONEFROM} && ! $rurl =~ "https://" && ! $rurl =~ "git@" ]]; then
+            git remote set-url origin https://github.com/${org}/${repo}.git || return $?
+        elif [[ -n ${CLONEFROM} && "$rurl" != "${CLONEFROM}" ]]; then
+            git remote set-url origin "${CLONEFROM}" || return $?
+        fi
+        git fetch || return $?  # fail on bad clone to prevent testing against stale code
+        git reset --hard origin/master
+        git clean -dfx
+        popd
+    else
+        if [[ -n ${CLONEFROM} ]]; then
+            git clone ${CLONEFROM} ${clone_target} || return $?
+        else
+            git clone https://github.com/${org}/${repo}.git ${clone_target} || return $?
+        fi
+    fi
+    # TODO __version__ check against ${version}
+
+    pushd "${folder}" || return $?  # or subfolder
+
+    if [[ $(git tag -l ${tag}) ]]; then
+        gsh=$(git rev-parse --short HEAD)
+        verspath=$(grep -l '__version__.\+=' $(ls */*.py))
+        # this commit count doesn't quite match the one we get
+        # from the python code which checks only files in sdist
+        commit_count=$(git rev-list ${tag}..HEAD -- . | wc -l)
+        version=${version}+${commit_count}.${gsh}
+        tag=${tag}+${gsh}
+        echo "${tag} has already been released for this repo!"
+        echo "running with ${tag} ${version} instead"
+        # FIXME need to make sure that we prevent releases in this case
+    fi
+
+    if [[ -n ${BRANCH} ]]; then
+        git checkout ${BRANCH}
+        git pull  # in the event that a local branch already exists
+    else
+        git checkout -f master  # just like clean -dfx this should wipe changes just in case
+    fi
+    #git checkout ${version}  # only if all tests are go and release is tagged
+
+    if [[ -n ${verspath} ]]; then  # apply local version after checkout
+        sed -i '/__version__/d' "${verspath}"  # handle bad semantics for find_version
+        echo "__version__ = '${version}'" >> "${verspath}"
+    fi
+
+    ## build release artifacts
+    PYTHONPATH=${PYTHONPATH}$(realpath .) python setup.py sdist $REST  # pass $REST along eg for --release
+    if [ $? -ne 0 ]; then
+        echo "setup.py failed"
+        popd > /dev/null
+        return 1
+    fi
+
+    # build the wheel from the sdist NOT from the repo
+    pushd dist/
+    tar xvzf ${packagename}-${version}.tar.gz
+    pushd ./${packagename}-${version}/
+    python setup.py bdist_wheel $@  # this should NOT be $REST, because we don't call it with --release (among other things)
+    mv dist/*.whl ../
+    popd  # from ./${packagename}-${version}/
+    rm -r ./${packagename}-${version}/
+    popd  # from dist/
+
+    ## testing
+    if [[ -z ${NO_TEST} ]]; then
+        unset PYTHONPATH
+        cp dist/${packagename//-/*}-${version}* "${TEST_PATH}"
+
+        pushd "${TEST_PATH}"
+        tar xvzf ${packagename}-${version}.tar.gz
+        if [ $? -ne 0 ]; then
+            echo "tar failed, probably due to a version mismatch"
+            popd > /dev/null
+            popd > /dev/null
+            return 1
+        fi
+        pushd ${packagename}-${version}
+
+        # pipenv --rm swears no venv exists, if no Pipfile
+        # exists even if adding a Pipfile will magically
+        # reveal that there was in fact a venv and thus that
+        # every other pipenv command knows about it but
+        # naieve little rm is kept in the dark, so we yell
+        # into the 'void' just to make sure
+        touch Pipfile
+        # FIXME need a way to do concurrent builds on different python versions
+        # running pipenv --rm breaks that
+        pipenv --rm  # clean any existing env
+        pipenv --python $PYTHON_VERSION  # for some reason 3.6 lingers in some envs
+        if [[ -n ${DEBUG} ]]; then
+            pipenv run pip install pudb ipdb  # install both for simplicity
+            NOCAP='-s'
+        fi
+
+        # local package server
+        local maybe_eiu=()
+        if [[ -n ${ARTIFACT_FOLDER} ]]; then
+            #pipenv run pip install requests-file || return $?  # sadly this does not work
+            #--extra-index-url "file://$(realpath ${ARTIFACT_FOLDER})" \
+
+            # run a local pip package server for integration testing
+
+            # it would be great to be able to pass 0 for the port to http.server
+            # but http.server doesn't flush stdout correctly until process exit
+            # so we use socket to get a random port and the use that and hope
+            # that some other process doesn't randomly grab it in between
+            # spoilers: some day it will
+            PORT=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
+            python -m http.server \
+                $PORT \
+                --bind 127.0.0.1 \
+                --directory "${ARTIFACT_FOLDER}" \
+                > /dev/null 2>&1 &  # if you need to debug redirect somewhere other than /dev/null
+            local TOKILL=$!
+            maybe_eiu+=(--extra-index-url "http://localhost:${PORT}")
+        fi
+
+        if [[ -n ${INTEGRATION_PACKAGES} ]]; then
+            echo $(color yellow)installing integration packages$(color off) ${INTEGRATION_PACKAGES[@]}
+            pipenv run pip install \
+                "${maybe_eiu[@]}" \
+                ${INTEGRATION_PACKAGES[@]} || return $?
+        fi
+
+        echo $(color yellow)installing$(color off) ${packagename}
+        pipenv run pip install \
+            "${maybe_eiu[@]}" \
+                -e .[test] || local CODE=$?
+
+        [[ -n $TOKILL ]] && kill $TOKILL
+        [[ -n $CODE && $CODE -ne 0 ]] && return $CODE
+
+        pipenv run pytest ${NOCAP} || local FAILURE=$?
+        # FIXME popd on failure ... can't && because we loose the next popd instead of exiting
+        # everything should pass if not, keep going until it does
+        popd  # from ${packagename}-${version}
+        popd  # from "${TEST_PATH}"
+    else
+        # treat unrun tests as if they failed
+        echo "$(color yellow)TESTS WERE NOT RUN$(color off)";
+        local FAILURE=1
+    fi
+
+    # background here to twine?
+    popd  # from "${folder}"
+
+    if [[ -n ${FAILURE} ]]; then
+        echo "$(color red)TESTS FAILED$(color off)";
+    fi
+
+    # deposit the build artifacts
+    if [[ -n ${ARTIFACT_FOLDER} ]]; then
+        if [ ! -d "${ARTIFACT_FOLDER}/${packagename}" ]; then
+            mkdir -p "${ARTIFACT_FOLDER}/${packagename}"
+        fi
+        cp "${folder}"/dist/${packagename//-/*}-${version}* "${ARTIFACT_FOLDER}/${packagename}"
+        echo "build artifacts have been copied to ${ARTIFACT_FOLDER}/${packagename}"
+    fi
+
+    # FIXME need multiple repos when packages share a repo
+    # basically a test for if [[ package == repo ]] or something
+    if [[ -n ${KEEP_ARTIFACTS} ]]; then
+        echo "$(color yellow)keeping artifacts$(color off)"
+    elif [[ -n ${CLONEFROM} || ${BRANCH} ]]; then
+        rm ${folder}/dist/${packagename//-/*}-${version}*
+        if [[ -n ${CLONEFROM} ]]; then
+            echo "$(color yellow)release build was cloned from a local source$(color off) ${CLONEFROM}"
+        else
+            echo "$(color yellow)release build was cloned from a specific branch$(color off) ${BRANCH}"
+        fi
+        echo "$(color ltyellow)removing the build artifacts from ${folder}/dist$(color off)"
+        echo "$(color ltyellow)to prevent release from a private source$(color off)"
+    fi
+}
+#+end_src
+** TODO ebuild testing
+9999 ebuild testing can happen before this, but in principle we
+can/should also test the release at this point probably in the latest
+docker package builder image after a sync? or even just have a
+dedicated python release testing image where all the deps are already
+present ...
+** TODO Tag release
+I think that this is the correct place to tag a release.
+Tag locally, then push the tag to GitHub.
+That will simplify the steps for doing a GitHub release.
+** Push release
+TODO check to make sure that twine is installed
+TODO make sure that we pop out of software releases if twine fails/does not exist
+TODO check to make sure that the target folder exists e.g. ~/files/software-releases
+#+NAME: &push-release
+#+begin_src bash :eval never :exports code :noweb yes
+function push-release () {
+    # example
+    # push-release folder   software_releases_path    packagename version
+    # push-release ontquery ~/nas/software-releases   ontquery    0.0.8
+    local folder=$1
+    shift
+    local software_releases_path=$1
+    shift
+    local packagename=$1
+    shift
+    local version=$1
+    shift
+
+    local PYTHON_VERSION=${PYTHON_VERSION:-<<&default-python-version()>>}
+    local repo=${folder%/*}  # XXX this more or less matches current conventions
+    if [[ ${folder} == *"/"* ]]; then
+        local clone_target=${repo}-${packagename}-${PYTHON_VERSION}  # prevent git lock collisions
+        folder="${clone_target}/${folder#*/}"
+    else
+        local clone_target=${repo}-${PYTHON_VERSION}
+        folder=${clone_target}
+    fi
+
+    # NOTE Always deploy from ${folder}/dist NOT from ARTIFACT_FOLDER
+    # This prevents accidental release of testing builds
+    rsync -a -v --ignore-existing ${folder}/dist/${packagename//-/*}-${version}{-,.tar}* ${software_releases_path}/ || return $?
+    pushd ${software_releases_path}
+    sha256sum ${packagename//-/*}-${version}{-,.tar}* >> hashes
+    twine upload --repository test ${packagename//-/*}-${version}{-,.tar}* || return $?
+    sleep 1
+    echo "test pypi hashes"
+    curl https://test.pypi.org/pypi/${packagename}/json | python -m json.tool | grep "\(sha256\|filename\)" | grep -B1 "${version}" | awk '{ gsub(/"/, "", $2); printf("%s ", $2) }' | sed 's/,\ /\n/g'
+    echo "local hashes"
+    grep "${packagename//-/.}-${version}" hashes
+    echo go inspect https://test.pypi.org/project/${packagename}
+    echo and go do the github release
+    popd
+}
+#+end_src
+** TODO GitHub release
+#+NAME: github-release
+#+begin_src python :eval never
+import requests
+from sparcur.utils
+#from sparcur.utils import mimetype  # FIXME or something like that
+# TODO api token
+
+suffix_to_mime = {
+    '.whl': 'application/octet-stream',  # technically zip ...
+    '.gz': 'application/gzip',
+    '.zip': 'application/zip',
+}
+
+
+class BadAssetSuffixError(Exception):
+    """ u wot m8 !? """
+
+
+def upload_assets(upload_base, version, *asset_paths):
+    for asset in asset_paths:
+        name = asset.name
+        requests.post()
+
+
+def github_release(org, repo, version, hashes, *assets, branch='master'):
+    """ hashes should be the output of sha256sum {packagename}-{version} """
+    # FIXME pyontutils violates some assumptions about 1:1 ness here
+
+    asset_paths = tuple(Path(a).resolve() for a in assets)
+    bads = [p.suffix  for p in asset_paths if p.suffix not in suffix_to_mime]
+    if bads:
+        raise BadAssetSuffixError(' '.join(bads))
+
+    base = 'https://api.github.com'
+    path = f'/repos/{org}/{repo}/releases'
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    json_data = {'tag_name': version,
+                 'target_commitish': branch,
+                 'name': version,
+                 'body': hashes,
+                 'draft': False,  # ok because we can add assets later
+                 'prerelease': False}
+
+    url = base + path
+    resp = requests.post(url, headers=headers, json=json_data)
+    rel_J = resp.json()
+    uu = rel_j['upload_url']
+
+    upload_base = uu.replace('{?name,label}', '')
+
+    upload_assets(upload_base, *asset_paths)
+#+end_src
+
+** Final release
+#+NAME: &final-release
+#+CAPTION: on the release host final upload from previous block
+#+CAPTION: you will need to enter your password
+#+begin_src bash :eval never :exports code
+function final-release () {
+    # example
+    # final-release software_releases_path    packagename version
+    # final-release ~/nas/software-releases   ontquery    0.0.8
+    local software_releases_path=$1
+    shift
+    local packagename=$1
+    shift
+    local version=$1
+    shift
+
+    pushd ${software_releases_path}
+
+    twine upload --repository pypi ${packagename/-/*}-${version}{-,.tar}* || return $?  # enter password here
+
+    sleep 1
+    echo "pypi hashes"
+    curl https://pypi.org/pypi/${packagename}/json | python -m json.tool | grep "\(sha256\|filename\)" | grep -B1 "${version}" | awk '{ gsub(/"/, "", $2); printf("%s ", $2) }' | sed 's/,\ /\n/g'
+    echo "local hashes"
+    grep "${packagename}-${version}" hashes
+    echo go inspect https://pypi.org/project/${packagename}
+
+    popd
+}
+#+end_src
+** TODO Next version                                               :noexport:
+#+NAME: release-next
+#+HEADER: :shebang "#!/usr/bin/env python3"
+#+begin_src python :tangle ./../bin/release-next :tangle-mode (or #o755)
+"""python package release workflows
+
+Usage:
+    release-next [options]
+    release-next info [options] [<path>...]
+    release-next bump [current dev pre a b rc release micro minor major post local] [options] [<path>...]
+
+Options:
+    -p --pretend            do a dry run to see what would be done
+    -c --component=PHASE    which component to bump
+    -t --test               run tests
+    -d --debug              debug mode
+    -h --help               show this
+    -n --no-network         no network calls
+       --auth               do auth github
+"""
+
+import augpathlib as aug
+import clifn
+
+
+def main():
+    import sys
+    from pprint import pprint
+    options, *ad = Options.setup(__doc__, version='release 0.0.0')
+    main = Main(options)
+    if main.options.debug:
+        print(main.options)
+
+    if main.options.no_network:
+        aug.PackagePath._github_json = None
+        aug.PackagePath._pypi_json = None
+    elif main.options.auth:
+        aug.PackagePath._github_do_auth = True
+
+    out = main()
+
+    def wnv(v, n):
+        try:
+            return next_version(v, n)
+        except Exception as e:
+            return 'ERROR', v, n, e
+
+    # TODO need an auto version bump and commit command
+    if options.test:
+        spn = aug.PackagePath('~/git/rdflib').expanduser()
+        asdf = sorted([parse_version(_) for _ in spn.pypi_json['releases'].keys()])
+        pprint(asdf)
+        pprint([wnv(v, 'current') for v in asdf])
+        pprint([wnv(v, 'dev') for v in asdf])  # FIXME dev and pre implicitly bump to release but some may need to spec
+        pprint([wnv(v, 'pre') for v in asdf])
+        pprint([wnv(v, 'a') for v in asdf])
+        pprint([wnv(v, 'b') for v in asdf])
+        pprint([wnv(v, 'rc') for v in asdf])
+        pprint([wnv(v, 'release') for v in asdf])
+        pprint([wnv(v, 'micro') for v in asdf])
+        pprint([wnv(v, 'minor') for v in asdf])
+        pprint([wnv(v, 'major') for v in asdf])
+        pprint([wnv(v, 'post') for v in asdf])
+        pprint([wnv(v, 'local') for v in asdf])
+
+    #breakpoint()
+    return out
+
+
+class Options(clifn.Options):
+
+    _phases = ('current', 'dev', 'pre', 'a', 'b', 'rc',
+               'release', 'micro', 'minor', 'major', 'post', 'local')
+
+    @property
+    def paths(self):
+        if self._args['<path>']:
+            # FIXME without the .resolve() weird bugs appear
+            return [aug.PackagePath(p).resolve() for p in self._args['<path>']]
+        else:
+            return [aug.PackagePath.cwd()]
+
+    @property
+    def next_phase(self):
+        for phase in self._phases:
+            if phase in self._args and self._args[phase]:
+                return phase
+
+        return 'current'
+
+    @property
+    def rel_comp(self):
+        if self.component:
+            if self.component not in self._phases:
+                raise ValueError(f'Bad phase {self.component}')
+
+            return self.component
+        else:
+            return 'release'
+
+
+class Main(clifn.Dispatcher):
+    def info(self):
+        for sp in self.options.paths:
+            cslr = sp.commits_since_last_release()
+            print('path                 ', sp)
+            print('package              ', sp.arg_packagename)
+            print('commits since release', len(cslr))
+            print('next                 ', sp.version_next(self.options.next_phase, self.options.rel_comp))
+            print('repo module version  ', sp.version_repo)  # FIXME super confusing when the change has not been committed
+            print('latest release pypi  ', sp.version_latest_pypi)
+            print('latest release github', sp.version_latest_github)
+            print('latest repo tag      ', sp.version_tag)  # should not update until after github release?
+            print(sp.command(self.options.next_phase, self.options.rel_comp))
+            print('\n'.join(cslr))
+            print()
+
+    def bump(self):
+        for sp in self.options.paths:
+            sp.bump(
+                next_phase=self.options.next_phase,
+                rel_comp=self.options.rel_comp,
+                pretend=self.options.pretend,
+            )
+
+
+if __name__ == '__main__':
+    main()
+#+end_src
+
+#+NAME: release-next-old
+#+begin_src bash :eval never :exports neither
+release-next () {
+    # example
+    # release-next path/to/folder/module/__init__.py
+    # vs
+    # release-next path/to/folder/module
+    # vs
+    # release-next path/to/folder
+
+    # behavior should probably be to search recursively up until we find a setup.py file ...
+    WORKING_DIR=$(git rev-parse --show-toplevel)
+    MODULE_PATH=$(dirname INIT_PATH)
+    FOLDER=$(dirname MODULE_PATH)
+    SETUP_PATH="${FOLDER}/setup.py"
+    ORG=
+    # get folder package name
+    # get version
+    # find setup.py
+}
+#+end_src
+
+** Utils
+#+name: &are-you-sure
+#+caption: also defined in [[file:../nifstd/scigraph/README.org::&are-you-sure][&are-you-sure]]
+#+begin_src bash :eval never
+function are-you-sure () {
+    read -p "Are you sure you want to push the final release? yes/N " -n 1 choice
+    # ((((
+    case "${choice}" in
+        yes|YES) echo ;;
+        n|N) echo; echo "Not pushing final release."; return 1;;
+        '?') echo; echo "$(set -o posix; set | grep -v '^_')"; return 1;;
+        ,*)   echo; echo "Not pushing final release."; return 1;;
+    esac
+    echo "Pushing final release ..."
+}
+#+end_src
+* Examples
+These are examples. They may be out of date and already finished.
+#+CAPTION: pyontutils examples
+#+begin_src bash :eval never
+build-release tgbugs pyontutils pyontutils/librdflib librdflib 0.0.1
+push-release pyontutils/librdflib ~/nas/software-releases librdflib 0.0.1
+final-release ~/nas/software-releases librdflib 0.0.1
+
+build-release tgbugs pyontutils pyontutils/htmlfn htmlfn 0.0.1
+push-release pyontutils/htmlfn ~/nas/software-releases htmlfn 0.0.1
+final-release ~/nas/software-releases htmlfn 0.0.1
+
+build-release tgbugs pyontutils pyontutils/ttlser ttlser 1.0.0
+push-release pyontutils/ttlser ~/nas/software-releases ttlser 1.0.0
+final-release ~/nas/software-releases ttlser 1.0.0
+
+build-release tgbugs pyontutils pyontutils pyontutils 0.1.2
+push-release pyontutils ~/nas/software-releases pyontutils 0.1.2
+final-release ~/nas/software-releases pyontutils 0.1.2
+
+NIFSTD_CHECKOUT_OK=1 build-release tgbugs pyontutils pyontutils/neurondm neurondm 0.1.0
+push-release pyontutils/neurondm ~/nas/software-releases neurondm 0.1.0
+final-release ~/nas/software-releases neurondm 0.1.0
+
+build-release tgbugs pyontutils pyontutils/nifstd nifstd-tools 0.0.1
+#+end_src
+
+* pyontutils full repo release testing
+NOTE if you reuse a repo run =git clean -dfx= to clear all untracked files.
+#+begin_src bash :eval never
+pushd /tmp
+git clone https://github.com/tgbugs/pyontutils.git
+pushd pyontutils
+python setup.py sdist; cp dist/pyontutils* /tmp/release-testing
+for f in {librdflib,htmlfn,ttlser,neurondm,nifstd}; do pushd $f; python setup.py sdist; cp dist/$f* /tmp/release-testing/; popd; done
+pushd /tmp/release-testing
+find -name "*.tar.gz" -exec tar xvzf {} \;
+for f in {librdflib,htmlfn,ttlser,pyontutils,neurondm,nifstd}; do pushd $f*/; pip install -e .[test]; python setup.py test; popd; done
+#+end_src
+
+From inside /tmp/${repo}
+#+NAME: bdist_wheel-from-sdist
+#+CAPTION: build wheels from sdist never from repo directly
+#+begin_src bash :eval never
+pushd dist/
+tar xvzf pyontutils*.tar.gz
+pushd pyontutils*/
+python setup.py bdist_wheel
+mv dist/*.whl ../
+popd
+rm -r ./pyontutils*/
+popd
+
+for f in {librdflib,htmlfn,ttlser,neurondm,nifstd}; do
+pushd $f/dist
+tar xvzf $f*.tar.gz
+pushd $f*/
+python setup.py bdist_wheel
+mv dist/*.whl ../
+popd
+rm -r ./$f*/
+popd
+done
+#+end_src
+
+* Bootstrap :noexport:
+#+name: orgstrap
+#+begin_src elisp :results none :exports none :lexical yes
+(when (and noninteractive (member "tangle" argv))
+  (let (enable-local-eval)
+    ;; this pattern is required when tangling to avoid infinite loops
+    (revert-buffer nil t nil)
+    (setq-local find-file-literally nil))
+  (setq-local org-confirm-babel-evaluate (lambda (l b) (not (string= b "(or #o755)"))))
+  (org-babel-tangle))
+#+end_src
+
+** Local Variables
+# close powershell comment #>
+# Local Variables:
+# eval: (progn (setq-local orgstrap-min-org-version "8.2.10") (let ((a (org-version)) (n orgstrap-min-org-version)) (or (fboundp #'orgstrap--confirm-eval) (not n) (string< n a) (string= n a) (error "Your Org is too old! %s < %s" a n))) (defun orgstrap-norm-func--dprp-1-0 (body) (let ((p (read (concat "(progn\n" body "\n)"))) (m '(defun defun-local defmacro defvar defvar-local defconst defcustom)) print-quoted print-length print-level) (cl-labels ((f (b) (cl-loop for e in b when (listp e) do (or (and (memq (car e) m) (let ((n (nthcdr 4 e))) (and (stringp (nth 3 e)) (or (cl-subseq m 3) n) (f n) (or (setcdr (cddr e) n) t)))) (f e))) p)) (prin1-to-string (f p))))) (unless (boundp 'orgstrap-norm-func) (defvar-local orgstrap-norm-func orgstrap-norm-func-name)) (defun orgstrap-norm-embd (body) (funcall orgstrap-norm-func body)) (unless (fboundp #'orgstrap-norm) (defalias 'orgstrap-norm #'orgstrap-norm-embd)) (defun orgstrap--confirm-eval-minimal (lang body) (not (and (member lang '("elisp" "emacs-lisp")) (eq orgstrap-block-checksum (intern (secure-hash orgstrap-cypher (orgstrap-norm body))))))) (unless (fboundp #'orgstrap--confirm-eval) (defalias 'orgstrap--confirm-eval #'orgstrap--confirm-eval-minimal)) (let (enable-local-eval) (vc-find-file-hook)) (let ((ocbe org-confirm-babel-evaluate) (obs (org-babel-find-named-block "orgstrap"))) (if obs (unwind-protect (save-excursion (setq-local orgstrap-norm-func orgstrap-norm-func-name) (setq-local org-confirm-babel-evaluate #'orgstrap--confirm-eval) (goto-char obs) (org-babel-execute-src-block)) (when (eq org-confirm-babel-evaluate #'orgstrap--confirm-eval) (setq-local org-confirm-babel-evaluate ocbe)) (org-set-visibility-according-to-property)) (warn "No orgstrap block."))))
+# End:

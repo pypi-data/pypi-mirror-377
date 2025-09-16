@@ -1,0 +1,113 @@
+@prefix ilxtr: <http://uri.interlex.org/tgbugs/uris/readable/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+_:dupe ilxtr:dupe _:derp .
+
+
+ilxtr:b0 rdf:first ilxtr:x ;
+    rdf:rest
+    ilxtr:b1 .
+
+ilxtr:b1 rdf:first ilxtr:y ;
+    rdf:rest
+    ilxtr:b2 .
+
+ilxtr:b2 rdf:first ilxtr:z ;
+    rdf:rest
+    ilxtr:b3 .
+
+ilxtr:b3 rdf:first ilxtr:e ;
+    rdf:rest
+    ilxtr:b1 .
+
+
+_:blank a ilxtr:p .
+
+
+_:blank0 a ilxtr:q ;
+    rdf:rest _:blank0 .
+
+
+_:blank1 a ilxtr:r ;
+    rdf:rest _:blank2 .
+
+_:blank2 a ilxtr:s ;
+    rdf:rest _:blank3 .
+
+_:blank3 a ilxtr:t ;
+    rdf:rest _:blank1 .
+
+
+_:b1 a ilxtr:a ;
+    rdf:rest _:b2 .
+
+_:b2 a ilxtr:a ;
+    rdf:rest _:b3 .
+
+_:b3 a ilxtr:a ;
+    rdf:rest _:b1, _:b4 .
+
+_:b4 a ilxtr:a ;
+    rdf:rest _:b2 .
+
+_:x0 ilxtr:p _:x1 .
+_:x1 ilxtr:z _:x2 .
+_:x2 ilxtr:p _:x3 .
+_:x3 ilxtr:p _:x4 .
+_:x4 ilxtr:z _:x0 .
+
+_:y0 ilxtr:c _:y1 .
+_:y1 ilxtr:d _:y2 .
+_:y2 ilxtr:c _:y3 .
+_:y3 ilxtr:c _:y4 .
+_:y4 ilxtr:f _:y5 .
+
+_:a1 ilxtr:d _:a2 .
+_:a2 ilxtr:c _:a3, _:a4 .
+_:a3 ilxtr:c _:a4 .
+_:a4 ilxtr:f _:a5 .
+_:a5 ilxtr:f _:a6, _:a7 .
+_:a6 ilxtr:f _:a2 .
+_:a7 ilxtr:f _:a8 .
+_:a8 ilxtr:f _:a9 .
+_:a9 ilxtr:f _:a5, _:a3 .
+
+
+# a nasty double cyclical graph with multiple triples not in the cycles
+#    ______
+#   / /--v v
+# a>b>c<>d<-e
+#   ^ ^--/ /
+#    \____/
+
+_:_a ilxtr:1 _:_b .
+_:_b ilxtr:2 _:_c .
+_:_c ilxtr:3 _:_d .
+_:_d ilxtr:4 _:_c .
+_:_b ilxtr:5 _:_e .
+_:_e ilxtr:6 _:_b .
+_:_e ilxtr:7 _:_d .
+
+# a connected head that is also the best cut point
+
+ilxtr:evil ilxtr:p _:e_1 .
+_:e_1 ilxtr:1 _:e_2 .
+_:e_1 ilxtr:p "a" .
+_:e_2 ilxtr:2 _:e_3 .
+_:e_3 ilxtr:3 _:e_1 .
+
+ilxtr:evil-1 ilxtr:1 _:evil-1 .
+ilxtr:evil-2 ilxtr:2 _:evil-1 .
+_:evil-1 ilxtr:3 "make sure that the id for _:evil-1 is also used in the calculation of the id of the whole graph" .
+
+# multiple nodes in the cycle are connected heads
+
+ilxtr:evil-3 ilxtr:n _:evil-3 .
+ilxtr:evil-3 ilxtr:m _:evil-5 .
+_:evil-3 ilxtr:n _:evil-4 .
+_:evil-4 ilxtr:n _:evil-5 .
+_:evil-5 ilxtr:n _:evil-6 .
+_:evil-6 ilxtr:n _:evil-3 .
+
+
+_:dupe ilxtr:dupe _:derp .

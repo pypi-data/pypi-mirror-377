@@ -1,0 +1,56 @@
+# Este bloque le dice a Python CÓMO construir tu paquete.
+# Generalmente no necesitas tocarlo.
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# Este bloque contiene toda la información SOBRE tu paquete.
+[project]
+# --- Información básica ---
+name = "sbc-model"
+version = "0.1.1"
+authors = [
+  { name="Pablo Eduardo Chavez Mercado", email="pablo.chavez1992@gmail.com" },
+]
+description = "Un clasificador de Machine Learning que implementa un ensamblaje de Stacking con modelos de Boosting."
+
+# --- Archivos importantes ---
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+
+# --- Palabras clave para búsqueda en PyPI ---
+keywords = ["stacking", "boosting", "classifier", "ensemble", "xgboost", "machine-learning"]
+
+# --- Clasificadores oficiales de PyPI ---
+# Ayudan a la gente a encontrar tu paquete. Puedes ver la lista completa en pypi.org
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+# --- Dependencias (¡CRÍTICO!) ---
+# Estas son las librerías que tu código necesita para funcionar.
+# pip las instalará automáticamente junto con tu paquete.
+dependencies = [
+    "numpy",
+    "scikit-learn",
+    "xgboost",
+    "lightgbm",
+    "catboost",
+    "pandas",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sbc_model*"]

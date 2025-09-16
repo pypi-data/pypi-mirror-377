@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: sbc-model
+Version: 0.1.1
+Summary: Un clasificador de Machine Learning que implementa un ensamblaje de Stacking con modelos de Boosting.
+Author-email: Pablo Eduardo Chavez Mercado <pablo.chavez1992@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Pablo Eduardo Chavez Mercado
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Keywords: stacking,boosting,classifier,ensemble,xgboost,machine-learning
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: xgboost
+Requires-Dist: lightgbm
+Requires-Dist: catboost
+Requires-Dist: pandas
+Dynamic: license-file
+
+# sbc-model 🤖
+
+[![PyPI version](https://badge.fury.io/py/sbc-model.svg)](https://badge.fury.io/py/sbc-model)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Un clasificador de Machine Learning fácil de usar que implementa un ensamblaje de Stacking con modelos de Boosting (XGBoost, LightGBM, CatBoost).
+
+## ¿Qué es sbc-model? 🤔
+
+`sbc-model` es una librería de alto nivel diseñada para simplificar el proceso de creación de modelos de ensamblaje robustos. En lugar de configurar manualmente la validación cruzada y el meta-modelo, `sbc-model` lo encapsula en una sola clase, siguiendo las mejores prácticas de scikit-learn.
+
+El nombre **SBC** significa **S**tacking **B**oosting **C**lassifier.
+
+---
+
+## Características Principales ✨
+
+* **Modelos Potentes:** Utiliza XGBoost, LightGBM y CatBoost como modelos base, tres de los algoritmos más potentes para datos tabulares.
+* **Stacking Automatizado:** Gestiona automáticamente el proceso de validación cruzada para generar predicciones "out-of-fold" y entrenar un meta-modelo.
+* **Fácil de Usar:** Interfaz simple inspirada en scikit-learn. Solo necesitas instanciar la clase y llamar a `.fit_predict_proba()`.
+* **Reproducible:** Controla la aleatoriedad con una `seed` para asegurar que tus resultados sean consistentes.
+
+---
+
+## Instalación 📦
+
+Puedes instalar `sbc-model` directamente desde PyPI:
+
+```bash
+pip install sbc-model

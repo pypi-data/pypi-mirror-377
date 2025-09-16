@@ -1,0 +1,163 @@
+Metadata-Version: 2.4
+Name: agentic-chatbot
+Version: 2.0.1
+Summary: Enterprise-grade AI agents for enhanced chatbot capabilities with RAG, security, and multi-user support
+Home-page: https://github.com/deuex-solutions/Agentic-Boilerplate
+Author: Dhruv Yadav
+Author-email: Dhruv Yadav <dhruv.y@deuexsolutions.com>
+License: MIT
+Project-URL: Homepage, https://github.com/deuex-solutions/Agentic-Boilerplate
+Project-URL: Documentation, https://github.com/deuex-solutions/Agentic-Boilerplate#readme
+Project-URL: Repository, https://github.com/deuex-solutions/Agentic-Boilerplate
+Project-URL: Bug Tracker, https://github.com/deuex-solutions/Agentic-Boilerplate/issues
+Keywords: ai,agents,chatbot,security,context,model-selection,openai,gpt,llm,machine-learning,nlp,conversational-ai,rag,retrieval-augmented-generation,enterprise,multi-user,conversation-memory,vector-store,chromadb,redis,postgresql,anthropic,claude,google-gemini,ollama,langchain,streaming,async,tools,function-calling,monitoring,analytics
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Security
+Classifier: Topic :: Database
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit>=1.49.0
+Requires-Dist: openai>=1.102.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: langchain>=0.3.27
+Requires-Dist: langchain-community>=0.3.29
+Requires-Dist: langchain-openai>=0.3.32
+Requires-Dist: langchain-anthropic>=0.3.20
+Requires-Dist: langchain-google-genai>=2.0.10
+Requires-Dist: transformers>=4.56.0
+Requires-Dist: sentence-transformers>=5.1.0
+Requires-Dist: chromadb>=1.0.20
+Requires-Dist: faiss-cpu>=1.12.0
+Requires-Dist: langchain-chroma>=0.2.5
+Requires-Dist: redis>=6.4.0
+Requires-Dist: pymongo>=4.15.0
+Requires-Dist: psycopg2-binary>=2.9.10
+Requires-Dist: anthropic>=0.67.0
+Requires-Dist: google-generativeai>=0.8.5
+Requires-Dist: wikipedia>=1.4.0
+Requires-Dist: google-api-python-client>=2.181.0
+Requires-Dist: google-auth>=2.40.3
+Requires-Dist: pytest>=7.0.0
+Requires-Dist: pytest-asyncio>=0.21.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Provides-Extra: demo
+Requires-Dist: streamlit>=1.28.0; extra == "demo"
+Provides-Extra: docs
+Requires-Dist: sphinx>=6.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "docs"
+Requires-Dist: myst-parser>=1.0.0; extra == "docs"
+Provides-Extra: enterprise
+Requires-Dist: redis>=6.4.0; extra == "enterprise"
+Requires-Dist: pymongo>=4.15.0; extra == "enterprise"
+Requires-Dist: psycopg2-binary>=2.9.10; extra == "enterprise"
+Provides-Extra: rag
+Requires-Dist: sentence-transformers>=5.1.0; extra == "rag"
+Requires-Dist: chromadb>=1.0.20; extra == "rag"
+Requires-Dist: faiss-cpu>=1.12.0; extra == "rag"
+Requires-Dist: langchain-chroma>=0.2.5; extra == "rag"
+Provides-Extra: tools
+Requires-Dist: wikipedia>=1.4.0; extra == "tools"
+Requires-Dist: google-api-python-client>=2.181.0; extra == "tools"
+Requires-Dist: google-auth>=2.40.3; extra == "tools"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# 🤖 AI Agents for Enhanced Chatbots
+
+**Enterprise-grade AI agents that work together to create smarter, safer, and more efficient chatbots with conversation memory and advanced features.**
+
+## 🎯 Quick Start
+
+```python
+from agentic_chatbot import create_openai_agent
+
+# Basic agent with tools
+agent = create_openai_agent(enable_tools=True)
+response = agent.invoke("user_123", "What's the latest news about AI?")
+
+# Full-featured agent with RAG
+agent = create_openai_agent(enable_rag=True, enable_tools=True)
+response = agent.invoke("user_123", "Tell me about quantum computing")
+```
+
+## ✨ Key Features
+
+- **🛡️ Security Agent** - Detects malicious content and security threats
+- **🧠 Context Agent** - Analyzes query relevance and conversation flow  
+- **🎯 Model Selection Agent** - Intelligently selects optimal LLM models
+- **💬 Advanced Conversation Agent** - Multi-user memory with RAG, tools, and monitoring
+
+## 🚀 Core Capabilities
+
+- **Multi-LLM Support**: OpenAI, Anthropic, Google, Ollama
+- **RAG Integration**: Document retrieval with ChromaDB and FAISS
+- **Tool Integration**: Google Search, Wikipedia, custom tools
+- **Multi-User Sessions**: Separate conversation history per user
+- **Enterprise Storage**: Redis, MongoDB, PostgreSQL backends
+- **Comprehensive Monitoring**: Token tracking, cost estimation, analytics
+
+## 📦 Installation
+
+```bash
+pip install agentic-chatbot
+```
+
+## 🔧 Optional Features
+
+```bash
+# RAG capabilities
+pip install agentic-chatbot[rag]
+
+# Tool integration  
+pip install agentic-chatbot[tools]
+
+# Enterprise features
+pip install agentic-chatbot[enterprise]
+
+# Development tools
+pip install agentic-chatbot[dev]
+```
+
+## 📚 Documentation
+
+- **Full Documentation**: [GitHub Repository](https://github.com/deuex-solutions/Agentic-Boilerplate)
+- **Examples**: See `examples/` directory
+- **Advanced Guide**: `COMPREHENSIVE_AGENT_GUIDE.md`
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](https://github.com/deuex-solutions/Agentic-Boilerplate) for details.
+
+## 📄 License
+
+MIT License - see [LICENSE](https://github.com/deuex-solutions/Agentic-Boilerplate/blob/main/LICENSE) file for details.
+
+---
+
+**Ready to build enterprise-grade AI chatbots?** 🚀
+
+Made with ❤️ by the AI Agents Team

@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qubesync"
+version = "0.1.1"
+dependencies = ["requests"]
+description = "A Python library for QuickBooks Desktop / Enterprise integration via QubeSync API with intuitive DSL for building QBXML requests."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "QubeSync", email = "support@qubesync.com"}
+]
+keywords = ["quickbooks", "qbxml", "accounting", "integration", "api", "dsl"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License", 
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/qubeintegrations/qube_sync_py"
+Documentation = "https://docs.qubesync.com"
+Repository = "https://github.com/qubeintegrations/qube_sync_py"
+Issues = "https://github.com/qubeintegrations/qube_sync_py/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

@@ -1,0 +1,96 @@
+# VOEVENT-TOOLS-PKG
+Python module that generates VOEvent XML from user-supplied data.
+
+## Requirements
+* Python 3.0.0+
+* Pandas 2.3.0+
+* Numpy 2.3.0+
+
+## Installation and Setup
+
+(Recommended): Set up a python virtual environment
+```
+source .venv/bin/activate
+```
+Run the following commands to install the related dependencies, and then the package itself.
+```
+pip install pandas
+pip install numpy
+pip install voevent-tools-pkg
+```
+If you downloaded the package from source, you can install the package locally with the following command
+```
+pip install -e .
+```
+Modify the config.ini file to configure the XML output directory. You can also change the voevent spec file location, which by default is https://www.lmsal.com/hek/software/herconfig/VOEvent_Spec.txt
+
+## Supported Event Types and Attributes
+
+The full list of event types and coresponding attributes can be found here: https://www.lmsal.com/hek/VOEvent_Spec.html
+
+Current HEK entries does NOT support the latest VOEvent 2.0 schema.
+
+## How to use
+
+Please refer to the included file **demo_FL.py**, which contains an example script on how to use voevent-tools-pkg.
+
+First, import VOEvent-tools
+```
+from hek_voevent_tools import parse_features_file, create_event, export_event, load_config
+```
+Load from config.ini
+```
+config = load_config()
+VOEVENT_SPEC = config['DEFAULT'].get('specs_location')
+OUTPUT_PATH = config['DEFAULT'].get('output_path')
+```
+Convert the VOEvent_Spec file into a Pandas dataframe
+```
+csv_dataframe = parse_features_file(VOEVENT_SPEC)
+```
+Create the VOEvent object, in which you also provide the event type as a two letter abbreviation as listed in the specs file.
+```
+voevent = create_event(csv_dataframe, EVENT_TYPE='FL')
+```
+Assigned required and optional parameters
+```
+voevent.required['OBS_Observatory'] = 'SDO'
+voevent.required['OBS_Instrument'] = 'AIA'
+...
+voevent.optional['FL_PeakFlux'] = "674.229"
+```
+Add citations
+```
+voevent.citation = {
+  'action': 'supersedes',
+  'description': 'Closing of open event'
+}
+```
+Add a reference
+```
+voevent.reference.append({
+  'name': 'Publication',
+  'link': 'http://www.harvard.edu/',
+  'type': 'html'
+})
+```
+Display all information from a VOEvent object, including what is required or optional.
+```
+voevent.help()
+```
+Export the VOEvent object as an XML file. By default, the file location is defined at output_path in config.ini.
+```
+export_event(csv_dataframe, voevent, OUTPUT_PATH+'example.xml')
+```
+
+## Running the unit tests
+
+(Recommended): Install and run pytests
+```
+pip install pytest
+pytest -v
+```
+You can also run the unit tests with Python's built-in **unittest**.
+```
+python -m unittest discover -s tests
+```

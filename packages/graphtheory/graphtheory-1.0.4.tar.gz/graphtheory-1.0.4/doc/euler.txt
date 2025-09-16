@@ -1,0 +1,27 @@
+EULERIAN CYCLES
+----------------------------------------------------------------------
+from graphtheory.structures.edges import Edge
+from graphtheory.structures.graphs import Graph
+from graphtheory.eulerian.fleury import FleuryDFS            # O(n*m)
+from graphtheory.eulerian.fleury import FleuryDFSWithEdges   # O(n*m)
+from graphtheory.eulerian.fleury import FleuryBFS            # O(n*m)
+from graphtheory.eulerian.fleury import FleuryBFSWithEdges   # O(n*m)
+from graphtheory.eulerian.euler import EulerianCycleDFS      # O(m)
+from graphtheory.eulerian.euler import EulerianCycleDFSWithEdges   # O(m)
+from graphtheory.eulerian.hierholzer import Hierholzer             # O(m)
+from graphtheory.eulerian.hierholzer import HierholzerWithEdges    # O(m)
+
+G = Graph()
+# Add nodes and edges here.
+# algorithm = FleuryDFS(G)
+# algorithm = FleuryDFSWithEdges(G)
+# algorithm = FleuryBFS(G)
+# algorithm = FleuryBFSWithEdges(G)
+# algorithm = EulerianCycleDFS(G)
+# algorithm = EulerianCycleDFSWithEdges(G)
+# algorithm = Hierholzer(G)
+algorithm = HierholzerWithEdges(G)
+algorithm.run()
+print ( algorithm.eulerian_cycle )
+----------------------------------------------------------------------
+EOF

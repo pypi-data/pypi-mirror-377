@@ -1,0 +1,18 @@
+[project]
+name = "gui-dictionary"
+version = "0.1.1"
+description = "Dictionary App"
+requires-python = ">=3.13"
+dependencies = ["requests"]
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://summer.hackclub.com/projects/13295"
+Source = "https://github.com/Dekoder-py/gui_dictionary"
+
+[project.scripts]
+gui-dictionary = "gui_dictionary.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

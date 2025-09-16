@@ -1,0 +1,21 @@
+// THIS FILE IS GENERATED. DO NOT EDIT.
+
+{% if response_code %}
+export type {{ type_name }} =
+    {%- for model in models %}
+        {% if models|length > 1 %}
+        |
+        {% endif %}
+        {% include 'typescript.object.jinja2' %}
+    {%- endfor %}
+    ;
+{% else %}
+export type {{ type_name }} =
+    {%- for model in models %}
+        {% if models|length > 1 %}
+        |
+        {% endif %}
+        {% include 'typescript.object.jinja2' %}
+    {%- endfor %}
+    ;
+{% endif %}

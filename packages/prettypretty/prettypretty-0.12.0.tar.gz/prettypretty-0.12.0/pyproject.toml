@@ -1,0 +1,75 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+
+[project]
+name = "prettypretty"
+description = "Applying 2020s color science to 1970s terminal user interfaces"
+keywords = ["awesome", "terminal", "color", "ANSI escape code", "terminal user interface"]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache 2.0"}
+authors = [{name = "Robert Grimm", email="rgrimm@alum.mit.edu"}]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Rust",
+    "Topic :: Adaptive Technologies",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: User Interfaces",
+    "Topic :: System :: Shells",
+    "Topic :: Terminals",
+    "Topic :: Terminals :: Terminal Emulators/X Terminals",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "sphinx",
+    "sphinxcontrib-autoprogram",
+    "sphinx-copybutton",
+    "sphinx_design",
+    "sphinx-rtd-theme",
+]
+viz = [
+    "matplotlib",
+    "vedo",
+]
+
+
+[project.urls]
+repository = "https://github.com/apparebit/prettypretty"
+package = "https://pypi.org/project/prettypretty/"
+documentation= "https://apparebit.github.io/prettypretty/"
+
+
+[tool.maturin]
+python-source = "."
+python-packages = ["prettypretty"]
+# Keep consistent with name of module function in src/lib.rs:
+module-name = "prettypretty.color"
+bindings = "pyo3"
+no-default-features = true
+features = ["f64", "gamut", "pyffi"]
+manifest-path = "crates/prettypretty/Cargo.toml"
+
+
+[tool.pyright]
+include = ["prettypretty/**/*.py", "prettypretty/**/*.pyi", "test/*.py", "runtest.py"]
+typeCheckingMode = "strict"
+pythonVersion = "3.11"

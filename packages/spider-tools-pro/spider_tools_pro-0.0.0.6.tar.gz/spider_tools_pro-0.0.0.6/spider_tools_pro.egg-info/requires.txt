@@ -1,0 +1,37 @@
+requests
+lxml
+loguru
+urllib3
+curl_cffi
+aiomysql
+aiohttp
+click
+html2text
+oss2
+pymysql
+DBUtils
+beautifulsoup4
+fake-useragent
+rarfile
+pandas
+ftfy
+redis
+ragflow-sdk
+
+[:platform_system != "Windows"]
+python-magic
+
+[:platform_system == "Windows"]
+python-magic-bin
+
+[dev]
+pytest
+pytest-cov
+black
+isort
+flake8
+mypy
+
+[docs]
+sphinx
+sphinx-rtd-theme

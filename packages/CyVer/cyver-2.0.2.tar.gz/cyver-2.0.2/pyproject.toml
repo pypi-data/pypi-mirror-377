@@ -1,0 +1,36 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "CyVer"
+version = "2.0.2"
+description = "Cypher queries Validators against a given Knowledge Graph schema, in terms of syntax, schema validity, and property access."
+readme = "README.md"
+authors = [{ name = "Ioanna Mandilara", email = "ioanna_mandilara@yahoo.gr" },
+        { name = "Christina-Maria Androna", email = "androna.xm@gmail.com" }]
+dependencies = [
+    "regex>=2024.11.6",
+    "neo4j>=5.27",
+    "pandas>=2.2.3"
+]
+requires-python = ">=3.10"
+classifiers=[
+        'Programming Language :: Python :: 3',
+        'Operating System :: OS Independent',
+]
+license = { file = "LICENSE" }  # Reference the LICENSE file here
+
+
+[tool.setuptools]
+packages = ["CyVer","CyVer.validators"]
+
+[project.urls]
+Homepage = "https://gitlab.com/netmode/CyVer"
+Documentation = "https://gitlab.com/netmode/CyVer/-/wikis/CyVer-Documentation"
+Changelog = "https://gitlab.com/netmode/CyVer/-/blob/main/CHANGELOG.md"
+Issues = "https://gitlab.com/netmode/CyVer/-/issues"
+Repository = "https://gitlab.com/netmode/CyVer"

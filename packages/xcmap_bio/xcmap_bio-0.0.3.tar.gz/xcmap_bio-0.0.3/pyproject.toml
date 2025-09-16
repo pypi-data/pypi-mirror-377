@@ -1,0 +1,25 @@
+[project]
+name = "xcmap_bio"
+version = "0.0.3"
+description = "Biological tools"
+authors = [
+    {name = "zhangyang",email = "bryanyo1017@126.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "xcmap (>=0.1.5,<0.2.0)",
+    "pandas (>=2.3.2,<3.0.0)",
+    "pysam (>=0.23.3,<0.24.0)",
+    "pyfaidx (>=0.9.0.3,<0.10.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "xcmap_bio", from = "src"}]
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

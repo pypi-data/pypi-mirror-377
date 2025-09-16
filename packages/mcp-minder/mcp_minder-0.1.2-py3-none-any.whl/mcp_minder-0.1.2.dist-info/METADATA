@@ -1,0 +1,677 @@
+Metadata-Version: 2.4
+Name: mcp_minder
+Version: 0.1.2
+Summary: MCP服务器管理框架 - 用于管理和监控MCP (Model Context Protocol) 服务器
+Author-email: MCP Minder Team <contact@mcpminder.dev>
+License: MIT
+License-File: LICENSE
+Keywords: framework,management,mcp,model-context-protocol,server
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.12
+Requires-Dist: asyncio-mqtt>=0.16.0
+Requires-Dist: build>=1.3.0
+Requires-Dist: fastapi>=0.104.0
+Requires-Dist: fastmcp>=2.12.3
+Requires-Dist: gradio>=4.0.0
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: mcp>=1.13.1
+Requires-Dist: psutil>=5.9.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-multipart>=0.0.6
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: starlette>=0.27.0
+Requires-Dist: twine>=6.2.0
+Requires-Dist: uvicorn>=0.24.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: build>=1.3.0; extra == 'dev'
+Requires-Dist: flake8>=6.0.0; extra == 'dev'
+Requires-Dist: httpx>=0.24.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Requires-Dist: twine>=6.2.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# MCP Minder
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+MCP Minder 是一个简单而强大的 MCP (Model Context Protocol) 服务器管理框架，用于快速生成、部署和管理 MCP 服务器。
+
+## 🏗️ 架构概览
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    用户交互层                                │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│  │ CLI工具     │  │ Web界面     │  │ 客户端库    │        │
+│  │ (命令行)    │  │ (Gradio)    │  │ (Python)    │        │
+│  └─────────────┘  └─────────────┘  └─────────────┘        │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    API服务层                                │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │              FastAPI 服务器                         │    │
+│  │  RESTful API + Pydantic 模型 + 中间件               │    │
+│  └─────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   核心业务层                                │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│  │ 服务管理器  │  │ 进程启动器  │  │ 代码生成器  │        │
+│  │ServiceManager│  │MCPLauncher │  │MCPGenerator │        │
+│  └─────────────┘  └─────────────┘  └─────────────┘        │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   数据存储层                                │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│  │ 服务配置    │  │ 日志文件    │  │ MCP文件     │        │
+│  │services.json│  │service_logs/│  │mcpserver/   │        │
+│  └─────────────┘  └─────────────┘  └─────────────┘        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> 📋 **详细架构文档**: 查看 [架构图详解](architecture_diagram.md) 和 [核心架构](core_architecture.md) 了解更多技术细节。
+
+## ✨ 功能特性
+
+- 🚀 **快速生成**: 基于模板快速生成 MCP 服务器文件
+- 🎯 **高度可定制**: 支持自定义服务名称、工具名称、参数类型等
+- 📝 **模板系统**: 基于 example.py 格式的灵活模板
+- 🔧 **服务管理**: 内置服务启动器，支持后台运行和进程管理
+- 🌐 **RESTful API**: 完整的 FastAPI 接口，支持远程管理
+- 🖥️ **Web界面**: 基于 Gradio 的友好Web界面
+- 💾 **数据持久化**: 本地 JSON 存储服务配置和状态
+- 💻 **多种接口**: 提供命令行接口、Python API、REST API 和 Web界面
+- 📦 **客户端库**: 提供 Python 客户端库，支持远程服务管理
+- 🔗 **远程管理**: 通过 URL 连接到远程 MCP Minder 服务进行管理
+- ⚡ **异步支持**: 完整的异步/同步 API 支持
+- 🛡️ **错误处理**: 完善的异常处理和错误提示
+- 📦 **开源友好**: 简洁的项目结构，易于使用和扩展
+- 🧪 **测试覆盖**: 完整的单元测试和集成测试
+
+## 📦 安装
+
+### 使用 pip 安装
+
+```bash
+pip install mcp_minder
+```
+
+### 从源码安装
+
+```bash
+# 克隆项目
+git clone <repository-url>
+cd mcp-minder
+
+# 安装（开发模式）
+pip install -e .
+
+# 安装开发依赖
+pip install -e ".[dev]"
+```
+
+### 使用 Makefile（推荐）
+
+```bash
+# 安装开发环境
+make install-dev
+
+# 查看所有可用命令
+make help
+```
+
+## 🚀 使用方法
+
+### 1. 客户端库使用 (推荐)
+
+安装后，您可以使用客户端库来远程管理 MCP 服务器：
+
+```python
+from minder.client import McpMinder
+
+# 创建客户端实例
+minder = McpMinder.get_service(
+    url="http://localhost:8000",  # MCP Minder API 服务器地址
+    servername="my_mcp_server"    # 要管理的 MCP 服务名称
+)
+
+# 同步操作
+info = minder.get_info_sync()
+print(f"服务信息: {info}")
+
+# 启动服务
+result = minder.start_sync(port=8080)
+print(f"启动结果: {result}")
+
+# 检查状态
+status = minder.get_status_sync()
+print(f"服务状态: {status}")
+
+# 停止服务
+result = minder.stop_sync()
+print(f"停止结果: {result}")
+```
+
+**异步操作示例：**
+
+```python
+import asyncio
+
+async def manage_service():
+    minder = McpMinder.get_service("http://localhost:8000", "my_mcp_server")
+    
+    # 获取服务信息
+    info = await minder.get_info()
+    print(f"服务信息: {info}")
+    
+    # 启动服务
+    result = await minder.start(port=8080)
+    print(f"启动结果: {result}")
+    
+    # 停止服务
+    result = await minder.stop()
+    print(f"停止结果: {result}")
+
+# 运行异步函数
+asyncio.run(manage_service())
+```
+
+**使用上下文管理器：**
+
+```python
+# 同步上下文管理器
+with McpMinder.get_service("http://localhost:8000", "my_mcp_server") as minder:
+    info = minder.get_info_sync()
+    result = minder.start_sync(port=8080)
+    print(f"服务启动: {result}")
+
+# 异步上下文管理器
+async def use_context_manager():
+    async with McpMinder.get_service("http://localhost:8000", "my_mcp_server") as minder:
+        info = await minder.get_info()
+        result = await minder.start(port=8080)
+        print(f"服务启动: {result}")
+
+asyncio.run(use_context_manager())
+```
+
+### 2. 命令行使用
+
+```bash
+# 基本用法
+minder my_server.py
+
+# 完整自定义
+minder my_server.py \
+  -s "user_service" \
+  -t "get_user_info" \
+  -p "user_id" \
+  --param-type "int" \
+  --return-type "dict" \
+  -d "获取用户信息" \
+  -c "output = f'用户ID: {user_id}'" \
+  --port 8080 \
+  -a "张三"
+```
+
+### 2. 启动 Web 界面
+
+```bash
+# 启动Web界面
+mcp-web
+
+# 指定端口
+mcp-web --port 8080
+
+# 启用分享链接
+mcp-web --share
+
+# 启用调试模式
+mcp-web --debug
+```
+
+### 3. 启动 API 服务器
+
+```bash
+# 启动API服务器
+mcp-api-server
+
+# 指定主机和端口
+
+
+
+# 启用调试模式
+mcp-api-server --debug
+```
+
+### 4. RESTful API 使用
+
+启动API服务器后，可以通过HTTP请求管理服务：
+
+```bash
+# 健康检查
+curl http://localhost:8000/health
+
+# 创建服务
+curl -X POST http://localhost:8000/api/services \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "my_service",
+    "file_path": "my_server.py",
+    "port": 8080,
+    "description": "我的MCP服务"
+  }'
+
+# 启动服务 (按ID)
+curl -X POST http://localhost:8000/api/services/{service_id}/start
+
+# 启动服务 (按名称，推荐)
+curl -X POST http://localhost:8000/api/services/by-name/{service_name}/start
+
+# 停止服务 (按名称)
+curl -X POST http://localhost:8000/api/services/by-name/{service_name}/stop
+
+# 删除服务 (按名称)
+curl -X DELETE http://localhost:8000/api/services/by-name/{service_name}
+
+# 获取服务日志 (按名称)
+curl http://localhost:8000/api/services/by-name/{service_name}/logs?lines=100
+
+# 获取服务信息 (按名称)
+curl http://localhost:8000/api/services/by-name/{service_name}
+
+# 获取服务列表
+curl http://localhost:8000/api/services
+
+# 生成MCP服务器
+curl -X POST http://localhost:8000/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "output_path": "new_server.py",
+    "service_name": "new_service",
+    "tool_name": "new_tool",
+    "tool_code": "output = f\"处理结果: {input_data}\""
+  }'
+```
+
+### 5. API 文档
+
+启动API服务器后，访问以下地址查看完整的API文档：
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+### 6. Python API 使用
+
+```python
+from minder import MCPGenerator, MCPLauncher, ServiceManager
+
+# 生成MCP服务器
+generator = MCPGenerator()
+success = generator.generate(
+    output_path="my_server.py",
+    service_name="user_service",
+    tool_name="get_user_info",
+    tool_param_name="user_id",
+    tool_param_type="int",
+    tool_return_type="dict",
+    tool_description="获取用户信息",
+    tool_code="output = f'用户ID: {user_id}'",
+    service_port=8080,
+    author="张三"
+)
+
+# 服务管理
+service_manager = ServiceManager()
+service_id = service_manager.register_service(
+    name="user_service",
+    file_path="my_server.py",
+    port=8080,
+    description="用户服务"
+)
+
+# 启动服务 (按ID)
+result = service_manager.start_service(service_id)
+if result['success']:
+    print(f"服务启动成功，PID: {result['pid']}")
+
+# 启动服务 (按名称，推荐)
+result = service_manager.start_service_by_name("my_service")
+if result['success']:
+    print(f"服务启动成功，PID: {result['pid']}")
+
+# 停止服务 (按名称)
+result = service_manager.stop_service_by_name("my_service")
+if result['success']:
+    print("服务停止成功")
+
+# 删除服务 (按名称)
+result = service_manager.delete_service_by_name("my_service")
+if result['success']:
+    print("服务删除成功")
+
+# 获取服务日志 (按名称)
+logs = service_manager.get_service_logs_by_name("my_service", lines=100)
+if logs['success']:
+    print(f"日志内容: {logs['logs']}")
+```
+
+### 7. API 客户端使用
+
+```python
+import asyncio
+from minder.examples.api_usage import MCPMinderAPIClient
+
+async def main():
+    client = MCPMinderAPIClient("http://localhost:8000")
+    
+    # 健康检查
+    health = await client.health_check()
+    print(f"服务状态: {health['status']}")
+    
+    # 生成MCP服务器
+    result = await client.generate_mcp_server({
+        "output_path": "api_server.py",
+        "service_name": "api_service",
+        "tool_name": "api_tool"
+    })
+    
+    # 创建并启动服务
+    service = await client.create_service({
+        "name": "api_service",
+        "file_path": "api_server.py",
+        "port": 8080
+    })
+    
+    # 启动服务 (按ID)
+    await client.start_service(service['service']['id'])
+    
+    # 启动服务 (按名称，推荐)
+    await client.start_service_by_name("api_service")
+    
+    # 停止服务 (按名称)
+    await client.stop_service_by_name("api_service")
+    
+    # 获取服务日志 (按名称)
+    logs = await client.get_service_logs_by_name("api_service", lines=100)
+    
+    await client.close()
+
+asyncio.run(main())
+```
+
+### 运行示例
+
+```bash
+# 运行基本使用示例
+python -m minder.examples.basic_usage
+
+# 运行启动器使用示例
+python -m minder.examples.launcher_usage
+```
+
+## 服务启动器
+
+MCP Generator 还提供了内置的服务启动器，用于管理生成的MCP服务器进程。
+
+### 按名称操作服务 (推荐)
+
+MCP Minder 支持按服务名称直接操作服务，无需记住复杂的服务ID。这种方式更加直观和便捷：
+
+**优势：**
+- 🎯 **直观易用**: 直接使用服务名称，无需查找服务ID
+- 🚀 **快速操作**: 减少查找步骤，提高操作效率
+- 🔍 **易于记忆**: 服务名称比UUID更容易记忆
+- 📝 **脚本友好**: 在自动化脚本中使用更简单
+
+**支持的操作：**
+- 启动服务: `mcp-launcher start-by-name my_service`
+- 停止服务: `mcp-launcher stop-by-name my_service`
+- 删除服务: `mcp-launcher delete-by-name my_service`
+- 查看日志: `mcp-launcher logs-by-name my_service`
+- 获取信息: API `/api/services/by-name/{service_name}`
+
+### 启动器命令
+
+```bash
+# 按文件路径启动MCP服务
+mcp-launcher start my_server.py
+mcp-launcher start my_server.py --port 8080 --host 127.0.0.1
+
+# 按文件路径停止MCP服务
+mcp-launcher stop my_server.py
+
+# 按服务名称启动服务 (推荐)
+mcp-launcher start-by-name my_service
+
+# 按服务名称停止服务 (推荐)
+mcp-launcher stop-by-name my_service
+
+# 按服务名称删除服务
+mcp-launcher delete-by-name my_service
+
+# 按服务名称查看日志
+mcp-launcher logs-by-name my_service --lines 100
+
+# 列出运行中的服务
+mcp-launcher list
+
+# 列出所有服务 (包括状态信息)
+mcp-launcher list-services
+mcp-launcher list-services --status running
+
+# 停止所有服务
+mcp-launcher stop-all
+
+# 同步服务状态
+mcp-launcher sync-services
+
+# 按文件路径查看服务日志
+mcp-launcher logs my_server.py
+mcp-launcher logs my_server.py --lines 100
+```
+
+### 启动器Python API
+
+```python
+from minder import MCPLauncher
+
+launcher = MCPLauncher()
+
+# 启动服务
+result = launcher.start_service(
+    script_path="my_server.py",
+    use_uv=True,
+    host="127.0.0.1",
+    port=8080,
+    background=True
+)
+
+# 列出运行中的服务
+services = launcher.list_running_services()
+
+# 停止服务
+launcher.stop_service("my_server.py")
+
+# 查看日志
+logs = launcher.get_service_logs("my_server.py", lines=50)
+```
+
+## 📁 项目结构
+
+```
+mcp-minder/
+├── minder/                # 主包
+│   ├── __init__.py
+│   ├── __main__.py
+│   ├── core/              # 核心功能
+│   │   ├── __init__.py
+│   │   ├── generator.py   # MCP生成器核心
+│   │   ├── launcher.py    # MCP服务启动器
+│   │   └── service_manager.py # 服务管理器
+│   ├── cli/               # 命令行接口
+│   │   ├── __init__.py
+│   │   ├── main.py        # 生成器CLI
+│   │   ├── launcher_cli.py # 启动器CLI
+│   │   ├── api_cli.py     # API服务器CLI
+│   │   └── web_cli.py     # Web界面CLI
+│   ├── api/               # FastAPI接口
+│   │   ├── __init__.py
+│   │   ├── main.py        # FastAPI应用
+│   │   └── models.py      # API数据模型
+│   ├── web/               # Web界面
+│   │   ├── __init__.py
+│   │   └── gradio_app.py  # Gradio应用
+│   └── examples/          # 使用示例
+│       ├── __init__.py
+│       ├── basic_usage.py # 基本使用示例
+│       ├── launcher_usage.py # 启动器使用示例
+│       └── api_usage.py   # API使用示例
+├── example/               # 原始示例
+│   └── example.py         # 基础模板
+├── mcpserver/             # 生成的MCP服务器文件
+├── docs/                  # 文档
+│   ├── README.md
+│   ├── quickstart.md
+│   ├── api.md
+│   ├── development.md
+│   └── contributing.md
+├── tests/                 # 测试
+│   ├── __init__.py
+│   ├── test_generator.py
+│   ├── test_launcher.py
+│   ├── test_service_manager.py
+│   └── test_api.py
+├── scripts/               # 脚本工具
+│   └── uv_install.py
+├── pyproject.toml         # 项目配置
+├── .gitignore            # Git忽略文件
+├── .pre-commit-config.yaml # 代码质量检查
+├── LICENSE               # MIT许可证
+└── README.md             # 项目说明
+```
+
+## 参数说明
+
+| 参数 | 短选项 | 说明 | 默认值 |
+|------|--------|------|--------|
+| output | - | 输出文件路径 | 必需 |
+| service-name | -s | 服务名称 | 从文件名提取 |
+| tool-name | -t | 工具函数名称 | 从服务名生成 |
+| param-name | -p | 工具参数名称 | path |
+| param-type | - | 工具参数类型 | str |
+| return-type | - | 工具返回类型 | str |
+| description | -d | 工具描述 | MCP工具 |
+| port | - | 服务端口 | 随机 |
+| author | -a | 作者 | 开发者 |
+
+## 🧪 开发
+
+### 快速开始
+
+```bash
+# 安装开发环境
+make install-dev
+
+# 运行完整的质量检查
+make all
+
+# 启动开发服务器
+make dev
+```
+
+### 开发命令
+
+```bash
+# 查看所有可用命令
+make help
+
+# 运行测试
+make test
+
+# 代码格式化
+make format
+
+# 代码检查
+make lint
+
+# 构建包
+make build
+```
+
+### 手动运行
+
+```bash
+# 运行所有测试
+pytest
+
+# 运行特定测试
+pytest tests/test_generator.py
+
+# 运行测试并显示覆盖率
+pytest --cov=minder
+
+# 格式化代码
+black .
+
+# 排序导入
+isort .
+
+# 类型检查
+mypy minder/
+
+# 代码风格检查
+flake8 minder/
+
+# 安装 pre-commit 钩子
+pre-commit install
+```
+
+## 🤝 贡献
+
+我们欢迎所有形式的贡献！请查看 [贡献指南](docs/contributing.md) 了解如何参与项目开发。
+
+### 贡献方式
+
+- 🐛 报告 Bug
+- 💡 提出新功能建议
+- 📝 改进文档
+- 🔧 提交代码修复
+- 🧪 添加测试用例
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
+
+## 🙏 致谢
+
+感谢所有为这个项目做出贡献的开发者们！
+
+## 📞 支持
+
+如果您遇到任何问题或有任何建议，请：
+
+- 提交 [Issue](https://github.com/your-org/mcp-minder/issues)
+- 参与 [讨论](https://github.com/your-org/mcp-minder/discussions)
+- 查看 [文档](docs/)
+

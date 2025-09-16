@@ -1,0 +1,39 @@
+# mawiisurv
+
+`mawiisurv` implements G‐estimation methods for treatment effects under endogeneity, both with and without right‐censoring, using a variety of machine‐learning and classical estimators.
+
+---
+
+## Features
+
+- **Complete‐data G‐estimator** (`mawii_noncensor`)  
+- **Right‐censoring G‐estimator** (`mawii_censor`)  
+- Multiple model backends:
+  - Neural networks
+  - Linear regression
+  - Random forests
+  - XGBoost  
+- Choice of Generalized Empirical Likelihood (GEL) functions:
+  - Empirical Tilting (ET)
+  - Empirical Likelihood (EL)
+  - Continuous Updating Estimator (CUE)
+
+---
+
+## Installation
+
+Install from PyPI:
+
+```bash
+pip install mawiisurv
+
+
+
+Dependencies
+Make sure you have the following installed (the minimal compatible versions shown):
+numpy>=1.19
+torch>=1.8
+scipy>=1.5
+scikit-learn>=0.24
+xgboost>=1.3
+numba>=0.53

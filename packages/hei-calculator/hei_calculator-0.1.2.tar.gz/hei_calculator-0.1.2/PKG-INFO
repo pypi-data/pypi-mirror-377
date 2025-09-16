@@ -1,0 +1,128 @@
+Metadata-Version: 2.4
+Name: hei-calculator
+Version: 0.1.2
+Summary: A Python package to calculate Healthy Eating Index (HEI-2015) scores from dietary intake data.
+Home-page: https://github.com/nirajang20/HEI
+Author: Nirajan Ghimire
+Author-email: Nirajan Ghimire <nirajanghimire20@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/hei-calculator
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Dynamic: license-file
+
+# hei-calculator
+
+**hei-calculator** is a Python package that calculates the **Healthy Eating Index (HEI-2015)** from dietary intake data stored in CSV files.  
+It is designed for **researchers, students, and public health professionals** who want to evaluate diet quality easily.
+
+---
+
+## 📖 What is HEI-2015?
+
+The **Healthy Eating Index (HEI-2015)** is a scoring system (0–100 points) that measures how closely a diet follows the **2015–2020 Dietary Guidelines for Americans**.  
+It includes **13 components** covering fruits, vegetables, proteins, grains, fats, and sugars.  
+
+- **Higher scores** → Better diet quality  
+- **Lower scores** → Poorer diet quality  
+
+---
+
+## 📝 Input Requirements
+
+Your CSV file must include these columns:  
+
+- `kcal` → Total energy intake (kcal)  
+- `F_TOTAL` → Total fruits  
+- `G_WHOLE` → Whole grains  
+- `V_TOTAL` → Total vegetables  
+- `V_LEGUMES` → Legumes  
+- `V_DRKGR` → Dark green vegetables  
+- `D_TOTAL` → Total dairy  
+- `PF_TOTAL` → Total protein foods  
+- `PF_SEAFD_HI` → Seafood (high in n-3 fats)  
+- `PF_SEAFD_LOW` → Seafood (low in n-3 fats)  
+- `PF_SOY` → Soy products  
+- `PF_NUTSDS` → Nuts and seeds  
+- `PF_LEGUMES` → Legumes (protein category)  
+- `G_REFINED` → Refined grains  
+- `ADD_SUGARS` → Added sugars (grams)  
+- `SOLID_FATS` → Saturated fats (grams)  
+- `Sodium` / `SODIUM` / `NA` / `sodium` → Sodium (mg)  
+
+---
+
+## 📊 Output
+
+The package calculates **13 HEI-2015 component scores** and one **total score**:
+
+1. HEI_total_fruits  
+2. HEI_whole_fruits  
+3. HEI_total_veg  
+4. HEI_green_and_beans  
+5. HEI_whole_grains  
+6. HEI_total_dairy  
+7. HEI_total_protein  
+8. HEI_sea_food  
+9. HEI_fatty_acids  
+10. HEI_refined_grains  
+11. HEI_sodium  
+12. HEI_added_sugar  
+13. HEI_saturated_fat  
+
+➡️ **HEI_total** = Sum of all 13 components  
+
+The results are saved in a **new CSV file** with these additional columns.
+
+---
+
+## ⚙️ Installation
+
+Install from PyPI:
+
+```bash
+pip install hei-calculator
+```
+
+---
+
+## 🚀 Usage
+
+```python
+from hei_calculator import process_csv
+
+# Example usage
+process_csv("input_file.csv",
+            "output_file.csv")
+```
+
+### Output only HEI columns
+```python
+from hei_calculator import process_csv
+process_csv("input_file.csv", "hei_output_only_file.csv", only_hei_columns=True)
+
+
+---
+
+## 👩‍🔬 Who Can Use This?
+
+- **Researchers** working with dietary survey data  
+- **Public health professionals** evaluating nutrition programs  
+- **Students** learning about diet quality assessment  
+- **Anyone** interested in applying the HEI-2015 scoring system  
+
+---
+
+## 📢 Notes
+
+- Ensure all required columns are present in your CSV file.  
+- If sodium values are missing, the package sets `HEI_sodium = 0` and shows a warning.  
+- Calculations follow the HEI-2015 scoring standards.  
+
+---
+
+## 📜 License
+
+This project is provided under the MIT License.  

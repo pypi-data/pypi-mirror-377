@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hei-calculator"
+version = "0.1.2"
+description = "A Python package to calculate Healthy Eating Index (HEI-2015) scores from dietary intake data."
+readme = "README.md"
+authors = [
+  { name="Nirajan Ghimire", email="nirajanghimire20@gmail.com" }
+]
+license = { text="MIT" }
+dependencies = ["pandas"]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/hei-calculator"

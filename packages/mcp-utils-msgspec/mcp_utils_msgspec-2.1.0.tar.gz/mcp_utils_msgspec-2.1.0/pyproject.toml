@@ -1,0 +1,40 @@
+[project]
+name = "mcp-utils-msgspec"
+version = "2.1.0"
+description = "Synchronous utilities for Model Context Protocol (MCP) integration"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = ["mcp", "model-context-protocol", "ai", "llm"]
+authors = [
+    { name = "Fulfil.IO Inc" },
+    { name = "Pioreactor Inc." },
+]
+dependencies = [
+    "msgspec>=0.18.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/pioreactor/mcp-utils"
+Repository = "https://github.com/pioreactor/mcp-utils.git"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

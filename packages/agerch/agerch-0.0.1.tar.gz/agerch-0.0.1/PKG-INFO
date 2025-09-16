@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: agerch
+Version: 0.0.1
+Summary: First Agerch Version
+Author: Rotem Margalit
+Author-email: Rotem Margalit <support@agerch.com>
+License: Proprietary
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# Agerch
+
+A simple Python package with one function.
+
+## Installation
+
+```bash
+pip install agerch
+```
+
+## Usage
+
+```python
+from agerch import say_hello
+
+say_hello()  # prints "Hello Agerch"
+```
+
+## Features
+
+- One function: `say_hello()` that prints "Hello Agerch"
+
+## License
+
+Proprietary License

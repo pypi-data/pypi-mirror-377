@@ -1,0 +1,1360 @@
+"""
+Runs:
+  * git status
+  * if there are not changes then exit 1
+  * else
+    * if ./lint exists, then run it
+    * if ./test exists, then run it
+    * git add .
+    * opencommit (oco)
+"""
+
+import _thread
+import argparse
+import logging
+import os
+import subprocess
+import sys
+import threading
+import warnings
+from dataclasses import dataclass
+from pathlib import Path
+from shutil import which
+from typing import List, Tuple, Union
+
+import openai
+
+# Logger will be configured in main() based on --log flag
+logger = logging.getLogger(__name__)
+
+
+class InputTimeoutError(Exception):
+    """Raised when input times out."""
+
+    pass
+
+
+def input_with_timeout(prompt: str, timeout_seconds: int = 300) -> str:
+    """
+    Get user input with a timeout. Raises InputTimeoutError if timeout is reached.
+
+    Args:
+        prompt: The prompt to display to the user
+        timeout_seconds: Timeout in seconds (default 5 minutes)
+
+    Returns:
+        The user's input string
+
+    Raises:
+        InputTimeoutError: If timeout is reached without user input
+        EOFError: If input stream is closed
+    """
+    # Check if we're in a non-interactive environment first
+    if not sys.stdin.isatty():
+        raise EOFError("No interactive terminal available")
+
+    result = []
+    exception_holder = []
+
+    def get_input():
+        try:
+            result.append(input(prompt))
+        except Exception as e:
+            exception_holder.append(e)
+
+    # Start input thread
+    input_thread = threading.Thread(target=get_input, daemon=True)
+    input_thread.start()
+
+    # Wait for either input or timeout
+    input_thread.join(timeout=timeout_seconds)
+
+    if input_thread.is_alive():
+        # Timeout occurred
+        logger.warning(f"Input timed out after {timeout_seconds} seconds")
+        raise InputTimeoutError(f"Input timed out after {timeout_seconds} seconds")
+
+    # Check if an exception occurred in the input thread
+    if exception_holder:
+        raise exception_holder[0]
+
+    # Return the input if successful
+    if result:
+        return result[0]
+    else:
+        raise InputTimeoutError("No input received")
+
+
+# Force UTF-8 encoding for proper international character handling
+if sys.platform == "win32":
+    import codecs
+
+    if sys.stdout.encoding != "utf-8":
+        sys.stdout = codecs.getwriter("utf-8")(sys.stdout.buffer, "strict")
+    if sys.stderr.encoding != "utf-8":
+        sys.stderr = codecs.getwriter("utf-8")(sys.stderr.buffer, "strict")
+
+
+def is_uv_project(directory=".") -> bool:
+    """
+    Detect if the given directory is a uv-managed Python project.
+
+    Args:
+        directory (str): Path to the directory to check (default is current directory).
+
+    Returns:
+        bool: True if it's a uv project, False otherwise.
+    """
+    try:
+        required_files = ["pyproject.toml", "uv.lock"]
+        return all(os.path.isfile(os.path.join(directory, f)) for f in required_files)
+    except KeyboardInterrupt:
+        logger.info("is_uv_project interrupted by user")
+        _thread.interrupt_main()
+        return False
+    except Exception as e:
+        logger.error(f"Error in is_uv_project: {e}")
+        print(f"Error: {e}")
+        return False
+
+
+IS_UV_PROJECT = is_uv_project()
+
+# Example usage
+if __name__ == "__main__":
+    if is_uv_project():
+        print("This is a uv project.")
+    else:
+        print("This is not a uv project.")
+
+
+def _to_exec_str(cmd: str, bash: bool) -> str:
+    if bash and sys.platform == "win32":
+        return f"bash -c '{cmd}'"
+    return cmd
+
+
+def _safe_git_commit(message: str) -> int:
+    """Safely execute git commit with proper UTF-8 encoding."""
+    try:
+        print(f'Running: git commit -m "{message}"')
+        result = subprocess.run(
+            ["git", "commit", "-m", message],
+            encoding="utf-8",
+            errors="replace",
+            text=True,
+            capture_output=False,  # Let output go to console directly
+        )
+        if result.returncode != 0:
+            print(f"Error: git commit returned {result.returncode}")
+        return result.returncode
+    except KeyboardInterrupt:
+        logger.info("_safe_git_commit interrupted by user")
+        _thread.interrupt_main()
+        return 130
+    except Exception as e:
+        logger.error(f"Error in _safe_git_commit: {e}")
+        print(f"Error executing git commit: {e}", file=sys.stderr)
+        return 1
+
+
+def _exec(cmd: str, bash: bool, die=True) -> int:
+    print(f"Running: {cmd}")
+    cmd = _to_exec_str(cmd, bash)
+
+    try:
+        # Use subprocess.run instead of os.system for better encoding control
+        result = subprocess.run(
+            cmd,
+            shell=True,
+            encoding="utf-8",
+            errors="replace",
+            text=True,
+            capture_output=False,  # Let output go to console directly
+        )
+        rtn = result.returncode
+    except KeyboardInterrupt:
+        logger.info("_exec interrupted by user")
+        _thread.interrupt_main()
+        return 130
+    except Exception as e:
+        logger.error(f"Error in _exec: {e}")
+        print(f"Error executing command: {e}", file=sys.stderr)
+        rtn = 1
+
+    if rtn != 0:
+        print(f"Error: {cmd} returned {rtn}")
+        if die:
+            sys.exit(1)
+    return rtn
+
+
+def find_git_directory() -> str:
+    """Traverse up to 3 levels to find a directory with a .git folder."""
+    current_dir = os.getcwd()
+    for _ in range(3):
+        if os.path.exists(os.path.join(current_dir, ".git")):
+            return current_dir
+        parent_dir = os.path.dirname(current_dir)
+        if current_dir == parent_dir:
+            break
+        current_dir = parent_dir
+    return ""
+
+
+def check_environment() -> Path:
+    if which("git") is None:
+        print("Error: git is not installed.")
+        sys.exit(1)
+    git_dir = find_git_directory()
+    if not git_dir:
+        print("Error: .git directory does not exist.")
+        sys.exit(1)
+
+    if not which("oco"):
+        warnings.warn(
+            "opencommit (oco) is not installed. Skipping automatic commit message generation.",
+            stacklevel=2,
+        )
+    return Path(git_dir)
+
+
+def get_answer_yes_or_no(question: str, default: Union[bool, str] = "y") -> bool:
+    """Ask a yes/no question and return the answer."""
+    # Check if stdin is available
+    if not sys.stdin.isatty():
+        # No interactive terminal, use default
+        result = (
+            True
+            if (isinstance(default, str) and default.lower() == "y")
+            or (isinstance(default, bool) and default)
+            else False
+        )
+        print(f"{question} [y/n]: {'y' if result else 'n'} (auto-selected, no stdin)")
+        return result
+
+    while True:
+        try:
+            answer = (
+                input_with_timeout(question + " [y/n]: ", timeout_seconds=300)
+                .lower()
+                .strip()
+            )
+            if "y" in answer:
+                return True
+            if "n" in answer:
+                return False
+            if answer == "":
+                if isinstance(default, bool):
+                    return default
+                if isinstance(default, str):
+                    if default.lower() == "y":
+                        return True
+                    elif default.lower() == "n":
+                        return False
+                return True
+            print("Please answer 'yes' or 'no'.")
+        except (EOFError, InputTimeoutError) as e:
+            # No stdin available or timeout, use default
+            result = (
+                True
+                if (isinstance(default, str) and default.lower() == "y")
+                or (isinstance(default, bool) and default)
+                else False
+            )
+            logger.warning(f"Input failed for yes/no question: {e}")
+            print(
+                f"\nInput failed or timed out ({type(e).__name__}), using default: {'y' if result else 'n'}"
+            )
+            return result
+
+
+def configure_logging(enable_file_logging: bool) -> None:
+    """Configure logging based on whether file logging should be enabled."""
+    handlers: List[logging.Handler] = [logging.StreamHandler(sys.stderr)]
+    if enable_file_logging:
+        handlers.append(logging.FileHandler("codeup.log"))
+
+    logging.basicConfig(
+        level=logging.INFO,  # Changed from ERROR to INFO for more detailed logging
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=handlers,
+        force=True,  # Override any existing configuration
+    )
+
+
+@dataclass
+class Args:
+    repo: Union[str, None]
+    no_push: bool
+    verbose: bool
+    no_test: bool
+    no_lint: bool
+    publish: bool
+    no_autoaccept: bool
+    message: Union[str, None]
+    no_rebase: bool
+    no_interactive: bool
+    log: bool
+    just_ai_commit: bool
+    set_key_anthropic: Union[str, None]
+    set_key_openai: Union[str, None]
+
+    def __post_init__(self) -> None:
+        assert isinstance(
+            self.repo, (str, type(None))
+        ), f"Expected str, got {type(self.repo)}"
+        assert isinstance(
+            self.no_push, bool
+        ), f"Expected bool, got {type(self.no_push)}"
+        assert isinstance(
+            self.verbose, bool
+        ), f"Expected bool, got {type(self.verbose)}"
+        assert isinstance(
+            self.no_test, bool
+        ), f"Expected bool, got {type(self.no_test)}"
+        assert isinstance(
+            self.no_lint, bool
+        ), f"Expected bool, got {type(self.no_lint)}"
+        assert isinstance(
+            self.publish, bool
+        ), f"Expected bool, got {type(self.publish)}"
+        assert isinstance(
+            self.no_autoaccept, bool
+        ), f"Expected bool, got {type(self.no_autoaccept)}"
+        assert isinstance(
+            self.message, (str, type(None))
+        ), f"Expected str, got {type(self.message)}"
+        assert isinstance(
+            self.no_rebase, bool
+        ), f"Expected bool, got {type(self.no_rebase)}"
+        assert isinstance(
+            self.no_interactive, bool
+        ), f"Expected bool, got {type(self.no_interactive)}"
+        assert isinstance(self.log, bool), f"Expected bool, got {type(self.log)}"
+        assert isinstance(
+            self.just_ai_commit, bool
+        ), f"Expected bool, got {type(self.just_ai_commit)}"
+        assert isinstance(
+            self.set_key_anthropic, (str, type(None))
+        ), f"Expected (str, type(None)), got {type(self.set_key_anthropic)}"
+        assert isinstance(
+            self.set_key_openai, (str, type(None))
+        ), f"Expected (str, type(None)), got {type(self.set_key_openai)}"
+
+
+def _parse_args() -> Args:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("repo", help="Path to the repo to summarize", nargs="?")
+    parser.add_argument(
+        "--no-push", help="Do not push after successful commit", action="store_true"
+    )
+    parser.add_argument(
+        "--verbose",
+        help="Passes the verbose flag to the linter and tester",
+        action="store_true",
+    )
+    parser.add_argument("--publish", "-p", help="Publish the repo", action="store_true")
+    parser.add_argument(
+        "--no-test", "-nt", help="Do not run tests", action="store_true"
+    )
+    parser.add_argument("--no-lint", help="Do not run linter", action="store_true")
+    parser.add_argument(
+        "--no-autoaccept",
+        "-na",
+        help="Do not auto-accept commit messages from AI",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-m",
+        "--message",
+        help="Commit message (bypasses AI commit generation)",
+        type=str,
+    )
+    parser.add_argument(
+        "--no-rebase",
+        help="Do not attempt to rebase before pushing",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--no-interactive",
+        help="Fail if auto commit message generation fails (non-interactive mode)",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--log",
+        help="Enable logging to codeup.log file",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--just-ai-commit",
+        help="Skip linting and testing, just run the automatic AI commit generator",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--set-key-anthropic",
+        type=str,
+        help="Set Anthropic API key and exit",
+    )
+    parser.add_argument(
+        "--set-key-openai",
+        type=str,
+        help="Set OpenAI API key and exit",
+    )
+    tmp = parser.parse_args()
+
+    out: Args = Args(
+        repo=tmp.repo,
+        no_push=tmp.no_push,
+        verbose=tmp.verbose,
+        no_test=tmp.no_test,
+        no_lint=tmp.no_lint,
+        publish=tmp.publish,
+        no_autoaccept=tmp.no_autoaccept,
+        message=tmp.message,
+        no_rebase=tmp.no_rebase,
+        no_interactive=tmp.no_interactive,
+        log=tmp.log,
+        just_ai_commit=tmp.just_ai_commit,
+        set_key_anthropic=tmp.set_key_anthropic,
+        set_key_openai=tmp.set_key_openai,
+    )
+    return out
+
+
+def _publish() -> None:
+    publish_script = "upload_package.sh"
+    if not os.path.exists(publish_script):
+        print(f"Error: {publish_script} does not exist.")
+        sys.exit(1)
+    _exec("./upload_package.sh", bash=True)
+
+
+def _get_keyring_api_key() -> Union[str, None]:
+    """Get OpenAI API key from system keyring/keystore."""
+    try:
+        import keyring
+
+        api_key = keyring.get_password("zcmds", "openai_api_key")
+        return api_key if api_key else None
+    except ImportError:
+        # keyring not available
+        return None
+    except KeyboardInterrupt:
+        logger.info("_get_keyring_api_key interrupted by user")
+        _thread.interrupt_main()
+        return None
+    except Exception as e:
+        logger.error(f"Error accessing keyring: {e}")
+        return None
+
+
+def _generate_ai_commit_message_anthropic(diff_text: str) -> Union[str, None]:
+    """Generate commit message using Anthropic Claude API as fallback."""
+    try:
+        import anthropic
+
+        from codeup.config import get_anthropic_api_key
+
+        api_key = get_anthropic_api_key()
+        if not api_key:
+            logger.info("No Anthropic API key found")
+            return None
+
+        logger.info("Using Anthropic Claude API for commit message generation")
+        client = anthropic.Anthropic(api_key=api_key)
+
+        prompt = f"""You are an expert developer who writes clear, concise commit messages following conventional commit format.
+
+Analyze the following git diff and generate a single line commit message that:
+1. Follows conventional commit format (type(scope): description)
+2. Uses one of these types: feat, fix, docs, style, refactor, perf, test, chore, ci, build
+3. Is under 72 characters
+4. Describes the main change concisely
+5. Uses imperative mood (e.g., "add", not "added")
+
+Git diff:
+```
+{diff_text}
+```
+
+Respond with only the commit message, nothing else."""
+
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",  # Fast and cost-effective model
+            max_tokens=100,
+            messages=[{"role": "user", "content": prompt}],
+        )
+
+        if response.content and len(response.content) > 0:
+            first_block = response.content[0]
+            # Check if it's a text block and has the text attribute
+            if hasattr(first_block, "text"):
+                commit_message = first_block.text.strip()  # type: ignore
+                logger.info(
+                    f"Generated Anthropic commit message: {commit_message[:50]}..."
+                )
+                return commit_message
+            else:
+                logger.warning("Anthropic API returned non-text content")
+                return None
+        else:
+            logger.warning("Anthropic API returned empty response")
+            return None
+
+    except ImportError:
+        logger.info("Anthropic library not available")
+        return None
+    except KeyboardInterrupt:
+        logger.info("_generate_ai_commit_message_anthropic interrupted by user")
+        _thread.interrupt_main()
+        return None
+    except Exception as e:
+        logger.error(f"Failed to generate Anthropic commit message: {e}")
+        return None
+
+
+def _generate_ai_commit_message() -> Union[str, None]:
+    """Generate commit message using OpenAI API with Anthropic fallback."""
+    try:
+        # Import and use existing OpenAI config system
+        from codeup.config import get_openai_api_key
+
+        api_key = get_openai_api_key()
+
+        # Get staged diff
+        logger.info("Getting git diff for commit message generation")
+        try:
+            # Check for staged changes first
+            staged_result = subprocess.run(
+                ["git", "diff", "--cached"],
+                capture_output=True,
+                text=True,
+                check=True,
+                encoding="utf-8",
+            )
+            diff_text = staged_result.stdout.strip()
+
+            if not diff_text:
+                # No staged changes, get regular diff
+                logger.info("No staged changes, getting regular diff")
+                result = subprocess.run(
+                    ["git", "diff"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    encoding="utf-8",
+                )
+                diff_text = result.stdout.strip()
+                if not diff_text:
+                    logger.warning("No changes found in git diff")
+                    return None
+        except Exception as e:
+            logger.error(f"Error getting git diff: {e}")
+            return None
+
+        logger.info(f"Got diff, length: {len(diff_text)}")
+
+        # Try OpenAI first if we have a key
+        if api_key:
+            try:
+                # Set the API key for OpenAI
+                os.environ["OPENAI_API_KEY"] = api_key
+
+                # Force the correct OpenAI API endpoint
+                os.environ["OPENAI_BASE_URL"] = "https://api.openai.com/v1"
+                os.environ["OPENAI_API_BASE"] = "https://api.openai.com/v1"
+
+                logger.info(f"Using OpenAI API key, length: {len(api_key)}")
+                logger.info("Set OpenAI base URL to: https://api.openai.com/v1")
+
+                # Create OpenAI client
+                client = openai.OpenAI(api_key=api_key)
+
+                prompt = f"""You are an expert developer who writes clear, concise commit messages following conventional commit format.
+
+Analyze the following git diff and generate a single line commit message that:
+1. Follows conventional commit format (type(scope): description)
+2. Uses one of these types: feat, fix, docs, style, refactor, perf, test, chore, ci, build
+3. Is under 72 characters
+4. Describes the main change concisely
+5. Uses imperative mood (e.g., "add", not "added")
+
+Git diff:
+```
+{diff_text}
+```
+
+Respond with only the commit message, nothing else."""
+
+                response = client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=100,
+                    temperature=0.3,
+                )
+
+                if response.choices and len(response.choices) > 0:
+                    content = response.choices[0].message.content
+                    commit_message = content.strip() if content else ""
+                    logger.info(
+                        f"Successfully generated OpenAI commit message: {commit_message[:50]}..."
+                    )
+                    return commit_message
+                else:
+                    logger.warning("OpenAI API returned empty response")
+
+            except Exception as e:
+                logger.warning(f"OpenAI commit message generation failed: {e}")
+                print(f"OpenAI generation failed: {e}")
+
+        # Fallback to Anthropic only if we have a key
+        from codeup.config import get_anthropic_api_key
+
+        if get_anthropic_api_key():
+            logger.info("Trying Anthropic as fallback for commit message generation")
+            anthropic_message = _generate_ai_commit_message_anthropic(diff_text)
+            if anthropic_message:
+                return anthropic_message
+        else:
+            logger.info("No Anthropic API key found, skipping Anthropic fallback")
+
+        # If both failed
+        logger.warning("AI commit message generation failed")
+        print("Warning: AI commit message generation failed")
+        print("Solutions:")
+        print("  - Set OpenAI API key: export OPENAI_API_KEY=your_key")
+        print("  - Set Anthropic API key: export ANTHROPIC_API_KEY=your_key")
+        print(
+            "  - Set keys via config: python -c \"from codeup.config import save_config; save_config({'openai_key': 'your_openai_key', 'anthropic_key': 'your_anthropic_key'})\""
+        )
+        return None
+
+    except KeyboardInterrupt:
+        logger.info("_generate_ai_commit_message interrupted by user")
+        _thread.interrupt_main()
+        return None
+    except Exception as e:
+        logger.error(f"Failed to generate AI commit message: {e}")
+        logger.error(f"Exception type: {type(e).__name__}")
+        logger.error(f"Exception args: {e.args}")
+        import traceback
+
+        logger.error(f"Traceback: {traceback.format_exc()}")
+
+        error_msg = str(e)
+        print("Error: AI commit message generation failed")
+        print(f"Exception: {type(e).__name__}: {error_msg}")
+        print("Full traceback:")
+        print(traceback.format_exc())
+
+        return None
+
+
+def _opencommit_or_prompt_for_commit_message(
+    auto_accept: bool, no_interactive: bool = False
+) -> None:
+    """Generate AI commit message or prompt for manual input."""
+    # Try to generate AI commit message first
+    ai_message = _generate_ai_commit_message()
+
+    if ai_message:
+        print(f"Generated commit message: {ai_message}")
+        # Always auto-accept AI-generated messages when they succeed
+        print("Auto-accepting AI-generated commit message")
+        _safe_git_commit(ai_message)
+        return
+    elif no_interactive:
+        # In non-interactive mode, fail if AI commit generation fails
+        logger.error("AI commit generation failed in non-interactive mode")
+        print("Error: Failed to generate AI commit message in non-interactive mode")
+        print("This may be due to:")
+        print("  - OpenAI API issues or rate limiting")
+        print("  - Missing or invalid OpenAI API key")
+        print("  - Network connectivity problems")
+        print("Solutions:")
+        print("  - Run in interactive mode: codeup (without --no-interactive)")
+        print("  - Set API key via environment: export OPENAI_API_KEY=your_key")
+        print("  - Set API key via imgai: imgai --set-key YOUR_KEY")
+        print("  - Set API key via Python config:")
+        print(
+            "    python -c \"from codeup.config import save_config; save_config({'openai_key': 'your_key'})\""
+        )
+        raise RuntimeError(
+            "AI commit message generation failed in non-interactive terminal"
+        )
+
+    # Fall back to manual commit message
+    if no_interactive:
+        logger.warning(
+            "Cannot get manual commit message input in non-interactive mode, using fallback"
+        )
+        print("Cannot get commit message input in non-interactive mode")
+        print("Using generic commit message as fallback...")
+        _safe_git_commit("chore: automated commit (AI unavailable)")
+        return
+
+    try:
+        msg = input_with_timeout("Commit message: ", timeout_seconds=300)
+        _safe_git_commit(msg)
+    except (EOFError, InputTimeoutError) as e:
+        logger.warning(f"Manual commit message input failed: {e}")
+        print(f"Commit message input failed or timed out ({type(e).__name__})")
+        print("Using generic commit message as fallback...")
+        _safe_git_commit("chore: automated commit (input failed)")
+        return
+
+
+def _ai_commit_or_prompt_for_commit_message(
+    no_autoaccept: bool, message: Union[str, None] = None, no_interactive: bool = False
+) -> None:
+    """Generate commit message using AI or prompt for manual input."""
+    if message:
+        # Use provided commit message directly
+        _safe_git_commit(message)
+    else:
+        # Use AI or interactive commit
+        _opencommit_or_prompt_for_commit_message(
+            auto_accept=not no_autoaccept, no_interactive=no_interactive
+        )
+
+
+# demo help message
+
+
+def get_git_status() -> str:
+    """Get git status output."""
+    result = subprocess.run(
+        ["git", "status"], capture_output=True, text=True, check=True, encoding="utf-8"
+    )
+    return result.stdout
+
+
+def has_changes_to_commit() -> bool:
+    """Check if there are any changes (staged, unstaged, or untracked) to commit."""
+    try:
+        # Check for staged changes
+        staged_result = subprocess.run(
+            ["git", "diff", "--cached", "--name-only"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        )
+        if staged_result.stdout.strip():
+            return True
+
+        # Check for unstaged changes
+        unstaged_result = subprocess.run(
+            ["git", "diff", "--name-only"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        )
+        if unstaged_result.stdout.strip():
+            return True
+
+        # Check for untracked files
+        untracked_files = get_untracked_files()
+        if untracked_files:
+            return True
+
+        return False
+
+    except KeyboardInterrupt:
+        logger.info("has_changes_to_commit interrupted by user")
+        _thread.interrupt_main()
+        return False
+    except Exception as e:
+        logger.error(f"Error checking for changes: {e}")
+        return False
+
+
+def get_untracked_files() -> List[str]:
+    """Get list of untracked files."""
+    result = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard"],
+        capture_output=True,
+        text=True,
+        check=True,
+        encoding="utf-8",
+    )
+    return [f.strip() for f in result.stdout.splitlines() if f.strip()]
+
+
+def get_main_branch() -> str:
+    """Get the main branch name (main, master, etc.)."""
+    try:
+        # Try to get the default branch from remote
+        result = subprocess.run(
+            ["git", "symbolic-ref", "refs/remotes/origin/HEAD"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        if result.returncode == 0:
+            return result.stdout.strip().split("/")[-1]
+    except KeyboardInterrupt:
+        logger.info("get_main_branch interrupted by user")
+        _thread.interrupt_main()
+        return "main"
+    except Exception as e:
+        logger.error(f"Error getting main branch: {e}")
+        pass
+
+    # Fallback: check common branch names
+    for branch in ["main", "master"]:
+        try:
+            result = subprocess.run(
+                ["git", "rev-parse", "--verify", f"origin/{branch}"],
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            if result.returncode == 0:
+                return branch
+        except KeyboardInterrupt:
+            logger.info("get_main_branch loop interrupted by user")
+            _thread.interrupt_main()
+            return "main"
+        except Exception as e:
+            logger.error(f"Error checking branch {branch}: {e}")
+            continue
+
+    return "main"  # Default fallback
+
+
+def get_current_branch() -> str:
+    """Get the current branch name."""
+    result = subprocess.run(
+        ["git", "branch", "--show-current"],
+        capture_output=True,
+        text=True,
+        check=True,
+        encoding="utf-8",
+    )
+    return result.stdout.strip()
+
+
+def check_rebase_needed(main_branch: str) -> bool:
+    """Check if current branch is behind the remote main branch."""
+    try:
+        remote_hash = subprocess.run(
+            ["git", "rev-parse", f"origin/{main_branch}"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        ).stdout.strip()
+
+        # Check if we're behind
+        merge_base = subprocess.run(
+            ["git", "merge-base", "HEAD", f"origin/{main_branch}"],
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding="utf-8",
+        ).stdout.strip()
+
+        return merge_base != remote_hash
+
+    except KeyboardInterrupt:
+        logger.info("check_rebase_needed interrupted by user")
+        _thread.interrupt_main()
+        return False
+    except Exception as e:
+        logger.error(f"Error checking rebase needed: {e}")
+        return False
+
+
+def attempt_safe_rebase(main_branch: str) -> Tuple[bool, bool]:
+    """
+    Attempt a rebase and handle conflicts properly.
+
+    Returns:
+        Tuple[bool, bool]: (success, had_conflicts)
+        - success: True if rebase completed successfully
+        - had_conflicts: True if conflicts were encountered (and rebase was aborted)
+    """
+    try:
+        # Attempt the actual rebase
+        result = subprocess.run(
+            ["git", "rebase", f"origin/{main_branch}"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+
+        if result.returncode == 0:
+            # Rebase succeeded
+            logger.info(f"Successfully rebased onto origin/{main_branch}")
+            return True, False
+        else:
+            # Rebase failed, check if it's due to conflicts
+            stderr_lower = result.stderr.lower()
+            stdout_lower = result.stdout.lower()
+
+            if (
+                "conflict" in stderr_lower
+                or "conflict" in stdout_lower
+                or "failed to merge" in stderr_lower
+                or "failed to merge" in stdout_lower
+            ):
+                logger.info("Rebase failed due to conflicts, aborting rebase")
+                # Abort the rebase to return to clean state
+                abort_result = subprocess.run(
+                    ["git", "rebase", "--abort"],
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                )
+
+                if abort_result.returncode != 0:
+                    logger.error(f"Failed to abort rebase: {abort_result.stderr}")
+                    print(
+                        f"Error: Failed to abort rebase: {abort_result.stderr}",
+                        file=sys.stderr,
+                    )
+
+                return False, True
+            else:
+                # Rebase failed for other reasons
+                logger.error(f"Rebase failed: {result.stderr}")
+                print(f"Rebase failed: {result.stderr}", file=sys.stderr)
+                return False, False
+
+    except KeyboardInterrupt:
+        logger.info("attempt_safe_rebase interrupted by user")
+        _thread.interrupt_main()
+        return False, False
+    except Exception as e:
+        logger.error(f"Error attempting rebase: {e}")
+        print(f"Error attempting rebase: {e}", file=sys.stderr)
+        return False, False
+
+
+def safe_rebase_try() -> bool:
+    """Attempt a safe rebase using proper git commands. Returns True if successful or no rebase needed."""
+    try:
+        # Get the main branch
+        main_branch = get_main_branch()
+        current_branch = get_current_branch()
+
+        # If we're on the main branch, no rebase needed
+        if current_branch == main_branch:
+            return True
+
+        # Check if rebase is needed
+        if not check_rebase_needed(main_branch):
+            print(f"Branch is already up to date with origin/{main_branch}")
+            return True
+
+        # Attempt the rebase directly - this will handle conflicts properly
+        print(f"Attempting rebase onto origin/{main_branch}...")
+        success, had_conflicts = attempt_safe_rebase(main_branch)
+
+        if success:
+            print(f"Successfully rebased onto origin/{main_branch}")
+            return True
+        elif had_conflicts:
+            print(
+                f"Cannot automatically rebase: conflicts detected with origin/{main_branch}"
+            )
+            print(
+                "Remote repository has conflicting changes that must be manually resolved."
+            )
+            print(f"Please run: git rebase origin/{main_branch}")
+            print("Then resolve any conflicts manually.")
+            return False
+        else:
+            print("Rebase failed for other reasons")
+            return False
+
+    except KeyboardInterrupt:
+        logger.info("safe_rebase_try interrupted by user")
+        _thread.interrupt_main()
+        return False
+    except Exception as e:
+        logger.error(f"Error in safe_rebase_try: {e}")
+        print(f"Error during safe rebase attempt: {e}")
+        return False
+
+
+def safe_push() -> bool:
+    """Attempt to push safely, with automatic rebase if safe to do so."""
+    try:
+        # First, try a normal push
+        print("Attempting to push to remote...")
+        result = subprocess.run(
+            ["git", "push"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+
+        if result.returncode == 0:
+            print("Successfully pushed to remote")
+            return True
+
+        # If normal push failed, check if it's due to non-fast-forward
+        stderr_output = result.stderr.lower()
+
+        if "non-fast-forward" in stderr_output or "rejected" in stderr_output:
+            print(
+                "Push rejected (non-fast-forward). Repository needs to be updated first."
+            )
+            print(
+                "This indicates the remote branch has changes that need to be integrated."
+            )
+
+            # Attempt safe rebase if possible
+            if safe_rebase_try():
+                # Rebase succeeded, try push again
+                print("Rebase successful, attempting push again...")
+                result = subprocess.run(
+                    ["git", "push"],
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                )
+
+                if result.returncode == 0:
+                    print("Successfully pushed to remote after rebase")
+                    return True
+                else:
+                    print(f"Push failed after rebase: {result.stderr}")
+                    return False
+            else:
+                # Rebase failed or not safe, provide manual instructions
+                return False
+        else:
+            print(f"Push failed: {result.stderr}")
+            return False
+
+    except KeyboardInterrupt:
+        logger.info("safe_push interrupted by user")
+        _thread.interrupt_main()
+        return False
+    except Exception as e:
+        logger.error(f"Push error: {e}")
+        print(f"Push error: {e}")
+        return False
+
+
+def main() -> int:
+    """Run git status, lint, test, add, and commit."""
+
+    # Force UTF-8 encoding for all subprocess operations on Windows
+    os.environ["PYTHONIOENCODING"] = "utf-8"
+    if sys.platform == "win32":
+        os.environ["PYTHONLEGACYWINDOWSSTDIO"] = "0"
+
+    args = _parse_args()
+    configure_logging(args.log)
+    verbose = args.verbose
+
+    # Handle key setting flags
+    if args.set_key_anthropic:
+        try:
+            import keyring
+
+            keyring.set_password("zcmds", "anthropic_api_key", args.set_key_anthropic)
+            print("Anthropic API key stored in system keyring")
+            return 0
+        except ImportError:
+            print("Error: keyring not available. Install with: pip install keyring")
+            return 1
+        except Exception as e:
+            print(f"Error storing Anthropic key: {e}")
+            return 1
+
+    if args.set_key_openai:
+        try:
+            import keyring
+
+            keyring.set_password("zcmds", "openai_api_key", args.set_key_openai)
+            print("OpenAI API key stored in system keyring")
+            return 0
+        except ImportError:
+            print("Error: keyring not available. Install with: pip install keyring")
+            return 1
+        except Exception as e:
+            print(f"Error storing OpenAI key: {e}")
+            return 1
+
+    git_path = check_environment()
+    os.chdir(str(git_path))
+
+    # Handle --just-ai-commit flag
+    if args.just_ai_commit:
+        try:
+            # Just run the AI commit workflow
+            _exec("git add .", bash=False)
+            _ai_commit_or_prompt_for_commit_message(
+                args.no_autoaccept, args.message, no_interactive=False
+            )
+            return 0
+        except KeyboardInterrupt:
+            logger.info("just-ai-commit interrupted by user")
+            print("Aborting")
+            _thread.interrupt_main()
+            return 1
+        except Exception as e:
+            logger.error(f"Unexpected error in just-ai-commit: {e}")
+            print(f"Unexpected error: {e}")
+            return 1
+
+    try:
+        git_status_str = get_git_status()
+        print(git_status_str)
+
+        # Check if there are any changes to commit
+        if not has_changes_to_commit():
+            print("No changes to commit, working tree clean.")
+            return 1
+
+        untracked_files = get_untracked_files()
+        has_untracked = len(untracked_files) > 0
+        if has_untracked:
+            print("There are untracked files.")
+            if args.no_interactive:
+                # In non-interactive mode, automatically add all untracked files
+                print("Non-interactive mode: automatically adding all untracked files.")
+                for untracked_file in untracked_files:
+                    print(f"  Adding {untracked_file}")
+                    _exec(f"git add {untracked_file}", bash=False)
+            else:
+                answer_yes = get_answer_yes_or_no("Continue?", "y")
+                if not answer_yes:
+                    print("Aborting.")
+                    return 1
+                for untracked_file in untracked_files:
+                    answer_yes = get_answer_yes_or_no(f"  Add {untracked_file}?", "y")
+                    if answer_yes:
+                        _exec(f"git add {untracked_file}", bash=False)
+                    else:
+                        print(f"  Skipping {untracked_file}")
+        if os.path.exists("./lint") and not args.no_lint:
+            cmd = "./lint" + (" --verbose" if verbose else "")
+            # rtn = _exec(cmd, bash=True, die=True)  # Come back to this
+
+            cmd = _to_exec_str(cmd, bash=True)
+            uv_resolved_dependencies = True
+            proc = subprocess.Popen(
+                cmd,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                encoding="utf-8",
+                errors="replace",  # Replace unmappable characters
+                bufsize=1,  # Line buffered
+            )
+
+            # Stream output with 60-second timeout between lines
+            import time
+
+            with proc:
+                assert proc.stdout is not None
+                timeout_duration = 60  # 60 seconds of silence before timeout
+                last_output_time = time.time()
+
+                while True:
+                    # Check if process has finished
+                    if proc.poll() is not None:
+                        break
+
+                    # Check for timeout (no output for 60 seconds)
+                    if time.time() - last_output_time > timeout_duration:
+                        print(
+                            f"Warning: Lint process timed out after {timeout_duration} seconds of no output"
+                        )
+                        proc.kill()
+                        proc.wait()
+                        print("Error: Linting process hung and was terminated.")
+                        sys.exit(1)
+
+                    # Try to read a line
+                    try:
+                        line = proc.stdout.readline()
+                        if line:
+                            # Since we're using text=True, line is already a string
+                            linestr = line.strip()
+                            print(linestr)
+                            last_output_time = time.time()  # Reset timeout on output
+                            if (
+                                "No solution found when resolving dependencies"
+                                in linestr
+                            ):
+                                uv_resolved_dependencies = False
+                        else:
+                            # No line available, sleep briefly and continue
+                            time.sleep(0.1)
+                    except Exception as e:
+                        logger.error(f"Error reading lint output: {e}")
+                        break
+
+            proc.wait()
+            if proc.returncode != 0:
+                print("Error: Linting failed.")
+                if uv_resolved_dependencies:
+                    sys.exit(1)
+                if args.no_interactive:
+                    print(
+                        "Non-interactive mode: automatically running 'uv pip install -e . --refresh'"
+                    )
+                    answer_yes = True
+                else:
+                    answer_yes = get_answer_yes_or_no(
+                        "'uv pip install -e . --refresh'?",
+                        "y",
+                    )
+                    if not answer_yes:
+                        print("Aborting.")
+                        sys.exit(1)
+                for _ in range(3):
+                    refresh_rtn = _exec(
+                        "uv pip install -e . --refresh", bash=True, die=False
+                    )
+                    if refresh_rtn == 0:
+                        break
+                else:
+                    print("Error: uv pip install -e . --refresh failed.")
+                    sys.exit(1)
+        if not args.no_test and os.path.exists("./test"):
+            test_cmd = "./test" + (" --verbose" if verbose else "")
+            test_cmd = _to_exec_str(test_cmd, bash=True)
+
+            print(f"Running: {test_cmd}")
+            test_proc = subprocess.Popen(
+                test_cmd,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                encoding="utf-8",
+                errors="replace",  # Replace unmappable characters
+                bufsize=1,  # Line buffered
+            )
+
+            # Stream test output with 60-second timeout between lines
+            with test_proc:
+                assert test_proc.stdout is not None
+                timeout_duration = 60  # 60 seconds of silence before timeout
+                last_output_time = time.time()
+
+                while True:
+                    # Check if process has finished
+                    if test_proc.poll() is not None:
+                        break
+
+                    # Check for timeout (no output for 60 seconds)
+                    if time.time() - last_output_time > timeout_duration:
+                        print(
+                            f"Warning: Test process timed out after {timeout_duration} seconds of no output"
+                        )
+                        test_proc.kill()
+                        test_proc.wait()
+                        print("Error: Test process hung and was terminated.")
+                        sys.exit(1)
+
+                    # Try to read a line
+                    try:
+                        line = test_proc.stdout.readline()
+                        if line:
+                            # Since we're using text=True, line is already a string
+                            linestr = line.strip()
+                            print(linestr)
+                            last_output_time = time.time()  # Reset timeout on output
+                        else:
+                            # No line available, sleep briefly and continue
+                            time.sleep(0.1)
+                    except Exception as e:
+                        logger.error(f"Error reading test output: {e}")
+                        break
+
+            test_proc.wait()
+            if test_proc.returncode != 0:
+                print("Error: Tests failed.")
+                sys.exit(1)
+        _exec("git add .", bash=False)
+        _ai_commit_or_prompt_for_commit_message(
+            args.no_autoaccept, args.message, args.no_interactive
+        )
+
+        if not args.no_push:
+            # Fetch latest changes from remote
+            print("Fetching latest changes from remote...")
+            _exec("git fetch", bash=False)
+
+            # Check if rebase is needed and handle it
+            if not args.no_rebase:
+                main_branch = get_main_branch()
+                current_branch = get_current_branch()
+
+                if current_branch != main_branch and check_rebase_needed(main_branch):
+                    print(
+                        f"Current branch '{current_branch}' is behind origin/{main_branch}"
+                    )
+
+                    if args.no_interactive:
+                        print(
+                            f"Non-interactive mode: attempting automatic rebase onto origin/{main_branch}"
+                        )
+                        success, had_conflicts = attempt_safe_rebase(main_branch)
+                        if success:
+                            print(f"Successfully rebased onto origin/{main_branch}")
+                        elif had_conflicts:
+                            print(
+                                "Error: Rebase failed due to conflicts that need manual resolution"
+                            )
+                            print(f"Please run: git rebase origin/{main_branch}")
+                            print(
+                                "Then resolve any conflicts manually and re-run codeup"
+                            )
+                            return 1
+                        else:
+                            print("Error: Rebase failed for unknown reasons")
+                            return 1
+                    else:
+                        proceed = get_answer_yes_or_no(
+                            f"Attempt rebase onto origin/{main_branch}?", "y"
+                        )
+                        if not proceed:
+                            print("Skipping rebase.")
+                            return 1
+
+                        # Perform the rebase
+                        success, had_conflicts = attempt_safe_rebase(main_branch)
+                        if success:
+                            print(f"Successfully rebased onto origin/{main_branch}")
+                        elif had_conflicts:
+                            print(
+                                "Rebase failed due to conflicts. Please resolve conflicts manually and try again."
+                            )
+                            print(f"Run: git rebase origin/{main_branch}")
+                            print("Then resolve conflicts and re-run codeup")
+                            return 1
+                        else:
+                            print("Rebase failed for other reasons")
+                            return 1
+
+            # Now attempt the push
+            if not safe_push():
+                print("Push failed. You may need to resolve conflicts manually.")
+                return 1
+        if args.publish:
+            _publish()
+    except KeyboardInterrupt:
+        logger.info("codeup main function interrupted by user")
+        print("Aborting")
+        _thread.interrupt_main()
+        return 1
+    except Exception as e:
+        logger.error(f"Unexpected error in codeup main: {e}")
+        print(f"Unexpected error: {e}")
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    main()

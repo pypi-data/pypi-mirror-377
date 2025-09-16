@@ -1,0 +1,72 @@
+Metadata-Version: 2.4
+Name: codeup
+Version: 1.0.1
+Summary: Intelligent git workflow automation tool with AI-powered commit messages
+Home-page: https://github.com/zackees/codeup
+Author-email: Zach Vorhies <zach@zachvorhies.com>
+Maintainer: Zachary Vorhies
+License: MIT
+Project-URL: Homepage, https://github.com/zackees/codeup
+Project-URL: Repository, https://github.com/zackees/codeup
+Project-URL: Issues, https://github.com/zackees/codeup/issues
+Project-URL: Documentation, https://github.com/zackees/codeup#readme
+Keywords: git,ai,commit,automation,workflow
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8.1
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai>=1.0.0
+Requires-Dist: anthropic>=0.18.0
+Requires-Dist: appdirs>=1.4.4
+Requires-Dist: keyring>=24.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: pytest-xdist>=3.0.0; extra == "dev"
+Requires-Dist: pytest-timeout>=2.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: pyright>=1.1.0; extra == "dev"
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: maintainer
+
+# template-python-cmd
+A template for quickly making a python lib that has a command line program attached
+
+[![Linting](../../actions/workflows/lint.yml/badge.svg)](../../actions/workflows/lint.yml)
+
+[![MacOS_Tests](../../actions/workflows/push_macos.yml/badge.svg)](../../actions/workflows/push_macos.yml)
+[![Ubuntu_Tests](../../actions/workflows/push_ubuntu.yml/badge.svg)](../../actions/workflows/push_ubuntu.yml)
+[![Win_Tests](../../actions/workflows/push_win.yml/badge.svg)](../../actions/workflows/push_win.yml)
+
+
+
+![here-title](https://github.com/user-attachments/assets/c661d973-3f44-4a70-b3ae-cb75bbf09285)
+
+
+Replace `template-python-cmd` and `template_python_cmd` with your command. Run tox until it's
+correct.
+
+To develop software, run `. ./activate.sh`
+
+# Windows
+
+This environment requires you to use `git-bash`.
+
+# Linting
+
+Run `./lint.sh` to find linting errors using `pylint`, `flake8` and `mypy`.

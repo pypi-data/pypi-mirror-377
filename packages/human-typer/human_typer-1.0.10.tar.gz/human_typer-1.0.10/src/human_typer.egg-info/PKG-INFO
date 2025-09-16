@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: human_typer
+Version: 1.0.10
+Summary: Python package to simulate human keyboard typing
+Home-page: https://github.com/UnMars/human_typer
+Author: UnMars
+Author-email: guillaume_roboam@hotmail.fr
+Maintainer: UnMars
+License: MIT
+Project-URL: Homepage, https://github.com/UnMars/human_typer
+Project-URL: Repository, https://github.com/UnMars/human_typer
+Project-URL: Issues, https://github.com/UnMars/human_typer/issues
+Keywords: human,typing,bot,keyboard,selenium,automation
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: keyboard>=0.13.5
+Requires-Dist: selenium>=3.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Human Typer
+
+Python package to simulate human keyboard typing
+
+## Installation
+
+Use the package manager [pip](https://pypi.org/project/human_typer/) to install human-typer.
+
+```bash
+pip install human_typer
+```
+
+## Usage
+
+```python
+from human_typer import Human_typer
+
+My_Typer = Human_typer(keyboard_layout = "qwerty", average_cpm = 190)
+
+# Directly with keyboard 
+My_Typer.keyboard_type("my text")
+
+# With an Selenium element
+my_element = driver.find_element_by_id("ID")
+My_Typer.type_in_element("my text", my_element)
+```
+
+## Contributing
+Pull requests are welcome 😊
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

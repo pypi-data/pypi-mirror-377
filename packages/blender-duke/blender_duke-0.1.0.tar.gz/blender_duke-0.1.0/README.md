@@ -1,0 +1,1 @@
+duke is a command-line tool for bootstrapping, testing and packaging Blender add-on projects (inspired by poetry and similar to it in usage)

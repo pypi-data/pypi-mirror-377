@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: pdf2md-converter
+Version: 0.1.0
+Summary: A PDF to clean, pagewise Markdown converter.
+Author-email: Pratik <pratikpradhan64@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Pillow
+Requires-Dist: PyMuPDF
+Requires-Dist: torch
+Requires-Dist: transformers
+Requires-Dist: pytest
+Requires-Dist: protobuf>=6.32.1
+Requires-Dist: torchvision>=0.23.0
+Requires-Dist: sentencepiece>=0.2.1
+Requires-Dist: pytesseract>=0.3.13
+Provides-Extra: all
+Requires-Dist: easyocr; extra == "all"
+Requires-Dist: pytesseract; extra == "all"
+Requires-Dist: layoutparser[detectron2]; extra == "all"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-mock; extra == "test"
+Requires-Dist: psutil; extra == "test"
+Dynamic: license-file
+
+# pdf2md: PDF to Markdown Converter
+
+`pdf2md` is an open-source Python library and CLI tool for converting PDF documents into clean, page-wise Markdown files. It leverages modern, GPU-accelerated OCR and layout detection models from the Hugging Face ecosystem, with robust fallbacks to widely used tools like EasyOCR and Tesseract.
+
+[Image of a PDF document on the left being converted to a Markdown document on the right with images and text blocks]
+
+## Features
+
+-   **Multi-Backend OCR**: Supports TrOCR (Hugging Face), EasyOCR, and Tesseract.
+-   **Layout-Aware**: Uses `layoutparser` (optional) to intelligently detect text, image, and table blocks, with a heuristic fallback.
+-   **Resource-Aware**: Explicitly manages GPU memory and resources to prevent leaks.
+-   **CLI & Library**: Use it as a powerful command-line tool or integrate it into your Python projects.
+-   **Docker Support**: CPU-only Docker image is provided by default, with clear instructions for GPU acceleration.
+
+## Quickstart (CLI)
+
+1.  **Create a virtual environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    ```
+2.  **Install the library and dependencies:**
+    ```bash
+    pip install ".[all]" # Installs all optional dependencies for full functionality
+    ```
+3.  **Run a conversion:**
+    ```bash
+    # Convert a scanned document using pytesseract (CPU-only)
+    pdf2md --input documents/scanned_book.pdf --out output/ --backend pytesseract --layout heuristic
+    ```
+
+## Docker Usage
+
+A `Dockerfile` is provided for running `pdf2md` in a containerized environment. By default, it's configured for **CPU-only** mode.
+
+1.  **Build the CPU image:**
+    ```bash
+    docker build -t pdf2md .
+    ```
+2.  **Run the CLI (CPU-only):**
+    ```bash
+    docker run --rm -v $(pwd):/data pdf2md --input /data/sample.pdf --out /data/output --backend easyocr
+    ```
+
+### How to Enable GPU Support
+
+To run `pdf2md` with GPU acceleration, you need to use a base image with CUDA and install the correct PyTorch wheel.
+
+1.  **Modify `Dockerfile`**: Uncomment the `FROM nvidia/cuda:11.8.0-base-ubuntu22.04` and `WORKDIR /app` lines, and comment out the CPU base image.
+2.  **Update PyTorch Installation**: Change the PyTorch install command to point to a CUDA-enabled wheel, for example: `pip install torch==2.1.0+cu118 --index-url https://download.pytorch.org/whl/cu118`. **Note**: Check the official PyTorch website for the latest compatible wheel URL.
+3.  **Use `docker-compose`**: The `docker-compose.yml` is pre-configured to enable NVIDIA container runtime support. Uncomment the `runtime: nvidia` line under the `pdf2md` service.
+4.  **Build and run (GPU):**
+    ```bash
+    # Build with new Dockerfile
+    docker build -t pdf2md:gpu .
+    # Run with docker-compose
+    docker-compose up
+    ```
+
+## Contributing & Testing
+
+### Running Tests
+
+To run the unit and integration tests, first install the test dependencies:
+```bash
+pip install ".[test]"
+pytest

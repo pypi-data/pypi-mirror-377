@@ -1,0 +1,416 @@
+# ===================================================================
+# Enhanced Pre-commit Configuration for MCP MLOps Server
+# ===================================================================
+# Comprehensive pre-commit hooks for code quality, security, and 
+# Docker best practices with performance optimization.
+# ===================================================================
+
+# Pre-commit configuration version
+default_stages: [commit]
+minimum_pre_commit_version: '3.0.0'
+
+# Global settings
+default_language_version:
+  python: python3.12
+  node: 20.10.0
+
+# Fail fast on first error to improve developer experience
+fail_fast: true
+
+# Repository-wide configuration
+repos:
+  # ===================================================================
+  # Core Python Code Quality
+  # ===================================================================
+  
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # File integrity checks
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+        exclude: '\.dvc$'
+      - id: check-merge-conflict
+        args: [--assume-in-merge]
+      - id: check-added-large-files
+        args: [--maxkb=10240]  # 10MB limit
+      
+      # Syntax and structure validation
+      - id: check-yaml
+        args: [--unsafe]  # Allow custom constructors
+      - id: check-json
+        exclude: '^\.vscode/'
+      - id: check-toml
+      - id: check-xml
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: check-builtin-literals
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      
+      # Python-specific checks
+      - id: check-ast
+      - id: name-tests-test
+        args: [--pytest-test-first]
+      - id: requirements-txt-fixer
+        files: requirements.*\.txt$
+
+  # ===================================================================
+  # Python Formatting and Import Organization
+  # ===================================================================
+  
+  - repo: https://github.com/psf/black
+    rev: 24.2.0
+    hooks:
+      - id: black
+        name: "Format Python code with Black"
+        language_version: python3.12
+        args: [--line-length=88, --target-version=py312]
+        types_or: [python, pyi]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: "Sort Python imports with isort"
+        args: [--profile=black, --line-length=88]
+        types: [python]
+
+  # ===================================================================
+  # Python Linting and Type Checking
+  # ===================================================================
+  
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        name: "Lint Python code with Flake8"
+        additional_dependencies: 
+          - flake8-docstrings>=1.7.0
+          - flake8-bugbear>=24.0.0
+          - flake8-comprehensions>=3.14.0
+          - flake8-simplify>=0.21.0
+          - flake8-bandit>=4.1.0
+          - flake8-pytest-style>=1.7.2
+        args: [--max-line-length=88, --extend-ignore=E203,W503]
+        types: [python]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: "Type check Python code with MyPy"
+        additional_dependencies: 
+          - types-PyYAML
+          - types-requests
+          - types-toml
+        args: [--strict, --ignore-missing-imports]
+        exclude: ^(tests/|docs/)
+        types: [python]
+
+  # ===================================================================
+  # Security Scanning
+  # ===================================================================
+  
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        name: "Security scan Python code with Bandit"
+        args: [-r, --format=custom, --skip=B101,B601]
+        exclude: ^tests/
+        types: [python]
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: "Detect secrets in code"
+        args: ['--baseline', '.secrets.baseline']
+        exclude: |
+          (?x)^(
+            \.env\.example|
+            \.secrets\.baseline|
+            poetry\.lock|
+            uv\.lock|
+            package-lock\.json
+          )$
+
+  # ===================================================================
+  # Documentation and Markdown
+  # ===================================================================
+  
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        name: "Lint Markdown files"
+        args: [--fix, --config=.markdownlint.yaml]
+        types: [markdown]
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17
+    hooks:
+      - id: mdformat
+        name: "Format Markdown files"
+        additional_dependencies:
+          - mdformat-gfm>=0.3.5
+          - mdformat-black>=0.1.1
+        args: [--wrap=88]
+        types: [markdown]
+
+  # ===================================================================
+  # Docker and Container Security
+  # ===================================================================
+  
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        name: "Lint Dockerfile with Hadolint"
+        args: [--config=.hadolint.yaml]
+        types: [dockerfile]
+
+  - repo: local
+    hooks:
+      # Custom Docker security check
+      - id: dockerfile-security-check
+        name: "Docker security best practices check"
+        entry: bash -c 'for dockerfile in "$@"; do
+          echo "🔍 Checking $dockerfile for security issues...";
+          if grep -q "^USER root" "$dockerfile"; then
+            echo "❌ Security issue: Found USER root in $dockerfile";
+            exit 1;
+          fi;
+          if ! grep -q "^USER [^r]" "$dockerfile"; then
+            echo "⚠️  Warning: No non-root USER specified in $dockerfile";
+          fi;
+          if grep -q "ADD http" "$dockerfile"; then
+            echo "❌ Security issue: Using ADD with HTTP URL in $dockerfile";
+            exit 1;
+          fi;
+          echo "✅ Docker security check passed for $dockerfile";
+        done'
+        language: system
+        files: Dockerfile.*
+        types: [dockerfile]
+
+      # Docker Compose validation
+      - id: docker-compose-check
+        name: "Validate Docker Compose files"
+        entry: bash -c 'for compose_file in "$@"; do
+          echo "🔍 Validating $compose_file...";
+          if command -v docker-compose >/dev/null 2>&1; then
+            docker-compose -f "$compose_file" config >/dev/null || exit 1;
+          else
+            echo "⚠️  docker-compose not available, skipping validation";
+          fi;
+          echo "✅ Docker Compose validation passed for $compose_file";
+        done'
+        language: system
+        files: docker-compose.*\.ya?ml$
+        types: [yaml]
+
+  # ===================================================================
+  # Environment and Configuration
+  # ===================================================================
+  
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        name: "Lint YAML files"
+        args: [-c=.yamllint.yaml]
+        types: [yaml]
+
+  - repo: local
+    hooks:
+      # Environment file validation
+      - id: env-file-check
+        name: "Validate environment files"
+        entry: bash -c 'for env_file in "$@"; do
+          echo "🔍 Checking $env_file...";
+          if grep -q "password.*=" "$env_file"; then
+            echo "❌ Found hardcoded password in $env_file";
+            exit 1;
+          fi;
+          if grep -q "secret.*=" "$env_file"; then
+            echo "❌ Found hardcoded secret in $env_file";
+            exit 1;
+          fi;
+          echo "✅ Environment file check passed for $env_file";
+        done'
+        language: system
+        files: '\.env.*'
+        exclude: '\.env\.example$'
+
+      # Configuration consistency check
+      - id: config-consistency-check
+        name: "Check configuration consistency"
+        entry: python
+        args: [-c, "
+import os
+import sys
+from pathlib import Path
+import toml
+
+print('🔍 Checking configuration consistency...')
+
+# Check pyproject.toml
+pyproject = toml.load('pyproject.toml')
+version = pyproject['project']['version']
+print(f'📦 Project version: {version}')
+
+# Check Dockerfile version consistency
+dockerfile = Path('Dockerfile').read_text()
+if f'VERSION={version}' not in dockerfile:
+    print(f'⚠️  Warning: Dockerfile may need version update to {version}')
+
+# Check that all required environment variables are documented
+env_example = Path('.env.example')
+if env_example.exists():
+    env_vars = env_example.read_text()
+    required_vars = ['MLFLOW_TRACKING_URI', 'DATA_DIR', 'AWS_ACCESS_KEY_ID']
+    for var in required_vars:
+        if var not in env_vars:
+            print(f'❌ Missing required environment variable {var} in .env.example')
+            sys.exit(1)
+
+print('✅ Configuration consistency check passed')
+        "]
+        language: python
+        files: '(pyproject\.toml|Dockerfile|\.env\.example)$'
+        pass_filenames: false
+
+  # ===================================================================
+  # Performance and Best Practices
+  # ===================================================================
+  
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.1
+    hooks:
+      - id: pyupgrade
+        name: "Upgrade Python syntax"
+        args: [--py312-plus]
+        types: [python]
+
+  - repo: https://github.com/pycqa/autoflake
+    rev: v2.3.0
+    hooks:
+      - id: autoflake
+        name: "Remove unused imports and variables"
+        args: 
+          - --remove-all-unused-imports
+          - --remove-unused-variables
+          - --remove-duplicate-keys
+          - --in-place
+        types: [python]
+
+  # ===================================================================
+  # Git and Version Control
+  # ===================================================================
+  
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.15.0
+    hooks:
+      - id: commitizen
+        name: "Check commit message format"
+        stages: [commit-msg]
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        name: "Format JSON, YAML, and Markdown with Prettier"
+        additional_dependencies:
+          - prettier@3.2.5
+          - "@prettier/plugin-xml@3.4.1"
+        types_or: [json, yaml, markdown]
+        exclude: |
+          (?x)^(
+            \.vscode/|
+            uv\.lock|
+            \.secrets\.baseline
+          )$
+
+  # ===================================================================
+  # Local Custom Hooks
+  # ===================================================================
+  
+  - repo: local
+    hooks:
+      # Project structure validation
+      - id: project-structure-check
+        name: "Validate project structure"
+        entry: python
+        args: [-c, "
+import os
+from pathlib import Path
+
+print('🔍 Checking project structure...')
+
+required_dirs = [
+    'src/mcp_mlops_server',
+    'tests',
+    'src/mcp_mlops_server/data',
+    'src/mcp_mlops_server/tools',
+    'src/mcp_mlops_server/utils',
+]
+
+required_files = [
+    'pyproject.toml',
+    'README.md',
+    'Dockerfile',
+    'Makefile',
+    '.env.example',
+    'src/mcp_mlops_server/__init__.py',
+    'src/mcp_mlops_server/server.py',
+]
+
+missing_items = []
+
+for dir_path in required_dirs:
+    if not Path(dir_path).is_dir():
+        missing_items.append(f'Directory: {dir_path}')
+
+for file_path in required_files:
+    if not Path(file_path).is_file():
+        missing_items.append(f'File: {file_path}')
+
+if missing_items:
+    print('❌ Missing required project structure items:')
+    for item in missing_items:
+        print(f'  - {item}')
+    exit(1)
+else:
+    print('✅ Project structure validation passed')
+        "]
+        language: python
+        pass_filenames: false
+        always_run: true
+
+      # License header check
+      - id: license-header-check
+        name: "Check license headers in Python files"
+        entry: bash -c 'for file in "$@"; do
+          if [[ "$file" == src/mcp_mlops_server/*.py ]] && [[ ! "$file" == *__init__.py ]]; then
+            if ! head -n 10 "$file" | grep -q "MLOps Server"; then
+              echo "⚠️  Consider adding license/copyright header to $file";
+            fi;
+          fi;
+        done'
+        language: system
+        types: [python]
+        exclude: '(__init__|test_).*\.py$'
+
+# ===================================================================
+# Configuration Files for Tools
+# ===================================================================
+
+# The following configuration files should also be created:
+# - .hadolint.yaml (Dockerfile linting)
+# - .markdownlint.yaml (Markdown linting)  
+# - .yamllint.yaml (YAML linting)
+# - .secrets.baseline (secrets detection baseline)

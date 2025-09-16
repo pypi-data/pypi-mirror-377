@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"\nfrom mcp.types import Tool\nfrom mcp.server import Server\nhelp(Tool)\n\")",
+      "Bash(python -c \"\nimport asyncio\nimport sys\nsys.path.insert(0, ''src'')\n\nfrom tencent_cloud_search_mcp.server import TencentCloudSearchServer\n\nasync def test_list_tools():\n    server = TencentCloudSearchServer()\n    \n    try:\n        # 模拟调用list_tools\n        tools = [\n            {\n                ''name'': ''tencent_search'',\n                ''description'': ''使用腾讯云联网搜索API进行搜索'',\n                ''inputSchema'': {\n                    ''type'': ''object'',\n                    ''properties'': {\n                        ''query'': {''type'': ''string'', ''description'': ''搜索查询关键词''},\n                        ''limit'': {''type'': ''integer'', ''description'': ''返回结果数量限制 (默认10)'', ''default'': 10}\n                    },\n                    ''required'': [''query'']\n                }\n            }\n        ]\n        \n        print(''✅ 工具列表构造成功'')\n        print(''工具数量:'', len(tools))\n        print(''第一个工具:'', tools[0])\n        \n    except Exception as e:\n        print(''❌ 测试失败:'', e)\n        import traceback\n        traceback.print_exc()\n\nasyncio.run(test_list_tools())\n\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

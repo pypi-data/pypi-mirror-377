@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vlbisim"
+version = "0.1.1"
+description = "A simple simulator for VLBI"
+readme = "README.md"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+license = "MIT"  # must be a string, not a table
+requires-python = ">=3.9"
+
+
+dependencies = [
+    "pandas",
+    "matplotlib",
+    "numpy",
+    "astropy",
+    "numba",
+    "celluloid",
+    "basemap"]
+[project.scripts]
+vlbisim = "vlbisim.vlbisim:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

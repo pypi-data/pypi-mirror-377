@@ -1,0 +1,136 @@
+Metadata-Version: 2.4
+Name: vlbisim
+Version: 0.1.1
+Summary: A simple simulator for VLBI
+Author-email: Your Name <you@example.com>
+License-Expression: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: astropy
+Requires-Dist: numba
+Requires-Dist: celluloid
+Requires-Dist: basemap
+Dynamic: license-file
+
+# vlbisim
+
+`vlbisim` is a Python package for simulating Very Long Baseline Interferometry (VLBI) observations. It allows users to define telescope arrays, simulate uv-coverage for astronomical sources, visualize baseline distributions, and create synthetic dirty images. The package supports major VLBI arrays such as VLBA, EHT, ngVLA, EVN, and user-defined custom arrays.
+
+---
+
+## Features
+
+- Define and configure telescopes with latitude, longitude, elevation, and visibility limits.  
+- Calculate uv-coverage for arbitrary telescope arrays and sources.  
+- Simulate interferometric observations with customizable observation times and scan durations.  
+- Plot uv-coverage with baseline highlighting options.  
+- Generate synthetic dirty images from uv-coverage.  
+- Visualize telescope locations on world maps and globes.  
+- Supports major VLBI arrays, including VLBA, EHT, ngVLA, GMVA, EVN, MeerKAT, SKA, and others.  
+
+---
+
+## Installation
+
+```bash
+pip install vlbisim
+```
+
+> **Note:** Some features require additional dependencies such as `numpy`, `matplotlib`, `astropy`, `basemap`, and `numba`.
+
+---
+
+## Usage
+
+### Importing the package
+
+```python
+from vlbisim import Telescope, getArray, simulateUV, plotUVdata, plotMap
+```
+
+---
+
+### Define telescopes
+
+```python
+# Create a single telescope
+t1 = Telescope(lat=50.524778, lon=6.883972, name="Effelsberg", elev_lim=15)
+
+# Load a pre-defined array
+vlba = getArray("VLBA")
+```
+
+---
+
+### Simulate uv-coverage
+
+```python
+# Define source coordinates [RA, Dec] in degrees
+source = [180.0, 45.0]
+
+# Simulate uv-coverage
+uv_coverage = simulateUV(vlba, source, n_iter=100, obsstart=0, obsend=24, make_plot=True)
+```
+
+---
+
+### Plot uv-coverage
+
+```python
+plotUVdata(uv_coverage, highlight_baselines=[0, 1, 2])
+```
+
+---
+
+### Plot telescope array on a world map
+
+```python
+plotMap(vlba, llcrnrlat=-90, urcrnrlat=90, llcrnrlon=-180, urcrnrlon=180)
+```
+
+---
+
+### Additional Utilities
+
+- `SplitScans`: Split long observations into shorter scans.  
+- `combine_telescopes`: Merge multiple arrays.  
+- `getHighlightBaselines`: Highlight specific baselines in plots.  
+- `plotGlobe`: Visualize telescope arrays on a 3D globe.  
+- `get_elevation`: Fetch telescope elevation using Open-Meteo API.  
+
+---
+
+## Examples
+
+```python
+# Combine two arrays
+full_array = combine_telescopes([getArray("VLBA"), getArray("EVN")])
+
+# Split observation into scans
+uv_scans = SplitScans(full_array, source=[180,45], obstart=0, obsend=24, scan_time=2, n_scans=12)
+
+# Animate uv-coverage and save as mp4
+simulateUV(full_array, source, make_movie=True, output_name="uvout.mp4")
+```
+
+---
+
+## Dependencies
+
+- `numpy`  
+- `matplotlib`  
+- `astropy`  
+- `basemap`  
+- `numba`  
+- `requests`  
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+

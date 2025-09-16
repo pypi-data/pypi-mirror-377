@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: pylerolero
+Version: 0.0.1
+Summary: Gerador de lero-lero em formato de frases e textos.
+Home-page: UNKNOWN
+Author: João Marcos Campagnolo
+Author-email: jota.campagnolo@gmail.com
+License: MIT License
+Project-URL: Bug Tracker, https://github.com/JotaCampagnolo/pylerolero/issues
+Project-URL: Source Code, https://github.com/JotaCampagnolo/pylerolero
+Keywords: fake lero frase texto
+Platform: UNKNOWN
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+<div align="center">
+  <img src="logo.png" width="400"/>
+  <h1>Gerador de Lero-Lero em Python</h1>
+  <p>Este é um pacote Python para gerar frases e textos completos no estilo "lero-lero" corporativo em português do Brasil. Ideal para dar uma leve descontraída em apresentações, relatórios e e-mails que precisam soar complexos e estratégicos.</p>
+  
+  ![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)
+    ![License](https://img.shields.io/badge/license-MIT-green)
+</div>
+
+## Instalação
+
+Você pode instalar o pacote diretamente do PyPI:
+
+```bash
+pip install pylerolero
+```
+
+## Como Usar
+O pacote oferece duas funções principais para a geração de texto:
+- `gerar_frase(tamanho=1)`
+- `gerar_texto(num_frases=1, tamanho_min=1, tamanho_max=1)`
+
+### Gerando uma única frase
+Use a função `gerar_frase(tamanho=1)` para criar uma única frase de lero-lero. Você pode definir o tamanho da frase com o parâmetro tamanho. Um valor maior resulta em frases mais longas e complexas, sendo que o padrão é 1.
+
+- Estrutura das frases: `(adjunto + sujeito + verbo + complemento [+ conexão])`. As conexões são utilizadas para conectar segmentos de frases com tamanho maior que 1.
+
+```Python
+from pylerolero import gerar_frase
+
+print(gerar_frase())
+# Exemplo de saída: "Olhando para o ciclo de vida do produto o ecossistema de parceiros facilita as métricas de sucesso."
+
+print(gerar_frase(tamanho=2))
+# Exemplo de saída: "Para assegurar a consistência o ponto de contato promove os padrões de excelência, além disso através de uma análise criteriosa o plano de ação prioriza o nosso planejamento estratégico."
+```
+
+### Gerando um parágrafo de texto
+Para gerar um parágrafo com várias frases, utilize a função `gerar_texto(num_frases=1, tamanho_min=1, tamanho_max=1)`. Você pode usar os parâmetros abaixo para personalizar o texto gerado:
+
+- `num_frases` [opcional]: o número de frases no parágrafo, sendo que o padrão é 1;
+- `tamanho_min` [opcional]: a quantidade mínima de segmentos de cada frase, sendo que o padrão é 1;
+- `tamanho_max` [opcional]: a quantidade máxima de segmentos de cada frase, sendo que o padrão é 1.
+
+```Python
+from gerador_lerolero import gerar_texto
+
+print(gerar_texto(num_frases=3, tamanho_min=1, tamanho_max=3))
+# Exemplo de saída: "No cenário de transformação digital o nicho de mercado conecta com o nosso planejamento estratégico. Com base nas melhores práticas a estratégia de marketing busca aprimorar a comunicação interdepartamental, e se não bastasse isso, olhando para o ciclo de vida do produto a jornada do cliente garante a melhoria contínua dos processos, portanto, de modo a garantir a aderência a escalabilidade da solução está remodelando os padrões de qualidade. Diante do novo cenário a experiência do usuário (UX) conecta com a nossa capacidade de entrega."
+```
+
+## Contribuição
+Contribuições são sempre bem-vindas! Se você tiver mais palavras ou frases para adicionar, sinta-se à vontade para abrir uma pull request.
+
+- Faça um Fork do projeto.
+- Crie uma nova branch `git checkout -b feature/sua-feature`;
+- Adicione suas alterações `git add .`;
+- Faça um Commit `git commit -m 'Adiciona nova feature'`;
+- Envie para o GitHub `git push origin feature/sua-feature`;
+- Abra um Pull Request.
+

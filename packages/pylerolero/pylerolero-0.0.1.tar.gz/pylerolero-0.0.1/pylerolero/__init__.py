@@ -1,0 +1,1 @@
+from .pylerolero import gerar_frase, gerar_texto

@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: pwntools_util
+Version: 0.0.2
+Summary: pwntools wrapper with bytes casting and common utils
+Author-email: Mario Chao <az0112mario@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/MarioChao/pwntools_util
+Project-URL: Issues, https://github.com/MarioChao/pwntools_util/issues
+Keywords: pwntools,exploit,ctf,flag
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pwntools>=4.14.1
+Dynamic: license-file
+
+# Welcome to pwntools util!
+
+This Python package is a wrapper class for Gallopsled's [pwntools](https://www.pwntools.com). It's created to facilitate different aspects of writing a pwntools program.
+
+```py
+from pwntools_util import PwnUtil
+
+ppp = PwnUtil()
+ppp.connectRemote('example.com', 352)
+
+n = ppp.getNumberFromLine()
+ppp.sendline('the payload')
+ppp.interactive()
+
+ppp.disconnect()
+```
+
+## Installation
+
+pwntools_util is on the Python Package Index (PyPI). Install it using [pip](https://pip.pypa.io/en/stable/):
+
+```sh
+python3 -m pip install --upgrade pwntools-util
+```

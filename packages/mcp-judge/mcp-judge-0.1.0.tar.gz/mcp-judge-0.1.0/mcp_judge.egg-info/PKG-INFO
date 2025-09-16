@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: mcp-judge
+Version: 0.1.0
+Summary: A Streamlit application for testing and inspecting MCP tools.
+Home-page: UNKNOWN
+Author: Nilavo Boral
+Author-email: nilavoboral@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+
+# 🧑‍⚖️ MCP Judge
+
+An interactive interface for testing and inspecting your MCP tools. This Streamlit application helps you connect to an MCP server, list available tools, inspect their schemas, and run them with custom inputs, all from a clean, web-based UI.
+
+## ✨ Features
+
+* **Connect to any MCP Server:** Easily connect to a new MCP server by simply entering its URL.
+* **Discover & Inspect Tools:** View a list of all available tools and their descriptions.
+* **Dynamic Input Forms:** The app automatically generates input forms based on the tool's `inputSchema`.
+* **Live Tool Testing:** Run any tool with your specified inputs and see the JSON output in real-time.
+* **Clear, Intuitive Layout:** A clean, two-column design separates connection and tool selection from inputs and results, providing a professional user experience.
+
+---
+
+## 🚀 Installation
+
+You can install `mcp-judge-app` directly from PyPI.
+
+```bash
+pip install mcp-judge-app
+```
+
+---
+
+### 💻 How to Run
+
+After installation, you can launch the application from your terminal with a single command:
+
+```bash
+mcp-judge
+```
+This will automatically start a local server and open the app in your default web browser.
+
+---
+
+### 🛠️ Usage
+
+1.  **Enter Server URL:** On the left side of the screen, enter the URL of the MCP server you want to test and click **"Connect"**.
+2.  **Select a Tool:** Once connected, a list of available tools will appear below. Choose the tool you want to test from the dropdown menu.
+3.  **Provide Inputs:** The right side of the screen will show a form based on the selected tool's required inputs. Fill in the necessary details.
+4.  **Run the Tool:** Click the **"Run Tool"** button to execute the tool. The output will be displayed in the **"Tool Result"** section below.
+
+---
+
+### 📄 Requirements
+
+* Python 3.11+
+* `fastmcp`
+* `streamlit`
+
+---
+
+### ⚖️ License
+
+This project is licensed under the MIT License.
+

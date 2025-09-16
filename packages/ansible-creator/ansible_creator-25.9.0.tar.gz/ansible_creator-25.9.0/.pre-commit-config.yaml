@@ -1,0 +1,109 @@
+---
+ci:
+  # We rely on renovate to update it but there is no way to fully disable it
+  # https://github.com/pre-commit-ci/issues/issues/83
+  autoupdate_schedule: quarterly
+  skip:
+    # https://github.com/pre-commit-ci/issues/issues/55
+    - ccv
+    # No docker on pre-commit.ci
+repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.8.17
+    hooks:
+      - id: uv-sync
+      - id: uv-lock
+        name: "deps: upgrade via uv sync --upgrade"
+        alias: deps
+        args: ["--upgrade"]
+        stages: [manual]
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
+  - repo: https://github.com/rbubley/mirrors-prettier
+    # keep it before yamllint
+    rev: v3.6.2
+    hooks:
+      - id: prettier
+        always_run: true
+        additional_dependencies:
+          - prettier
+          - prettier-plugin-sort-json@3.1.0
+  - repo: https://github.com/streetsidesoftware/cspell-cli
+    rev: v9.2.0
+    hooks:
+      - id: cspell
+        name: Spell check with cspell
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: debug-statements
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+  - repo: https://github.com/Lucas-C/pre-commit-hooks.git
+    rev: v1.5.5
+    hooks:
+      - id: remove-tabs
+        exclude: >
+          (?x)^(
+            .config/pydoclint-baseline.txt
+          )$
+
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.6.2
+    hooks:
+      - id: prettier
+        always_run: true
+        additional_dependencies:
+          - prettier
+          - prettier-plugin-toml
+          - prettier-plugin-sort-json
+
+  - repo: https://github.com/pappasam/toml-sort
+    rev: v0.24.3
+    hooks:
+      - id: toml-sort-fix
+        alias: toml
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.0
+    hooks:
+      - id: ruff-format
+        alias: ruff
+      - id: ruff-check
+  - repo: https://github.com/pre-commit/mirrors-mypy.git
+    rev: v1.18.1
+    hooks:
+      - id: mypy
+        additional_dependencies: &deps
+          - argcomplete
+          - jinja2
+          - pytest
+          - pyyaml
+          - types-pyyaml
+        # Override default pre-commit '--ignore-missing-imports'
+        args: []
+  - repo: https://github.com/jsh9/pydoclint
+    rev: "0.7.3"
+    hooks:
+      - id: pydoclint
+        # This allows automatic reduction of the baseline file when needed.
+        entry: sh -ec "pydoclint . && pydoclint --generate-baseline=1 ."
+        pass_filenames: false
+
+  - repo: https://github.com/pycqa/pylint.git
+    rev: v3.3.8
+    hooks:
+      - id: pylint
+        args:
+          - --output-format=colorized
+        additional_dependencies: *deps
+  - repo: https://github.com/mashi/codecov-validator
+    rev: "1.0.1"
+    hooks:
+      - id: ccv
+        name: codecov

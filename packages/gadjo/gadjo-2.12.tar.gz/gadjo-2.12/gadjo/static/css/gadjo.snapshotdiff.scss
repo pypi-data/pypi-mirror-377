@@ -1,0 +1,98 @@
+p.snapshot-description {
+	font-size: 80%;
+	margin: 0;
+}
+
+table.diff {
+	background: white;
+	border: 1px solid #f3f3f3;
+	border-collapse: collapse;
+	width: 100%;
+	colgroup, thead, tbody, td {
+		border: 1px solid #f3f3f3;
+	}
+	tbody tr:nth-child(even) {
+		background: #fdfdfd;
+	}
+	th, td {
+		max-width: 30vw;
+		/* it will not actually limit width as the table is set to
+		 * expand to 100% but it will prevent one side getting wider
+		 */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		vertical-align: top;
+	}
+	.diff_header {
+		background: #f7f7f7;
+	}
+	td.diff_header {
+		text-align: right;
+		padding-right: 10px;
+		color: #606060;
+	}
+	.diff_next {
+		display: none;
+	}
+	.diff_add {
+		background-color: #aaffaa;
+	}
+	.diff_chg {
+		background-color: #ffff77;
+	}
+	.diff_sub {
+		background-color: #ffaaaa;
+	}
+	.difflib_chg_to td {
+		background-color: #f7f7f7;
+	}
+	.expand-handler td {
+		text-align: left;
+		background-color: #f7f7f7;
+		&:hover {
+			background-color: inherit;
+		}
+	}
+	.expand-before, .expand-between, .expand-after {
+		cursor: pointer;
+		&::before {
+			font-family: FontAwesome;
+			padding: 0 2ex;
+		}
+	}
+	.expand-before::before {
+		content: "\f176";  // long-arrow-up
+	}
+	.expand-between::before {
+		content: "\f07d";  // arrows-v
+	}
+	.expand-after::before {
+		content: "\f175";  // long-arrow-down
+	}
+}
+
+div.snapshot-diff {
+	margin: 1em 0;
+	display: none;
+	ins {
+		text-decoration: none;
+		background-color: #d4fcbc;
+	}
+	del {
+		text-decoration: line-through;
+		background-color: #fbb6c2;
+		color: #555;
+	}
+	h3 {
+		del, ins {
+			font-weight: bold;
+			background-color: transparent;
+		}
+		del, del a {
+			color: #fbb6c2 !important;
+		}
+		ins, ins a {
+			color: #d4fcbc !important;
+		}
+	}
+}

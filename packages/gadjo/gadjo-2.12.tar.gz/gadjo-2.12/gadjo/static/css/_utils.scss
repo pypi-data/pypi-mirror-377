@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../xstatic/fonts/fontawesome-webfont.eot');
+	src: url('../xstatic/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'), url('../xstatic/fonts/fontawesome-webfont.woff') format('woff'), url('../xstatic/fonts/fontawesome-webfont.ttf') format('truetype'), url('../xstatic/fonts/fontawesome-webfont.svg#fontawesomeregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@function text-color($color) {
+  @if (lightness($color) > 50) {
+    @return #303030;
+  } @else {
+    @return #ffffff;
+  }
+}
+
+// Only display content to screen readers
+@mixin sr-only {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+}
+
+.sr-only {
+	@include sr-only();
+}
+
+// bare list : for ol / ul, remove default list styles
+@mixin bare-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.bare-list {
+	@include bare-list();
+}
+
+@media not print {
+	.pk-print-only {
+		display: none !important;
+	}
+}
+
+@media print {
+	.pk-no-print {
+		display: none !important;
+	}
+}

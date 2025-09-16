@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<div
+  class="gadjo-multi-select-widget"
+  data-row-id="{{ widget.name }}"
+  data-row-label="{% trans "Value" %}"
+  {% if widget.max_choices %}data-max-choices="{{ widget.max_choices }}"{% endif %}
+>
+  <div class="gadjo-multi-select-widget--fields" role="group" aria-labelledby="{{ widget.name }}_title">
+    {% for widget in widget.subwidgets %}
+      <div class="gadjo-multi-select-widget--field">
+        <label for="{{ widget.name }}_{{ forloop.counter }}" class="sr-only">{% trans "Value" %} {{ forloop.counter }}</label>
+        <div class="gadjo-multi-select-widget--select-button-container">
+          {% include widget.template_name %}
+          <button type="button" name="{{ widget.name }}$remove_element" class="gadjo-multi-select-widget--button-remove" title="{% trans "Remove" %}" aria-label="{% trans "Remove value" %} {{ forloop.counter }}"></button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button
+    type="button"
+    name="{{ widget.name }}$add_element"
+    class="gadjo-multi-select-widget--button-add"
+    title="{% trans "Add" %}"
+    aria-label="{% trans "Add" %}"
+    {% if widget.subwidgets|length >= widget.max_choices %}disabled{% endif %}
+  ></button>
+</div>

@@ -1,0 +1,35 @@
+.gadjo-multi-select-widget {
+	&--field {
+		  margin-bottom: 0.2em;
+	}
+
+	&--select-button-container {
+		  display: flex;
+		  gap: 0.5em;
+	}
+
+	&--field {
+		select {
+			  min-width: 0;
+		}
+
+		button {
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+
+		&:first-of-type .gadjo-multi-select-widget--button-remove {
+			display: none;
+		}
+	}
+
+	&--button-add::before {
+		content: "\f067"; /* plus */
+		font-family: FontAwesome;
+	}
+
+	&--button-remove::before {
+		content: "\f068"; /* minus */
+		font-family: FontAwesome;
+	}
+}

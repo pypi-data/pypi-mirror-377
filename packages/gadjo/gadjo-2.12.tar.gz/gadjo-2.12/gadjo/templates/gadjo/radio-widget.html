@@ -1,0 +1,9 @@
+{% extends "gadjo/widget.html" %}
+
+{% block widget-attrs %}role="radiogroup"{% endblock %}
+
+{% block widget-control %}
+  {% for option in field %}
+    {{ option }}
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,20 @@
+recursive-include gadjo/locale *.po *.mo
+recursive-include gadjo/templates *.txt *.html
+recursive-include gadjo/static *.scss *.css *.map *.png *.gif *.eot *.woff *.ttf *.svg *.jpg *.jpeg *.js README.md LICENSE release.sh
+recursive-include icons *.svg
+
+prune debian
+
+include MANIFEST.in
+include AUTHORS
+include COPYING
+include VERSION
+include inkscape_wrapper.py
+include *.py
+include *.rc
+include *.sh
+include *.yaml
+include *.yml
+include pytest.ini
+
+exclude .git-blame-ignore-revs

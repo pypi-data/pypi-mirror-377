@@ -1,0 +1,104 @@
+// ======
+//	fx-grid.css
+//	flexbox grid system
+// =====
+
+// Publik vars
+$fx-grid-gutter: 1rem;
+$fx-grid-gutter-and-epsilon: $fx-grid-gutter + 0.00001rem;
+$fx-grid-cell-min-size: 10em; // for .fx-grid--auto
+$fx-grid-mobile-limit: $very-small-limit;
+$fx-grid-tablet-limit: $grid-mobile-limit;
+$max-cols-mobile : 3;
+$max-cols-tablet : 6;
+$max-cols-desktop : 9;
+
+//	custom media queries
+//		ex. @media ($max-grid-mobile-viewport) {}
+$max-grid-mobile-viewport: "max-width: #{$fx-grid-mobile-limit}";
+$min-grid-tablet-viewport: "min-width: #{$fx-grid-mobile-limit + 1}";
+$min-grid-desktop-viewport: "min-width: #{$fx-grid-tablet-limit + 1}";
+
+
+.fx-grid,
+[class*="fx-grid--"] {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+	margin-left: -1 * $fx-grid-gutter;
+	/* if flex item are list */
+	list-style-type: none;
+
+	> * {
+		box-sizing: border-box; // for gadjo
+		margin-left: $fx-grid-gutter;
+		flex-basis: calc(100% - #{$fx-grid-gutter});
+		hyphens: auto;
+	}
+}
+
+// mode auto
+.fx-grid--auto {
+	> * {
+		flex-basis: $fx-grid-cell-min-size;
+		flex-shrink: 1;
+		flex-grow: 1;
+	}
+}
+
+// mode cols
+@for $i from 2 through $max-cols-mobile {
+	.fx-grid--#{$i} > *,
+	[class*="fx-grid--"][class*="--m#{$i}"] > * {
+		flex-basis: calc(#{100%/$i} - #{$fx-grid-gutter-and-epsilon});
+	}
+}
+@media ($min-grid-tablet-viewport) {
+		@for $i from 2 through $max-cols-tablet {
+		[class*="fx-grid--"][class*="--t#{$i}"] > * {
+			flex-basis: calc(#{100%/$i} - #{$fx-grid-gutter-and-epsilon});
+		}
+	}
+}
+@media ($min-grid-desktop-viewport) {
+		@for $i from 2 through $max-cols-desktop {
+		[class*="fx-grid--"][class*="--d#{$i}"] > * {
+			flex-basis: calc(#{100%/$i} - #{$fx-grid-gutter-and-epsilon});
+		}
+	}
+}
+
+// custom grid cell size
+.fx-grid,
+[class*="fx-grid--"] {
+	@for $i from 1 through $max-cols-mobile {
+		@for $j from 1 through $i {
+			> .size--#{$j}-#{$i},
+			> [class*="size--"][class*="--m#{$j}-#{$i}"] {
+				flex-basis: calc( #{100%*$j/$i} - #{$fx-grid-gutter-and-epsilon});
+				flex-grow: 0;
+			}
+		}
+	}
+	@media ($min-grid-tablet-viewport) {
+		@for $i from 1 through $max-cols-tablet {
+			@for $j from 1 through $i {
+				> [class*="size--"][class*="--t#{$j}-#{$i}"] {
+					flex-basis: calc( #{100%*$j/$i} - #{$fx-grid-gutter-and-epsilon});
+					flex-grow: 0;
+				}
+			}
+		}
+	}
+	@media ($min-grid-desktop-viewport) {
+		@for $i from 1 through $max-cols-desktop {
+			@for $j from 1 through $i {
+				> [class*="size--"][class*="--d#{$j}-#{$i}"] {
+					flex-basis: calc( #{100%*$j/$i} - #{$fx-grid-gutter-and-epsilon});
+					flex-grow: 0;
+				}
+			}
+		}
+	}
+}

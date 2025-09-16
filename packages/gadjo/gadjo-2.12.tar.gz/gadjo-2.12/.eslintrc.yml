@@ -1,0 +1,131 @@
+env:
+  browser: true
+  es2017: true
+extends: eslint:recommended
+parserOptions:
+  sourceType: module
+ignorePatterns:
+  - "gadjo/static/js/gadjo.js"
+rules:
+  # Follow Standard JS guidelines : https://standardjs.com/rules.html, except rules
+  # annotated with a 'custom' comment
+
+  # Linting
+  array-callback-return: error
+  constructor-super: error
+  eqeqeq: [error, always, {null: ignore}]
+  handle-callback-err: error
+  no-array-constructor: error
+  no-caller: error
+  no-class-assign: error
+  no-cond-assign: error
+  no-const-assign: error
+  no-control-regex: error
+  no-debugger: error
+  no-delete-var: error
+  no-dupe-args: error
+  no-dupe-class-members: error
+  no-dupe-keys: error
+  no-duplicate-case: error
+  no-duplicate-imports: error
+  no-empty-character-class: error
+  no-empty-pattern: error
+  no-eval: error
+  no-ex-assign: error
+  no-extend-native: error
+  no-extra-boolean-cast: error
+  no-fallthrough: error
+  no-func-assign: error
+  no-global-assign: error
+  no-implied-eval: error
+  no-inner-declarations: error
+  no-invalid-regexp: error
+  no-iterator: error
+  no-labels: error
+  no-new-func: error
+  no-new-object: error
+  no-new-require: error
+  no-new-symbol: error
+  no-new-wrappers: error
+  no-new: error
+  no-obj-calls: error
+  no-octal-escape: error
+  no-octal: error
+  no-proto: error
+  no-redeclare: error
+  no-regex-spaces: error
+  no-return-assign: error
+  no-self-assign: error
+  no-self-compare: error
+  no-sequences: error
+  no-shadow-restricted-names: error
+  no-sparse-arrays: error
+  no-template-curly-in-string: error
+  no-this-before-super: error
+  no-throw-literal: error
+  no-undef: error
+  no-unexpected-multiline: error
+  no-unmodified-loop-condition: error
+  no-unneeded-ternary: error
+  no-unreachable: error
+  no-unsafe-finally: error
+  no-unsafe-negation: error
+  no-unused-vars: error
+  no-use-before-define: [error, {functions: false, variables: false, classes: false}]
+  no-useless-call: error
+  no-useless-computed-key: error
+  no-useless-constructor: error
+  no-useless-escape: error
+  no-var: error
+  no-with: error
+  use-isnan: error
+  valid-typeof: error
+
+  # Style / Formatting
+  accessor-pairs: error
+  block-spacing: error
+  brace-style: [error, 1tbs, {allowSingleLine: true}]
+  camelcase: error
+  comma-dangle: [error, always-multiline] # custom : Adding a dangling comma make patches shorter
+  comma-spacing: error
+  comma-style: error
+  curly: [error, multi-line]
+  dot-location: [error, property]
+  eol-last: [error, always]
+  func-call-spacing: error
+  indent: [error, 2]
+  key-spacing: error
+  keyword-spacing: error
+  max-len: [error, {code: 110}] # custom: configured like this on python projects
+  new-cap: [error, { newIsCap: true, capIsNew: false}]
+  new-parens: error
+  no-extra-parens: [error, functions]
+  no-floating-decimal: error
+  no-irregular-whitespace: error
+  no-lone-blocks: error
+  no-mixed-spaces-and-tabs: error
+  no-multi-spaces: error
+  no-multi-str: error
+  no-multiple-empty-lines: error
+  no-tabs: error
+  no-trailing-spaces: error
+  no-undef-init: error
+  no-useless-rename: error
+  no-whitespace-before-property: error
+  object-property-newline: [error, { allowMultiplePropertiesPerLine: true }]
+  one-var: [error, never]
+  operator-linebreak: [error, before]
+  padded-blocks: [error, never]
+  quotes: [error, single]
+  rest-spread-spacing: error
+  semi-spacing: error
+  semi: [error, never]
+  space-before-function-paren: error
+  space-in-parens: error
+  space-infix-ops: error
+  space-unary-ops: error
+  spaced-comment: error
+  template-curly-spacing: error
+  wrap-iife: [error, any]
+  yield-star-spacing: [error, {after: true, before: true}]
+

@@ -1,0 +1,127 @@
+{% load i18n gadjo static %}<!DOCTYPE html>
+<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}"{% endif %} {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+  <head>
+    <meta charset="utf-8"/>
+    <title>{% block page-title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    {% block gadjo-favicon %}
+      <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    {% endblock %}
+    {% block gadjo-css %}
+      <link rel="stylesheet" type="text/css" media="all" href="{% static "css/gadjo.css" %}?{% start_timestamp %} "/>
+      {% block css %}
+        <link rel="stylesheet" type="text/css" media="all" href="{% static "css/style.css" %}?{% start_timestamp %}"/>
+      {% endblock %}
+    {% endblock %}
+    {% block gadjo-js %}
+      <script src="{% xstatic 'jquery' 'jquery.min.js' %}"></script>
+      <script src="{% xstatic 'jquery-ui' 'jquery-ui.min.js' %}"></script>
+      <script src="{% static "js/gadjo.js" %}?{% start_timestamp %}"></script>
+    {% endblock %}
+    {{ media }}
+    {% block extrascripts %}
+    {% endblock %}
+  </head>
+  <body data-gadjo="true" {% block bodyargs %}{% endblock %}>
+    <nav id="nav-skip" role="navigation" aria-label="{% trans "quick access" %}">
+      <ul>
+        <li><a href="#main-content">{% trans "Go to content" %}</a></li>
+      </ul>
+    </nav>
+    <div id="top">
+      {% block sidepage %}
+      {% endblock %}
+      {% block user-links %}
+        <ul class="user-info">
+          {% if global_title %}
+            <li class="ui-platform-name">{% if portal_url %}<a href="{{portal_url}}">{{ global_title }}</a>{% else %}{{ global_title }}{% endif %}</li>
+          {% endif %}
+          {% if user.is_authenticated %}
+            <li class="ui-avatar">{{ user.get_full_name|slice:":1" }}</li>
+            <li class="ui-name">{% block user-name %}{{ user.get_full_name }}{% endblock %}</li>
+            <li class="ui-logout"><a href="{% block logout-url %}index.html{% endblock %}"
+                                     title="{% trans "Logout" %}"><span class="sr-only">{% trans "Logout" %}</span></a></li>
+          {% endif %}
+          {% block help-link %}
+          {% endblock %}
+        </ul>
+      {% endblock %}
+    </div>
+    <div id="header">
+      {% block site-header %}
+        <h1>{% block site-title %}{% endblock %}</h1>
+        {% block subheader %}{% endblock %}
+      {% endblock %}
+    </div>
+    <div id="main">
+
+      <div id="main-content" {% block main-content-attributes %}{% endblock %}>
+        {% block main-content %}
+          <div id="more-user-links">
+            {% block more-user-links %}
+              <span id="breadcrumb">
+                {% block breadcrumb %}
+                  <a href="{% block homepage-url %}/{% endblock %}">{% block homepage-title %}{% trans "Homepage" %}{% endblock %}</a>
+                {% endblock %}
+              </span>
+            {% endblock %}
+          </div>
+          <div id="content">
+
+            <div id="appbar">
+              {% block appbar %}
+              {% endblock %}
+            </div>
+
+            {% block messages %}
+              {% if messages %}
+                <ul class="messages">
+                  {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endblock %}
+
+            {% block beforecontent %}
+            {% endblock %}
+
+            {% block content %}
+            {% endblock %}
+            <br style="clear: both;"/>
+
+            {% block aftercontent %}
+            {% endblock %}
+
+          </div> <!-- #content -->
+        {% endblock %}
+      </div> <!-- #main-content -->
+
+      {% block after-main-content %}
+      {% endblock %}
+
+      {% block sidebar %}
+      {% endblock %}
+
+    </div> <!-- #main -->
+
+
+    <div id="footer">
+      {% block footer %}
+      {% endblock %}
+      {% block back-to-top %}
+        <div class="gadjo-back-to-top">
+          <a href="#nav-skip" accesskey="t" title="{% trans "Go back to top if page" %}"><span class="sr-only">{% trans "Back to top" %}</span></a>
+        </div>
+      {% endblock %}
+    </div>
+
+    {% block tracking %}
+      {% include "gadjo/tracking.html" %}
+    {% endblock %}
+
+    {% block page-end %}
+    {% endblock %}
+  </body>
+</html>

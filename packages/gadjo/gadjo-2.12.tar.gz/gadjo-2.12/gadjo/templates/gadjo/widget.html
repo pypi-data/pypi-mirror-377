@@ -1,0 +1,45 @@
+{% load gadjo i18n %}
+
+{% block widget-wrapper %}
+  <div class="{% block widget-css-classes %}widget
+                {{ field.css_classes }}
+                django-{{ field|field_class_name }}
+                {% if field.errors %}widget-with-error{% endif %}
+                {% if field.field.required %}widget-required{% else %}widget-optional{% endif %}{% endblock %}"
+       {% if field.id_for_label %}id="{{field.id_for_label}}_p"{% endif %}>
+    {% block widget-title %}
+      <div class="title" {% if field.id_for_label %}id="{{ field.id_for_label }}_title"{% endif %}>
+        {{ field.label_tag }}
+        {% if field.field.required %}
+          <span title="{% trans "This field is required." %}" class="required">*</span>
+        {% else %}
+          <span class="optional">{% trans "(optional)" %}</span>
+        {% endif %}
+      </div>
+    {% endblock %}
+    {% block widget-content %}
+      <div class="content"
+           {% if field.id_for_label %}aria-labelledby="{{ field.id_for_label }}_title"{% endif %}
+           {% block widget-attrs %}{% endblock %}>
+        {% block widget-hint %}
+          {% if field.help_text %}
+            <div class="hint" id="help_text_{{field.id_for_label}}"><p>{{ field.help_text|safe }}</p></div>
+          {% endif %}
+        {% endblock %}
+        {% block widget-control %}
+          {{ field }}
+        {% endblock %}
+        {% block widget-error %}
+          {% if field.errors %}
+            <div class="error" id="error_{{field.id_for_label}}"><p>
+              {% for error in field.errors %}
+                {{ error }}{% if not forloop.last %}<br>{% endif %}
+              {% endfor %}
+            </p></div>
+          {% endif %}
+        {% endblock %}
+        {% block widget-bottom %}{% endblock %}
+      </div>
+    {% endblock %}
+  </div>
+{% endblock %}

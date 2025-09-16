@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+div#portal-agent-content, aside#sidebar {
+	div.cell {
+		&.pk-button, &.pk-big-button,
+		&[class*=pk-button-], &[class*="pk-big-button-"] {  // when used on link cells
+			padding: 0;
+			a {
+				@extend %button;
+				text-align: center;
+				display: block;
+			}
+		}
+		&.pk-big-button,
+		&[class*="pk-big-button-"] {
+			a {
+				padding: 2rem 4rem;
+			}
+		}
+		&.pk-button-cancel, &.pk-big-button-cancel {
+			a {
+				@extend %cancel-button;
+			}
+		}
+		&.pk-button-delete, &.pk-big-button-delete {
+			a {
+				@extend %delete-button;
+			}
+		}
+		&.pk-button-submit, &.pk-big-button-submit {
+			a {
+				@extend %submit-button;
+			}
+		}
+	}
+}
+
+.link-list-cell.pk-horizontal-button-links,
+.link-list-cell.pk-wide-horizontal-button-links {
+	ul {
+		display: flex;
+		@media screen and (max-width: $mobile-limit) {
+			flex-direction: column;
+		}
+	}
+	li {
+		&:not(:last-child) {
+			margin-right: 1em;
+		}
+		border: none;
+		&:hover {
+			background: transparent;
+		}
+		@media screen and (max-width: $mobile-limit) {
+			&:not(:last-child) {
+				margin-right: 0;
+			}
+			margin-bottom: 0.5em;
+		}
+	}
+	&.pk-wide-horizontal-button-links {
+		li {
+			flex: 1;
+		}
+	}
+	a {
+		@extend %button;
+	}
+}

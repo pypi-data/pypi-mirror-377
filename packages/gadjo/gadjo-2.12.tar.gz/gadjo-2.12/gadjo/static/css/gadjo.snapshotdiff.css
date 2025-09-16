@@ -1,0 +1,73 @@
+p.snapshot-description {
+  font-size: 80%;
+  margin: 0; }
+
+table.diff {
+  background: white;
+  border: 1px solid #f3f3f3;
+  border-collapse: collapse;
+  width: 100%; }
+  table.diff colgroup, table.diff thead, table.diff tbody, table.diff td {
+    border: 1px solid #f3f3f3; }
+  table.diff tbody tr:nth-child(even) {
+    background: #fdfdfd; }
+  table.diff th, table.diff td {
+    max-width: 30vw;
+    /* it will not actually limit width as the table is set to
+		 * expand to 100% but it will prevent one side getting wider
+		 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top; }
+  table.diff .diff_header {
+    background: #f7f7f7; }
+  table.diff td.diff_header {
+    text-align: right;
+    padding-right: 10px;
+    color: #606060; }
+  table.diff .diff_next {
+    display: none; }
+  table.diff .diff_add {
+    background-color: #aaffaa; }
+  table.diff .diff_chg {
+    background-color: #ffff77; }
+  table.diff .diff_sub {
+    background-color: #ffaaaa; }
+  table.diff .difflib_chg_to td {
+    background-color: #f7f7f7; }
+  table.diff .expand-handler td {
+    text-align: left;
+    background-color: #f7f7f7; }
+    table.diff .expand-handler td:hover {
+      background-color: inherit; }
+  table.diff .expand-before, table.diff .expand-between, table.diff .expand-after {
+    cursor: pointer; }
+    table.diff .expand-before::before, table.diff .expand-between::before, table.diff .expand-after::before {
+      font-family: FontAwesome;
+      padding: 0 2ex; }
+  table.diff .expand-before::before {
+    content: "\f176"; }
+  table.diff .expand-between::before {
+    content: "\f07d"; }
+  table.diff .expand-after::before {
+    content: "\f175"; }
+
+div.snapshot-diff {
+  margin: 1em 0;
+  display: none; }
+  div.snapshot-diff ins {
+    text-decoration: none;
+    background-color: #d4fcbc; }
+  div.snapshot-diff del {
+    text-decoration: line-through;
+    background-color: #fbb6c2;
+    color: #555; }
+  div.snapshot-diff h3 del, div.snapshot-diff h3 ins {
+    font-weight: bold;
+    background-color: transparent; }
+  div.snapshot-diff h3 del, div.snapshot-diff h3 del a {
+    color: #fbb6c2 !important; }
+  div.snapshot-diff h3 ins, div.snapshot-diff h3 ins a {
+    color: #d4fcbc !important; }
+
+/*# sourceMappingURL=gadjo.snapshotdiff.css.map */

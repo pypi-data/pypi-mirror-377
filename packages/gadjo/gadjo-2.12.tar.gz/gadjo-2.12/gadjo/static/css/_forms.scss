@@ -1,0 +1,776 @@
+@charset "UTF-8";
+
+$widget-background: white;
+$widget-focus-background: white;
+$widget-border: 1px solid #AAA;
+$widget-focus-border: $widget-border;
+$widget-border-radius: 0;
+$widget-color: black;
+$widget-focus-color: $widget-color;
+$widget-focus-outline: 1px solid $primary-color;
+$widget-focus-outline-offset: 0;
+
+$button-delete-color: $red;
+$button-focus-outline: $widget-focus-outline !default;
+$button-focus-outline-offset: $widget-focus-outline-offset !default;
+
+$data_uri_arrow-down: "arrow-down.svg";
+
+input, select, button, textarea {
+	font-size: 100%;
+	font-family: $font-family;
+}
+
+label {
+	margin-bottom: 0;
+	font-weight: normal;
+}
+
+form div.widget {
+	margin-bottom: 1.5em;
+}
+
+div.errornotice p {
+	margin: 1ex 0;
+	&:first-child {
+		margin-top: 0;
+	}
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+div.error {
+	color: black;
+	font-weight: normal;
+	background: transparent;
+	padding-left: 0px;
+	margin-left: 2px;
+
+	&::before {
+		content: "\f071"; /* fa-exclamation-triangle */
+		font-family: FontAwesome;
+		padding-right: 1ex;
+	}
+
+	p {
+		display: inline-block;
+		margin: 0;
+	}
+}
+
+span.required {
+	margin-left: 0.3em;
+	position: relative;
+	top: -0.1em;
+	cursor: help;
+}
+
+div.widget div.title {
+	margin-bottom: 0;
+}
+
+div.buttons {
+	margin-top: 2em;
+}
+
+div.buttons div {
+	display: inline-block;
+
+	& input[name="submit"] {
+		font-weight: bold;
+	}
+}
+
+a.button {
+	line-height: 2.5em;
+}
+
+%button {
+	--color: var(--primary-color);
+	--outline-color: var(--primary-color);
+	--hover-color: white;
+	--hover-background: var(--color);
+
+	display: inline-block;
+	padding: 5px 15px;
+	cursor: pointer;
+	vertical-align: baseline;
+	border-radius: 3px;
+	font-weight: bold;
+	background: white;
+	text-align: center;
+	border: 1px solid var(--color);
+	color: var(--color);
+	transition: border-color 0.2s ease, box-shadow 0.2s linear;
+	&[aria-pressed=true], &:hover {
+		border-color: hsla(0, 0%, 0%, 0.6);
+		background: var(--hover-background);
+		color: var(--hover-color);
+	}
+
+	&.disabled, &:disabled {
+		box-shadow: none;
+		cursor: not-allowed;
+		background: #f3f3f3;
+		color: #888;
+		border-color: #888;
+		pointer-events: none;
+	}
+	&:active { border-color: hsla(0, 0%, 0%, 0.3); }
+	&:focus {
+		@if $button-focus-outline == none {
+			outline: 1px dotted $button-background;
+		} @else {
+			outline: 1px solid var(--outline-color);
+			outline-offset: $button-focus-outline-offset;
+		}
+	}
+}
+
+a.button, a.pk-button, a[class*=pk-button-], a.pk-big-button, a[class*="pk-big-button-"], button, input[type=submit], div.buttons input, div.buttons a.cancel {
+	@extend %button;
+}
+
+a.pk-big-button, a[class*="pk-big-button-"] {
+	padding: 2rem 4rem;
+}
+
+input[type=submit] {
+	height: 2.3rem;
+}
+
+%cancel-button,
+a.cancel-button, button.cancel-button, a.pk-button-cancel, a.pk-big-button-cancel, div.buttons .cancel-button input, div.buttons a.cancel, div.buttons .cancel-button button {
+	--color: #727272;
+	--hover-color: var(--color);
+	--hover-background: #eee;
+}
+
+div.buttons {
+	display: flex;
+	flex-wrap: wrap;
+	// always force cancel button to be last
+	a.cancel {
+		order: 100;
+		margin-left: 1em;
+	}
+	// make sure adjacent buttons have a margin
+	button + button,
+	button + a {
+		margin-left: 1em;
+	}
+}
+
+%delete-button,
+a.delete-button, button.delete-button, a.pk-button-delete, a.pk-big-button-delete, div.buttons .delete-button input, div.buttons .delete-button button {
+	--color: #{$button-delete-color};
+	--outline-color: #{darken($button-delete-color, 10%)};
+}
+
+%submit-button,
+a.submit-button, button.submit-button, a.pk-button-submit, a.pk-big-button-submit, div.buttons .submit-button input, div.buttons .submit-button button {
+	--color: var(--blue-dusty);
+}
+
+form.disabled-during-submit {
+	// this class is added to forms in w.c.s. when a button is clicked.
+	div.buttons {
+		cursor: wait;
+		button {
+			pointer-events: none;
+			box-shadow: none;
+			opacity: 0.7;
+		}
+	}
+}
+
+div.ui-dialog button.ui-button-disabled,
+div#content button:disabled,
+input[type=submit]:disabled {
+	border-color: #888;
+	color: #888;
+	background: #f3f3f3;
+	pointer-events: none;
+	box-shadow: none;
+	cursor: not-allowed;
+}
+
+input, input[type="text"], input[type="url"], input[type="email"], input[type="password"], input[type="url"], input[type="tel"], input[type="number"], input[type="search"], input[type="file"], input[type="date"], input[type="datetime-local"], input[type="month"], input[type="time"], input[type="week"], textarea, select {
+	border: $widget-border;
+	border-radius: $widget-border-radius;
+	box-sizing: border-box;
+	margin: 0.2em 0px;
+	outline: medium none;
+	padding: 0.7ex 0.7em;
+	max-width: 100%;
+	transition: background-size 0.2s ease;
+	background: $widget-background;
+	color: $widget-color;
+	&:focus:not([readonly]) {
+		background-color: $widget-focus-background;
+		border: $widget-focus-border;
+		color: $widget-focus-color;
+	}
+	&:focus {
+		outline: $widget-focus-outline;
+		outline-offset: $widget-focus-outline-offset;
+	}
+	&.disabled,
+	&[disabled] {
+		background: #eee;
+	}
+}
+
+input[type="text"][name$="_url"], input[type="text"][name$="-url"], input[type="url"] {
+	width: 100%;
+}
+
+input[type="radio"]:focus, input[type="checkbox"]:focus {
+	box-shadow: none;
+}
+
+label input[type="radio"], label input[type="checkbox"] {
+	&[disabled] + span {
+		color: lighten($font-color, 30%);
+	}
+}
+
+input[readonly], select[readonly], textarea[readonly] {
+	border-width: 0 0 1px 0;
+}
+
+div.date input[readonly] {
+	border-width: 1px;
+}
+
+input[type=file] {
+	border: none;
+	padding-left: 0;
+	&:focus:not([readonly]) {
+		border: none;
+	}
+}
+
+select {
+	background: white;
+	appearance: none;
+	padding-right: 4em;
+	background-image: url($data_uri_arrow-down);
+	background-position: right 1.3rem center;
+	background-repeat: no-repeat;
+	background-size: 1rem auto;
+	&::-ms-expand {
+		// remove the arrow of select element in IE
+		display: none;
+	}
+}
+
+select[multiple] {
+	background: white;
+	padding-right: 0;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	margin-right: 1ex;
+	margin-bottom: 1ex;
+	accent-color: $primary-color;
+}
+
+div.content label {
+	margin-right: 1em;
+}
+
+span.helptext,
+div.hint {
+	display: block;
+	font-size: 80%;
+	p {
+		margin: 0;
+	}
+}
+
+form p label {
+	display: block;
+}
+
+div.a2-block form input,
+div.a2-block form select {
+	width: 100%;
+}
+
+div.a2-block form input[type=checkbox],
+div.a2-block form input[type=radio] {
+	width: auto;
+}
+
+div.a2-block form input[type=submit] {
+	width: auto;
+	min-width: 20ex;
+}
+
+div.a2-block ul#id_edit-profile-title {
+	margin-left: 1em;
+	margin-top: -1ex;
+	li {
+		display: inline-block;
+		margin-right: 2em;
+	}
+	label {
+		font-weight: normal;
+	}
+}
+
+form ul.errorlist {
+	padding: 0;
+	margin: 2em 0 0 0;
+	list-style: none;
+
+	& li::before {
+		content: "\f06a";
+		font-family: FontAwesome;
+		padding-right: 1ex;
+	}
+}
+
+/* fieldsets */
+fieldset.gadjo-foldable legend.gadjo-foldable-widget {
+	border-bottom: 1px solid #aaa;
+	cursor: pointer;
+	display: block;
+	font-weight: bold;
+	padding: 1ex 0 0;
+	width: 100%;
+	position: relative;
+}
+fieldset.gadjo-foldable legend.gadjo-foldable-widget:after {
+	content: "▼";
+	transition: transform 0.1s ease;
+	position: absolute;
+	right: 1ex;
+}
+fieldset.gadjo-foldable.gadjo-folded legend.gadjo-foldable-widget:after {
+	transform: rotate(-90deg);
+}
+fieldset.gadjo-foldable {
+	padding: 1ex 0 0 0;
+	border: 0;
+}
+.gadjo-foldable.gadjo-folded > .gadjo-folding {
+	display: none;
+}
+
+/* select2 */
+div.select2-container,
+span.select2-container {
+	font-size: 100%;
+	min-width: 20em;
+	margin-top: 2px;
+	a.select2-choice {
+		padding: 0.1em 0.7em;
+	}
+	span.select2-selection--single,
+	span.select2-selection--multiple,
+	a.select2-choice,
+	a.select2-choice div {
+		box-sizing: content-box;
+		padding: 1px 0;
+		background: $widget-background;
+		color: $widget-color;
+		border-radius: $widget-border-radius;
+		border: $widget-border;
+		.select2-selection__rendered {
+			color: $widget-color;
+		}
+	}
+	.select2-search--inline .select2-search__field {
+		margin-top: 0;
+		margin-bottom: 0;
+		border: none;
+	}
+	&.select2-container--focus,
+	&.select2-container--open {
+		span.select2-selection--single,
+		span.select2-selection--multiple,
+		a.select2-choice,
+		a.select2-choice div {
+			background: $widget-focus-background;
+			border: $widget-focus-border;
+			color: $widget-focus-color;
+			span {
+				color: $widget-focus-color;
+			}
+		}
+	}
+	&.select2-container--focus span.select2-selection--single,
+	&.select2-container--focus span.select2-selection--multiple {
+		outline: $widget-focus-outline;
+		outline-offset: $widget-focus-outline-offset;
+	}
+	.select2-choices,
+	.select2-choice {
+		box-shadow: none;
+	}
+	.select2-search--dropdown input,
+	.select2-search--dropdown input:active,
+	.select2-search--dropdown input:focus {
+		background: white;
+		color: #333;
+		border: 1px solid #ccc;
+	}
+	.select2-selection--single .select2-selection__rendered {
+		padding-right: 50px;
+	}
+	.select2-selection--single .select2-selection__arrow {
+		background-image: url($data_uri_arrow-down);
+		background-position: right 1.3rem center;
+		background-repeat: no-repeat;
+		background-size: 1rem auto;
+		width: 50px;
+		right: 0;
+		top: 0;
+		height: 100%;
+		b {
+			display: none;
+		}
+	}
+	.select2-selection--single .select2-selection__clear {
+		margin-right: 2em;
+	}
+	.select2-dropdown {
+		border: $widget-border;
+		&.select2-dropdown--below {
+			position: relative;
+			top: -6px;
+		}
+	}
+	.select2-results {
+		.loading-results {
+			position: absolute;
+			display: inline-block;
+			right: 0;
+			color: black;
+			@media screen and (max-width: $mobile-limit) {
+				display: none;
+			}
+		}
+		.loading-results:last-child {
+			position: static;
+			display: block;
+			color: inherit;
+		}
+	}
+}
+
+div.select2-container.select2-drop-above .select2-choice {
+	background: white;
+	border-radius: 0;
+}
+
+div.select2-drop {
+	box-shadow: none;
+	border-radius: 0;
+}
+
+div.select2-search {
+	margin-top: 4px;
+}
+
+/* form.as_p */
+
+form p {
+	margin: 0 0 1em 0;
+}
+
+form p label {
+	display: block;
+}
+
+form p.required label:after {
+	padding-left: 1ex;
+	content: "*";
+	color: red;
+}
+
+form p label {
+	margin-bottom: 0.3ex;
+}
+
+/* form.small */
+
+form.small p input {
+	margin-left: 0;
+}
+
+form.small p {
+	margin-bottom: 0.5em;
+}
+
+form.small label {
+	width: 200px;
+	display: inline-block;
+}
+
+form.small a.button,
+form.small button {
+	margin-left: 205px;
+	display: inline-block;
+}
+
+form.small button + button,
+form.small button + a.button {
+	margin-left: 1em;
+}
+
+[name$="-clear"] + label {
+	display: inline;
+}
+
+.field-live-hint {
+	position: absolute;
+	background: #ffffee;
+	color: #333;
+	z-index: 1000000;
+	padding: 1em 1em;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.16);
+}
+
+.field-live-hint span::before {
+	font-family: FontAwesome;
+	content: "\f0eb";  // lightbulb
+	padding-right: 0.5em;
+}
+
+.field-live-hint button.action,
+.field-live-hint button.close {
+	margin: 0 1em;
+	padding: 0;
+	color: blue !important;
+	border: none;
+	text-decoration: underline !important;
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+.field-live-hint button.close {
+	color: #333 !important;
+	margin: 0;
+	text-decoration: none !important;
+}
+
+.field-live-hint button.close::after {
+	content: "×";
+}
+
+form {
+	.widget-optional span.optional {
+		display: none;
+	}
+}
+
+form.pk-mark-optional-fields {
+	.widget-required {
+		span.required {
+			display: none;
+		}
+	}
+	.widget-optional:not(.django-checkbox-input) span.optional {
+		display: inline;
+		font-style: italic;
+	}
+}
+
+form.pk-hide-requisiteness {
+	.widget-required span.required,
+	.widget-optional:not(.django-checkbox-input) span.optional {
+		display: none;
+	}
+}
+
+.gadjo-joined-buttons {
+	display: inline-flex;
+	button {
+		border-radius: 0;
+		margin-left: -1px; // join borders
+		&:first-child {
+			border-radius: 3px 0 0 3px;
+			margin-left: 0px;
+		}
+		&:last-child {
+			border-radius: 0 3px 3px 0;
+		}
+	}
+}
+
+.pk-tabs {
+	display: flex;
+	flex-direction: row;
+	&--tab-list {
+		flex: 0;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		background: #fafafa;
+		padding: 0.5em;
+		button {
+			border: 0px solid transparent;
+			border-left-width: 3px;
+			text-align: left;
+			font-weight: normal;
+			background: transparent;
+			width: 100%;
+			min-width: 10em;
+			margin-bottom: 1px;
+			color: #333;
+			&:focus {
+				outline: none;
+			}
+			&:focus-visible {
+				outline: $widget-focus-outline;
+			}
+			&:hover {
+				color: inherit;
+				background: #eee;
+			}
+			&[aria-selected="true"] {
+				background: #e0e0e0;
+				border-left-color: $primary-color;
+			}
+			&.pk-tabs--button-marker {
+				padding-right: 2em;
+				background-size: 5px 5px;
+				background-repeat: no-repeat;
+				background-position: top 50% right 1em;
+				background-image: radial-gradient(closest-side, #888 100%, transparent);
+			}
+		}
+	}
+	&--container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		overflow: auto;
+		background: white;
+		> * {
+			padding: 1rem 0.5rem;
+		}
+	}
+}
+
+.godo:not(.html-edition) .godo--editor {
+	@extend textarea;
+}
+
+/* force alignment for blocks defining grid elements within grids */
+.BlockSubWidget.widget {
+	margin-bottom: 0;
+}
+
+.buttons-group {
+	display: flex;
+	a, button {
+		@extend %button;
+		margin-right: 0;
+		margin-left: -1px;
+		border-radius: 0;
+		&:first-child {
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+		}
+		&:last-child {
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+		&.active {
+			background: var(--color);
+			color: white;
+		}
+	}
+}
+
+.gadjo-password-field {
+	position: relative;
+	.title {
+		padding-right: 6em;
+	}
+}
+
+.password-visibility-checkbox {
+	display: flex;
+	position: absolute;
+	top: 0;
+	right: 0;
+	input + label {
+		margin: 0;
+	}
+	input {
+		margin: 0 0.25em 0 0;
+	}
+}
+
+.CheckboxesWithImagesWidget, .RadiobuttonsWithImagesWidget {
+	.content:focus-within {
+		outline: $widget-focus-outline;
+		outline-offset: $widget-focus-outline-offset;
+	}
+}
+
+.CheckboxesWidget,
+.RadiobuttonsWidget {
+	.content {
+		label {
+			display: block;
+			padding-bottom: 0.7em;
+		}
+		ul {
+			@extend .bare-list;
+		}
+	}
+	&.pk-horizontal-radiobuttons .content li,
+	&.pk-horizontal-radiobuttons .content label,
+	&.widget-inline-radio .content li,
+	&.widget-inline-radio .content label {
+		display: inline-block;
+	}
+}
+
+.gadjo-dropdown {
+	position: relative;
+	button::after {
+		content: "\f0d7"; // caret-down
+		font-family: FontAwesome;
+		padding-left: 1em;
+	}
+	ul {
+		@include bare-list();
+		min-width: 10em;
+		position: absolute;
+		z-index: 1000;
+		border: 1px solid var(--primary-color);
+		margin-top: -1px;
+		margin-left: 2px;
+		border-radius: 0 3px 3px 3px;
+		&.gadjo-dropdown-right {
+			border-radius: 3px 0px 3px 3px;
+			right: 0;
+		}
+		background: white;
+		li {
+			margin: 0;
+			a {
+				display: block;
+				padding: 0.5em 1em;
+				border: none;
+				white-space: pre;
+				&:focus, &:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+	&:not(.gadjo-opened) ul {
+		visibility: hidden;
+	}
+}

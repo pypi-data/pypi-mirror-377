@@ -1,0 +1,42 @@
+[contenteditable=true]:focus-within {
+	outline: 1px inset #ccc;
+	outline-offset: 3px;
+}
+
+.style-popup {
+	background: white;
+	box-shadow: 0 0 5px #666;
+	input {
+		display: none;
+		padding: 3px;
+		border: 1px inset #ccc;
+		background: white;
+		width: 0px;
+		transition: width ease 2s;
+		&.shown {
+			display: inline-block;
+			width: 400px;
+		}
+	}
+	button {
+		padding: 0;
+		height: 2em;
+		text-align: center;
+		background: #eee;
+		border: 0px;
+		&:hover {
+			background: #ccc;
+		}
+		&[data-action=createLink] {
+			color: blue;
+			text-decoration: underline;
+		}
+		&.on {
+			background: #444;
+			color: white;
+		}
+	}
+	&.short button {
+		width: 2em;
+	}
+}

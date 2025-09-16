@@ -1,0 +1,57 @@
+{% load gadjo %}
+{% comment %}
+Pagination bar
+
+Expected context variables:
+ - request: django request object
+ - page_obj: Paginator page object
+ - page_key (optional): name of page parameter (default: page)
+ - anchor (optional): anchor to use in links
+ - without_key (optional): key to remove in GET params
+
+{% endcomment %}
+{% if page_obj.paginator.num_pages > 1 %}
+  {% with page_key=page_key|default:"page" %}
+    {% spaceless %}
+      <p class="paginator">
+        {% if page_obj.number > 4 %}
+          <a href="{% querystring page_key=1 without without_key %}{{ anchor }}">1</a>
+          …
+        {% else %}
+          {% if page_obj.number >= 3 %}
+            <a href="{% querystring page_key=1 without without_key %}{{ anchor }}">1</a>
+            {% if page_obj.number == 4 %}
+              <a href="{% querystring page_key=2 without without_key %}{{ anchor }}">2</a>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+
+        {% if page_obj.has_previous %}
+          <a href="{% querystring page_key=page_obj.previous_page_number without without_key %}{{ anchor }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+
+        <span class="this-page">{{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+          <a href="{% querystring page_key=page_obj.next_page_number without without_key %}{{ anchor }}">{{ page_obj.next_page_number }}</a>
+        {% endif %}
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+          {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+            …
+            <a href="{% querystring page_key=page_obj.paginator.num_pages without without_key %}{{ anchor }}">{{ page_obj.paginator.num_pages }}</a>
+          {% endif %}
+        {% else %}
+          {% if page_obj.number <= page_obj.paginator.num_pages|add:"-2" %}
+            {% if page_obj.number == page_obj.paginator.num_pages|add:"-3" %}
+              {% with a_page_key=page_obj.paginator.num_pages|add:"-1" %}
+                <a href="{% querystring page_key=a_page_key without without_key %}{{ anchor }}">{{ a_page_key }}</a>
+              {% endwith %}
+            {% endif %}
+            <a href="{% querystring page_key=page_obj.paginator.num_pages without without_key %}{{ anchor }}">{{ page_obj.paginator.num_pages }}</a>
+          {% endif %}
+        {% endif %}
+      </p>
+    {% endspaceless %}
+  {% endwith %}
+{% endif %}

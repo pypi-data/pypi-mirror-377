@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+/* temporary hacks for applications */
+
+div.form-inner-container,   // authentic
+div#pages-list,  // combo
+div.placeholder, // combo
+table.agenda-table,  // chrono
+div#appbar + form,  // misc
+div#appbar + ul.messages + form,  // misc
+div#appbar + div#description  // passerelle
+{
+	background: white;
+	padding: 0.5rem;
+	border-radius: 3px;
+	box-sizing: border-box;
+}
+
+.ui-dialog div.form-inner-container {  // authentic
+	padding: 0;
+}
+
+div.other_actions { // authentic
+	margin-left: 71%;
+	width: 29%;
+}
+
+body.welco-home div#main-content {
+	background: white;
+	margin: 0;
+}

@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+$font-path: '../xstatic/fonts' !default;
+
+@mixin font($type, $weight) {
+	@font-face {
+		font-family: 'Open Sans';
+		src: url('#{$font-path}/#{$type}/OpenSans-#{$type}.woff2') format('woff2'),
+		     url('#{$font-path}/#{$type}/OpenSans-#{$type}.woff') format('woff'),
+		     url('#{$font-path}/#{$type}/OpenSans-#{$type}.eot?#iefix') format('embedded-opentype'),
+		     url('#{$font-path}/#{$type}/OpenSans-#{$type}.ttf?#iefix') format('truetype');
+		font-weight: $weight;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: 'Open Sans';
+		@if $type == Regular {  // not RegularItalic
+			src: url('#{$font-path}/Italic/OpenSans-Italic.woff2') format('woff2'),
+			     url('#{$font-path}/Italic/OpenSans-Italic.woff') format('woff'),
+			     url('#{$font-path}/Italic/OpenSans-Italic.eot?#iefix') format('embedded-opentype'),
+			     url('#{$font-path}/Italic/OpenSans-Italic.ttf?#iefix') format('truetype');
+		} @else {
+			src: url('#{$font-path}/#{$type}Italic/OpenSans-#{$type}Italic.woff2') format('woff2'),
+			     url('#{$font-path}/#{$type}Italic/OpenSans-#{$type}Italic.woff') format('woff'),
+			     url('#{$font-path}/#{$type}Italic/OpenSans-#{$type}Italic.eot?#iefix') format('embedded-opentype'),
+			     url('#{$font-path}/#{$type}Italic/OpenSans-#{$type}Italic.ttf?#iefix') format('truetype');
+		}
+		font-weight: $weight;
+		font-style: italic;
+	}
+}
+
+@include font('Light', 300);
+@include font('Regular', 400);
+@include font('Semibold', 600);
+@include font('Bold', 700);
+@include font('ExtraBold', 800);

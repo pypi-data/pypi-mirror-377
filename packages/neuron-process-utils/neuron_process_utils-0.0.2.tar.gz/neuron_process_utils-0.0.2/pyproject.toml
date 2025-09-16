@@ -1,0 +1,45 @@
+[project]
+name = "neuron-process-utils"
+version = "0.0.2"
+requires-python = ">=3.10"
+description = "neuron process utils"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "jiang yan", email = "1900812927@qq.com"},
+]
+classifiers = [
+]
+keywords = [
+    'neuron process',
+]
+dependencies = [
+   "swcgeom>=0.20.0",
+]
+
+[project.urls]
+homepage = "https://gitee.com/Eason596/nnunetv2_extend"
+repository = "https://gitee.com/Eason596/nnunetv2_extend"
+
+[project.scripts]
+npu_swc_process = "npu.script_entry:swc_process_entry"
+npu_swc_to_mask = "npu.script_entry:swc_to_mask_entry"
+npu_swc_to_dist = "npu.script_entry:swc_to_dist_entry"
+npu_mask_to_dist = "npu.script_entry:mask_to_dist_entry"
+npu_nnunet_prob_to_tif = "npu.script_entry:nnunet_predict_prob_to_tif_entry"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "ruff",
+    "pre-commit"
+]
+
+[build-system]
+requires = ["setuptools>=67.8.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.codespell]
+skip = '.git,*.pdf,*.svg'
+#
+# ignore-words-list = ''

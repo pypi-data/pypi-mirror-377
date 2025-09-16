@@ -1,0 +1,247 @@
+Metadata-Version: 2.4
+Name: select-notifier
+Version: 0.2.0
+Summary: Lightweight notification package(email & Rocket.Chat, Telegram) for Select services
+Author: Select Team
+License: Proprietary
+Project-URL: Homepage, https://repo.afe.ir/afeai/select-notifier
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: httpx[http2]>=0.27.0
+Requires-Dist: python-telegram-bot<22,>=21
+Provides-Extra: test
+Requires-Dist: pytest>=8; extra == "test"
+Requires-Dist: pytest-cov>=5; extra == "test"
+Provides-Extra: dev
+Requires-Dist: black>=24.0; extra == "dev"
+Requires-Dist: ruff>=0.6.0; extra == "dev"
+Requires-Dist: mypy>=1.10; extra == "dev"
+Requires-Dist: pre-commit>=3.7; extra == "dev"
+
+## Name
+
+**Select-Notifier: Lightweight Notification Module (Email + Rocket.Chat + Telegram)**
+
+---
+
+## Description
+
+**Select-Notifier** is a small, production-friendly Python package that provides a unified interface for sending notifications.  
+It currently supports:
+
+- **EmailNotifier** — SMTP with robust input validation, STARTTLS/SSL support, retries & backoff (subject required)  
+- **RocketNotifier** — Rocket.Chat integration via REST API (`chat.postMessage`) with retries & backoff (subject optional)  
+- **TelegramNotifier** — Telegram Bot API integration using [python-telegram-bot](https://docs.python-telegram-bot.org/) with retries & backoff (subject optional)  
+
+The package is designed to be embedded inside Select services and pipelines where a simple, reliable notifier is needed.
+
+---
+
+## Badges
+
+On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project.  
+You can use [Shields.io](https://shields.io) to add badges. Many services also have instructions for adding a badge.
+
+---
+
+## Visuals
+
+Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos).  
+Tools like `ttygif` can help, but check out [Asciinema](https://asciinema.org) for a more sophisticated method.
+
+---
+
+## Features
+
+```text
+✅ Email (SMTP):
+    - STARTTLS (587) and SMTPS/SSL (465)
+    - Retries with exponential backoff
+    - Validation for sender/recipient, subject/body (subject is required)
+    - Password normalization (removes whitespace, converts non-ASCII digits)
+
+✅ Rocket.Chat (REST API):
+    - Auth with userId + authToken
+    - Send to channels (#channel) or direct messages (@user)
+    - Retries with exponential backoff
+    - Subject is optional
+
+✅ Telegram (Bot API via python-telegram-bot):
+    - Bot token + chat_id
+    - Send to private chats (after user has started the bot) or groups (bot must be added)
+    - Retries with exponential backoff
+    - Subject is optional
+    - Proxy support for restricted regions
+
+✅ Minimal Dependencies:
+    - Email: standard library only
+    - Rocket: [`httpx`](https://www.python-httpx.org/)
+    - Telegram: [`python-telegram-bot`](https://docs.python-telegram-bot.org/)
+```
+
+---
+
+## Repository Structure
+
+```text
+select-notifier/
+├── src/
+│   └── select_notifier/
+│       ├── __init__.py
+│       ├── __version__.py
+│       ├── base.py                 # Core types & protocols
+│       └── services/
+│           ├── email.py            # EmailNotifier
+│           ├── rocket.py           # RocketNotifier
+│           └── telegram.py         # TelegramNotifier
+├── tests/
+│   ├── test_base.py
+│   ├── test_email_notifier.py
+│   ├── test_rocket_notifier.py
+│   └── test_telegram_notifier.py
+├── version_and_changelog.py        # Version bump + changelog generator
+├── versioning_strategy.md          # Versioning policy
+├── pyproject.toml
+├── requirements.txt
+├── requirements-dev.txt
+└── README.md
+```
+
+---
+
+## Installation
+
+1) Clone the repository:
+```bash
+git clone http://repo.afe.ir/afeai/select-notifier.git
+cd select-notifier
+```
+
+2. Create virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate    # Linux/Mac
+.venv\Scripts\activate       # Windows
+```
+
+3) Install requirements:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Usage
+
+### EmailNotifier (STARTTLS, port 587)
+```python
+from select_notifier.services.email import EmailNotifier
+
+notifier = EmailNotifier.create(
+    sender="noreply@example.com",
+    password="your-app-password",
+    server="smtp.example.com",
+    port=587,
+    use_tls=True,
+    use_ssl=False,
+    timeout=30.0,
+    retries=2,
+    backoff=1.5,
+)
+
+notifier.send_text(
+    subject="Hello from Select-Notifier",   # subject REQUIRED for email
+    body="This is a test message.",
+    to=["user@dest.com"],
+)
+```
+
+### EmailNotifier (SMTPS, port 465)
+```python
+from select_notifier.services.email import EmailNotifier
+
+notifier = EmailNotifier.create(
+    sender="noreply@example.com",
+    password="your-app-password",   # use an app password, not your login password
+    server="smtp.example.com",
+    port=465,
+    use_tls=False,                  # no STARTTLS on SMTPS
+    use_ssl=True,                   # implicit SSL (SMTPS)
+    timeout=30.0,
+    retries=2,
+    backoff=1.5,
+)
+
+notifier.send_text(
+    subject="Hello from Select-Notifier",
+    body="This is a test message over SMTPS (465).",
+    to=["user@dest.com"],
+)
+```
+
+### RocketNotifier (REST API)
+```python
+from select_notifier.services.rocket import RocketNotifier
+
+notifier = RocketNotifier.create(
+    domain="https://chat.company.com",
+    user_id="YOUR_USER_ID",
+    auth_token="YOUR_AUTH_TOKEN",
+    retries=2,
+    backoff=1.5,
+)
+
+notifier.send_text(
+    subject="Deploy",   # subject OPTIONAL
+    body="Production deployment finished",
+    to=["#ops"],   # or ["@username"]
+)
+```
+
+### TelegramNotifier (subject optional, with proxy example)
+```python
+from select_notifier.services.telegram import TelegramNotifier
+from select_notifier.base import normalize_message
+
+notifier = TelegramNotifier.create(
+    bot_token="YOUR_BOT_TOKEN",
+    api_base="https://api.telegram.org",
+    proxy_url="http://127.0.0.1:10809",   # optional
+    retries=1,
+    backoff=1.5,
+)
+# user must have started the bot, or bot must be added to group
+msg = normalize_message(subject="", body="Hello via Telegram ✅", to=["123456789"])
+notifier.send(msg)
+```
+
+**Notes & Limitations**
+- Gmail: Use an App Password (no spaces).
+- Rocket.Chat: Requires a valid userId and authToken. User must have permission to post in the target channel/DM.
+- Telegram:
+    - To DM, the user must have clicked Start on the bot at least once.
+    - To send in a group, add the bot to the group (make admin if you want it to manage messages).
+    - chat_id can be retrieved using getUpdates or helper bots (e.g., @userinfobot).
+- Proxy: If your region blocks Telegram or other services, provide proxy_url (http/socks) when creating the notifier.
+
+---
+
+## License
+
+**Private Repository:**  
+This codebase is private and currently not distributed under any open-source license.  
+Contact the project owner for more information or collaboration requests.
+
+---
+
+## Contact
+
+For questions, ideas, or collaboration, please reach out to the project maintainer.
+
+---
+
+## Project Status
+
+**Under Development:**  
+This project is still evolving. While core functionalities are operational, enhancements and stability improvements are ongoing.

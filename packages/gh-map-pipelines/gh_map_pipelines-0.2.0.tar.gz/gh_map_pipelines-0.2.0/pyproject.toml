@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "gh-map-pipelines"
+version = "0.2.0"
+description = "Map pipelines Github in Parquet and SQLite with incremental processing and rate limit handling"
+authors = ["Cristiano Henrique dos Santos <cristianovisk@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pyyaml = "^6.0.2"
+httpx = "^0.28.1"
+pandas = "^2.3.1"
+rich = "^14.0.0"
+typer = "^0.16.0"
+pyarrow = "^21.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+gh_map = "gh_map_pipelines.cli_v2:app"
+gh_map_v1 = "gh_map_pipelines.cli:app"
+gh_map_migrate = "migrate_to_v2:main"
+
+[tool.poetry.urls]
+"Documentation" = "https://github.com/cristianovisk/gh_map_pipelines/blob/main/README.md"
+"Code" = "https://github.com/cristianovisk/gh_map_pipelines"
+"Bug Tracker" = "https://github.com/cristianovisk/gh_map_pipelines/issues"

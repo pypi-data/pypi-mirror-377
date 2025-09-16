@@ -1,0 +1,15 @@
+httpx
+fastapi>=0.100.0
+packaging
+uvicorn[standard]
+simple-repository>=0.10.0
+
+[dev]
+simple-repository-server[test]
+
+[test]
+pytest
+pytest_asyncio
+pytest_httpx
+starlette>=0.26.1
+pytest_httpserver

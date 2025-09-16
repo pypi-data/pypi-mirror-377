@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "twine"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "underpyx"
+version = "0.1.0"
+description = "Fundamental utilities in python, such as encapsulation, immutability, service patterns, and JSON typing in Python."
+authors = [
+    { name = "Ariana Maghsoudi", email = "ariana.maghsoudi82@gmail.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "assertpy"]
+
+[tool.setuptools.packages.find]
+include = ["underpy*"]
+exclude = ["tests*"]

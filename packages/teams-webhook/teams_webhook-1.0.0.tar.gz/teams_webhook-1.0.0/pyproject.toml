@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teams-webhook"
+version = "1.0.0"
+authors = [
+    {name = "Pandiyaraj Karuppasamy", email = "pandiyarajk@live.com"},
+]
+description = "A simple Python package to send messages to Microsoft Teams using webhooks"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Chat",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["microsoft", "teams", "webhook", "notification", "messaging"]
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/pandiyarajk/teams-webhook"
+Documentation = "https://github.com/pandiyarajk/teams-webhook#readme"
+Repository = "https://github.com/pandiyarajk/teams-webhook"
+"Bug Reports" = "https://github.com/pandiyarajk/teams-webhook/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["teams_webhook*"]
+
+[tool.setuptools.package-data]
+teams_webhook = ["*.md", "*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["teams_webhook"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

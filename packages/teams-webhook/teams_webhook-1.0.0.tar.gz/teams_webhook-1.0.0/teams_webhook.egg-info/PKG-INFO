@@ -1,0 +1,198 @@
+Metadata-Version: 2.4
+Name: teams-webhook
+Version: 1.0.0
+Summary: A simple Python package to send messages to Microsoft Teams using webhooks
+Home-page: https://github.com/pandiyarajk/teams-webhook
+Author: Pandiyaraj Karuppasamy
+Author-email: Pandiyaraj Karuppasamy <pandiyarajk@live.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/pandiyarajk/teams-webhook
+Project-URL: Documentation, https://github.com/pandiyarajk/teams-webhook#readme
+Project-URL: Repository, https://github.com/pandiyarajk/teams-webhook
+Project-URL: Bug Reports, https://github.com/pandiyarajk/teams-webhook/issues
+Keywords: microsoft,teams,webhook,notification,messaging
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.25.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-cov>=2.0; extra == "test"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Teams Webhook
+
+A simple Python package to send messages to Microsoft Teams using webhooks.
+
+## Features
+
+- Easy-to-use interface for sending Teams messages
+- Support for rich message cards with titles, subtitles, and images
+- Customizable theme colors
+- Error handling and response validation
+- Both class-based and function-based APIs
+
+## Installation
+
+```bash
+pip install teams-webhook
+```
+
+## Quick Start
+
+### Using the Class
+
+```python
+from teams_webhook import TeamsWebhook
+
+# Initialize with your webhook URL
+webhook = TeamsWebhook("https://your-company.webhook.office.com/webhookb2/your-webhook-url")
+
+# Send a message
+result = webhook.send_message(
+    message_title="🚨 Alert",
+    activity_title="System Monitor",
+    activity_subtitle="Health Check",
+    text_message="This is a test message!"
+)
+
+print(f"Success: {result['success']}")
+```
+
+### Using the Function
+
+```python
+from teams_webhook import send_teams_message
+
+# Send a message directly
+result = send_teams_message(
+    webhook_url="https://your-company.webhook.office.com/webhookb2/your-webhook-url",
+    message_title="📊 Status Update",
+    activity_title="Automation Bot",
+    activity_subtitle="QA Automation",
+    text_message="**Status:** All systems operational"
+)
+```
+
+## Parameters
+
+### Required Parameters
+
+- `webhook_url` (str): Your Microsoft Teams webhook URL
+- `message_title` (str): The main title of the message
+- `activity_title` (str): The activity title in the message card
+- `activity_subtitle` (str): The activity subtitle in the message card
+- `text_message` (str): The main text content of the message
+
+### Optional Parameters
+
+- `theme_color` (str): The theme color of the message card (default: "0076D7" - blue)
+- `activity_image` (str): URL of the activity image
+
+## Examples
+
+### Error Alert
+
+```python
+from teams_webhook import TeamsWebhook
+
+webhook = TeamsWebhook("your-webhook-url")
+
+result = webhook.send_message(
+    message_title="🚨 Critical Error",
+    activity_title="Error Monitor",
+    activity_subtitle="Service Alert",
+    text_message="**Error Level:** CRITICAL<br>**Service:** webapp-service<br>**Error:** Database connection failed",
+    theme_color="FF0000",  # Red for error
+    activity_image="https://example.com/error-icon.png"
+)
+```
+
+### Status Update
+
+```python
+from teams_webhook import send_teams_message
+
+result = send_teams_message(
+    webhook_url="your-webhook-url",
+    message_title="📊 Status Update",
+    activity_title="System Monitor",
+    activity_subtitle="Health Check",
+    text_message="**Status:** All systems operational<br>**Uptime:** 99.9%",
+    theme_color="00FF00"  # Green for success
+)
+```
+
+## Response Format
+
+The package returns a dictionary with the following structure:
+
+```python
+{
+    "success": True,  # Boolean indicating if the request was successful
+    "status_code": 200,  # HTTP status code
+    "message": "Message sent successfully to Microsoft Teams!",
+    "response": "..."  # Raw response from Teams
+}
+```
+
+## Error Handling
+
+The package handles various error scenarios:
+
+- Network connectivity issues
+- Invalid webhook URLs
+- Teams service unavailability
+- Malformed message payloads
+
+All errors are caught and returned in the response dictionary with appropriate error messages.
+
+## Getting a Teams Webhook URL
+
+1. Go to your Microsoft Teams channel
+2. Click on the three dots (...) next to the channel name
+3. Select "Connectors"
+4. Find "Incoming Webhook" and click "Configure"
+5. Fill in the details and click "Create"
+6. Copy the webhook URL
+
+## Requirements
+
+- Python 3.7+
+- requests library
+
+## License
+
+MIT License
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Changelog
+
+### 1.0.0
+- Initial release
+- Basic webhook functionality
+- Class and function-based APIs
+- Error handling and response validation

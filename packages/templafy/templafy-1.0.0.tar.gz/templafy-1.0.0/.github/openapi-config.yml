@@ -1,0 +1,12 @@
+project_name_override: templafy
+package_name_override: templafy
+literal_enums: true
+generate_all_tags: true
+post_hooks:
+  - "ruff check src/templafy --fix"
+  - "ruff format src/templafy"
+field_prefix: attr_
+content_type_overrides:
+  application/vnd.openxmlformats-officedocument.wordprocessingml.document: application/octet-stream
+  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet: application/octet-stream
+  application/vnd.openxmlformats-officedocument.presentationml.presentation: application/octet-stream

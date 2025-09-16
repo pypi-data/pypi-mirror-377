@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yugam_sharma"
+version = "0.3.0"
+requires-python = ">=3.13"
+description = "My first package!"
+readme = "README.md"
+authors = [
+    {name = "Yugam Sharma", email = "yugam.sharma@yahoo.com"},
+]
+maintainers = [
+  {name = "Yugam Sharma", email = "yugam.sharma@yahoo.com"}
+]
+license = {file = "LICENSE.txt"}
+keywords = [
+    "Sharma"
+]
+classifiers = [
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: MacOS :: MacOS X",
+]
+dependencies = [
+    "colorama~=0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "twine",
+    "build"
+]
+
+[project.urls]
+Homepage = "https://github.com/ysharma-dev/yugam_sharma"
+Documentation = "https://github.com/ysharma-dev/yugam_sharma/README.md"
+
+[project.scripts]
+yugam_sharma = "yugam_sharma.__main__:main"

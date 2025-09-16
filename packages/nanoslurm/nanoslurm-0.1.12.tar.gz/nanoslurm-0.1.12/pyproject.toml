@@ -1,0 +1,33 @@
+[project]
+name = "nanoslurm"
+version = "0.1.12"
+description = "Zero-dependency Python wrapper for SLURM job submission and monitoring"
+readme = "README.md"
+authors = [
+    { name = "Andrea Boscolo Camiletto", email = "abcamiletto@gmail.com" },
+]
+requires-python = ">=3.11"
+dependencies = [
+    "typer",
+    "rich",
+    "textual",
+    "platformdirs",
+    "pyyaml",
+]
+classifiers = ["Operating System :: POSIX :: Linux"]
+
+[build-system]
+requires = ["hatchling; sys_platform == 'linux'"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 140
+lint.ignore = ["E741", "E743", "F722"] # ignore ambiguous variable names
+lint.extend-select = ["I"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401", "F403"] # exclude imports from __init__.py
+
+[project.scripts]
+nslurm = "nanoslurm.cli:app"
+nanoslurm = "nanoslurm.cli:app"

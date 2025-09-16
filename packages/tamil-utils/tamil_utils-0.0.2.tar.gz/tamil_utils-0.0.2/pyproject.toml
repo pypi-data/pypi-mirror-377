@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tamil-utils"
+version = "0.0.2"
+description = "Tiny Tamil text utilities: normalize, tokenize, stopword removal, graphemes"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{ name = "Arulnidhi Karunanidhi" }]
+keywords = ["tamil", "indic", "nlp", "unicode"]
+dependencies = ["regex>=2023.0"]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Text Processing :: Linguistic"
+]
+
+[project.urls]
+Homepage = "https://github.com/arulnidhii/tamil-utils"
+Issues = "https://github.com/arulnidhii/tamil-utils/issues"
+
+[project.scripts]
+tamil-utils = "tamil_utils.cli:main"

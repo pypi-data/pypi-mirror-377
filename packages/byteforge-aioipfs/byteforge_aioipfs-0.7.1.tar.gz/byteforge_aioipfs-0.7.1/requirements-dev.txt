@@ -1,0 +1,28 @@
+# Development dependencies for aioipfs
+# Extracted from pyproject.toml [project.optional-dependencies.dev]
+
+-r requirements.txt
+
+# Development tools
+mypy
+pytest
+pytest-asyncio
+pytest-cov
+ruff
+tox
+wheel
+
+# Optional development dependencies
+orjson>=3.0
+ipfs-car-decoder==0.1.1
+
+# Documentation dependencies (from pyproject.toml)
+sphinx==5.3.0
+sphinxcontrib-asyncio
+sphinxcontrib-video
+guzzle_sphinx_theme
+
+# Bohort dependencies (REPL tool)
+appdirs>=1.4.4
+omegaconf==2.3.0
+ptpython-aioipfs>=3.0.27

@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(uv sync:*)",
+      "Bash(uv add:*)",
+      "Bash(tree:*)",
+      "WebSearch",
+      "WebFetch(domain:cloud.tencent.com)",
+      "Bash(uv pip show:*)",
+      "Bash(python3:*)",
+      "Bash(source:*)",
+      "Bash(python:*)",
+      "Bash(./run_test.sh:*)",
+      "Bash(echo:*)",
+      "Bash(export:*)",
+      "Bash(twine check:*)",
+      "Bash(./publish.sh:*)",
+      "Bash(pip show:*)",
+      "Bash(pip index versions:*)",
+      "Bash(uv run twine upload:*)",
+      "Bash(uv run:*)",
+      "Bash(tencent-cloud-search-mcp)",
+      "Bash(cat pyproject.toml)",
+      "Bash(PYTHONPATH=src python3 -m tencent_cloud_search_mcp.server)",
+      "Bash(PYTHONPATH=src python -m tencent_cloud_search_mcp.server)",
+      "Bash(PYTHONPATH=src python -c \"\nimport asyncio\nfrom tencent_cloud_search_mcp.server import TencentCloudSearchServer\n\nasync def test():\n    server = TencentCloudSearchServer()\n    print(''✅ 服务器初始化成功'')\n    return True\n\nresult = asyncio.run(test())\nprint(''✅ 测试完成，MCP服务器可以正常运行'')\n\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

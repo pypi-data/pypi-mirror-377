@@ -1,0 +1,10 @@
+[MASTER]
+# Configuration for GitHub Actions pylint
+# This file is specifically for CI to exclude generated code
+ignore=generated
+ignore-patterns=.*generated.*,test.*?py,conftest.py
+ignore-paths=.*generated.*,src/reprompt/generated/.*
+
+[MESSAGES CONTROL]
+# Disable checking for generated files
+# Even if they're passed directly, this should help skip them

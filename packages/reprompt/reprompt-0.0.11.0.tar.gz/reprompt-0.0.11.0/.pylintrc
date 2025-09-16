@@ -1,0 +1,28 @@
+[MASTER]
+# Completely ignore the generated directory and all its contents
+ignore=generated,CVS
+ignore-patterns=generated/.*,.*generated.*,test.*?py,conftest.py
+ignore-paths=.*generated.*,src/reprompt/generated/.*
+
+[MESSAGES CONTROL]
+# Disable specific warnings we don't want
+disable=
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    R0913,  # too-many-arguments (CLI functions legitimately have many arguments)
+    R0917,  # too-many-positional-arguments
+
+[DESIGN]
+max-args=8  # Allow up to 8 arguments for CLI functions
+max-branches=12
+
+[FORMAT]
+max-line-length=120
+
+[LOGGING]
+logging-format-style=old
+
+[EXCEPTIONS]
+overgeneral-exceptions=builtins.BaseException,
+                       builtins.Exception

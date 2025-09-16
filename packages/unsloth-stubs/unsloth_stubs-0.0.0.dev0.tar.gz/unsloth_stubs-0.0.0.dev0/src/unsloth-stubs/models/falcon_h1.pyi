@@ -1,0 +1,19 @@
+from .llama import *
+from ._utils import __version__ as __version__
+from .llama import LlamaLinearScalingRotaryEmbedding as LlamaLinearScalingRotaryEmbedding, LlamaRotaryEmbedding as LlamaRotaryEmbedding
+from _typeshed import Incomplete
+from transformers.models.falcon_h1.modeling_falcon_h1 import FalconHybridMambaAttentionDynamicCache as FalconHybridMambaAttentionDynamicCache
+
+def FalconH1Attention_fast_forward(self, hidden_states: torch.Tensor, causal_mask: Optional[BlockDiagonalCausalMask] = None, attention_mask: Optional[torch.Tensor] = None, position_ids: Optional[torch.LongTensor] = None, past_key_value: Optional[Tuple[torch.Tensor]] = None, output_attentions: bool = False, use_cache: bool = False, padding_mask: Optional[torch.LongTensor] = None, position_embeddings: Optional[Tuple[torch.Tensor, torch.Tensor]] = None, *args, **kwargs) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]]: ...
+
+torch_matmul: Incomplete
+
+def FalconH1Attention_fast_forward_inference(self, hidden_states: torch.Tensor, past_key_value: Optional[Tuple[torch.Tensor]], position_ids, do_prefill: bool = False, attention_mask=None): ...
+def FalconH1DecoderLayer_fast_forward(self, hidden_states: torch.Tensor, causal_mask=None, attention_mask: Optional[torch.Tensor] = None, mamba_attention_mask: Optional[torch.Tensor] = None, position_ids: Optional[torch.LongTensor] = None, cache_position: Optional[torch.LongTensor] = None, past_key_value: Optional[Tuple[torch.Tensor]] = None, output_attentions: Optional[bool] = False, use_cache: Optional[bool] = False, padding_mask: Optional[torch.LongTensor] = None, position_embeddings: Optional[Tuple[torch.Tensor, torch.Tensor]] = None, *args, **kwargs) -> Tuple[torch.FloatTensor, Optional[Tuple[torch.FloatTensor, torch.FloatTensor]]]: ...
+def fix_prepare_inputs_for_generation(module) -> None: ...
+
+class FastFalconH1Model(FastLlamaModel):
+    @staticmethod
+    def pre_patch() -> None: ...
+    @staticmethod
+    def from_pretrained(model_name: str = 'Qwen/FalconH1-7B', max_seq_length: int = 4096, dtype=None, load_in_4bit: bool = True, token=None, device_map: str = 'sequential', rope_scaling=None, fix_tokenizer: bool = True, model_patcher=None, tokenizer_name=None, trust_remote_code: bool = False, **kwargs): ...

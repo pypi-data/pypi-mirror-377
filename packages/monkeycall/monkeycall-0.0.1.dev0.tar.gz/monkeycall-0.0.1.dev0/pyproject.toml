@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "monkeycall"
+version = "0.0.1.dev0"
+description = "Detect (spider/howler) monkey calls using pretrained TF2 models from Hugging Face."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  { name="Georgios Rizos", email="georgevrizos@gmail.com" }
+]
+dependencies = [
+  "tensorflow==2.20.0",
+  "huggingface_hub==0.34.4",
+  "librosa==0.11.0",
+  "pandas==2.3.2"
+]
+
+[project.urls]
+Homepage = "https://huggingface.co/georgiosrizos/spider-monkey-dummy-detector"
+Source = "https://github.com/georgiosrizos/monkeycall"

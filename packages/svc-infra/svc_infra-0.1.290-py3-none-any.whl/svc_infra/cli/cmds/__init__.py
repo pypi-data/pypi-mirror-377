@@ -1,0 +1,20 @@
+from svc_infra.cli.cmds.cache.redis.redis_cmds import register as register_redis
+from svc_infra.cli.cmds.db.nosql.mongo.mongo_cmds import register as register_mongo
+from svc_infra.cli.cmds.db.nosql.mongo.mongo_scaffold_cmds import (
+    register as register_mongo_scaffold,
+)
+from svc_infra.cli.cmds.db.sql.alembic_cmds import register as register_alembic
+from svc_infra.cli.cmds.db.sql.sql_scaffold_cmds import register as register_sql_scaffold
+from svc_infra.cli.cmds.obs.grafana_cmds import register as register_grafana
+
+from .help import _HELP
+
+__all__ = [
+    "register_alembic",
+    "register_sql_scaffold",
+    "register_grafana",
+    "register_mongo",
+    "register_mongo_scaffold",
+    "register_redis",
+    "_HELP",
+]

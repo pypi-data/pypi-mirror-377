@@ -1,0 +1,286 @@
+name: Python wheels
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  create_sdist:
+    name: Create 🐍 sdist
+    if: ${{ (startsWith(github.event.comment.body, '/build_wheels') && github.event.issue.pull_request) || github.event_name == 'workflow_dispatch' || github.event_name == 'release' }}
+    runs-on: ubuntu-24.04
+
+    steps:
+      # ref: https://github.com/actions/checkout/issues/331#issuecomment-707103442
+      - name: Get pull request
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            };
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`);
+            try {
+              const result = await github.rest.pulls.get(request);
+              return result.data;
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`);
+            }
+
+      - name: Checkout MR
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
+          submodules: true
+
+      - name: Checkout
+        if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'release' }}
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          submodules: true
+
+      - name: Disable local version for TestPyPI upload
+        if: github.event_name == 'workflow_dispatch'
+        run: echo SETUPTOOLS_SCM_OVERRIDES_FOR_OVERLAP='{ local_scheme = "no-local-version" }' >> "$GITHUB_ENV"
+        shell: bash
+
+      - name: Trigger response
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        id: trigger-response
+        with:
+          script: |
+            const msg = 'Triggered [building of 🐍 sdist](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) via action...';
+            try {
+              const result = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: msg,
+              });
+              return result.data;
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`);
+            }
+      - name: Setup Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Dependencies
+        run: python -m pip install build twine
+
+      - name: Create sdist
+        id: build-sdist
+        run: python -m build --sdist
+
+      - name: Check metadata
+        id: check-metadata
+        run: twine check dist/*
+
+      - name: Notify via comment
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        env:
+          STEP_STATUS: ${{steps.check-metadata.outcome}}
+        with:
+          script: |
+            try {
+              const result = await github.rest.issues.getComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: ${{ fromJSON(steps.trigger-response.outputs.result).id }},
+              });
+
+              let msg = result.data.body;
+              if(process.env.STEP_STATUS == 'success') {
+                msg += 'successful :heavy_check_mark:';
+              } else {
+                msg += 'failed :x:';
+              }
+
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: ${{ fromJSON(steps.trigger-response.outputs.result).id }},
+                body: msg,
+              });
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`);
+            }
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ github.event.repository.name }}-sdist
+          path: dist/*.tar.gz
+          retention-days: 2
+
+  build_wheels:
+    name: Build 🐍 wheels on ${{ matrix.os }}
+    if: ${{ (startsWith(github.event.comment.body, '/build_wheels') && github.event.issue.pull_request) || github.event_name == 'workflow_dispatch' || github.event_name == 'release' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-14, windows-2022]
+
+    steps:
+      # ref: https://github.com/actions/checkout/issues/331#issuecomment-707103442
+      - name: Get pull request
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            };
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`);
+            try {
+              const result = await github.rest.pulls.get(request);
+              return result.data;
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`);
+            }
+
+      - name: Checkout MR
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
+          submodules: true
+
+      - name: Checkout
+        if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'release' }}
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          submodules: true
+
+      - name: Trigger response
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        id: trigger-response
+        with:
+          script: |
+            const msg = 'Triggered [building of 🐍 wheels on ${{ matrix.os }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) via action...';
+            try {
+              const result = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: msg,
+              });
+              return result.data;
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`);
+            }
+
+      - name: Disable local version for TestPyPI upload
+        if: github.event_name == 'workflow_dispatch'
+        run: echo SETUPTOOLS_SCM_OVERRIDES_FOR_OVERLAP='{ local_scheme = "no-local-version" }' >> "$GITHUB_ENV"
+        shell: bash
+
+      - name: Build wheels
+        id: build-wheels
+        uses: pypa/cibuildwheel@c923d83ad9c1bc00211c5041d0c3f73294ff88f6 # v3.1.4
+        with:
+          output-dir: dist
+
+      - name: Build Pyodide wheels
+        if: matrix.os == 'ubuntu-24.04'
+        uses: pypa/cibuildwheel@c923d83ad9c1bc00211c5041d0c3f73294ff88f6 # v3.1.4
+        env:
+          CIBW_PLATFORM: pyodide
+        with:
+          output-dir: dist
+
+      - name: Notify via comment
+        if: ${{ github.event.issue.pull_request }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        env:
+          STEP_STATUS: ${{ steps.build-wheels.outcome }}
+        with:
+          script: |
+            try {
+              const result = await github.rest.issues.getComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: ${{ fromJSON(steps.trigger-response.outputs.result).id }},
+              });
+
+              let msg = result.data.body;
+              if(process.env.STEP_STATUS == 'success') {
+                msg += 'successful :heavy_check_mark:';
+              } else {
+                msg += 'failed :x:';
+              }
+
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: ${{ fromJSON(steps.trigger-response.outputs.result).id }},
+                body: msg,
+              });
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`);
+            }
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ github.event.repository.name }}-wheels-${{ matrix.os }}
+          path: ./dist/*.whl
+          retention-days: 2
+
+  publish:
+    name: Upload release to PyPI
+    needs: [create_sdist, build_wheels]
+    runs-on: ubuntu-24.04
+    environment: ${{ github.event_name == 'release' && github.event.action == 'published' && 'pypi' || 'testpypi' }}
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+
+    steps:
+      - name: Download sdist/wheels
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          pattern: ${{ github.event.repository.name }}-*
+          path: dist
+          merge-multiple: true
+
+        # PyPI does not support publishing of Pyodide wheels yet
+      - name: Remove Pyodide wheels
+        run: rm dist/*pyodide*.whl || true
+        shell: bash
+
+      - name: Generate artifact attestations
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        with:
+          subject-path: "dist/*"
+
+      - name: Publish package to TestPyPI
+        if: github.event_name == 'workflow_dispatch'
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish package to PyPI
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":rebaseStalePrs",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(ci)"
+  ],
+  "baseBranchPatterns": [
+    "main",
+    "0.1.x"
+  ],
+  "enabledManagers": [
+    "custom.regex",
+    "github-actions",
+    "pep621"
+  ],
+  "platformCommit": "enabled",
+  "commitBodyTable": true,
+  "separateMajorMinor": false,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "pre-commit dependencies",
+      "managerFilePatterns": [
+        "/^\\.pre-commit-config\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "\\s*-\\s+repo:\\s+(?<depName>https://github\\.com/[^/]+/[^\\s]+)\\s+rev:\\s+(?<currentDigest>[a-f0-9]{40})\\s*#\\s*frozen:\\s*(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-zA-Z0-9.-]+)?)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "{{replace 'https://github.com/' '' depName}}"
+    },
+    {
+      "customType": "regex",
+      "description": "C++ dependencies via CMake FetchContent",
+      "managerFilePatterns": [
+        "/CMakeLists\\.txt$/"
+      ],
+      "matchStrings": [
+        "(?ms)fetchcontent_declare\\s*\\(\\s*(?<depName>[^\\s\\)]+)\\s+GIT_REPOSITORY\\s+(?<gitUrl>https://git(hub|lab)\\.com/[^/\\s]+/[^/\\s]+)\\.git\\s+GIT_TAG\\s+(?<currentDigest>[a-f0-9]{40})\\s*#\\s*(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-zA-Z0-9.-]+)?)"
+      ],
+      "datasourceTemplate": "{{#if (containsString gitUrl 'gitlab.com')}}gitlab-releases{{else}}github-releases{{/if}}",
+      "packageNameTemplate": "{{replace 'https://github.com/' '' (replace 'https://gitlab.com/' '' gitUrl)}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "groupName": "pre-commit dependencies",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchFileNames": [
+        "^\\.pre-commit-config\\.ya?ml$"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "automerge": false,
+      "addLabels": [
+        "pre-commit"
+      ]
+    },
+    {
+      "groupName": "C++ dependencies",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchFileNames": [
+        "CMakeLists\\.txt$"
+      ],
+      "automerge": false
+    },
+    {
+      "groupName": "Git Hub Actions",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "groupName": "Python dependencies",
+      "matchManagers": [
+        "pep621"
+      ],
+      "automerge": false
+    }
+  ],
+  "labels": [
+    "renovate",
+    "dependencies"
+  ]
+}

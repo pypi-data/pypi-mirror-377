@@ -1,0 +1,3089 @@
+[
+    {
+        "name": "auth",
+        "data_type": "vyom_msg.msg.Auth",
+        "topic": "/auth",
+        "is_subscribed": true,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "behavior_tree_node-transition_event",
+        "data_type": "lifecycle_msgs.msg.TransitionEvent",
+        "topic": "/behavior_tree_node/transition_event",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "diagnostics",
+        "data_type": "diagnostic_msgs.msg.DiagnosticArray",
+        "topic": "/diagnostics",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-adsb-send",
+        "data_type": "mavros_msgs.msg.ADSBVehicle",
+        "topic": "/drone0/mavros/adsb/send",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-adsb-vehicle",
+        "data_type": "mavros_msgs.msg.ADSBVehicle",
+        "topic": "/drone0/mavros/adsb/vehicle",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-battery",
+        "data_type": "sensor_msgs.msg.BatteryState",
+        "topic": "/drone0/mavros/battery",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-cam_imu_sync-cam_imu_stamp",
+        "data_type": "mavros_msgs.msg.CamIMUStamp",
+        "topic": "/drone0/mavros/cam_imu_sync/cam_imu_stamp",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-camera-image_captured",
+        "data_type": "mavros_msgs.msg.CameraImageCaptured",
+        "topic": "/drone0/mavros/camera/image_captured",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-cellular_status-status",
+        "data_type": "mavros_msgs.msg.CellularStatus",
+        "topic": "/drone0/mavros/cellular_status/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-companion_process-status",
+        "data_type": "mavros_msgs.msg.CompanionProcessStatus",
+        "topic": "/drone0/mavros/companion_process/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-esc_status-info",
+        "data_type": "mavros_msgs.msg.ESCInfo",
+        "topic": "/drone0/mavros/esc_status/info",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-esc_status-status",
+        "data_type": "mavros_msgs.msg.ESCStatus",
+        "topic": "/drone0/mavros/esc_status/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-esc_telemetry-telemetry",
+        "data_type": "mavros_msgs.msg.ESCTelemetry",
+        "topic": "/drone0/mavros/esc_telemetry/telemetry",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-estimator_status",
+        "data_type": "mavros_msgs.msg.EstimatorStatus",
+        "topic": "/drone0/mavros/estimator_status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-extended_state",
+        "data_type": "mavros_msgs.msg.ExtendedState",
+        "topic": "/drone0/mavros/extended_state",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-fake_gps-mocap-pose",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/fake_gps/mocap/pose",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-geofence-fences",
+        "data_type": "mavros_msgs.msg.WaypointList",
+        "topic": "/drone0/mavros/geofence/fences",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-device-attitude_status",
+        "data_type": "mavros_msgs.msg.GimbalDeviceAttitudeStatus",
+        "topic": "/drone0/mavros/gimbal_control/device/attitude_status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-device-info",
+        "data_type": "mavros_msgs.msg.GimbalDeviceInformation",
+        "topic": "/drone0/mavros/gimbal_control/device/info",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-device-set_attitude",
+        "data_type": "mavros_msgs.msg.GimbalDeviceSetAttitude",
+        "topic": "/drone0/mavros/gimbal_control/device/set_attitude",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-manager-info",
+        "data_type": "mavros_msgs.msg.GimbalManagerInformation",
+        "topic": "/drone0/mavros/gimbal_control/manager/info",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-manager-set_attitude",
+        "data_type": "mavros_msgs.msg.GimbalManagerSetAttitude",
+        "topic": "/drone0/mavros/gimbal_control/manager/set_attitude",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-manager-set_manual_control",
+        "data_type": "mavros_msgs.msg.GimbalManagerSetPitchyaw",
+        "topic": "/drone0/mavros/gimbal_control/manager/set_manual_control",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-manager-set_pitchyaw",
+        "data_type": "mavros_msgs.msg.GimbalManagerSetPitchyaw",
+        "topic": "/drone0/mavros/gimbal_control/manager/set_pitchyaw",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gimbal_control-manager-status",
+        "data_type": "mavros_msgs.msg.GimbalManagerStatus",
+        "topic": "/drone0/mavros/gimbal_control/manager/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-compass_hdg",
+        "data_type": "std_msgs.msg.Float64",
+        "topic": "/drone0/mavros/global_position/compass_hdg",
+        "is_subscribed": true,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 0,
+                "buffered": 30
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 30
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-global",
+        "data_type": "sensor_msgs.msg.NavSatFix",
+        "topic": "/drone0/mavros/global_position/global",
+        "is_subscribed": true,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 0,
+                "buffered": 30
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 30
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-gp_lp_offset",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/global_position/gp_lp_offset",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-gp_origin",
+        "data_type": "geographic_msgs.msg.GeoPointStamped",
+        "topic": "/drone0/mavros/global_position/gp_origin",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-local",
+        "data_type": "nav_msgs.msg.Odometry",
+        "topic": "/drone0/mavros/global_position/local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-raw-fix",
+        "data_type": "sensor_msgs.msg.NavSatFix",
+        "topic": "/drone0/mavros/global_position/raw/fix",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-raw-gps_vel",
+        "data_type": "geometry_msgs.msg.TwistStamped",
+        "topic": "/drone0/mavros/global_position/raw/gps_vel",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-raw-satellites",
+        "data_type": "std_msgs.msg.UInt32",
+        "topic": "/drone0/mavros/global_position/raw/satellites",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-rel_alt",
+        "data_type": "std_msgs.msg.Float64",
+        "topic": "/drone0/mavros/global_position/rel_alt",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-global_position-set_gp_origin",
+        "data_type": "geographic_msgs.msg.GeoPointStamped",
+        "topic": "/drone0/mavros/global_position/set_gp_origin",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gps_input-gps_input",
+        "data_type": "mavros_msgs.msg.GPSINPUT",
+        "topic": "/drone0/mavros/gps_input/gps_input",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gps_rtk-rtk_baseline",
+        "data_type": "mavros_msgs.msg.RTKBaseline",
+        "topic": "/drone0/mavros/gps_rtk/rtk_baseline",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gps_rtk-send_rtcm",
+        "data_type": "mavros_msgs.msg.RTCM",
+        "topic": "/drone0/mavros/gps_rtk/send_rtcm",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gpsstatus-gps1-raw",
+        "data_type": "mavros_msgs.msg.GPSRAW",
+        "topic": "/drone0/mavros/gpsstatus/gps1/raw",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gpsstatus-gps1-rtk",
+        "data_type": "mavros_msgs.msg.GPSRTK",
+        "topic": "/drone0/mavros/gpsstatus/gps1/rtk",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gpsstatus-gps2-raw",
+        "data_type": "mavros_msgs.msg.GPSRAW",
+        "topic": "/drone0/mavros/gpsstatus/gps2/raw",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-gpsstatus-gps2-rtk",
+        "data_type": "mavros_msgs.msg.GPSRTK",
+        "topic": "/drone0/mavros/gpsstatus/gps2/rtk",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-home_position-home",
+        "data_type": "mavros_msgs.msg.HomePosition",
+        "topic": "/drone0/mavros/home_position/home",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-home_position-set",
+        "data_type": "mavros_msgs.msg.HomePosition",
+        "topic": "/drone0/mavros/home_position/set",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-data",
+        "data_type": "sensor_msgs.msg.Imu",
+        "topic": "/drone0/mavros/imu/data",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-data_raw",
+        "data_type": "sensor_msgs.msg.Imu",
+        "topic": "/drone0/mavros/imu/data_raw",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-diff_pressure",
+        "data_type": "sensor_msgs.msg.FluidPressure",
+        "topic": "/drone0/mavros/imu/diff_pressure",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-mag",
+        "data_type": "sensor_msgs.msg.MagneticField",
+        "topic": "/drone0/mavros/imu/mag",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-static_pressure",
+        "data_type": "sensor_msgs.msg.FluidPressure",
+        "topic": "/drone0/mavros/imu/static_pressure",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-temperature_baro",
+        "data_type": "sensor_msgs.msg.Temperature",
+        "topic": "/drone0/mavros/imu/temperature_baro",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-imu-temperature_imu",
+        "data_type": "sensor_msgs.msg.Temperature",
+        "topic": "/drone0/mavros/imu/temperature_imu",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-landing_target-lt_marker",
+        "data_type": "geometry_msgs.msg.Vector3Stamped",
+        "topic": "/drone0/mavros/landing_target/lt_marker",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-landing_target-pose",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/landing_target/pose",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-landing_target-pose_in",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/landing_target/pose_in",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-accel",
+        "data_type": "geometry_msgs.msg.AccelWithCovarianceStamped",
+        "topic": "/drone0/mavros/local_position/accel",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-odom",
+        "data_type": "nav_msgs.msg.Odometry",
+        "topic": "/drone0/mavros/local_position/odom",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-pose",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/local_position/pose",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-pose_cov",
+        "data_type": "geometry_msgs.msg.PoseWithCovarianceStamped",
+        "topic": "/drone0/mavros/local_position/pose_cov",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-velocity_body",
+        "data_type": "geometry_msgs.msg.TwistStamped",
+        "topic": "/drone0/mavros/local_position/velocity_body",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-velocity_body_cov",
+        "data_type": "geometry_msgs.msg.TwistWithCovarianceStamped",
+        "topic": "/drone0/mavros/local_position/velocity_body_cov",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-local_position-velocity_local",
+        "data_type": "geometry_msgs.msg.TwistStamped",
+        "topic": "/drone0/mavros/local_position/velocity_local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-log_transfer-raw-log_data",
+        "data_type": "mavros_msgs.msg.LogData",
+        "topic": "/drone0/mavros/log_transfer/raw/log_data",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-log_transfer-raw-log_entry",
+        "data_type": "mavros_msgs.msg.LogEntry",
+        "topic": "/drone0/mavros/log_transfer/raw/log_entry",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mag_calibration-report",
+        "data_type": "mavros_msgs.msg.MagnetometerReporter",
+        "topic": "/drone0/mavros/mag_calibration/report",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mag_calibration-status",
+        "data_type": "std_msgs.msg.UInt8",
+        "topic": "/drone0/mavros/mag_calibration/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-manual_control-control",
+        "data_type": "mavros_msgs.msg.ManualControl",
+        "topic": "/drone0/mavros/manual_control/control",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-manual_control-send",
+        "data_type": "mavros_msgs.msg.ManualControl",
+        "topic": "/drone0/mavros/manual_control/send",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mission-reached",
+        "data_type": "mavros_msgs.msg.WaypointReached",
+        "topic": "/drone0/mavros/mission/reached",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mission-waypoints",
+        "data_type": "mavros_msgs.msg.WaypointList",
+        "topic": "/drone0/mavros/mission/waypoints",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mocap-pose",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/mocap/pose",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mocap-tf",
+        "data_type": "geometry_msgs.msg.TransformStamped",
+        "topic": "/drone0/mavros/mocap/tf",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mount_control-command",
+        "data_type": "mavros_msgs.msg.MountControl",
+        "topic": "/drone0/mavros/mount_control/command",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mount_control-orientation",
+        "data_type": "geometry_msgs.msg.Quaternion",
+        "topic": "/drone0/mavros/mount_control/orientation",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-mount_control-status",
+        "data_type": "geometry_msgs.msg.Vector3Stamped",
+        "topic": "/drone0/mavros/mount_control/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-nav_controller_output-output",
+        "data_type": "mavros_msgs.msg.NavControllerOutput",
+        "topic": "/drone0/mavros/nav_controller_output/output",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-obstacle-send",
+        "data_type": "sensor_msgs.msg.LaserScan",
+        "topic": "/drone0/mavros/obstacle/send",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-odometry-in",
+        "data_type": "nav_msgs.msg.Odometry",
+        "topic": "/drone0/mavros/odometry/in",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-odometry-out",
+        "data_type": "nav_msgs.msg.Odometry",
+        "topic": "/drone0/mavros/odometry/out",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-onboard_computer-status",
+        "data_type": "mavros_msgs.msg.OnboardComputerStatus",
+        "topic": "/drone0/mavros/onboard_computer/status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-open_drone_id-basic_id",
+        "data_type": "mavros_msgs.msg.OpenDroneIDBasicID",
+        "topic": "/drone0/mavros/open_drone_id/basic_id",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-open_drone_id-operator_id",
+        "data_type": "mavros_msgs.msg.OpenDroneIDOperatorID",
+        "topic": "/drone0/mavros/open_drone_id/operator_id",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-open_drone_id-self_id",
+        "data_type": "mavros_msgs.msg.OpenDroneIDSelfID",
+        "topic": "/drone0/mavros/open_drone_id/self_id",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-open_drone_id-system",
+        "data_type": "mavros_msgs.msg.OpenDroneIDSystem",
+        "topic": "/drone0/mavros/open_drone_id/system",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-open_drone_id-system_update",
+        "data_type": "mavros_msgs.msg.OpenDroneIDSystemUpdate",
+        "topic": "/drone0/mavros/open_drone_id/system_update",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-optical_flow-ground_distance",
+        "data_type": "sensor_msgs.msg.Range",
+        "topic": "/drone0/mavros/optical_flow/ground_distance",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-optical_flow-raw-optical_flow",
+        "data_type": "mavros_msgs.msg.OpticalFlow",
+        "topic": "/drone0/mavros/optical_flow/raw/optical_flow",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-optical_flow-raw-send",
+        "data_type": "mavros_msgs.msg.OpticalFlow",
+        "topic": "/drone0/mavros/optical_flow/raw/send",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-param-event",
+        "data_type": "mavros_msgs.msg.ParamEvent",
+        "topic": "/drone0/mavros/param/event",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-play_tune",
+        "data_type": "mavros_msgs.msg.PlayTuneV2",
+        "topic": "/drone0/mavros/play_tune",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-radio_status",
+        "data_type": "mavros_msgs.msg.RadioStatus",
+        "topic": "/drone0/mavros/radio_status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rallypoint-rallypoints",
+        "data_type": "mavros_msgs.msg.WaypointList",
+        "topic": "/drone0/mavros/rallypoint/rallypoints",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rangefinder-rangefinder",
+        "data_type": "sensor_msgs.msg.Range",
+        "topic": "/drone0/mavros/rangefinder/rangefinder",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rangefinder_pub",
+        "data_type": "sensor_msgs.msg.Range",
+        "topic": "/drone0/mavros/rangefinder_pub",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rangefinder_sub",
+        "data_type": "sensor_msgs.msg.Range",
+        "topic": "/drone0/mavros/rangefinder_sub",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rc-in",
+        "data_type": "mavros_msgs.msg.RCIn",
+        "topic": "/drone0/mavros/rc/in",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rc-out",
+        "data_type": "mavros_msgs.msg.RCOut",
+        "topic": "/drone0/mavros/rc/out",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-rc-override",
+        "data_type": "mavros_msgs.msg.OverrideRCIn",
+        "topic": "/drone0/mavros/rc/override",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_accel-accel",
+        "data_type": "geometry_msgs.msg.Vector3Stamped",
+        "topic": "/drone0/mavros/setpoint_accel/accel",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_attitude-cmd_vel",
+        "data_type": "geometry_msgs.msg.TwistStamped",
+        "topic": "/drone0/mavros/setpoint_attitude/cmd_vel",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_attitude-thrust",
+        "data_type": "mavros_msgs.msg.Thrust",
+        "topic": "/drone0/mavros/setpoint_attitude/thrust",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_position-global",
+        "data_type": "geographic_msgs.msg.GeoPoseStamped",
+        "topic": "/drone0/mavros/setpoint_position/global",
+        "is_subscribed": true,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 0,
+                "buffered": 30
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 30
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_position-global_to_local",
+        "data_type": "geographic_msgs.msg.GeoPoseStamped",
+        "topic": "/drone0/mavros/setpoint_position/global_to_local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_position-local",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/setpoint_position/local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_raw-attitude",
+        "data_type": "mavros_msgs.msg.AttitudeTarget",
+        "topic": "/drone0/mavros/setpoint_raw/attitude",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_raw-global",
+        "data_type": "mavros_msgs.msg.GlobalPositionTarget",
+        "topic": "/drone0/mavros/setpoint_raw/global",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_raw-local",
+        "data_type": "mavros_msgs.msg.PositionTarget",
+        "topic": "/drone0/mavros/setpoint_raw/local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_raw-target_attitude",
+        "data_type": "mavros_msgs.msg.AttitudeTarget",
+        "topic": "/drone0/mavros/setpoint_raw/target_attitude",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_raw-target_global",
+        "data_type": "mavros_msgs.msg.GlobalPositionTarget",
+        "topic": "/drone0/mavros/setpoint_raw/target_global",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_raw-target_local",
+        "data_type": "mavros_msgs.msg.PositionTarget",
+        "topic": "/drone0/mavros/setpoint_raw/target_local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_trajectory-desired",
+        "data_type": "nav_msgs.msg.Path",
+        "topic": "/drone0/mavros/setpoint_trajectory/desired",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_trajectory-local",
+        "data_type": "trajectory_msgs.msg.MultiDOFJointTrajectory",
+        "topic": "/drone0/mavros/setpoint_trajectory/local",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_velocity-cmd_vel",
+        "data_type": "geometry_msgs.msg.TwistStamped",
+        "topic": "/drone0/mavros/setpoint_velocity/cmd_vel",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-setpoint_velocity-cmd_vel_unstamped",
+        "data_type": "geometry_msgs.msg.Twist",
+        "topic": "/drone0/mavros/setpoint_velocity/cmd_vel_unstamped",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-state",
+        "data_type": "mavros_msgs.msg.State",
+        "topic": "/drone0/mavros/state",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-status_event",
+        "data_type": "mavros_msgs.msg.StatusEvent",
+        "topic": "/drone0/mavros/status_event",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-statustext-recv",
+        "data_type": "mavros_msgs.msg.StatusText",
+        "topic": "/drone0/mavros/statustext/recv",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-statustext-send",
+        "data_type": "mavros_msgs.msg.StatusText",
+        "topic": "/drone0/mavros/statustext/send",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-sys_status",
+        "data_type": "mavros_msgs.msg.SysStatus",
+        "topic": "/drone0/mavros/sys_status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-terrain-report",
+        "data_type": "mavros_msgs.msg.TerrainReport",
+        "topic": "/drone0/mavros/terrain/report",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-time_reference",
+        "data_type": "sensor_msgs.msg.TimeReference",
+        "topic": "/drone0/mavros/time_reference",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-timesync_status",
+        "data_type": "mavros_msgs.msg.TimesyncStatus",
+        "topic": "/drone0/mavros/timesync_status",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-trajectory-desired",
+        "data_type": "mavros_msgs.msg.Trajectory",
+        "topic": "/drone0/mavros/trajectory/desired",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-trajectory-generated",
+        "data_type": "mavros_msgs.msg.Trajectory",
+        "topic": "/drone0/mavros/trajectory/generated",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-trajectory-path",
+        "data_type": "nav_msgs.msg.Path",
+        "topic": "/drone0/mavros/trajectory/path",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-tunnel-in",
+        "data_type": "mavros_msgs.msg.Tunnel",
+        "topic": "/drone0/mavros/tunnel/in",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-tunnel-out",
+        "data_type": "mavros_msgs.msg.Tunnel",
+        "topic": "/drone0/mavros/tunnel/out",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-vfr_hud",
+        "data_type": "mavros_msgs.msg.VfrHud",
+        "topic": "/drone0/mavros/vfr_hud",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-vision_pose-pose",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/drone0/mavros/vision_pose/pose",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-vision_pose-pose_cov",
+        "data_type": "geometry_msgs.msg.PoseWithCovarianceStamped",
+        "topic": "/drone0/mavros/vision_pose/pose_cov",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-vision_speed-speed_twist",
+        "data_type": "geometry_msgs.msg.TwistStamped",
+        "topic": "/drone0/mavros/vision_speed/speed_twist",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-vision_speed-speed_twist_cov",
+        "data_type": "geometry_msgs.msg.TwistWithCovarianceStamped",
+        "topic": "/drone0/mavros/vision_speed/speed_twist_cov",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-vision_speed-speed_vector",
+        "data_type": "geometry_msgs.msg.Vector3Stamped",
+        "topic": "/drone0/mavros/vision_speed/speed_vector",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "drone0-mavros-wind_estimation",
+        "data_type": "geometry_msgs.msg.TwistWithCovarianceStamped",
+        "topic": "/drone0/mavros/wind_estimation",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "hello",
+        "data_type": "vyom_msg.msg.Hello",
+        "topic": "/hello",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "mission_status_topic",
+        "data_type": "vyom_mission_msgs.msg.MissionStatus",
+        "topic": "/mission_status_topic",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "move_base_simple-goal",
+        "data_type": "geometry_msgs.msg.PoseStamped",
+        "topic": "/move_base_simple/goal",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "parameter_events",
+        "data_type": "rcl_interfaces.msg.ParameterEvent",
+        "topic": "/parameter_events",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "rosout",
+        "data_type": "rcl_interfaces.msg.Log",
+        "topic": "/rosout",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "systemcheck",
+        "data_type": "vyom_msg.msg.Systemcheck",
+        "topic": "/systemcheck",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "tf",
+        "data_type": "tf2_msgs.msg.TFMessage",
+        "topic": "/tf",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "tf_static",
+        "data_type": "tf2_msgs.msg.TFMessage",
+        "topic": "/tf_static",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "uas156-mavlink_sink",
+        "data_type": "mavros_msgs.msg.Mavlink",
+        "topic": "/uas156/mavlink_sink",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "uas156-mavlink_source",
+        "data_type": "mavros_msgs.msg.Mavlink",
+        "topic": "/uas156/mavlink_source",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "zr30-feed",
+        "data_type": "sensor_msgs.msg.Image",
+        "topic": "/zr30/feed",
+        "is_subscribed": true,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 0,
+                "buffered": 30
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 30
+            }
+        }
+    },
+    {
+        "name": "zr30-feed-compressed",
+        "data_type": "sensor_msgs.msg.CompressedImage",
+        "topic": "/zr30/feed/compressed",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "zr30-feed-compressedDepth",
+        "data_type": "sensor_msgs.msg.CompressedImage",
+        "topic": "/zr30/feed/compressedDepth",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    },
+    {
+        "name": "zr30-feed-theora",
+        "data_type": "theora_image_transport.msg.Packet",
+        "topic": "/zr30/feed/theora",
+        "is_subscribed": false,
+        "is_subscribe_on_mission": false,
+        "destinations": {
+            "s3": {
+                "live": 5,
+                "buffered": 5
+            },
+            "gcs": {
+                "live": 0,
+                "buffered": 0
+            },
+            "local": {
+                "live": 0,
+                "buffered": 5
+            }
+        }
+    }
+]

@@ -1,0 +1,608 @@
+Metadata-Version: 2.4
+Name: endnote-utils
+Version: 1.0.3
+Summary: Convert EndNote XML to CSV/JSON/XLSX with streaming parse and TXT report.
+Author-email: Minh Quach <minhquach8@gmail.com>
+License: MIT
+Keywords: endnote,xml,csv,bibliography,research
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: openpyxl>=3.1.0
+
+# EndNote Utils
+
+Convert **EndNote XML** and **RIS files** into clean **CSV / JSON / XLSX** with automatic **TXT reports**.
+Includes an **LLM screening tool** (via **Ollama**) to label *include / exclude / uncertain* from **title + abstract**.
+Supports both **Python API** and **command-line interface (CLI)**.
+
+---
+
+## Table of Contents
+
+- [EndNote Utils](#endnote-utils)
+  - [Table of Contents](#table-of-contents)
+  - [✨ Features](#-features)
+  - [📦 Installation](#-installation)
+- [🔹 A) Exporter (XML/RIS → CSV/JSON/XLSX)](#-a-exporter-xmlris--csvjsonxlsx)
+    - [Quick examples](#quick-examples)
+    - [Exporter CLI options](#exporter-cli-options)
+    - [Output Snippet](#output-snippet)
+      - [Export report snippet](#export-report-snippet)
+      - [CSV export snippet](#csv-export-snippet)
+- [🔹 B) LLM Screening](#-b-llm-screening)
+    - [1. Install Ollama + models](#1-install-ollama--models)
+      - [Why local models?](#why-local-models)
+    - [2. Write criteria (`criteria.txt`)](#2-write-criteria-criteriatxt)
+    - [3. Run the screener](#3-run-the-screener)
+    - [LLM CLI options](#llm-cli-options)
+    - [Output snippets](#output-snippets)
+      - [Screener output snippet](#screener-output-snippet)
+      - [Screening report snippet](#screening-report-snippet)
+- [🔹 C) One-Shot Pipeline](#-c-one-shot-pipeline)
+    - [Examples](#examples)
+    - [Full-screen CLI options](#full-screen-cli-options)
+    - [Output snippet](#output-snippet-1)
+- [🧪 Python API](#-python-api)
+    - [Import surface](#import-surface)
+    - [`export`](#export)
+    - [`export_folder`](#export_folder)
+    - [`export_files_to_csv_with_report` (low-level)](#export_files_to_csv_with_report-low-level)
+    - [`screen_csv_with_ollama` (LLM)](#screen_csv_with_ollama-llm)
+    - [End-to-end example (pure Python)](#end-to-end-example-pure-python)
+    - [Make your own LLM stats report](#make-your-own-llm-stats-report)
+- [❓ FAQ](#-faq)
+- [⚠️ Disclaimer](#️-disclaimer)
+- [📜 License](#-license)
+
+---
+
+## ✨ Features
+
+* ✅ Parse one file (`--xml` or `--ris`) or a folder of mixed `*.xml` / `*.ris`
+* ✅ Streaming parsers (low memory usage)
+* ✅ Extract fields:
+  `database, ref_type, title, journal, authors, year, volume, number, abstract, doi, urls, keywords, publisher, isbn, language, extracted_date`
+* ✅ Add `database` column from filename (`IEEE.xml → IEEE`, `PubMed.ris → PubMed`)
+* ✅ Normalize DOI (`10.xxxx` → `https://doi.org/...`)
+* ✅ Always generate a **TXT report** (counts, duplicates, stats)
+* ✅ Deduplicate by `doi` or `title+year` (`--dedupe`)
+* ✅ Export to **CSV, JSON, XLSX**
+* ✅ Auto-create output folders if missing
+* ✅ Python API for integration
+* ✅ **LLM screening** with **Qwen** or **Mistral** via **Ollama**
+* ✅ One-shot pipeline: **`endnote-full-screen`** = export → screen in one command
+
+> **How to think about it:** use the **Exporter** to normalize your sources into a single table, then (optionally) run **LLM Screening** to triage papers. If you want both in one go, use **`endnote-full-screen`**.
+
+---
+
+## 📦 Installation
+
+```bash
+pip install endnote-utils
+```
+
+Requires **Python 3.8+**.
+
+If you see Excel export errors, reinstall:
+
+```bash
+pip install --upgrade openpyxl
+```
+
+---
+
+# 🔹 A) Exporter (XML/RIS → CSV/JSON/XLSX)
+
+The exporter turns EndNote XML/RIS into tidy tables. This is the best place to **deduplicate**, **filter**, and **summarize** your corpus before further work (i.e., extract data for reading grid).
+
+### Quick examples
+
+```bash
+# Single XML → CSV
+endnote-utils --xml data/IEEE.xml --out output/ieee.csv
+
+# Single RIS → JSON
+endnote-utils --ris data/PubMed.ris --out output/pubmed.json
+
+# Folder (mixed XML/RIS) → XLSX with stats & DOI dedupe
+endnote-utils --folder data/refs --out output/all.xlsx --stats --dedupe doi
+```
+
+### Exporter CLI options
+
+| Option            | Description                                         | Example                               |
+| ----------------- | --------------------------------------------------- | ------------------------------------- |
+| `--xml FILE.xml`  | Parse one EndNote XML file                          | `--xml data/IEEE.xml`                 |
+| `--ris FILE.ris`  | Parse one RIS file                                  | `--ris data/PubMed.ris`               |
+| `--folder DIR`    | Parse all `*.xml` / `*.ris` in folder               | `--folder data/refs`                  |
+| `--out PATH`      | Output path; format inferred from extension         | `--out output/all.csv`                |
+| `--format FMT`    | Force format: `csv`, `json`, `xlsx`                 | `--format json`                       |
+| `--report PATH`   | Save TXT report                                     | `--report reports/run1.txt`           |
+| `--no-report`     | Disable TXT report                                  | `--no-report`                         |
+| `--delimiter CH`  | CSV delimiter                                       | `--delimiter ';'`                     |
+| `--quoting MODE`  | CSV quoting: `minimal`, `all`, `nonnumeric`, `none` | `--quoting all`                       |
+| `--no-header`     | Suppress CSV header                                 | `--no-header`                         |
+| `--encoding ENC`  | Output encoding                                     | `--encoding utf-8`                    |
+| `--ref-type STR`  | Filter records by reference type                    | `--ref-type "Conference Proceedings"` |
+| `--year YYYY`     | Filter records by year                              | `--year 2024`                         |
+| `--max-records N` | Stop after N records per file                       | `--max-records 100`                   |
+| `--dedupe MODE`   | Deduplicate: `none`, `doi`, `title-year`            | `--dedupe doi`                        |
+| `--dedupe-keep K` | Keep `first` or `last` duplicate                    | `--dedupe-keep last`                  |
+| `--stats`         | Add summary stats to report                         | `--stats`                             |
+| `--stats-json P`  | Save stats + duplicates as JSON                     | `--stats-json output/stats.json`      |
+| `--verbose`       | Verbose logging                                     | `--verbose`                           |
+
+> **Tip:** use `--stats` early to sanity-check your dataset (years, ref types, top journals) before screening.
+
+### Output Snippet
+
+#### Export report snippet
+
+```
+========================================
+EndNote Export Report
+========================================
+Run started : 2025-09-12 12:42:20
+Files       : 4
+Duration    : 0.47 seconds
+
+Per-file results
+----------------------------------------
+IEEE.xml       : 2147 exported, 0 skipped
+PubMed.ris     : 504 exported, 0 skipped
+TOTAL exported : 2651
+
+Duplicates table (by database)
+----------------------------------------
+Database    Origin  Retractions  Duplicates  Remaining
+------------------------------------------------------
+IEEE          2200            0         53        2147
+PubMed         520            2         14         504
+```
+
+#### CSV export snippet
+
+| database  | ref\_type       | title                                                                          | journal | authors                     | year | volume | number | abstract | doi | urls | keywords | publisher | isbn | language | extracted\_date |
+| --------- | --------------- | ------------------------------------------------------------------------------ | ------- | --------------------------- | ---- | ------ | ------ | -------- | --- | ---- | -------- | --------- | ---- | -------- | --------------- |
+| IEEE | Conference Proceedings | Automating Detection of Papilledema in Pediatric Fundus Images with Explainable Machine Learning | 2022 IEEE International Conference on Image Processing (ICIP) | K. Avramidis; M. Rostami; M. Chang; S. Narayanan | 2022 |        |        | Papilledema is an ophthalmic neurologic disorder in which increased intracranial pressure leads to swelling of the optic nerves. Undiagnosed papilledema in... |  https://doi.org/10.1109/ICIP46576.2022.9897529   |      | Integrated optics; Deep learning; Training; Location awareness; Optical imaging; Feature extraction; Robustness; human-centered AI; model explainability; papilledema; pseudopapilledema; multi-view learning         |           |   2381-8549   |          | 2025-09-11      |
+
+---
+
+# 🔹 B) LLM Screening
+
+Once you have a clean CSV, you can ask a **local LLM** to label each row as *include / exclude / uncertain* based on **title + abstract**. The tool also records reasons.
+
+### 1. Install Ollama + models
+
+```bash
+# Install Ollama
+https://ollama.ai/download
+
+# Pull models
+ollama pull qwen2.5:7b-instruct
+ollama pull mistral-nemo:12b
+```
+
+Model pages: [Qwen 2.5](https://ollama.com/library/qwen2.5), [Mistral-Nemo](https://ollama.com/library/mistral-nemo)
+
+#### Why local models?
+
+* Data stays on your machine (good for sensitive corpora)
+* No API costs or rate limits
+* Works offline once models are pulled
+
+### 2. Write criteria (`criteria.txt`)
+
+Keep criteria short and concrete. The LLM uses this to decide whether a paper belongs in your review.
+
+```text
+Inclusion:
+- English, peer-reviewed journals or conferences (2022–Sep 2025).
+- Human participants or clinical datasets related to neurological disorders.
+- Empirical AI/ML with an explainability/interpretability component.
+- Clinical relevance: diagnosis, prognosis, monitoring, risk prediction, decision support.
+
+Exclusion:
+- Non-English; pre-2022; grey literature.
+- Non-human only or simulated without validation.
+- No neurology/clinical data.
+- Secondary research without new empirical results.
+- Pure algorithm papers without XAI/evaluation.
+```
+
+### 3. Run the screener
+
+```bash
+# Using Qwen
+endnote-screen output/all.csv output/screened.csv criteria.txt \
+  --preset qwen --log-file logs/screen.log --verbose
+
+# Using Mistral
+endnote-screen output/all.csv output/screened.csv criteria.txt \
+  --preset mistral --log-file logs/screen.log
+```
+
+> **How it parses answers:** models can respond in a strict 3-line template or a compact single-line format; both are supported and robust to light markdown/noise.
+
+### LLM CLI options
+
+| Option             | Description                               | Example                      |
+| ------------------ | ----------------------------------------- | ---------------------------- |
+| `input_csv`        | Input CSV (must have `title`, `abstract`) | `output/all.csv`             |
+| `output_csv`       | Output CSV (new columns appended)         | `output/screened.csv`        |
+| `criteria_txt`     | Screening criteria file                   | `criteria.txt`               |
+| `--preset NAME`    | Model preset (`qwen`, `mistral`)          | `--preset qwen`              |
+| `--model TAG`      | Override model tag                        | `--model mistral-nemo:12b`   |
+| `--title-col COL`  | Title column name                         | `--title-col Title`          |
+| `--abstract-col C` | Abstract column name                      | `--abstract-col Abstract`    |
+| `--temperature X`  | Sampling temperature                      | `--temperature 0.2`          |
+| `--max-tokens N`   | Max tokens per row                        | `--max-tokens 256`           |
+| `--num-ctx N`      | Context window                            | `--num-ctx 4096`             |
+| `--retry N`        | Retries per row on errors                 | `--retry 3`                  |
+| `--max-records N`  | Limit to first N rows (test mode)         | `--max-records 50`           |
+| `--log-every N`    | Log every N rows                          | `--log-every 25`             |
+| `--log-file PATH`  | Save log file                             | `--log-file logs/screen.log` |
+| `--verbose`        | Verbose logs                              | `--verbose`                  |
+
+> **What gets added:** `exclude` (`yes/no/maybe`), `reason` (≤2 short sentences with a required prefix), `confidence` (if present), and quality flags for title/abstract truncation.
+
+### Output snippets
+
+#### Screener output snippet
+
+| title                                                                                                               | abstract      | exclude | reason                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------- | ------------- | ------- | --------------------------------------------------------------------------------------- |
+| Review of Personalized Semantic Secure Communications Based on the DIKWP Model                                      | *(empty)*     | yes     | no relevance because no clinical neurology/XAI scope or empirical evaluation.           |
+| Performance Analysis of Deep-Learning and Explainable AI Techniques for Detecting and Predicting Epileptic Seizures | We benchmark… | no      |                                                                                         |
+| Insights into the Potential of Fuzzy Systems for Medical AI Interpretability                                        | We discuss…   | yes     | low relevance because conceptual discussion lacks empirical study on neurological data. |
+
+#### Screening report snippet
+
+```
+========================================
+LLM Screening Report
+========================================
+Started    : 2025-09-16 14:43:25
+Finished   : 2025-09-16 14:43:29
+Input CSV  : output/all.csv
+Output CSV : output/screened.csv
+Model      : qwen2.5:7b-instruct
+Rows       : 50
+Duration   : 22.8 seconds
+Throughput : 2.2 rows/s
+
+Decisions
+----------------------------------------
+include               : 18 (36.0%)
+exclude_no_relevance  : 28 (56.0%)
+exclude_low_relevance :  2 ( 4.0%)
+exclude_review        :  1 ( 2.0%)
+uncertain             :  1 ( 2.0%)
+avg confidence        : 0.83  (n=50)
+```
+
+---
+
+# 🔹 C) One-Shot Pipeline
+
+The full-screen runner combines both steps: it first exports (from XML/RIS into your chosen format) and then screens the CSV output. This approach is well-suited for batch processing and fully reproducible pipelines.
+
+### Examples
+
+```bash
+# Export folder → CSV → Screen with Qwen
+endnote-full-screen \
+  --folder data/refs \
+  --out output/all.csv \
+  --criteria criteria.txt \
+  --preset qwen \
+  --dedupe doi \
+  --stats \
+  --log-file logs/screen.log
+
+# Screen-only (use existing CSV)
+endnote-full-screen \
+  --csv-in output/all.csv \
+  --out output/screened.csv \
+  --criteria criteria.txt \
+  --preset mistral \
+  --log-file logs/screen.log \
+  --max-records 20
+```
+
+### Full-screen CLI options
+
+| Option            | Description                                    | Example                          |
+| ----------------- | ---------------------------------------------- | -------------------------------- |
+| `--xml FILE.xml`  | Input: one EndNote XML file                    | `--xml data/IEEE.xml`            |
+| `--ris FILE.ris`  | Input: one RIS file                            | `--ris data/PubMed.ris`          |
+| `--folder DIR`    | Input: folder with mixed XML/RIS files         | `--folder data/refs`             |
+| `--csv-in FILE`   | Input: existing CSV (skip export, screen only) | `--csv-in output/all.csv`        |
+| `--out PATH`      | Output file path (format inferred)             | `--out output/all.csv`           |
+| `--format FMT`    | Output format: `csv`, `json`, `xlsx`           | `--format csv`                   |
+| `--report PATH`   | TXT report for export stage                    | `--report reports/export.txt`    |
+| `--dedupe MODE`   | Deduplicate: `none`, `doi`, `title-year`       | `--dedupe doi`                   |
+| `--dedupe-keep K` | Keep `first` or `last` duplicate               | `--dedupe-keep last`             |
+| `--stats`         | Add summary stats                              | `--stats`                        |
+| `--stats-json P`  | Save stats as JSON                             | `--stats-json output/stats.json` |
+| `--criteria FILE` | Screening criteria file (required)             | `--criteria criteria.txt`        |
+| `--preset NAME`   | Screening preset (`qwen`, `mistral`)           | `--preset qwen`                  |
+| `--model TAG`     | Override model tag                             | `--model mistral-nemo:12b`       |
+| `--max-records N` | Limit rows for screening (test mode)           | `--max-records 20`               |
+| `--log-file PATH` | Save screening log                             | `--log-file logs/screen.log`     |
+| `--log-every N`   | Progress logging frequency                     | `--log-every 25`                 |
+| `--verbose`       | Verbose logging                                | `--verbose`                      |
+
+### Output snippet
+
+```
+INFO: Export stage: 2 input file(s)
+INFO: Exported 2150 record(s).
+INFO: Screened output → output/all.csv
+INFO: Export report → output/all_report.txt
+INFO: LLM report → output/all_report_screen.txt
+INFO: Screen log → logs/screen.log
+```
+
+---
+
+# 🧪 Python API
+
+The Python API provides the same functionality as the CLI, allowing you to build custom workflows. Use the high-level helpers for fast results, or the low-level functions for maximum control and flexibility.
+
+### Import surface
+
+```python
+from pathlib import Path
+
+# Exporter APIs
+from endnote_utils import export, export_folder, export_files_to_csv_with_report
+from endnote_utils import DEFAULT_FIELDNAMES, CSV_QUOTING_MAP
+
+# LLM screener (Ollama)
+from endnote_utils import screen_csv_with_ollama
+
+# Presets (optional): {"qwen": {...}, "mistral": {...}}
+from endnote_utils.screen import MODEL_PRESETS
+```
+
+---
+
+### `export`
+
+```python
+total, out_path, report_path = export(
+    input_path: Path,
+    out_path: Path,
+    *,
+    format: str | None = None,        # inferred from out_path if None
+    delimiter: str = ",",
+    quoting: str = "minimal",         # one of CSV_QUOTING_MAP keys
+    include_header: bool = True,
+    encoding: str = "utf-8",
+    ref_type: str | None = None,      # filter
+    year: int | None = None,          # filter
+    max_records: int | None = None,   # per-file limit (testing)
+    dedupe: str = "none",             # "none" | "doi" | "title-year"
+    dedupe_keep: str = "first",       # "first" | "last"
+    stats: bool = False,              # add summary stats to TXT report
+    stats_json: Path | None = None,   # save stats/dupes as JSON
+)
+```
+
+**Returns**: `total` (int), `out_path` (Path), `report_path` (Path | None)
+
+---
+
+### `export_folder`
+
+```python
+total, out_path, report_path = export_folder(
+    folder: Path,
+    out_path: Path,
+    *,
+    format: str | None = None,
+    delimiter: str = ",",
+    quoting: str = "minimal",
+    include_header: bool = True,
+    encoding: str = "utf-8",
+    ref_type: str | None = None,
+    year: int | None = None,
+    max_records: int | None = None,   # per-file limit
+    dedupe: str = "none",
+    dedupe_keep: str = "first",
+    stats: bool = False,
+    stats_json: Path | None = None,
+)
+```
+
+---
+
+### `export_files_to_csv_with_report` (low-level)
+
+Use this if you want to pass a curated list of files and always emit a single CSV plus a report.
+
+```python
+total, out_path, report_path = export_files_to_csv_with_report(
+    inputs: list[Path],
+    out_path: Path,                   # single CSV
+    *,
+    fieldnames: list[str] = DEFAULT_FIELDNAMES,
+    delimiter: str = ",",
+    quoting: str = "minimal",
+    include_header: bool = True,
+    encoding: str = "utf-8",
+    ref_type: str | None = None,
+    year: int | None = None,
+    max_records_per_file: int | None = None,
+    report_path: Path | None = None,
+    dedupe: str = "none",
+    dedupe_keep: str = "first",
+    stats: bool = False,
+    stats_json: Path | None = None,
+)
+```
+
+---
+
+### `screen_csv_with_ollama` (LLM)
+
+```python
+processed, wrote = screen_csv_with_ollama(
+    input_csv: Path,
+    output_csv: Path,
+    criteria_txt: Path,
+    *,
+    model: str = "qwen2.5:7b-instruct",  # or "mistral-nemo:12b"
+    title_col: str = "title",
+    abstract_col: str = "abstract",
+    temperature: float = 0.2,
+    max_tokens: int = 256,
+    num_ctx: int = 4096,
+    retry: int = 3,
+    max_records: int | None = None,     # test first N rows
+    log_every: int = 25,
+)
+```
+
+**Effect**: appends `exclude`, `reason`, `confidence` (if present), `truncated_title`, `abstract_chunks`, `abstract_truncated` to `output_csv`.
+
+**Tip (presets)**:
+
+```python
+cfg = MODEL_PRESETS["qwen"]  # or "mistral"
+processed, wrote = screen_csv_with_ollama(
+    input_csv=Path("output/all.csv"),
+    output_csv=Path("output/screened.csv"),
+    criteria_txt=Path("criteria.txt"),
+    model=cfg["model"],
+    temperature=cfg["temperature"],
+    max_tokens=cfg["max_tokens"],
+    num_ctx=cfg["num_ctx"],
+)
+```
+
+---
+
+### End-to-end example (pure Python)
+
+```python
+from pathlib import Path
+import csv, logging
+from endnote_utils import export_folder, screen_csv_with_ollama
+from endnote_utils.screen import MODEL_PRESETS
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+# 1) Export
+total, csv_path, report = export_folder(
+    Path("data/refs"),
+    Path("output/all.csv"),
+    dedupe="doi",
+    stats=True
+)
+
+# 2) Screen
+cfg = MODEL_PRESETS["qwen"]
+processed, wrote = screen_csv_with_ollama(
+    input_csv=csv_path,
+    output_csv=Path("output/screened.csv"),
+    criteria_txt=Path("criteria.txt"),
+    model=cfg["model"],
+    temperature=cfg["temperature"],
+    max_tokens=cfg["max_tokens"],
+    num_ctx=cfg["num_ctx"],
+    log_every=50,
+)
+
+# 3) Keep only include=no
+src = Path("output/screened.csv")
+dst = Path("output/included.csv")
+with src.open(newline="", encoding="utf-8") as fi, dst.open("w", newline="", encoding="utf-8") as fo:
+    r = csv.DictReader(fi)
+    w = csv.DictWriter(fo, fieldnames=r.fieldnames)
+    w.writeheader()
+    for row in r:
+        if (row.get("exclude") or "").lower() == "no":
+            w.writerow(row)
+```
+
+---
+
+### Make your own LLM stats report
+
+This helper shows how to compute simple aggregates if you want to augment the built-in TXT report.
+
+```python
+from collections import Counter
+import csv, statistics
+from pathlib import Path
+
+def summarize_screen(csv_path: Path) -> dict:
+    dec = Counter()
+    confs = []
+    reasons = Counter()
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        r = csv.DictReader(f)
+        for row in r:
+            d = (row.get("exclude") or "").lower()
+            dec[d] += 1
+            try:
+                c = float(row.get("confidence") or "")
+                if 0 <= c <= 1:
+                    confs.append(c)
+            except Exception:
+                pass
+            rs = (row.get("reason") or "").strip()
+            if rs:
+                reasons[rs] += 1
+    return {
+        "rows": sum(dec.values()),
+        "decisions": dec,
+        "avg_conf": (statistics.mean(confs) if confs else None),
+        "top_reasons": reasons.most_common(10),
+    }
+
+print(summarize_screen(Path("output/screened.csv")))
+```
+
+---
+
+# ❓ FAQ
+
+**Q: Which columns are required for screening?**
+A: `title` and `abstract`. Rename via `--title-col` / `--abstract-col` if needed.
+
+**Q: Can I screen a CSV produced by other tools?**
+A: Yes—any CSV with those two columns works.
+
+**Q: How does deduplication work?**
+A: `--dedupe doi` removes repeated DOIs; `--dedupe title-year` removes identical `(title, year)` pairs. Reports show totals and duplicates by database.
+
+**Q: Where are reports saved?**
+A: Export report: `<out>_report.txt`. Screening report: `<out>_report_screen.txt`.
+
+**Q: Is data sent anywhere?**
+A: No. LLM screening runs **locally** via Ollama (no API keys, no cloud calls).
+
+**Q: Which model should I pick?**
+A: `qwen2.5:7b-instruct` is fast and follows instructions well (good laptop default). `mistral-nemo:12b` is stronger but heavier (more RAM/VRAM).
+
+---
+
+# ⚠️ Disclaimer
+
+* **LLM screening is an assistive tool, not a substitute for expert judgment** — always manually review included/excluded results before relying on them for research or publication.
+* **Performance varies with hardware** — smaller models (e.g., Qwen) generally run smoothly on standard laptops; larger ones (e.g., Mistral) may require more memory and computing power.
+* **Local execution only** — all processing happens on your machine via Ollama. No API keys, cloud services, or external data transfers are involved.
+* **Reproducibility** — results may vary slightly between runs due to model sampling. For consistency, record the model tag, preset, and parameters (e.g., temperature, max tokens) in your workflow.
+
+---
+
+# 📜 License
+
+MIT License © 2025 Minh Quach

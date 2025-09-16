@@ -1,0 +1,45 @@
+[project]
+name = "gemini-parallel-mongodb"
+version = "0.1.0"
+description = "Parallel Gemini API calls with MongoDB logging support"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "miroblog", email = "miroblog@snu.ac.kr"}
+]
+keywords = ["gemini", "api", "parallel", "async", "mongodb", "ai", "genai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "google-genai>=1.36.0",
+    "motor>=3.7.1",
+    "pillow>=11.3.0",
+    "pydantic>=2.11.9",
+    "pymongo>=4.15.0",
+    "python-dotenv>=1.1.1",
+    "tqdm>=4.67.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/miroblog/gemini-parallel"
+Repository = "https://github.com/miroblog/gemini-parallel"
+Issues = "https://github.com/miroblog/gemini-parallel/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gemini_parallel"]

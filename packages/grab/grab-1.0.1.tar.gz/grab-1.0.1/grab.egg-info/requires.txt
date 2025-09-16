@@ -1,0 +1,30 @@
+six
+user_agent
+selection>=2.0.1
+defusedxml
+
+[:platform_system != "Windows" or python_version >= "3.13"]
+lxml
+pycurl
+
+[:python_version <= "2.7"]
+typing-extensions
+
+[full]
+urllib3
+certifi
+
+[pyquery]
+
+[pyquery:platform_system != "Windows" and python_version <= "2.7"]
+pyquery<=1.4.1
+
+[pyquery:platform_system != "Windows" and python_version >= "3.0"]
+pyquery
+
+[pyquery:platform_system == "Windows" and python_version >= "3.13"]
+pyquery
+
+[urllib3]
+urllib3
+certifi

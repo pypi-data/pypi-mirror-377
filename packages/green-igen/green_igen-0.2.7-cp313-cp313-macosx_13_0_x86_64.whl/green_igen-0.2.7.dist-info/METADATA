@@ -1,0 +1,58 @@
+Metadata-Version: 2.2
+Name: green-igen
+Version: 0.2.7
+Summary: Analytical continuation suits for Green Software Package
+Author: Sergei Iskakov
+Author-Email: Gaurav Harsha <gharsha@umich.edu>
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Project-URL: Homepage, https://green-phys.org
+Project-URL: Issues, https://github.com/Green-Phys/green-igen/issues
+Requires-Python: >=3.8
+Requires-Dist: numpy
+Requires-Dist: h5py
+Requires-Dist: scipy
+Requires-Dist: pyscf
+Provides-Extra: tests
+Requires-Dist: coverage>=5.0.3; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: pytest-benchmark[histogram]>=3.2.1; extra == "tests"
+Description-Content-Type: text/markdown
+
+[![GitHub license](https://img.shields.io/github/license/Green-Phys/green-igen?cacheSeconds=3600&color=informational&label=License)](./LICENSE)
+[![GitHub license](https://img.shields.io/badge/C%2B%2B-17-blue)](https://en.cppreference.com/w/cpp/compiler_support/17)
+
+```
+ █▀▀█ █▀▀█ █▀▀ █▀▀ █▀▀▄
+ █ ▄▄ █▄▄▀ █▀▀ █▀▀ █  █
+ █▄▄█ ▀ ▀▀ ▀▀▀ ▀▀▀ ▀  ▀
+```
+***
+
+`Green/IntegralGeneration` is a part of Green Software Toolkit and uses modified PySCF code
+to generate Ewald correction into Coulomb integrals.
+
+# Installation
+
+## Dependencies
+
+`Green/IntegralGeneration` has the following required external dependencies
+  - HDF5 library version >= 1.10.2
+  - PySCF
+  - NumPy
+  - SciPy
+  - h5py
+
+## Installation of Python package
+
+We provide pre-built binaries for major Linux distributions and recent MacOS version via `pip`.
+For installation using `pip `simply type `pip install green-igen`.
+If pre-built binaries can not be used, package will be built from sources.
+
+# Acknowledgements
+
+This work is supported by National Science Foundation under the award OCA-2310582

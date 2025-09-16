@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genux"
+version = "0.1.1"
+description = "Multi-Agent Linux Command Execution System"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Ashwin", email = "ashwinkulkarni737@gmail.com" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "langchain>=0.2.0",
+    "langchain-groq>=0.1.0",
+    "langchain-community>=0.2.0",
+    "tavily-python>=0.3.0",
+]
+
+[project.scripts]
+genux = "genux.main:main"

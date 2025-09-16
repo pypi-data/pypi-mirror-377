@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seasnake-bite"
+version = "0.1.0b4"
+description = "sea-snake is a small Python library generating PlantUML sequence diagrams."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = {text = "MIT"}
+authors = [{ name = "sea-snake-developer", email = "seasnake.dev@gmail.com" }]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "coverage",
+    "mypy",
+    "ruff",
+    "black"
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+exclude = ["tests/fixtures", ".venv"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+
+[project.urls]
+"Homepage" = "https://github.com/seasnakedev/sea-snake"
+"Contributing" = "https://github.com/seasnakedev/sea-snake/blob/main/CONTRIBUTING.md"
+"CLA" = "https://github.com/seasnakedev/sea-snake/blob/main/CLA.md"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["seasnake", "seasnake.*"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov=seasnake --cov-report=term-missing --cov-report=xml"
+testpaths = [
+    "tests/unit",
+    "tests/integration",
+    "tests/acceptance"
+]
+markers = [
+    "integration: mark a test as an integration test",
+    "unit: mark a test as a unit test"
+]
+pythonpath = ["src"]

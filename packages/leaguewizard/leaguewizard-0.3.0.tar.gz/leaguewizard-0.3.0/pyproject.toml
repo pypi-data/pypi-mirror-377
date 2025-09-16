@@ -1,0 +1,82 @@
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build"]
+
+[project]
+name = "leaguewizard"
+version = "0.3.0"
+
+description = "Auto sync your itemsets, perks and spells with mobalytics.gg ones on champion selection."
+readme = "README.md"
+
+keywords = [
+    "automation",
+    "builds",
+    "lcu",
+    "league of legends",
+    "leaguewizard",
+    "lol",
+    "runes",
+]
+license-files = [
+    "LICENSE",
+]
+authors = [
+
+    { name = "Hamburgão", email = "amburgao@users.noreply.github.com" },
+]
+requires-python = ">=3.10,<4.0"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+]
+dependencies = [
+    "aiohttp>=3.12.15",
+    "async-lru>=2.0.5",
+    "dotenv>=0.9.9",
+    "loguru>=0.7.3",
+    "pillow>=11.3",
+    "psutil>=7.0.0",
+    "pystray>=0.19.5",
+    "selectolax>=0.3.34",
+    "websockets>=15.0.1",
+]
+urls.documentation = "https://amburgao.github.io/leaguewizard"
+urls.issue = "https://github.com/amburgao/leaguewizard/issues"
+urls.repository = "https://github.com/amburgao/leaguewizard"
+
+gui-scripts.leaguewizard = "leaguewizard.__init__:main"
+
+[dependency-groups]
+dev = [
+    "hatch>=1.14.1",
+    "mypy>=1.14.1",
+    "pyinstaller>=6.15",
+    "ruff>=0.12.11",
+]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-api-autonav>=0.4.0",
+    "mkdocs-autoapi>=0.4.1",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-literate-nav>=0.6.2",
+    "mkdocs-material>=9.6.19",
+    "mkdocs-section-index>=0.3.10",
+    "mkdocstrings[python]>=0.30.0",
+]
+types = [
+    "types-psutil>=7.0.0.20250822",
+]
+
+
+[tool.uv.workspace]
+members = ["."]

@@ -1,0 +1,21 @@
+from seven_jd.jd.api.base import RestApi
+
+class MarketTemplateMessageSendRequest(RestApi):
+		def __init__(self,domain='gw.api.360buy.com',port=80):
+			"""
+			"""
+			RestApi.__init__(self,domain, port)
+			self.templateType = None
+			self.mobile = None
+			self.uPin = None
+			self.templateId = None
+
+		def getapiname(self):
+			return 'jingdong.market.template.message.send'
+
+			
+
+
+
+
+

@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: pyadminkit
+Version: 0.1.1
+Summary: A lightweight and highly extensible Python admin system middleware
+Home-page: https://github.com/pyadminkit/pyadminkit
+Download-URL: https://github.com/user/reponame/archive/v_01.tar.gz
+Author: PyAdminKit Team
+Author-email: admin@pyadminkit.com
+License: MIT
+Keywords: SOME,MEANINGFULL,KEYWORDS
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Database
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Office/Business
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: mysql
+Requires-Dist: aiomysql>=0.2.0; extra == "mysql"
+Provides-Extra: postgresql
+Requires-Dist: asyncpg>=0.28.0; extra == "postgresql"
+Provides-Extra: sqlite
+Requires-Dist: aiosqlite>=0.19.0; extra == "sqlite"
+Provides-Extra: mongodb
+Requires-Dist: motor>=3.3.0; extra == "mongodb"
+Provides-Extra: fastapi
+Requires-Dist: fastapi>=0.100.0; extra == "fastapi"
+Provides-Extra: flask
+Requires-Dist: flask>=2.0.0; extra == "flask"
+Provides-Extra: django
+Requires-Dist: django>=4.0.0; extra == "django"
+Provides-Extra: full
+Requires-Dist: aiomysql>=0.2.0; extra == "full"
+Requires-Dist: asyncpg>=0.28.0; extra == "full"
+Requires-Dist: aiosqlite>=0.19.0; extra == "full"
+Requires-Dist: motor>=3.3.0; extra == "full"
+Requires-Dist: fastapi>=0.100.0; extra == "full"
+Requires-Dist: flask>=2.0.0; extra == "full"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

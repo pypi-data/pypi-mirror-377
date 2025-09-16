@@ -1,0 +1,11 @@
+arg-services<2,>=1.7.7
+cbrkit[nlp]<1,>=0.28.5
+numba<1,>=0.61
+typer<1,>=0.9
+
+[all]
+cbrkit[llm,transformers]
+
+[all:platform_machine != "x86_64" or sys_platform != "darwin"]
+tensorflow-hub<1,>=0.16
+tensorflow<3,>=2

@@ -1,0 +1,13 @@
+from _typeshed import Incomplete
+from unsloth.registry.registry import ModelInfo as ModelInfo, ModelMeta as ModelMeta, QuantType as QuantType
+
+class GemmaModelInfo(ModelInfo):
+    @classmethod
+    def construct_model_name(cls, base_name, version, size, quant_type, instruct_tag): ...
+
+GemmaMeta3Base: Incomplete
+GemmaMeta3Instruct: Incomplete
+
+def register_gemma_3_base_models(include_original_model: bool = False): ...
+def register_gemma_3_instruct_models(include_original_model: bool = False): ...
+def register_gemma_models(include_original_model: bool = False): ...

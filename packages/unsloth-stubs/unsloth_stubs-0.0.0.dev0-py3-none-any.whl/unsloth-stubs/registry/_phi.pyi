@@ -1,0 +1,13 @@
+from _typeshed import Incomplete
+from unsloth.registry.registry import ModelInfo as ModelInfo, ModelMeta as ModelMeta, QuantType as QuantType
+
+class PhiModelInfo(ModelInfo):
+    @classmethod
+    def construct_model_name(cls, base_name, version, size, quant_type, instruct_tag): ...
+
+PhiMeta4: Incomplete
+PhiInstructMeta4: Incomplete
+
+def register_phi_4_models(include_original_model: bool = False): ...
+def register_phi_4_instruct_models(include_original_model: bool = False): ...
+def register_phi_models(include_original_model: bool = False): ...

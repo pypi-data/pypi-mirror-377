@@ -1,0 +1,16 @@
+[console_scripts]
+ossmk = ossmk.cli:app
+
+[ossmk.exporters]
+json = ossmk.exporters.json:exporter
+stdout = ossmk.exporters.stdout:exporter
+
+[ossmk.providers]
+github = ossmk.providers.github:provider
+
+[ossmk.rules]
+default = ossmk.core.rules:default_rules
+
+[ossmk.storage]
+memory = ossmk.storage.memory:backend
+sqlite = ossmk.storage.sqlite:backend

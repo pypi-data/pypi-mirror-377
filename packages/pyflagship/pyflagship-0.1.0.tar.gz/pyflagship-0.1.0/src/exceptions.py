@@ -1,0 +1,2 @@
+class FlagNotFoundException(Exception):
+    pass

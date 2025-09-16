@@ -1,0 +1,37 @@
+[project]
+name = "flask_tabler_icons"
+authors = [{ name = "Lix Xu", email = "xuzenglin@gmail.com" }]
+description = "a collection of jinja macros for tabler icons"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["flask_tabler", "flask_tabler_icons"]
+license-files = ["LICENSE.txt"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+]
+dependencies = ["flask", "flask_topassets"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "flask_tabler_icons.__version__" }
+
+[project.urls]
+"Homepage" = "https://github.com/lixxu/flask-tabler-icons"
+"Bug Tracker" = "https://github.com/lixxu/flask-tabler-icons/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*", "examples*"]
+
+[tool.setuptools.package-data]
+flask_tabler = ["static/**", "templates/**"]

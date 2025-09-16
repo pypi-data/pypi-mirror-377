@@ -1,0 +1,28 @@
+[project]
+name = "flask_autosize"
+authors = [{ name = "lix", email = "xuzenglin@gmail.com" }]
+description = "a package to use autosize in flask"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE.txt" }
+keywords = ["star-rating"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["flask", "flask_topassets"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "flask_autosize.__version__" }
+
+[project.urls]
+"Homepage" = "https://github.com/lixxu/flask_autosize"
+"Bug Tracker" = "https://github.com/lixxu/flask_autosize/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

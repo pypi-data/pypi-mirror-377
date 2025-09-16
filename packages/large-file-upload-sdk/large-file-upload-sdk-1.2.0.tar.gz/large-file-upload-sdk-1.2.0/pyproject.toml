@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "large-file-upload-sdk"
+version = "1.2.0"
+description = "Large File Upload SDK - Support chunked upload, resumable transfer, and Token authentication"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "SAIS Development Team", email = "dev@sais.com.cn"}
+]
+keywords = ["file upload", "large file", "chunked upload", "resumable upload", "file transfer", "token authentication"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Archiving",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "requests>=2.25.0",
+    "urllib3>=1.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/file-upload-server"
+Documentation = "https://github.com/your-username/file-upload-server#readme"
+Repository = "https://github.com/your-username/file-upload-server"
+"Bug Reports" = "https://github.com/your-username/file-upload-server/issues"
+
+[tool.setuptools]
+py-modules = ["file_upload_sdk"]

@@ -1,0 +1,16 @@
+include README.md
+include LICENSE
+include SDK_INSTALL.md
+include file_upload_sdk.py
+include sdk_usage_example.py
+exclude test_*.py
+exclude API_TEST.md
+exclude Dockerfile*
+exclude .env*
+exclude *.sh
+exclude requirements-docker.txt
+exclude Jenkinsfile
+recursive-exclude uploads *
+recursive-exclude temp *
+recursive-exclude __pycache__ *
+recursive-exclude *.egg-info *

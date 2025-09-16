@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hyram"
+authors = [
+    {name = "Erin E. Carrier"},
+    {name = "Michael C. Devin"},
+    {name = "Brian D. Ehrhart"},
+    {name = "Isaac W. Ekoto"},
+    {name = "Katrina M. Groth"},
+    {name = "Ethan S. Hecht"},
+    {name = "Benjamin R. Liu"},
+    {name = "Alice Muna"},
+    {name = "John T. Reynolds"},
+    {name = "Benjamin B. Schroeder"},
+    {name = "Cianan Sims"},
+    {name = "Greg Walkup"}
+]
+maintainers = [
+    {name = "Michael C. Devin"},
+    {name = "Brian D. Ehrhart"},
+    {name = "Ethan S. Hecht"},
+    {name = "Benjamin R. Liu"},
+    {name = "Cianan Sims"}
+]
+description = "Hydrogen Plus Other Alternative Fuels Risk Assessment Models Python Package"
+readme = "./src/hyram/README.md"
+requires-python = ">=3.9"
+keywords = ["hydrogen", "methane", "propane", "flame", "plume", "jet", "overpressure", "quantitative risk assessment", "risk"]
+license = "GPL-3.0-only"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3 :: Only"
+]
+dependencies = ["matplotlib >= 3.8", "numpy", "scipy", "coolprop >= 6.3", "contourpy"]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://hyram.sandia.gov/"
+repository = "https://github.com/sandialabs/hyram"
+
+[tool.setuptools.dynamic]
+version = {attr = "hyram.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["hyram*"]

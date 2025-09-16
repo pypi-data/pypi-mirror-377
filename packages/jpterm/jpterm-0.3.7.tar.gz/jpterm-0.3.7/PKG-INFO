@@ -1,0 +1,65 @@
+Metadata-Version: 2.4
+Name: jpterm
+Version: 0.3.7
+Summary: Jupyter in the terminal
+Project-URL: Homepage, https://github.com/davidbrochart/jpterm
+Author-email: David Brochart <david.brochart@gmail.com>
+License: MIT
+License-File: LICENSE
+Keywords: jupyter,textual
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.10
+Requires-Dist: rich-click>=1.6.0
+Requires-Dist: txl-cell==0.3.6
+Requires-Dist: txl-console==0.3.6
+Requires-Dist: txl-editors==0.3.6
+Requires-Dist: txl-file-browser==0.3.6
+Requires-Dist: txl-image-viewer==0.3.6
+Requires-Dist: txl-jpterm==0.3.6
+Requires-Dist: txl-kernel==0.3.7
+Requires-Dist: txl-launcher==0.3.6
+Requires-Dist: txl-local-contents==0.3.6
+Requires-Dist: txl-local-kernels==0.3.6
+Requires-Dist: txl-local-terminals==0.3.6
+Requires-Dist: txl-markdown-viewer==0.3.6
+Requires-Dist: txl-notebook-editor==0.3.6
+Requires-Dist: txl-remote-contents==0.3.6
+Requires-Dist: txl-remote-kernels==0.3.6
+Requires-Dist: txl-remote-terminals==0.3.6
+Requires-Dist: txl-terminal==0.3.6
+Requires-Dist: txl-text-editor==0.3.6
+Requires-Dist: txl-widgets==0.3.6
+Requires-Dist: txl==0.3.2
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == 'docs'
+Requires-Dist: mkdocs-material; extra == 'docs'
+Requires-Dist: mkdocstrings-python; extra == 'docs'
+Description-Content-Type: text/markdown
+
+[![Build Status](https://github.com/davidbrochart/jpterm/workflows/test/badge.svg)](https://github.com/davidbrochart/jpterm/actions)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
+
+<p align="center">
+<a href="https://polar.sh/davidbrochart">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=davidbrochart&darkmode=1">
+  <img alt="Subscribe" src="https://polar.sh/embed/subscribe.svg?org=davidbrochart">
+</picture>
+</a>
+</p>
+
+# jpterm
+
+Jpterm is the successor of [nbterm](https://github.com/davidbrochart/nbterm).
+
+It aims to be the equivalent of [JupyterLab](https://jupyterlab.readthedocs.io) in the terminal, using the [Textual](https://textual.textualize.io) framework.
+
+For more details, see the [documentation](https://davidbrochart.github.io/jpterm).

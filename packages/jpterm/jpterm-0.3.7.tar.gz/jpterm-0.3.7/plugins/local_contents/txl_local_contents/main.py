@@ -1,0 +1,55 @@
+import json
+from importlib.metadata import entry_points
+from os import scandir
+from typing import List, Union
+
+from anyio import Path
+from fps import Module
+from pycrdt import Doc
+
+from txl.base import Contents
+
+ydocs = {ep.name: ep.load() for ep in entry_points(group="jupyter_ydoc")}
+
+
+class LocalContents(Contents):
+    async def get(
+        self,
+        path: str,
+        is_dir: bool = False,
+        type: str = "file",
+        format: str | None = None,
+    ) -> Union[List, Doc]:
+        p = Path(path)
+        assert (await p.is_dir()) == is_dir
+        if await p.is_dir():
+            return sorted(list(scandir(path)), key=lambda entry: (not entry.is_dir(), entry.name))
+        if await p.is_file():
+            jupyter_ydoc = ydocs[type]()
+            if type == "file":
+                jupyter_ydoc.source = await p.read_text()
+            elif type == "blob":
+                jupyter_ydoc.source = await p.read_bytes()
+            elif type == "notebook":
+                jupyter_ydoc.source = json.loads(await p.read_text())
+        return jupyter_ydoc
+
+    async def save(
+        self,
+        path: str,
+        jupyter_ydoc: Doc,
+    ) -> None:
+        p = Path(path)
+        source = jupyter_ydoc.source
+        if isinstance(source, dict):
+            await p.write_text(json.dumps(source, indent=2))
+        elif isinstance(source, bytes):
+            await p.write_bytes(source)
+        else:
+            await p.write_text(source)
+
+
+class LocalContentsModule(Module):
+    async def start(self) -> None:
+        contents = LocalContents()
+        self.put(contents, Contents)

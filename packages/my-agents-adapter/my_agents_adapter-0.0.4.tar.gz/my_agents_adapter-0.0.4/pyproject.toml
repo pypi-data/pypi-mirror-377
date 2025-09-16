@@ -1,0 +1,15 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+lint.select = ["E", "F", "B", "I"]   # E=pycodestyle errors, F=Pyflakes, B=bugbear, I=import sort
+lint.ignore = []
+fix = false
+
+exclude = [
+     "/src/agents_adapter/models/",
+     "**/models/",
+ ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agents_adapter"]  # Your package/module name
+combine-as-imports = true

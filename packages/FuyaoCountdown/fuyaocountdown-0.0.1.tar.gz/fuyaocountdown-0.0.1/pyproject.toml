@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools >= 77.0.3", "wheel>0.37.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FuyaoCountdown"
+version = "0.0.1"
+dependencies = [
+
+]
+description = "一个可以在到达目标时间时执行任务的第三方库"
+readme = "README.md"
+requires-python = ">=3.10.7"
+license = {file = "LICENSE"}
+authors = [
+    { name = "fuyao-norway", email = "1959415641@qq.com" },
+    { name = "fuyao-ziqiu", email = "1987239025@qq.com" },
+    { name = "fuyaoteam", email = "fuyaoteam@gmail.com" }
+]
+classifiers = [# 分类信息（与PyPI过滤相关）
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+urls = { "Repository" = "https://github.com/fuyao-lhw/Countdown" }
+
+
+[tool.setuptools.package-data]
+packages = ["FuyaoCountdown"]

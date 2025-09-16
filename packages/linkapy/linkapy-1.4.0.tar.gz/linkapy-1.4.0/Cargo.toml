@@ -1,0 +1,15 @@
+[package]
+name = "linkapy"
+version = "1.4.0"
+edition = "2021"
+readme = "README.md"
+
+[lib]
+name = "linkapy"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.24", features = ["extension-module"] }
+rayon = "*"
+flate2 = "*"
+sprs = "*"

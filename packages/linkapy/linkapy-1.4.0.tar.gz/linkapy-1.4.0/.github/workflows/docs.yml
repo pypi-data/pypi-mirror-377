@@ -1,0 +1,21 @@
+name: docs
+on: [push, pull_request]
+jobs:
+  pytests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - name: test
+        run: |
+          pip install .[docs]
+      - name: docs
+        run: |
+          cd docs
+          sphinx-build -b html . _build

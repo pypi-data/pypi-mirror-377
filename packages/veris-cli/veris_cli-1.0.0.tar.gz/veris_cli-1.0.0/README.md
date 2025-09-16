@@ -1,0 +1,404 @@
+# veris-cli
+
+[![PyPI version](https://badge.fury.io/py/veris-cli.svg)](https://badge.fury.io/py/veris-cli)
+[![Tests](https://github.com/veris-ai/veris-cli/actions/workflows/test.yml/badge.svg)](https://github.com/veris-ai/veris-cli/actions/workflows/test.yml)
+[![Python](https://img.shields.io/pypi/pyversions/veris-cli.svg)](https://pypi.org/project/veris-cli/)
+
+Veris CLI package.
+
+Installation:
+
+### From PyPI (recommended)
+```bash
+# Using pip
+pip install veris-cli
+
+# Using uv tool
+uv tool install veris-cli
+```
+
+### From GitHub
+```bash
+# Latest from main branch
+uv tool install 'git+https://github.com/veris-ai/veris-cli.git'
+
+# Verify installation
+uv tool list --show-paths
+veris init --help
+```
+
+Upgrade:
+```
+uv tool upgrade veris-cli
+```
+
+Uninstall:
+```
+uv tool uninstall veris-cli
+```
+
+Usage:
+```
+veris init
+```
+
+## Quickstart
+
+This quickstart will guide you through running Veris simulations against the example app in [mini_crm](https://github.com/veris-ai/mini_crm) using the [OpenAI agents](https://openai.github.io/openai-agents-python/) framework.
+
+Choose one integration path:
+- Decorators (mini_crm `veris_decorators` branch): `@veris.mock` adorns tools
+  - Docs: https://github.com/veris-ai/veris-python-sdk?tab=readme-ov-file#core-decorators
+  - mini_crm branch: https://github.com/veris-ai/mini_crm/tree/veris_decorators
+- Instrumentor (mini_crm `veris_instrument` branch): use `Runner.run(..., veris_config=...)`
+  - Docs: https://github.com/veris-ai/veris-python-sdk?tab=readme-ov-file#core-instrument
+  - mini_crm branch: https://github.com/veris-ai/mini_crm/tree/veris_instrument
+
+_You may use this as reference for your own repo._
+
+1. Ensure you have ngrok configured.
+
+Otherwise refer to their [getting started](https://ngrok.com/docs/getting-started/) guide to get it set up.
+
+2. Follow the steps in the [mini_crm quickstart](https://github.com/veris-ai/mini_crm?tab=readme-ov-file#quickstart--mini-crm-lead-qualifier) to set up the agent.
+
+Verify your path is set to the root directory `.../mini_crm/`.
+
+3. Install dependencies
+
+Inside the same environment where you downloaded the dependencies for `mini_crm`.
+```bash
+pip install veris-ai
+```
+
+4. Initialize `.veris` config in your repo.
+
+Advisable to add `.veris` to `.gitignore`.
+```bash
+veris init
+```
+This will setup the config scaffolding for VERIS.
+
+5. Obtain an API key and assign it to `VERIS_API_KEY`.
+
+Get your API key from https://simulator.veris.ai/ (you will need an account).
+```bash
+# Option A: store in .env (auto-loaded)
+echo 'VERIS_API_KEY=<your-api-key>' >> .env
+
+# Option B: export in your shell
+export VERIS_API_KEY="<your-api-key>"
+```
+
+6. Set `ENV` environment variable
+```bash
+# Option A: store in .env (auto-loaded)
+echo 'ENV=simulation' >> .env
+
+# Option B: export in your shell
+export ENV=simulation
+```
+
+
+7. Expose MCP on your FastAPI app (common to both paths)
+```python
+from fastapi import FastAPI
+from veris_ai import veris
+
+app = FastAPI(title="Mini CRM Lead Qualifier")
+
+# ... your routes and business logic ...
+
+# Enable MCP integration with HTTP transport
+veris.set_fastapi_mcp(fastapi=app)
+
+# Mount the MCP server with HTTP transport (recommended)
+veris.fastapi_mcp.mount_http()
+```
+
+8. Choose ONE integration path
+
+Option A — Decorators (branch: `veris_decorators`)
+- Reference: https://github.com/veris-ai/mini_crm/tree/veris_decorators
+- Docs: https://github.com/veris-ai/veris-python-sdk?tab=readme-ov-file#core-decorators
+```python
+from veris_ai.tool_mock import veris
+
+@function_tool
+@veris.mock(mode="tool", expects_response=False)
+def lookup_lead(ctx: RunContextWrapper[CRMRunContext], query: str) -> Optional[Dict[str, Any]]:
+    ...
+# Repeat for other tools
+```
+
+Option B — Instrumentor (branch: `veris_instrument`)
+- Reference: https://github.com/veris-ai/mini_crm/tree/veris_instrument
+- Docs: https://github.com/veris-ai/veris-python-sdk?tab=readme-ov-file#core-instrument
+```python
+from veris_ai import Runner, VerisConfig
+from veris_ai.models import ToolCallOptions
+
+result = await Runner.run(
+    agent,
+    req.message,
+    context=context.context,
+    veris_config=VerisConfig(
+        tool_options={
+            "score_lead_industry": ToolCallOptions(response_expectation="none"),
+            "get_leads": ToolCallOptions(response_expectation="none"),
+            "lookup_lead": ToolCallOptions(response_expectation="none"),
+            "write_lead_update": ToolCallOptions(response_expectation="none"),
+        }
+    ),
+)
+```
+
+9. Start the agent server from the repo root
+```bash
+veris setup --app app.main:app --port 8000 --reload
+```
+This will start up the FastAPI server and tunnel it to a public address through ngrok. The simulator server will connect to the public URL.
+
+
+10. Generate scenarios
+```bash
+veris scenario generate \
+  --agent .veris/agent.json \
+  --model gpt-4o-2024-08-06 \
+  --variations-per-skeleton 2 \
+  --random-subset 2 \
+  --watch --save
+```
+Saves generated scenarios to `.veris/scenarios/` and prints the `generation_id`.
+
+
+11. Launch a simulation.
+
+No need to wait for the run to finish. You may safely break out of this command by pressing `Ctrl+C`, the simulation will continue to run in the background.
+```bash
+veris sim launch --watch
+```
+**Note the run id printed in the console.**
+
+12. (Optional) Kill a session or evaluation.
+
+In the event of a run-on or stalling session or evaluation, you can kill each by their corresponding command.
+```bash
+# Kill a simulation
+veris sim kill <simulation_id>
+
+# Kill an evaluation
+veris sim eval-kill <eval_id>
+```
+
+13. Explore results
+
+This may be done at any point in the simulation process.
+```bash
+veris sim results --run <run_id>
+```
+14. Congratulations!
+You have now run simulations against your agent with no stateful side effects, observe no changes in the database!
+
+## Simulation commands
+
+### Launch simulations from `.veris/`
+
+```
+veris sim launch [--scenarios <id> ...] [--use-cases <name> ...] [--watch]
+```
+
+- `--watch` (optional) watches the status of the simulations and evaluations and updates the status in real-time untill all simulations are finished.
+- Press Ctrl+C to stop watching; the command also auto-exits when all simulations and evaluations complete.
+
+### Check status (single poll)
+
+```
+veris sim status --run <run_id>
+```
+
+### Stop a simulation or evaluation
+
+```
+veris sim kill <simulation_id>
+veris sim eval-kill <eval_id>
+```
+
+Core flow mirrors the web demo launcher and monitor.
+
+### Show evaluation results
+
+```
+veris sim results --run <run_id> [--json] [--export <path>]
+```
+
+- Requires the run to be complete (all simulations evaluated). If not complete, the command exits with a helpful message; run `veris sim status --run <id>` until done.
+- Default output is a simple table summarizing per-scenario and overall averages (`--table` is on by default).
+- When `--json` is provided, emits a machine-readable summary; `--export` writes the same JSON to a file.
+
+## Scenario generation commands
+
+### Start generation
+
+```
+veris scenario generate \
+  [--agent .veris/agent.json] \
+  [--config generator_config.json] \
+  [--model MODEL] \
+  [--variations-per-skeleton N] \
+  [--random-subset N] \
+  [--max-parallel-calls N] \
+  [--max-retries N] \
+  [--watch] [--save]
+```
+
+- **--agent**: path to agent spec (defaults to `.veris/agent.json` if present)
+- **--config**: optional generator config JSON, CLI flags override fields
+- **--watch**: poll status until complete; with `--save`, scenarios are written to `.veris/scenarios/`
+
+### Check generation status
+
+```
+veris scenario status --gen <generation_id>
+```
+
+### Fetch scenarios for a generation
+
+```
+veris scenario get --gen <generation_id> [--include-failed] [--save] [--out-dir DIR]
+```
+- Default saves scenarios into `.veris/scenarios/`. Use `--out-dir` to change destination or disable saving and print JSON with `--save=false`.
+
+
+
+### Veris initialization
+
+```
+veris init
+```
+
+Creates the following structure:
+
+```
+.veris/
+  agent.json
+  scenarios/
+    example-scenario.json
+  runs/
+```
+
+Agent spec and scenarios are JSON, validated against local Pydantic models.
+
+### Architecture (CLI)
+
+- `SimulationRunner` orchestrates launches and status/evaluation polling.
+- `ApiClient` wraps calls to the Veris API using `VERIS_API_URL`.
+- Runs persist under `.veris/runs/<run_id>.json`.
+
+### Configuration
+
+- Config file lives at `.veris/config.json` (created by `veris init` or on first save)
+- Keys:
+  - `api_key`: used as `X-API-Key` header for API calls
+  - `agent`: connection to your local agent (`agent_id`, `name`, `mcp_url`, `mcp_transport`, `timeout_seconds`)
+- Api key must be set as an environment variable or in a `.env` file:
+  ```bash
+  export VERIS_API_KEY="<your-api-key>"
+  ```
+  You can obtain your API key from `https://simulator.veris.ai/`.
+- Commands:
+  - Set public agent URL (originally set via `veris setup`):
+  ```
+  veris config public_url <url>
+  ```
+- `veris setup` integration:
+  - Automatically writes the discovered ngrok URL to `.veris/config.json` (unless `--no_override_public_url`)
+
+### Expose local FastAPI via ngrok
+
+Prerequisites:
+- ngrok installed and authenticated (run `ngrok config add-authtoken <token>`)
+  - Refer to this guide to get setup: https://ngrok.com/docs/getting-started/
+  - To check if auth token is set, run `ngrok config check`
+- uvicorn available in your FastAPI environment
+
+Run your FastAPI app and expose it via ngrok:
+```
+veris setup --app app.main:app --port 8000
+```
+
+Common options:
+- `--app`: ASGI import path, e.g. `app.main:app` (required)
+- `--port`: Local port (default: 8000)
+- `--host`: Bind host (default: 127.0.0.1)
+- `--reload`: Enable auto-reload (dev only)
+- `--workers`: Number of worker processes
+- `-d`, `--detached`: Run in background and persist PIDs to `.veris/setup_state.json`
+  - Use `veris setup stop` to stop the detached process
+
+Show help:
+```
+veris setup --help
+```
+
+
+## Contributing
+
+### Development config
+
+Override the API base URL by adding the following to your environment or `.env` file:
+
+```
+export VERIS_API_URL=http://localhost:8742
+```
+
+### Development
+
+Install development dependencies:
+```bash
+# Install with all extras
+uv sync --all-extras
+```
+
+Run tests with coverage:
+```bash
+uv run pytest tests/ --cov=veris_cli --cov-report=term-missing
+```
+
+Run lints and format code:
+```bash
+# Format code with uv (experimental feature)
+uv format
+
+# Check formatting without making changes
+uv format --check
+
+# Run all pre-commit hooks
+uv run pre-commit run --all-files
+```
+
+### CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+#### Test Workflow
+- **Trigger**: On push to main, pull requests, or manual dispatch
+- **Matrix**: Tests against Python 3.11, 3.12, and 3.13
+- **Checks**:
+  - Code formatting with `uv format --check`
+  - Unit tests with coverage reporting
+
+#### Release Workflow
+- **Trigger**: Manual workflow dispatch
+- **Process**:
+  - Semantic versioning with conventional commits
+  - Automated changelog generation
+  - PyPI package publishing with `uv`
+
+To release a new version:
+1. Ensure all changes are committed with conventional commit messages
+2. Go to Actions → Release → Run workflow
+3. The workflow will automatically:
+   - Bump version based on commits
+   - Update changelog
+   - Build and publish to PyPI

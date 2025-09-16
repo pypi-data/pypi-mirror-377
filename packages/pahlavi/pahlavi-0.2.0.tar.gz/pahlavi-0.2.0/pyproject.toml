@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pahlavi"
+version = "0.2.0"
+description = "A compact toolkit for Iran's past: convert Jalali dates & compare historical currency."
+readme = { file = "README.md", content-type = "text/markdown" }
+keywords = ["jalali", "pahlavi", "calendar", "currency"]
+requires-python = ">=3.7"
+dependencies = [
+    "jdatetime",
+    "requests",
+    "beautifulsoup4"
+]
+license = {text = "MIT"}
+authors = [
+    { name = "Behnam Alamshahi", email = "b_alamshahi@outlook.com" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+

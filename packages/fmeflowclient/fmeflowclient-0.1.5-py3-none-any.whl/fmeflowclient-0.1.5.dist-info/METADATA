@@ -1,0 +1,44 @@
+Metadata-Version: 2.4
+Name: fmeflowclient
+Version: 0.1.5
+Summary: A Python client for interacting with FME Flow via its REST API
+Project-URL: Homepage, https://github.com/sverker84/fmeflowclient
+Project-URL: Issues, https://github.com/sverker84/fmeflowclient/issues
+Author-email: Sverker Norlander <sverker.norlander@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: API,Client,FME,FME Flow,REST
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: requests
+Description-Content-Type: text/markdown
+
+# fmeflowclient
+fmeflowclient is a simple Python 3.x library for communicating with an FME Flow server using its rest API.
+
+## Install fmeflowclient
+fmeflowclient is available on PyPI:
+
+```bash
+$ python -m pip install fmeflowclient
+```
+
+fmeflowclient is currently develop on Python 3.11.
+
+## Sample usage
+### Get all workspace owners
+```python
+from fmeflowclient import FMEFlowClient
+fmecli = FMEFlowClient("https://fmeflow-fqdn/", token="FMETOKENHERE")
+
+# Get a list of dictionaries of all workspaces
+workspaces = fmecli.list_all_workspaces()
+
+# Create a set of workspace owners
+workspace_owners = {ws["userName"] for ws in workspaces}
+
+print(workspace_owners)
+```

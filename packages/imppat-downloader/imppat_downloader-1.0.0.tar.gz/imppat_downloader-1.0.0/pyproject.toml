@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imppat_downloader"
+version = "1.0.0"
+description = "Command-line tool to download compound structures from the IMPPAT database"
+authors = [{name="Sai Eswar M", email="msaieswar2002@gmail.com"}]
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.8"
+dependencies = [
+    "requests",
+    "beautifulsoup4",
+	"lxml"
+]
+
+[project.scripts]
+imppat_downloader = "imppat_downloader.cli:run"

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"\nimport asyncio\nimport sys\nsys.path.insert(0, ''src'')\n\nfrom tencent_cloud_search_mcp.server import TencentCloudSearchServer\n\nasync def test_server():\n    server = TencentCloudSearchServer()\n    \n    try:\n        # 测试_handle_search函数\n        arguments = {''query'': ''测试搜索'', ''limit'': 5}\n        result = await server._handle_search(arguments)\n        \n        print(''✅ _handle_search调用成功'')\n        print(''结果类型:'', type(result))\n        print(''结果:'', result)\n        print(''内容类型:'', type(result.content))\n        print(''第一个content:'', result.content[0] if result.content else ''None'')\n        \n    except Exception as e:\n        print(''❌ 测试失败:'', e)\n        import traceback\n        traceback.print_exc()\n\nasyncio.run(test_server())\n\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

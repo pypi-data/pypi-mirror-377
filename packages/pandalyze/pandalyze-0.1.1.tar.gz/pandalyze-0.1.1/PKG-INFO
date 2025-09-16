@@ -1,0 +1,62 @@
+Metadata-Version: 2.3
+Name: pandalyze
+Version: 0.1.1
+Summary: pandalyze is a pandas analyzer that allows developers to use pandas more efficiently
+Author: MoAkbarally
+Author-email: mo.akbarally@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: pandas (>=2.3.2,<3.0.0)
+Requires-Dist: psutil (>=7.0.0,<8.0.0)
+Requires-Dist: rich (>=14.1.0,<15.0.0)
+Description-Content-Type: text/markdown
+
+# pandalyze
+
+Lightweight utilities to inspect and analyze pandas.
+
+Features
+- Quick memory and performance insights for DataFrames
+- Human-friendly console output using rich
+
+Installation
+
+Install from PyPI (after release):
+
+	pip install pandalyze
+
+Or install from source for development:
+
+	python -m venv .venv
+	source .venv/bin/activate
+	pip install -e .
+
+Basic usage
+
+```python
+from pandalyze import analyze
+
+# Example: analyze your function stats
+@analyze
+def your_function()
+    pass
+```
+
+Publishing
+
+- This project uses `pyproject.toml` with Poetry-compatible build back-end (`poetry-core`).
+- Bump the `version` in `pyproject.toml` before publishing to PyPI/TestPyPI.
+
+Contributing
+
+Contributions are welcome. Open issues or pull requests and follow standard GitHub workflow.
+
+License
+
+Specify a license in `pyproject.toml` and add a `LICENSE` file if you want this released publicly.
+
+

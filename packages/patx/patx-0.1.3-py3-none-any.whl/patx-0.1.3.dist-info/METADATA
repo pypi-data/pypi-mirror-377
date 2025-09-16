@@ -1,0 +1,392 @@
+Metadata-Version: 2.4
+Name: patx
+Version: 0.1.3
+Summary: Pattern eXtraction for Time Series and Spatial Data
+Author-email: Jonas Wolber <jonascw@web.de>
+Maintainer-email: Jonas Wolber <jonascw@web.de>
+License-Expression: MIT
+Project-URL: Repository, https://github.com/Prgrmmrjns/patX
+Keywords: time-series,spatial-data,feature-engineering,pattern-extraction,machine-learning,optimization,polynomial-patterns
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: optuna>=3.0.0
+Requires-Dist: lightgbm>=3.3.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: seaborn>=0.11.0
+Requires-Dist: pandas>=1.3.0
+Provides-Extra: xgboost
+Requires-Dist: xgboost>=1.6.0; extra == "xgboost"
+Dynamic: license-file
+
+# PatX - Pattern eXtraction for Time Series Feature Engineering
+
+[![PyPI version](https://badge.fury.io/py/patx.svg)](https://badge.fury.io/py/patx)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+PatX is a Python package for extracting polynomial patterns from time series data to create meaningful features for machine learning models. It uses Optuna optimization to automatically discover patterns that are most predictive for your target variable.
+
+## Features
+
+- **Automatic Pattern Discovery**: Uses optimization to find the most predictive polynomial patterns in your time series data
+- **Multiple Series Support**: Handle datasets with multiple time series channels
+- **Flexible Models**: Built-in support for LightGBM with easy extension to other models
+- **Visualization**: Built-in tools to visualize discovered patterns
+- **Easy Integration**: Simple API that works with scikit-learn workflows
+
+## Installation
+
+```bash
+pip install patx
+```
+
+For XGBoost support (optional):
+```bash
+pip install xgboost
+```
+
+## Quick Start
+
+Copy and paste these complete examples to get started immediately:
+
+### Single Time Series Example (MIT-BIH)
+
+```python
+import pandas as pd
+from patx import PatternOptimizer, get_model, load_mitbih_data
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load the included MIT-BIH Arrhythmia dataset
+print("Loading MIT-BIH dataset...")
+data = load_mitbih_data()
+X = data.drop('target', axis=1)
+y = data['target'].values
+
+print(f"Dataset shape: {X.shape}")
+print(f"Classes: {sorted(pd.unique(y))}")
+
+# Split the data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# Initialize XGBoost model
+n_classes = len(pd.unique(y))
+model = get_model('xgboost', 'classification', 'MITBIH', n_classes=n_classes)
+
+# Create PatternOptimizer
+print("Starting pattern extraction...")
+optimizer = PatternOptimizer(
+    X_train=X_train,
+    y_train=y_train,
+    model=model,
+    max_n_trials=50,
+    test_size=0.3,
+    n_jobs=-1,
+    show_progress=True,
+    dataset='MITBIH',
+    multiple_series=False,
+    X_test_data=X_test,
+    metric='accuracy',
+    polynomial_degree=3,
+    val_size=0.3
+)
+
+# Extract features and train model
+result = optimizer.feature_extraction()
+
+# Get results
+trained_model = result['model']
+patterns = result['patterns']
+test_predictions = trained_model.predict(result['X_test'])
+
+# Evaluate performance
+accuracy = accuracy_score(y_test, test_predictions)
+print(f"\nResults:")
+print(f"Discovered {len(patterns)} patterns")
+print(f"Test accuracy: {accuracy:.4f}")
+print(f"Classification Report:")
+print(classification_report(y_test, test_predictions))
+
+# Visualize patterns
+optimizer.visualize_patterns()
+print("Pattern visualizations saved!")
+```
+
+### Pattern Visualization Example
+
+```python
+from patx import PatternOptimizer, get_model, load_mitbih_data
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+# Load and prepare data
+data = load_mitbih_data()
+X = data.drop('target', axis=1)
+y = data['target'].values
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# Create and train optimizer
+n_classes = len(pd.unique(y))
+model = get_model('lightgbm', 'classification', 'MITBIH', n_classes=n_classes)
+
+optimizer = PatternOptimizer(
+    X_train=X_train,
+    y_train=y_train,
+    model=model,
+    max_n_trials=50,
+    test_size=0.3,
+    n_jobs=-1,
+    show_progress=True,
+    dataset='MITBIH',
+    multiple_series=False,
+    X_test_data=X_test,
+    metric='accuracy',
+    polynomial_degree=3,
+    val_size=0.3
+)
+
+result = optimizer.feature_extraction()
+patterns = result['patterns']
+
+# Visualization options
+# 1. Visualize all patterns with MAE distribution
+optimizer.visualize_patterns()
+
+# 2. Visualize first pattern only with MAE distribution
+optimizer.visualize_patterns(pattern_indices=[0])
+
+# 3. Visualize first pattern without MAE distribution (pattern only)
+optimizer.visualize_patterns(
+    pattern_indices=[0], 
+    show_mae_distribution=False,
+    specific_name='first_pattern_only'
+)
+
+# 4. Visualize first 3 patterns without MAE distribution
+optimizer.visualize_patterns(
+    pattern_indices=[0, 1, 2], 
+    show_mae_distribution=False,
+    specific_name='first_three_patterns'
+)
+
+print(f"Visualizations saved to images/MITBIH/ directory")
+```
+
+### Multiple Time Series Example (REMC)
+
+```python
+import pandas as pd
+import numpy as np
+from patx import PatternOptimizer, get_model, load_remc_data
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import roc_auc_score, classification_report
+
+# Load the included REMC epigenomics dataset with multiple time series
+print("Loading REMC dataset...")
+data = load_remc_data()
+X_list = data['X_list']  # List of 5 time series (histone marks)
+y = data['y']
+series_names = data['series_names']
+
+print(f"Loaded {len(X_list)} time series: {series_names}")
+print(f"Data shape: {len(y)} samples, {X_list[0].shape[1]} time points per series")
+print(f"Class distribution: {np.bincount(y)}")
+
+# Split the data (manual split for multiple time series)
+indices = np.arange(len(y))
+train_indices, test_indices = train_test_split(
+    indices, test_size=0.3, random_state=42, stratify=y
+)
+
+X_train_list = [X[train_indices] for X in X_list]
+X_test_list = [X[test_indices] for X in X_list]
+y_train, y_test = y[train_indices], y[test_indices]
+
+print(f"Train samples: {len(y_train)}, Test samples: {len(y_test)}")
+
+# Initialize XGBoost model
+model = get_model('xgboost', 'classification', 'REMC')
+
+# Create PatternOptimizer for multiple time series
+print("Starting pattern extraction for multiple time series...")
+optimizer = PatternOptimizer(
+    X_train=X_train_list,
+    y_train=y_train,
+    model=model,
+    max_n_trials=30,
+    test_size=0.3,
+    n_jobs=-1,
+    show_progress=True,
+    dataset='REMC',
+    multiple_series=True,
+    X_test_data=X_test_list,
+    metric='auc',
+    polynomial_degree=3,
+    val_size=0.3
+)
+
+# Extract features and train model
+result = optimizer.feature_extraction()
+
+# Get results
+trained_model = result['model']
+patterns = result['patterns']
+test_probabilities = trained_model.predict_proba_positive(result['X_test'])
+test_predictions = (test_probabilities > 0.5).astype(int)
+
+# Evaluate performance
+auc_score = roc_auc_score(y_test, test_probabilities)
+print(f"\nResults:")
+print(f"Discovered {len(patterns)} patterns across {len(X_list)} time series")
+print(f"Test AUC: {auc_score:.4f}")
+print(f"Classification Report:")
+print(classification_report(y_test, test_predictions))
+
+# Show pattern distribution across time series
+print(f"\nPattern distribution across time series:")
+for i, series_name in enumerate(series_names):
+    series_patterns = [p for p in patterns if p['series_idx'] == i]
+    print(f"{series_name}: {len(series_patterns)} patterns")
+
+# Visualize patterns
+optimizer.visualize_patterns()
+print("Pattern visualizations saved!")
+```
+
+## API Reference
+
+### PatternOptimizer
+
+The main class for pattern extraction.
+
+**Parameters:**
+- `X_train`: Training time series data
+- `y_train`: Training targets
+- `model`: Model instance with train() and predict() methods
+- `max_n_trials`: Maximum optimization trials
+- `test_size`: Test split ratio
+- `n_jobs`: Number of parallel jobs
+- `show_progress`: Show progress bar
+- `dataset`: Dataset name
+- `multiple_series`: Whether data has multiple series
+- `X_test_data`: Test data for feature extraction
+- `metric`: Evaluation metric ('accuracy', 'auc', 'rmse')
+- `polynomial_degree`: Degree of polynomial patterns
+- `val_size`: Validation split ratio
+- `initial_features`: Optional initial features
+
+**Methods:**
+- `feature_extraction()`: Extract patterns and return features
+- `save_parameters_to_json(dataset_name)`: Save pattern parameters
+- `visualize_patterns(pattern_indices=None, dataset_name=None, specific_name='patterns', show_mae_distribution=True)`: Visualize discovered patterns
+  - `pattern_indices`: List of pattern indices to visualize (default: all patterns)
+  - `dataset_name`: Dataset name for file organization (default: uses optimizer's dataset)
+  - `specific_name`: Name for output file (default: 'patterns')
+  - `show_mae_distribution`: Whether to show MAE distribution plot (default: True)
+
+### Models
+
+Built-in model support:
+- `get_model(model_type, task_type, dataset, n_classes)`: Get configured model
+  - `model_type`: 'lightgbm' (default) or 'xgboost'
+  - `task_type`: 'classification' or 'regression'
+  - `dataset`: Dataset name for parameter optimization
+  - `n_classes`: Number of classes (for multiclass classification)
+- `LightGBMModel`: LightGBM wrapper with consistent interface
+- `XGBoostModel`: XGBoost wrapper with consistent interface
+- `evaluate_model_performance(model, X, y, metric)`: Evaluate model
+
+**Examples:**
+```python
+# Use XGBoost for classification
+model = get_model('xgboost', 'classification', 'MITBIH', n_classes=5)
+
+# Use LightGBM (default)
+model = get_model('lightgbm', 'classification', 'REMC')
+
+# For regression tasks
+model = get_model('xgboost', 'regression', 'MyDataset')
+```
+
+### Data
+
+- `load_mitbih_data()`: Load the included MIT-BIH Arrhythmia dataset (single time series)
+- `load_remc_data()`: Load the included REMC epigenomics dataset (multiple time series)
+
+## Advanced Usage
+
+### Multiple Time Series
+
+For datasets with multiple time series channels, see the REMC example above. The key points:
+
+- Set `multiple_series=True`
+- Pass `X_train` as a list of numpy arrays (one per time series)
+- Each array should have shape `(n_samples, n_timepoints)`
+
+```python
+# X_train_list is a list of time series
+optimizer = PatternOptimizer(
+    X_train=X_train_list,  # List of time series
+    y_train=y_train,
+    multiple_series=True,
+    # ... other parameters
+)
+```
+
+### Custom Models
+
+You can use any model that implements `train()` and `predict()` methods:
+
+```python
+class CustomModel:
+    def train(self, X_train, y_train, X_val=None, y_val=None):
+        # Your training logic
+        pass
+    
+    def predict(self, X):
+        # Your prediction logic
+        pass
+
+model = CustomModel()
+optimizer = PatternOptimizer(X_train, y_train, model=model, ...)
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Citation
+
+If you use PatX in your research, please cite:
+
+```bibtex
+@software{patx,
+  title={PatX: Pattern eXtraction for Time Series Feature Engineering},
+  author={Your Name},
+  year={2025},
+  url={https://github.com/Prgrmmrjns/patX}
+}
+```

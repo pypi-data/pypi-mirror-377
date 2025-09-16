@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: mayim
+Version: 1.2.0
+Summary: The NOT ORM hydrator
+License: MIT
+Keywords: orm
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: docs
+Requires-Dist: pydoc-markdown; extra == "docs"
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+Requires-Dist: tox; extra == "test"
+Provides-Extra: dev
+Requires-Dist: coverage; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Provides-Extra: postgres
+Requires-Dist: psycopg; extra == "postgres"
+Requires-Dist: psycopg_pool; extra == "postgres"
+Provides-Extra: mysql
+Requires-Dist: asyncmy; extra == "mysql"
+Provides-Extra: sqlite
+Requires-Dist: aiosqlite; extra == "sqlite"
+Dynamic: license-file
+
+# Mayim
+
+> The *NOT* ORM Python hydrator
+
+**What is Mayim?**
+
+The simplest way to describe it would be to call it a **one-way ORM**. That is to say that it does *not* craft SQL statements for you. Think of it as **BYOQ** (Bring Your Own Query).
+
+**Why?**
+
+I have nothing against ORMs, truthfully. They serve a great purpose and can be the right tool for the job in many situations. I just prefer not to use them where possible. Instead, I would rather have control of my SQL statements.
+
+The typical tradeoff though is that there is more work needed to hydrate from SQL queries to objects. Mayim aims to solve that.
+
+## Getting Started
+
+```
+pip install mayim[postgres]
+```
+
+```python
+import asyncio
+from typing import List
+from mayim import Mayim, PostgresExecutor, sql
+from dataclasses import dataclass
+
+@dataclass
+class Person:
+    name: str
+
+class PersonExecutor(PostgresExecutor):
+    @sql("SELECT * FROM people LIMIT $limit OFFSET $offset")
+    async def select_all_people(
+        self, limit: int = 4, offset: int = 0
+    ) -> List[Person]:
+        ...
+
+async def run():
+    executor = PersonExecutor()
+    Mayim(dsn="postgres://...")
+    print(await executor.select_all_people())
+
+
+asyncio.run(run())
+```
+
+## Documentation
+
+The docs: [ahopkins.github.io/mayim](https://ahopkins.github.io/mayim/guide/)
+
+## Framework support
+
+Out of the box, Mayim comes with extensions to support Quart, Sanic, and Starlette applications. Checkout the docs for more info.

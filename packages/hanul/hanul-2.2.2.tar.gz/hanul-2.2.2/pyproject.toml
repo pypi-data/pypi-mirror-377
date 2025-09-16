@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hanul"   # pip install hanul
+version = "2.2.2"
+readme = "README.md"
+
+[project.scripts]
+hanul = "hanul.cli:main"
+
+[tool.poetry]
+name = "hanul"
+version = "2.2.2"
+packages = [
+  { include = "hanul", from = "src" }
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"hanul" = ["README.md"]

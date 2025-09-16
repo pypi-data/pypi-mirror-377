@@ -1,0 +1,28 @@
+[build-system]
+# need to added here to use cibuildwheel package
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py4jrush"
+dynamic = ["version","dependencies","readme"]
+authors = [{name = "Jianlin", email="jianlinshi.cn@gmail.com"}]
+description = "A fast implementation of RuSH (Rule-based sentence Segmenter using Hashing)."
+keywords=['ner', 'regex']
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version={file = "py4jrush/VERSION"}
+readme={file = ['README.MD'], content-type = 'text/markdown'}
+
+[project.urls]
+Source = "https://github.com/jianlins/py4jrush"
+
+[tool.setuptools]
+include-package-data = true

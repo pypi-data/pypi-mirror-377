@@ -1,0 +1,129 @@
+Metadata-Version: 2.2
+Name: aimmspy
+Version: 25.2.1.12
+Summary: Python bindings for the AIMMS optimization platform, built with pybind11 for seamless C++ integration. Enables efficient data exchange and interaction with AIMMS projects using pandas, polars, and pyarrow. Ideal for advanced optimization workflows requiring high-performance native code.
+Keywords: AIMMS,Optimization,Operations Research,Mathematical Modeling
+Author: AIMMS B.V.
+Maintainer: AIMMS B.V.
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: C++
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: >=3.10
+Requires-Dist: pyarrow==20.0.0
+Requires-Dist: pandas
+Requires-Dist: polars==1.30.0
+Description-Content-Type: text/markdown
+
+# AIMMS Python Library
+
+With this library it is possible to interact with AIMMS models from Python, enabling high-performance, headless interaction with AIMMS models from within Python scripts.
+
+---
+
+## Overview
+
+`aimmspy` is a Python module built on **pybind11** for tight C++ integration, enabling efficient interaction with AIMMS models. With `aimmspy`, you can:
+
+- Assign and retrieve data between Python and AIMMS using Python dictionaries, Pandas, Polars, or Arrow data frames
+- Execute AIMMS procedures (such as solves) programmatically and capture the results
+- Benefit from high-performance native code, ideal for advanced optimization workflows
+
+`aimmspy` is a key component of the **AIMMS Python Bridge**, designed for "Python-in-the-lead" scenarios, where Python scripts drive AIMMS model runs. It complements the `pyaimms` library (accessible from within an AIMMS project), which supports the reverse ("AIMMS-in-the-lead") workflow.
+
+---
+
+## Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **High-performance integration** | `aimmspy` uses `pybind11` for efficient C++ access to AIMMS runtime |
+| **Flexible data exchange** | Leverage Python-native data structures-dictionaries, Pandas, Polars, PyArrow, for data handling between Python and AIMMS |
+| **Programmatic control** | Trigger AIMMS procedures (e.g. solve) directly from Python and retrieve results |
+| **Python-first workflow** | Ideal for batch runs, automated pipelines, and embedding optimization in external applications |
+| **Bulk data handling** | The `multi_assign()` and `multi_data()` methods allows sending and fetching multiple AIMMS identifiers in a single call |
+
+---
+
+## Prerequisites
+
+- [**AIMMS Developer** installed](https://www.aimms.com/support/downloads/) - the low-code optimization modeling platform that provides:
+  - A full-featured IDE with a rich mathematical modeling language for formulating LP, MIP, NLP, MINLP, stochastic, and robust optimization models  
+  - Access to high-performance solvers (e.g., CPLEX, Gurobi, BARON, CBC, IPOPT, KNITRO, CP Optimizer)  
+  - An integrated WebUI builder, model explorer, and deployment tools  
+  - Fast deployment and decision-support app creation
+- A [valid AIMMS Developer license](https://licensing.aimms.cloud/license) and an existing AIMMS project to connect with (project file, executable, license URL)
+  - You will receive a license URL in the installation instructions after verification, this URL will be needed when initializing a connection to the AIMMS project
+
+More information on how to get started can be found in the [python bridge documentation](https://documentation.aimms.com/aimmspy/index.html).
+
+**Note**: AIMMS offers a [**free Academic License**](https://licensing.cloud.aimms.com/license/academic.htm) for students, educators, and researchers. This makes it easy for academic users to experiment with AIMMS and `aimmspy` without cost.
+
+---
+
+## Installation
+
+Install via `pip`:
+
+```bash
+pip install aimmspy
+```
+
+## Basic Usage Example
+
+Here is a minimal example showing how to connect to an AIMMS project, assign data, run a solve procedure, and retrieve results:
+
+```python
+from aimmspy.project.project import Project, Model
+from aimmspy.utils import find_aimms_path
+
+# Initialize connection to AIMMS project
+project = Project(
+    # path to the AIMMS bin folder (or Lib on Linux)
+    aimms_path=find_aimms_path("25.5.4.3"),
+    # path to AIMMS project
+    aimms_project_file="path/to/your/project.aimms",
+    # license url
+    license_url="wss://licensing.aimms.cloud/your-license-url"
+)
+
+# Get a handle to the AIMMS model
+model: Model = project.get_model(__file__)
+
+# Assign supply and demand data to the identifiers in the AIMMS model
+model.Supply.assign({"Factory1": 35, "Factory2": 50})
+model.Demand.assign({"Market1": 45, "Market2": 40})
+
+# Assign transportation costs
+model.TransportCost.assign({
+    ("Factory1", "Market1"): 10,
+    ("Factory1", "Market2"): 15,
+    ("Factory2", "Market1"): 20,
+    ("Factory2", "Market2"): 5,
+})
+
+# Run the optimization procedure defined in AIMMS
+model.TransportSolve()
+
+# Retrieve results: optimal shipment quantities
+shipments = model.Shipments.data()
+print("Optimal shipments:")
+print(shipments)
+
+```
+
+This example assumes you have an AIMMS project with identifiers `Supply`, `Demand`, `TransportCost`, `Shipments`, and a procedure `TransportSolve` set up. Replace with identifiers from your own AIMMS project.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For questions, bug reports, or feature requests, please contact AIMMS B.V. via [support](https://community.aimms.com/p/developer-support). Or post an question on the [AIMMS Community](https://community.aimms.com/). We are happy to help you with any issues or questions you may have.
+

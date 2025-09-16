@@ -1,0 +1,63 @@
+[project]
+name = "peakipy"
+version = "2.1.1"
+authors = [
+    { name = "j-brady", email = "jacob.brady@protonmail.com" }
+]
+description = "Deconvolute overlapping NMR peaks"
+readme = 'README.md'
+repository = "https://github.com/j-brady/peakipy"
+homepage = "https://j-brady.github.io/peakipy"
+
+classifiers = [
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.11",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: POSIX :: Linux",
+        "Operating System :: Microsoft :: Windows",
+        ]
+
+license="MIT"
+
+requires-python = ">=3.11"
+dependencies = [
+    "bokeh>=3.8.0",
+    "jedi>=0.19.2",
+    "jinja2>=3.1.6",
+    "lmfit>=1.3.4",
+    "matplotlib>=3.10.6",
+    "nmrglue>=0.11",
+    "numdifftools>=0.9.41",
+    "numpy>=2.3.3",
+    "pandas>=2.3.2",
+    "panel>=1.8.0",
+    "plotly>=6.3.0",
+    "plotpy>=2.7.5",
+    "pydantic>=2.11.9",
+    "pyyaml>=6.0.2",
+    "rich>=14.1.0",
+    "scikit-image>=0.25.2",
+    "scipy>=1.16.2",
+    "statsmodels>=0.14.5",
+    "tqdm>=4.67.1",
+    "typer>=0.17.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "coverage>=7.10.6",
+    "ipython>=9.5.0",
+    "mkdocs-material>=9.6.20",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+]
+
+[project.scripts]
+peakipy = 'peakipy.cli.main:app'

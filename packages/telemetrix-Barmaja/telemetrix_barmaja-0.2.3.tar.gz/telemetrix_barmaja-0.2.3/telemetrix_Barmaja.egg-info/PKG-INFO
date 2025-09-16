@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: telemetrix_Barmaja
+Version: 0.2.3
+Summary: Arduino IDE-style class API on top of telemetrix (v1.43) with packaged examples.
+Author-email: Barmaja <info@example.com>
+License: MIT License
+Project-URL: Homepage, https://example.com/telemetrix-barmaja
+Project-URL: Repository, https://example.com/telemetrix-barmaja-repo
+Project-URL: Issues, https://example.com/telemetrix-barmaja-issues
+Keywords: arduino,telemetrix,education,STEM,robotics
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Education
+Classifier: Topic :: System :: Hardware
+Classifier: Intended Audience :: Education
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: telemetrix==1.43
+Requires-Dist: pyserial>=3.5
+Dynamic: license-file
+
+
+# telemetrix_Barmaja (v0.2.1)
+
+Arduino IDE-style **class API** on top of telemetrix (tested with v1.43). Examples are packaged in the wheel at `telemetrix_Barmaja/examples/`.
+
+```python
+import time
+from telemetrix_Barmaja import TelemetrixSync, OUTPUT, HIGH, LOW
+
+board = TelemetrixSync()  # auto-detect; or TelemetrixSync(com_port="COM6")
+board.pinMode(13, OUTPUT)
+try:
+    while True:
+        board.digitalWrite(13, HIGH); time.sleep(0.5)
+        board.digitalWrite(13, LOW);  time.sleep(0.5)
+finally:
+    board.shutdown()
+```

@@ -1,0 +1,51 @@
+[project]
+name = "hexcore"
+version = "1.3.0"
+authors = [
+  { name="David Latosefki (Indroic)", email="indroic@outlook.com" },
+]
+description = "Núcleo reutilizable para proyectos Python con arquitectura hexagonal y event handling. Provee abstracciones, utilidades y contratos para DDD, eventos y desacoplamiento de infraestructura."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiosqlite>=0.21.0",
+    "alembic>=1.16.5",
+    "async-typer>=0.1.10",
+    "asyncpg>=0.30.0",
+    "beanie>=2.0.0",
+    "fastapi>=0.116.1",
+    "pika>=1.3.2",
+    "pydantic>=2.11.7",
+    "redis>=6.4.0",
+    "sqlalchemy>=2.0.43",
+    "typer>=0.17.3",
+    "ruff>=0.12.11",
+]
+
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+
+[project.scripts]
+hexcore = "hexcore.__main__:app"
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.9.1",
+    "mypy>=1.17.1",
+    "mypy-extensions>=1.1.0",
+]
+
+[tool.setuptools]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true
+push = true

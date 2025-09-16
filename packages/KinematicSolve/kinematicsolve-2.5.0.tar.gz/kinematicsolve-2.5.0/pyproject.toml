@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "KinematicSolve"
+version = "2.5.0"
+description = "An algebra and calculus-based kinematics solver for Python."
+authors = [
+    { name = "Mahir Rahman" },
+    { name = "Tyler Nguyen" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "sympy>=1.11.1"
+]

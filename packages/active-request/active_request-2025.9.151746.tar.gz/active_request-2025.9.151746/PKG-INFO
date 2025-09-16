@@ -1,0 +1,113 @@
+Metadata-Version: 2.4
+Name: active_request
+Version: 2025.9.151746
+Summary: Sliding-window active request counter (last 60s) using Redis for FastAPI or any Python app.
+Home-page: https://github.com/chigwell/active_request
+Author: Eugene Evstafev
+Author-email: chigwel@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: redis>=5.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+[![PyPI version](https://badge.fury.io/py/active_request.svg)](https://badge.fury.io/py/active_request)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://static.pepy.tech/badge/active_request)](https://pepy.tech/project/active_request)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue)](https://www.linkedin.com/in/eugene-evstafev-716669181/)
+
+# active\_request
+
+`active_request` is a tiny Redis-backed sliding-window counter for tracking **live requests in the last N seconds** (default 60s). It is safe across multiple processes and works with both sync and async Redis clients (e.g. FastAPI).
+
+## Installation
+
+```bash
+pip install active_request
+```
+
+> Requires Redis server and `redis` Python client ≥ 5.0.
+
+## Usage
+
+### Sync
+
+```python
+from __future__ import annotations
+
+import os
+
+import redis
+from active_request import record_active_request
+
+r = redis.Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379/0"))
+
+count = record_active_request(
+    r,
+    key="metrics:active_requests:api",
+    window_seconds=60,
+    gauge_key="metrics:active_requests:api:count",
+)
+print(count)  # live number of requests in the last 60s
+```
+
+### Async (FastAPI example)
+
+```python
+from __future__ import annotations
+
+import os
+from fastapi import FastAPI, Depends
+from redis.asyncio import Redis
+
+from active_request import arecord_active_request
+
+app = FastAPI()
+redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+r = Redis.from_url(redis_url)
+
+
+@app.get("/ping")
+async def ping():
+    # Increment and get live count of requests in the last 60 seconds
+    live = await arecord_active_request(
+        r,
+        key="metrics:active_requests:api",
+        window_seconds=60,
+        gauge_key="metrics:active_requests:api:count",
+    )
+    return {"ok": True, "live_60s": live}
+```
+
+## Features
+
+* Sliding window counter using a Redis sorted set + Lua (accurate to milliseconds).
+* Concurrency-safe across multiple workers/processes.
+* Sync and async APIs: `record_active_request` / `arecord_active_request`.
+* Optional “gauge” key written with short TTL for easy scraping/dashboards.
+* Small dependency footprint (`redis` only).
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome!
+Repo: [https://github.com/chigwell/active\_request](https://github.com/chigwell/active_request) • Issues: [https://github.com/chigwell/active\_request/issues](https://github.com/chigwell/active_request/issues)
+
+## License
+
+`active_request` is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).

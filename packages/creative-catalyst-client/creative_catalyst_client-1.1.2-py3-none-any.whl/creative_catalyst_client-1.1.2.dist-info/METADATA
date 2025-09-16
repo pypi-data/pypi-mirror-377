@@ -1,0 +1,166 @@
+Metadata-Version: 2.4
+Name: creative-catalyst-client
+Version: 1.1.2
+Summary: A client for the Creative Catalyst Engine API.
+Author-email: Md Tawhidul Islam <mtawhidulislam7@gmail.com>
+Project-URL: Repository, https://github.com/MTawhid7/creative-catalyst-client
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: sseclient-py
+
+# Creative Catalyst API Client
+
+[![PyPI version](https://img.shields.io/pypi/v/creative-catalyst-client.svg)](https://pypi.org/project/creative-catalyst-client/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python Versions](https://img.shields.io/pypi/pyversions/creative-catalyst-client.svg)](https://pypi.org/project/creative-catalyst-client/)
+
+A robust Python client for interacting with the Creative Catalyst Engine API. This client handles job submission and uses a real-time Server-Sent Events (SSE) stream to provide progress updates and retrieve final results, eliminating the need for inefficient polling.
+
+---
+
+## Table of Contents
+
+- [Creative Catalyst API Client](#creative-catalyst-api-client)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Configuration](#configuration)
+    - [Example](#example)
+  - [Error Handling](#error-handling)
+  - [Development](#development)
+  - [License](#license)
+
+---
+
+## Features
+
+-   **Simple Interface:** A clean, intuitive client for submitting creative briefs.
+-   **Real-Time & Efficient:** Uses Server-Sent Events (SSE) to get job status updates the moment they happen, with no need for manual polling.
+-   **Robust Error Handling:** Includes a set of custom exceptions to handle API connection issues, job submission failures, and failed jobs gracefully.
+-   **Configurable:** The target API server URL is configured via a single environment variable, making it easy to switch between development, staging, and production environments.
+
+---
+
+## Installation
+
+The package is hosted on the public Python Package Index (PyPI).
+
+```bash
+pip install creative-catalyst-client
+```
+
+It is highly recommended to pin the package to a specific version in your project's `requirements.txt` file to ensure reproducible builds:
+
+```
+# In your requirements.txt
+creative-catalyst-client==1.1.1
+```
+
+<details>
+<summary><strong>(Alternative) Installation from Private GitHub Packages</strong></summary>
+
+If your project requires installing from the private GitHub Packages registry, you will need a GitHub Personal Access Token (PAT) with `read:packages` scope.
+
+1.  **Configure `pip`:** Add the following line to the top of your `requirements.txt` file, replacing `YOUR-GITHUB-USERNAME` with the correct GitHub organization or username:
+    ```
+    --extra-index-url https://pypi.pkg.github.com/YOUR-GITHUB-USERNAME
+    ```
+
+2.  **Set Authentication Token:** Before running `pip install`, set your PAT as an environment variable:
+    ```bash
+    export GITHUB_TOKEN=your_personal_access_token_here
+    ```
+
+3.  **Install:** Now, `pip install -r requirements.txt` will be able to find and download the package from the private registry.
+</details>
+
+---
+
+## Usage
+
+### Configuration
+
+The client is configured to find the server using a single environment variable. Before running your application, ensure the following variable is set:
+
+```
+CREATIVE_CATALYST_API_URL="http://<ip_address_of_catalyst_server>:9500"
+```
+
+The client will automatically read this value.
+
+### Example
+
+The following is a complete example of how to submit a job and receive the final report.
+
+```python
+import os
+from api_client.client import CreativeCatalystClient
+from api_client.exceptions import APIClientError
+
+# Ensure the environment variable is set for the script to use.
+# In a real application, this would be managed by your deployment environment.
+os.environ["CREATIVE_CATALYST_API_URL"] = "http://127.0.0.1:9500"
+
+# 1. Initialize the client. It automatically finds the URL from the environment.
+client = CreativeCatalystClient()
+
+# 2. Define your creative brief.
+creative_brief = """
+A collection of luxury silk scarves inspired by the art of Japanese kintsugi and the nebulae photographed by the James Webb Space Telescope.
+"""
+
+try:
+    # 3. Submit the job and get the final report.
+    # The client will print real-time progress updates to the console.
+    final_report = client.get_creative_report(creative_brief)
+
+    print("\n--- ✅ Final Report Received ---")
+    if final_report.get("final_report"):
+        print(f"Theme: {final_report['final_report'].get('overarching_theme')}")
+
+except APIClientError as e:
+    print(f"\n--- ❌ An Error Occurred ---")
+    print(f"Error: {e}")
+```
+
+---
+
+## Error Handling
+
+The client will raise specific exceptions for different failure modes, all inheriting from `APIClientError`. You can catch these to handle errors gracefully.
+
+-   **`ConnectionError`**: Raised if the client cannot connect to the API server at all.
+-   **`JobSubmissionError`**: Raised if the initial job submission fails (e.g., due to a server error or invalid request).
+-   **`JobFailedError`**: Raised if the job is accepted but fails during processing on the worker.
+
+---
+
+## Development
+
+This section is for developers contributing to the `creative-catalyst-client` package itself.
+
+The project uses `pip-tools` for dependency management.
+
+1.  **Create a virtual environment:**
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+2.  **Install all dependencies:**
+    ```bash
+    pip install -r dev-requirements.txt
+    ```
+3.  **To add a dependency,** edit `pyproject.toml` (for production) or `dev-requirements.in` (for development).
+4.  **To update the lock files,** run: `pip-compile --strip-extras dev-requirements.in`.
+5.  **To build the package,** run: `python -m build`.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

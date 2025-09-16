@@ -1,0 +1,28 @@
+# Authentication configuration for AI Social Server
+credentials:
+  usernames:
+    demo_user:
+      name: "Demo User"
+      password: "demo123"  # Plain text for development - use bcrypt in production
+      email: "demo@example.com"
+      role: "user"
+    admin:
+      name: "Administrator"
+      password: "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj6hsC6BtZvy"  # hashed: admin123
+      email: "admin@example.com"
+      role: "admin"
+
+cookie:
+  name: "ai_social_auth_cookie"
+  key: "some_signature_key_for_development"  # Change this in production
+  expiry_days: 30
+
+registration:
+  enabled: true
+  default_role: "user"
+
+# Application settings
+app:
+  name: "AI Social Server"
+  version: "1.0.0"
+  description: "AI-powered social media platform optimized for neurochemical engagement"

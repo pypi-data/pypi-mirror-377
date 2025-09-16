@@ -1,0 +1,8 @@
+[console_scripts]
+agentic-social-server = social_server.app:main
+social-feed = social_server.app:main
+
+[streamlit.apps]
+social-auth = social_server.pages.login_register:main
+social-feed = social_server.pages.ai_social_feed:main
+social-profile = social_server.pages.profile_home:main

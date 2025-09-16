@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "stapax"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dynamic = ["version"]
+dependencies = [
+    "coloredlogs>=15.0.1",
+    "dacite",
+    "equinox>=0.13.0",
+    "hydra-core",
+    "jax>=0.7.1",
+    "jaxtyping>=0.3.2",
+    "lightning>=2.5.5",
+    "matplotlib>=3.10.6",
+    "numpy>=2.3.3",
+    "omegaconf",
+    "optax>=0.2.6",
+]
+authors = [
+    { name = "Benedict Armstrong", email = "benedict.armstrong@inf.ethz.ch" },
+    { name = "Philipp Nazari", email = "philipp.nazari@tuebingen.mpg.de" },
+]
+
+[project.scripts]
+stapax = "src.cli:cli_main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+include = ["config/**/*"]
+
+[tool.hatch.version]
+source = "vcs"
+raw-options = { local_scheme = "no-local-version", version_scheme = "only-version" }

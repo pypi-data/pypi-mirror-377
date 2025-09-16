@@ -1,0 +1,88 @@
+name: Build Linux wheels (CPU and CUDA) with uv
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+    linux-cpu-wheel:
+        name: Linux CPU wheel
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up uv
+              uses: astral-sh/setup-uv@v3
+
+            - name: Install Python
+              run: uv python install 3.12
+
+            - name: Build sdist and wheel
+              run: uv build
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: linux-cpu-dist
+                  path: dist/*
+
+    linux-cuda-wheel:
+        name: Linux CUDA wheel (deps resolution)
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up uv
+              uses: astral-sh/setup-uv@v3
+
+            - name: Install Python
+              run: uv python install 3.12
+
+            - name: Install CUDA-flavored deps (JAX CUDA, PyTorch CUDA)
+              run: |
+                  # JAX CUDA wheels are on PyPI via extras
+                  uv pip install "jax[cuda12]>=0.7.1"
+                  # PyTorch CUDA wheels via the official index (CPU-only runners, this only checks resolution)
+                  uv pip install --index-url https://download.pytorch.org/whl/cu121 torch torchvision --extra-index-url https://pypi.org/simple
+
+            - name: Build sdist and wheel
+              run: uv build
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: linux-cuda-dist
+                  path: dist/*
+
+    # Optional: publish to PyPI on tags. Set PYPI_API_TOKEN in repo secrets to enable.
+    publish:
+        name: Publish to PyPI (on tag)
+        needs: [linux-cpu-wheel, linux-cuda-wheel]
+        runs-on: ubuntu-latest
+        if: startsWith(github.ref, 'refs/tags/')
+        steps:
+            - name: Download CPU artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  name: linux-cpu-dist
+                  path: dist
+
+            - name: Download CUDA artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  name: linux-cuda-dist
+                  path: dist
+
+            - name: Set up uv
+              uses: astral-sh/setup-uv@v3
+
+            - name: Publish to PyPI with uv
+              env:
+                  UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+              run: |
+                  uv publish --token "$UV_PUBLISH_TOKEN" dist/*

@@ -1,0 +1,21 @@
+defaults:
+    - _self_
+
+# Configure Hydra to put single and multi run outputs in the outputs directory
+hydra:
+    run:
+        dir: outputs/singlerun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    sweep:
+        dir: outputs/multirun/${oc.select:output_subdir,}/${now:%Y-%m-%d}/${now:%H-%M-%S}/${oc.select:HYDRA_RUN_ID,}
+        subdir: ${hydra.job.num}
+
+wandb:
+    mode: 'online'
+    name: ${dataset.name}/${model.encoder.name}
+    project: 'ligoss'
+
+# defines the mode of the experiment. 'train' runs the training, 'test' runs the testing, 'all' runs both
+mode: 'all'
+
+test:
+    output_path: 'outputs/results'

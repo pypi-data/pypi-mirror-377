@@ -1,0 +1,67 @@
+name: Publish
+
+env:
+  # Enable colored output
+  # https://github.com/actions/runner/issues/241
+  PY_COLORS: 1
+  PYTHON_VERSION: "3.12"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish-packages:
+    name: Publish package index
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write # Needed for GH pages updates
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Install packages
+        run: |
+          uv sync --extra index
+
+      - name: View scenarios
+        run: |
+          uv run -- packse view scenarios/**/*.{toml,yaml,json}
+
+      - name: Build scenarios and index
+        run: |
+          uv run -- packse index build --no-hash scenarios
+
+      - name: Publish scenarios
+        run: echo ${{ github.ref }}
+
+      - name: Publish scenarios
+        if: github.ref == 'refs/heads/main'
+        run: |
+          commit=$(./scripts/version parts | jq -r ".short_hash")
+
+          git fetch origin gh-pages
+          git branch gh-pages FETCH_HEAD
+          git checkout gh-pages
+
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+          mkdir "$commit"
+          cp -r index/* "./$commit"
+          git add "$commit"
+          git commit -m "Publish scenarios for $commit"
+          git push --set-upstream origin gh-pages

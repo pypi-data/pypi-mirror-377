@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante Version="3.3" 
+	xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" 
+	LugarExpedicion="45079" MetodoPago="PUE" TipoDeComprobante="I" Total="1716.00" Moneda="MXN" 
+	FormaPago="03" SubTotal="1800.00" Fecha="2017-11-13T16:11:59" 
+	NoCertificado="40001000000300000337" Certificado="" Sello="" >
+  <cfdi:Emisor Rfc="AAA010101AAA" Nombre="Esta es una demostración" RegimenFiscal="612" />
+  <cfdi:Receptor Rfc="BASJ600902KL9" Nombre="Juanito Bananas De la Sierra" UsoCFDI="G03" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="80111701" Cantidad="1" ClaveUnidad="E48" Unidad="Servicio" Descripcion="Selección de personal" ValorUnitario="1800" Importe="1800.00">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="1800.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="288.00" />
+        </cfdi:Traslados>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="1800.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.106667" Importe="192.00" />
+          <cfdi:Retencion Base="1800.00" Impuesto="001" TipoFactor="Tasa" TasaOCuota="0.100000" Importe="180.00" />
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="80111702" Cantidad="2" ClaveUnidad="E49" Unidad="Servicio2" Descripcion="Descripcion2" ValorUnitario="1800" Importe="3600.00">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="3600.00" Impuesto="003" TipoFactor="Tasa" TasaOCuota="0.030000" Importe="576.00" />
+        </cfdi:Traslados>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="3600.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.106667" Importe="384.00" />
+          <cfdi:Retencion Base="3600.00" Impuesto="001" TipoFactor="Tasa" TasaOCuota="0.100000" Importe="360.00" />
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosRetenidos="744.00" TotalImpuestosTrasladados="576.00">
+    <cfdi:Retenciones>
+      <cfdi:Retencion Impuesto="002" Importe="384.00" />
+      <cfdi:Retencion Impuesto="001" Importe="360.00" />
+    </cfdi:Retenciones>
+    <cfdi:Traslados>
+      <cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="864.00" />
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+</cfdi:Comprobante>

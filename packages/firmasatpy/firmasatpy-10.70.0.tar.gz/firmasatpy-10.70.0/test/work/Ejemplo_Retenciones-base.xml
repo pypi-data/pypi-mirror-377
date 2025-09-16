@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<retenciones:Retenciones
+    Cert=""
+    CveRetenc="01" DescRetenc="0.00"
+    FechaExp="2014-12-16T14:01:29-06:00" FolioInt="1RETENCION"
+    NumCert="20001000000100005867"
+    Sello=""
+    Version="1.0"
+    xmlns:arrendamientoenfideicomiso="http://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso"
+    xmlns:dividendos="http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos"
+    xmlns:enajenaciondeacciones="http://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones"
+    xmlns:fideicomisoempresarial="http://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial"
+    xmlns:intereses="http://www.sat.gob.mx/esquemas/retencionpago/1/intereses"
+    xmlns:intereseshipotecarios="http://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios"
+    xmlns:operacionesconderivados="http://www.sat.gob.mx/esquemas/retencionpago/1/operacionesconderivados"
+    xmlns:pagosaextranjeros="http://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros"
+    xmlns:planesderetiro="http://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro"
+    xmlns:premios="http://www.sat.gob.mx/esquemas/retencionpago/1/premios"
+    xmlns:retenciones="http://www.sat.gob.mx/esquemas/retencionpago/1"
+    xmlns:sectorfinanciero="http://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.sat.gob.mx/esquemas/retencionpago/1 http://www.sat.gob.mx/esquemas/retencionpago/1/retencionpagov1.xsd
+	http://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso http://www.sat.gob.mx/esquemas/retencionpago/1/arrendamientoenfideicomiso/arrendamientoenfideicomiso.xsd http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xsd   http://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones http://www.sat.gob.mx/esquemas/retencionpago/1/enajenaciondeacciones/enajenaciondeacciones.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial http://www.sat.gob.mx/esquemas/retencionpago/1/fideicomisonoempresarial/fideicomisonoempresarial.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/intereses http://www.sat.gob.mx/esquemas/retencionpago/1/intereses/intereses.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios http://www.sat.gob.mx/esquemas/retencionpago/1/intereseshipotecarios/intereseshipotecarios.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/operacionesconderivados http://www.sat.gob.mx/esquemas/retencionpago/1/operacionesconderivados/operacionesconderivados.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros http://www.sat.gob.mx/esquemas/retencionpago/1/pagosaextranjeros/pagosaextranjeros.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro http://www.sat.gob.mx/esquemas/retencionpago/1/planesderetiro/planesderetiro.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/premios http://www.sat.gob.mx/esquemas/retencionpago/1/premios/premios.xsd  http://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero http://www.sat.gob.mx/esquemas/retencionpago/1/sectorfinanciero/sectorfinanciero.xsd">
+    <retenciones:Emisor CURPE="AAAA010101HJCXXX00"
+        NomDenRazSocE="PERSONA FÍSICA DE PRUEBA" RFCEmisor="AAAA010101AAA"/>
+    <retenciones:Receptor Nacionalidad="Nacional">
+        <retenciones:Nacional CURPR="XAXX010101HNTXXX00"
+            NomDenRazSocR="PERSONA FISICA NACIONAL DE PRUEBA" RFCRecep="XAXX010101000"/>
+    </retenciones:Receptor>
+    <retenciones:Periodo Ejerc="2014" MesFin="12" MesIni="1"/>
+    <retenciones:Totales montoTotExent="0.00" montoTotGrav="1.00"
+        montoTotOperacion="3.00" montoTotRet="2.00">
+        <retenciones:ImpRetenidos BaseRet="2.00" Impuesto="01"
+            TipoPagoRet="Pago provisional" montoRet="1.00"/>
+        <retenciones:ImpRetenidos BaseRet="2.00" Impuesto="02"
+            TipoPagoRet="Pago definitivo" montoRet="0.00"/>
+    </retenciones:Totales>
+    <retenciones:Complemento>
+        <arrendamientoenfideicomiso:Arrendamientoenfideicomiso
+            DeduccCorresp="0.00" DescrMontOtrosConceptDistr="NO HAY"
+            MontOtrosConceptDistr="0.00" MontResFiscDistFibras="0.00"
+            MontTotRet="0.00" PagProvEfecPorFiduc="0.00"
+            RendimFideicom="0.00" Version="1.0"/>
+        <dividendos:Dividendos Version="1.0">
+            <dividendos:DividOUtil CveTipDivOUtil="01"
+                MontDivAcumExt="10.1" MontDivAcumNal="10.1"
+                MontISRAcredNal="0.1" MontISRAcredRetExtranjero="0.00"
+                MontISRAcredRetMexico="0.00" MontRetExtDivExt="0.00" TipoSocDistrDiv="Sociedad Nacional"/>
+            <dividendos:Remanente ProporcionRem="10.0"/>
+        </dividendos:Dividendos>
+        <enajenaciondeacciones:EnajenaciondeAcciones
+            ContratoIntermediacion="NO HAY CONTRATO" Ganancia="0.00"
+            Perdida="0.00" Version="1.0"/>
+        <fideicomisoempresarial:Fideicomisonoempresarial Version="1.0">
+            <fideicomisoempresarial:IngresosOEntradas
+                MontTotEntradasPeriodo="0.00"
+                PartPropAcumDelFideicom="0.00" PropDelMontTot="20.815484">
+                <fideicomisoempresarial:IntegracIngresos Concepto="ESTE ES EL CONCEPTO"/>
+            </fideicomisoempresarial:IngresosOEntradas>
+            <fideicomisoempresarial:DeduccOSalidas
+                MontTotEgresPeriodo="0.00" PartPropDelFideicom="0.00" PropDelMontTot="20.000000">
+                <fideicomisoempresarial:IntegracEgresos ConceptoS="Nada"/>
+            </fideicomisoempresarial:DeduccOSalidas>
+            <fideicomisoempresarial:RetEfectFideicomiso
+                DescRetRelPagFideic="Descripción" MontRetRelPagFideic="0.00"/>
+        </fideicomisoempresarial:Fideicomisonoempresarial>
+        <intereses:Intereses MontIntNominal="1.000" MontIntReal="2.000"
+            OperFinancDerivad="NO" Perdida="3.000"
+            RetiroAORESRetInt="NO" SistFinanciero="NO" Version="1.0"/>
+        <intereseshipotecarios:Intereseshipotecarios
+            CreditoDeInstFinanc="NO" MontTotIntNominalesDev="0.00"
+            MontTotIntNominalesDevYPag="0.00"
+            MontTotIntRealPagDeduc="0.00" NumContrato="10000000000"
+            PropDeducDelCredit="0.00" SaldoInsoluto="0.00" Version="1.0"/>
+        <operacionesconderivados:Operacionesconderivados
+            MontGanAcum="1.0" MontPerdDed="1.0" Version="1.0"/>
+        <pagosaextranjeros:Pagosaextranjeros EsBenefEfectDelCobro="SI" Version="1.0">
+            <pagosaextranjeros:NoBeneficiario ConceptoPago="6"
+                DescripcionConcepto="ESTA ES LA DESCRIPCION" PaisDeResidParaEfecFisc="IT"/>
+            <pagosaextranjeros:Beneficiario CURP="AAAA010101HJCXXX01"
+                ConceptoPago="6"
+                DescripcionConcepto="ESTA ES LA DESCRIPCION"
+                NomDenRazSocB="PRUEBA DE PERSONA FISICA" RFC="AAAA010101AA0"/>
+        </pagosaextranjeros:Pagosaextranjeros>
+        <planesderetiro:Planesderetiro HuboRetirosAnioInmAnt="SI"
+            HuboRetirosAnioInmAntPer="NO"
+            MontIntRealesDevengAniooInmAnt="0.00"
+            MontTotAportAnioInmAnterior="0.00"
+            MontTotExedenteAnioInmAnt="0.00"
+            MontTotExentRetiradoAnioInmAnt="0.00"
+            MontTotRetiradoAnioInmAnt="0.00"
+            MontTotRetiradoAnioInmAntPer="0.00" SistemaFinanc="NO" Version="1.0"/>
+        <premios:Premios EntidadFederativa="18" MontTotPago="50000"
+            MontTotPagoExent="0" MontTotPagoGrav="50000" Version="1.0"/>
+        <sectorfinanciero:SectorFinanciero
+            DescripFideicom="DEScRIPCION DEL FIDEICOM"
+            IdFideicom="191216" NomFideicom="NOMBRE DEL FIDEICOM" Version="1.0"/>
+    </retenciones:Complemento>
+</retenciones:Retenciones>

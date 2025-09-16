@@ -1,0 +1,163 @@
+A Python interface to FirmaSAT
+==============================
+
+This is a Python interface to the core FirmaSAT library
+
+FirmaSAT enables you to analyze and sign CFDi digital tax vouchers (Comprobantes Fiscal Digitales) 
+as specified by the Servicio de Administración Tributaria (SAT) in Mexico. 
+
+FirmaSAT must be installed on your system. It is available from
+https://cryptosys.net/firmasat/.
+
+Classes
+-------
+
+**Sello**
+   Operates on the Sello (signature) node in a SAT XML document.
+
+**Tfd**
+   Operates on the Timbre Fiscal Digital (TFD) element, if present.
+
+**Pkix**
+   PKI X.509 security utilities. Operates on private keys and
+   X.509 certificates.
+
+**Xmlu**
+   XML utilities. Operates on SAT-specific XML documents.
+
+**Gen**
+   General info about the core library DLL, e.g. version
+   number, compile date.
+
+**Err**
+   Details of errors returned by the core library DLL.
+
+All code in is one module ``firmasat.py`` for simplicity of
+distribution. All methods are static methods.
+
+Errors
+------
+
+Most errors (missing files, invalid format) will result in a
+``firmasat.Error`` exception, although some methods are more forgiving
+and will return a negative error code instead. Passing a bad argument type
+will result in an ``ArgumentError`` exception
+
+
+Examples
+--------
+
+To use in Python's REPL:
+
+::
+
+    >>> from firmasat import *
+    >>> Gen.version()
+    105028
+
+If you don't like ``import *`` and find ``firmasat`` a bit long to type
+each time, try
+
+::
+
+    >>> import firmasat as fs
+    >>> fs.Gen.version()
+    105028
+
+To sign a CFDI document, create the base XML file with all the required
+data except the following nodes
+
+::
+
+    Sello=""
+    Certificado=""
+    NoCertificado="30001000000300023708"
+
+You must add the 20-digit serial number of your signing certificate to the 
+``NoCertificado`` node. See below.
+
+Then run the ``Sello.sign_xml()`` method with full paths to your ``key``
+and ``cer`` files.
+
+::
+
+    n = Sello.sign_xml('new.xml', 'base.xml', "emisor.key", password, "emisor.cer")
+
+This creates a new file ``new.xml`` with the Sello and Certificado nodes
+completed.
+
+
+Finding a certificate's serial number
+-------------------------------------
+
+::
+
+    >>> firmasat.Pkix.query_cert('emisor.cer', 'serialNumber')
+    '30001000000300023708'
+
+or using FirmaSAT from the command line
+
+::
+
+    > firmasat NUMBERCERT emisor.cer
+    30001000000300023708
+
+
+Tests
+-----
+
+There is a series of tests in ``test_firmasat.py`` (`source <https://cryptosys.net/firmasat/test_firmasat.py.html>`_). 
+You should find an example there of what you want to do.
+
+These tests require a subdirectory ``work`` in the same folder
+which must contain all the required test files.
+
+
+::
+
+    test
+    |   test_firmasat.py
+    |
+    \---work
+        |   emisor.cer
+        |   emisor.key
+        |   <...all required test files>
+        |
+        \---tmp.XXXXXXXX
+                <..temporary files...>
+
+
+The test function creates a new temporary subdirectory each time, which is
+deleted automatically.
+If you want to keep this temp folder for debugging, then add the argument ``nodelete`` on the command line.
+
+This structure is already set up in the distribution file, so unzip the
+file ``firmasat-x.x.x.zip`` and open a command-line prompt in the
+``test`` subdirectory. You can do any of the following.
+
+1. ``python test_firmasat.py``
+
+2. ``py.test -v``
+
+3. Open the file ``test_firmasat.py`` using IDLE and select
+   ``Run > Run Module (F5)``.
+
+We've tested this using the Python 3.12.0 interpreter and IDLE, PyCharm 2022.2.3, and ``py.test``.
+
+System requirements
+-------------------
+
+Windows platforms only. Python 3 must be installed on your system (at
+least 3.6). FirmaSAT v10.70 or above must also be installed.
+
+Contact
+-------
+
+For more information or to make suggestions, please contact us at
+http://cryptosys.net/contact/.
+
+| David Ireland
+| DI Management Services Pty Ltd t/a CryptoSys
+| Australia
+| http://cryptosys.net/contact/
+| 15 September 2025

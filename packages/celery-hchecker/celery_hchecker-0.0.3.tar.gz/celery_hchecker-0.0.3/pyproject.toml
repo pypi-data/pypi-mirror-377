@@ -1,0 +1,27 @@
+[project]
+name = "celery-hchecker"
+version = "0.0.3"
+description = ""
+authors = [
+    { name = "skulap", email = "skulap01@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "celery (>=5.5.3,<6.0.0)",
+    "cachetools (>=6.2.0,<7.0.0)"
+]
+
+[tool.poetry]
+packages = [{ include = "celery_hchecker", from = "src" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.4.2,<9.0.0"
+pytest-mock = "^3.15.0"
+fakeredis = "^2.31.1"
+black = ">=25.1.0,<26.0.0"
+ruff = ">=0.13.0,<0.14.0"

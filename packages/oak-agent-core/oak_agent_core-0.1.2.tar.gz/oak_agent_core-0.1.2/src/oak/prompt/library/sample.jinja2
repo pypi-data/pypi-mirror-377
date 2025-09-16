@@ -1,0 +1,14 @@
+{% extends 'base_template.jinja2' %}
+
+{% block content %}
+**User Question:** {{ user_question }}
+
+{% if personal_context %}
+**User's Portfolio/Goals:** {{ personal_context }}
+{% endif %}
+
+{% if knowledge_context %}
+**Relevant Research/News:** {{ knowledge_context }}
+{% endif %}
+
+{% endblock %}

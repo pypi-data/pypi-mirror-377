@@ -1,0 +1,53 @@
+[project]
+name = "skillcorner-on-demand"
+version = "0.1.14"
+description = "Python client to interact with SkillCorner On Demand API"
+readme = "README.md"
+authors = [{ name = "SkillCorner", email = "support@skillcorner.com" }]
+dependencies = ["fitrequest>=0.8.2", "requests>=2.32.3"]
+requires-python = ">=3.9,<3.13"
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.lint.ruff]
+fix = true
+line-length = 120
+select = ["B", "E", "F", "I001", "Q", "SIM", "UP", "W"]
+target-version = "py39"
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["./tests"]
+pythonpath = ["."]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.2",
+    "pytest-cov>=5.0.0",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.6.3",
+    "requests-mock>=1.12.1",
+    "coverage>=7.6.1",
+]
+
+[tool.poe.tasks.test]
+sequence = [
+    { cmd = "coverage run -m pytest --junitxml=junit_test.xml" },
+    { cmd = "coverage xml" },
+    { cmd = "coverage html" },
+    { cmd = "coverage report --omit 'tests/*'" },
+]

@@ -1,0 +1,338 @@
+Metadata-Version: 2.4
+Name: skillcorner-on-demand
+Version: 0.1.14
+Summary: Python client to interact with SkillCorner On Demand API
+Author-email: SkillCorner <support@skillcorner.com>
+License-File: LICENCE.md
+Requires-Python: <3.13,>=3.9
+Requires-Dist: fitrequest>=0.8.2
+Requires-Dist: requests>=2.32.3
+Description-Content-Type: text/markdown
+
+# Getting Started
+
+## Installation
+```shell
+uv pip install skillcorner-on-demand
+```
+
+## Credentials
+You need to add in your environment your `username` and `password` with that you can access to the service, if you don't like this method follow the alternative
+
+```shell
+export SKILLCORNER_ON_DEMAND_USERNAME=email@mycompagny.com
+export SKILLCORNER_ON_DEMAND_PASSWORD=mysuperpassword
+```
+
+## How to use it
+You just need to instanciate the client like this
+
+```py
+import os
+
+from skillcorner_on_demand.client import SkillcornerOnDemandClient
+
+USERNAME = os.getenv('SKILLCORNER_ON_DEMAND_USERNAME')
+PASSWORD = os.getenv('SKILLCORNER_ON_DEMAND_PASSWORD')
+
+client = SkillcornerOnDemandClient(USERNAME, PASSWORD)
+
+```
+
+## Get Methods
+
+### Get All requests
+```py
+response = client.get_all_requests()
+```
+With the reponse
+```json
+"count": 6,
+    "next": null,
+    "previous": null,
+    "results": {
+        "matches": [
+            {
+                "id": 14,
+                "status": "input_data",
+                "tactical_data": [],
+                "match": {
+                    "id": 1429092,
+                    "unique_name": "Match Name",
+                    "date_time": "2024-02-10T13:00:00Z",
+                },
+                "is_matchsheet_csv_valid": true,
+                "is_period_limits_csv_valid": true,
+                "is_homeside_team_csv_valid": true,
+                "is_video_uploaded": false
+            },
+            ...
+        ]
+    }
+```
+### Get request by ID
+or get just one request by his match ID
+```py
+    client.get_request(match_id=1429095)
+```
+response
+```json
+{
+    "id": 6,
+    "status": "processing",
+    "tactical_data": [],
+    "match": {
+        "id": 1429095,
+        "unique_name": "20240806_LOSC Lille_Fenerbahce",
+        "date_time": "2024-08-06T18:30:00Z",
+        "status": "not_started"
+    },
+    "is_matchsheet_csv_valid": true,
+    "is_period_limits_csv_valid": true,
+    "is_homeside_team_csv_valid": true,
+    "is_video_uploaded": true
+}
+```
+
+## Upload methods
+
+### Matches List
+```py
+response = client.upload_match_list(
+    path="path/to/file.csv",
+)
+```
+
+
+
+### Period Limits
+```py
+response = client.upload_period_limits(
+    match_id=1429095,
+    period_limits_path="path/to/file.csv",
+)
+```
+
+response
+
+```json
+{"message": "Information successfully added and uploaded to the request"}
+```
+
+### Match Sheet
+```py
+response = client.upload_match_sheet(
+    match_id=1429095,
+    match_sheet_path="path/to/file.csv",
+)
+```
+
+response
+
+```json
+{"message": "Information successfully added and uploaded to the request"}
+```
+
+### Home Team Side
+```py
+response = client.upload_home_team_side(
+    match_id=1429095,
+    home_team_side_path="path/to/file.csv",
+)
+```
+
+response
+
+```json
+{"message": "Information successfully added and uploaded to the request"}
+```
+
+### Video
+```py
+response = client.upload_match_video(
+    match_id=1429095,
+    video_path="path/to/file.mp4",
+)
+```
+
+response
+
+```json
+{"message": "Information successfully added and uploaded to the request"}
+```
+
+## Update a file
+To update a file you just need to call the upload method and pass the `is_update=True` parameter like this
+
+```py
+response = client.upload_match_sheet(
+    match_id=1429095,
+    match_sheet_path="path/to/file.mp4",
+    is_update=True
+)
+```
+response
+```json
+{"message": "Match Sheet successfully updated"}
+```
+
+
+## CSV Validation
+
+if some lineup information is not valid the API will return you a list of errors like these:
+
+```json
+{
+    "errors": [
+        "Home team does not have 11 start players it has 10.",
+        "Away team does not have 11 start players it has 12.",
+        "Duplicate player id [133003] for the home team",
+        "Player J. David has been subbed in for himself.",
+        "Duplicate jersey number [53] for the away team",
+        "Team home has duplicate positions ['RW'].",
+        "Team away has duplicate positions ['RCB', 'LW']."
+    ]
+}
+```
+
+## Start Processing a Match
+To add the match to the process queue you need to call this method
+```py
+response = client.launch_match(
+    match_id=1429095,
+)
+```
+
+## Get the data of the match when the process is done
+
+
+### Data Collection
+Get data collection of this match
+
+```py
+response = client.get_data_collection(
+    match_id=1429095,
+)
+```
+response
+```json
+{
+    "match_id": 1429095,
+    "status": "postmatch",
+    "physical_last_modified": "2024-09-13T13:02:23.992345Z",
+    "physical_v3_last_modified": null,
+    "tracking_last_modified": "2024-09-13T12:59:43.067225Z",
+    "tracking_extra_last_modified": "2024-09-13T12:59:43.067225Z",
+    ...
+}
+```
+
+### Tracking
+Get tracking data
+
+*Warning: This method can take a long time to complete because of the large* file size.
+```py
+response = client.get_tracking(
+    match_id=1429095,
+)
+```
+response
+```json
+{
+    "data": [],
+    "possession": {
+        "group": null,
+        "trackable_object": null
+        },
+        "frame": 1,
+        "image_corners_projection":
+            [-29.886810706710552, 39.0, -9.262864149625193, -24.788953625823087, 8.817583207115144, -25.174142763841694, 32.730019680050475, 39.0],
+        "timestamp": null,
+        "period": null
+}
+...
+```
+
+### Match data
+Get all the information about the match
+
+```py
+response = client.get_match_data(
+    match_id=1429095,
+)
+```
+response
+```json
+{
+    "id": 1429095,
+    "home_team_score": 0,
+    "away_team_score": 0,
+    "date_time": "2024-08-25T20:45:00Z",
+    "stadium": {
+        "id": 1198,
+        "name": "Subaru Park",
+        "city": "Chester",
+        "capacity": 18500
+    },
+    "home_team": {
+        "id": 1503,
+        "name": "Philadelphia Union",
+        "short_name": "Philadelphia",
+        "acronym": "PHI"
+    },
+    "home_team_kit": {
+        "id": 3879,
+        "team_id": 1503,
+        "season": {
+            "id": 8,
+            "start_year": 2021,
+            "end_year": 2022,
+            "name": "2021/2022"
+        },
+        "name": "Home",
+        "jersey_color": "#000000",
+        "number_color": "#95a44c"
+    },
+    "away_team": {
+        "id": 1499,
+        "name": "Colorado Rapids",
+        "short_name": "Colorado Rapids",
+        "acronym": "COL"
+    },
+    "away_team_kit": {
+        "id": 11169,
+        "team_id": 1499,
+        "season": {
+            "id": 29,
+            "start_year": 2024,
+            "end_year": 2024,
+            "name": "2024"
+        },
+        "name": "24/25",
+        "jersey_color": "#5f9cdd",
+        "number_color": "#0b3bcb"
+    },
+    "home_team_coach": null,
+    "away_team_coach": null,
+    ...
+}
+```
+
+### Physical
+Get physical data for this match, pass csv in argument if you want to download data directly in csv
+```py
+response = client.get_match_physical(
+    match_id=1429095,
+    csv=True
+)
+```
+
+### Dynamic Events
+To get dynamic events, pass the file format wanted `csv`, `sportscode-xml`, `matchtracker-xml` or `focus-json` not other format can be handled.
+By default, a file with the chosen format will be created, but if you just want the data and not a file, you can pass the parameters, `save=False`
+```py
+response = client.get_dynamic_events(
+    match_id=1234567,
+    file_format='csv' # among 'csv', 'sportscode-xml', 'matchtracker-xml' or 'focus-json'
+    save=True # Default behavior 
+)

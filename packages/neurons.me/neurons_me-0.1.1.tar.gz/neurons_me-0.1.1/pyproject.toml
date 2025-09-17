@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neurons.me"
+version = "0.1.1"
+authors = [
+    { name="suiGn" }
+]
+description = "DeepLearning for everyone and .me"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]

@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redlistapi"
+description = "A Python client for the IUCN Red List API"
+version = "0.1.1"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Daniele Baisero", email = "daniele.baisero@gmail.com" }]
+keywords = [
+  "IUCN",
+  "Red List",
+  "Red-List",
+  "KBA",
+  "Key Biodiversity Area",
+  "Key Biodiversity Areas"
+  ]
+dependencies = [
+  "requests",
+  "python-dotenv",
+  "PyYAML",
+  "numpy",
+  "pandas",
+  "tqdm"
+  ]
+
+[project.optional-dependencies]
+spatial = [
+  "shapely",
+  "geopandas",
+  "geojson",
+  "gdal"
+  ]
+test = [
+  "pytest",
+  "ruff"
+  ]
+
+[project.urls]
+homepage = "https://gitlab.com/daniele.baisero/redlistapi"
+repository = "https://gitlab.com/daniele.baisero/redlistapi"
+"bugtracker" = "https://gitlab.com/daniele.baisero/redlistapi/issues"

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit-cookie-manager"
+version = "0.1.4"
+description = "A Streamlit component to manage encrypted cookies in the browser"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Jason Kim", email = "kimwootak@catholic.ac.kr" }
+]
+requires-python = ">=3.8"
+dependencies = [
+  "streamlit>=1.20",
+  "cryptography>=41.0.0"
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["streamlit_cookie_manager*"]
+
+[tool.setuptools.package-data]
+"streamlit_cookie_manager" = ["frontend/dist/**/*"]

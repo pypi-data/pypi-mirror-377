@@ -1,0 +1,37 @@
+title: "OpenWeatherMap API Collection"
+description: "Test requests for the OpenWeatherMap API"
+
+headers:
+  Accept: "application/json"
+
+requests:
+  getCurrentWeather:
+    method: GET
+    url: "https://api.openweathermap.org/data/2.5/weather"
+    body:
+      q: "London,uk"
+      appid: $OPENWEATHERMAP_API_KEY
+      units: "metric"
+    assert:
+      status_code: 200
+      soft_timeout_s: 5.0
+
+  getForecast:
+    method: GET
+    url: "https://api.openweathermap.org/data/2.5/forecast"
+    body:
+      q: "New York"
+      appid: $OPENWEATHERMAP_API_KEY
+      units: "imperial"
+    assert:
+      status_code: 200
+
+  getAirPollution:
+    method: GET
+    url: "https://api.openweathermap.org/data/2.5/air_pollution"
+    body:
+      lat: "51.5074"
+      lon: "-0.1278"
+      appid: $OPENWEATHERMAP_API_KEY
+    assert:
+      status_code: 200

@@ -1,0 +1,20 @@
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PalindromeCheckerLib"
+version = "0.1.0"
+description = "Check if text is a palindrome"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [{ name = "Ali Alsheikh", email = "a77561289@gmail.com " }]
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.scripts]
+PalindromeCheckerLib = "palindrome.__main__:main"
+
+[project.urls]
+Homepage = "https://pypi.org/project/PalindromeCheckerLib/"

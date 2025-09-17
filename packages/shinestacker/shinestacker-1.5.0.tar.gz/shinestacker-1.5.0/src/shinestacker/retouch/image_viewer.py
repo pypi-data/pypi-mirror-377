@@ -1,0 +1,129 @@
+# pylint: disable=C0114, C0115, C0116, E0611, R0904, R0902, R0914, R0912, R0913, R0917
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QWidget, QVBoxLayout
+from .image_view_status import ImageViewStatus
+from .overlaid_view import OverlaidView
+from .sidebyside_view import SideBySideView, TopBottomView
+
+
+class ImageViewer(QWidget):
+    def __init__(self, layer_collection, parent=None):
+        super().__init__(parent)
+        self.status = ImageViewStatus()
+        self._strategies = {
+            'overlaid': OverlaidView(layer_collection, self.status, self),
+            'sidebyside': SideBySideView(layer_collection, self.status, self),
+            'topbottom': TopBottomView(layer_collection, self.status, self)
+        }
+        for strategy in self._strategies.values():
+            strategy.hide()
+        self.strategy = self._strategies['overlaid']
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.strategy = self._strategies['overlaid']
+        self.layout.addWidget(self.strategy)
+        self.strategy.show()
+
+    def set_strategy(self, label):
+        new_strategy = self._strategies.get(label, None)
+        if new_strategy is None:
+            raise RuntimeError(f"View strategy {label} is invalid.")
+        self.layout.removeWidget(self.strategy)
+        self.strategy.hide()
+        self.strategy = new_strategy
+        self.layout.addWidget(self.strategy)
+        self.strategy.show()
+        self.strategy.resize(self.size())
+        if not self.strategy.empty():
+            self.strategy.cleanup_brush_preview()
+            self.strategy.update_master_display()
+            self.strategy.update_current_display()
+            self.strategy.setup_brush_cursor()
+            self.strategy.update_brush_cursor()
+            self.strategy.show_master()
+            self.strategy.setFocus()
+            self.strategy.activateWindow()
+
+    def empty(self):
+        return self.strategy.empty()
+
+    def set_master_image_np(self, img):
+        self.strategy.set_master_image_np(img)
+
+    def clear_image(self):
+        for st in self._strategies.values():
+            st.clear_image()
+
+    def show_master(self):
+        self.strategy.show_master()
+
+    def show_current(self):
+        self.strategy.show_current()
+
+    def update_master_display(self):
+        self.strategy.update_master_display()
+
+    def update_current_display(self):
+        self.strategy.update_current_display()
+
+    def update_brush_cursor(self):
+        self.strategy.update_brush_cursor()
+
+    def refresh_display(self):
+        self.strategy.refresh_display()
+
+    def set_brush(self, brush):
+        for st in self._strategies.values():
+            st.set_brush(brush)
+
+    def set_preview_brush(self, brush):
+        for st in self._strategies.values():
+            st.set_preview_brush(brush)
+
+    def set_display_manager(self, dm):
+        for st in self._strategies.values():
+            st.set_display_manager(dm)
+
+    def set_allow_cursor_preview(self, state):
+        self.strategy.set_allow_cursor_preview(state)
+
+    def setup_brush_cursor(self):
+        self.strategy.setup_brush_cursor()
+
+    def zoom_in(self):
+        self.strategy.zoom_in()
+
+    def zoom_out(self):
+        self.strategy.zoom_out()
+
+    def reset_zoom(self):
+        self.strategy.reset_zoom()
+
+    def actual_size(self):
+        self.strategy.actual_size()
+
+    def get_current_scale(self):
+        return self.strategy.get_current_scale()
+
+    def get_cursor_style(self):
+        return self.strategy.get_cursor_style()
+
+    def set_cursor_style(self, style):
+        self.strategy.set_cursor_style(style)
+
+    def position_on_image(self, pos):
+        return self.strategy.position_on_image(pos)
+
+    def get_visible_image_portion(self):
+        return self.strategy.get_visible_image_portion()
+
+    def connect_signals(
+            self, handle_temp_view, begin_copy_brush_area, continue_copy_brush_area,
+            end_copy_brush_area, handle_brush_size_change):
+        for st in self._strategies.values():
+            st.temp_view_requested.connect(handle_temp_view)
+            st.brush_operation_started.connect(begin_copy_brush_area)
+            st.brush_operation_continued.connect(continue_copy_brush_area)
+            st.brush_operation_ended.connect(end_copy_brush_area)
+            st.brush_size_change_requested.connect(handle_brush_size_change)
+            st.setFocusPolicy(Qt.StrongFocus)

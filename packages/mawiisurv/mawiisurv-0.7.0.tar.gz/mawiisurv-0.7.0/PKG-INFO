@@ -1,0 +1,361 @@
+Metadata-Version: 2.4
+Name: mawiisurv
+Version: 0.7.0
+Summary: Semiparametric Causal Inference for Right-Censored Outcomes with Many Weak Invalid Instruments
+Author-email: Qiushi Bu <buqiushi17@mails.ucas.ac.cn>
+Keywords: censored outcomes,deep neural networks,instrumental variables,generalized empirical likelihood,mendelian randomization,over-identification test,semiparametric theory,weak and invalid instruments
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy>=1.19
+Requires-Dist: torch>=1.8
+Requires-Dist: scipy>=1.5
+Requires-Dist: scikit-learn>=0.24
+Requires-Dist: xgboost>=1.3
+Requires-Dist: numba>=0.53
+Dynamic: license-file
+
+# MAWII-SURV
+
+> Semiparametric causal inference for right-censored outcomes with many weak or invalid instruments, powered by the GEL-NOW framework.
+
+[![PyPI](https://img.shields.io/pypi/v/mawiisurv.svg)](https://pypi.org/project/mawiisurv/)
+[![Python](https://img.shields.io/pypi/pyversions/mawiisurv.svg)](https://pypi.org/project/mawiisurv/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+MAWII-Surv (MAny Weak and Invalid Instruments for Survival outcomes) implements **GEL-NOW**: Generalized Empirical Likelihood with **N**on-**O**rthogonal and **W**eak moments. It extends classical GEL to non-orthogonal nuisance settings and allows many weak or invalid IVs under right-censoring.
+
+---
+
+## Table of Contents
+- [Introduction to MAWII-Surv](#introduction-to-mawii-surv)
+- [Why MAWII-Surv?](#why-mawii-surv)
+- [Features](#features)
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [Quick Start](#quick-start)
+- [API](#api)
+- [Arguments](#arguments)
+- [Return Values](#return-values)
+- [Notes & Tips](#notes)
+- [Citation](#citation)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Introduction to MAWII-Surv
+
+MAWII-Surv (MAny Weak and Invalid Instruments for Survival outcomes) is a Python package for semiparametric causal inference with right-censored outcomes in the presence of many weak or invalid instruments. The package implements the novel GEL-NOW (Generalized Empirical Likelihood with Non-Orthogonal and Weak moments, or GEL 2.0) framework, which extends classical generalized empirical likelihood to settings where nuisance functions enter non-orthogonally and where instruments may be weak or invalid.
+
+Key features include:
+
+- Heteroscedasticity-based identification under an accelerated failure time (AFT) model, enabling causal effect estimation even with invalid instruments.
+
+- Flexible nuisance estimation using modern machine learning methods, including deep neural networks, to capture complex nonlinear structures.
+
+- Robust inference that explicitly accounts for additional variance from non-orthogonal nuisances, ensuring valid confidence intervals.
+
+- Diagnostics such as a censoring-adjusted over-identification test to assess instrument validity.
+
+- Applications to biobank-scale data, with built-in support for analyzing time-to-event outcomes such as disease onset.
+
+
+With simulation tools, diagnostic functions, and real-data examples, MAWII-Surv provides a user-friendly platform for researchers in statistics, econometrics, epidemiology, and genetics to conduct reliable causal inference from censored survival data
+
+## Why MAWII-Surv?
+
+- **Survival + Endogeneity:** G-estimation for treatment effects with right-censoring and unmeasured confounding.
+- **Many Weak/Invalid IVs:** Robust to weak instruments and horizontal pleiotropy.
+- **GEL 2.0 (GEL-NOW):** Empirical Likelihood (EL), Exponential Tilting (ET), and Continuous Updating (CUE) with theory for **non-orthogonal nuisances**.
+- **Modern ML Nuisances:** Deep neural nets (PyTorch), Random Forests, XGBoost, plus classical linear models.
+- **Diagnostics:** Over-identification test adapted to censoring; standard errors account for censoring-induced variance inflation.
+
+## Features
+
+- **Uncensor‐data** (`mawii_noncensor`)  
+- **Right‐censoring** (`mawii_censor`)  
+- Multiple model backends:
+  - Neural networks
+  - Linear regression
+  - Random forests
+  - XGBoost  
+- Choice of Generalized Empirical Likelihood (GEL) functions:
+  - Empirical Tilting (ET)
+  - Empirical Likelihood (EL)
+  - Continuous Updating Estimator (CUE)
+
+---
+
+## Installation
+
+Install from PyPI:
+
+```
+pip install mawiisurv
+```
+
+---
+## Dependencies
+
+Make sure you have the following installed (the minimal compatible versions shown):
+- numpy>=1.19
+- torch>=1.8
+- scipy>=1.5
+- scikit-learn>=0.24
+- xgboost>=1.3
+- numba>=0.53
+
+If you plan to use GPU, please install a CUDA-compatible PyTorch from the official download page before installing this package.
+
+---
+## Quick start
+
+A runnable demo is provided below. It simulates both non-censored and right-censored data, fits the DNN + ET specification, and prints the point estimate, standard error, and the over-identification test statistic.
+```
+# demo
+
+#  pip install mawiisurv
+import numpy as np
+import mawiisurv
+import torch
+import copy
+# function input
+'''
+Main input variables:
+    X: (n,p) array, covariates
+    Z: (n,m) array, instrumental variables
+    A: (n,) array, treatment
+    Y: (n,) array, outcome
+    censor_delta: (n,) array, censor indicator, 1 for uncensor and 0 for censor
+    h: window for local KM estimation, and default setting is 1
+    model_types: ['neural_network','linear_regression','random_forest','xgboost'], 4 choices of comparsion models, and default setting is ['neural_network']
+    rho_function_names: ['ET','EL','CUE'], GEL functions, and default setting is ['EL']
+
+Other DNN setting: 
+    hidden_layers=[50, 50],
+    learning_rate=0.0005,
+    weight_decay=0.0001,
+    batch_size=256,
+    dropout_rate=0,
+    patience=5,
+    epochs=1000,
+    validation_split=0.05,
+    shuffle=False,
+    device='cpu'
+'''
+
+# two main functions:
+'''
+'mawii_noncensor' for complete data
+'mawii_censor' for right censor data
+'''
+
+# function output
+'''
+function will return a list of result, including 
+    'beta' : estimation of treatment effect
+    'se' : estimated standard error
+    'test' : overidentification test statistics
+'''
+
+# complete data simulation
+n = 10000
+m = 20
+p = 1
+beta_0 = 0.4
+device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+
+
+def generate_data(n=10000, m=10, p=5, beta_0=0.4, h_2=0.2,eta_A=1,censor_rate=0.3, case='case1'):
+    random_coefs = np.random.normal(loc=0, scale=1, size=1000)
+    
+    X = np.random.uniform(-2,2,size=(n,p))
+    Z = np.random.uniform(-2,2,size=(n,m))
+
+    gamma = np.sqrt(h_2 / (1.5*m)) * random_coefs[0 : m] 
+    delta = np.sqrt(h_2 / (1.5*m)) * random_coefs[m : 2*m]
+
+    epsilon_A = np.random.normal(0, 0.4*(1-h_2), size=n)
+    epsilon_Y = np.random.normal(0, 0.4*(1-h_2), size=n)
+    
+
+    alpha_case1 = np.zeros(m)
+    alpha_case2 = np.sqrt(h_2 / (1.5*m)) * (random_coefs[2*m : 3*m])/2
+    alpha_case3 = gamma / 2
+    Z_new = copy.deepcopy(Z)
+    Z_new = np.cos(Z*2)
+
+    
+    if case == "case1":
+        tmp = np.random.multinomial(1, [1, 0, 0], size=m)
+    elif case == "case2":
+        tmp = np.random.multinomial(1, [0.6, 0.2, 0.2], size=m)
+    elif case == "case3":
+        tmp = np.random.multinomial(1, [0.1, 0.9, 0], size=m)
+    elif case == "case4":
+        tmp = np.random.multinomial(1, [0.1, 0, 0.9], size=m)
+    else:
+        raise ValueError("Unknown case provided.")
+    alpha = tmp[:, 0] * alpha_case1 + tmp[:, 1] * alpha_case2 + tmp[:, 2] * alpha_case3
+
+    U = np.random.normal(0, 0.6*(1-h_2), size=n)
+    A = Z_new @ gamma + U + (1 + Z @ delta)*epsilon_A
+    T = beta_0*A  + Z_new @ alpha -U  + epsilon_Y 
+
+    rr = 0
+    
+    while True:
+        C = np.random.uniform( -1+rr,5+rr, size=n)
+        censor_delta = np.where(T <= C, 1, 0) 
+        if np.mean(1-censor_delta) >=censor_rate+0.03:
+            rr = rr + 0.1
+        elif np.mean(1-censor_delta)<=censor_rate-0.03:
+            rr = rr - 0.1
+        else:
+             break
+            
+    Y = np.minimum(T,C)
+ 
+    return X, Z, A, Y, T, censor_delta
+
+X, Z, A, Y, T, censor_delta= generate_data(n=10000, m=20, p=1, beta_0=0.4, h_2=0.2, eta_A=1, censor_rate=0.4, case='case1')
+
+
+# uncensored data simulation
+
+result_noncensor = mawiisurv.mawii_noncensor(X, Z, A, T, 
+                          model_types=['neural_network'], # options:  ['neural_network','linear_regression','random_forest','xgboost'],
+                          rho_function_names=['ET'], # options: ['ET','EL','CUE'],
+                          device = device)
+
+print(f"DNN+ET BETA: {result_noncensor['neural_network']['ET']['beta']:.3f}")
+print(f"DNN+ET SE: {result_noncensor['neural_network']['ET']['se']:.3f}")
+print(f"DNN+ET over-identification test: {result_noncensor['neural_network']['ET']['test']:.3f}")
+
+
+# right-censor data simulation
+
+result_censor = mawiisurv.mawii_censor(X, Z, A, Y, censor_delta, h = 4,
+                                           model_types=['neural_network'], # options:  ['neural_network','linear_regression','random_forest','xgboost'],
+                                           rho_function_names=['ET'], # options: ['ET','EL','CUE'],
+                                          device = device)
+
+print(f"DNN+ET BETA: {result_censor['neural_network']['ET']['beta']:.3f}")
+print(f"DNN+ET SE: {result_censor['neural_network']['ET']['se']:.3f}")
+print(f"DNN+ET over-identification test: {result_censor['neural_network']['ET']['test']:.3f}")
+    
+```
+---
+## API
+```
+mawii_noncensor(
+    X, Z, A, Y,
+    model_types=['neural_network'],
+    rho_function_names=['ET'],
+    hidden_layers=[50, 50],
+    learning_rate=0.0005,
+    weight_decay=0.0001,
+    batch_size=256,
+    dropout_rate=0,
+    patience=5,
+    epochs=100,
+    validation_split=0.05,
+    shuffle=False,
+    device='cpu',
+) -> dict
+mawii_censor(
+    X, Z, A, Y, censor_delta, h=1,
+    model_types=['neural_network'],
+    rho_function_names=['ET'],
+    hidden_layers=[50, 50],
+    learning_rate=0.0005,
+    weight_decay=0.0001,
+    batch_size=256,
+    dropout_rate=0,
+    patience=5,
+    epochs=100,
+    validation_split=0.05,
+    shuffle=False,
+    device='cpu',
+) -> dict
+```
+---
+## Arguments
+
+- X: array of shape n by p, baseline covariates
+
+- Z: array of shape n by m, instrumental variables
+
+- A: array of shape n, treatment
+
+- Y: array of shape n, outcome
+
+- censor_delta: array of shape n, 1 uncensored and 0 censored, only for mawii_censor
+
+- h: scalar, window for local Kaplan–Meier in censoring adjustment
+
+- model_types: list of model backends, choose from neural_network, linear_regression, random_forest, xgboost
+
+- rho_function_names: list of GEL score types, choose from ET, EL, CUE
+
+- device: cpu or cuda device string such as cuda:0
+
+---
+## Return values:
+```
+{
+  'neural_network': {
+    'ET': {
+      'beta': float,    # point estimate
+      'se': float,      # standard error
+      'test': float     # overidentification test statistic
+    },
+    'EL': {...},
+    'CUE': {...}
+  },
+  'linear_regression': {...},
+  ...
+}
+```
+
+## Notes
+
+- We generally recommend ET or EL over CUE under weak identification.
+
+- Deep NNs tend to be most robust for complex nonlinear nuisances; RF/XGB are strong baselines in moderate dimensions.
+
+- Under censoring, standard errors include an extra variance component due to estimating the censoring distribution.
+
+## Citation:
+
+If you use MAWII-Surv, please cite:
+```
+Bu Q., Su W., Zhao X., Liu Z. (2025).
+Semiparametric Causal Inference for Right-Censored Outcomes with Many Weak Invalid Instruments.
+(manuscript)
+```
+
+BibTeX:
+```
+@misc{mawiisurv2025,
+  title   = {Semiparametric Causal Inference for Right-Censored Outcomes with Many Weak Invalid Instruments},
+  author  = {Bu, Qiushi and Su, Wen and Zhao, Xingqiu and Liu, Zhonghua},
+  year    = {2025},
+  note    = {Python package: MAWII-Surv},
+  howpublished = {\url{https://pypi.org/project/mawiisurv/}}
+}
+```
+
+## Contributing
+
+Contributions are welcome!  
+Please use Issues for bug reports and pull requests for code contributions. 
+
+## License
+MIT License — see LICENSE for details.
+

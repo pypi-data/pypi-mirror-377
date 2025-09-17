@@ -1,0 +1,22 @@
+# minitorch_v2/pyproject.toml
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minitorch"
+version = "0.1.0"
+description = "A lightweight machine learning library inspired by PyTorch"
+readme = "README.md"
+authors = []
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.21.0",
+]
+
+[tool.setuptools]
+packages = ["torch"]
+
+[tool.setuptools.package-data]
+"torch" = ["*.py"]

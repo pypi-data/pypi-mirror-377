@@ -1,0 +1,36 @@
+[project]
+name = "django-devapp"
+version = "0.3.4"
+description = "Basic tools to manage a django application outside of a Django project"
+authors = [
+    {name = "George Tantiras"}
+]
+license = {text = "BSD-3-Clause License"}
+dynamic = [ "classifiers" ]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "django (>=5.1.6,<6.0.0)",
+    "black (>=25.1.0,<26.0.0)",
+    "click (>=8.1.8,<9.0.0)",
+    "ipython (>=8.32.0,<9.0.0)",
+    "build (>=1.2.2.post1,<2.0.0)",
+    "twine (>=6.1.0,<7.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP",
+]
+packages = [{include = "dev", from = "src"}]
+
+[project.scripts]
+dev = "dev.boot:control"

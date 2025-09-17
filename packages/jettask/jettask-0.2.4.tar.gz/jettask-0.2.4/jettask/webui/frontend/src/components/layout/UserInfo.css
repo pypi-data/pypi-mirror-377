@@ -1,0 +1,197 @@
+/* 用户信息容器 */
+.user-info-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+}
+
+/* 图标按钮样式 */
+.header-icon-btn {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  padding: 4px 8px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.header-icon-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 用户头像容器 */
+.user-avatar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.user-avatar-container:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.username {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 用户下拉菜单 */
+.user-dropdown-menu {
+  min-width: 180px;
+}
+
+.user-dropdown-menu .ant-menu-item {
+  height: 40px;
+  line-height: 40px;
+}
+
+.theme-badge,
+.language-badge {
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* 通知下拉框容器 */
+.notification-dropdown-container {
+  width: 360px;
+}
+
+.notification-dropdown {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 通知头部 */
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-header span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* 通知菜单 */
+.notification-menu {
+  max-height: 400px;
+  overflow-y: auto;
+  border: none;
+}
+
+.notification-menu .ant-menu-item {
+  height: auto;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-menu .ant-menu-item:last-child {
+  border-bottom: none;
+}
+
+.notification-menu .ant-menu-item.unread {
+  background: #e6f7ff;
+}
+
+.notification-menu .ant-menu-item:hover {
+  background: #f5f5f5;
+}
+
+/* 通知项 */
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notification-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.notification-description {
+  font-size: 12px;
+  color: #8c8c8c;
+  line-height: 1.5;
+}
+
+.notification-time {
+  font-size: 11px;
+  color: #bfbfbf;
+}
+
+/* 空通知 */
+.empty-notification {
+  padding: 32px;
+  text-align: center;
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+/* 通知底部 */
+.notification-footer {
+  padding: 8px;
+  text-align: center;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* 帮助下拉菜单 */
+.help-dropdown-menu {
+  min-width: 140px;
+}
+
+.help-dropdown-menu .ant-menu-item {
+  height: 36px;
+  line-height: 36px;
+}
+
+/* Badge样式覆盖 */
+.ant-badge-count {
+  height: 16px;
+  min-width: 16px;
+  line-height: 16px;
+  font-size: 10px;
+  padding: 0 4px;
+  right: -6px;
+  top: -6px;
+}
+
+/* 滚动条样式 */
+.notification-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-menu::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+.notification-menu::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 3px;
+}
+
+.notification-menu::-webkit-scrollbar-thumb:hover {
+  background: #8c8c8c;
+}

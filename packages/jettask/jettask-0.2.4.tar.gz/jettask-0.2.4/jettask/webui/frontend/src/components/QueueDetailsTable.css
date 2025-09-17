@@ -1,0 +1,65 @@
+/* 队列详情表格的紧凑样式 */
+
+/* 减少单元格内边距 */
+.compact-table .ant-table-cell {
+  padding: 4px 8px !important;
+}
+
+/* 减少表头内边距 */
+.compact-table .ant-table-thead .ant-table-cell {
+  padding: 6px 8px !important;
+  background-color: #fafafa;
+}
+
+/* 减少分页器的边距 */
+.compact-table .ant-pagination {
+  margin: 8px 0 !important;
+}
+
+/* 优化标签样式 */
+.compact-table .ant-tag {
+  margin: 0;
+  padding: 0 6px;
+  line-height: 18px;
+  font-size: 12px;
+}
+
+/* 鼠标悬停行高亮 */
+.compact-table .ant-table-tbody > tr:hover > td {
+  background: #f5f5f5;
+}
+
+/* 移除不必要的边框 */
+.compact-table .ant-table {
+  border: none;
+}
+
+/* Summary行样式 */
+.compact-table .ant-table-summary {
+  background: #f0f0f0;
+}
+
+.compact-table .ant-table-summary .ant-table-cell {
+  font-weight: 600;
+  background: #f0f0f0;
+}
+
+/* 减少行高 */
+.compact-table .ant-table-tbody > tr {
+  height: 36px;
+}
+
+/* 优化滚动条样式 */
+.compact-table .ant-table-body::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.compact-table .ant-table-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.compact-table .ant-table-body::-webkit-scrollbar-track {
+  background-color: transparent;
+}

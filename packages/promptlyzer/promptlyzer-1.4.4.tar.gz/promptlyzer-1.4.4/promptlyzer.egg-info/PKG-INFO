@@ -1,0 +1,180 @@
+Metadata-Version: 2.4
+Name: promptlyzer
+Version: 1.4.4
+Summary: Official Python SDK for Promptlyzer - Smart prompt management and multi-provider LLM inference optimization
+Home-page: https://promptlyzer.com
+Author: Promptlyzer
+Author-email: contact@promptlyzer.com
+Project-URL: Homepage, https://promptlyzer.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: requests>=2.31.0
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: anthropic>=0.15.0
+Requires-Dist: nest-asyncio>=1.5.6
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Promptlyzer Python Client
+
+Cut LLM costs by 70% while improving quality - automatically.
+
+## What is Promptlyzer?
+
+Promptlyzer is an intelligent LLM gateway that automatically optimizes your prompts and model selection. Use any LLM provider through one SDK, and watch your system get better and cheaper over time.
+
+## Installation
+
+```bash
+pip install promptlyzer
+```
+
+## Quick Start
+
+```python
+from promptlyzer import PromptlyzerClient
+
+# Initialize client
+client = PromptlyzerClient(api_key="pk_live_YOUR_API_KEY")
+
+# Configure your LLM provider
+client.configure_inference_provider("openai", "sk-...")
+
+# Start using immediately
+response = client.inference.infer(
+    prompt="Explain quantum computing",
+    model="gpt-3.5-turbo"
+)
+
+print(f"Response: {response.content}")
+print(f"Cost: ${response.metrics.cost:.4f}")
+```
+
+## How It Works
+
+Promptlyzer follows a simple three-step cycle to continuously improve your AI system:
+
+```
+┌─────────────┐     ┌──────────────┐     ┌──────────────┐
+│  INFERENCE  │ --> │  COLLECTION  │ --> │ OPTIMIZATION │
+│             │     │              │     │              │
+│ Any LLM API │     │ Auto-batched │     │ Find best    │
+│ One syntax  │     │ Every 100    │     │ prompt+model │
+└─────────────┘     └──────────────┘     └──────────────┘
+```
+
+## Quick Optimization Example
+
+```python
+# Create dataset
+dataset = {
+    "data": [
+        {"question": "What is 2+2?", "answer": "4"},
+        {"question": "Capital of France?", "answer": "Paris"},
+        # Add more examples...
+    ]
+}
+
+# Run optimization
+experiment = client.optimization.create(
+    name="My First Optimization",
+    dataset="dataset.json",
+    system_message="You are a helpful assistant",
+    models=["gpt-3.5-turbo", "gpt-4o", "claude-3-haiku"],
+    project_id="my-project"
+)
+
+# Get results
+result = client.optimization.wait_for_result(experiment['experiment_id'])
+print(f"Best model: {result['best_model']}")
+print(f"Best prompt: {result['best_prompt']}")
+```
+
+## Core Features
+
+- **Multi-Provider Support**: OpenAI, Anthropic, Together AI, SiliconFlow
+- **Automatic Optimization**: Find the best prompt-model combination
+- **Production Data Collection**: Build datasets from real usage
+- **Cost Tracking**: Monitor and optimize AI spending
+- **Prompt Management**: Version control for prompts across environments
+
+## Supported Models
+
+- **OpenAI**: `gpt-4o` (vision ✓), `gpt-4o-mini`, `gpt-3.5-turbo`
+- **Anthropic**: `claude-3-5-sonnet` (vision ✓), `claude-3-haiku`, `claude-3-opus`
+- **Together AI**: `llama-3.3-70b`, `qwen-2.5-72b`, `deepseek-v3`, `mixtral-8x7b`
+- **SiliconFlow**: `deepseek-v3`, `qwen2.5-72b`, `glm-4.5`, `deepseek-r1`, `glm-4.5v` (vision ✓), and more
+
+## Expected Results
+
+Based on real customer data:
+
+```
+Week 1:
+- Integration time: 5 minutes
+- Immediate cost reduction: 70%
+- No code refactoring needed
+
+Month 1:
+- Data collected: 10,000+ interactions
+- First optimization run
+- Additional 20% cost reduction
+- 15% quality improvement
+
+Month 3:
+- Total cost reduction: 85%
+- Response time: 2.3s → 0.9s
+- Quality score: 7.1 → 8.7
+- Monthly savings: $12,000+
+```
+
+## Documentation
+
+📖 **[Complete Documentation](DOCUMENTATION.md)**
+
+## Configuration
+
+```bash
+# Required
+export PROMPTLYZER_API_KEY="pk_live_your_api_key"
+
+# Optional LLM providers
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+export TOGETHER_API_KEY="sk-..."
+export SILICONFLOW_API_KEY="sk-..."
+```
+
+## Requirements
+
+- Python 3.7+
+- Promptlyzer API key ([Get free trial](https://promptlyzer.com))
+
+## Support
+
+- Email: contact@promptlyzer.com
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.

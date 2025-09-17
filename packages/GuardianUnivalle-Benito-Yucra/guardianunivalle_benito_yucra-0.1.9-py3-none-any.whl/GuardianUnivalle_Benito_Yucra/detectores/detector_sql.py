@@ -1,0 +1,190 @@
+import re
+import json
+import time
+import logging
+from typing import Tuple
+from django.http import JsonResponse
+from django.utils.deprecation import MiddlewareMixin
+from django.conf import settings
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+
+# ---------- Configuración de logging ----------
+logger = logging.getLogger("sqlidefense")
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()  # Por consola; en producción puede ser FileHandler
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+# ---------- Patrones de ataques SQL ----------
+PATTERNS = [
+    (
+        re.compile(r"\bunion\b\s+(all\s+)?\bselect\b", re.I),
+        "Intento de UNION SELECT detectado",
+    ),
+    (
+        re.compile(r"\bselect\b.*\bfrom\b.*\bwhere\b.*\b(or|and)\b.*=", re.I),
+        "Intento de SELECT con OR/AND detectado",
+    ),
+    (
+        re.compile(r"\b(or|and)\s+\d+\s*=\s*\d+", re.I),
+        "Intento de OR/AND 1=1 detectado",
+    ),
+    (
+        re.compile(r"\b(drop|truncate|delete|insert|update)\b", re.I),
+        "Intento de manipulación de tabla detectado",
+    ),
+    (
+        re.compile(r"(--|#|;)", re.I),
+        "Comentario o terminador de sentencia sospechoso detectado",
+    ),
+    (re.compile(r"exec\s*\(", re.I), "Intento de ejecución de procedimiento detectado"),
+]
+
+# ---------- Bloqueo temporal por IP ----------
+TEMP_BLOCK = {}  # {ip: timestamp}
+BLOCK_DURATION = 30  # segundos
+
+# ---------- Configuración para bypass ----------
+BYPASS_MAX_AGE = getattr(settings, "SQLI_BYPASS_MAX_AGE", 30)  # segundos
+BYPASS_HEADER = "HTTP_X_SQLI_BYPASS"
+
+# --- JWT soporte (si simplejwt está instalado) ---
+try:
+    from rest_framework_simplejwt.backends import TokenBackend
+
+    SIMPLEJWT_AVAILABLE = True
+except Exception:
+    SIMPLEJWT_AVAILABLE = False
+
+
+# ---------- Helpers ----------
+def extract_payload_text(request) -> str:
+    """Extrae todo el contenido que podría contener inyecciones"""
+    parts = []
+
+    # Query params
+    if request.META.get("QUERY_STRING"):
+        parts.append(request.META.get("QUERY_STRING"))
+
+    # Body
+    try:
+        content_type = request.META.get("CONTENT_TYPE", "")
+        if "application/json" in content_type:
+            body_json = json.loads(request.body.decode("utf-8") or "{}")
+            parts.append(json.dumps(body_json))
+        else:
+            parts.append(request.body.decode("utf-8", errors="ignore"))
+    except Exception:
+        pass
+
+    # Headers
+    parts.append(request.META.get("HTTP_USER_AGENT", ""))
+    parts.append(request.META.get("HTTP_REFERER", ""))
+
+    return " ".join([p for p in parts if p])
+
+
+def detect_sqli_text(text: str) -> Tuple[bool, list]:
+    """Detecta ataques SQL en el texto"""
+    matches = []
+    for patt, message in PATTERNS:
+        if patt.search(text):
+            matches.append(message)
+    return (len(matches) > 0, matches)
+
+
+def get_client_ip(request):
+    """Obtiene la IP del cliente"""
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(",")[0].strip()
+    else:
+        ip = request.META.get("REMOTE_ADDR", "0.0.0.0")
+    return ip
+
+
+def is_valid_jwt(request) -> bool:
+    """Valida si la petición trae un JWT válido en Authorization: Bearer <token>"""
+    if not SIMPLEJWT_AVAILABLE:
+        return False
+    auth = request.META.get("HTTP_AUTHORIZATION", "")
+    if not auth or not auth.startswith("Bearer "):
+        return False
+    token = auth.split(" ", 1)[1].strip()
+    try:
+        tb = TokenBackend(
+            algorithm=getattr(settings, "SIMPLE_JWT", {}).get("ALGORITHM", "HS256"),
+            signing_key=getattr(settings, "SIMPLE_JWT", {}).get(
+                "SIGNING_KEY", settings.SECRET_KEY
+            ),
+        )
+        tb.decode(token, verify=True)
+        return True
+    except Exception:
+        return False
+
+
+def is_valid_signed_bypass(request) -> bool:
+    """Valida si la petición trae un token firmado válido y no expirado"""
+    signed = request.META.get(BYPASS_HEADER, "")
+    if not signed:
+        return False
+    signer = TimestampSigner(settings.SECRET_KEY)
+    try:
+        signer.unsign(signed, max_age=BYPASS_MAX_AGE)
+        return True
+    except SignatureExpired:
+        logger.info("Bypass token expirado")
+        return False
+    except BadSignature:
+        logger.info("Bypass token inválido")
+        return False
+
+
+# ---------- Middleware ----------
+class SQLIDefenseStrongMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        client_ip = get_client_ip(request)
+
+        # Revisa si la IP está temporalmente bloqueada
+        if client_ip in TEMP_BLOCK:
+            if time.time() - TEMP_BLOCK[client_ip] < BLOCK_DURATION:
+                logger.warning(f"IP bloqueada temporalmente: {client_ip}")
+                return JsonResponse(
+                    {
+                        "detail": "Acceso temporalmente bloqueado por actividad sospechosa",
+                        "alerts": ["IP bloqueada temporalmente"],
+                    },
+                    status=403,
+                )
+            else:
+                del TEMP_BLOCK[client_ip]
+
+        # --- Nuevo: bypass por JWT válido o token firmado válido ---
+        if is_valid_jwt(request):
+            return None
+        if is_valid_signed_bypass(request):
+            return None
+
+        # --- Detección de SQLi ---
+        text = extract_payload_text(request)
+        if not text:
+            return None
+
+        flagged, matches = detect_sqli_text(text)
+        if flagged:
+            # Bloquea temporalmente la IP
+            TEMP_BLOCK[client_ip] = time.time()
+            logger.warning(
+                f"Intento de ataque detectado desde IP: {client_ip}, detalles: {matches}, payload: {text}"
+            )
+            return JsonResponse(
+                {
+                    "detail": "Request bloqueado: posible intento de inyección SQL detectado",
+                    "alerts": matches,
+                },
+                status=403,
+            )
+
+        return None

@@ -1,0 +1,61 @@
+[project]
+name = "imgsearch"
+version = "0.2.1"
+description = "ImgSearch is a lightweight image search engine that supports searching images by image."
+readme = "README.md"
+authors = [
+    { name = "Seamile", email = "lanhuermao@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "bidict>=0.23.1",
+    "hnswlib>=0.8.0",
+    "msgpack>=1.1.1",
+    "pillow>=11.3.0",
+    "psutil>=7.0.0",
+    "pyro5>=5.15",
+    # NumPy with version constraints
+    "numpy<2; sys_platform=='darwin' and platform_machine=='x86_64'",
+    "numpy>=1.24.0; sys_platform!='darwin' or platform_machine!='x86_64'",
+    # PyTorch dependencies with platform-specific versions
+    "torch==2.2.2; sys_platform=='darwin' and platform_machine=='x86_64'",
+    "torch>=2.8.0; sys_platform!='darwin' or platform_machine!='x86_64'",
+    "torchvision>=0.17.2", # dependi: disable-check
+    # TinyCLIP dependencies
+    "ftfy>=6.3.1",
+    "regex>=2025.9.1",
+    "tqdm>=4.67.1",
+    "huggingface-hub>=0.35.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipython>=9.5.0",
+    "pytest>=8.4.2",
+]
+
+[project.scripts]
+isearch = "imgsearch.client:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["imgsearch*", "tinyclip*"]
+
+[tool.setuptools.package-data]
+"tinyclip" = ["*.gz", "model_configs/*.json"]
+
+[build-system]
+requires = ["setuptools>=60.0.0", "wheel"]
+build-backend = "setuptools.build_meta"

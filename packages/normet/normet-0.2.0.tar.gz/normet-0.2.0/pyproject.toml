@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "normet"
+version = "0.2.0"
+description = "Normalisation, Decomposition, and Counterfactual Modelling for Environmental Time-series"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+authors = [{ name = "Congbo Song", email = "congbo.song@ncas.ac.uk" }]
+keywords = [
+  "environmental-data",
+  "time series",
+  "deweathering",
+  "normalisation",
+  "counterfactual",
+  "synthetic control",
+  "causal inference",
+  "air quality",
+  "air pollution"
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Atmospheric Science"
+]
+
+# Core dependencies
+dependencies = [
+    "numpy>=1.22",
+    "pandas>=1.5",
+    "scipy>=1.10",
+    "joblib>=1.2",
+    "matplotlib>=3.6"
+]
+
+# Optional dependencies: user can choose one AutoML backend
+[project.optional-dependencies]
+flaml = ["flaml>=2.1"]
+h2o = ["h2o>=3.44"]
+all = ["flaml>=2.1", "h2o>=3.44"]
+
+[project.urls]
+Homepage = "https://github.com/dsncas/normet"
+Issues = "https://github.com/dsncas/normet/issues"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["normet*"]
+
+# Include non-code files (README, LICENSE) in sdists/wheels
+[tool.setuptools.package-data]
+"normet" = ["py.typed"]
+
+# Optional: exclude heavy assets if you add any later
+[tool.setuptools.exclude-package-data]
+"normet" = ["*.ipynb_checkpoints*", "*.tmp"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+# testpaths = ["tests"]
+
+# ----------------------
+# Developer tools
+# ----------------------
+
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["normet"]

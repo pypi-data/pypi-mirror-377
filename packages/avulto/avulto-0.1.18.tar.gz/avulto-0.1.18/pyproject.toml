@@ -1,0 +1,33 @@
+[project]
+name = "avulto"
+requires-python = ">=3.10"
+version = "0.1.18"
+authors = [
+    {name = "Warriorstar Orion", email = "orion@snowfrost.garden"}
+]
+description = "A Python API for working with BYOND projects."
+
+[project.urls]
+repository = "https://github.com/warriorstar-orion/avulto"
+
+[build-system]
+requires = ["maturin>=1.8,<2.0"]
+build-backend = "maturin"
+
+[tool.cibuildwheel]
+build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+archs = "AMD64"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+
+[tool.uv.sources]
+avulto = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "avulto",
+    "ipython>=8.37.0",
+    "pytest>=8.4.1",
+]

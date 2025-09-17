@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: funminks
+Version: 0.1.0
+Summary: FunMinks — utilities around LLM endpoints and mink population tools.
+Author-email: Your Name <garcilazo.uriel@gmail.com>
+License: LICENSE
+Project-URL: Homepage, https://ugarcil.github.io/GeneticAlgoLLM/
+Project-URL: Repository, https://github.com/UGarCil/GeneticAlgoLLM
+Project-URL: Bug Tracker, https://github.com/UGarCil/GeneticAlgoLLM/issues
+Keywords: llm,transformers,pytorch,nlp,pandas
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: transformers
+Requires-Dist: pandas
+Requires-Dist: huggingface_hub
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Provides-Extra: torch
+Requires-Dist: torch<3,>=2.1; extra == "torch"
+Dynamic: license-file

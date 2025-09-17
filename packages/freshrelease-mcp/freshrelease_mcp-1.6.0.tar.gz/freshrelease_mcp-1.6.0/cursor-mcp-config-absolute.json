@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "freshrelease-mcp": {
+      "command": "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "args": ["-m", "freshrelease_mcp.server"],
+      "env": {
+        "FRESHRELEASE_API_KEY": "your_api_key_here",
+        "FRESHRELEASE_DOMAIN": "your_domain.freshrelease.io",
+        "FRESHRELEASE_PROJECT_KEY": "your_default_project_key_here"
+      }
+    }
+  }
+}
+
+
+

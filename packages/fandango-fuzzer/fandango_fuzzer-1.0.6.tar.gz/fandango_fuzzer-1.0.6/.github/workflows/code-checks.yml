@@ -1,0 +1,65 @@
+name: Code Checks
+
+on:
+  pull_request:
+  workflow_dispatch: # Enables manual execution from the Actions tab
+
+jobs:
+  black-check:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [ 3.11 ]  # Python version to run
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install black
+        run: |
+          pip install black
+
+      - name: Check formatting with black
+        run: |
+          black --check .
+
+  mypy-check:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [ 3.11 ]  # Python version to run
+
+    steps:
+      # Step 1: Checkout the repository's code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      # Step 3: Install mypy
+      - name: Install dependencies
+        run: |
+           pip install mypy -e ".[development,book]"
+        env:
+          FANDANGO_SKIP_CPP_PARSER: 1
+
+      # Step 4: Run mypy
+      - name: Run mypy
+        shell: bash
+        run: |
+          mypy .

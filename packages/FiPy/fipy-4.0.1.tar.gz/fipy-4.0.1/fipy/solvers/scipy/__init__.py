@@ -1,0 +1,19 @@
+
+import logging
+
+_log = logging.getLogger(__name__)
+
+from .preconditioners import *
+
+from .linearCGSSolver import *
+from .linearGMRESSolver import *
+from .linearBicgstabSolver import *
+from .linearLUSolver import *
+from .linearCGSolver import *
+
+from . import scipyConvergence
+
+DefaultSolver = LinearLUSolver
+DefaultAsymmetricSolver = LinearLUSolver
+DummySolver = LinearGMRESSolver
+GeneralSolver = LinearLUSolver

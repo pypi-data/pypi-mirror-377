@@ -1,0 +1,15 @@
+name: fipy
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python >=3.6
+  - numpy
+  - scipy
+  - gmsh
+  - mpi4py
+  - petsc4py
+  - matplotlib
+  - mayavi
+  - pip:
+    - "--editable=../"

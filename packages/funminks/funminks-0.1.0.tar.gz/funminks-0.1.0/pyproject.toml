@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "funminks"
+version = "0.1.0"
+description = "FunMinks — utilities around LLM endpoints and mink population tools."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "LICENSE" }
+
+authors = [
+  { name = "Your Name", email = "garcilazo.uriel@gmail.com" }
+]
+
+dependencies = [
+  "transformers",
+  "pandas",
+  "huggingface_hub"
+]
+
+keywords = ["llm", "transformers", "pytorch", "nlp", "pandas"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://ugarcil.github.io/GeneticAlgoLLM/"
+Repository = "https://github.com/UGarCil/GeneticAlgoLLM"
+"Bug Tracker" = "https://github.com/UGarCil/GeneticAlgoLLM/issues"
+
+[tool.setuptools]
+packages = ["funminks"]
+include-package-data = false
+
+[project.optional-dependencies]
+dev = ["build", "twine", "pytest", "ruff", "black"]
+# If you want users to choose their own Torch build (CPU/GPU),
+# remove torch from [project.dependencies] above and expose:
+torch = ["torch>=2.1,<3"]

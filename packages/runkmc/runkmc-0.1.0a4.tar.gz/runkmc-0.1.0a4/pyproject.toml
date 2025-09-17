@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "cmake"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "runkmc"
+version = "0.1.0a4"
+description = "Kinetic Monte Carlo Simulator for Polymerization"
+authors = [{name = "Devon Callan", email = "devoncallan@ucsb.edu"}]
+requires-python = ">=3.8"
+dependencies = ["numpy", "pandas", "matplotlib", "tqdm"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["runkmc*"]
+
+[tool.setuptools.package-data]
+runkmc = [
+    "../cpp/**/*",
+    "../build/RunKMC",
+    "**/*.txt",
+]
+
+[tool.wheel]
+universal = false
+
+[tool.cibuildwheel]
+before-build = "cmake -B build -S cpp && cmake --build build"

@@ -1,0 +1,216 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "shopify-partners-sdk"
+version = "0.2.0"
+description = "Modern Python GraphQL SDK for Shopify Partners API"
+authors = ["Amit Ray <mail@amitray.dev>"]
+maintainers = ["Amit Ray <mail@amitray.dev>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/amitray007/shopify-partners-sdk"
+repository = "https://github.com/amitray007/shopify-partners-sdk"
+documentation = "https://shopify-partners-sdk.readthedocs.io"
+keywords = [
+    "shopify", 
+    "partners", 
+    "graphql", 
+    "sdk", 
+    "api", 
+    "apps"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries",
+]
+packages = [{include = "shopify_partners_sdk", from = "src"}]
+include = [
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "py.typed",
+]
+exclude = [
+    "tests/",
+    "docs/",
+    "examples/",
+    "*.pyc",
+    "*.pyo",
+    "__pycache__/",
+    ".pytest_cache/",
+    ".mypy_cache/",
+    ".ruff_cache/",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+pydantic = "^2.8.0"
+pydantic-settings = "^2.4.0"
+typing-extensions = "^4.8.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+pytest-cov = "^5.0.0"
+mypy = "^1.11.0"
+ruff = "^0.6.0"
+black = "^24.8.0"
+isort = "^5.13.0"
+pre-commit = "^3.8.0"
+bandit = "^1.7.0"
+safety = "^3.2.0"
+
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/amitray007/shopify-partners-sdk/issues"
+"Changelog" = "https://github.com/amitray007/shopify-partners-sdk/blob/main/CHANGELOG.md"
+"Contributing" = "https://github.com/amitray007/shopify-partners-sdk/blob/main/CONTRIBUTING.md"
+"Funding" = "https://github.com/sponsors/amitray007"
+"Source" = "https://github.com/amitray007/shopify-partners-sdk"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "ARG",  # flake8-unused-arguments
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "PTH",  # flake8-use-pathlib
+    "RET",  # flake8-return
+    "TID",  # flake8-tidy-imports
+    "ICN",  # flake8-import-conventions
+    "PIE",  # flake8-pie
+    "T20",  # flake8-print
+    "PYI",  # flake8-pyi
+    "PT",   # flake8-pytest-style
+    "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
+    "RUF",  # Ruff-specific rules
+]
+ignore = [
+    "E501",   # line too long, handled by black
+    "B008",   # do not perform function calls in argument defaults
+    "B904",   # raise ... from ... for exception chaining
+    "T201",   # print found
+    "T203",   # pprint found
+    "RUF012", # mutable class attributes should be annotated with `typing.ClassVar`
+]
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "docs",
+    "*.egg-info",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]  # allow unused imports and star imports in __init__.py
+"tests/**" = ["ARG", "S", "T201", "T203", "PT011", "PT012"]  # allow unused arguments, security issues, prints, and pytest raises in tests
+"docs/**" = ["T201", "T203"]  # allow prints in documentation
+"examples/**" = ["T201", "T203"]  # allow prints in examples
+"scripts/**" = ["T201", "T203"]  # allow prints in scripts
+
+[tool.ruff.lint.isort]
+known-first-party = ["shopify_partners_sdk"]
+force-sort-within-sections = true
+split-on-trailing-comma = true
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 88
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+extra_checks = true
+show_error_codes = true
+show_column_numbers = true
+color_output = true
+error_summary = true
+pretty = true
+
+# Exclude patterns
+exclude = [
+    "build/",
+    "dist/",
+    "docs/",
+    ".venv/",
+    "venv/",
+]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers --cov=shopify_partners_sdk --cov-report=term-missing --cov-report=html"
+testpaths = ["tests"]
+markers = [
+    "unit: marks tests as unit tests",
+    "integration: marks tests as integration tests",
+    "slow: marks tests as slow running",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

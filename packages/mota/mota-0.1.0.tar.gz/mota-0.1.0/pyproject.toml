@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=75.8.0", "wheel>=0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mota"
+version = "0.1.0"
+description = "A Comprehensive LLM API Interaction Tool"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    {name = "KEJIA", email = "DETONG.KEJI@GMAIL.COM"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["AI", "LLM"]
+dependencies = [
+    "typer~=0.15.1",
+    "typing-extensions~=4.12.2",
+    "edn-format~=0.7.5",
+    "requests~=2.32.3",
+    "python-dotenv~=1.0.1",
+    "anthropic>=0.47.2",
+    "google-generativeai>=0.8.4",
+    "mistralai>=1.5.0",
+    "openai>=1.64.0",
+    "pydantic~=2.10.6",
+    "keyring~=25.6.0",
+    "python-gnupg~=0.5.4",
+    "groq>=0.18.0",
+    "langchain>=0.3.20",
+    "langchain-community>=0.3.19",
+    "langchain-huggingface>=0.1.2",
+    "faiss-cpu>=1.10.0",
+    "sentence-transformers>=3.4.1"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest~=8.3.4",
+    "pytest-cov~=6.0.0",
+    "mock~=5.1.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["test_*.py"]
+
+[project.urls]
+Repository = "https://codeberg.org/wizardelf/mota"
+Documentation = "https://codeberg.org/wizardelf/mota/src/branch/ling/README.md"
+
+[tool.setuptools.packages.find]
+where = ["source"]
+
+[project.scripts]
+mota = "mota.main:cli"

@@ -1,0 +1,226 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop, "fix/**" ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+        include:
+          - python-version: "3.11"
+            pixi-environment: "test-py311"
+          - python-version: "3.12"
+            pixi-environment: "test-py312"
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up pixi
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.54.1
+        cache: true
+    
+    - name: Run unit tests
+      run: pixi run -e ${{ matrix.pixi-environment }} test
+    
+    - name: Run CLI integration tests (direct mode)
+      run: pixi run -e ${{ matrix.pixi-environment }} pytest tests/test_cli_integration_working.py -v --cov=src/tellus/interfaces/cli --cov-append
+      
+    - name: Run CLI integration tests (REST API mode)
+      env:
+        TELLUS_CLI_USE_REST_API: true
+      run: pixi run -e ${{ matrix.pixi-environment }} pytest tests/test_cli_integration_working.py -v --cov=src/tellus/interfaces/cli --cov-append
+      
+    - name: Run working CLI specification tests (direct mode)
+      run: pixi run -e ${{ matrix.pixi-environment }} pytest tests/test_cli_specification.py -v --cov=src/tellus/interfaces/cli --cov-append
+      
+    - name: Run working CLI specification tests (REST API mode)
+      env:
+        TELLUS_CLI_USE_REST_API: true
+      run: pixi run -e ${{ matrix.pixi-environment }} pytest tests/test_cli_specification.py -v --cov=src/tellus/interfaces/cli --cov-append
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v4
+      if: matrix.python-version == '3.11'
+      with:
+        fail_ci_if_error: false
+
+  database-tests:
+    name: Database Integration Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tellus_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up pixi
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.54.1
+        cache: true
+
+    - name: Run database repository tests
+      env:
+        TELLUS_DB_HOST: localhost
+        TELLUS_DB_PORT: 5432
+        TELLUS_DB_NAME: tellus_test
+        TELLUS_DB_USER: postgres
+        TELLUS_DB_PASSWORD: postgres
+        TESTING: true
+      run: pixi run -e test-py311 pytest tests/unit/infrastructure/repositories/ -v --cov=src/tellus/infrastructure/repositories --cov-append
+
+    - name: Test database CLI commands
+      env:
+        TELLUS_DB_HOST: localhost
+        TELLUS_DB_PORT: 5432
+        TELLUS_DB_NAME: tellus_test
+        TELLUS_DB_USER: postgres
+        TELLUS_DB_PASSWORD: postgres
+      run: |
+        # Test database initialization
+        pixi run -e test-py311 python -m tellus.cli.database init --drop-tables
+        # Test database status
+        pixi run -e test-py311 python -m tellus.cli.database status
+
+  lint:
+    name: Linting and Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up pixi  
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.54.1
+        cache: true
+    
+    # Add linting when you have it configured
+    # - name: Run ruff
+    #   run: pixi run ruff check .
+    
+    # - name: Run mypy
+    #   run: pixi run mypy src/
+
+  build-test:
+    name: Test Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Verify build
+      run: python -m twine check dist/*
+
+  docker-build:
+    name: Docker Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Need full git history for version detection
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: tellus:test
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Test Docker image
+      run: |
+        # Test that the image runs and has correct version
+        docker run --rm tellus:test tellus --version
+
+        # Test database status command (should fallback to SQLite)
+        docker run --rm tellus:test tellus database status
+
+        # Test database initialization
+        docker run --rm tellus:test tellus database init
+
+        # Test CLI help
+        docker run --rm tellus:test tellus --help
+
+  docker-compose-test:
+    name: Docker Compose Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Need full git history for version detection
+
+    - name: Test SQLite-only compose
+      run: |
+        # Test SQLite-only deployment
+        docker-compose -f docker-compose.sqlite.yml up -d
+
+        # Wait for service to be ready
+        timeout 30 bash -c 'until curl -f http://localhost:1968/api/v0a7/health; do sleep 2; done'
+
+        # Test API endpoints
+        curl -f http://localhost:1968/api/v0a7/health
+        curl -f http://localhost:1968/api/v0a7/simulations
+
+        # Cleanup
+        docker-compose -f docker-compose.sqlite.yml down
+
+    - name: Test full PostgreSQL compose
+      run: |
+        # Test full PostgreSQL deployment
+        docker-compose up -d
+
+        # Wait for both services to be ready
+        timeout 60 bash -c 'until curl -f http://localhost:1968/api/v0a7/health; do sleep 2; done'
+
+        # Test API endpoints
+        curl -f http://localhost:1968/api/v0a7/health
+        curl -f http://localhost:1968/api/v0a7/simulations
+
+        # Test database connection (should be using PostgreSQL)
+        docker-compose exec -T tellus-api tellus database init --drop-tables
+        docker-compose exec -T tellus-api tellus database status
+
+        # Cleanup
+        docker-compose down
+

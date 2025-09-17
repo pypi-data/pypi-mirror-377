@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: aggarage
+Version: 0.1.0
+Summary: An open-source python package with multiple python tools.
+Author: AG
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numba>=0.57.0
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AgGarage
+
+An open-source python package with multiple python tools.
+
+## Installation
+
+```bash
+pip install aggarage
+```
+
+## Usage
+
+```python
+from aggarage import *
+
+@blitz # Example of a decorator from the package, it optimizes heavy calculations
+def heavy_calc(x):
+    total = 0
+    for i in range(x):
+        total += i ** 2
+    return total
+
+print(heavy_calc(10_000_000))
+
+```
+
+## Timed Variables
+
+AgGarage allows you to store variables over time and retrieve past values.
+
+```python
+from aggarage import create_timed_variable, get_value_of_timed_variable, clear_all_timed_variables
+
+create_timed_variable("score", 100)
+create_timed_variable("score", 200)
+
+print(get_value_of_timed_variable("score"))       # latest value
+print(get_value_of_timed_variable("score", "-1m")) # value 1 minute ago
+
+clear_all_timed_variables()  # removes all timed variable data
+
+```
+
+## Utilities
+
+AgGarage also provides common utility functions:
+
+`fib(n)` – Fibonacci number
+`factorial(n)` / `factorial_recursive(n)` – Factorial
+`is_prime(num)` – Prime check
+`gcd(a, b)` / `lcm(a, b)` – Greatest/common divisors
+`reverse_string(s)` / `is_palindrome(s)` – String utilities
+`sum_of_squares(n)` – Sum of squares
+`printf(text, color="red")` – Colored terminal output
+
+## Notes
+
+Timed variables are stored with second-level precision and automatically prune entries older than 30 minutes.
+The `@blitz` decorator uses JIT compilation if available or threads as a fallback to speed up computations.
+

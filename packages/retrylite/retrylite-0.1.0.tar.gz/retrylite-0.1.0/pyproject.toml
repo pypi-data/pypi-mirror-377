@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "retrylite"
+version = "0.1.0"
+description = "Zero-dependency retry decorator (sync & async)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "M. Andi Saputra", email = "moehandi@gmail.com"}]
+keywords = ["retry", "backoff", "async", "circuit-breaker", "resilience"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/moehandi/retrylite"
+Documentation = "https://github.com/moehandi/retrylite#readme"
+Repository = "https://github.com/moehandi/retrylite.git"
+Changelog = "https://github.com/moehandi/retrylite/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+metrics = ["prometheus-client>=0.19", "opentelemetry-api>=1.20"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/retrylite"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/README.md", "/CHANGELOG.md"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C90", "UP"]
+mccabe = { max-complexity = 15 }
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+exclude = ["tests", "build", "dist"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.4.2"
+pytest-cov = "7.0.0"
+types-requests = "^2.32.4.20250913"
+aiohttp = "^3.12.15"
+pre-commit = "^4.3.0"
+black = "^25.1.0"
+ruff = "^0.13.0"
+mypy = "^1.18.1"
+responses = "^0.25.8"
+pytest-asyncio = "^1.2.0"

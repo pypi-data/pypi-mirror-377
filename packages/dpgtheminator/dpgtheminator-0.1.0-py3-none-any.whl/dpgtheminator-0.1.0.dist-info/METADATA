@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: dpgtheminator
+Version: 0.1.0
+Summary: Add your description here
+Author-email: Zachary Parmley <zachary.parmley@gmail.com>
+Requires-Python: >=3.13
+Requires-Dist: dearpygui>=2.1.0
+Requires-Dist: dpgcontainers>=0.1.8
+Requires-Dist: msgspec>=0.19.0
+Description-Content-Type: text/markdown
+
+### DPGTheminator
+
+*ALPHA* This project is in it's infancy.
+
+Currently, and possibly forever, only supports _colors_.  No other DPG theme
+settings are supported.
+
+```python
+import dpgtheminator
+
+dpgtheminator.load('light').bind()
+```
+
+To customize a theme visually:
+
+```python
+dpgtheminator.load('light').bind().show_gui()
+```
+
+From the gui, you can *save* your customized theme.  Then, once satisfied,
+instead of loading 'light' load your saved path, and omit the .show_gui() call.

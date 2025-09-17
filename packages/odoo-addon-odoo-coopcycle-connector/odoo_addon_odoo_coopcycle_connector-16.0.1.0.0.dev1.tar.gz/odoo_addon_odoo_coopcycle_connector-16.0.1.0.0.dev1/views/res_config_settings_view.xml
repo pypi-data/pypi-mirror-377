@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_res_config_settings_coopcycle" model="ir.ui.view">
+    <field name="name">res.config.settings.coopcycle.connector</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[hasclass('settings')]" position="inside">
+        <div class="app_settings_block" data-string="CoopCycle Connector" string="CoopCycle Connector" icon="/base/static/description/settings.png">
+          <h2>CoopCycle Connector</h2>
+          <div class="row mt16 o_settings_container">
+            <div class="col-12 col-lg-6">
+              <label for="coopcycle_user" class="form-label"/>
+              <field name="coopcycle_user"/>
+
+              <label for="coopcycle_password" class="form-label"/>
+              <field name="coopcycle_password" password="True"/>
+
+              <label for="coopcycle_instance" class="form-label"/>
+              <field name="coopcycle_instance" placeholder="my_company.coopcycle.org"/>
+
+              <label for="coopcycle_sync_max_days" class="form-label"/>
+              <field name="coopcycle_sync_max_days"/>
+
+              <label for="coopcycle_product_id" class="form-label"/>
+              <field name="coopcycle_product_id"/>
+
+              <label for="coopcycle_tax_id" class="form-label" />
+              <field name="coopcycle_tax_id"/>
+            </div>
+          </div>
+        </div>
+      </xpath>
+    </field>
+  </record>
+</odoo>

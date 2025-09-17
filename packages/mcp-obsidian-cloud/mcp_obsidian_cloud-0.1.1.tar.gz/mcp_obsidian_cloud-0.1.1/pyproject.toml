@@ -1,0 +1,17 @@
+[project]
+name            = "mcp-obsidian-cloud"
+version         = "0.1.1"
+description     = "Servidor MCP para a Obsidian Cloud Stack"
+authors         = [{ name = "Guilherme Giorgi", email = "guilherme@ggailabs.com" }]
+readme          = "README.md"
+requires-python = ">=3.9"
+dependencies    = ["requests>=2.31"]
+
+# cria o executável `mcp-obsidian-cloud`
+[project.scripts]
+mcp-obsidian-cloud = "mcp_obsidian_cloud.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+

@@ -1,0 +1,76 @@
+{
+  "id": "healthcare-application",
+  "name": "Healthcare Platform",
+  "description": "Template for healthcare applications with HIPAA compliance, patient data security, and clinical workflows",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "react",
+    "node.js",
+    "postgresql",
+    "hl7-fhir",
+    "encryption",
+    "audit-logging"
+  ],
+  "default_tags": [
+    "healthcare",
+    "hipaa",
+    "patient-data",
+    "clinical-workflows",
+    "security",
+    "interoperability"
+  ],
+  "required_instructions": [
+    "hipaa_compliance",
+    "patient_data_security",
+    "clinical_workflow_design",
+    "audit_trail_implementation",
+    "data_encryption"
+  ],
+  "optional_instructions": [
+    "hl7_fhir_integration",
+    "telemedicine_features",
+    "ai_diagnostic_assistance",
+    "ehr_integration"
+  ],
+  "parameters": {
+    "compliance_level": {
+      "type": "string",
+      "default": "hipaa",
+      "description": "Healthcare compliance requirements",
+      "required": true,
+      "options": ["hipaa", "hitech", "gdpr", "fda_validated"]
+    },
+    "interoperability_standard": {
+      "type": "string",
+      "default": "fhir_r4",
+      "description": "Healthcare interoperability standard",
+      "required": false,
+      "options": ["fhir_r4", "hl7_v2", "cda", "dicom"]
+    },
+    "deployment_environment": {
+      "type": "string",
+      "default": "cloud_compliant",
+      "description": "Deployment environment type",
+      "required": true,
+      "options": ["cloud_compliant", "on_premise", "hybrid"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "hipaa-compliance.md",
+      "operator": "exists",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "healthcare",
+    "complexity": "advanced",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+
+    "tags": ["healthcare", "hipaa", "clinical", "secure"]
+  }
+}

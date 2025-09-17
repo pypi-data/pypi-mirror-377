@@ -1,0 +1,123 @@
+{
+  "instructions": [
+    {
+      "id": "docker_containerization",
+      "version": "1.0.0",
+      "tags": ["docker", "deployment", "containerization", "devops"],
+      "content": "Containerize with multi-stage Docker builds. Include development, testing, and production configurations. Use docker-compose for complex setups.",
+      "metadata": {
+        "category": "devops",
+        "priority": 7,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "ci_cd_pipeline",
+      "version": "1.1.0",
+      "tags": ["ci-cd", "automation", "deployment", "testing", "workflow"],
+      "content": "Implement comprehensive CI/CD pipeline with automated testing, code quality checks, security scanning, and deployment automation. Use tools like GitHub Actions, Jenkins, or GitLab CI for workflow automation. Include automated testing, code quality checks, deployment pipelines, and notification systems. Ensure proper integration with development processes and maintain pipeline reliability.",
+      "metadata": {
+        "category": "devops",
+        "priority": 8,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+
+    {
+      "id": "backup_recovery",
+      "version": "1.0.0",
+      "tags": ["backup", "recovery", "reliability", "data"],
+      "content": "Implement automated backup strategies with regular recovery testing. Document disaster recovery plans and RTO/RPO requirements.",
+      "metadata": {
+        "category": "devops",
+        "priority": 6,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "configuration_management",
+      "version": "1.0.0",
+      "tags": ["devops", "configuration", "automation", "consistency"],
+      "content": "Use configuration management tools (Ansible, Chef, Puppet) for consistent server configuration. Implement configuration drift detection and automated remediation.",
+      "metadata": {
+        "category": "devops",
+        "priority": 7,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "deployment_strategies",
+      "version": "1.0.0",
+      "tags": ["devops", "deployment", "strategies", "rollback"],
+      "content": "Implement deployment strategies like blue-green, canary, or rolling deployments. Ensure zero-downtime deployments with proper health checks and rollback mechanisms.",
+      "metadata": {
+        "category": "devops",
+        "priority": 8,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+
+    {
+      "id": "intelligent_ci_cd",
+      "version": "1.0.0",
+      "tags": ["devops", "ci-cd", "testing", "automation", "optimization"],
+      "content": "Enhance CI/CD with intelligent test selection based on code changes and historical data. Implement predictive failure analysis to identify potential build/deployment failures before they occur. Optimize pipeline efficiency while maintaining quality.",
+      "metadata": {
+        "category": "devops",
+        "priority": 8,
+        "author": "Research Integration",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "vulnerability_management",
+      "version": "1.1.0",
+      "tags": ["devops", "security", "vulnerability", "scanning", "prevention", "automation", "ci-cd"],
+      "content": "Integrate automated vulnerability scanning throughout the CI/CD pipeline and shift security left with continuous vulnerability scanning in the DevOps cycle. Use tools like Snyk, OWASP ZAP, or Bandit for dependency and code scanning. Move from reactive patching to proactive risk identification before production deployment. Scan application code, IaC templates, container images, and dependencies for security risks. Address high and critical vulnerabilities immediately and ensure no vulnerable code reaches production.",
+      "metadata": {
+        "category": "devops",
+        "priority": 9,
+        "author": "AgentSpec Consolidated",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-12-15T00:00:00Z"
+      }
+    },
+    {
+      "id": "asset_versioning",
+      "version": "1.0.0",
+      "tags": ["devops", "versioning", "models", "datasets", "traceability"],
+      "content": "Extend version control beyond source code to include models, datasets, and configurations. Ensure full traceability for rapid issue identification and enable quick rollback to known-good versions. Essential for maintaining system stability and reliability.",
+      "metadata": {
+        "category": "devops",
+        "priority": 8,
+        "author": "Research Integration",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "git_hooks",
+      "version": "1.0.0",
+      "tags": ["devops", "git", "hooks", "validation", "automation", "quality"],
+      "content": "Implement extensive pre-commit and pre-push hooks to ensure no broken code reaches the repository. Pre-commit hooks should run linting, formatting, security checks, and unit tests. Pre-push hooks should execute the full test suite, build verification, and integration tests. Configure hooks to be fast but comprehensive, preventing any code that doesn't meet quality standards from being committed or pushed.",
+      "metadata": {
+        "category": "devops",
+        "priority": 9,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+}

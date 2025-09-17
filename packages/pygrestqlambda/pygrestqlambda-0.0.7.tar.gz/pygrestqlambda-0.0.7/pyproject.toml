@@ -1,0 +1,41 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project]
+name = "pygrestqlambda"
+version = "0.0.7"
+description = "PostgreSQL REST API framework for AWS Lambda functions"
+readme = "README.md"
+requires-python = ">=3.11"
+
+authors = [{ name = "Voquis Limited", email = "opensource@voquis.com" }]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "aws-xray-sdk",
+  "boto3"
+]
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "docker",
+  "httpx",
+  "psycopg[binary]",
+  "pylint",
+  "pytest",
+  "pytest-cov",
+  "pytest-xdist",
+  "ruff",
+  "twine"
+]
+
+[project.urls]
+Homepage = "https://github.com/mesogate/pygrestqlambda"
+Issues = "https://github.com/mesogate/pygrestqlambda/issues"

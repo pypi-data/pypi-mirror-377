@@ -1,0 +1,446 @@
+# This file makes the src directory a Python package
+
+import os
+import shutil
+import asyncio
+from concurrent.futures import ProcessPoolExecutor
+from functools import wraps
+from .verifier import verify as verify
+import subprocess
+from pathlib import Path
+from .post_install import main as post_install_main
+from .proof_generator import generate_proof
+import json
+import time
+
+
+_dependencies_checked = False
+
+
+def ensure_dependencies():
+    """Ensure bb and nargo are installed before running package functions."""
+    global _dependencies_checked
+
+    if (
+        _dependencies_checked
+        or os.environ.get("CI")
+        or os.environ.get("POP_SKIP_INSTALL")
+    ):
+        return
+
+    missing_deps = []
+    if not shutil.which("bb"):
+        missing_deps.append("bb")
+    if not shutil.which("nargo"):
+        missing_deps.append("nargo")
+
+    if missing_deps:
+        print(f"Installing required dependencies: {', '.join(missing_deps)}...")
+        print("This may take a few minutes on first run.")
+
+        try:
+            post_install_main()
+            print("Dependencies installed successfully!")
+        except Exception as e:
+            print(f"Warning: Failed to install dependencies: {e}")
+
+    _dependencies_checked = True
+
+
+def requires_dependencies(func):
+    """Decorator to ensure dependencies are installed before running a function."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        ensure_dependencies()
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def _prove_worker(
+    miner_data,
+    daily_pnl=None,
+    hotkey=None,
+    verbose=False,
+    annual_risk_free_percentage=4.19,
+    days_in_year_crypto=365,
+    weighted_average_decay_max=1.0,
+    weighted_average_decay_min=0.15,
+    weighted_average_decay_rate=0.075,
+    omega_loss_minimum=0.01,
+    sharpe_stddev_minimum=0.01,
+    sortino_downside_minimum=0.01,
+    statistical_confidence_minimum_n_ceil=60,
+    annual_risk_free_decimal=0.0419,
+    drawdown_maxvalue_percentage=10,
+    use_weighting=False,
+    bypass_confidence=False,
+    daily_checkpoints=2,
+    account_size=None,
+    omega_noconfidence_value=0.0,
+    sharpe_noconfidence_value=-100,
+    sortino_noconfidence_value=-100,
+    calmar_noconfidence_value=-100,
+    statistical_confidence_noconfidence_value=-100,
+):
+    """
+    Worker function to run proof generation in a separate process.
+    """
+    try:
+        result = generate_proof(
+            data=miner_data,
+            daily_pnl=daily_pnl,
+            miner_hotkey=hotkey,
+            verbose=verbose,
+            annual_risk_free_percentage=annual_risk_free_percentage,
+            days_in_year_crypto=days_in_year_crypto,
+            weighted_average_decay_max=weighted_average_decay_max,
+            weighted_average_decay_min=weighted_average_decay_min,
+            weighted_average_decay_rate=weighted_average_decay_rate,
+            omega_loss_minimum=omega_loss_minimum,
+            sharpe_stddev_minimum=sharpe_stddev_minimum,
+            sortino_downside_minimum=sortino_downside_minimum,
+            statistical_confidence_minimum_n_ceil=statistical_confidence_minimum_n_ceil,
+            annual_risk_free_decimal=annual_risk_free_decimal,
+            drawdown_maxvalue_percentage=drawdown_maxvalue_percentage,
+            use_weighting=use_weighting,
+            bypass_confidence=bypass_confidence,
+            daily_checkpoints=daily_checkpoints,
+            account_size=account_size,
+            omega_noconfidence_value=omega_noconfidence_value,
+            sharpe_noconfidence_value=sharpe_noconfidence_value,
+            sortino_noconfidence_value=sortino_noconfidence_value,
+            calmar_noconfidence_value=calmar_noconfidence_value,
+            statistical_confidence_noconfidence_value=statistical_confidence_noconfidence_value,
+        )
+
+        proof_results = result.get("proof_results", {})
+        proof_generated = proof_results.get("proof_generated", False)
+
+        if proof_generated:
+            status = "success"
+        else:
+            status = "proof_generation_failed"
+
+        return {
+            "status": status,
+            "portfolio_metrics": result.get("portfolio_metrics", {}),
+            "merkle_roots": result.get("merkle_roots", {}),
+            "data_summary": result.get("data_summary", {}),
+            "proof_results": proof_results,
+            "proof_generated": proof_generated,
+        }
+
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "proof_generated": False,
+        }
+
+
+@requires_dependencies
+async def prove(
+    miner_data,
+    hotkey,
+    verbose=False,
+    annual_risk_free_percentage=4.19,
+    use_weighting=False,
+    bypass_confidence=False,
+    daily_checkpoints=2,
+):
+    """
+    Generate zero-knowledge proof for miner portfolio data asynchronously.
+
+    Args:
+        miner_data: Dictionary containing perf_ledgers and positions for the miner
+        hotkey: Miner's hotkey
+        verbose: Boolean to control logging verbosity
+
+    Returns:
+        Dictionary with proof results including status, portfolio_metrics, etc.
+    """
+    loop = asyncio.get_event_loop()
+
+    with ProcessPoolExecutor(max_workers=1) as executor:
+        try:
+            result = await loop.run_in_executor(
+                executor,
+                _prove_worker,
+                miner_data,
+                hotkey,
+                verbose,
+                annual_risk_free_percentage,
+                use_weighting,
+                bypass_confidence,
+                daily_checkpoints,
+            )
+            return result
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": str(e),
+                "proof_generated": False,
+            }
+
+
+def save_instant_mdd_results(results, hotkey):
+    """
+    Save instant MDD proof results to disk in ~/.pop/instant_mdd/ directory.
+
+    Args:
+        results: The instant MDD results dictionary to save
+        hotkey: The miner's hotkey for filename
+    """
+    try:
+        pop_dir = Path.home() / ".pop" / "instant_mdd"
+        pop_dir.mkdir(parents=True, exist_ok=True)
+
+        timestamp = int(time.time())
+        filename = f"{hotkey}_{timestamp}.json"
+        filepath = pop_dir / filename
+
+        with open(filepath, "w") as f:
+            json.dump(results, f, indent=2, default=str)
+
+        print(f"Instant MDD results saved to {filepath}")
+        return str(filepath)
+
+    except Exception as e:
+        print(f"Error saving instant MDD results: {str(e)}")
+        return None
+
+
+def get_latest_instant_mdd_for_miner(hotkey):
+    """
+    Get the latest instant MDD result for a specific miner.
+
+    Args:
+        hotkey: The miner's hotkey
+
+    Returns:
+        dict with latest instant MDD result, or None if not found
+    """
+    try:
+        pop_dir = Path.home() / ".pop" / "instant_mdd"
+        if not pop_dir.exists():
+            return None
+
+        matching_files = list(pop_dir.glob(f"{hotkey}_*.json"))
+        if not matching_files:
+            return None
+
+        latest_file = max(matching_files, key=lambda f: f.stat().st_mtime)
+
+        with open(latest_file, "r") as f:
+            results = json.load(f)
+
+        return results
+
+    except Exception as e:
+        print(f"Error getting latest instant MDD for {hotkey}: {str(e)}")
+        return None
+
+
+def get_all_instant_mdd_for_miner(hotkey):
+    """
+    Get all instant MDD results for a specific miner.
+
+    Args:
+        hotkey: The miner's hotkey
+
+    Returns:
+        list of instant MDD result dictionaries sorted by timestamp (newest first)
+    """
+    try:
+        pop_dir = Path.home() / ".pop" / "instant_mdd"
+        if not pop_dir.exists():
+            return []
+
+        matching_files = list(pop_dir.glob(f"{hotkey}_*.json"))
+        if not matching_files:
+            return []
+
+        results = []
+        for file_path in matching_files:
+            try:
+                with open(file_path, "r") as f:
+                    result = json.load(f)
+                    result["_filepath"] = str(file_path)
+                    result["_timestamp"] = int(file_path.stem.split("_")[1])
+                    results.append(result)
+            except Exception as e:
+                print(f"Error reading {file_path}: {str(e)}")
+                continue
+
+        return sorted(results, key=lambda x: x["_timestamp"], reverse=True)
+
+    except Exception as e:
+        print(f"Error getting all instant MDD for {hotkey}: {str(e)}")
+        return []
+
+
+@requires_dependencies
+def prove_instant_mdd(hotkey, ledger_element):
+    """
+    Generate zero-knowledge proof for instant maximum drawdown calculation.
+
+    Args:
+        hotkey: Miner's hotkey for identification
+        ledger_element: PerfLedger object containing checkpoint data
+
+    Returns:
+        Dictionary with proof results including drawdown calculation
+    """
+
+    SCALE = 10_000_000
+    MAX_ARRAY_SIZE = 1024
+
+    # Extract MDD values from ledger checkpoints
+    if (
+        not ledger_element
+        or not hasattr(ledger_element, "cps")
+        or len(ledger_element.cps) == 0
+    ):
+        return {
+            "status": "no_data",
+            "hotkey": hotkey,
+            "exceeds_threshold": False,
+            "drawdown_percentage": 0,
+        }
+
+    # Convert checkpoint MDD values to scaled integers
+    mdd_values = []
+    for cp in ledger_element.cps:
+        if hasattr(cp, "mdd"):
+            scaled_mdd = int(cp.mdd * SCALE)
+            mdd_values.append(scaled_mdd)
+
+    # Pad array to MAX_ARRAY_SIZE
+    while len(mdd_values) < MAX_ARRAY_SIZE:
+        mdd_values.append(0)
+
+    n_checkpoints = min(len(ledger_element.cps), MAX_ARRAY_SIZE)
+
+    # 10% threshold (from ValiConfig.DRAWDOWN_MAXVALUE_PERCENTAGE)
+    max_drawdown_threshold = 10  # 10% as integer
+
+    try:
+        # Get the instant_mdd circuit path
+        circuit_path = Path(__file__).parent.parent / "instant_mdd"
+
+        # Create Prover.toml with input data
+        prover_toml_path = circuit_path / "Prover.toml"
+        with open(prover_toml_path, "w") as f:
+            f.write(f'hotkey = "{hotkey}"\n')
+            f.write(f"mdd_values = {mdd_values}\n")
+            f.write(f'n_checkpoints = "{n_checkpoints}"\n')
+            f.write(f'max_drawdown_threshold = "{max_drawdown_threshold}"\n')
+
+        # Execute nargo
+        result = subprocess.run(
+            ["nargo", "execute"], capture_output=True, text=True, cwd=str(circuit_path)
+        )
+
+        if result.returncode != 0:
+            return {
+                "status": "execution_failed",
+                "hotkey": hotkey,
+                "error": result.stderr,
+            }
+
+        # Parse output
+        if "Circuit output:" in result.stdout:
+            output_line = result.stdout.split("Circuit output: ")[1].strip()
+
+            # Parse tuple output (exceeds_threshold, drawdown_percentage)
+            if output_line.startswith("(") and output_line.endswith(")"):
+                output_line = output_line[1:-1]  # Remove parentheses
+                parts = output_line.split(", ")
+                if len(parts) == 2:
+                    exceeds_threshold = parts[0].strip() == "true"
+                    drawdown_percentage = int(
+                        parts[1].strip()
+                    )  # Already unscaled from circuit
+
+                    results = {
+                        "status": "success",
+                        "hotkey": hotkey,
+                        "exceeds_threshold": exceeds_threshold,
+                        "drawdown_percentage": drawdown_percentage,
+                        "n_checkpoints": n_checkpoints,
+                    }
+
+                    save_instant_mdd_results(results, hotkey)
+                    return results
+
+        return {"status": "parse_failed", "hotkey": hotkey, "raw_output": result.stdout}
+
+    except Exception as e:
+        return {"status": "error", "hotkey": hotkey, "message": str(e)}
+
+
+def prove_sync(
+    miner_data,
+    daily_pnl=None,
+    hotkey=None,
+    verbose=False,
+    annual_risk_free_percentage=4.19,
+    days_in_year_crypto=365,
+    weighted_average_decay_max=1.0,
+    weighted_average_decay_min=0.15,
+    weighted_average_decay_rate=0.075,
+    omega_loss_minimum=0.01,
+    sharpe_stddev_minimum=0.01,
+    sortino_downside_minimum=0.01,
+    statistical_confidence_minimum_n_ceil=60,
+    annual_risk_free_decimal=0.0419,
+    drawdown_maxvalue_percentage=10,
+    use_weighting=False,
+    bypass_confidence=False,
+    daily_checkpoints=2,
+    account_size=None,
+    omega_noconfidence_value=0.0,
+    sharpe_noconfidence_value=-100,
+    sortino_noconfidence_value=-100,
+    calmar_noconfidence_value=-100,
+    statistical_confidence_noconfidence_value=-100,
+):
+    """
+    Synchronous wrapper for the prove function for backward compatibility.
+
+    Args:
+        miner_data: Dictionary containing perf_ledgers and positions for the miner
+        hotkey: Miner's hotkey
+        verbose: Boolean to control logging verbosity
+
+    Returns:
+        Dictionary with proof results including status, portfolio_metrics, etc.
+    """
+    return _prove_worker(
+        miner_data,
+        daily_pnl=daily_pnl,
+        hotkey=hotkey,
+        verbose=verbose,
+        annual_risk_free_percentage=annual_risk_free_percentage,
+        days_in_year_crypto=days_in_year_crypto,
+        weighted_average_decay_max=weighted_average_decay_max,
+        weighted_average_decay_min=weighted_average_decay_min,
+        weighted_average_decay_rate=weighted_average_decay_rate,
+        omega_loss_minimum=omega_loss_minimum,
+        sharpe_stddev_minimum=sharpe_stddev_minimum,
+        sortino_downside_minimum=sortino_downside_minimum,
+        statistical_confidence_minimum_n_ceil=statistical_confidence_minimum_n_ceil,
+        annual_risk_free_decimal=annual_risk_free_decimal,
+        drawdown_maxvalue_percentage=drawdown_maxvalue_percentage,
+        use_weighting=use_weighting,
+        bypass_confidence=bypass_confidence,
+        daily_checkpoints=daily_checkpoints,
+        account_size=account_size,
+        omega_noconfidence_value=omega_noconfidence_value,
+        sharpe_noconfidence_value=sharpe_noconfidence_value,
+        sortino_noconfidence_value=sortino_noconfidence_value,
+        calmar_noconfidence_value=calmar_noconfidence_value,
+        statistical_confidence_noconfidence_value=statistical_confidence_noconfidence_value,
+    )

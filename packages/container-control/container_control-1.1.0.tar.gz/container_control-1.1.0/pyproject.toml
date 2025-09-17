@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "container-control"
+version = "1.1.0"
+description = "Container Control Core for Showrunner"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.10"
+license = "LicenseRef-Proprietary"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Showrunner Team"},
+]
+keywords = ["containers", "fastapi", "scaffolding", "showrunner"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Framework :: FastAPI",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Systems Administration",
+]
+dependencies = [
+    "fastapi>=0.95",
+    "uvicorn>=0.20",
+    "psutil>=5.9",
+    "ruamel.yaml>=0.17",
+    "pydantic>=1.10",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7",
+    "httpx>=0.24",
+]
+
+[project.scripts]
+container-control-bootstrap = "bootstrap:main"
+
+[project.urls]
+Documentation = "https://github.com/rdwr-taly/container-control#readme"
+Repository = "https://github.com/rdwr-taly/container-control"
+Issues = "https://github.com/rdwr-taly/container-control/issues"
+Changelog = "https://github.com/rdwr-taly/container-control/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+include-package-data = true
+package-dir = {"" = "src"}
+py-modules = ["container_control_core", "app_adapter", "bootstrap"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["container_control*"]
+
+[tool.setuptools.package-data]
+container_control = ["templates/*.example"]

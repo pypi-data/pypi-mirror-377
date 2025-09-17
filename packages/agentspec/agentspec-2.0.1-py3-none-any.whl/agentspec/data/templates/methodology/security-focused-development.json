@@ -1,0 +1,128 @@
+{
+  "id": "security-focused-development",
+  "name": "Secure Enterprise Application",
+  "description": "Template for enterprise applications with security controls, compliance, and audit capabilities",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "ai-security",
+    "guardrails",
+    "compliance",
+    "validation"
+  ],
+  "default_tags": [
+    "ai-security",
+    "guardrails",
+    "compliance",
+    "validation",
+    "enterprise"
+  ],
+  "required_instructions": [
+    "productivity_risk_paradox",
+    "validation_guardrails",
+    "regulatory_compliance_guardrails",
+    "enterprise_guardrail_implementation"
+  ],
+  "optional_instructions": [
+    "alignment_guardrails",
+    "hallucination_guardrails",
+    "appropriateness_guardrails"
+  ],
+  "parameters": {
+    "implementation_level": {
+      "type": "string",
+      "default": "enterprise",
+      "description": "Level of security implementation",
+      "required": true,
+      "options": ["basic", "intermediate", "enterprise", "mission_critical"]
+    },
+    "compliance_requirements": {
+      "type": "array",
+      "default": ["gdpr"],
+      "description": "Regulatory compliance requirements",
+      "required": false,
+      "options": ["gdpr", "hipaa", "sox", "pci_dss", "iso27001"]
+    },
+    "identity_provider": {
+      "type": "string",
+      "default": "azure_ad",
+      "description": "Identity provider for RBAC integration",
+      "required": false,
+      "options": ["azure_ad", "okta", "auth0", "cognito", "custom"]
+    },
+    "monitoring_integration": {
+      "type": "string",
+      "default": "siem",
+      "description": "Monitoring and alerting integration",
+      "required": false,
+      "options": ["siem", "splunk", "datadog", "cloudwatch", "custom"]
+    },
+    "automation_level": {
+      "type": "string",
+      "default": "fully_automated",
+      "description": "Level of guardrail automation",
+      "required": true,
+      "options": ["manual", "semi_automated", "fully_automated"]
+    }
+  },
+  "guardrail_layers": [
+    {
+      "type": "validation",
+      "priority": 10,
+      "description": "Input/output validation and sanitization",
+      "implementation": ["input_sanitization", "output_filtering", "rate_limiting"]
+    },
+    {
+      "type": "regulatory_compliance",
+      "priority": 9,
+      "description": "Privacy and regulatory compliance",
+      "implementation": ["rbac_integration", "pii_redaction", "audit_trails"]
+    },
+    {
+      "type": "alignment",
+      "priority": 8,
+      "description": "Behavior alignment and prompt injection protection",
+      "implementation": ["system_prompts", "injection_filters", "red_teaming"]
+    },
+    {
+      "type": "hallucination",
+      "priority": 8,
+      "description": "Factual accuracy and source attribution",
+      "implementation": ["rag_integration", "source_attribution", "fact_checking"]
+    },
+    {
+      "type": "appropriateness",
+      "priority": 7,
+      "description": "Content filtering and bias mitigation",
+      "implementation": ["toxicity_detection", "bias_filtering", "content_moderation"]
+    }
+  ],
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "security-config.json",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "technology_detected",
+      "value": "ai-security",
+      "operator": "equals",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "security-policy.md",
+      "operator": "exists",
+      "weight": 0.6
+    }
+  ],
+  "metadata": {
+    "category": "ai-security",
+    "complexity": "advanced",
+    "author": "Research Integration",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["security", "enterprise", "compliance", "guardrails"]
+  }
+}

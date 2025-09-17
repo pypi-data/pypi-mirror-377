@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentSpec Core Configuration Schema",
+  "type": "object",
+  "properties": {
+    "agentspec": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "paths": {
+          "type": "object",
+          "properties": {
+            "instructions": {"type": "string"},
+            "templates": {"type": "string"},
+            "schemas": {"type": "string"},
+            "output": {"type": "string"},
+            "cache": {"type": "string"}
+          },
+          "additionalProperties": false
+        },
+        "behavior": {
+          "type": "object",
+          "properties": {
+            "auto_detect_project": {"type": "boolean"},
+            "suggest_templates": {"type": "boolean"},
+            "validate_on_generate": {"type": "boolean"},
+            "create_gitignore": {"type": "boolean"},
+            "interactive_mode": {"type": "boolean"},
+            "colored_output": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        },
+        "logging": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "string",
+              "enum": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+            },
+            "format": {"type": "string"},
+            "file": {"type": ["string", "null"]},
+            "max_file_size": {"type": "string"},
+            "backup_count": {"type": "integer", "minimum": 0},
+            "structured": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "cache_instructions": {"type": "boolean"},
+            "cache_templates": {"type": "boolean"},
+            "cache_project_analysis": {"type": "boolean"},
+            "parallel_processing": {"type": "boolean"},
+            "max_suggestions": {"type": "integer", "minimum": 1},
+            "analysis_timeout": {"type": "integer", "minimum": 1}
+          },
+          "additionalProperties": false
+        },
+        "templates": {
+          "type": "object",
+          "properties": {
+            "auto_recommend": {"type": "boolean"},
+            "allow_inheritance": {"type": "boolean"},
+            "validate_on_load": {"type": "boolean"},
+            "custom_template_paths": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          },
+          "additionalProperties": false
+        },
+        "instructions": {
+          "type": "object",
+          "properties": {
+            "validate_on_load": {"type": "boolean"},
+            "check_conflicts": {"type": "boolean"},
+            "auto_resolve_dependencies": {"type": "boolean"},
+            "custom_instruction_paths": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "always_include": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Instruction IDs that should always be included in generated specs"
+            }
+          },
+          "additionalProperties": false
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "scan_depth": {"type": "integer", "minimum": 1},
+            "ignore_patterns": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "confidence_threshold": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "max_files_to_scan": {"type": "integer", "minimum": 1}
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": ["markdown", "json", "yaml", "text"]
+            },
+            "include_metadata": {"type": "boolean"},
+            "include_timestamps": {"type": "boolean"},
+            "word_wrap": {"type": "integer", "minimum": 40}
+          },
+          "additionalProperties": false
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "validate_file_paths": {"type": "boolean"},
+            "restrict_file_access": {"type": "boolean"},
+            "max_file_size": {"type": "string"},
+            "allowed_extensions": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["version"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["agentspec"],
+  "additionalProperties": true
+}

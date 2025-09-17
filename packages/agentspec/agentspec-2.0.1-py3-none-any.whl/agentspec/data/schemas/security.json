@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentSpec Security Schema",
+  "description": "Schema for defining security policies and guardrails in AgentSpec",
+  "type": "object",
+  "properties": {
+    "guardrail_framework": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "implementation_level": {
+          "type": "string",
+          "enum": ["basic", "intermediate", "enterprise", "mission_critical"]
+        },
+        "guardrail_layers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/guardrail_layer"
+          }
+        }
+      },
+      "required": ["version", "implementation_level", "guardrail_layers"]
+    }
+  },
+  "definitions": {
+    "guardrail_layer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["hallucination", "regulatory_compliance", "alignment", "validation", "appropriateness"]
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "implementation_practices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "example_scenarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scenario": {
+                "type": "string"
+              },
+              "expected_behavior": {
+                "type": "string"
+              }
+            },
+            "required": ["scenario", "expected_behavior"]
+          }
+        },
+        "integration_requirements": {
+          "type": "object",
+          "properties": {
+            "identity_provider": {
+              "type": "boolean"
+            },
+            "api_gateway": {
+              "type": "boolean"
+            },
+            "ci_cd_pipeline": {
+              "type": "boolean"
+            },
+            "siem_integration": {
+              "type": "boolean"
+            }
+          }
+        },
+        "automation_level": {
+          "type": "string",
+          "enum": ["manual", "semi_automated", "fully_automated"]
+        },
+        "monitoring_requirements": {
+          "type": "object",
+          "properties": {
+            "logging_enabled": {
+              "type": "boolean"
+            },
+            "audit_trail": {
+              "type": "boolean"
+            },
+            "real_time_alerts": {
+              "type": "boolean"
+            },
+            "policy_as_code": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "required": ["type", "purpose", "implementation_practices", "automation_level"]
+    }
+  }
+}

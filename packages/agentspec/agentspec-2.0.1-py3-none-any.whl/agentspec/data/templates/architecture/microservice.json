@@ -1,0 +1,161 @@
+{
+  "id": "microservice",
+  "name": "Microservice Architecture",
+  "description": "Template for microservice applications with containerization, service discovery, and distributed system best practices",
+  "version": "1.0.0",
+  "project_type": "microservice",
+  "technology_stack": [
+    "docker",
+    "kubernetes",
+    "api-gateway",
+    "service-mesh",
+    "message-queue",
+    "monitoring",
+    "logging",
+    "tracing"
+  ],
+  "default_tags": [
+    "microservices",
+    "distributed-systems",
+    "containerization",
+    "orchestration",
+    "monitoring",
+    "security",
+    "scalability",
+    "reliability"
+  ],
+  "required_instructions": [
+    "microservice_structure",
+    "containerization_setup",
+    "service_communication",
+    "health_checks",
+    "monitoring_setup"
+  ],
+  "optional_instructions": [
+    "service_mesh_configuration",
+    "api_gateway_setup",
+    "message_queue_integration",
+    "distributed_tracing",
+    "circuit_breaker_pattern",
+    "load_balancing"
+  ],
+  "excluded_instructions": [
+    "monolithic_architecture",
+    "single_database_setup"
+  ],
+  "parameters": {
+    "orchestration": {
+      "type": "string",
+      "default": "kubernetes",
+      "description": "Container orchestration platform",
+      "required": true,
+      "options": ["kubernetes", "docker-swarm", "nomad", "ecs"]
+    },
+    "service_mesh": {
+      "type": "string",
+      "default": "istio",
+      "description": "Service mesh solution",
+      "required": false,
+      "options": ["istio", "linkerd", "consul-connect", "none"]
+    },
+    "api_gateway": {
+      "type": "string",
+      "default": "kong",
+      "description": "API gateway solution",
+      "required": false,
+      "options": ["kong", "ambassador", "traefik", "nginx", "envoy"]
+    },
+    "message_broker": {
+      "type": "string",
+      "default": "kafka",
+      "description": "Message broker for async communication",
+      "required": false,
+      "options": ["kafka", "rabbitmq", "nats", "redis", "none"]
+    },
+    "monitoring": {
+      "type": "string",
+      "default": "prometheus",
+      "description": "Monitoring and metrics solution",
+      "required": false,
+      "options": ["prometheus", "datadog", "new-relic", "grafana"]
+    },
+    "logging": {
+      "type": "string",
+      "default": "elk",
+      "description": "Centralized logging solution",
+      "required": false,
+      "options": ["elk", "fluentd", "splunk", "cloudwatch"]
+    },
+    "tracing": {
+      "type": "string",
+      "default": "jaeger",
+      "description": "Distributed tracing solution",
+      "required": false,
+      "options": ["jaeger", "zipkin", "datadog", "x-ray"]
+    },
+    "database_per_service": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use separate database per service",
+      "required": false
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "Dockerfile",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "docker-compose.yml",
+      "operator": "exists",
+      "weight": 0.7
+    },
+    {
+      "type": "file_exists",
+      "value": "k8s",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "kubernetes",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "project_structure",
+      "value": "services",
+      "operator": "exists",
+      "weight": 0.7
+    },
+    {
+      "type": "file_exists",
+      "value": "helm",
+      "operator": "exists",
+      "weight": 0.6
+    },
+    {
+      "type": "technology_detected",
+      "value": "docker",
+      "operator": "equals",
+      "weight": 0.8
+    },
+    {
+      "type": "technology_detected",
+      "value": "kubernetes",
+      "operator": "equals",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "architecture",
+    "complexity": "advanced",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["microservices", "distributed", "cloud-native", "scalable"]
+  }
+}

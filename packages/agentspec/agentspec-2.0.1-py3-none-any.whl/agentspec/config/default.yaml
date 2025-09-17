@@ -1,0 +1,101 @@
+# Default configuration for AgentSpec
+agentspec:
+  version: "2.0.0"
+
+  # Paths configuration
+  paths:
+    instructions: "data/instructions"
+    templates: "data/templates"
+    schemas: "data/schemas"
+    output: "."
+    cache: "~/.agentspec/cache"
+
+  # Behavior configuration
+  behavior:
+    auto_detect_project: true
+    suggest_templates: true
+    validate_on_generate: true
+    create_gitignore: true
+    interactive_mode: true
+    colored_output: true
+
+  # Logging configuration
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    file: null
+    max_file_size: "10MB"
+    backup_count: 5
+    structured: false
+
+  # Performance configuration
+  performance:
+    cache_instructions: true
+    cache_templates: true
+    cache_project_analysis: true
+    parallel_processing: false
+    max_suggestions: 10
+    analysis_timeout: 30
+
+  # Template configuration
+  templates:
+    auto_recommend: true
+    allow_inheritance: true
+    validate_on_load: true
+    custom_template_paths: []
+
+  # Instruction configuration
+  instructions:
+    validate_on_load: true
+    check_conflicts: true
+    auto_resolve_dependencies: true
+    custom_instruction_paths: []
+    always_include:
+      - "plan_and_reflect"
+      - "use_tools_dont_guess"
+      - "persist_until_complete"
+      - "context_management"
+      - "quality_standards"
+      - "incremental_development"
+      - "continuous_validation_loop"
+      - "avoid_vibe_coding"
+      - "ai_code_understanding_requirement"
+      - "ai_code_generation_rules"
+      - "ai_error_handling_patterns"
+
+  # Context detection configuration
+  context:
+    scan_depth: 3
+    ignore_patterns:
+      - "node_modules"
+      - ".git"
+      - "__pycache__"
+      - "*.pyc"
+      - ".DS_Store"
+    confidence_threshold: 0.7
+    max_files_to_scan: 1000
+
+  # Output configuration
+  output:
+    format: "markdown"
+    include_metadata: true
+    include_timestamps: true
+    word_wrap: 80
+
+  # Security configuration
+  security:
+    validate_file_paths: true
+    restrict_file_access: true
+    max_file_size: "50MB"
+    allowed_extensions:
+      - ".py"
+      - ".js"
+      - ".ts"
+      - ".json"
+      - ".yaml"
+      - ".yml"
+      - ".md"
+      - ".txt"
+      - ".toml"
+      - ".cfg"
+      - ".ini"

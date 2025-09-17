@@ -1,0 +1,82 @@
+{
+  "id": "saas-application",
+  "name": "SaaS Platform",
+  "description": "Template for multi-tenant SaaS platforms with subscription management, analytics, and AI-powered features",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "react",
+    "node.js",
+    "postgresql",
+    "stripe",
+    "analytics",
+    "monitoring",
+    "cdn"
+  ],
+  "default_tags": [
+    "saas",
+    "multi-tenant",
+    "subscription",
+    "analytics",
+    "ai-powered",
+    "scalability"
+  ],
+  "required_instructions": [
+    "multi_tenant_architecture",
+    "subscription_management",
+    "user_onboarding",
+    "analytics_implementation",
+    "billing_integration"
+  ],
+  "optional_instructions": [
+    "ai_feature_integration",
+    "advanced_analytics",
+    "white_labeling",
+    "api_marketplace"
+  ],
+  "parameters": {
+    "billing_provider": {
+      "type": "string",
+      "default": "stripe",
+      "description": "Payment and billing provider",
+      "required": true,
+      "options": ["stripe", "paddle", "chargebee", "recurly"]
+    },
+    "analytics_platform": {
+      "type": "string",
+      "default": "mixpanel",
+      "description": "User analytics platform",
+      "required": false,
+      "options": ["mixpanel", "amplitude", "segment", "google_analytics"]
+    },
+    "tenant_isolation": {
+      "type": "string",
+      "default": "schema_based",
+      "description": "Multi-tenant data isolation strategy",
+      "required": true,
+      "options": ["database_per_tenant", "schema_based", "row_level_security"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "package.json",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "dependency_exists",
+      "value": "stripe",
+      "operator": "exists",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "saas",
+    "complexity": "advanced",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["saas", "multi-tenant", "subscription", "business"]
+  }
+}

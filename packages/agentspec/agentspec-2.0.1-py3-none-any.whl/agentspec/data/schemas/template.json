@@ -1,0 +1,183 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentSpec Template Schema",
+  "description": "Schema for validating AgentSpec templates",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the template",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name for the template",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what the template is for",
+      "minLength": 10
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the template",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "project_type": {
+      "type": "string",
+      "description": "Type of project this template is designed for",
+      "enum": ["web-app", "web_frontend", "web_backend", "api", "microservice", "mobile-app", "desktop-app", "library", "cli-tool", "data-pipeline", "ml-model", "generic"]
+    },
+    "technology_stack": {
+      "type": "array",
+      "description": "Technologies this template is designed for",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "default_tags": {
+      "type": "array",
+      "description": "Default instruction tags to include",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "required_instructions": {
+      "type": "array",
+      "description": "Instructions that must be included",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "optional_instructions": {
+      "type": "array",
+      "description": "Instructions that may be included based on context",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "excluded_instructions": {
+      "type": "array",
+      "description": "Instructions that should be excluded",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Template parameters for customization",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "array", "object"]
+          },
+          "default": {},
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": false
+          },
+          "options": {
+            "type": "array",
+            "description": "Valid options for enum-like parameters"
+          }
+        },
+        "required": ["type"]
+      }
+    },
+    "inheritance": {
+      "type": "object",
+      "description": "Template inheritance configuration",
+      "properties": {
+        "parent": {
+          "type": "string",
+          "description": "ID of parent template"
+        },
+        "override_mode": {
+          "type": "string",
+          "enum": ["merge", "replace", "extend"],
+          "default": "merge",
+          "description": "How to handle conflicts with parent template"
+        }
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Conditions for when this template should be recommended",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["file_exists", "dependency_exists", "project_structure", "technology_detected"]
+          },
+          "value": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["equals", "contains", "matches", "not_equals", "exists", "not_exists"]
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 1,
+            "description": "Weight for recommendation scoring"
+          }
+        },
+        "required": ["type", "value", "operator"]
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the template",
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Primary category for the template"
+        },
+        "complexity": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced"],
+          "default": "intermediate"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the template"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the template was created"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the template was last updated"
+        },
+
+        "tags": {
+          "type": "array",
+          "description": "Tags for categorizing templates",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "required": ["id", "name", "description", "version", "project_type", "default_tags", "metadata"],
+  "additionalProperties": false
+}

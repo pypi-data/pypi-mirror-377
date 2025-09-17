@@ -1,0 +1,30 @@
+{
+  "instructions": [
+    {
+      "id": "command_timeout_management",
+      "version": "1.0.0",
+      "tags": ["reliability", "automation", "error-handling", "timeout", "resilience"],
+      "content": "Attach timeouts to every automated command to prevent hanging or blocking on user input. Implement timeout mechanisms that allow the agent to regain control and attempt alternative approaches or fix issues when commands don't complete within expected timeframes. Include retry logic with exponential backoff and fallback strategies for critical operations.",
+      "metadata": {
+        "category": "reliability",
+        "priority": 7,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "webhook_handling",
+      "version": "1.0.0",
+      "tags": ["reliability", "webhooks", "api", "integration"],
+      "content": "Implement robust webhook handling with validation, retry logic, idempotency, and security measures like signature verification.",
+      "metadata": {
+        "category": "reliability",
+        "priority": 6,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+}

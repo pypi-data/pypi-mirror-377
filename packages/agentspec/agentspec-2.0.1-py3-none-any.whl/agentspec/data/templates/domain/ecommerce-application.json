@@ -1,0 +1,82 @@
+{
+  "id": "ecommerce-application",
+  "name": "E-commerce Platform",
+  "description": "Template for scalable e-commerce platforms with payment processing, inventory management, and AI-powered recommendations",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "react",
+    "node.js",
+    "postgresql",
+    "redis",
+    "elasticsearch",
+    "payment-gateway",
+    "cdn"
+  ],
+  "default_tags": [
+    "e-commerce",
+    "payments",
+    "inventory",
+    "recommendations",
+    "security",
+    "performance"
+  ],
+  "required_instructions": [
+    "product_catalog_management",
+    "shopping_cart_implementation",
+    "payment_processing",
+    "order_management",
+    "inventory_tracking"
+  ],
+  "optional_instructions": [
+    "ai_recommendations",
+    "search_optimization",
+    "multi_currency_support",
+    "marketplace_features"
+  ],
+  "parameters": {
+    "payment_gateway": {
+      "type": "string",
+      "default": "stripe",
+      "description": "Primary payment gateway",
+      "required": true,
+      "options": ["stripe", "paypal", "square", "adyen"]
+    },
+    "search_engine": {
+      "type": "string",
+      "default": "elasticsearch",
+      "description": "Product search engine",
+      "required": false,
+      "options": ["elasticsearch", "algolia", "solr", "database"]
+    },
+    "recommendation_engine": {
+      "type": "string",
+      "default": "collaborative_filtering",
+      "description": "Product recommendation strategy",
+      "required": false,
+      "options": ["collaborative_filtering", "content_based", "hybrid", "ai_powered"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "package.json",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "technology_detected",
+      "value": "react",
+      "operator": "equals",
+      "weight": 0.7
+    }
+  ],
+  "metadata": {
+    "category": "e-commerce",
+    "complexity": "advanced",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["e-commerce", "payments", "retail", "scalable"]
+  }
+}

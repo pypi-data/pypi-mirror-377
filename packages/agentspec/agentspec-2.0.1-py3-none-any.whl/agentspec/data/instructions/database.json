@@ -1,0 +1,96 @@
+{
+  "instructions": [
+    {
+      "id": "database_design",
+      "version": "1.0.0",
+      "tags": ["database", "design", "normalization", "schema"],
+      "content": "Design normalized database schemas with proper relationships, constraints, and indexes. Use appropriate data types, implement referential integrity, and plan for scalability from the start.",
+      "metadata": {
+        "category": "database",
+        "priority": 8,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "migration_management",
+      "version": "1.0.0",
+      "tags": ["database", "migrations", "versioning", "deployment"],
+      "content": "Use database migration tools (Alembic, Flyway, Rails migrations) for schema changes. Write reversible migrations, test on staging environments, and maintain migration history. Never modify existing migrations.",
+      "metadata": {
+        "category": "database",
+        "priority": 9,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+
+    {
+      "id": "data_consistency",
+      "version": "1.0.0",
+      "tags": ["database", "consistency", "transactions", "acid"],
+      "content": "Ensure data consistency with proper transaction management, ACID properties, and appropriate isolation levels. Use database constraints, triggers, and stored procedures judiciously.",
+      "metadata": {
+        "category": "database",
+        "priority": 8,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "data_validation",
+      "version": "1.0.0",
+      "tags": ["database", "data", "validation", "integrity", "quality"],
+      "content": "Implement comprehensive data validation at all system boundaries. Use schema validation, type checking, range validation, and business rule validation. Provide clear error messages for validation failures.",
+      "metadata": {
+        "category": "database",
+        "priority": 9,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "data_transformation",
+      "version": "1.0.0",
+      "tags": ["database", "data", "transformation", "etl", "processing"],
+      "content": "Implement robust data transformation pipelines with error handling, data quality checks, and monitoring. Use appropriate tools for ETL/ELT processes and maintain data lineage.",
+      "metadata": {
+        "category": "database",
+        "priority": 7,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "data_archival",
+      "version": "1.0.0",
+      "tags": ["database", "data", "archival", "retention", "lifecycle"],
+      "content": "Implement data lifecycle management with automated archival, retention policies, and secure deletion. Consider regulatory requirements and implement data classification schemes.",
+      "metadata": {
+        "category": "database",
+        "priority": 6,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "data_synchronization",
+      "version": "1.0.0",
+      "tags": ["database", "data", "synchronization", "consistency", "replication"],
+      "content": "Implement data synchronization between systems with conflict resolution, eventual consistency patterns, and data integrity checks. Handle network partitions and system failures gracefully.",
+      "metadata": {
+        "category": "database",
+        "priority": 7,
+        "author": "AgentSpec",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+}

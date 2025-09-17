@@ -1,0 +1,225 @@
+Metadata-Version: 2.4
+Name: fastmcp-data-analysis-server
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: fastmcp>=2.9.2
+Requires-Dist: numpy>=2.3.1
+Requires-Dist: pandas>=2.3.0
+Requires-Dist: scipy>=1.16.0
+
+# FastMCP Data Analysis Server
+
+A Model Context Protocol (MCP) server that provides comprehensive data analysis utilities including statistical functions, probability distributions, and data processing tools.
+
+## Features
+
+### Probability Distributions
+- **Poisson Probability**: Calculate point, cumulative, and survival probabilities
+- **Normal Distribution**: PDF, CDF, and survival function calculations  
+- **Binomial Probability**: Complete binomial distribution analysis
+
+### Statistical Analysis
+- **Descriptive Statistics**: Mean, median, mode, variance, skewness, kurtosis, quartiles
+- **Correlation Analysis**: Pearson and Spearman correlation with significance testing
+- **Hypothesis Testing**: One-sample t-tests with detailed results
+- **Linear Regression**: Simple linear regression with R², MSE, and equation
+
+### Data Processing
+- **CSV Analysis**: Process CSV text data and generate comprehensive summaries
+- **Data Summarization**: Automatic detection of numeric/categorical columns
+
+## Installation
+
+1. **Initialize the project with uv:**
+```bash
+uv init fastmcp-data-analysis-server
+cd fastmcp-data-analysis-server
+```
+
+2. **Install dependencies:**
+```bash
+uv add fastmcp numpy scipy pandas
+```
+
+Or install from the pyproject.toml:
+```bash
+uv sync
+```
+
+3. **Install development dependencies (optional):**
+```bash
+uv add --dev pytest pytest-asyncio black isort mypy
+```
+
+## Usage
+
+### Running the Server
+
+```bash
+# Using uv
+uv run python main.py
+
+# Or if installed
+python main.py
+```
+
+### Available Tools
+
+#### 1. Poisson Probability
+```python
+# Point probability: P(X = k)
+poisson_probability(lam=3.5, k=2, prob_type="point")
+
+# Cumulative probability: P(X ≤ k)  
+poisson_probability(lam=3.5, k=5, prob_type="cumulative")
+
+# Survival probability: P(X > k)
+poisson_probability(lam=3.5, k=4, prob_type="survival")
+```
+
+#### 2. Descriptive Statistics
+```python
+descriptive_statistics([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+```
+
+#### 3. Normal Distribution
+```python
+# Standard normal
+normal_probability(x=1.96, mean=0, std_dev=1, prob_type="cumulative")
+
+# Custom normal distribution
+normal_probability(x=85, mean=100, std_dev=15, prob_type="point")
+```
+
+#### 4. Correlation Analysis
+```python
+correlation_analysis(
+    x_data=[1, 2, 3, 4, 5], 
+    y_data=[2, 4, 6, 8, 10]
+)
+```
+
+#### 5. Hypothesis Testing
+```python
+hypothesis_test_ttest(
+    sample_data=[12, 15, 18, 16, 17], 
+    population_mean=14, 
+    alpha=0.05
+)
+```
+
+#### 6. Linear Regression
+```python
+linear_regression_analysis(
+    x_data=[1, 2, 3, 4, 5],
+    y_data=[2, 4, 5, 4, 5]
+)
+```
+
+#### 7. Binomial Probability
+```python
+# Probability of exactly 3 successes in 10 trials
+binomial_probability(n=10, k=3, p=0.4, prob_type="point")
+```
+
+#### 8. CSV Data Analysis
+```python
+csv_text = """name,age,score
+Alice,25,85
+Bob,30,92
+Charlie,22,78"""
+
+data_summary_from_csv_text(csv_text)
+```
+
+## Example Responses
+
+### Poisson Probability Response
+```json
+{
+    "probability": 0.2138,
+    "description": "P(X = 2)",
+    "lambda": 3.5,
+    "k": 2,
+    "prob_type": "point",
+    "mean": 3.5,
+    "variance": 3.5,
+    "std_dev": 1.8708
+}
+```
+
+### Descriptive Statistics Response  
+```json
+{
+    "count": 10,
+    "mean": 5.5,
+    "median": 5.5,
+    "std_dev": 3.0277,
+    "variance": 9.1667,
+    "min": 1.0,
+    "max": 10.0,
+    "skewness": 0.0,
+    "kurtosis": -1.2
+}
+```
+
+## Development
+
+### Code Formatting
+```bash
+uv run black main.py
+uv run isort main.py
+```
+
+### Type Checking
+```bash
+uv run mypy main.py
+```
+
+### Testing
+```bash
+uv run pytest
+```
+
+## MCP Client Integration
+
+This server can be used with any MCP client. The tools are automatically exposed and can be called with the appropriate parameters.
+
+### Example MCP Client Usage
+```python
+# Assuming you have an MCP client connected
+client.call_tool("poisson_probability", {
+    "lam": 2.5,
+    "k": 3,
+    "prob_type": "cumulative"
+})
+```
+
+### Example MCP Server Config 
+```json
+{
+  "mcpServers": {
+    "analysis-mcp": {
+      "command": "fastmcp-data-analysis-server/.venv/bin/python",
+      "args": [
+        "fastmcp-data-analysis-server/main.py"
+      ],
+    }
+  }
+}
+```
+
+## Error Handling
+
+All functions include comprehensive error handling for:
+- Invalid parameter values
+- Empty datasets
+- Mismatched data lengths
+- Invalid probability types
+- Mathematical domain errors
+
+## License
+
+MIT License

@@ -1,0 +1,28 @@
+include README.md SIGNING_KEYS.pub LICENSE INSTALL *-requirements.txt
+
+include doc/release-notes/*
+include doc/wiki/*/*
+
+include examples/*
+include extmod/*
+
+include mmgen/proto/eth/*/LICENSE
+include mmgen/data/*
+
+include scripts/*
+include nix/*
+
+include test/*.py
+include test/*/*.py
+include test/*/*/*.py
+include test/*/*/*/*.py
+include test/ref/*
+include test/ref/*/*
+include test/ref/*/*/*
+include test/ref/*/*/*/*
+include test/overlay/fakemods/mmgen/*.py
+include test/overlay/fakemods/mmgen/*/*.py
+include test/overlay/fakemods/mmgen/*/*/*/*.py
+
+include test/test-release.sh
+include test/test-release.d/*.sh

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bisex"
+version = "0.2.0"
+description = "General‑purpose Python→TypeScript type generator"
+readme = "README.md"
+authors = [
+  { name = "Hyv" }
+]
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["typescript", "codegen", "ast", "dataclasses", "enums"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Software Development :: Code Generators",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/hyvnova/bisex"
+
+[tool.hatch.build.targets.wheel]
+packages = ["bisex"]
+

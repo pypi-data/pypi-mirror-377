@@ -1,0 +1,1 @@
+The goal of this activity is to introduce you to Python’s packaging system, known as PyPI (Python Package Index). PyPI serves as a central repository for contributed Python packages and libraries. It is accessed by the pip tool whenever you install a new package.

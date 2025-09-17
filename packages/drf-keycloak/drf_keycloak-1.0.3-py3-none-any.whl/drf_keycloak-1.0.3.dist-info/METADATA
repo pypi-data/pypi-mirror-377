@@ -1,0 +1,198 @@
+Metadata-Version: 2.4
+Name: drf-keycloak
+Version: 1.0.3
+Summary: Keycloak authentication plugin for Django REST Framework
+Author-email: Sascha Rau <ideal3000developer@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/sascharau/djangorestframework-keycloak
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.2
+Classifier: Framework :: Django :: 4.0
+Classifier: Framework :: Django :: 4.1
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Django :: 5.1
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Internet :: WWW/HTTP
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: requests>=2.26.0
+Requires-Dist: django>=3.2
+Requires-Dist: djangorestframework>=3.10
+Requires-Dist: pyjwt<3,>=2
+Requires-Dist: cryptography>=3.3.1
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-django; extra == "test"
+Requires-Dist: drf-spectacular; extra == "test"
+Requires-Dist: tox; extra == "test"
+Provides-Extra: lint
+Requires-Dist: ruff; extra == "lint"
+Requires-Dist: pre-commit; extra == "lint"
+Provides-Extra: doc
+Requires-Dist: Sphinx<2,>=1.6.5; extra == "doc"
+Requires-Dist: sphinx_rtd_theme>=0.1.9; extra == "doc"
+Provides-Extra: dev
+Requires-Dist: pytest-watch; extra == "dev"
+Requires-Dist: wheel; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: ipython; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-django; extra == "dev"
+Requires-Dist: drf-spectacular; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: Sphinx<2,>=1.6.5; extra == "dev"
+Requires-Dist: sphinx_rtd_theme>=0.1.9; extra == "dev"
+Requires-Dist: python-jose==3.3.0; extra == "dev"
+Provides-Extra: python-jose
+Requires-Dist: python-jose==3.3.0; extra == "python-jose"
+Dynamic: license-file
+
+=================================================
+Keycloak Authentication for Django Rest Framework
+=================================================
+
+In this project, we implement authentication using the *Authorization Code Flow* with Keycloak as the identity and access management service. Here is how the authentication flow is structured:
+
+1. **Frontend Responsibility**:
+
+   - **User Registration and Login**: The frontend handles user registration and login through Keycloak, facilitating a seamless user experience.
+
+2. **Backend Responsibility**:
+
+   - **Token Validation**: Once a user is authenticated, the backend takes over by validating the JWT (JSON Web Token) from the header of each incoming request to ensure it is valid and secure.
+
+This approach allows us to keep the backend implementation relatively simple, focusing mainly on token validation, while leveraging Keycloak's robust authentication and authorization features through the frontend.
+
+Install
+_______
+
+.. code-block:: bash
+
+   pip install drf-keycloak
+
+
+
+Settings
+--------
+
+You can find a selection of variables in ``drf_keycloak.settings.py``, just overwrite them in the Django settings.
+
+.. code-block:: python
+
+   KEYCLOAK_CONFIG = {
+       "SERVER_URL": "http://localhost:8080/realms/master",
+       "REALM": "master",
+       "CLIENT_ID": "account",
+       "CLIENT_SECRET": None,
+       "AUDIENCE": None,
+       "ALGORITHM": "RS256",
+       "ISSUER": "http://localhost:8080/realms/master",
+       "PERMISSION_PATH": "resource_access.account.roles",
+       "USER_ID_FIELD": "username",
+       "USER_ID_CLAIM": "preferred_username",
+       "VERIFY_SIGNATURE": True,
+       # user mapping
+       # django keys, keycloak keys
+       "CLAIM_MAPPING": {
+           "first_name": "given_name",
+           "last_name": "family_name",
+           "email": "email",
+           "username": "preferred_username",
+       },
+   }
+
+
+Enable
+******
+
+Add ``keycloak`` to ``INSTALLED_APPS``.
+
+.. code-block:: python
+
+   INSTALLED_APPS = [
+       "django.contrib.auth",
+       # ...
+       "drf_keycloak"
+   ]
+
+Add ``drf_keycloak.authentication.KeycloakAuthBackend`` to DRF settings
+
+.. code-block:: python
+
+   REST_FRAMEWORK = {
+       "DEFAULT_AUTHENTICATION_CLASSES": [
+           # ...
+           "drf_keycloak.authentication.KeycloakAuthBackend",
+           # ...
+       ],
+   }
+
+Permissions
+***********
+
+To create permissions for your API follow the example in ``HasViewProfilePermission`` in ``drf_keycloak.permissions.py``.
+
+Use it as usual...
+
+.. code-block:: python
+
+   from drf_keycloak.permissions import HasPermission
+
+   class ExamplePermission(HasPermission):
+       permission = "view-profile"
+
+
+   class UserApi(generics.RetrieveAPIView):
+       permission_classes = [ExamplePermission]
+
+Middleware
+**********
+
+For security reasons, use the optional middleware in ``drf_keycloak.middleware.HeaderMiddleware`` at the top of the settings.
+
+.. code-block:: python
+
+   MIDDLEWARE = [
+       "drf_keycloak.middleware.HeaderMiddleware",
+       # ...
+   ]
+
+You should also look at Mozilla's `django-csp <https://github.com/mozilla/django-csp>`_ package.
+
+OpenAPI Schema with drf-spectacular
+***********************************
+
+In any ``apps.py`` or file that is loaded at startup
+
+.. code-block:: python
+
+   from django.apps import AppConfig
+
+   class MyAppConfig(AppConfig):
+       """app config"""
+
+       default_auto_field = "django.db.models.BigAutoField"
+       name = "myapp"
+
+       def ready(self):
+           import drf_keycloak.schema  # noqa: E402
+
+Thanks
+******
+
+Thanks to `django-rest-framework-simplejwt <https://github.com/jazzband/djangorestframework-simplejwt>`_, the code was inspirational for this package.
+

@@ -1,0 +1,9 @@
+[console_scripts]
+fipy_changelog = fipy.tools.changelog:app
+fipy_copy_script = fipy.tools.copy_script:app
+fipy_test = fipy.tests.test:app
+versioneer = versioneer:main
+
+[fipy.viewers]
+matplotlib = fipy.viewers.matplotlibViewer:MatplotlibViewer
+mayavi = fipy.viewers.mayaviViewer:MayaviClient

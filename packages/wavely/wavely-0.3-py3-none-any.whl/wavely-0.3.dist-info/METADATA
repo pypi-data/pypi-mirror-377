@@ -1,0 +1,74 @@
+Metadata-Version: 2.2
+Name: wavely
+Version: 0.3
+Summary: A small library for building curve coordinates from simple components
+Author: jhunt
+License: The MIT License (MIT)
+        
+        Copyright (c) 2025 James Hunt
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to
+        deal in the Software without restriction, including without limitation the
+        rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+        sell copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software..
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+        FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+        IN THE SOFTWARE.
+        
+Project-URL: Documentation, https://github.com/jhunt/wavely/blob/main/README.md
+Project-URL: Issues, https://github.com/jhunt/wavely/issues
+Project-URL: Source, https://github.com/jhunt/wavely
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+wavely
+======
+
+A small library for building curve coordinates from simple
+components.
+
+With `wavely`, you can describe a complex curve piecemeal, using
+scaled and transalted sigmoid and linear components, mix complex
+curves together, and generate noisy, semi-random curves within
+constraints.
+
+This is perfect for synthesizing data with observable
+characteristics without losing verisimilitude.
+
+I use it for demos.
+
+## Examples
+
+The `examples.py` script will flip through a series of plots,
+showing different ways of dealing with the `Linear` and `Sigmoid`
+primitives and the `Bounded` aggregate.
+
+![Example: Unit Curves][1]
+
+![Example: Linear Curves][2]
+
+![Example: Sigmoid Curves][3]
+
+![Example: Bounded Random Curves][4]
+
+![Example: Seasonal Curves][5]
+
+[1]: https://raw.githubusercontent.com/jhunt/wavely/refs/heads/main/docs/unit.png
+[2]: https://raw.githubusercontent.com/jhunt/wavely/refs/heads/main/docs/example-linear.png
+[3]: https://raw.githubusercontent.com/jhunt/wavely/refs/heads/main/docs/example-sigmoid.png
+[4]: https://raw.githubusercontent.com/jhunt/wavely/refs/heads/main/docs/example-bounded-random.png
+[5]: https://raw.githubusercontent.com/jhunt/wavely/refs/heads/main/docs/example-seasonal.png

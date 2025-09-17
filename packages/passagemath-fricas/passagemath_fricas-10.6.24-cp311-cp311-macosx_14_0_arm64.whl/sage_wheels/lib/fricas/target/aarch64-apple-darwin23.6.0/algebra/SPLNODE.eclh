@@ -1,0 +1,53 @@
+
+#ifdef ECL_DYNAMIC_VV
+static cl_object *VV;
+#else
+static cl_object VV[VM];
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+static cl_object L2088_splnode_rep_(cl_object , cl_object );
+static cl_object L2089_splnode_per_(cl_object , cl_object );
+static cl_object L2090_splnode_empty___3_(cl_object );
+static cl_object L2091_splnode_empty___b_4_(cl_object , cl_object );
+static cl_object L2092_splnode_value__v_5_(cl_object , cl_object );
+static cl_object L2093_splnode_condition__c_6_(cl_object , cl_object );
+static cl_object L2094_splnode_status__b_7_(cl_object , cl_object );
+static cl_object L2095_splnode_construct_vcb__8_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L2096_splnode_construct_vc__9_(cl_object , cl_object , cl_object );
+static cl_object L2097_splnode_construct_r__10_(cl_object , cl_object );
+static cl_object L2098_splnode_construct_ll_11_(cl_object , cl_object );
+static cl_object L2099_splnode_construct_vll_12_(cl_object , cl_object , cl_object );
+static cl_object L2100_splnode_copy_2__13_(cl_object , cl_object );
+static cl_object L2101_splnode_setvalue___v__14_(cl_object , cl_object , cl_object );
+static cl_object L2102_splnode_setcondition___c__15_(cl_object , cl_object , cl_object );
+static cl_object L2103_splnode_setstatus___b__16_(cl_object , cl_object , cl_object );
+static cl_object L2104_splnode_setempty__2__17_(cl_object , cl_object );
+static cl_object L2105_splnode_inflex__2_mmb_18_(cl_object , cl_object , cl_object , cl_object , cl_object );
+static cl_object L2106_splnode_subnode__2_mb_19_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L2107_splnode___2_b_20_(cl_object , cl_object , cl_object );
+static cl_object L2108_splnode____2_b_21_(cl_object , cl_object , cl_object );
+static cl_object L2109_splnode_coerce__of_22_(cl_object , cl_object );
+static cl_object L2110_splittingnode__(cl_object , cl_object );
+static cl_object L2111_splittingnode_(volatile cl_narg, ...);
+static cl_object Cblock;
+#define VM 69
+#define VMtemp 73
+#define ECL_DEFINE_SETF_FUNCTIONS 
+#ifdef __cplusplus
+}
+#endif
+/*
+ * Exported Lisp functions
+ */
+#define compiler_cfuns_size 24
+static const struct ecl_cfunfixed compiler_cfuns[] = {
+ /*t,m,narg,padding,name=function-location,block=name-location,entry,entry_fixed,file,file_position*/
+{0,0,2,0,ecl_make_fixnum(34),ecl_make_fixnum(0),(cl_objectfn)L2088_splnode_rep_,NULL,ECL_NIL,ecl_make_fixnum(54)},
+{0,0,2,0,ecl_make_fixnum(35),ecl_make_fixnum(2),(cl_objectfn)L2089_splnode_per_,NULL,ECL_NIL,ecl_make_fixnum(246)},
+{0,0,1,0,ecl_make_fixnum(36),ecl_make_fixnum(3),(cl_objectfn)L2090_splnode_empty___3_,NULL,ECL_NIL,ecl_make_fixnum(392)},
+{0,0,2,0,ecl_make_fixnum(37),ecl_make_fixnum(4),(cl_objectfn)L2091_splnode_empty___b_4_,NULL,ECL_NIL,ecl_make_fixnum(531)},
+{0,0,2,0,ecl_make_fixnum(38),ecl_make_fixnum(5),(cl_objectfn)L2092_splnode_value__v_5_,NULL,ECL_NIL,ecl_make_fixnum(762)},
+{0,0,2,0,ecl_make_fixnum(39),ecl_make_fixnum(6),(cl_objectfn)L2093_splnode_condition__c_6_,NULL,ECL_NIL,ecl_make_fixnum(854)},

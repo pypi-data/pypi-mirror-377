@@ -1,0 +1,86 @@
+{
+  "resource": "/example",
+  "path": "/v1/example",
+  "httpMethod": "POST",
+  "headers": {
+    "accept": "*/*",
+    "content-type": "application/json",
+    "Host": "api.example.com",
+    "User-Agent": "curl/8.12.1",
+    "X-Amzn-Trace-Id": "Root=1-12345678-7c6dfa2c5fdf65f7487f080e",
+    "X-Forwarded-For": "123.123.123.123",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "accept": [
+      "*/*"
+    ],
+    "content-type": [
+      "application/x-www-form-urlencoded"
+    ],
+    "Host": [
+      "api.example.com"
+    ],
+    "User-Agent": [
+      "curl/8.12.1"
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-12345678-7c6dfa2c5fdf65f7487f080e"
+    ],
+    "X-Forwarded-For": [
+      "123.123.123.123"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": {
+    "test": "ghi"
+  },
+  "multiValueQueryStringParameters": {
+    "test": [
+      "abc",
+      "def",
+      "ghi"
+    ]
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "resourceId": "v0fyag",
+    "resourcePath": "/example",
+    "httpMethod": "GET",
+    "extendedRequestId": "QvLBjFKfrPEEi-Q=",
+    "requestTime": "10/Sep/2025:12:00:00 +0000",
+    "path": "/v1/example",
+    "accountId": "123456789012",
+    "protocol": "HTTP/1.1",
+    "stage": "v1",
+    "domainPrefix": "api",
+    "requestTimeEpoch": 1757593202344,
+    "requestId": "12345678-1234-1234-1234-123456789012",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "sourceIp": "123.123.123.123",
+      "principalOrgId": null,
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "curl/8.12.1",
+      "user": null
+    },
+    "domainName": "api.example.com",
+    "deploymentId": "123456",
+    "apiId": "1234567890"
+  },
+  "body": "eyJleGFtcGxlIjogInZhbHVlIn0=",
+  "isBase64Encoded": true
+}

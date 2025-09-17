@@ -1,0 +1,49 @@
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost/mydb"
+      ],
+      "env": {}
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/kmani/files_claude"
+      ]
+    }, 
+    "freshdesk-mcp": {
+      "command": "uvx",
+      "args": [
+        "freshdesk-mcp"
+      ],
+      "env": {
+        "FRESHDESK_API_KEY": "WOacxIwbyvNG89bzqIG",
+        "FRESHDESK_DOMAIN": "kalidassmani-help.freshdesk.com"
+      }
+    },
+    "freshrelease-mcp": {
+      "command": "/opt/homebrew/opt/python@3.10/bin/python3.10",
+      "args": ["-m", "freshrelease_mcp.server"],
+      "env": {
+        "FRESHRELEASE_API_KEY": "kGXcxVN6w0l39GdQbXxJmw",
+        "FRESHRELEASE_DOMAIN": "freshworks.freshrelease.com",
+        "FRESHRELEASE_PROJECT_KEY": "FS"
+      }
+    }
+  }
+}
+
+
+

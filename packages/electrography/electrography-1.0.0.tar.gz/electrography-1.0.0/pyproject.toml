@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools", "cython"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "electrography"
+
+version = "1.0.0"
+
+description = "Python package to record and analyse data from OpenBCI boards"
+
+readme = "README.md"
+
+requires-python = ">=3.9"
+
+license = { file = "LICENSE.txt" }
+
+keywords = ["electrophysiology", "electrocardiography", "electrogastrography","electroencephalography"]
+
+authors = [{ name = "Edwin Dalmaijer", email = "edwin@dalmaijer.org" }]
+
+classifiers = [
+  # Move to "5 - Production/Stable" after testing.
+  "Development Status :: 4 - Beta",
+
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+]
+
+dependencies = ["brainflow", "matplotlib", "numpy", "scipy"]
+
+[project.urls]
+"Homepage" = "https://www.dalmaijer.org"
+"Bug Reports" = "https://github.com/esdalmaijer/electrography/issues"
+"Source" = "https://github.com/esdalmaijer/electrography"
+
+# TODO: Use this option for post-install cythonsation?
+# The following would provide a command line executable called `sample`
+# which executes the function `main` from this package when invoked.
+#[project.scripts]
+#sample = "sample:main"
+
+
+#[tool.setuptools]
+# Intentionally commented out in case we need any additional files to
+# be included in the future.
+#package-data = { "sample" = ["*.dat"] }

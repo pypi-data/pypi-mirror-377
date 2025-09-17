@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "j-utilities-toolkit"
+version = "0.0.2"
+description = "A collection of reusable utilities including logging, configuration, timing, debugging, and more."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name="Jay Curtis", email="jaysuzi5@gmail.com" }
+]
+dependencies = [
+    "python-dotenv>=1.1.1",
+    "pytz>=2025.2",
+    "splunk-sdk>=2.1.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/jaysuzi5/jToolkit"
+Issues = "https://github.com/jaysuzi5/jToolkit/issues"

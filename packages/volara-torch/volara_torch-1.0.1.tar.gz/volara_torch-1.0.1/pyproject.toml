@@ -1,0 +1,51 @@
+[project]
+name = "volara-torch"
+version = "1.0.1"
+description = "Plugin for Volara including everything pytorch related. This includes the `Predict` task and the `models` module."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "volara>=1.0.2",
+    "torch>=2.4",
+    "daisy>=1.2.2",
+    "gunpowder>=1.4.0",
+    "funlib.geometry>=0.3",
+    "funlib.persistence>=0.6",
+    "pydantic>=2.6.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "mypy>=1.0", "ruff>=0.6"]
+docs = [
+    "autodoc_pydantic>=2.0",
+    "sphinx-autodoc-typehints>=2.0",
+    "sphinx-material>=0.0.36",
+    "sphinx-click>=6.0",
+    "sphinx-rtd-theme>=2.0",
+    "myst-parser>=4.0",
+    "jupyter-sphinx>=0.5",
+    "matplotlib>=3.0",
+    "pooch>=1.8",
+    "wget>=3.2",
+    "funlib-show-neuroglancer>=0.2",
+    "nbsphinx>=0.9.7",
+    "jupytext>=1.16.7",
+]
+
+[project.entry-points."volara.blockwise_tasks"]
+predict = "volara_torch.blockwise.predict:Predict"
+
+[tool.ruff]
+lint.select = ["F", "W", "I001"]
+
+[[tool.mypy.overrides]]
+module = [
+    "daisy.*",
+    "gunpowder.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]

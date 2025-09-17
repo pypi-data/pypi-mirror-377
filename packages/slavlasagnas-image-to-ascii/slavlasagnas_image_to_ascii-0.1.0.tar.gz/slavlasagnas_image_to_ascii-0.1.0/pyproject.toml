@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slavlasagnas-image-to-ascii"
+version = "0.1.0"
+description = "A Tkinter-based Image to ASCII Art converter"
+authors = [
+  { name="SlavLasagna", email="martinguionniere@gmail.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = [
+    "pillow"
+]
+
+[project.urls]
+Homepage = "https://github.com/SlavLasagna/IToA"
+
+[project.gui-scripts]
+itoa = "ImageToASCII.__main__:run"

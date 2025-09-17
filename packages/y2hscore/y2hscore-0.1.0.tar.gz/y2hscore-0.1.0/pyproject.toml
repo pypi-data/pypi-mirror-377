@@ -1,0 +1,24 @@
+[build-system]
+
+requires        =   ["setuptools>=61.0"]
+build-backend   =   "setuptools.build_meta"
+
+[project]
+
+name            =   "y2hscore"
+version         =   "0.1.0"
+description     =   "Y2HScore runs with python -m y2hscore"
+authors         =   [ { name  ="INET, Helmholtz Munich", email = "inet@helmholtz-munich.com" } ]
+readme          =   "README.md"
+requires-python =   ">=3.10"
+dependencies    =   [
+                        "opencv-python>=4.10,<5.0",
+                        "numpy>=2.2"
+                    ]
+
+[tool.setuptools]
+include-package-data    =   true
+
+[tool.setuptools.packages.find]
+
+where           =   ["."]

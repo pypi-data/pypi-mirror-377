@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: textual-file-viewer
+Version: 0.9.0
+Summary: View the contents of several common file types
+Project-URL: Repository, https://gitlab.com/pjhdekoning/textual-file-viewer
+Project-URL: Issues, https://gitlab.com/pjhdekoning/textual-file-viewer/issues
+Author-email: Patrick de Koning <pjhdekoning@lumc.nl>
+Keywords: TUI
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Requires-Python: >=3.10
+Requires-Dist: hatchling>=1.27.0
+Requires-Dist: numpy
+Requires-Dist: openpyxl
+Requires-Dist: pandas>=2.0
+Requires-Dist: pillow
+Requires-Dist: pydicom
+Requires-Dist: pylibjpeg[libjpeg,openjpeg]
+Requires-Dist: rich-pixels>=3.0.1
+Requires-Dist: simpleitk>=2.4.1
+Requires-Dist: textual-dev>=1.7.0
+Requires-Dist: textual-image>=0.7.0
+Requires-Dist: textual-slider>=0.2.0
+Requires-Dist: textual-sortable-datatable
+Requires-Dist: textual>=1.0
+Requires-Dist: typer
+Requires-Dist: types-python-dateutil>=2.9.0.20241206
+Description-Content-Type: text/markdown
+
+# textual-file-viewer 
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https://gitlab.com/pjhdekoning/textual-file-viewer/-/raw/main/pyproject.toml?ref_type=heads)
+![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/pjhdekoning/textual-file-viewer)
+![GitLab Last Commit](https://img.shields.io/gitlab/last-commit/pjhdekoning/textual-file-viewer)
+![GitLab Issues](https://img.shields.io/gitlab/issues/open/pjhdekoning/textual-file-viewer)
+![PyPI - License](https://img.shields.io/pypi/l/textual-file-viewer)
+![PyPI - Status](https://img.shields.io/pypi/status/textual-file-viewer)
+![PyPI - Version](https://img.shields.io/pypi/v/textual-file-viewer)
+![PyPI - Format](https://img.shields.io/pypi/format/textual-file-viewer)
+![Pepy Total Downloads](https://img.shields.io/pepy/dt/textual-file-viewer)
+
+Commandline tool to view .xslx, .csv, DICOM, MetaImage (.mha/.mhd) and Niftii files.
+```shell
+file-viewer FILENAME
+```

@@ -1,0 +1,123 @@
+name: ${prefix}playbacks
+node_type: transform
+owners:
+- yshang@netflix.com
+display_name: playbacks
+description: ''
+mode: published
+columns:
+- name: account_id
+  type: bigint
+  display_name: Account Id
+  description: null
+  attributes: []
+  partition: null
+- name: playback_start_utc_epoch_ms_ts
+  type: bigint
+  display_name: Playback Start Utc Epoch Ms Ts
+  description: null
+  attributes: []
+  partition: null
+- name: playback_start_utc_date
+  type: int
+  display_name: Playback Start Utc Date
+  description: null
+  attributes: []
+  partition: null
+- name: view_secs
+  type: int
+  display_name: View Secs
+  description: null
+  attributes: []
+  partition: null
+- name: is_jfk_profile
+  type: int
+  display_name: Is Jfk Profile
+  description: null
+  attributes: []
+  partition: null
+- name: wsum_eqs_v3_score_pts
+  type: double
+  display_name: Wsum Eqs V3 Score Pts
+  description: null
+  attributes:
+  - dimension
+  partition: null
+- name: eqs_view_secs
+  type: int
+  display_name: Eqs View Secs
+  description: null
+  attributes: []
+  partition: null
+- name: play_hw_category
+  type: string
+  display_name: Play Hw Category
+  description: null
+  attributes: []
+  partition: null
+- name: play_client_name
+  type: string
+  display_name: Play Client Name
+  description: null
+  attributes: []
+  partition: null
+dimension_links:
+- type: join
+  role: null
+  dimension_node: common.dimensions.xp.measure_date
+  node_column: null
+  join_type: left
+  join_on: ${prefix}playbacks.playback_start_utc_date = common.dimensions.xp.measure_date.dateint
+- type: join
+  role: null
+  dimension_node: common.dimensions.client_category
+  node_column: null
+  join_type: left
+  join_on: ${prefix}playbacks.play_client_name = common.dimensions.client_category.client_name
+- type: join
+  role: null
+  dimension_node: common.dimensions.hardware_category
+  node_column: null
+  join_type: left
+  join_on: ${prefix}playbacks.play_hw_category = common.dimensions.hardware_category.hw_category
+- type: join
+  role: null
+  dimension_node: member.is_jfk_profile
+  node_column: null
+  join_type: left
+  join_on: ${prefix}playbacks.is_jfk_profile = member.is_jfk_profile.is_jfk_profile
+- type: join
+  role: null
+  dimension_node: common.dimensions.xp.allocation_day
+  node_column: null
+  join_type: right
+  join_on: |-
+    ${prefix}playbacks.account_id = common.dimensions.xp.allocation_day.account_id
+    AND FLOOR(
+      (
+        NF_TO_UNIXTIME_MS(${prefix}playbacks.playback_start_utc_epoch_ms_ts)
+        - common.dimensions.xp.allocation_day.alloc_utc_ms_ts
+      ) / 86400000.0
+    )
+    = common.dimensions.xp.allocation_day.days_since_allocation
+query: |-
+  SELECT
+    account_id,
+    playback_start_utc_epoch_ms_ts,
+    playback_start_utc_date,
+    view_secs,
+    is_jfk_profile,
+    IF(
+      view_secs > 0 AND eqs_v3_score_pts IS NOT NULL AND is_supplemental_playback = 0,
+      view_secs * eqs_v3_score_pts,
+      NULL
+    ) AS wsum_eqs_v3_score_pts,
+    IF(
+        eqs_v3_score_pts IS NOT NULL,
+        view_secs,
+        NULL
+    ) AS eqs_view_secs,
+    play_hw_category,
+    play_client_name
+  FROM source.prodhive.exp_data.playback_allocation_core_w_eqs_f F
+  -- WHERE test_cell_nbr_map[:`common.dimensions.xp.ab_test.test_id`] IS NOT NULL

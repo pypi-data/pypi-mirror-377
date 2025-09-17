@@ -1,0 +1,13 @@
+name: ${prefix}qpd_normalization__35
+node_type: metric
+owners:
+- yshang@netflix.com
+display_name: QPD (normalization = 35)
+description: ''
+mode: published
+query: |-
+  SELECT 28.0 * COUNT( DISTINCT CASE
+          WHEN view_secs >= 360 THEN common.dimensions.xp.allocation_day.days_since_allocation
+          ELSE NULL
+      END) / 35.0
+   FROM ${prefix}playbacks

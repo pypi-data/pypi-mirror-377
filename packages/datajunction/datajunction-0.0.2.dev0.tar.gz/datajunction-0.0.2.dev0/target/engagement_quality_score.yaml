@@ -1,0 +1,12 @@
+name: ${prefix}engagement_quality_score
+node_type: metric
+owners:
+- yshang@netflix.com
+display_name: Engagement Quality Score
+description: ''
+mode: published
+query: |-
+  SELECT CAST(SUM(CASE WHEN wsum_eqs_v3_score_pts IS NOT NULL THEN wsum_eqs_v3_score_pts ELSE NULL END) AS DOUBLE) /
+  SUM(CASE WHEN wsum_eqs_v3_score_pts IS NOT NULL THEN eqs_view_secs ELSE NULL END) FROM ${prefix}playbacks
+direction: higher_is_better
+significant_digits: 3

@@ -1,0 +1,16 @@
+name: ${prefix}qpd
+node_type: metric
+owners:
+- yshang@netflix.com
+display_name: Video QPD per 28d
+description: Video Qualified Play Days (VQPD). Qualified Play Days, formerly known
+  as Days with a Qualified Play (DWAQP), is defined as the number of days per 28 days
+  within the test period that have at least one play of greater than or equal to 6
+  minutes. QPD is the engagement metric we have historically found to be most predictive
+  of retention. For more details on the related research, see [here](https://docs.google.com/document/d/1qIm2BVC_uvcUvqBl4Xfwfkz5WxNKp5alzDbeDE3dTJA/edit).
+mode: published
+query: |-
+  SELECT 28.0 * COUNT( DISTINCT CASE
+          WHEN view_secs >= 360 THEN common.dimensions.xp.allocation_day.days_since_allocation
+          ELSE NULL
+      END) / MAX(common.dimensions.xp.allocation_day.account_observation_day) FROM ${prefix}playbacks

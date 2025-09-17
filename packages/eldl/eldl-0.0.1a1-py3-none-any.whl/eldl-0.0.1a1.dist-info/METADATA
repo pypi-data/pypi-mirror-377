@@ -1,0 +1,91 @@
+Metadata-Version: 2.4
+Name: eldl
+Version: 0.0.1a1
+Summary: An electrochemical dynamics library.
+Project-URL: Documentation, https://github.com/ugognw/eldl
+Project-URL: Issues, https://github.com/ugognw/eldl/issues
+Project-URL: Source, https://github.com/ugognw/eldl
+Author-email: Ugochukwu Nwosu <ugognw@gmail.com>
+License-File: LICENSE
+Keywords: computational chemistry,electrochemistry,physics
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: fenics-basix>=0.9.0
+Provides-Extra: dev
+Requires-Dist: bump-my-version>=1.2.0; extra == 'dev'
+Requires-Dist: mypy>=1.17.0; extra == 'dev'
+Requires-Dist: pre-commit>=2.20.0; extra == 'dev'
+Requires-Dist: ruff>=0.12.3; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: furo>=2024.04.27; extra == 'docs'
+Requires-Dist: sphinx-autobuild>=2024.10.03; extra == 'docs'
+Requires-Dist: sphinx-click>=5.0.1; extra == 'docs'
+Requires-Dist: sphinx-copybutton>=0.5.2; extra == 'docs'
+Requires-Dist: sphinx-notfound-page>=1.1.0; extra == 'docs'
+Requires-Dist: sphinx>=8.0.0; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest-cov>=6.0.0; extra == 'test'
+Requires-Dist: pytest-datadir>=1.7.0; extra == 'test'
+Requires-Dist: pytest-xdist>=3.8.0; extra == 'test'
+Requires-Dist: pytest>=8.4.1; extra == 'test'
+Description-Content-Type: text/x-rst
+
+=============
+eldl
+=============
+
+|eldl|_ is an electrochemical dynamics library written in Python.
+
+.. start
+
+Install `eldl`
+================
+
+`eldl` requires: Python_ 3.10+ or PyPy3.
+
+1. Run the following command in your command line:
+
+.. code-block::
+
+    pip install eldl
+
+2. Check that you've installed the correct version:
+
+.. code-block:: python
+
+    >>> from eldl.__about__ import __version__
+    >>> print(__version__)
+    0.0.1a1
+
+You can also install the in-development version with:
+
+.. code-block::
+
+    pip install git+ssh://https://github.com/ugognw/eldl.git@development
+
+Documentation
+=============
+
+View the latest version of the documentation on `Read the Docs`_
+
+.. _Python: https://www.python.org
+.. _Read the Docs: https://eldl.readthedocs.io/en/latest
+.. |eldl| replace:: `eldl`
+.. _eldl: https://github.com/ugognw/eldl

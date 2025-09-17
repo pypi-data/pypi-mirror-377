@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uniir_for_pyserini"
+version = "0.1.1"
+authors = [
+     { name = "Cong Wei", email = "lim142857@gmail.com" },
+     { name = "Wenhu Chen", email = "wenhuchen@uwaterloo.ca" },
+     { name = "Sahel Sharifymoghaddam", email = "sahel.sharifymoghaddam@uwaterloo.ca" },
+     { name = "Zibo Guo", email = "daniel168.guo@gmail.com" }
+]
+description = "Fork of the original UniIR repository modified for easy and simple Pyserini integration"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+"Homepage" = "https://github.com/castorini/UniIR-for-Pyserini"
+"Bug Tracker" = "https://github.com/castorini/UniIR-for-Pyserini/issues"
+
+[tool.bumpver]
+current_version = "0.1.1"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"', 'version = "{version}"'
+]
+"README.md" = [
+    'current_version = "{version}"',
+]
+
+[tool.setuptools]
+packages = [
+    "uniir_for_pyserini.pyserini_integration",
+    "uniir_for_pyserini.common",
+    "uniir_for_pyserini.data",
+    "uniir_for_pyserini.data.preprocessing",
+    "uniir_for_pyserini.models",
+    "uniir_for_pyserini.models.uniir_blip",
+    "uniir_for_pyserini.models.uniir_blip.backbone",
+    "uniir_for_pyserini.models.uniir_blip.backbone.transform",
+    "uniir_for_pyserini.models.uniir_blip.blip_featurefusion",
+    "uniir_for_pyserini.models.uniir_blip.blip_scorefusion",
+    "uniir_for_pyserini.models.uniir_clip",
+    "uniir_for_pyserini.models.uniir_clip.clip_featurefusion",
+    "uniir_for_pyserini.models.uniir_clip.clip_scorefusion"
+]
+
+[tool.setuptools.package-dir]
+"uniir_for_pyserini.pyserini_integration" = "src/pyserini_integration"
+"uniir_for_pyserini.common" = "src/common"
+"uniir_for_pyserini.data" = "src/data"
+"uniir_for_pyserini.models" = "src/models"
+
+[tool.setuptools.package-data]
+"uniir_for_pyserini.pyserini_integration" = ["model_config.yaml"]
+"uniir_for_pyserini.models" = ["**/*.json"]

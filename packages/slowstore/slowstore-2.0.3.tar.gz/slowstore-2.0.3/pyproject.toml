@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "slowstore"
+version = "2.0.3"
+description = "File json storage backend for your collections"
+authors = ["Costa Halicea <costa@codechem.com>"]
+
+homepage = "https://github.com/42dotmk/slowstore"
+repository = "https://github.com/42dotmk/slowstore"
+documentation = "https://github.com/42dotmk/slowstore/blob/main/README.md"
+
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+pydantic = "^2.8.2"
+pytest = "^8.3.4"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+debugpy = "^1.8.5"
+ipython = "^8.27.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

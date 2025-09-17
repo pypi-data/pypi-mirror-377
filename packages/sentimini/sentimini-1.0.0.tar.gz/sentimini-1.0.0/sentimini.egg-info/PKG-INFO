@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: sentimini
+Version: 1.0.0
+Summary: Tiny Sentiment Analyzer – rule-based & lexicon-based
+Author: Mohammad Shohag
+Project-URL: Homepage, https://github.com/shohagcsediu/sentimini
+Keywords: sentiment-analysis,nlp,lightweight,polarity
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# sentimini – Sentiment Analyzer
+Sentiment analysis package is very lightweight package for analysis sentiment.
+
+Uses rule-based + lexicon approach for quick polarity detection.
+
+## Installation
+
+```bash
+pip install sentimini
+```
+
+## Usage
+
+```bash
+from sentimini import polarity, score
+
+print(polarity("I love this product!"))   # positive
+print(polarity("This is terrible..."))    # negative
+print(polarity("It is okay."))            # neutral
+
+print(score("I really love this!"))
+# { "polarity": "positive", "score": 0.8 }
+```
+
+## Features
+
+✅ Tiny & fast (no ML models)
+
+✅ Works offline
+
+✅ Rule-based with lexicon
+
+✅ Supports negations & intensifiers
+
+✅ Extensible word lists

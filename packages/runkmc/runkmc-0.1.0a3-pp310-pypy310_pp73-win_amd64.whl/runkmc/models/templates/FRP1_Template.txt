@@ -1,0 +1,57 @@
+parameters
+    num_units = {num_units};
+    termination_time = {termination_time};
+    analysis_time = {analysis_time};
+end
+
+species
+    I I     [C0]={I_c0}   FW={I_FW}   f=0.5
+    U R     [C0]=0        FW={R_FW}
+    M A     [C0]={A_c0}   FW={A_FW}
+    M B     [C0]={B_c0}   FW={B_FW}
+    P P[A]
+    P P[B]
+    P D
+end
+
+rateconstants
+    kd	    = {kd}
+
+    kpAA    = {kpAA}
+    kpAB    = {kpAB}
+    kpBA    = {kpBA}
+    kpBB    = {kpBB}
+
+    ktdAA   = {ktdAA}
+    ktdAB   = {ktdAB}
+    ktdBB   = {ktdBB}
+
+    ktcAA   = {ktcAA}
+    ktcAB   = {ktcAB}
+    ktcBB   = {ktcBB}
+end
+
+reactions
+	# ---- Initiator decomoposition ----
+    ID I -kd-> R + R
+    
+	# ---- Initiation ----
+    IN R + A -kpAA-> P[A]
+    IN R + B -kpBB-> P[B]
+
+	# ---- Propagation ----
+    PR P[A] + A -kpAA-> P[A]
+    PR P[A] + B -kpAB-> P[B]
+    PR P[B] + A -kpBA-> P[A]
+    PR P[B] + B -kpBB-> P[B]
+
+	# ---- Termination by combination ----
+    TC P[A] + P[A] -ktcAA-> D
+    TC P[A] + P[B] -ktcAB-> D
+    TC P[B] + P[B] -ktcBB-> D
+
+	# ---- Termination by disproportionation ----
+    TD P[A] + P[A] -ktdAA-> D + D
+    TD P[A] + P[B] -ktdAB-> D + D
+    TD P[B] + P[B] -ktdBB-> D + D
+end

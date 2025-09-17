@@ -1,0 +1,130 @@
+{% autoescape false %}
+// Сгенерированный Pawn-код
+#define UUID "{{ script_id }}"
+#define VERSION "{{ version }}"
+
+#include "gs_natives.inc"
+#include <float>
+
+#define UUID_CFG_ENTRY "{{ config_uuid_cfg_entry }}"
+#define UUID_CFG_DESCRIPTOR "{{ config_uuid_cfg_descriptor }}"
+
+{% for datasource in datasources %}
+#define UUID_{{ datasource.name.upper() }} "{{ datasource.uuid }}"
+{% endfor %}
+
+#define INT8 	0
+#define INT16 	1
+#define INT32 	2
+#define INT64 	3
+#define UINT8 	4
+#define UINT16 	5
+#define UINT32 	6
+#define UINT64 	7
+#define FLOAT	8
+#define STRING	9
+#define ENUM	10
+#define ARRAY	11
+#define BOOL 	12
+
+//------------------------------Function signature types---------------------
+#define FST_CELL 	0
+#define FST_ARRAY 	1
+#define FST_STRING 	2
+#define FST_FLOAT 	3
+#define FST_FIXED 	4
+
+// Добавляем примерные структуры как в примере (адаптировать если нужно)
+// const CANIdType: {CAN11bit=0, CAN29bit=1}
+// #define CANMSG[.id, CANIdType:.idType, .dataSize, .data{64}]
+// #define BTMSG[.mac{6}, .rssi, .dataSize, .data{32}]
+// #define BTPARAMS[.mac{6}, .uuid16, .uuid{16}]
+
+{% for field in fields|sort(attribute='idx') %}
+#define {{ field.name.upper() }} "{{ field.name }}"
+{% endfor %}
+
+public init()
+{
+    Delay(1000);
+    {% for func in functions %}
+    RegisterSignature("{{ func.name }}", {{ func.signature|length }}, {% if func.signature|length > 0 %}{ {% for sig in func.signature %}{% if loop.index > 1 %}, {% endif %}{{ sig.type }}{% endfor %} }{% else %}{ FST_CELL }{% endif %});
+    {% endfor %}
+
+    Diagnostics("\n=== Config Setup ===\n");
+    
+    new metaDesc;
+    
+    if(!ConfigNewMeta("{{ config_name }}", metaDesc))
+        return;
+    
+    {% for field in fields|sort(attribute='idx') %}
+    {% if field.type|lower == 'string' %}
+    if(!ConfigMetaAddField(metaDesc, STRING, {{ field.name.upper() }}, "{{ field.default|default('') }}"))
+    {% elif field.type|lower == 'array' %}
+    new {{ field.name }}Array{% if field.max_length %}[{{ field.max_length }}]{% else %}[8]{% endif %} = { {% if field.default and field.default|length > 0 %}{{ field.default|join(', ') }}{% else %}0, 0, 0, 0, 0, 0, 0, 0{% endif %} };
+    if(!ConfigMetaAddField(metaDesc, ARRAY, {{ field.name.upper() }}, {{ field.name }}Array, {{ field.max_length|default(8) }}))
+    {% elif field.type|lower == 'float' %}
+    new Float:{{ field.name }}Val = {{ field.default|default(0.0) }};
+    if(!ConfigMetaAddField(metaDesc, FLOAT, {{ field.name.upper() }}, {{ field.name }}Val))
+    {% elif field.type in ['INT8','INT16','INT32'] %}
+    if(!ConfigMetaAddField(metaDesc, {{ field.type }}, {{ field.name.upper() }}, {{ field.default|default(0) }}))
+    {% elif field.type in ['UINT8','UINT16','UINT32'] %}
+    if(!ConfigMetaAddField(metaDesc, {{ field.type }}, {{ field.name.upper() }}, {{ field.default|default(0) }}))
+    {% elif field.type|lower == 'enum' %}
+    if(!ConfigMetaAddField(metaDesc, ENUM, {{ field.name.upper() }}, {{ field.default|default(0) }}{% if field.ui and field.ui.options %}{% for opt in field.ui.options %}, "{{ opt.name }}", {{ opt.value }}{% endfor %}{% endif %}))
+    {% elif field.type|lower == 'bool' %}
+    if(!ConfigMetaAddField(metaDesc, BOOL, {{ field.name.upper() }}, {{ field.default|default(0) }}))
+    {% endif %}
+        return;
+    {% endfor %}
+    
+    if(AddOrUpdateConfig(metaDesc))
+        Diagnostics("AddOrUpdateConfig (%d) - OK", metaDesc);
+    else
+    {
+        Diagnostics("AddOrUpdateConfig (%d) - FAIL", metaDesc);
+        return;
+    }
+
+    // ---- Datasource registration ----
+    {% for datasource in datasources %}
+    // {{ datasource.name }} datasource
+    new {{ datasource.name|lower }}Id = 0;
+    if (ArchiveClientIsRegistered(UUID_{{ datasource.name.upper() }}, {{ datasource.name|lower }}Id))
+    {
+        Diagnostics("{{ datasource.name }} Client %x - found", {{ datasource.name|lower }}Id);
+    }
+    else
+    {
+        new {{ datasource.name|lower }}MetaDesc;
+        if (!NewMeta("{{ datasource.name }}", UUID_{{ datasource.name.upper() }}, {{ datasource.name|lower }}MetaDesc))
+        {
+            Diagnostics("Error create meta for %s", UUID_{{ datasource.name.upper() }});
+            return;
+        }
+
+        if ({% for field in datasource.fields|sort(attribute='idx') %}{% if not loop.first %} || {% endif %}!MetaAddField({{ datasource.name|lower }}MetaDesc, {% if field.type|lower == 'string' %}STRING{% elif field.type|lower == 'array' %}ARRAY{% elif field.type|lower == 'float' %}FLOAT{% elif field.type|lower == 'enum' %}ENUM{% elif field.type|lower == 'bool' %}BOOL{% else %}{{ field.type }}{% endif %}, "{{ field.name }}"){% endfor %})
+        {
+            Diagnostics("Error add field for %s", UUID_{{ datasource.name.upper() }});
+            return;
+        }
+        
+        if (!ArchiveRegisterClient({{ datasource.name|lower }}MetaDesc, {{ datasource.name|lower }}Id))
+        {
+            Diagnostics("ArchiveRegisterClient (%d) - fail", {{ datasource.name|lower }}MetaDesc);
+            return;
+        }
+        else
+        {
+            Diagnostics("{{ datasource.name }} Client %x - registered", {{ datasource.name|lower }}Id);
+        }
+    }
+    {% endfor %}
+
+    // Подписки из конфигурации
+    {% for sub in subscriptions %}
+    Subscribe(UUID, "{{ sub.path }}", "{{ sub.function }}");
+    {% endfor %}
+}
+{% endautoescape %} 

@@ -1,0 +1,61 @@
+[project]
+name = "krnel-graph"
+version = "0.1.1"
+description = "Krnel graph library"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [
+    { name = "Kimberly Wilber", email = "kimmy+pypispam@krnel.ai" },
+    { name = "Peyman Faratin", email = "peyman+pypispam@krnel.ai" },
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fsspec>=2024.0.0",
+    "httpx>=0.28.1",
+    "numpy>=2.2",
+    "pandas>=2.3.1",
+    "pyarrow>=21.0.0",
+    "pydantic>=2.11.7",
+    "structlog>=25.4.0",
+]
+
+[project.scripts]
+krnel = "krnel:main"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pandas>=2.3.1",
+]
+viz = [
+    "numba>=0.61.2",
+    "umap-learn",
+    "jupyter-scatter>=0.22.0",
+    "seaborn>=0.13.2", # undeclared umap-learn dep
+]
+cli = [
+    "rich>=13.7.1",
+    "cyclopts>=3.22.5",
+    "humanize>=4.0.0",
+]
+docs = [
+    "sphinx>=7.1.0",
+    "sphinx-autoapi>=3.0.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "myst-parser>=2.0.0",
+    "sphinx-autobuild>=2024.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+krnel = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

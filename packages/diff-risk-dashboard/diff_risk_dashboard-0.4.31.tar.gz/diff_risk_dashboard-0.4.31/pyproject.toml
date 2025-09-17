@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "diff-risk-dashboard"
+version = "0.4.31"
+description = "Visual risk exposure of PRs powered by ai-patch-verifier outputs."
+authors = ["CoderDeltaLAN <coderdeltalan.cargo784@8alias.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "diff_risk_dashboard", from = "src" }]
+
+exclude = ["_intel/**"]
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+pydantic = "^2"
+rich = "^13"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8"
+ruff = "^0.6"
+black = "^24.8"
+mypy = "^1.11"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.ruff.lint]
+select = ["E","F","I","UP"]
+ignore = []
+
+[tool.poetry.scripts]
+diff-risk = "diff_risk_dashboard.cli:main"
+diff-risk-web = "diff_risk_dashboard.web:main"
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"

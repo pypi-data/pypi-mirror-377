@@ -1,0 +1,51 @@
+[project]
+name = "sqlorm-py"
+version = "0.3.1"
+description = "A new kind or ORM that do not abstract away your database or SQL queries."
+authors = [
+    {"name" = "Maxime Bouroumeau-Fuseau", email = "maxime.bouroumeau@gmail.com"}
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "blinker>=1.9.0",
+]
+
+[project.urls]
+Repository = "https://github.com/hyperflask/sqlorm"
+
+[project.entry-points."opentelemetry_instrumentor"]
+sqlorm = "sqlorm.opentelemetry:SQLORMInstrumentor"
+
+[dependency-groups]
+postgresql = [
+    "psycopg[binary] >=3.1.18,<4.0.0"
+]
+mysql = [
+    "mysql-connector-python >=8.3.0,<9.0.0"
+]
+encrypted = [
+    "pycryptodome >=3.20.0,<4.0.0"
+]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.4",
+    "mkdocs-material>=9.5.24",
+    "mkdocs-callouts>=1.13.2"
+]
+
+[tool.ruff]
+include = ["sqlorm/**/*.py"]
+line-length = 100
+
+[tool.ruff.lint]
+exclude = ["sqlorm/__init__.py"]
+
+[build-system]
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "sqlorm"

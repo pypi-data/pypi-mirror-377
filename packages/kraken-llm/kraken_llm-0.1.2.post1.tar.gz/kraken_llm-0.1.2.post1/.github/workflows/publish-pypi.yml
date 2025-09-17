@@ -1,0 +1,45 @@
+name: Build and Publish Python Package with Post Version Increment
+
+on:
+  push:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Count commits for current version
+        id: count_commits
+        run: |
+          VERSION_BASE="0.1.2"
+          COUNT=$(git rev-list --count HEAD)
+          # Формируем постфикс версии с подсчётом
+          NEW_VERSION="${VERSION_BASE}post${COUNT}"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Update version in pyproject.toml
+        run: sed -i "s|^version = .*|version = \"$NEW_VERSION\"|" pyproject.toml
+
+      - name: Clean dist folder
+        run: rm -rf dist/*
+
+      - name: Install build system
+        run: python3 -m pip install --upgrade build hatchling
+
+      - name: Build distribution
+        run: python3 -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

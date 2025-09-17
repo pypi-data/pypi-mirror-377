@@ -1,0 +1,21 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended"
+    ],
+    "branchPrefix": "renovate-", 
+    "packageRules": [
+        {
+          "groupName": "group-github-actions",
+          "description": "Group GitHub Action updates",
+          "matchManagers": ["github-actions"],
+          "semanticCommitType": "chore"
+        },
+        {
+          "groupName": "group-pyproject-toml",
+          "description": "Group pyproject.toml dependency updates",
+          "matchFiles": ["pyproject.toml"],
+          "semanticCommitType": "chore"
+        }
+    ]
+}

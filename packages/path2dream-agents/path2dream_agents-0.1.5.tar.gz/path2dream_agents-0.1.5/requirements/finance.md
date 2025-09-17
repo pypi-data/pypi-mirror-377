@@ -1,0 +1,2 @@
+- The goal of the Micro-SaaS is to maximaze the profit
+- When choosing target segments, focus on paying segments. By default it means focusing on US/EU region unless proven that some other region is also promising

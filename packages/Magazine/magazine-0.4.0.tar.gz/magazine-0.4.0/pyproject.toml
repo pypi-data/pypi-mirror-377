@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Magazine"
+version = "0.4.0"
+description = "Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document."
+authors = [{name = "Martin Schrön", email = "martin@schroen.eu"}]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["logging", "reports", "pdf"]
+
+dependencies = [
+    "numpy>=1.20,<3.0",
+    "matplotlib>=3.0",
+    "neatlogger>=0.1",
+    "pandas",
+    "fpdf2",
+    "habanero",
+    "figurex>=0.2.15",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mschroen/magazine"
+Repository = "https://github.com/mschroen/magazine"
+Issues = "https://github.com/mschroen/magazine/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["magazine*"]
+
+[tool.setuptools.package-data]
+magazine = ["*.txt", "*.md", "fonts/*.ttf"]
+
+[tool.setuptools]
+include-package-data = true
+

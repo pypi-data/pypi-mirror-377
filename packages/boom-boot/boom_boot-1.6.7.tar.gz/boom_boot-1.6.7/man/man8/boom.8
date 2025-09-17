@@ -1,0 +1,1755 @@
+.TH BOOM 8 "Sep 04 2025" "Linux" "MAINTENANCE COMMANDS"
+.\" Compatibility for older groff (1.22.x) lacking EX/EE
+.ie d EX \{\
+.\}
+.el \{\
+.de EX
+.  nf
+.  RS
+..
+.de EE
+.  RE
+.  fi
+..
+.\}
+.
+.\" URL macro fallbacks for man2html compatibility (and groff without man-ext)
+.\" Define UR and UE independently so we don't assume both exist.
+.if !d UR \{\
+.de UR
+\\$2 \(la\\$1\(ra
+..
+.\}
+.if !d UE \{\
+.de UE
+.  br
+..
+.\}
+.
+.de ARG_CMD_TYPES
+.  RI [ entry | profile | host ]
+..
+.
+.de ARG_COMMANDS
+.  RI [ create | delete | clone | show | list | edit ]
+..
+.
+.de ARG_LEGACY_TYPES
+.  RI legacy " "\c
+..
+.
+.de ARG_LEGACY_COMMAND
+.  RI [ write | clear | show ]
+..
+.
+.de ARG_CACHE_TYPES
+.  RI cache " "\c
+..
+.
+.de ARG_CACHE_COMMAND
+.  RI [ list | show ]
+..
+.
+.SH NAME
+.
+Boom \(em linux boot manager
+.
+.SH SYNOPSIS
+.
+.SS Command types
+.B boom
+.de CMD_COMMAND
+.  ARG_CMD_TYPES
+.  ARG_COMMANDS
+..
+.CMD_COMMAND
+.br
+.
+.B boom
+.de CMD_LEGACY_COMMAND
+.  ARG_LEGACY_TYPES
+.  ARG_LEGACY_COMMAND
+..
+.CMD_LEGACY_COMMAND
+.br
+.
+.B boom
+.de CMD_CACHE_COMMAND
+.  ARG_CACHE_TYPES
+.  ARG_CACHE_COMMAND
+..
+.CMD_CACHE_COMMAND
+.br
+.
+.br
+.P
+.SS Subcommands
+.
+.B boom
+.de CMD_ENTRY_CREATE
+.  B entry
+.  B create
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --root-device\ \c
+.  IR device ] " "\c
+.  RB [ --root-lv\ \c
+.  IR lv ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  RB [ --btrfs-subvol\ \c
+.  IR subvol ] " "\c
+.  RB [ --add-opts\ \c
+.  IR opts ] " "\c
+.  RB [ --del-opts\ \c
+.  IR opts ] " "\c
+.  RB [ --backup ] " "\c
+.  RB [ --update ] " "\c
+.  RB [ --no-fstab ] " "\c
+.  RB [ --mount\ \c
+.  IR mount ] " "\c
+.  RB [ --swap\ \c
+.  IR swap ] " "\c
+..
+.CMD_ENTRY_CREATE
+.br
+.
+.B boom
+.de CMD_ENTRY_DELETE
+.  B entry
+.  B delete
+.  RB [ --boot-id\ \c
+.  IR boot_id ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ boot_id ] " "\c
+..
+.CMD_ENTRY_DELETE
+.br
+.
+.B boom
+.de CMD_ENTRY_CLONE
+.  B entry
+.  B clone
+.  RB [ --boot-id\ \c
+.  IR boot_id ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --root-device\ \c
+.  IR device ] " "\c
+.  RB [ --root-lv\ \c
+.  IR lv ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  RB [ --btrfs-subvol\ \c
+.  IR subvol ] " "\c
+.  RB [ --add-opts\ \c
+.  IR opts ] " "\c
+.  RB [ --del-opts\ \c
+.  IR opts ] " "\c
+.  RB [ --backup ] " "\c
+.  RB [ --update ] " "\c
+.  RB [ --no-fstab ] " "\c
+.  RB [ --mount\ \c
+.  IR mount ] " "\c
+.  RB [ --swap\ \c
+.  IR swap ] " "\c
+.  RB [ boot_id ] " "\c
+..
+.CMD_ENTRY_CLONE
+.br
+.
+.B boom
+.de CMD_ENTRY_LIST
+.  B entry
+.  B list
+.  RB [ --boot-id\ \c
+.  IR boot_id ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --root-device\ \c
+.  IR device ] " "\c
+.  RB [ --root-lv\ \c
+.  IR lv ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  RB [ --btrfs-subvol\ \c
+.  IR subvol ] " "\c
+.  RB [ --nameprefixes ] " "\c
+.  RB [ --noheadings ] " "\c
+.  RB [ --options\ \c
+.  IR fields ] " "\c
+.  RB [ --sort\ \c
+.  IR fields ] " "\c
+.  RB [ --rows | --json ] " "\c
+.  RB [ --separator\ \c
+.  IR separator ] " "\c
+.  IR [ boot_id ] " "\c
+..
+.CMD_ENTRY_LIST
+.br
+.
+.B boom
+.de CMD_ENTRY_SHOW
+.  B entry
+.  B show
+.  RB [ --boot-id\ \c
+.  IR boot_id ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --root-device\ \c
+.  IR device ] " "\c
+.  RB [ --root-lv\ \c
+.  IR lv ] " "\c
+.  RB [ --btrfs-subvol\ \c
+.  IR subvol ] " "\c
+.  IR [ boot_id ] " "\c
+..
+.CMD_ENTRY_SHOW
+.br
+.P
+.
+.B boom
+.de CMD_PROFILE_CREATE
+.  B profile
+.  B create
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --os-version-id\ \c
+.  IR version_id ] " "\c
+.  BR [ --from-host ] " "\c
+.  RB [ --os-release\ \c
+.  IR os_release ] " "\c
+.  RB [ --uname-pattern\ \c
+.  IR uname_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+..
+.CMD_PROFILE_CREATE
+.br
+.
+.B boom
+.de CMD_PROFILE_DELETE
+.  B profile
+.  B delete
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --os-version-id\ \c
+.  IR version_id ] " "\c
+.  BR [ --from-host ] " "\c
+.  RB [ --os-release\ \c
+.  IR os_release ] " "\c
+.  RB [ --uname-pattern\ \c
+.  IR uname_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+.  IR [ profile_id ] " "\c
+..
+.CMD_PROFILE_DELETE
+.br
+.
+.B boom
+.de CMD_PROFILE_CLONE
+.  B profile
+.  B clone
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --os-version-id\ \c
+.  IR version_id ] " "\c
+.  BR [ --from-host ] " "\c
+.  RB [ --os-release\ \c
+.  IR os_release ] " "\c
+.  RB [ --uname-pattern\ \c
+.  IR uname_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+.  IR [ profile_id ] " "\c
+..
+.CMD_PROFILE_CLONE
+.br
+.
+.B boom
+.de CMD_PROFILE_LIST
+.  B profile
+.  B list
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --nameprefixes ] " "\c
+.  RB [ --noheadings ] " "\c
+.  RB [ --options\ \c
+.  IR fields ] " "\c
+.  RB [ --sort\ \c
+.  IR fields ] " "\c
+.  RB [ --rows | --json ] " "\c
+.  RB [ --separator\ \c
+.  IR separator ] " "\c
+.  IR [ profile_id ] " "\c
+..
+.CMD_PROFILE_LIST
+.br
+.
+.B boom
+.de CMD_PROFILE_SHOW
+.  B profile
+.  B show
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  IR [ profile_id ] " "\c
+..
+.CMD_PROFILE_SHOW
+.br
+.P
+.
+.B boom
+.de CMD_HOST_CREATE
+.  B host
+.  B create
+.  RB [ --name\ \c
+.  IR name ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --machine-id\ \c
+.  IR machine_id ] " "\c
+.  RB [ --kernel-pattern\ \c
+.  IR kernel_pattern ] " "\c
+.  RB [ --initramfs-pattern\ \c
+.  IR initramfs_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+..
+.CMD_HOST_CREATE
+.br
+.
+.B boom
+.de CMD_HOST_DELETE
+.  B host
+.  B delete
+.  RB [ --host-profile\ \c
+.  IR host_id ] " "\c
+.  IR [ host_id ] " "\c
+..
+.CMD_HOST_DELETE
+.br
+.
+.B boom
+.de CMD_HOST_CLONE
+.  B host
+.  B clone
+.  RB [ --host-profile\ \c
+.  IR host_id ] " "\c
+.  RB [ --name\ \c
+.  IR name ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --machine-id\ \c
+.  IR machine_id ] " "\c
+.  RB [ --kernel-pattern\ \c
+.  IR kernel_pattern ] " "\c
+.  RB [ --initramfs-pattern\ \c
+.  IR initramfs_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+.  IR [ host_id ] " "\c
+..
+.CMD_HOST_CLONE
+.br
+.
+.B boom
+.de CMD_HOST_EDIT
+.  B host
+.  B edit
+.  RB [ --host-profile\ \c
+.  IR host_id ] " "\c
+.  RB [ --name\ \c
+.  IR name ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --machine-id\ \c
+.  IR machine_id ] " "\c
+.  RB [ --kernel-pattern\ \c
+.  IR kernel_pattern ] " "\c
+.  RB [ --initramfs-pattern\ \c
+.  IR initramfs_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+.  IR [ host_id ] " "\c
+..
+.CMD_HOST_EDIT
+.br
+.
+.B boom
+.de CMD_HOST_LIST
+.  B host
+.  B list
+.  RB [ --host-profile\ \c
+.  IR host_id ] " "\c
+.  RB [ --name\ \c
+.  IR name ] " "\c
+.  RB [ --short-name\ \c
+.  IR short_name ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --machine-id\ \c
+.  IR machine_id ] " "\c
+.  RB [ --kernel-pattern\ \c
+.  IR kernel_pattern ] " "\c
+.  RB [ --initramfs-pattern\ \c
+.  IR initramfs_pattern ] " "\c
+.  RB [ --lvm-opts\ \c
+.  IR lvm_opts ] " "\c
+.  RB [ --btrfs-opts\ \c
+.  IR btrfs_opts ] " "\c
+.  RB [ --os-options\ \c
+.  IR os_options ] " "\c
+.  RB [ --nameprefixes ] " "\c
+.  RB [ --noheadings ] " "\c
+.  RB [ --options\ \c
+.  IR fields ] " "\c
+.  RB [ --sort\ \c
+.  IR fields ] " "\c
+.  RB [ --rows | --json ] " "\c
+.  RB [ --separator\ \c
+.  IR separator ] " "\c
+.  IR [ host_id ] " "\c
+..
+.CMD_HOST_LIST
+.br
+.
+.B boom
+.de CMD_HOST_SHOW
+.  B host
+.  B show
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  IR [ profile_id ] " "\c
+..
+.CMD_HOST_SHOW
+.br
+.P
+.
+.B boom
+.de CMD_LEGACY_WRITE
+.  B legacy
+.  B write
+.  RB [ --boot-id\ \c
+.  IR boot_id ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --root-device\ \c
+.  IR device ] " "\c
+.  RB [ --root-lv\ \c
+.  IR lv ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  RB [ --btrfs-subvol\ \c
+.  IR subvol ] " "\c
+.  IR [ boot_id ] " "\c
+..
+.CMD_LEGACY_WRITE
+.br
+.
+.B boom
+.de CMD_LEGACY_CLEAR
+.  B legacy
+.  B clear
+..
+.CMD_LEGACY_CLEAR
+.br
+.
+.B boom
+.de CMD_LEGACY_SHOW
+.  B legacy
+.  B show
+.  RB [ --boot-id\ \c
+.  IR boot_id ] " "\c
+.  RB [ --profile\ \c
+.  IR os_id ] " "\c
+.  RB [ --version\ \c
+.  IR version ] " "\c
+.  RB [ --name\ \c
+.  IR osname ] " "\c
+.  RB [ --short-name\ \c
+.  IR osshortname ] " "\c
+.  RB [ --os-version\ \c
+.  IR version ] " "\c
+.  RB [ --root-device\ \c
+.  IR device ] " "\c
+.  RB [ --root-lv\ \c
+.  IR lv ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  RB [ --btrfs-subvol\ \c
+.  IR subvol ] " "\c
+.  IR [ boot_id ] " "\c
+..
+.CMD_LEGACY_SHOW
+.br
+.P
+.
+.B boom
+.de CMD_CACHE_LIST
+.  B cache
+.  B list
+.  RB [ --image\ \c
+.  IR img_id ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  RB [ --nameprefixes ] " "\c
+.  RB [ --noheadings ] " "\c
+.  RB [ --options\ \c
+.  IR fields ] " "\c
+.  RB [ --sort\ \c
+.  IR fields ] " "\c
+.  RB [ --rows | --json ] " "\c
+.  RB [ --separator\ \c
+.  IR separator ] " "\c
+.  IR [ img_id ] " "\c
+..
+.CMD_CACHE_LIST
+.br
+.
+.B boom
+.de CMD_CACHE_SHOW
+.  B cache
+.  B show
+.  RB [ --image\ \c
+.  IR img_id ] " "\c
+.  RB [ --linux\ \c
+.  IR kernel_path ] " "\c
+.  RB [ --initrd\ \c
+.  IR initrd_path ] " "\c
+.  IR [ img_id ] " "\c
+..
+.CMD_CACHE_SHOW
+.br
+.P
+.
+.B boom
+.de CMD_CONFIG_CREATE
+.  B config
+.  B create
+.  RB [ --boot-dir\ \c
+.  IR boot_dir ] " "\c
+..
+.CMD_CONFIG_CREATE
+.br
+.
+.SH DESCRIPTION
+.
+Boom is a \fIboot manager\fP for Linux systems using boot loaders that
+support the \fBBoot Loader Specification\fP (BLS) for boot entry
+configuration.
+.P
+Boom works best with a BLS compatible boot loader: either the
+\fIsystemd-boot\fP project, or \fIGrub2\fP with the `bls` patch. The
+\fIgrub2\fP boot loader included in \fBCentOS\fP, \fBFedora\fP and
+\fBRed Hat Enterprise Linux\fP include this support.
+.P
+All long options supported by boom may be written with or without
+dashes separating words. For example, \fB--boot-id\fP and \fB--bootid\fP
+are synonymous.
+.P
+.SH DEPRECATION NOTICE
+.
+The \fIlegacy bootloader commands\fP (\fBboom legacy write | clear | show\fP)
+and boom legacy bootloader integration are deprecated as of \fIboom-1.6.7\fP
+and will be removed in a future release.
+.
+.SH OPTIONS
+.
+.TP 8
+\fB-a | --add-opts\fP \fIopts\fP
+.br
+Specify additional boot options for this entry.
+.
+.TP 8
+\fB-d | --del-opts\fP \fIopts\fP
+.br
+Specify boot options to exclude from this entry.
+.
+.TP 8
+.B --backup
+.br
+Back up boot images used for this entry.
+.
+.TP 8
+\fB-b | --boot-id | --bootid\fP \fIboot_id\fP
+.br
+Specify a boot identifier to operate on.
+.
+.TP 8
+\fB--boot-dir | --bootdir\fP \fIpath\fP
+.br
+Specify the location of the /boot file system. Useful for testing or
+for accessing boom data from a system image.
+.
+.TP 8
+\fB-B | --btrfs-subvolume | --btrfssubvolume\fP \fIsubvol_path | subvol_id\fP
+.br
+Specify a BTRFS subvolume by its path or identifier.
+.br
+.TP 8
+\fB--btrfs-opts | --btrfsopts\fP \fIbtrfs_options_template\fP
+.br
+An OS profile template string for BTRFS boot options.
+.
+.TP 8
+\fB--debug\fP \fIdebug_flags\fP
+.br
+A comma-separated list of subsystem names to enable debugging output
+for, or 'all' to enable all debugging. The available debug classes
+are: profile, entry, command, report.
+.
+.TP 8
+\fB-e | --efi\fP \fIefi_image\fP
+.br
+Specify an EFI application image for a boot entry.
+.
+.TP 8
+.B -E | --expand-variables
+.br
+Expand bootloader variables in command output.
+.
+.TP 8
+.B -H | --from-host | --fromhost
+.br
+When creating a new OS profile, use \fIos-release\fP data from the
+running host.
+.
+.TP 8
+\fB-P | --host-profile\fP \fIprofile\fP
+.br
+Use the specified host profile for search or create operations.
+.
+.TP 8
+\fB-i | --initrd\fP \fIimage_path\fP
+.br
+A Linux initial ramfs image path.
+.
+.TP 8
+\fB-k | --kernel-pattern | --kernelpattern\fP \fIpattern\fP
+.br
+An OS profile template used to generate kernel image paths.
+.
+.TP 8
+\fB-l | --linux\fP \fIimage_path\fP
+.br
+A Linux kernel image path.
+.
+.TP 8
+\fB-L | --root-lv | --rootlv\fP \fIroot_lv\fP
+.br
+The logical volume containing the root file system for a boot entry.
+If \fB--root-lv\fP is given, but \fB--root-device\fP is not, the root
+device is assumed to be the specified logical volume.
+.
+.TP 8
+\fB--lvm-opts\fP \fIlvm_opts\fP
+.br
+An OS profile template used to generate LVM2 boot options.
+.
+.TP 8
+\fB-m | --machine-id | --machineid\fP \fImachine_id\fP
+.br
+.
+.TP 8
+\fB-M | --mount\fP \fIwhat:where:fstype:options\fP
+.br
+Specify a command-line file system mount for the boot entry.
+.
+.TP 8
+\fB-n | --name\fP \fIos_name\fP
+.br
+The name of a boom operating system profile.
+.
+.TP 8
+.B --name-prefixes | --nameprefixes
+.br
+Add a prefix to report field output names.
+.
+.TP 8
+.B --no-fstab
+.br
+Disable processing of /etc/fstab for the boot entry.
+.
+.TP 8
+.B --no-headings | --noheadings
+.br
+Suppress output of report headings.
+.
+.TP 8
+\fB-o | --options\fP \fIfield_list\fP
+.br
+Specify which fields to display.
+.
+.TP 8
+\fB--os-version\fP \fIos_version\fP
+.br
+The version string of a boom operating system profile.
+.
+.TP 8
+\fB-O | --sort\fP \fIkey_list\fP
+.br
+A comma-separated list of sort keys (field names), with an optional
+per-field prefix of \fB+\fP or \fB-\fP to force ascending or
+descending sort order respectively for that field.
+.
+.TP 8
+\fB-I | --os-version-id | --osversionid\fP \fIos_version_id\fP
+.br
+A boom operating system profile version identifier.
+.
+.TP 8
+\fB--os-options | --osoptions\fP \fIoptions_template\fP
+.br
+An operating system profile template string used to generate the
+kernel command line options string.
+.
+.TP 8
+\fB--os-release | --osrelease\fP \fIos_release_path\fP
+.br
+A path to a file in \fIos-release(5)\fP from which to create a new
+operating system profile.
+.
+.TP 8
+\fB-p | --profile\fP \fIos_id\fP
+.br
+The operating system identifier (\fIos_id\fP) of a boom operating
+system profile to use for the current operation. Defaults to the
+OS profile of the running system if absent.
+.
+.TP 8
+\fB-r | --root-device | --rootdevice\fP \fIroot_dev\fP
+.br
+The system root device for a new boot entry.
+.
+.TP 8
+\fB-R | --initramfs-pattern | --initramfspattern\fP \fIinitramfs_pattern\fP
+.br
+An OS profile template used to generate initial ramfs image paths.
+.
+.TP 8
+.B --rows
+.br
+Output report columns as rows.
+.
+.TP
+.B --json
+.br
+Output reports in JSON notation
+.
+.TP
+\fB--separator\fP \fIseparator\fP
+.br
+Report field separator
+.
+.TP
+\fB-s | --short-name | --shortname\fP \fIshort_name\fP
+The short name of a boom operating system profile.
+.
+.TP
+\fB--swap\fP \fIwhat:options\fP
+.br
+Specify a command-line swap configuration for the boot entry.
+.
+.TP
+\fB-t | --title\fP \fIentry_title\fP
+.br
+The title for a new boot entry.
+.
+.TP
+\fB-u | --uname-pattern | --unamepattern\fP \fIuname_pattern\fP
+.br
+An uname pattern to match for an operating system profile.
+.
+.TP
+.B --update
+.br
+When used with \fB--backup\fP update the backup image to the current
+version found in the boot directory.
+.
+.TP
+.B -V | --verbose
+.br
+Increase verbosity level. Specify multiple times, or set additional
+debug classes with \fB--debug\fP to enable more verbose messages.
+.
+.TP
+\fB-v | --version\fP \fIversion\fP
+.br
+The kernel version of a boom boot entry.
+.
+.SH OS Profiles and Boot Entries
+.
+Boom manages boot loader entries for one or more installed operating
+systems. Each operating system is identified by an \fBOS Profile\fP
+that provides identity information and a set of templates used to
+create boot loader entries.
+.P
+An OS profile is identified by its \fBos_id\fP, an alphanumeric
+string based on an SHA digest of the profile's identity fields.
+Identifiers reported in boom command output are automatically
+abbreviated to the minimum length required to ensure uniqueness
+and this short form may be used in any place where a boom OS
+identifier is expected.
+.P
+A \fBBoot Entry\fP represents one bootable instance of an installed
+operating system: a kernel, optional initial ramfs image, command
+line options, and other images or settings required for boot.
+.P
+Each boot entry is also identified by a SHA based unique identifier:
+the \fBboot_id\fP. An entry's ID is used to select an entry for
+display, modification, deletion or other operations.
+.P
+Since the boot entry's identifier is based on the boot parameters
+used to create the entry, the \fBboot_id\fP will change if an
+existing entry is modified (for e.g. with the \fBboom entry edit\fP
+command).
+.
+.SS Host Profiles
+.
+Host profiles provide an additional mechanism to control boot entry
+templates on a per-host basis. A host profile is bound to a specific
+\fBmachine_id\fP and is used whenever new boot entries are created for
+the corresponding host.
+.P
+A host profile can add and delete boot options from the set supplied by
+the active \fBOS Profile\fP, or override specific OS Profile keys
+completely. Any keys not set in a host profile are mapped directly to
+the original OS profile.
+.P
+.SH COMMANDS
+Commands consist of a \fBtype\fP (\fBentry\fP, \fBprofile\fP, \fBhost\fP,
+\fBlegacy\fP, \fBcache\fP, \fBconfig\fP), followed by a type-specific
+subcommand.
+.
+.SS Boot Entry Commands
+.
+.TP 5
+.B boom
+.CMD_ENTRY_CREATE
+.br
+Create a new boot entry using the specified values.
+.IP
+The title of the new entry must be set with the \fB--title\fP option.
+.IP
+The kernel version for the new entry is given with \fB--version\fP.
+If \fB--version\fP is not present the version is assumed to be that
+of the currently running kernel.
+.IP
+If \fB--profile\fP is given, it specifies the OS identifier of an
+existing OS profile to use for the new entry. If \fB--profile\fP is
+not given, and a profile exists that matches either the supplied
+or detected version then that profile will be automatically used.
+.IP
+The \fImachine-id\fP of the new entry is automatically set to the
+current machine-id (read from /etc/machine-id) unless this is
+overridden by the \fB--machine-id\fP switch.
+.IP
+A root device may be explicitly specified with the \fB--root-device\fP
+option or if an LVM2 logical volume is used this may be specified
+with \fB--root-lv\fP: in this case the root device is assumed to be
+the normal device path of the specified logical volume.
+.IP
+A BTRFS subvolume may be set by either the subvolume path or subvolume
+identifier using the \fB--btrfs-subvol\fP option.
+.IP
+Additional boot options not defined by the corresponding \fBOsProfile\fP
+templates may be specified with \fB--add-opts\fP. Options may also be
+removed from the entry using \fB--del-opts\fP (for example to disable
+graphical boot or the "quiet" flag for a particular entry).
+.IP
+If \fB--backup\fP is given a backup is made of the boot images (vmlinuz
+and initramfs) used by the boot entry and the new entry will use the
+backup paths instead of the original image paths. By default if an
+existing backup image is present it will be reused instead of using the
+latest matching image found in the boot directory. This behaviour can be
+overridden by using the \fB--update\fP option.
+.IP
+The newly created entry and its boot identifier are printed to the
+terminal on success:
+.IP
+.EX
+# boom create --title 'System Snapshot' --root-lv vg00/lvol0
+Created entry with boot_id 14d6b6e:
+  title System Snapshot
+  machine-id 611f38fd887d41dea7eb3403b2730a76
+  version 4.13.5-200.fc26.x86_64
+  linux /vmlinuz-4.13.5-200.fc26.x86_64
+  initrd /initramfs-4.13.5-200.fc26.x86_64.img
+  options BOOT_IMAGE=/vmlinuz-4.13.5-200.fc26.x86_64 root=/dev/vg00/lvol0 ro rd.lvm.lv=vg00/lvol0 rhgb quiet
+.EE
+.
+.TP 5
+.B boom
+.CMD_ENTRY_DELETE
+.br
+Delete the specified boot entry. The entry to delete may be specified
+either by its \fBboot identifier\fP, in which case at most one entry
+will be removed, or by specifying selection criteria which may match
+(and remove) multiple entries in a single operation.
+.IP
+For example, by giving \fB--version\fP, all entries matching the
+specified kernel version can be removed at once.
+.IP
+On success the number of entries removed is printed to the terminal.
+If the \fB--verbose\fP option is given then a report of the entries
+removed will also be displayed.
+.
+.TP 5
+.B boom
+.CMD_ENTRY_CLONE
+.br
+Clone an existing boot entry and modify its configuration.
+.IP
+The entry to clone must be specified by its \fBboot identifier\fP.
+Any remaining command line arguments are taken to be modifications
+to the original entry.
+.IP
+If \fB--backup\fP is given a backup is made of the boot images (vmlinuz
+and initramfs) used by the boot entry and the new entry will use the
+backup paths instead of the original image paths. By default if an
+existing backup image is present it will be reused instead of using the
+latest matching image found in the boot directory. This behaviour can be
+overridden by using the \fB--update\fP option.
+.IP
+On success the new entry and its boot identifier are printed to the
+terminal.
+.
+.TP 5
+.B boom
+.CMD_ENTRY_LIST
+.br
+Output a tabular report of boot entries.
+.IP
+Displays a report with one boot entry per line, containing fields
+describing the properties of the configured boot entries.
+.IP
+The list of fields to display is given with \fB--options\fP as a
+comma separated list of field names. To obtain a list of available
+fields run '\fBboom list -o help\fP'. If the list of fields begins
+with the '\fB+\fP' character the specified fields are appended to
+the default field list. Otherwise the given list of fields replaces
+the default set of report fields.
+.IP
+Report output may be sorted by multiple user-defined keys using
+the \fB--sort\fP option. The option expects a comma separated list
+of keys, with optional '\fB+\fP' and '\fB-\fP' prefixes indicating
+ascending and descending sort for that field respectively.
+.
+.TP 5
+.B boom
+.CMD_ENTRY_SHOW
+.br
+Display boot entries matching selection criteria on standard out.
+.IP
+Boot entries matching the criteria given on the command line are
+printed to the terminal in boot loader entry format.
+.IP
+If \fB--expand-variables\fP is given then any bootloader
+environment variables in the output will be replaced with their
+current values, for example the $kernelopts variable that some
+distributions configure to store the kernel command line.
+.
+.SS OS Profile Commands
+.
+.TP 5
+.B boom
+.CMD_PROFILE_CREATE
+.br
+Create a new OS profile using the specified values.
+.IP
+A new OS profile can be created either by specifying required values
+on the \fBboom\fP command line, or by reading data from either the
+hosts's \fIos-release\fP file (at /etc/os-release), or from another
+file in \fIos-release\fP format specified on the command line.
+.IP
+The information read from \fIos-release\fP (or equivalent command line
+options) form the profile's identity and are the basis for the profile
+OS identifier.
+.IP
+In addition to the \fIos-release\fP data a new OS profile requires
+a uname version string pattern to match, and template values used to
+construct boot entries.
+.IP
+The uname pattern must be given on the \fBprofile create\fP command
+line and is a regular expression matching the UTS release
+(\fBuname -r\fP) values reported by that distribution. The pattern is
+only used to attempt to match unknown boot entries to a valid OS
+profile: for example entries that have been manually edited, or that
+were created by another tool.
+.IP
+The \fBboom\fP command provides default templates that are suitable
+for most Linux distributions. Alternately, these values may be set
+on the command line at the time of profile creation, or modified using
+the \fBboom\fP program at a later time.
+.IP
+To create a profile for the currently running host, use the
+\fB--from-host\fP switch.
+.IP
+To create a profile from a saved \fIos-release\fP file use the
+\fB--os-release\fP option and give the path to the file to be used.
+.
+.TP 5
+.B boom
+.CMD_PROFILE_DELETE
+.br
+Delete the specified Os profile or profiles.
+.IP
+Delete all OS profiles matching the provided selection criteria. If
+the \fB--profile\fP option is used to specify an OS identifier then
+at most one profile will be removed.
+.IP
+On success the number of profiles removed is printed to the terminal.
+If the \fB--verbose\fP option is given then a report of the profiles
+removed will also be displayed.
+.
+.TP 5
+.B boom
+.CMD_PROFILE_CLONE
+.br
+Clone an existing OS profile and modify its configuration.
+.IP
+The entry to clone must be specified by its \fBOS identifier\fP.
+Any remaining command line arguments are taken to be modifications
+to the original entry.
+.IP
+On success the new entry and its OS identifier are printed to the
+terminal.
+.
+.TP 5
+.B boom
+.CMD_PROFILE_LIST
+.br
+Output a tabular report of OS profiles.
+.IP
+Displays a report with one OS profile per line, containing fields
+describing the properties of the configured OS profiles.
+.IP
+The list of fields to display is given with \fB--options\fP as a
+comma separated list of field names. To obtain a list of available
+fields run '\fBboom list -o help\fP'. If the list of fields begins
+with the '\fB+\fP' character the specified fields are appended to
+the default field list. Otherwise the given list of fields replaces
+the default set of report fields.
+.IP
+Report output may be sorted by multiple user-defined keys using
+the \fB--sort\fP option. The option expects a comma separated list
+of keys, with optional '\fB+\fP' and '\fB-\fP' prefixes indicating
+ascending and descending sort for that field respectively.
+.
+.TP 5
+.B boom
+.CMD_PROFILE_SHOW
+.br
+Display OS profiles matching selection criteria on standard out.
+.IP
+OS profiles matching the criteria given on the command line are
+printed to the terminal in a compact multi-line format.
+.
+.SS Host Profile Commands
+.
+.TP 5
+.B boom
+.CMD_HOST_CREATE
+.br
+Create a new host profile for the specified \fBmachine_id\fP and using
+the given profile option arguments. Any \fBOS Profile\fP keys that are
+given values will override the values in the underlying profile.
+.
+.TP 5
+.B boom
+.CMD_HOST_DELETE
+.br
+Delete the specified host profile or profiles.
+.IP
+Delete all host profiles matching the provided selection criteria. If
+the \fB--host-profile\fP option is used to specify an host identifier
+then at most one profile will be removed.
+.IP
+On success the number of profiles removed is printed to the terminal.
+If the \fB--verbose\fP option is given then a report of the profiles
+removed will also be displayed.
+.
+.TP 5
+.B boom
+.CMD_HOST_CLONE
+.br
+Clone an existing host profile and modify its configuration.
+.IP
+The entry to clone must be specified by its \fBhost identifier\fP.
+Any remaining command line arguments are taken to be modifications
+to the original entry.
+.IP
+On success the new entry and its host identifier are printed to the
+terminal.
+.
+.TP 5
+.B boom
+.CMD_HOST_EDIT
+.br
+Edit an existing host profile and modify its configuration.
+.IP
+The entry to edit must be specified by its \fBhost identifier\fP.
+Any remaining command line arguments are taken to be modifications
+to the original profile.
+.IP
+On success the new profile and its host identifier are printed to the
+terminal.
+.
+.TP 5
+.B boom
+.CMD_HOST_LIST
+.br
+Output a tabular report of host profiles.
+.IP
+Displays a report with one host profile per line, containing fields
+describing the properties of the configured host profiles.
+.IP
+The list of fields to display is given with \fB--options\fP as a comma
+separated list of field names. To obtain a list of available fields run
+\&'\fBboom host list -o help\fP'. If the list of fields begins with the
+\&'\fB+\fP' character the specified fields are appended to the default
+field list. Otherwise the given list of fields replaces the default set
+of report fields.
+.IP
+Report output may be sorted by multiple user-defined keys using
+the \fB--sort\fP option. The option expects a comma separated list
+of keys, with optional '\fB+\fP' and '\fB-\fP' prefixes indicating
+ascending and descending sort for that field respectively.
+.TP 5
+.B boom
+.CMD_HOST_SHOW
+.br
+Display host profiles matching selection criteria on standard out.
+.IP
+Host profiles matching the criteria given on the command line are
+printed to the terminal in a compact multi-line format.
+.IP
+.SS Legacy bootloader commands
+.P
+Boom is able to write the current set of boot entries into the
+configuration file of a legacy boot loader installed on the
+system. This may be used either on platforms that do not have
+a native bootloader supporting the Boot Loader Specification,
+or to allow upgrades and recovery from an installation lacking
+BLS support (if the system is updated to a distribution that
+does support the BLS boot loader configuration it will be used
+automatically when present).
+.P
+Legacy support is enabled and configured via the \fBboom.conf(5)\fP
+configuration file.
+.P
+\fBWarning\fP: these commands are deprecated as of \fIboom-1.6.7\fP
+and will be removed in a future release. Beginning with \fIboom-1.6.7\fP
+the \fBboom\fP command will issue a deprecation warning if legacy
+bootloader integration is enabled in \fBboom.conf(5)\fP or if \fBboom
+legacy\fP commands are used.
+.
+.TP 5
+.B boom
+.CMD_LEGACY_WRITE
+.br
+Write out the current set of Boom boot entries in the configured
+legacy configuration file. The normal command line selection
+options may be used to control the set of entries written to the
+file.
+.
+.TP 5
+.B boom
+.CMD_LEGACY_CLEAR
+.br
+Remove all Boom boot entries from the configured legacy
+configuration file.
+.
+.TP 5
+.B boom
+.CMD_LEGACY_SHOW
+.br
+Display the selected boot entries as they would appear in the
+configured legacy boot loader format. The normal command line
+selection options may be used to control the set of entries
+written to the terminal.
+.P
+.SS Boot image cache commands
+Boom can optionally cache or back up the images used by a boom
+BootEntry. This allows an entry to be booted in the case that a
+subsequent update has removed the original kernel and initramfs
+images and can be used to recover an earlier system state from
+a snapshot following even major operating system updates.
+.
+.TP 5
+.B boom
+.CMD_CACHE_LIST
+.br
+Output a tabular report of paths present in the boot image cache.
+.IP
+Displays a report with one cache entry per line, containing fields
+describing the properties of the cache entry.
+.IP
+The list of fields to display is given with \fB--options\fP as a comma
+separated list of field names. To obtain a list of available fields run
+\&'\fBboom cache list -o help\fP'. If the list of fields begins with the
+\&'\fB+\fP' character the specified fields are appended to the default
+field list. Otherwise the given list of fields replaces the default set
+of report fields.
+.IP
+Report output may be sorted by multiple user-defined keys using
+the \fB--sort\fP option. The option expects a comma separated list
+of keys, with optional '\fB+\fP' and '\fB-\fP' prefixes indicating
+ascending and descending sort for that field respectively.
+.
+.TP 5
+.B boom
+.CMD_CACHE_SHOW
+.br
+Display matching cache entries on standard output.
+.IP
+Entries matching selection criteria are printed in a compact multi-line
+format.
+.
+.TP 5
+.B boom
+.CMD_CONFIG_CREATE
+.br
+Create a default configuration at \fI/boot/boom/boom.conf\fP, overwriting any
+existing configuration file. The directory used as \fI/boot\fP may be overridden
+with the \fB--boot-dir\fP option.
+.IP
+When \fB--boot-dir\fP is specified, the configuration is written to
+\fIboot_dir/boom/boom.conf\fP.
+.
+.SH REPORT FIELDS
+.
+The \fBboom\fP report provides several types of field that may be
+added to the default field set for either Boot Entry or OS Profile
+reports, or used to create custom reports.
+.
+.SS Boot Parameters
+.
+Boot parameter fields represent the properties that distinguish
+boot entries: the kernel version and root device configuration.
+.TP
+.B version
+The kernel version of this Boot Entry.
+.TP
+.B rootdev
+The root device of this Boot Entry.
+.TP
+.B rootlv
+The root logical volume of this Boot Entry in 'VG/LV' notation.
+.TP
+.B subvolpath
+The BTRFS subvolume path for this Boot Entry.
+.TP
+.B subvolid
+The BTRFS subvolume ID for this BootEntry.
+.
+.SS Boot Entry fields
+.
+Boot Entry fields provide information about an entry not specified
+by its Boot Parameters, including the title, boot identifier, boot
+image locations, and options required to boot the entry.
+.TP
+.B bootid
+Boot identifier.
+.TP
+.B title
+The entry title as displayed in the boot loader.
+.TP
+.B options
+The kernel command line options used to boot this entry.
+.TP
+.B kernel
+The path to the bootable kernel image, relative to the boot loader.
+.TP
+.B initramfs
+The path to the initramfs image, relative to the boot loader.
+.TP
+.B machineid
+The machine-id associated with this Boot Entry.
+.TP
+.B entrypath
+The absolute path to this Boot Entry's on-disk configuration file.
+.
+.SS OS Profile fields
+.
+OS Profile fields provide access to the details of a profile's
+configuration including identity fields and the template strings
+used to generate entries.
+.P
+Since each Boot Entry has an attached OS Profile all profile fields
+are also available to add to any Boot Entry report.
+.TP
+.B osid
+OS profile identifier.
+.TP
+.B osname
+The name of this OS profile as read from \fIos-release\fP.
+.TP
+.B osshortname
+The short name of this OS profile as read from \fIos-release\fP.
+.TP
+.B osversion
+The OS version of this OS profile as read from  \fIos-release\fP.
+.TP
+.B osversion_id
+The OS version identifier of this OS profile as read from
+\fIos-release\fP.
+.TP
+.B unamepattern
+The configured UTS release pattern for this OS profile.
+.TP
+.B kernelpattern
+The configured kernel image template for this OS profile.
+.TP
+.B initrdpattern
+The configured initramfs image template for this OS profile.
+.TP
+.B lvm2opts
+The configured LVM2 root device options template for this OS profile.
+.TP
+.B btrfsopts
+The configured BTRFS root options template for this OS profile.
+.TP
+.B options
+The kernel command line options template for this OS profile.
+.TP
+.B profilepath
+The absolute path to this OS Profile's on-disk configuration file.
+.
+.SS Host Profile fields
+.
+Host Profile fields provide access to the details of a profile's
+configuration including identity fields and the template strings
+used to generate entries. This includes all fields available in
+the OS Profile report as well as additional Host Profile identity
+fields.
+.TP
+.B hostid
+Host profile identifier.
+.TP
+.B hostname
+The hostname of this host profile.
+.TP
+.B label
+The label of this host profile.
+.
+.SS Cache Entry fields
+.
+Cache entry fields provide information on the paths and images
+stored in the boom boot image cache.
+.TP
+.B imgid
+Image identifier.
+.TP
+.B path
+Path to the cached image, relative to the boot file system.
+.TP
+.B mode
+Path file system mode in human-readable format.
+.TP
+.B uid
+Image owner user identifier.
+.TP
+.B gid
+Image owner group identifier.
+.TP
+.B ts
+Image timestamp. The mtime of the image file at the time it was added
+to the cache.
+.TP
+.B state
+A string description of the cache entry state: \fBCACHED\fP,
+\fBMISSING\fP, \fBRESTORED\fP, or \fBBROKEN\fP.
+.TP
+.B count
+The number of boot entries that reference this boot image.
+.
+.SH REPORTING COMMANDS
+Both the \fBentry list\fP and \fBprofile list\fP commands use a common
+reporting system to display the results of the query. The selection of
+fields, and the order in which they are displayed, may be controlled to
+produce custom report formats.
+.P
+Displaying the available boot entry fields
+.P
+.EX
+# boom list -o help
+Boot loader entries Fields
+--------------------------
+  bootid        - Boot identifier [sha]
+  title         - Entry title [str]
+  options       - Kernel options [str]
+  kernel        - Kernel image [str]
+  initramfs     - Initramfs image [str]
+  machineid     - Machine identifier [sha]
+  entrypath     - On-disk entry path [str]
+.P
+OS profiles Fields
+------------------
+  osid          - OS identifier [sha]
+  osname        - OS name [str]
+  osshortname   - OS short name [str]
+  osversion     - OS version [str]
+  osversion_id  - Version identifier [str]
+  unamepattern  - UTS name pattern [str]
+  kernelpattern - Kernel image pattern [str]
+  initrdpattern - Initrd pattern [str]
+  lvm2opts      - LVM2 options [str]
+  btrfsopts     - BTRFS options [str]
+  options       - Kernel options [str]
+  profilepath   - On-disk profile path [str]
+.P
+Boot parameters Fields
+----------------------
+  version       - Kernel version [str]
+  rootdev       - Root device [str]
+  rootlv        - Root logical volume [str]
+  subvolpath    - BTRFS subvolume path [str]
+  subvolid      - BTRFS subvolume ID [num]
+.EE
+.
+.P
+Displaying the available OS profile fields
+.P
+.EX
+# boom profile list -o help
+OS profiles Fields
+------------------
+  osid          - OS identifier [sha]
+  osname        - OS name [str]
+  osshortname   - OS short name [str]
+  osversion     - OS version [str]
+  osversion_id  - Version identifier [str]
+  unamepattern  - UTS name pattern [str]
+  kernelpattern - Kernel image pattern [str]
+  initrdpattern - Initrd pattern [str]
+  lvm2opts      - LVM2 options [str]
+  btrfsopts     - BTRFS options [str]
+  options       - Kernel options [str]
+  profilepath   - On-disk profile path [str]
+.EE
+.P
+.
+Selecting custom fields for the \fBentry list\fP and \fBprofile list\fP
+commands
+.P
+.EX
+# boom list -o bootid,osname
+BootID  Name
+0d3e547 Fedora
+bc18de2 Fedora
+576fe39 Fedora
+1838f58 Fedora
+81520ca Fedora
+327e24a Fedora
+.EE
+.P
+.
+Adding additional fields to the default set
+.P
+.EX
+# boom list -o +options
+BootID  Version                  Name                     RootDevice              Options
+0d3e547 4.13.5-200.fc26.x86_64   Fedora                   /dev/mapper/vg_hex-root BOOT_IMAGE=/vmlinuz-4.11.12-100.fc24.x86_64 root=/dev/mapper/vg_hex-root ro rd.lvm.lv=vg_hex/root rhgb quiet rd.auto=1
+bc18de2 4.13.5-200.fc26.x86_64   Fedora                   /dev/vg_hex/root-snap10 BOOT_IMAGE=/vmlinuz-4.13.5-200.fc26.x86_64 root=/dev/vg_hex/root-snap10 ro rd.lvm.lv=vg_hex/root-snap10
+576fe39 4.13.5-200.fc26.x86_64   Fedora                   /dev/vg_hex/root        BOOT_IMAGE=/vmlinuz-4.13.5-200.fc26.x86_64 root=/dev/vg_hex/root ro rd.lvm.lv=vg_hex/root
+1838f58 4.13.5-200.fc26.x86_64   Fedora                   /dev/mapper/vg_hex-root BOOT_IMAGE=/vmlinuz-4.11.12-100.fc24.x86_64 root=/dev/mapper/vg_hex-root ro rd.lvm.lv=vg_hex/root rhgb quiet
+81520ca 4.13.13-200.fc26.x86_64  Fedora                   /dev/mapper/vg_hex-root BOOT_IMAGE=/vmlinuz-4.13.5-200.fc26.x86_64 root=/dev/mapper/vg_hex-root ro rd.lvm.lv=vg_hex/root rhgb quiet LANG=en_GB.UTF-8
+327e24a 4.13.5-200.fc26.x86_64   Fedora                   /dev/vg_hex/root        BOOT_IMAGE=%{linux} root=/dev/vg_hex/root ro rd.lvm.lv=vg_hex/root
+.EE
+.P
+.
+Sort operating system profiles by ascending OS name and descending
+OS version
+.P
+.EX
+# boom profile list -O+osname,-osversion
+OsID    Name                            OsVersion
+d4439b7 Fedora                          26 (Workstation Edition)
+9736c34 Fedora                          25 (Server Edition)
+9cb53dd Fedora                          24 (Workstation Edition)
+6bf746b Fedora                          24 (Server Edition)
+b99ea5f Red Hat Enterprise Linux Server 8 (Server)
+3fc389b Red Hat Enterprise Linux Server 7.2 (Maipo)
+c0b921e Red Hat Enterprise Linux Server 7 (Server)
+98c3edb Red Hat Enterprise Linux Server 6 (Server)
+b730331 Red Hat Enterprise Linux Server 5 (Server)
+efd6d41 Red Hat Enterprise Linux Server 4 (Server)
+21e37c8 Ubuntu                          16.04 LTS (Xenial Xerus)
+.EE
+.P
+.SH EXAMPLES
+List the available operating system profiles
+.P
+.EX
+# boom profile list
+OsID    Name                            OsVersion
+efd6d41 Red Hat Enterprise Linux Server 4 (Server)
+b730331 Red Hat Enterprise Linux Server 5 (Server)
+98c3edb Red Hat Enterprise Linux Server 6 (Server)
+c0b921e Red Hat Enterprise Linux Server 7 (Server)
+3fc389b Red Hat Enterprise Linux Server 7.2 (Maipo)
+b99ea5f Red Hat Enterprise Linux Server 8 (Server)
+.EE
+.P
+List the available boot entries
+.P
+.EX
+# boom list
+BootID  Version                  Name                     RootDevice
+0d3e547 4.13.5-200.fc26.x86_64   Fedora                   /dev/mapper/vg00-lvol0
+bc18de2 4.13.5-200.fc26.x86_64   Fedora                   /dev/vg00/lvol0-snap10
+576fe39 4.13.5-200.fc26.x86_64   Fedora                   /dev/vg00/lvol0
+f52ba10 4.11.12-100.fc24.x86_64  Fedora                   /dev/vg00/lvol0-snap
+1838f58 4.13.5-200.fc26.x86_64   Fedora                   /dev/mapper/vg00-lvol0
+81520ca 4.13.13-200.fc26.x86_64  Fedora                   /dev/mapper/vg00-lvol0
+327e24a 4.13.5-200.fc26.x86_64   Fedora                   /dev/vg00/lvol0
+.EE
+.P
+Create an OS profile for the running system (using Fedora 26 as an
+example)
+.P
+.EX
+# boom profile create --from-host --uname-pattern fc26
+Created profile with os_id d4439b7:
+  OS ID: "d4439b7d2f928c39f1160c0b0291407e5990b9e0",
+  Name: "Fedora", Short name: "fedora",
+  Version: "26 (Workstation Edition)", Version ID: "26",
+  UTS release pattern: "fc26",
+  Kernel pattern: "/kernel-%{version}", Initramfs pattern: "/initramfs-%{version}.img",
+  Root options (LVM2): "rd.lvm.lv=%{lvm_root_lv}",
+  Root options (BTRFS): "rootflags=%{btrfs_subvolume}",
+  Options: "root=%{root_device} ro %{root_opts}"
+.EE
+.P
+Create a new boot entry for a specific OS profile and version
+.P
+.EX
+# boom profile list --short-name rhel
+OsID    Name                            OsVersion
+3fc389b Red Hat Enterprise Linux Server 7.2 (Maipo)
+98c3edb Red Hat Enterprise Linux Server 6 (Server)
+c0b921e Red Hat Enterprise Linux Server 7 (Server)
+.EE
+.P
+.EX
+# boom create --profile 3fc389b --title \(dqRHEL7 snapshot\(dq --version 3.10-272.el7 --root-lv vg00/lvol0-snap
+Created entry with boot_id a5aef11:
+title RHEL7 snapshot
+machine-id 611f38fd887d41dea7eb3403b2730a76
+version 3.10-272.el7
+linux /vmlinuz-3.10-272.el7
+initrd /initramfs-3.10-272.el7.img
+options root=/dev/vg00/lvol0-snap ro rd.lvm.lv=vg00/lvol0-snap rhgb quiet
+.EE
+.P
+Create a new boot entry for the running system, changing only the root logical volume
+.P
+.EX
+# boom create --title Snap1 --root-lv vg00/lvol0-snap1
+Created entry with boot_id e077490:
+  title Snap1
+  machine-id 611f38fd887d41dea7eb3403b2730a76
+  version 4.13.13-200.fc26.x86_64
+  linux /vmlinuz-4.13.13-200.fc26.x86_64
+  initrd /initramfs-4.13.13-200.fc26.x86_64.img
+  options BOOT_IMAGE=/vmlinuz-4.13.13-200.fc26.x86_64 root=/dev/vg00/lvol0-snap1 ro rd.lvm.lv=vg00/lvol0-snap1
+.EE
+.P
+Delete an entry by its boot identifier
+.P
+.EX
+# boom delete --boot-id e077490
+Deleted 1 entry
+.EE
+.P
+Delete all entries for the Fedora 24 OS profile
+.P
+.EX
+# boom delete --name Fedora --os-version-id 24
+Deleted 4 entries
+.EE
+.P
+.SH EXIT STATUS
+\fBboom\fP exits with one of the following status codes:
+.TP 8
+0
+Command completed successfully.
+.TP 8
+.B 1
+A runtime error occurred.
+.TP 8
+.B 2
+Invalid arguments or option parsing error.
+.SH FILES
+Configuration is read from the following locations:
+.PP
+.
+.I /boot/boom/boom.conf
+.br
+.I /boot/boom/profiles
+.br
+.I /boot/boom/hosts
+.br
+.PP
+The main configuration file is \fI/boot/boom/boom.conf\fP. Defined OS and host
+profiles are stored in \fI/boot/boom/profiles\fP and \fI/boot/boom/hosts\fP
+respectively.
+.P
+BLS configuration snippets are stored in \fI/boot/loader/entries\fP.
+.
+.SH BUGS
+Please report bugs via the GitHub issue tracker:
+.P
+.UR https://\:github.com/snapshotmanager/boom-boot/issues
+.UE
+.
+.SH AUTHORS
+.
+Bryn M. Reeves <bmr@redhat.com>
+.
+.SH SEE ALSO
+.
+.P
+.BR boom.conf (5),
+.BR lvm (8),
+.BR stratis (8)
+.br
+.UR https://\:github.com/snapshotmanager/boom-boot
+boom project page
+.UE
+.br
+.UR https://\:github.com/snapshotmanager/snapshot-boot-docs
+boot to snapshot documentation
+.UE
+.br
+.UR https://systemd.io/BOOT_LOADER_SPECIFICATION
+Boot Loader Specification
+.UE
+.br
+.UR https://\:www.sourceware.org/lvm2/
+LVM2 resource page
+.UE
+.br
+.UR https://\:www.sourceware.org/dm/
+device-mapper resource page
+.UE
+.br
+.UR https://\:stratis-storage.github.io/
+Stratis resource page
+.UE
+.br

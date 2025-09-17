@@ -1,0 +1,12 @@
+services:
+  rest-api-gateway:
+    image: voquis/local-openapi-aws-rest-api-gateway-lambda
+    volumes:
+      - ./openapi.yaml:/openapi/openapi.yaml:ro
+    ports:
+      - 9096:8080
+    depends_on:
+      - rest-api-lambda
+  rest-api-lambda:
+    build:
+      context: ./lambda

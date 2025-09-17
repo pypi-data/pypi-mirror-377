@@ -1,0 +1,171 @@
+{
+  "script_id": "PLACEHOLDER_SCRIPT_ID",
+  "project_name": "PLACEHOLDER_NAME",
+  "version": "0.0.1",
+  "description": "Пример скрипта телеметрии",
+  "icon_base64": "DEFAULT_ICON_BASE64_PLACEHOLDER",
+  "uuid_ui_descriptor": "PLACEHOLDER_UI_DESCRIPTOR_UUID",
+  "config": {
+    "uuid_cfg_entry": "PLACEHOLDER_CONFIG_UUID",
+    "name": "Config",
+    "fields": [
+      {
+        "idx": 0,
+        "name": "int_example",
+        "type": "INT32",
+        "max_length": null,
+        "default": 0,
+        "min": 0,
+        "max": 100,
+        "group_param": true,
+        "overridden": false,
+        "ui": {
+          "category": "example",
+          "widget": "spinbox",
+          "name": { "en": "Integer Example", "ru": "Пример целого" },
+          "hint": { "en": "Example integer field", "ru": "Пример поля целого типа" },
+          "dimension": { "en": "units", "ru": "ед." }
+        }
+      },
+      {
+        "idx": 1,
+        "name": "text_example",
+        "type": "STRING",
+        "max_length": 64,
+        "default": "text_example",
+        "min": null,
+        "max": null,
+        "group_param": false,
+        "overridden": false,
+        "ui": {
+          "category": "example",
+          "widget": "lineedit",
+          "name": { "en": "Text Example", "ru": "Пример текста" },
+          "hint": { "en": "Example string field", "ru": "Пример строкового поля" },
+          "dimension": { "en": "", "ru": "" }
+        }
+      },
+      {
+        "idx": 2,
+        "name": "unsigned_array",
+        "type": "ARRAY",
+        "max_length": 8,
+        "default": [],
+        "min": 0,
+        "max": 65535,
+        "item_type": "UINT16",
+        "group_param": true,
+        "overridden": false,
+        "ui": {
+          "category": "example",
+          "widget": "array",
+          "name": { "en": "Unsigned Array", "ru": "Массив беззнаковых" },
+          "hint": { "en": "Array of unsigned ints", "ru": "Массив беззнаковых чисел" },
+          "dimension": { "en": "units", "ru": "ед." }
+        }
+      },
+      {
+        "idx": 3,
+        "name": "float_example",
+        "type": "FLOAT",
+        "max_length": null,
+        "default": 0.0,
+        "min": 0,
+        "max": 1000,
+        "group_param": true,
+        "overridden": false,
+        "ui": {
+          "category": "example",
+          "widget": "spinbox",
+          "name": { "en": "Float Example", "ru": "Пример float" },
+          "hint": { "en": "Example float field", "ru": "Пример поля float" },
+          "dimension": { "en": "units", "ru": "ед." }
+        }
+      },
+      {
+        "idx": 4,
+        "name": "enum_example",
+        "type": "ENUM",
+        "max_length": null,
+        "default": 0,
+        "enum_values": {
+          "Option A": 0,
+          "Option B": 1
+        },
+        "min": null,
+        "max": null,
+        "group_param": true,
+        "overridden": false,
+        "ui": {
+          "category": "example",
+          "widget": "enum",
+          "labels": {
+            "en": { "Option A": "Option A", "Option B": "Option B" },
+            "ru": { "Option A": "Опция A", "Option B": "Опция B" }
+          },
+          "name": { "en": "Enum Example", "ru": "Пример перечисления" },
+          "hint": { "en": "Choose option", "ru": "Выберите опцию" },
+          "dimension": { "en": "", "ru": "" }
+        }
+      },
+      {
+        "idx": 5,
+        "name": "bool_example",
+        "type": "BOOL",
+        "max_length": null,
+        "default": 0,
+        "min": null,
+        "max": null,
+        "group_param": true,
+        "overridden": false,
+        "ui": {
+          "category": "example",
+          "widget": "checkbox",
+          "name": { "en": "Bool Example", "ru": "Пример флага" },
+          "hint": { "en": "Example boolean field", "ru": "Пример логического поля" },
+          "dimension": { "en": "", "ru": "" }
+        }
+      }
+    ]
+  },
+  "datasources": {
+    "telemetry": {
+      "uuid": "PLACEHOLDER_DS_UUID",
+      "fields": [
+        {
+          "idx": 0,
+          "name": "speed",
+          "type": "UINT32",
+          "max_length": null
+        },
+        {
+          "idx": 1,
+          "name": "voltage",
+          "type": "FLOAT",
+          "max_length": null
+        }
+      ]
+    }
+  },
+
+  "subscriptions": [
+    {
+      "path": "/system/start",
+      "function": "start"
+    }
+  ],
+  "api": {
+    "uuid": "PLACEHOLDER_API_UUID",
+    "endpoints": [
+      {
+        "name": "start",
+        "signature": []
+      }
+    ]
+  },
+  "template": {
+    "type": "telemetry_script",
+    "uuid": "PLACEHOLDER_TEMPLATE_UUID",
+    "fields": []
+  }
+} 

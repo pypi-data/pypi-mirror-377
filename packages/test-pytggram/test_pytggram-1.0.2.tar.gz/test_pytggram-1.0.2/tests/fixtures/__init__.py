@@ -1,0 +1,3 @@
+"""
+Fixtures for PyTgGram tests
+"""

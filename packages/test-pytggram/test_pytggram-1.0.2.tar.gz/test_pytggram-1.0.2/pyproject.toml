@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "test-pytggram"
+version = "1.0.2"
+description = "An advanced, easy-to-use Telegram Bot Framework with MongoDB support"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Endtrz", email = "endtrz@gmail.com"}
+]
+keywords = ["telegram", "bot", "api", "framework", "async", "mongodb"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Communications :: Chat",
+    "Topic :: Internet",
+]
+
+[project.urls]
+Homepage = "https://github.com/hasnainkk-07/PyTgGram"
+Documentation = "https://github.com/hasnainkk-07/PyTgGram/wiki"
+Repository = "https://github.com/hasnainkk-07/PyTgGram"
+Issues = "https://github.com/hasnainkk-07/PyTgGram/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0", "pytest-asyncio>=0.20.0", "black>=22.0.0", "flake8>=5.0.0", "mypy>=0.991"]
+docs = ["sphinx>=5.0.0", "sphinx-rtd-theme>=1.0.0"]
+speed = ["uvloop>=0.17.0", "aiodns>=3.0.0"]
+
+[tool.setuptools]
+packages = {find = {}}

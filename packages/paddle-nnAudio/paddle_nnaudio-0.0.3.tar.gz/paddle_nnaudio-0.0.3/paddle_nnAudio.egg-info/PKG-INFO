@@ -1,0 +1,94 @@
+Metadata-Version: 2.4
+Name: paddle_nnAudio
+Version: 0.0.3
+Summary: A fast GPU audio processing toolbox with 1D convolutional neural network
+Home-page: https://github.com/PlumBlossomMaid/ppAudio
+Author: PlumBlossom
+Author-email: 1589524335@qq.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: scipy>=1.2.0
+Requires-Dist: numpy>=1.14.5
+Provides-Extra: tests
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: librosa; extra == "tests"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# paddle-nnAudio
+
+paddle-nnAudio 是基于 PaddlePaddle 卷积神经网络作为后端的音频处理工具箱。通过这种方式， 梅尔频谱可以在神经网络训练过程中实时从音频生成，并且傅里叶核（如 CQT 核）可以被训练。paddle-nnAudio 移植自 [nnAudio](https://github.com/KinWaiCheuk/nnAudio)，旨在为 PaddlePaddle 生态提供类似的音频处理能力。
+
+## 安装
+```bash
+pip install git+https://github.com/PlumBlossomMaid/paddle-nnAudio.git
+```
+或
+```bash
+pip install paddle-nnAudio
+```
+
+## 快速开始
+```python
+import paddle
+import librosa
+import numpy as np
+from ppAudio.features import MelSpectrogram
+
+def main() -> None:
+    paddle.device.set_device("gpu:0") # 使用gpu:0进行运算
+    example_y, example_sr = librosa.load(librosa.example('vibeace', hq=False)) # 加载音频
+
+    n_fft, win_length = (512, 400)
+    melspec = MelSpectrogram(n_fft=n_fft, win_length=win_length, hop_length=512)
+    X = melspec(paddle.to_tensor(example_y).unsqueeze(0)).squeeze() # 将波形前向传播以获取 spectrogram
+    X_librosa = librosa.feature.melspectrogram(example_y, n_fft=n_fft, win_length=win_length, hop_length=512) # 设置对照
+    assert np.allclose(X.cpu(), X_librosa, rtol=1e-3, atol=1e-3) # 精度对齐
+    print("done")
+
+
+if __name__ == "__main__":
+    main()
+
+```
+
+## 依赖项
+- Numpy >= 1.14.5
+- Scipy >= 1.2.0
+- PaddlePaddle >= 2.0.0 (或PaddlePaddle-gpu >= 2.0.0)
+- Python >= 3.6
+- librosa = 0.7.0
+
+## 引用
+如果您使用了 paddle-nnAudio，请引用原 nnAudio 的论文：
+
+K. W. Cheuk, H. Anderson, K. Agres and D. Herremans, "nnAudio: An on-the-Fly GPU Audio to Spectrogram Conversion Toolbox Using 1D Convolutional Neural Networks," in IEEE Access, vol. 8, pp. 161981-162003, 2020, doi: 10.1109/ACCESS.2020.3019084.
+
+### BibTex
+```
+@ARTICLE{9174990,
+  author={K. W. {Cheuk} and H. {Anderson} and K. {Agres} and D. {Herremans}},
+  journal={IEEE Access}, 
+  title={nnAudio: An on-the-Fly GPU Audio to Spectrogram Conversion Toolbox Using 1D Convolutional Neural Networks}, 
+  year={2020},
+  volume={8},
+  number={},
+  pages={161981-162003},
+  doi={10.1109/ACCESS.2020.3019084}}
+```
+
+## 许可证
+[MIT License](LICENSE)

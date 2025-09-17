@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: csv-parser-utils
+Version: 0.0.1
+Summary: Um pacote para manipular dados de arquivos CSV, usando pandas.
+Home-page: https://github.com/gallothiago/csv-parser-utils
+Author: Thiago Gallo
+Author-email: gallothiago2013@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: seaborn
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+csv-parser-utils
+Um pacote Python simples e eficiente para análise e visualização de dados de arquivos CSV, utilizando o poder do Pandas e Seaborn.
+
+---
+# Como Usar
+O pacote oferece funções para realizar tarefas comuns de análise de dados.
+
+---
+
+Instalação
+Você pode instalar o pacote diretamente do PyPI usando o pip:
+
+Bash
+
+pip install csv-parser-utils
+
+---
+# 1. Análise Estatística
+Importe as funções e use-as para obter informações sobre seus dados.
+
+Python
+
+from csv_parser_utils.main import contar_linhas, calcular_media_coluna, obter_resumo_estatistico
+import pandas as pd
+
+# Supondo que você tenha um arquivo chamado 'meus_dados.csv'
+# com colunas como 'Idade' e 'Pontuacao'
+caminho_arquivo = 'meus_dados.csv'
+
+# Contar o número de linhas de dados no arquivo
+num_linhas = contar_linhas(caminho_arquivo)
+print(f"O arquivo tem {num_linhas} linhas de dados.")
+
+# Calcular a média de uma coluna
+media_pontuacao = calcular_media_coluna(caminho_arquivo, 'Pontuacao')
+print(f"A média da coluna 'Pontuacao' é: {media_pontuacao:.2f}")
+
+# Obter um resumo estatístico completo de uma coluna
+resumo_estatistico = obter_resumo_estatistico(caminho_arquivo, 'Pontuacao')
+print("\nResumo Estatístico da coluna 'Pontuacao':")
+print(resumo_estatistico)
+
+---
+
+# 2. Visualização de Dados
+Crie e salve visualizações de dados para entender melhor a distribuição dos seus dados.
+
+Python
+
+from csv_parser_utils.main import plotar_histograma
+
+# Gerar um histograma da coluna 'Pontuacao' e salvar como imagem
+caminho_arquivo = 'meus_dados.csv'
+caminho_saida_imagem = 'distribuicao_pontuacao.png'
+
+plotar_histograma(caminho_arquivo, 'Pontuacao', caminho_saida_imagem)
+print(f"O histograma foi salvo em '{caminho_saida_imagem}'")
+
+---
+
+# Funções Disponíveis
+contar_linhas(caminho_arquivo): Retorna o número de linhas em um arquivo CSV.
+
+calcular_media_coluna(caminho_arquivo, nome_coluna): Calcula a média de uma coluna numérica.
+
+obter_resumo_estatistico(caminho_arquivo, nome_coluna): Retorna um resumo estatístico (média, desvio padrão, etc.) usando o pandas.describe().
+
+plotar_histograma(caminho_arquivo, nome_coluna, caminho_saida): Cria um histograma para uma coluna numérica e o salva como um arquivo de imagem (.png).
+

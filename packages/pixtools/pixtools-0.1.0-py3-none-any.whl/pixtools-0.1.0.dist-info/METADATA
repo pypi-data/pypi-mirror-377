@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: pixtools
+Version: 0.1.0
+Summary: A collection of multimedia utilities for AI-powered applications
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/pixtools
+Project-URL: Repository, https://github.com/yourusername/pixtools
+Project-URL: Issues, https://github.com/yourusername/pixtools/issues
+Keywords: ai,multimedia,openai,text-to-speech,image-generation
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Multimedia
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.0.0
+Requires-Dist: pyaudio>=0.2.11
+Requires-Dist: pillow>=10.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-mock>=3.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: pyright>=1.1.0; extra == "dev"
+
+# Pixtools
+
+A collection of multimedia utilities for AI-powered applications.
+
+## Features
+
+- **Text-to-Speech**: Convert text to audio using OpenAI's TTS API
+- **Voice Recording**: Record and transcribe audio using OpenAI's Whisper API
+- **Audio Playback**: Play audio files with simple controls
+- **OpenAI Client**: Streamlined interface for OpenAI API interactions
+- **File Caching**: Efficient caching system for API responses and generated content
+- **Image Generation**: Generate images using OpenAI's DALL-E API
+
+## Installation
+
+```bash
+pip install pixtools
+```
+
+## Requirements
+
+- Python 3.10 or higher
+- OpenAI API key
+
+## Quick Start
+
+```python
+from pixtools import TextToSpeech, VoiceToText, ImageGen, OpenAIClient
+
+# Initialize OpenAI client
+client = OpenAIClient(api_key="your-api-key")
+
+# Text-to-speech
+tts = TextToSpeech(client)
+tts.speak("Hello, world!")
+
+# Voice recording and transcription
+voice = VoiceToText(client)
+text = voice.record_and_transcribe()
+
+# Image generation
+image_gen = ImageGen(client)
+image_gen.generate("A beautiful sunset", "sunset.png")
+```
+
+## License
+
+MIT License

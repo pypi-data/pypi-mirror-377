@@ -1,0 +1,65 @@
+Metadata-Version: 2.4
+Name: cc-summarize
+Version: 1.0.0
+Summary: A tool for managing, viewing, and summarizing Claude Code sessions
+Author: Claude Code User
+License-Expression: CC0-1.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: anthropic>=0.35.0
+Requires-Dist: claude-code-sdk>=0.1.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: anyio>=4.0.0
+
+# CC-Summarize
+
+A tool for managing, viewing, and summarizing Claude Code sessions.
+
+## Features
+
+- Extract and format Claude Code session messages
+- Multiple output formats (plain, terminal, markdown, JSONL)
+- AI-powered summarization with both API and SDK backends
+- Smart caching and filtering capabilities
+- Date-based filtering and session management
+
+## Installation
+
+```bash
+pip install cc-summarize
+```
+
+## Usage
+
+```bash
+# List sessions for current project
+cc-summarize --list
+
+# Show user messages only
+cc-summarize
+
+# Generate AI summaries
+cc-summarize --summarize normal
+
+# Filter by date
+cc-summarize --since 3d
+
+# Multiple output formats
+cc-summarize --format markdown
+```
+
+## Requirements
+
+- Python 3.10+
+- Claude Code sessions in `~/.claude/projects/`
+- Optional: ANTHROPIC_API_KEY for API-based summarization
+- Optional: Claude Code SDK for local summarization

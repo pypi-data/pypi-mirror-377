@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uvulog"
+version = "1.0.3"
+description = "A simple logger for console and file logging, with colored output and log rotation."
+readme = "README.md"
+requires-python = ">=3.8.0"
+authors = [
+    { name = "Lupnis J H", email = "lupnisj@gmail.com" }
+]
+license = { text = "MIT" }
+keywords = ["logger", "logging", "console", "file", "colored", "log rotation"]
+
+dependencies = ["filelock"]

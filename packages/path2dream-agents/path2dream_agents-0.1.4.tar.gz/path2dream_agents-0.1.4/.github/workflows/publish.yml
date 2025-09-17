@@ -1,0 +1,74 @@
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty to use current version)'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Install dependencies
+      run: uv sync
+
+    - name: Update version if specified
+      if: ${{ github.event.inputs.version != '' }}
+      run: |
+        # Update version in pyproject.toml for this build only
+        sed -i 's/version = "[^"]*"/version = "${{ github.event.inputs.version }}"/' pyproject.toml
+        echo "Updated version to ${{ github.event.inputs.version }} for this build"
+
+    - name: Run linting and tests
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+        uv run python -m pytest tests/ -n auto -v
+
+    - name: Build package
+      run: |
+        uv build
+
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_PUBLISH_TOKEN }}
+      run: |
+        uv add twine --dev
+        uv run twine upload dist/*
+
+    - name: Get current version
+      id: version
+      run: |
+        if [ -n "${{ github.event.inputs.version }}" ]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=$(grep -oP '(?<=version = ")[^"]*' pyproject.toml)" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create "v${{ steps.version.outputs.version }}" \
+          --title "Release v${{ steps.version.outputs.version }}" \
+          --notes "Release version ${{ steps.version.outputs.version }}" \
+          dist/*

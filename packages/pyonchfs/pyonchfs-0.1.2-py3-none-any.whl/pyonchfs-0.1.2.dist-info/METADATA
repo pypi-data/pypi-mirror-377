@@ -1,0 +1,134 @@
+Metadata-Version: 2.4
+Name: pyonchfs
+Version: 0.1.2
+Summary: Python implementation of the OnchFS (On-Chain File System) protocol for Tezos blockchain
+Author-email: "objkt.com" <hi@objkt.com>
+Maintainer-email: "objkt.com" <hi@objkt.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/objkt-com/pyonchfs
+Project-URL: Repository, https://github.com/objkt-com/pyonchfs
+Project-URL: Documentation, https://github.com/objkt-com/pyonchfs#readme
+Project-URL: Bug Tracker, https://github.com/objkt-com/pyonchfs/issues
+Keywords: tezos,blockchain,onchfs,file-system,storage,ipfs-alternative
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Filesystems
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Security :: Cryptography
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pytezos>=3.10.0
+Requires-Dist: hpack>=4.0.0
+Requires-Dist: pycryptodome>=3.15.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: pylint>=3.0.0; extra == "dev"
+Requires-Dist: build>=0.8.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Dynamic: license-file
+
+# OnchFS Python Client
+
+Python client for the OnchFS (On-Chain File System) protocol on Tezos blockchain.
+
+## Installation
+
+```bash
+pip install pyonchfs
+```
+
+## Quick Start
+
+### Download Files
+
+```python
+from onchfs import OnchfsClient, Network
+
+client = OnchfsClient(network=Network.MAINNET)
+
+# Download directory
+directory_hash = "f8020273fba472a3e87baf6eb0f3929915edabace0fa409a261c4c4fa6684b21"
+files = client.download_directory(directory_hash, "downloaded/")
+
+# Get specific file
+content = client.get_file(directory_hash, "index.html")
+```
+
+### Prepare Files for Upload
+
+```python
+from onchfs import OnchfsClient, IFile, OnchfsPrepareOptions
+
+client = OnchfsClient()
+
+# Prepare files
+files = [
+    IFile(path="hello.txt", content=b"Hello, OnchFS!"),
+    IFile(path="data.json", content=b'{"message": "test"}')
+]
+
+directory_inode = client.prepare_files(files)
+directory_hash = client.get_directory_hash(directory_inode)
+```
+
+## API
+
+### OnchfsClient
+
+```python
+client = OnchfsClient(
+    network=Network.MAINNET,  # MAINNET, GHOSTNET, LOCALNET
+    contract_address=None,    # Optional custom contract
+    pytezos_client=None      # Optional PyTezos client
+)
+```
+
+**Download Methods:**
+
+- `download_directory(hash, target_dir)` - Download all files
+- `get_file(hash, filename)` - Get file content
+- `get_file_metadata(hash, filename)` - Get file metadata
+- `list_directory(hash)` - List directory contents
+
+**Preparation Methods:**
+
+- `prepare_files(files, options=None)` - Prepare files for upload
+- `prepare_directory(path, options=None)` - Prepare directory
+- `estimate_upload_cost(directory_inode)` - Estimate costs
+- `get_directory_hash(directory_inode)` - Get hash
+
+### Types
+
+```python
+from onchfs import IFile, OnchfsPrepareOptions
+
+file = IFile(path="example.txt", content=b"content")
+options = OnchfsPrepareOptions(chunk_size=16384, compress=True)
+```
+
+## Examples
+
+Run the included examples:
+
+```bash
+python examples/download_example.py
+python examples/prepare_example.py
+```
+
+## Contract Addresses
+
+- **Mainnet**: `KT1Ae7dT1gsLw2tRnUMXSCmEyF74KVkM6LUo`
+- **Ghostnet**: `KT1FA8AGGcJha6S6MqfBUiibwTaYhK8u7s9Q`

@@ -1,0 +1,140 @@
+Metadata-Version: 2.4
+Name: sholtonlib
+Version: 0.0.1
+Summary: A small example package
+Project-URL: Homepage, https://github.com/pypa/sampleproject
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Author-email: Example Author <author@example.com>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# Overview
+
+The goal of this activity is to introduce you to Python’s packaging system, known as PyPI (Python Package Index). PyPI serves as a central repository for contributed Python packages and libraries. It is accessed by the pip tool whenever you install a new package.
+
+# Instructions 
+
+## Part 1
+
+Start by creating a folder for your package inside the **src** directory. Since package names must be unique, name your folder using the format ```<your_name>lib```, replacing ```<your_name>``` with your actual name. Be sure to avoid spaces or special characters in the name.
+
+```
+src/<your_name>lib
+```
+
+Next, create the following file structure for your package. 
+
+```
+src
+|__<your_name>lib
+   |__ __init__.py
+   |__ mod.py
+|__test.py
+|__README.md
+|__pyproject.toml
+```
+
+Leave the **__init__.py** file empty. This file is required to treat the directory as a Python package, but it doesn’t need to contain any code for basic functionality.
+
+Next, create a file named **mod.py** inside your package folder. This will be the sole module in your package. Add the following code to it:
+
+```
+def add_one(number):
+    return number + 1
+```
+
+Add the following code to **test.py**. This won’t be a formal test, but rather a simple validation to ensure that your package can be properly imported and used.
+
+```
+from <your_name>lib import mod
+
+print(mod.add_one(5))
+```
+
+Make sure you are able to run **test.py** from **src**. 
+
+After validating that your package works, add the following configuration to **pyproject.toml**. Be sure to replace ```<your_name>``` with your actual name.
+
+TOML stands for Tom’s Obvious Minimal Language, a simple and readable format used for configuration files. In Python packaging, **pyproject.toml** defines metadata and build instructions for your package. 
+
+```
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "<your_name>lib"
+version = "0.0.1"
+authors = [
+  { name="Example Author", email="author@example.com" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+```
+
+Write a brief description of your project in **README.md**. This file cannot be left blank—it should explain what your package does, its purpose, and any basic usage instructions or examples.
+
+Next, try to build your project from the activity’s main folder using the following command:
+
+```
+python3 -m build src
+```
+
+If you encounter an error saying:
+
+```
+No module named 'build'
+```
+
+It means the build module is not installed. You can fix this by running:
+
+```
+pip3 install build
+```
+
+## Part 2
+
+Now it’s time to publish your package so others can use it.
+
+* First, create an account at [https://pypi.org/](https://pypi.org/).
+* Then, go to [https://pypi.org/manage/account/](https://pypi.org/manage/account/) and scroll down to click the “Add API token” button.
+* Give your token a name and select “Entire account (all projects)” as the scope.
+* Copy the generated token.
+* To use the token for publishing, run the following command from the activity’s main folder:
+
+```
+python3 -m twine upload -u __token__ -p pypi-AgEIcHlwaS5vcmcCJDE1Nzk4MGNmLWE4YzMtNDQ2Mi1hNDU4LWI1MTU5ZTY1YmNjOAACKlszLCI1YTVmOTYwNy1mYTJjLTQwNGYtYWIzYy04ZjBjZjQxMzljZmYiXQAABiDfWatrr2Hq2Soe7H5GZ5_6hME7pUGnMHjN4-Oo_SBSMQ src/dist/*
+```
+
+If you encounter an error saying:
+
+```
+No module named 'twine'
+```
+
+It means the twine module is not installed. You can fix this by running:
+
+```
+pip3 install twine
+```
+
+You can repeat this process multiple times if needed. For example, you may want to update your package. To do that, update the version of your package in **pyproject.toml**. Next, remove the **dist** folder and rebuild. Finally, upload the new version. 
+
+To test the installation and use of your package from PyPi, create a virtual environment and try to run **test.py**. 
+
+# More Information
+
+**PyPi** user guide is available [here](https://packaging.python.org/en/latest/tutorials/packaging-projects/).  

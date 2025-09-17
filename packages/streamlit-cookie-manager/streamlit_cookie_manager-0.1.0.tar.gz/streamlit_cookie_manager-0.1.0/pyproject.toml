@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit-cookie-manager"   # PyPI package name
+version = "0.1.0"
+description = "A simple cookie/session manager for Streamlit apps"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Jason Kim", email = "youremail@example.com" }
+]
+requires-python = ">=3.8"
+dependencies = [
+  "streamlit>=1.20"
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content"
+]
+
+[project.urls]
+Homepage = "https://github.com/jasonkim/streamlit-cookie-manager"
+Repository = "https://github.com/jasonkim/streamlit-cookie-manager"

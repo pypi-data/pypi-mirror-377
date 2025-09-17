@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mr-studydev"
+version = "1.0.0"
+description = "🎯 Ultimate Student & Developer Productivity CLI Tool with Pomodoro, Projects & Study Materials"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "PrinceTheProgrammer", email = "princetheprogrammer@example.com"},
+]
+keywords = [
+    "productivity", "pomodoro", "cli", "study", "project-management", 
+    "flashcards", "terminal", "developer-tools", "student-tools", "time-management"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education", 
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Software Development",
+    "Topic :: System :: Shells",
+    "Topic :: Terminals",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "click>=8.0.0",
+    "rich>=13.0.0",
+    "typer>=0.9.0",
+    "json5>=0.9.0",
+    "pyyaml>=6.0",
+    "python-dateutil>=2.8.0",
+    "arrow>=1.2.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/the-ai-developer/mr.studydev"
+"Bug Reports" = "https://github.com/the-ai-developer/mr.studydev/issues"
+"Source" = "https://github.com/the-ai-developer/mr.studydev"
+"Documentation" = "https://github.com/the-ai-developer/mr.studydev#readme"
+
+[project.scripts]
+studydev = "studydev.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0", 
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+
+[tool.setuptools]
+packages = ["studydev"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+studydev = ["*.json", "templates/*.json"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--cov=studydev --cov-report=html --cov-report=term-missing"

@@ -1,0 +1,324 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eldl"
+description = "An electrochemical dynamics library."
+authors = [
+    {name = "Ugochukwu Nwosu", email = "ugognw@gmail.com"},
+]
+dynamic = ["version"]
+readme = "README.rst"
+requires-python = ">=3.10"
+keywords = ['computational chemistry', 'electrochemistry', 'physics']
+classifiers = [
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Operating System :: Unix",
+        "Operating System :: POSIX",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Topic :: Scientific/Engineering :: Chemistry",
+        "Topic :: Scientific/Engineering :: Physics",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+    # finite-element library
+    "fenics-basix>=0.9.0",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "bump-my-version>=1.2.0",
+    "pre-commit>=2.20.0",
+    "mypy>=1.17.0",
+    "ruff>=0.12.3",
+]
+docs = [
+    "sphinx>=8.0.0",
+    "furo>=2024.04.27",
+    "sphinx_click>=5.0.1",
+    "sphinx-autobuild>=2024.10.03",
+    "sphinx-copybutton>=0.5.2",
+    "sphinx-notfound-page>=1.1.0",
+]
+test = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.0.0",
+    "pytest-datadir>=1.7.0",
+    "pytest-xdist>=3.8.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/ugognw/eldl"
+Issues = "https://github.com/ugognw/eldl/issues"
+Source = "https://github.com/ugognw/eldl"
+
+[tool.bumpversion]
+current_version = "0.0.1a1"
+commit_args = "-S -s"
+parse = """
+    (?P<major>\\d+)\\.
+    (?P<minor>\\d+)\\.
+    (?P<patch>\\d+)
+    (?:a(?P<pre_n>\\d+))?
+"""
+serialize =[
+  "{major}.{minor}.{patch}a{pre_n}",
+  "{major}.{minor}.{patch}"
+]
+
+[tool.bumpversion.parts.pre_n]
+first_value = "0"
+
+[[tool.bumpversion.files]]
+filename = "docs/source/conf.py"
+search = 'version = release = "{current_version}"'
+replace = 'version = release = "{new_version}"'
+
+
+[[tool.bumpversion.files]]
+filename = "README.rst"
+
+[[tool.bumpversion.files]]
+filename = "src/eldl/__about__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[tool.coverage.paths]
+source =[
+   'src',
+   '*/site-packages'
+]
+
+[tool.coverage.run]
+command_line = 'pytest'
+branch = true
+source = [
+    'eldl',
+    'tests'
+]
+parallel = true
+
+[tool.hatch.version]
+path = "src/eldl/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/eldl"]
+
+[tool.hatch.envs.default]
+features = ["dev", "docs", "test"]
+
+[tool.hatch.envs.docs]
+features = ["docs"]
+
+[tool.hatch.envs.docs.scripts]
+serve = [
+    "sphinx-autobuild --color --fail-on-warning -b html --open-browser --watch {root}/src/eldl {root}/docs/source {root}/docs/build {args}",
+]
+docs = [
+    "sphinx-build -j auto --color --fail-on-warning -b html {root}/docs/source {root}/docs/build {args}",
+]
+linkcheck = [
+    "sphinx-build -j auto --color --fail-on-warning -b linkcheck {root}/docs/source {root}/docs/build {args}",
+]
+doctest = [
+    "sphinx-build -j auto --color --fail-on-warning -b doctest {root}/docs/source {root}/docs/build {args}",
+]
+apidoc = [
+    "sphinx-apidoc --private -d 3 --separate --remove-old --force --module-first -H 'Package Index' --templatedir {root}/docs/source/user_guide/reference/_templates -fo {root}/docs/source/user_guide/reference/api {root}/src/eldl '**/settings*' {args}",
+]
+clean = [
+    "rm -rf {root}/docs/build"
+]
+clean-build = [
+    "clean",
+    "apidoc",
+    "serve"
+]
+
+[tool.hatch.envs.quality]
+skip-install = true
+features = ["dev"]
+
+[tool.hatch.envs.quality.scripts]
+quality = [
+    "pre-commit run --all-files"
+]
+
+[tool.hatch.envs.test]
+skip-install = true
+features = ["test"]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
+
+[tool.hatch.envs.test.scripts]
+test = [
+    "pytest -n auto {root}/tests {args}",
+]
+test-cov = [
+    "pytest --cov={root}/src/eldl --cov-report=html --cov-report=lcov --cov-report=xml --cov-report=term-missing -n auto {root}/tests {args}",
+]
+
+[tool.mypy]
+exclude = [
+  "conftest.py"
+]
+plugins = "pydantic.mypy"
+
+[[tool.mypy.overrides]]
+module = "pymatgen"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "-ra",
+    "--strict-markers",
+    "--doctest-modules",
+    "--doctest-glob=*.rst",
+    "--tb=short"
+]
+filterwarnings = [
+    "error",
+    "ignore::matplotlib._api.deprecation.MatplotlibDeprecationWarning",
+    "ignore:invalid escape sequence:DeprecationWarning"
+]
+norecursedirs = "migrations"
+python_files = [
+    "test_*.py",
+    "*_test.py",
+    "tests.py"
+]
+testpaths = "tests"
+markers = [
+    "rotation_angle: specify the angle to be used for a Rotation fixture",
+    "gui: GUI-related tests",
+]
+
+[tool.rstcheck]
+ignore_directives = [
+    "automodule",
+    "click"
+]
+ignore_substitutions = [
+    "release",
+]
+ignore_messages = [
+    'Duplicate implicit target name: "added".',
+    'Duplicate implicit target name: "changed".',
+    'Duplicate implicit target name: "fixed".',
+    'Duplicate implicit target name: "removed".',
+    'Duplicate implicit target name: "unreleased".',
+    'Duplicate explicit target name: "keep a changelog"',
+    'No role entry for "gitref" in module "docutils.parsers.rst.languages.en',
+    'Unknown interpreted text role "gitref".',
+]
+
+[tool.ruff]
+line-length = 79
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 79
+
+[tool.ruff.lint]
+ignore = [
+    "D203", # pydocstyle one-blank-line-before-class
+    "D213", # pydocstyle multi-line-summary-second-line
+    "D300", # pydocstyle triple-single-quotes
+    "D406", # pydocstyle new-line-after-section-name
+    "D407", # pydocstyle dashed-underline-after-section
+    "E111", # pycodestyle indentation-with-invalid-multiple
+    "E114", # pycodestyle indentation-with-invalid-multiple-comment
+    "E117", # pycodestyle over-indented
+    "E501", # pycodestyle line-too-long
+    "PLR0913", # pylint too-many-arguments
+    "Q000", # flake8-quotes bad-quotes-inline-string
+    "Q001", # flake8-quotes bad-quotes-multiline-string
+    "Q002", # flake8-quotes bad-quotes-docstring
+    "Q003", # flake8-quotes avoidable-escaped-quote
+    "RUF001", # ruff-specific rules ambiguous-unicode-character-string
+    "S101", # flake8-bandit assert
+    "S308", # flake8-bandit suspicious-mark-safe-usage
+    "W191", # pycodestyle tab-indentation
+]
+select = [
+    "ARG", # flake8-unused-arguments
+    "A", # flake8-builtins
+    "B", # flake8-bugbear
+    "BLE", # flake8-blind-except
+    "C4", # flake8-comprehensions
+    "C90", # mccabe complexity
+    "COM818", # flake8-commas trailing-comma-on-bare-tuple
+    "D", # pydocstyle
+    "DTZ", # flake8-datetimez
+    "E", # pycodestyle errors
+    "EM", # flake8-errmsg
+    "EXE", # flake8-executable
+    "F", # pyflakes
+    "I", # isort
+    "INT", # flake8-gettext
+    "N", # pep8-naming
+    "NPY", # NumPy-specific rules
+    "PIE", # flake8-pie
+    "PL", # pylint
+    "PT", # flake8-pytest-style
+    "PTH", # flake8-use-pathlib
+    "Q", # flake8-quotes
+    "RSE", # flake8-raise
+    "RUF", # ruff-specific rules
+    "S", # flake8-bandit
+    "SIM", # flake8-simplify
+    "TC", # flake8-type-checking
+    "TID", # flake8-tidy-imports
+    "UP", # pyupgrade
+    "W", # pycodestyle warnings
+    "YTT", # flake8-2020
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+forced-separate = ["conftest"]
+force-single-line = true
+force-sort-within-sections = true
+split-on-trailing-comma = false
+known-first-party = ["eldl"]
+
+[tool.ruff.lint.per-file-ignores]
+"noxfile.py" = ["EXE002", "D"]
+"__main__.py" = ["D100"]
+"__init__.py" = ["N999"]
+"tests/**" = ["D", "PLR2004"]
+"conf.py" = [
+    "A001",
+    "ARG001",
+    "D",
+    "PLR2004"
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

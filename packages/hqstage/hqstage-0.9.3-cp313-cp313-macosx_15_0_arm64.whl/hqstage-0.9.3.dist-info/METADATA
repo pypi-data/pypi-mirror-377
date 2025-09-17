@@ -1,0 +1,146 @@
+Metadata-Version: 2.4
+Name: hqstage
+Version: 0.9.3
+Summary: HQStage is a lightweight tool for installing and using HQS software.
+Author-email: HQS Quantum Simulation GmbH <info@quantumsimulations.de>
+Maintainer-email: Sebastian Zanker <sebastian.zanker@quantumsimulations.de>
+License: HQS Terms of use
+Project-URL: Homepage, https://cloud.quantumsimulations.de
+Project-URL: Documentation, https://docs.cloud.quantumsimulations.de
+Project-URL: HQS, https://quantumsimulations.de
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Quantum Computing
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp
+Requires-Dist: uv>=0.1.36
+Requires-Dist: click>=8.0
+Requires-Dist: diskcache
+Requires-Dist: platformdirs
+Requires-Dist: configparser
+Requires-Dist: tomli
+Requires-Dist: tomli-w
+Requires-Dist: pynacl
+Requires-Dist: py-machineid
+Requires-Dist: pydantic
+Requires-Dist: pypi-simple
+Requires-Dist: requests
+Requires-Dist: shellingham
+Requires-Dist: tqdm
+Requires-Dist: urllib3>=2.0
+Requires-Dist: semver
+Provides-Extra: tests
+Requires-Dist: coverage; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Provides-Extra: dev
+Requires-Dist: bandit; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinx_rtd_theme; extra == "docs"
+Requires-Dist: nbsphinx; extra == "docs"
+Dynamic: license-file
+
+# Readme
+
+`HQStage` is a lightweight tool for installing and using HQS software.
+Want to learn more about what you can do with our software?
+Explore our [quantum simulation use cases](https://quantumsimulations.de/use-cases).
+
+## Installation
+
+Prerequisites
+
+* Python 3.10+
+* macOS/Linux
+* Account on <https://cloud.quantumsimulations.de>
+* Get a free trial license at <https://cloud.quantumsimulations.de/licenses>
+* Proceed with installation
+
+```sh
+pip install hqstage
+hqstage init
+```
+
+## Free trial
+
+To get started with your first quantum computing use case request a [free trial](https://cloud.quantumsimulations.de/software).
+This free trial will add the `HQS Spectrum Tools` to your account which we will use to run our first example use case: a NMR spectrum prediction.
+
+## Running your first use case example: NMR
+
+Install the requried modules
+
+```shh
+hqstage install ipython jupyter matplotlib mkl hqs_spectrum_tools
+```
+
+and open an ipython interpreter:
+
+```sh
+ipython
+```
+
+Now, copy paste the following code snippet:
+
+```python
+from hqs_nmr_parameters import examples
+from hqs_nmr import NMRCalculationParameters, calculate_spectrum
+from matplotlib import pyplot as plt
+from rdkit.Chem import Draw, MolFromMolBlock
+print(f"Available moleucules: {examples.molecules.keys}")
+molecule_name = '1,2,4-trichlorobenzene'
+molecule_parameters = examples.molecules[molecule_name]
+rdkit_mol = MolFromMolBlock(molecule_parameters.structures["Molfile"].content)
+mol_image = Draw.MolToImage(rdkit_mol)
+fig, ax = plt.subplots(figsize=(10, 6))
+for field_T in [1, 5, 10]:
+    result = calculate_spectrum(molecule_parameters, NMRCalculationParameters(field_T=field_T))
+    ax.plot(result.spectrum.omegas_ppm, result.spectrum.intensity, label=f"B={field_T}T")
+plt.legend()
+ax.set_xlabel(r"$\delta$ [ppm]")
+ax.set_ylabel("Intensity, arb. units")
+ax.set_title(f"Spectrum of {molecule_name}")
+ax_image = fig.add_axes(
+    [0.1,
+    0.6,
+    0.25,
+    0.25]
+)
+ax_image.imshow(mol_image)
+ax_image.axis('off')
+plt.show()
+```
+
+## Downloading and using our examples
+
+Download the use-case and spectrum examples
+
+```gnubash
+mkdir -p ~/HQStage/Examples
+hqstage download-examples --download-dir ~/HQStage/Examples
+jupyter lab --notebook-dir ~/HQStage/Examples
+```
+
+This will open jupyter lab in the folder where we have downladed the HQStage examples in.
+Fell free to explore the examples andadjust to your needs or continue reading more about our [use cases](https://docs.cloud.quantumsimulations.de/use_cases.html)
+
+## User documentation
+
+User documentation is available on <https://docs.cloud.quantumsimulations.de>

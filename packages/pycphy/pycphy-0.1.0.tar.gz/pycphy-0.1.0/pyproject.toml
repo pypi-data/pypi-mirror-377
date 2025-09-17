@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycphy"
+version = "0.1.0"
+description = "Python: Computational Physics - Tools for physics dynamics simulation"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Sanjeev Bashyal", email = "sanjeev.bashyal@example.com"},
+]
+maintainers = [
+    {name = "Sanjeev Bashyal", email = "sanjeev.bashyal@example.com"},
+]
+keywords = ["computational physics", "simulation", "openfoam", "cfd", "physics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "numpy>=1.19.0",
+    "scipy>=1.6.0",
+    "matplotlib>=3.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mypy",
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+
+[project.urls]
+Homepage = "https://github.com/SanjeevBashyal/pycphy"
+Repository = "https://github.com/SanjeevBashyal/pycphy"
+Documentation = "https://github.com/SanjeevBashyal/pycphy#readme"
+"Bug Tracker" = "https://github.com/SanjeevBashyal/pycphy/issues"
+
+[project.scripts]
+pycphy-foam = "pycphy.foamCaseDeveloper.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pycphy*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

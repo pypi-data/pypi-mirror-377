@@ -1,0 +1,15 @@
+
+<pkg-info format-version="2" identifier="com.oracle.jdk8u202" version="1.1" install-location="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk" auth="root">
+    <payload installKBytes="373512" numberOfFiles="1620"/>
+    <scripts>
+        <preinstall file="./preinstall"/>
+        <postinstall file="./postinstall"/>
+    </scripts>
+    <bundle id="com.oracle.java.8u202.jdk" CFBundleIdentifier="com.oracle.java.8u202.jdk" path="./" CFBundleVersion="1.8.0_202">
+        <bundle id="com.oracle.jmc" CFBundleIdentifier="com.oracle.jmc" path=".Contents/Home/lib/missioncontrol/Java Mission Control.app" CFBundleVersion="552000"/>
+    </bundle>
+    <bundle-version>
+        <bundle id="com.oracle.java.8u202.jdk"/>
+        <bundle id="com.oracle.jmc"/>
+    </bundle-version>
+</pkg-info>

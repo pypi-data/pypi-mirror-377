@@ -1,0 +1,43 @@
+Metadata-Version: 2.4
+Name: volara-torch
+Version: 1.0.1
+Summary: Plugin for Volara including everything pytorch related. This includes the `Predict` task and the `models` module.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: volara>=1.0.2
+Requires-Dist: torch>=2.4
+Requires-Dist: daisy>=1.2.2
+Requires-Dist: gunpowder>=1.4.0
+Requires-Dist: funlib.geometry>=0.3
+Requires-Dist: funlib.persistence>=0.6
+Requires-Dist: pydantic>=2.6.3
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: pytest-cov>=5.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: autodoc_pydantic>=2.0; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=2.0; extra == "docs"
+Requires-Dist: sphinx-material>=0.0.36; extra == "docs"
+Requires-Dist: sphinx-click>=6.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=2.0; extra == "docs"
+Requires-Dist: myst-parser>=4.0; extra == "docs"
+Requires-Dist: jupyter-sphinx>=0.5; extra == "docs"
+Requires-Dist: matplotlib>=3.0; extra == "docs"
+Requires-Dist: pooch>=1.8; extra == "docs"
+Requires-Dist: wget>=3.2; extra == "docs"
+Requires-Dist: funlib-show-neuroglancer>=0.2; extra == "docs"
+Requires-Dist: nbsphinx>=0.9.7; extra == "docs"
+Requires-Dist: jupytext>=1.16.7; extra == "docs"
+
+[![tests](https://github.com/e11bio/volara-torch/actions/workflows/tests.yaml/badge.svg)](https://github.com/e11bio/volara-torch/actions/workflows/tests.yaml)
+[![ruff](https://github.com/e11bio/volara-torch/actions/workflows/ruff.yaml/badge.svg)](https://github.com/e11bio/volara-torch/actions/workflows/ruff.yaml)
+[![mypy](https://github.com/e11bio/volara-torch/actions/workflows/mypy.yaml/badge.svg)](https://github.com/e11bio/volara-torch/actions/workflows/mypy.yaml)
+<!-- [![codecov](https://codecov.io/gh/e11bio/volara-torch/branch/main/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/e11bio/volara-torch) -->
+
+# volara-torch
+A plugin for volara that includes pytorch models and a `Predict` task
+
+# Available blockwise operations:
+- `Predict`: Model Prediction

@@ -1,0 +1,20 @@
+{% extends "df_site/app.html" %}
+{% load df_site %}
+{% block body_banner %}
+{% endblock body_banner %}
+
+{% block navbar %}
+{% endblock %}
+{% block body_classes %}bg-body-secondary{% endblock %}
+
+{% block body_content %}
+    <div class="row pt-5 ">
+    <div class="col-md-6 offset-md-3 card p-0">
+    <a class="text-center border-bottom" href="{% url 'index' %}">{% fa6_icon 'home' %}</a>
+        {% block content %}
+        {% endblock content %}
+    </div>
+        {% block extra_body %}
+        {% endblock extra_body %}
+    </div>
+{% endblock body_content %}

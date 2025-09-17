@@ -1,0 +1,42 @@
+<div class="row">{% load i18n django_bootstrap5 df_site %}
+    {% block list_search %}{% include "df_components/list_search_form.html" %}{% endblock list_search %}
+    {% block date_hierarchy %}{% include 'df_components/list_hierarchy.html' %}{% endblock %}
+
+    {% block list_table %}
+        {% if cl.has_filters and not cl.model_admin.filters_on_right %}
+            <div class="filters col-md-4 col-sm-12">
+                {% include "df_components/list_filters.html" %}
+            </div>
+        {% endif %}
+        {% if results %}
+            <div class="results {% if cl.has_filters %}col-md-8{% else %}col-md-12{% endif %} col-sm-12">
+                {% block list_pagination_top %}
+                    {% if cl.model_admin.pagination_on_top %}
+                        {% include "df_components/list_pagination.html" %}
+                    {% endif %}
+                {% endblock list_pagination_top %}
+                {% include "df_components/list_table.html" %}
+                {% block list_pagination_bottom %}
+                    {% if cl.model_admin.pagination_on_bottom %}
+                        {% include "df_components/list_pagination.html" %}
+                    {% endif %}
+                {% endblock list_pagination_bottom %}
+            </div>
+        {% else %}
+            <div class="results {% if cl.has_filters %}col-md-8{% else %}col-md-12{% endif %} col-sm-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><span class="page-link">0 {{ cl.opts.verbose_name }}</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+        {% if cl.model_admin.filters_on_right and cl.has_filters %}
+            <div class="filters col-md-4 col-sm-12">
+                {% include "df_components/list_filters.html" %}
+            </div>
+        {% endif %}
+    {% endblock list_table %}
+
+</div>

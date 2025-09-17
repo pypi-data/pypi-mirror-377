@@ -1,0 +1,12 @@
+<div>
+    {% block field_sets %}
+        {% for fieldset in adminform %}
+            {% include "df_components/detail_fieldset.html" with heading_level=2 id_suffix=forloop.counter0 %}
+        {% endfor %}
+    {% endblock field_sets %}
+    {% block inline_field_sets %}
+        {% for inline_admin_formset in inline_admin_formsets %}
+            {% include inline_admin_formset.opts.template %}
+        {% endfor %}
+    {% endblock inline_field_sets %}
+</div>

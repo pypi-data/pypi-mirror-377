@@ -1,0 +1,35 @@
+{% load i18n df_site %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        {% for header in result_headers %}
+            <th scope="col"{{ header.class_attrib }}>
+                {% if header.sortable and header.sort_priority > 0 %}
+                    <small class="sortoptions float-end">
+                        <a class="sortremove link-primary" href="{{ header.url_remove }}"
+                           title="{% translate "Remove from sorting" %}">{% fa6_icon 'arrows-alt-h' %}</a>
+                        <a href="{{ header.url_toggle }}"
+                           class="toggle link-primary {{ header.ascending|yesno:'ascending,descending' }}"
+                           title="{% translate "Toggle sorting" %}">
+                            {% if header.ascending %}{% fa6_icon 'sort-up' %}{% else %}
+                                {% fa6_icon 'sort-down' %}{% endif %}</a>
+                        {% if num_sorted_fields > 1 %}
+                            <sub class="text-secondary"
+                                 title="{% blocktranslate with priority_number=header.sort_priority %}Sorting priority: {{ priority_number }}{% endblocktranslate %}">{{ header.sort_priority }}</sub>
+                        {% endif %}
+                    </small>
+                {% endif %}
+                <div class="text">{% if header.sortable %}
+                    <a href="{{ header.url_primary }}" class="link-primary">{{ header.text|capfirst }}</a>{% else %}
+                    <span class="text-primary">{{ header.text|capfirst }}</span>{% endif %}
+                </div>
+                <div class="clear"></div>
+            </th>{% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for result in results %}
+        <tr>{% for item in result %}{{ item }}{% endfor %}</tr>
+    {% endfor %}
+    </tbody>
+</table>

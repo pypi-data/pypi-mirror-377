@@ -1,0 +1,11 @@
+/* TEAM */
+Your title: {{ DF_SITE_AUTHOR }}{% if DF_SITE_ORGANIZATION and DF_SITE_ORGANIZATION != DF_SITE_AUTHOR %} ({{ DF_SITE_ORGANIZATION }}){% endif %}
+Site: {{ DF_SITE_TITLE }}
+{% for sn in humans_social_networks.items %}{{ sn.0|capfirst }}: {{ sn.1 }}
+{% endfor %}
+
+/* SITE */
+Last update: {{ humans_update|date:"Y/m/d" }}
+Keywords: {{ humans_keywords|join:", " }}
+Standards: HTML5, CSS3, ES6
+Components: Django 5, Bootstrap 5, FontAwesome 6

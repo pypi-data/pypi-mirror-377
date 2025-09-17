@@ -1,0 +1,39 @@
+{% load df_site i18n %}
+<nav>
+    <ul class="pagination justify-content-center">
+        {% if pagination_required %}
+            {% if cl.page_num != 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{% component_list_url cl page=1 %}">«</a>
+                </li>
+            {% endif %}
+            {% for i in page_range %}
+                {% if i == cl.paginator.ELLIPSIS or i == cl.page_num %}
+                    <li class="page-item disabled"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% component_list_url cl page=i %}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if cl.page_num != cl.paginator.num_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="{% component_list_url cl page=cl.paginator.num_pages %}">»</a>
+                </li>
+            {% endif %}
+        {% endif %}
+        {% if show_all_url %}
+            <li class="page-item">
+                <a href="{{ show_all_url }}" class="page-link">{% translate 'Show all' %}
+                <span class="badge text-bg-secondary">{{ cl.result_count }}</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">
+                        {{ cl.result_count }} {% if cl.result_count == 1 %}{{ cl.opts.verbose_name }}{% else %}
+                            {{ cl.opts.verbose_name_plural }}{% endif %}
+                    </span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

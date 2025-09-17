@@ -1,0 +1,221 @@
+{% load static pipeline_sri  df_site i18n django_bootstrap5 cookie_consent_tags %}<!doctype html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}"
+      {% if DF_COLOR_THEMES %}data-bs-theme="{{ COLOR_THEME|default:'auto' }}"
+      data-df-dark-theme="{{ DF_COLOR_THEMES.2.0 }}" data-df-light-theme="{{ DF_COLOR_THEMES.1.0 }}"{% endif %}>
+<head>
+    {% block head_meta_global %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:locale" content="{{ LANGUAGE_CODE }}"/>
+        {% block head_meta_title %}
+            <title>{{ PAGE_TITLE|default:DF_SITE_TITLE }}</title>
+            <meta property="og:title" content="{{ PAGE_TITLE|default:DF_SITE_TITLE }}"/>
+        {% endblock head_meta_title %}
+        <meta property="og:site_name" content="{{ DF_SITE_TITLE }}">
+        <meta name="apple-mobile-web-app-title" content="{{ DF_SITE_TITLE }}">
+        <meta name="application-name" content="{{ DF_SITE_TITLE }}">
+        <meta name="author" content="{{ DF_SITE_AUTHOR }}">
+        {% if PAGE_KEYWORDS %}
+            <meta name="keywords" content="{{ PAGE_KEYWORDS|join:', ' }}">
+        {% elif DF_SITE_KEYWORDS %}
+            <meta name="keywords" content="{{ DF_SITE_KEYWORDS|join:', ' }}">
+        {% endif %}
+        <meta property="twitter:site" content="{{ DF_SITE_X_ACCOUNT }}"/>
+        <meta property="og:type" content="website"/>
+        {% if DF_SITE_ORGANIZATION %}
+            <meta property="organization.name" content="{{ DF_SITE_ORGANIZATION }}"/>{% endif %}
+        <meta property="organization.logo" content="{% static 'favicon/apple-touch-icon.png' %}"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+        <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="{{ DF_SAFARI_PINNED_COLOR }}">
+        <meta name="msapplication-TileColor" content="{{ DF_MICROSOFT_BACKGROUND_COLOR }}">
+        <meta name="theme-color" content="{{ DF_ANDROID_THEME_COLOR }}">
+        <link rel="manifest" href="{% abs_url 'site_webmanifest' %}">
+        <meta name="msapplication-config" content="{% abs_url 'browserconfig' %}"/>
+    {% endblock head_meta_global %}
+    {% block head_meta_local %}
+        <meta property="twitter:creator" content="{{ DF_SITE_X_ACCOUNT }}"/>
+        <meta property="og:description" content="{{ PAGE_DESCRIPTION|default:DF_SITE_DESCRIPTION }}">
+        <meta name="description" content="{{ PAGE_DESCRIPTION|default:DF_SITE_DESCRIPTION }}">
+        <meta property="og:image" content="
+            {% if PAGE_IMAGE_URL %}{{ PAGE_IMAGE_URL }}{% else %}{% static 'favicon/favicon.ico' %}{% endif %}"/>
+        <link rel="canonical" href="{{ PAGE_URL|default:request.path|abs_url }}"/>
+        <meta property="og:url" content="{{ PAGE_URL|default:request.path|abs_url }}"/>
+    {% endblock head_meta_local %}
+    {% block media_global %}
+        {% sri_stylesheet "base" %}
+        {% sri_stylesheet "app" %}
+        {% sri_javascript "app" %}
+        {% sri_javascript "base" %}
+    {% endblock media_global %}
+    {% block media_local %}
+    {% endblock media_local %}
+</head>
+<body class="{% block body_classes %}{% endblock %}" data-admin-utc-offset="{% now "Z" %}">
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg sticky-top text-bg-primary">
+        <div class="container">
+            {% block navbar_site_title %}
+                <a class="navbar-brand" href="{% url 'index' %}"><img class="w-25"
+                                                                      src="{% static 'favicon/apple-touch-icon.png' %}"
+                                                                      alt="{% trans 'Site logo' %}"></a>
+            {% endblock navbar_site_title %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbar-content" aria-controls="navbar-content"
+                    aria-expanded="false"
+                    aria-label="{% trans 'Toggle navigation' %}">
+                {% fa6_icon 'bars' large=True %}
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar-content">
+                {% block navbar_content %}
+                {% endblock navbar_content %}
+                {% block navbar_search_form %}
+                {% endblock navbar_search_form %}
+                {% block navbar_dark_mode %}
+                    <a class="btn btn-outline-light df-theme-switcher"
+                       href="{% url 'users:theme_switch' %}?current={{ COLOR_THEME }}&next={{ request.get_full_path | urlencode }}"
+                       title="{% trans 'Switch color theme' %}">
+                        {% for color_data in DF_COLOR_THEMES %}{% if color_data.0 == COLOR_THEME %}
+                            {% fa6_icon color_data.2 %}{% endif %}{% endfor %}
+                    </a>
+                {% endblock navbar_dark_mode %}
+                {% block navbar_user %}
+                    {% if user.is_authenticated %}
+                        <span class="btn btn-outline-light dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">{% fa6_icon 'user-circle' %}</a>
+                        <span class="dropdown-menu">
+                {% url 'account_logout' as logout_url %}
+                                <a class="dropdown-item"
+                                   href="{% url 'users:settings' %}">{% trans "Settings" %}</a>
+                            {% if logout_url %}
+                                <a class="dropdown-item" href="{{ logout_url }}">{% trans "Sign Out" %}</a>
+                            {% endif %}
+                        </span>
+                        </span>
+                    {% else %}
+                        <span class="btn btn-outline-light dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">{% fa6_icon 'user-circle' %}</a>
+                        <span class="dropdown-menu">
+                        {% url 'account_login' as login_url %}
+                        {% url 'account_signup' as signup_url %}
+                            {% if login_url %}
+                                <a class="dropdown-item" href="{{ login_url }}">{% trans "Sign In" %}</a>
+                            {% endif %}
+                            {% if signup_url %}
+                                <a class="dropdown-item" href="{{ signup_url }}">{% trans "Sign Up" %}</a>
+                            {% endif %}
+                        </span>
+                        </span>
+                    {% endif %}
+                {% endblock %}
+                {% block navbar_admin %}
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a class="btn btn-outline-light" href="{% url 'admin:index' %}"
+                           title="{% trans 'Administration' %}">{% fa6_icon 'tools' %}</a>
+                    {% endif %}
+                {% endblock navbar_admin %}
+            </div>
+        </div>
+    </nav>
+{% endblock navbar %}
+
+{% block body %}
+    {% for ribbon in DF_RIBBONS %}
+        {% if ribbon.html_tag == "div" %}
+            <div class="{{ ribbon.css_classes }} my-1 text-center p-3"
+                 title="{{ ribbon.summary|striptags }}"><h1>{{ ribbon.summary|safe }}</h1>{{ ribbon.message|safe }}</div>
+        {% elif ribbon.url %}
+            <a class="{{ ribbon.css_classes }}" href="{{ ribbon.url }}" data-ribbon="{{ ribbon.summary|safe|escape }}"
+               title="{{ ribbon.summary|striptags }}">{{ ribbon.summary|safe }}</a>
+        {% else %}
+            <span class="{{ ribbon.css_classes }}" data-ribbon="{{ ribbon.summary|safe|escape }}"
+                  title="{{ ribbon.summary|striptags }}">{{ ribbon.summary|safe }}</span>
+        {% endif %}
+    {% endfor %}
+    <div class="container px-0">
+        {% block body_messages %}
+            {% bootstrap_messages %}
+        {% endblock body_messages %}
+        {% block body_banner %}
+            <div class="page-header" id="banner">
+                <div class="row">
+                    <div class="col-lg-8 col-md-7 col-sm-6 mx-1 py-3">
+                        <h1>{{ PAGE_TITLE|default:DF_SITE_TITLE }}</h1>
+                        {% if PAGE_DESCRIPTION == "" %}
+                        {% elif PAGE_DESCRIPTION or DF_SITE_DESCRIPTION %}
+                            <p class="lead">{{ PAGE_DESCRIPTION|default:DF_SITE_DESCRIPTION }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-4 col-md-5 col-sm-6"></div>
+                </div>
+            </div>
+        {% endblock body_banner %}
+        <div class=" min-vh-100">
+            {% block body_content %}
+            {% endblock body_content %}
+        </div>
+
+        {% block body_modal %}
+            <div id="df_site-modal" class="modal fade" tabindex="-1"></div>
+        {% endblock body_modal %}
+
+        {% block body_footer %}
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    {% block body_footer_copyright %}
+                        {% if DF_SITE_ORGANIZATION %}
+                            <a href="{% url 'index' %}"
+                               class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+
+                            </a>
+                            <span
+                                class="mb-3 mb-md-0 text-body-secondary">© {% now "Y" %} {{ DF_SITE_ORGANIZATION }}</span>
+                        {% endif %}
+                    {% endblock body_footer_copyright %}
+                </div>
+                <ul class="nav col-md4 ">
+                    {% block body_footer_links %}
+                        <li class="ms-3"><a href="{% url 'index' %}"
+                                            class="nav-link px-2 text-body-secondary">{% trans 'Home' %}</a></li>
+                    {% endblock body_footer_links %}
+                </ul>
+
+                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                    {% block body_footer_social %}
+                        {% for social in DF_SITE_SOCIAL_NETWORKS %}
+                            <li class="ms-3"><a class="text-body-secondary" href="{{ social.1 }}">
+                                {% fa6_icon social.0 prefix="fab" %}
+                            </a></li>
+                        {% endfor %}
+                    {% endblock body_footer_social %}
+                </ul>
+            </footer>
+
+
+        {% endblock body_footer %}
+    </div>
+{% endblock body %}
+{% block body_cookies %}
+    {% all_cookie_groups 'cookie-consent__cookie-groups' %}
+    <template id="cookie-consent__cookie-bar" data-df-cookies-status="{% url 'cookie_consent_status' %}">
+        <div class="container cookie-bar footer mt-auto py-3 bg-body-tertiary fixed-bottom">
+            <p>
+                {% trans "This site uses cookies for better performance and user experience. Do you agree to use these cookies?" %}</p>
+            <div class="btn-group">
+                <button type="button"
+                        class="btn btn-success cookie-consent__accept">{% trans 'Accept' %}</button>
+                <button type="button"
+                        class="btn btn-danger cookie-consent__decline">{% trans 'Decline' %}</button>
+                <a class="btn btn-secondary"
+                   href="{% url "cookie_consent_cookie_group_list" %}">{% trans 'Cookies info' %}</a>
+            </div>
+        </div>
+    </template>
+{% endblock body_cookies %}
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% load allauth %}
+<form class="p-3" method="{{ attrs.method }}" action="{{ attrs.action }}">
+    {% slot body %}
+    {% endslot %}
+
+    <div class="btn-group mt-3" role="group">
+        {% slot actions %}
+        {% endslot %}
+    </div>
+</form>

@@ -1,0 +1,6 @@
+{% load df_site %}<li class="list-group-item text-center">
+
+    <a title="{{ attrs.name }}" href="{{ attrs.href }}" class="nav-link">
+        <i class="fab fa-{{ attrs.provider_id|fa6_allauth_icon }}"></i>
+        {{ attrs.name }}</a>
+</li>

@@ -1,0 +1,20 @@
+{% extends "allauth/layouts/manage.html" %}
+
+{% load i18n static postman_tags allauth %}
+{% block head_title %}
+    {% trans "Messaging" %}
+{% endblock head_title %}
+
+{% block inner_content %}
+    {% block postman_menu %}{% with request.resolver_match.url_name as url_name %}
+        <ul id="postman_menu" class="nav nav-tabs">{% postman_unread as unread_count %}
+            <li class="nav-item"><a class="nav-link {% if url_name == 'inbox' %}active{% endif %}" href="{% url 'postman:inbox' %}">{% trans "Inbox" %}{% if unread_count %} <span class="badge text-bg-secondary">{{ unread_count }}</span>{% endif %}</a></li>
+            <li class="nav-item"><a class="nav-link {% if url_name == 'sent' %}active{% endif %}" href="{% url 'postman:sent' %}">{% trans "Sent Messages" %}</a></li>
+            <li class="nav-item"><a class="nav-link {% if url_name == 'write' or url_name == 'view_conversation' or url_name == 'reply' %}active{% endif %}" href="{% url 'postman:write' %}">{% trans "Write" %}</a></li>
+            <li class="nav-item"><a class="nav-link {% if url_name == 'archives' %}active{% endif %}" href="{% url 'postman:archives' %}">{% trans "Archives" %}</a></li>
+            <li class="nav-item"><a class="nav-link {% if url_name == 'trash' %}active{% endif %}" href="{% url 'postman:trash' %}">{% trans "Trash" %}</a></li>
+        </ul>
+    {% endwith %}{% endblock postman_menu %}
+    {% block content %}
+    {% endblock content %}
+{% endblock inner_content %}

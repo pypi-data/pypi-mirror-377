@@ -1,0 +1,23 @@
+[service]
+id = "d5456d2c-c99e-43a2-a7ac-49b7749f3247"
+name = "Channel starter service"
+description = ""
+path_to_channel = "./binaries/channel"
+verbose = false
+#fixed_sturdy_ref_token = "channel_starter"
+
+#[[service.registries]]
+#name = "channel starter service"
+#category_id = "channels"
+# sturdy ref to a registry where the service should be registered at
+#sturdy_ref = "capnp://the_host_key@host:port/a_sturdy_ref_token"
+
+[vat]
+#host = "localhost"
+#port = "9989"
+serve_bootstrap = true
+
+# at which resolvers should the vat be registered under the current vat id and optional alias
+#[[vat.resolvers]]
+#sturdy_ref = "sturdy ref here"
+#alias = "channel_starter"

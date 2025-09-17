@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "volti"
+version = "1.1.0"
+description = "🔐 Secure API Key Manager - Minimal CLI tool and Python library for managing API keys with military-grade encryption, password authentication, and cross-platform support. Store, retrieve, and organize your API keys safely with intuitive commands and bulk .env import capabilities."
+authors = [{name = "Lokesh", email = "lokeshpantangi@gmail.com"}, {name = "Aditya", email = "aditya268244@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Utilities",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+]
+keywords = ["api-keys", "security", "encryption", "cli", "credentials", "password-manager", "developer-tools"]
+dependencies = [
+    "cryptography>=3.4.8",
+    "click>=8.0.0",
+    "pywin32; platform_system == 'Windows'",
+    "argon2-cffi",
+    "pyperclip"
+]
+
+[project.scripts]
+volti = "apilib.commands:main"
+# Minimal CLI commands
+add = "apilib.commands:add_command"
+get = "apilib.commands:get_command"
+remove = "apilib.commands:remove_command"
+list = "apilib.commands:list_command"
+clear = "apilib.commands:clear_command"
+setup = "apilib.commands:setup_command"
+auth = "apilib.password_commands:check_auth_status_command"
+gitignore = "apilib.commands:gitignore_command"
+help = "apilib.commands:help_command"
+
+[project.urls]
+Homepage = "https://github.com/lokeshpantangi/volti"
+Repository = "https://github.com/lokeshpantangi/volti.git"
+Issues = "https://github.com/lokeshpantangi/volti/issues"
+Documentation = "https://github.com/lokeshpantangi/volti#readme"
+Changelog = "https://github.com/lokeshpantangi/volti/releases"
+"Bug Reports" = "https://github.com/lokeshpantangi/volti/issues"
+"Source Code" = "https://github.com/lokeshpantangi/volti"

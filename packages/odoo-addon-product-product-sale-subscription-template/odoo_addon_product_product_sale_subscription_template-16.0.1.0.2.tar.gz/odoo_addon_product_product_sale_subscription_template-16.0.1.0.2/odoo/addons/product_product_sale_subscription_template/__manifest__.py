@@ -1,0 +1,15 @@
+{
+    "name": "product_product_sale_subscription_template",
+    "version": "16.0.1.0.2",
+    "summary": "Adds sale subscription template to product",
+    "author": "Coopdevs Treball SCCL, Som Connexió SCCL",
+    "website": "https://coopdevs.org",
+    "license": "AGPL-3",
+    "category": "Cooperative management",
+    "depends": ["somconnexio", "subscription_oca"],
+    "data": ["views/product_views.xml"],
+    "demo": [],
+    "external_dependencies": {},
+    "application": False,
+    "installable": True,
+}

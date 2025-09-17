@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "davinci-remote-video-player"
+dynamic = ["version"]
+description = "A simple CLI tool for playing video files on remote HPC clusters"
+authors = [{name = "Leonardo Baroncelli"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["video", "player", "hpc", "remote", "opencv"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Multimedia :: Video :: Display",
+]
+
+dependencies = [
+    "opencv-python>=4.5.0",
+    "tqdm>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/LeoBaro/remote-video-player"
+Issues = "https://github.com/LeoBaro/remote-video-player/issues"
+
+
+[project.scripts]
+dvplayer = "dvplayer:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "dvplayer.__version__"}
+

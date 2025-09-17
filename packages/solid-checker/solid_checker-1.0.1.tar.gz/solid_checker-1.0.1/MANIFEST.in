@@ -1,0 +1,12 @@
+include README.md
+include LICENSE
+include pyproject.toml
+include __main__.py
+recursive-include srp *.py
+recursive-include ocp *.py
+recursive-include lsp *.py
+recursive-include isp *.py
+recursive-include dip *.py
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store

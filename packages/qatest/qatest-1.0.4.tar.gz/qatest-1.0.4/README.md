@@ -1,0 +1,151 @@
+# QATest CLI
+
+A command-line tool for validating and uploading JSON test cases to QATest management system.
+
+## Features
+
+- 🔍 **Validate** test case JSON files for correct structure and format
+- 📤 **Bulk upload** test cases to QATest API with automatic batching
+- 📁 **Recursive scanning** of directories for test case files
+- 🎨 **Rich terminal output** with progress indicators and colored formatting
+- ⚙️ **Configurable** via config files or command-line arguments
+
+## Installation
+
+```bash
+pip install qatest
+```
+
+## Quick Start
+
+### 1. Initialize Configuration
+
+Create a configuration file with your project credentials:
+
+```bash
+qatest init <project_key>
+```
+
+This creates a `qatest-config.yml` file in your current directory.
+
+### 2. Configure API Endpoint
+
+Edit the generated `qatest-config.yml`:
+
+```yaml
+api_endpoint: https://your-api-endpoint.com
+project_key: your-project-key
+```
+
+### 3. Validate Test Cases
+
+Check your test case JSON files for correct structure:
+
+```bash
+qatest validate ./test_cases
+```
+
+### 4. Upload Test Cases
+
+Upload validated test cases to QATest:
+
+```bash
+qatest upload ./test_cases
+```
+
+## Test Case Format
+
+Test cases must be JSON files with the following structure:
+
+```json
+{
+  "id": 442,
+  "title": "User login flow",
+  "description": "Test successful user authentication",
+  "preconditions": "User account exists",
+  "steps": [
+    {
+      "action": "Enter username and password",
+      "expected_result": "Credentials are accepted"
+    },
+    {
+      "action": "Click login button",
+      "expected_result": "User is redirected to dashboard"
+    }
+  ]
+}
+```
+
+**Required fields:**
+- `id` (integer): Unique test case identifier
+- `title` (string): Test case title
+- `steps` (array): Test steps with `action` and `expected_result`
+
+**Optional fields:**
+- `description` (string): Detailed test description
+- `preconditions` (string): Test prerequisites
+
+## Commands
+
+### `qatest init`
+
+Initialize configuration file with project credentials:
+
+```bash
+qatest init <project_key> [--force]
+```
+
+Options:
+- `--force`: Overwrite existing configuration
+
+### `qatest validate`
+
+Validate test case JSON files:
+
+```bash
+qatest validate <directory> [--pattern PATTERN]
+```
+
+Options:
+- `--pattern`: File pattern to match (default: `*.json`)
+
+### `qatest upload`
+
+Upload test cases to QATest API:
+
+```bash
+qatest upload <directory> [OPTIONS]
+```
+
+Options:
+- `--no-validate`: Skip validation before upload
+- `--batch-size`: Number of test cases per API request (default: 50)
+- `--config`: Path to custom configuration file
+
+## Configuration
+
+Configuration is managed through `qatest-config.yml`:
+
+```yaml
+api_endpoint: https://api.qatest.com  # Required
+project_key: your-api-key             # Required
+batch_size: 50                        # Optional (default: 50)
+validate_first: true                  # Optional (default: true)
+```
+
+## Error Handling
+
+The CLI provides detailed error messages for common issues:
+
+- **Missing configuration**: Prompts to run `qatest init`
+- **Invalid JSON**: Shows line numbers and parsing errors
+- **Missing fields**: Lists all missing required fields
+- **API errors**: Displays HTTP status codes and error details
+
+## License
+
+MIT License
+
+## Support
+
+For issues and feature requests, please visit the [GitHub repository](https://github.com/yourusername/qatest-cli).

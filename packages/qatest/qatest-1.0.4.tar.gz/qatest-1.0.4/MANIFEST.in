@@ -1,0 +1,32 @@
+# Include important files
+include README.md
+include LICENSE
+include requirements.txt
+include requirements-dev.txt
+
+# Include package data
+recursive-include qatest *.py
+
+# Exclude directories we don't want in the package
+prune example
+prune tests
+prune venv
+prune .git
+prune .github
+prune __pycache__
+prune *.egg-info
+
+# Exclude specific files
+exclude .gitignore
+exclude .env
+exclude qatest-config.yml
+exclude qatest-config.yaml
+exclude CLAUDE.md
+
+# Exclude compiled files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.swp
+global-exclude *.bak
+global-exclude *~
+global-exclude .DS_Store

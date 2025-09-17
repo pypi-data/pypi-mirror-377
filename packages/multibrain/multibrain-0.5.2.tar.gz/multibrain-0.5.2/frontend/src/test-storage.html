@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Storage</title>
+</head>
+<body>
+    <h1>LocalStorage Debug</h1>
+    <button onclick="checkStorage()">Check Storage</button>
+    <button onclick="clearStorage()">Clear Storage</button>
+    <pre id="output"></pre>
+    
+    <script>
+        function checkStorage() {
+            const data = localStorage.getItem('multibrain_v2');
+            const output = document.getElementById('output');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    output.textContent = JSON.stringify(parsed, null, 2);
+                } catch (e) {
+                    output.textContent = 'Error parsing: ' + e.message + '\n\nRaw data:\n' + data;
+                }
+            } else {
+                output.textContent = 'No data found in localStorage';
+            }
+        }
+        
+        function clearStorage() {
+            localStorage.removeItem('multibrain_v2');
+            document.getElementById('output').textContent = 'Storage cleared';
+        }
+        
+        // Check on load
+        checkStorage();
+    </script>
+</body>
+</html>

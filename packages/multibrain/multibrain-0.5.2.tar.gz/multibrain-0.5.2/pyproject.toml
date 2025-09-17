@@ -1,0 +1,75 @@
+# pyproject.toml
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2",
+]
+
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multibrain"
+dynamic = ["version"]
+authors = [
+    {name = "Jeff Moe", email = "moe@spacecruft.org"},
+]
+description = "Run queries with multiple AI servers"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = [
+    "ai",
+    "fastapi",
+    "inference",
+    "openai",
+    "llm",
+]
+license = {text = "Apache 2.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+
+dependencies = [
+    "fastapi",
+    "httpx",
+    "markdown2[all]",
+    "python-multipart",
+    "uvicorn",
+    "sse-starlette",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "build",
+    "ruff",
+    "setuptools-scm",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://spacecruft.org/deepcrayon/multibrain"
+Documentation = "https://spacecruft.org/deepcrayon/multibrain"
+Repository = "https://spacecruft.org/deepcrayon/multibrain"
+Issues = "https://spacecruft.org/deepcrayon/multibrain"
+Changelog = "https://spacecruft.org/deepcrayon/multibrain/raw/branch/main/CHANGELOG.txt"
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
+[tool.setuptools_scm]
+write_to = "src/multibrain/_version.py"
+
+[project.scripts]
+multibrain-api = "multibrain.api.launch:run_fastapi"

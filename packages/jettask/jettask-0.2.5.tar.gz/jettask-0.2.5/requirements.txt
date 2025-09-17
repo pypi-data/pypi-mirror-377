@@ -1,0 +1,26 @@
+redis
+watchdog
+uvloop
+msgpack
+
+# 性能优化依赖
+ujson      # 更快的JSON处理
+
+# WebUI依赖
+fastapi
+uvicorn
+websockets
+pydantic
+python-multipart
+
+# PostgreSQL依赖
+sqlalchemy[asyncio]  # SQLAlchemy with async support
+psycopg[pool,binary]  # PostgreSQL适配器（SQLAlchemy异步驱动）
+
+# CLI依赖
+click
+
+# 定时任务调度依赖
+asyncpg    # PostgreSQL异步驱动
+croniter    # Cron表达式解析
+aioredis    # Redis异步客户端（如果还没有）

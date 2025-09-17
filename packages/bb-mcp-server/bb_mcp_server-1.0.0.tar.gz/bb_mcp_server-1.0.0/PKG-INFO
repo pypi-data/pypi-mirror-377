@@ -1,0 +1,222 @@
+Metadata-Version: 2.4
+Name: bb-mcp-server
+Version: 1.0.0
+Summary: Bitbucket MCP (Model Context Protocol) server built with FastMCP that provides programmatic access to Bitbucket API v2.0
+Author-email: Jason Schulz <jason@schulz.studio>
+License: MIT
+Project-URL: Homepage, https://github.com/your-username/bb-mcp-server
+Project-URL: Repository, https://github.com/your-username/bb-mcp-server
+Project-URL: Issues, https://github.com/your-username/bb-mcp-server/issues
+Keywords: mcp,bitbucket,api,fastmcp,model-context-protocol
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastmcp>=2.12.1
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: python-dotenv>=1.0.0
+Dynamic: license-file
+
+# Bitbucket MCP Server
+
+[![PyPI version](https://badge.fury.io/py/bb-mcp-server.svg)](https://badge.fury.io/py/bb-mcp-server)
+[![Python](https://img.shields.io/pypi/pyversions/bb-mcp-server.svg)](https://pypi.org/project/bb-mcp-server/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/yourusername/bb-mcp-server/actions/workflows/test.yml/badge.svg)](https://github.com/yourusername/bb-mcp-server/actions/workflows/test.yml)
+
+A Model Context Protocol (MCP) server that provides programmatic access to Bitbucket API v2.0. Built with FastMCP, this server enables LLMs and other tools to interact with Bitbucket repositories, pull requests, pipelines, and workspaces.
+
+## Features
+
+- **26 Bitbucket API Tools**: Complete coverage of essential Bitbucket operations
+- **3 Meta-Tools**: High-level workflows for common patterns (pipeline analysis, PR reviews, workspace overview)
+- **7 MCP Resources**: Quick access to repository info, branches, members, and more
+- **Optimized for LLMs**: Token-efficient design with structured outputs
+- **Flexible Configuration**: Works with any Bitbucket workspace and repository via environment variables
+
+## Installation
+
+### From PyPI
+
+```bash
+pip install bb-mcp-server
+```
+
+### From Source
+
+```bash
+git clone https://github.com/yourusername/bb-mcp-server.git
+cd bb-mcp-server
+pip install -e .
+```
+
+## Configuration
+
+1. Create a Bitbucket App Password:
+
+   - Go to https://bitbucket.org/account/settings/app-passwords/
+   - Create a new app password with necessary permissions
+   - Save the password securely
+
+2. Set up environment variables:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Edit `.env` with your credentials:
+   ```env
+   BITBUCKET_USERNAME=your_username
+   BITBUCKET_APP_PASSWORD=your_app_password
+   BITBUCKET_WORKSPACE=your_workspace  # Optional, defaults to "busie"
+   BITBUCKET_REPO=your_repo            # Optional, defaults to "fe-main"
+   ```
+
+## Usage
+
+### Running the Server
+
+```bash
+# Using the installed package
+bb-mcp-server
+
+# Or directly with Python
+python server.py
+```
+
+### Integrating with MCP Clients
+
+Add to your MCP client configuration:
+
+```json
+{
+  "servers": {
+    "bitbucket": {
+      "command": "bb-mcp-server",
+      "env": {
+        "BITBUCKET_USERNAME": "your_username",
+        "BITBUCKET_APP_PASSWORD": "your_app_password"
+      }
+    }
+  }
+}
+```
+
+## Available Tools
+
+### Pipeline Operations
+
+- `list_pipelines` - List and filter pipeline runs
+- `get_pipeline` - Get pipeline details
+- `list_pipeline_steps` - Get pipeline step information
+- `get_pipeline_step_logs` - Retrieve step logs
+- `create_pipeline` - Trigger new pipeline
+
+### Pull Request Operations
+
+- `list_pull_requests` - List PRs with filtering
+- `create_pull_request` - Create new PR
+- `get_pull_request` - Get PR details
+- `update_pull_request` - Update existing PR
+- `list_pr_comments` - Get PR comments
+- `create_pr_comment` - Add PR comment
+- `get_pr_changes` - View file changes
+- `get_pr_diffstat` - Get diff statistics
+- `list_pr_tasks` - List PR tasks
+
+### Meta-Tools (Workflows)
+
+- `analyze_pipeline_failure` - Complete pipeline failure analysis with logs and recommendations
+- `review_pull_request` - Comprehensive PR review with changes, comments, and approval status
+- `workspace_overview` - Full workspace summary with repos, projects, and team info
+
+### Resources
+
+- `bitbucket://{workspace}/{repo}/info` - Repository information
+- `bitbucket://{workspace}/{repo}/recent-pipelines` - Recent pipeline runs
+- `bitbucket://{workspace}/{repo}/open-prs` - Open pull requests
+- `bitbucket://{workspace}/workspace-members` - Team members for reviewers
+- `bitbucket://{workspace}/{repo}/branches` - Available branches
+- `bitbucket://{workspace}/workspace-projects` - Workspace projects
+
+## Development
+
+### Setting up Development Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/bb-mcp-server.git
+cd bb-mcp-server
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install in development mode
+pip install -e .
+pip install -r requirements.txt
+```
+
+### Running Tests
+
+```bash
+# Install test dependencies
+pip install pytest pytest-asyncio pytest-cov
+
+# Run tests
+pytest tests/
+
+# Run with coverage
+pytest tests/ --cov=. --cov-report=html
+```
+
+### Code Quality
+
+```bash
+# Linting
+ruff check .
+
+# Formatting
+black .
+
+# Type checking
+mypy server.py utils/ modules/
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built with [FastMCP](https://github.com/jlowin/fastmcp) framework
+- Uses Bitbucket API v2.0
+- Implements Model Context Protocol (MCP) specification
+
+## Support
+
+For issues, questions, or contributions, please visit:
+
+- GitHub Issues: https://github.com/yourusername/bb-mcp-server/issues
+- Documentation: https://github.com/yourusername/bb-mcp-server/wiki

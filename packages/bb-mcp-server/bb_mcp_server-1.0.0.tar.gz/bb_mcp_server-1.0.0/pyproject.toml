@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bb-mcp-server"
+version = "1.0.0"
+description = "Bitbucket MCP (Model Context Protocol) server built with FastMCP that provides programmatic access to Bitbucket API v2.0"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Jason Schulz", email = "jason@schulz.studio" }]
+keywords = ["mcp", "bitbucket", "api", "fastmcp", "model-context-protocol"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = ["fastmcp>=2.12.1", "httpx>=0.25.0", "python-dotenv>=1.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/your-username/bb-mcp-server"
+Repository = "https://github.com/your-username/bb-mcp-server"
+Issues = "https://github.com/your-username/bb-mcp-server/issues"
+
+[project.scripts]
+bb-mcp-server = "server:main"
+
+[project.entry-points."mcp.servers"]
+bitbucket = "server:mcp"
+
+[tool.setuptools]
+py-modules = ["server"]
+packages = ["utils", "modules", "modules.tools", "modules.resources", "modules.meta_tools", "modules.prompts", "modules.middleware"]
+
+[tool.setuptools.package-data]
+"*" = ["*.py", "*.md", "*.txt", "*.env.example"]

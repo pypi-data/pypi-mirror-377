@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: JobTitleTransformer
+Version: 0.1.11
+Summary: A healthcare-focused job title transformation pipeline.
+Home-page: https://github.com/PrasannaDataBus/JobTitleTransformer
+Author: Prasanna UTHAMARAJ
+Author-email: prasanna.uthamaraj@informa.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: nltk
+Requires-Dist: termcolor
+Requires-Dist: tabulate
+Requires-Dist: scikit-learn
+Requires-Dist: sentence-transformers
+Requires-Dist: faiss-cpu
+Requires-Dist: torch
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# JobTitleTransformer
+
+This is a library to transform / enrich job title values coming from various sources (databases, csv's....). It performs data transformation in multiple steps using a modular approach.
+
+This Package is dedicated to Health Care Sector and not suitable for other sectors and their Job Title values.
+
+# IMPORTANT MESSAGE:
+
+This library mainly focus on transforming / enriching job title values to a standard format. For successful Integration of this library you will need to have a column 'job_title' in your dataset or any other similar column. Very Important is you will need to RENAME 'job_title' as 'speciality' before execution and you will need to copy your original dataframe to a NEW DATAFRAME 'df'
+
+## Installation
+
+Install with `pip`:
+
+```bash
+pip install JobTitleTransformer
+

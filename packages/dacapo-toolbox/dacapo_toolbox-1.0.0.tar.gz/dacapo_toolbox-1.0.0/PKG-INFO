@@ -1,0 +1,74 @@
+Metadata-Version: 2.4
+Name: dacapo-toolbox
+Version: 1.0.0
+Summary: A suite of tools for large scale ND training.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: edt>=3.0.0
+Requires-Dist: funlib-persistence>=0.6
+Requires-Dist: gunpowder>=1.4.2
+Requires-Dist: scikit-learn>=1.7.1
+Requires-Dist: torch>=2.6.0
+Provides-Extra: postprocessing
+Requires-Dist: volara-torch>=1.0.1; extra == "postprocessing"
+Requires-Dist: volara>=1.0.2; extra == "postprocessing"
+Provides-Extra: vis
+Requires-Dist: matplotlib>=3.10.5; extra == "vis"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.4; extra == "dev"
+Requires-Dist: pytest-cov>=6.0.0; extra == "dev"
+Requires-Dist: ruff>=0.9.6; extra == "dev"
+Requires-Dist: pytest-xdist>=3.6.1; extra == "dev"
+Requires-Dist: ty>=0.0.1a18; extra == "dev"
+Provides-Extra: accelerators
+Requires-Dist: accelerate>=1.10.0; extra == "accelerators"
+Requires-Dist: lightning>=2.5.3; extra == "accelerators"
+Provides-Extra: sample-datasets
+Requires-Dist: wget>=3.2; extra == "sample-datasets"
+Provides-Extra: examples
+Requires-Dist: torchvision>=0.22.0; extra == "examples"
+Provides-Extra: docs
+Requires-Dist: h5py>=3.13.0; extra == "docs"
+Requires-Dist: ipykernel>=6.29.5; extra == "docs"
+Requires-Dist: matplotlib>=3.10.3; extra == "docs"
+Requires-Dist: mwatershed>=0.5.3; extra == "docs"
+Requires-Dist: tems>=1.0.3; extra == "docs"
+Requires-Dist: torchvision>=0.22.0; extra == "docs"
+Requires-Dist: volara>=1.0.1; extra == "docs"
+Requires-Dist: volara-torch>=1.0.0; extra == "docs"
+Requires-Dist: wget>=3.2; extra == "docs"
+Requires-Dist: jupytext>=1.17.2; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=2.0; extra == "docs"
+Requires-Dist: sphinx-material>=0.0.36; extra == "docs"
+Requires-Dist: sphinx-click>=6.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=2.0; extra == "docs"
+Requires-Dist: nbsphinx>=0.9.7; extra == "docs"
+Requires-Dist: myst-parser>=4.0; extra == "docs"
+
+![dacapo-toolbox](docs/source/_static/dacapo-toolbox-logo.png)
+[![tests](https://github.com/pattonw/dacapo-toolbox/actions/workflows/tests.yaml/badge.svg)](https://github.com/pattonw/dacapo-toolbox/actions/workflows/tests.yaml)
+[![ruff](https://github.com/pattonw/dacapo-toolbox/actions/workflows/ruff.yaml/badge.svg)](https://github.com/pattonw/dacapo-toolbox/actions/workflows/ruff.yaml)
+[![ty](https://github.com/pattonw/dacapo-toolbox/actions/workflows/ty.yaml/badge.svg)](https://github.com/pattonw/dacapo-toolbox/actions/workflows/ty.yaml)
+[![pypi](https://github.com/pattonw/dacapo-toolbox/actions/workflows/publish.yaml/badge.svg)](https://pypi.org/project/dacapo-toolbox/)
+[![docs](https://github.com/pattonw/dacapo-toolbox/actions/workflows/docs.yaml/badge.svg)](https://github.com/pattonw/dacapo-toolbox/actions/workflows/docs.yaml)
+
+# DaCapo-Toolbox
+
+> A simple interface for large scale microscopy training and post processing
+
+## What is DaCapo-Toolbox?
+
+DaCapo-Toolbox wraps powerful tools for large scale microscopy training and evaluation such as:
+[gunpowder](https://github.com/funkelab/gunpowder), [daisy](https://github.com/funkelab/daisy), and
+[volara](https://github.com/e11bio/volara) in simple interfaces that abstract away the intricacies
+of the specific tools and just provides interfaces in common formats such as
+[zarr](https://zarr.readthedocs.io/en/stable/), [torch](https://pytorch.org), [dask](https://dask.org),
+and [numpy](https://numpy.org).
+
+## Installation
+
+`pip install dacapo-toolbox`
+
+## Usage
+
+See the [DaCapo-Toolbox docs](https://pattonw.github.io/dacapo-toolbox)

@@ -1,0 +1,53 @@
+# -- build
+
+[build-system]
+requires = [
+  "setuptools>=61",
+  "setuptools_scm[toml]>=3.4.3",
+  "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ja_webutils"
+description = "A python package to support HTML generation"
+readme = "README.md"
+authors = [
+  { name = "Joseph Areeda", email = "joseph.areeda@ligo.org" },
+]
+license = { text = "GPL-3.0-or-later" }
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Software Development :: Libraries",
+  ]
+
+# requirements
+requires-python = ">=3.9"
+dependencies = []
+
+# dynamic properties set by tools
+dynamic = [
+  "version",
+]
+
+[project.optional-dependencies]
+# test suite
+test = [
+  "pytest >=3.9.1",
+]
+
+[tool.setuptools_scm]
+write_to = "ja_webutils/_version.py"
+
+[tool.setuptools]
+packages = ['ja_webutils']

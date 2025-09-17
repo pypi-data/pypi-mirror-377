@@ -1,0 +1,91 @@
+include:
+  - project: computing/gitlab-ci-templates
+    file:
+      - python.yml
+
+stages:
+  - build
+  - deploy
+  - lint
+  - test
+  - docs
+
+
+
+
+# -- lint -------------------
+#
+# These jobs check the code
+# for quality issues
+#
+
+.lint:
+  stage: lint
+  image: igwn/base:conda
+
+flake8:
+  extends:
+    # https://computing.docs.ligo.org/gitlab-ci-templates/python/#.python:flake8
+    - build
+    - .lint
+  needs: []
+  script:
+    - echo "Linting code... This will take about 10 seconds."
+    - conda install flake8
+    - flake8
+
+# -- build ------------------
+build:
+  stage: build
+  image: igwn/base:conda 
+
+
+  script:
+    - conda install c-compiler cxx-compiler m2crypto pykerberos flake8
+    - python -m pip install .
+
+# -- deploy -----------------
+
+pages:
+  stage: test
+  script:
+    - mkdir -p public
+    - cp -vR docs/build/html/* public/
+  dependencies:
+    - docs
+  artifacts:
+    paths:
+      - public
+
+# testing
+test:
+  image: igwn/base:conda
+
+  script:
+    - echo "running pytest"
+    - conda install  pytest pytz
+    - python -m pip install .
+    - python -m pytest
+# -- docs -------------------
+#
+# These jobs run the sphinx
+# documentation build
+#
+
+docs:
+  stage: deploy
+  image: areeda/sphinx_latex
+  extends:
+    - build
+  script:
+#    - conda install make texlive-core
+    - python -m pip install m2crypto pykerberos flake8
+    - python -m pip install sphinx sphinx-rtd-theme sphinx-tabs sphinxcontrib-programoutput2 numpydoc versioneer
+    - python -m pip install sphinx_copybutton
+    - pip install .
+    - pushd docs
+    - make html
+    - popd
+  artifacts:
+    paths:
+      - docs/build/html

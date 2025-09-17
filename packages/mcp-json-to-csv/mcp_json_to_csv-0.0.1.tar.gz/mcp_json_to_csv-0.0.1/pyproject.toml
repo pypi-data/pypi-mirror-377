@@ -1,0 +1,41 @@
+[project]
+name = "mcp-json-to-csv"
+version = "0.0.1"
+description = "MCP Server for JSON to CSV convertion."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "AI/Run Team" }]
+maintainers = [
+    { name = "AI/Run Team" },
+]
+keywords = [
+    "mcp",
+    "json",
+    "csv",
+    "convertion",
+]
+license = { text = "MIT" }
+classifiers = []
+dependencies = [
+    "mcp>=1.0.0",
+    "pydantic>=2.0.0",
+    "mcp[cli]>=1.9.2"
+]
+
+[project.scripts]
+json-to-csv = "mcp_json_to_csv:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pyright>=1.1.389",
+    "pytest>=8.3.3",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.8.1",
+]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"

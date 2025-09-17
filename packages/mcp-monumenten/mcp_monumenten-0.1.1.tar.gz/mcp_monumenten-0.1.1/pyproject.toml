@@ -1,0 +1,42 @@
+[project]
+name = "mcp-monumenten"
+version = "0.1.1"
+description = "MCP server voor monumentale statussen in Nederland."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dotenv>=0.9.9",
+    "mcp[cli]>=1.12.3",
+    "monumenten>=0.4.0",
+]
+license = "MIT"
+authors = [
+    {name = "Tomer Gabay", email = "tomer.gabay@woonstadrotterdam.nl"},
+    {name = "Ben Verhees", email = "ben.verhees@woonstadrotterdam.nl"},
+]
+keywords = ["mcp", "monumenten", "rijksmonumenten", "kadaster", "gemeente"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.scripts]
+mcp-monumenten= "mcp_monumenten.__main__:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+]

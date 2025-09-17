@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "netchecker"
+version = "1.0.1"
+description = "A simple yet powerful Python module to check internet and DNS capabilities of a system."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "AGPL-3.0-only"
+license-files = ["LICEN[CS]E*"]
+authors = [
+    {name = "PowerPCFan", email = "charlies.retro.computing@gmail.com"}
+]
+maintainers = [
+    {name = "PowerPCFan", email = "charlies.retro.computing@gmail.com"}
+]
+dependencies = [
+    "icmplib>=3.0.4"
+]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/PowerPCFan/netchecker"
+Issues = "https://github.com/PowerPCFan/netchecker/issues"

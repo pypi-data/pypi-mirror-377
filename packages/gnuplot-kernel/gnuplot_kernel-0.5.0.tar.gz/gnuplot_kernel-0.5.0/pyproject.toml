@@ -1,0 +1,179 @@
+[project]
+name = "gnuplot_kernel"
+description = "A gnuplot kernel for Jupyter"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Hassan Kibirige", email = "has2k1@gmail.com"},
+]
+dynamic = ["version"]
+readme = "README.md"
+classifiers = [
+    "Framework :: IPython",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: System :: Shells",
+]
+
+dependencies = [
+    "metakernel>=0.30.0",
+    "jupyter>=1.1.1",
+]
+
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+
+dev = [
+    "gnuplot_kernel[test]",
+    "ruff",
+    "matplotlib>=3.8.0",
+    "pyright>=1.1.405",
+]
+
+test = [
+    "pytest-cov>=4.0.0",
+]
+
+
+[project.urls]
+homepage = "https://github.com/has2k1/gnuplot_kernel"
+repository = "https://github.com/has2k1/gnuplot_kernel"
+ci = "https://github.com/has2k1/gnuplot_kernel/actions"
+
+########## Build System ##########
+[build-system]
+requires = [
+    "setuptools>=59",
+    "setuptools_scm[toml]>=6.4",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+########## Tool - Setuptools ##########
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[tool.setuptools_scm]
+fallback_version = "999"
+version_scheme = "post-release"
+
+
+########## Tool - Pytest ##########
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+addopts = "--pyargs --cov=src/gnuplot_kernel --cov-report=xml --import-mode=importlib"
+
+########## Tool - Coverage ##########
+# Coverage.py
+[tool.coverage.run]
+branch = true
+source = ["src"]
+include = [
+   "src/gnuplot_kernel/*"
+]
+omit = [
+    "src/gnuplot_kernel/__main__.py"
+]
+disable_warnings = ["include-ignored"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "def register_ipython_magics",
+    "def load_ipython_extension"
+]
+precision = 1
+
+########## Tool - Ruff ##########
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+   "E",
+   "F",
+   "I",
+   "TCH",
+   "Q",
+   "PIE",
+   "PTH",
+   "PD",
+   "PYI",
+   "RSE",
+   "SIM",
+   "B904",
+   "FLY",
+   "NPY",
+   "PERF102"
+]
+ignore = [
+    "E741",  # Ambiguous l
+    "E743",  # Ambiguous I
+    # .reset_index, .rename, .replace
+    # This will remain the correct choice until we enable copy-on-write
+    "PD002",
+    # Use specific rule codes when ignoring type issues and
+    # not # type: ignore
+    "PGH003"
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    "**/__pycache__",
+    "**/*.ipynb",
+]
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+########## Tool - Pyright ##########
+[tool.pyright]
+# Paths of directories or files that should be included. If no paths
+# are specified, pyright defaults to the directory that contains the
+# config file. Paths may contain wildcard characters ** (a directory or
+# multiple levels of directories), * (a sequence of zero or more
+# characters), or ? (a single character). If no include paths are
+# specified, the root path for the workspace is assumed.
+include = [
+    "src/gnuplot_kernel/"
+]
+
+# Paths of directories or files whose diagnostic output (errors and
+# warnings) should be suppressed even if they are an included file or
+# within the transitive closure of an included file. Paths may contain
+# wildcard characters ** (a directory or multiple levels of
+# directories), * (a sequence of zero or more characters), or ? (a
+# single character).
+ignore = []
+
+# Set of identifiers that should be assumed to contain a constant
+# value wherever used within this program. For example, { "DEBUG": true
+# } indicates that pyright should assume that the identifier DEBUG will
+# always be equal to True. If this identifier is used within a
+# conditional expression (such as if not DEBUG:) pyright will use the
+# indicated value to determine whether the guarded block is reachable
+# or not. Member expressions that reference one of these constants
+# (e.g. my_module.DEBUG) are also supported.
+defineConstant = { DEBUG = true }
+
+# typeCheckingMode = "strict"
+useLibraryCodeForTypes = true
+reportUnnecessaryTypeIgnoreComment = true
+
+# Specifies a list of execution environments (see below). Execution
+# environments are searched from start to finish by comparing the path
+# of a source file with the root path specified in the execution
+# environment.
+executionEnvironments = []
+
+stubPath = ""

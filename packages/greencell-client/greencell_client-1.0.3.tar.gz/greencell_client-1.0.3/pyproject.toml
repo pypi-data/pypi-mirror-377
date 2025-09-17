@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm[toml]>=8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greencell_client"
+dynamic = ["version"]
+authors = [
+  { name="Jakub Brzezowski", email="jakub.brzezowski@greencell.pl" },
+]
+description = "Support for communication with Greencell devices using by Home Assistant integration"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[tool.setuptools_scm]
+tag_regex = "^v?(?P<version>\\d+\\.\\d+\\.\\d+)$"
+version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
+write_to = "src/greencell_client/_version.py"

@@ -1,0 +1,104 @@
+Metadata-Version: 2.4
+Name: smartextract
+Version: 0.6
+Summary: smartextract Python SDK
+Project-URL: Documentation, https://docs.smartextract.ai
+Project-URL: Issues, https://github.com/dida-do/smartextract-sdk-python/issues
+Project-URL: Source, https://github.com/dida-do/smartextract-sdk-python
+Author-email: dida Datenschmiede GmbH <info@dida.do>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.9
+Requires-Dist: httpx>=0.25
+Requires-Dist: pydantic[email]<3,>=2.0
+Provides-Extra: all
+Requires-Dist: httpx-oauth>=0.16; extra == 'all'
+Requires-Dist: platformdirs>=4.0; extra == 'all'
+Requires-Dist: pycomplete>=0.4; extra == 'all'
+Requires-Dist: pygments>=2.0; extra == 'all'
+Requires-Dist: pyyaml>=5.1; extra == 'all'
+Provides-Extra: cli-extras
+Requires-Dist: pycomplete>=0.4; extra == 'cli-extras'
+Requires-Dist: pygments>=2.0; extra == 'cli-extras'
+Requires-Dist: pyyaml>=5.1; extra == 'cli-extras'
+Provides-Extra: oauth
+Requires-Dist: httpx-oauth>=0.16; extra == 'oauth'
+Requires-Dist: platformdirs>=4.0; extra == 'oauth'
+Description-Content-Type: text/markdown
+
+# smartextract Python SDK
+
+[![PyPI - Version](https://img.shields.io/pypi/v/smartextract.svg)](https://pypi.org/project/smartextract)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/smartextract.svg)](https://pypi.org/project/smartextract)
+
+This package provides convenient access to the [smartextract REST API](https://api.smartextract.ai/docs)
+for Python applications.
+
+## Installation
+
+This package requires Python 3.9 or higher and is available from PyPI:
+
+```sh
+pip install smartextract[oauth,cli-extras]
+```
+
+You can leave out `oauth` and `cli-extras` if you don't plan to use those
+features.
+
+## Usage
+
+To make your first request to the smartextract API, first make sure that you
+have signed up at <https://app.smartextract.ai/>.  Then, try the following:
+
+```python
+import smartextract
+client = smartextract.Client()
+info = client.get_user_info()
+print(info)
+```
+
+You may also generate an [API key](https://app.smartextract.ai/settings/api-keys)
+and pass it as an argument when initializing the client.  This is necessary if
+you want to avoid the interactive login via web browser.
+
+For more information, use your IDE to explore the methods of the `Client` object or
+refer to the [user guide](https://docs.smartextract.ai/guide).
+
+## CLI
+
+This package also offers a command line interface.  To enable a few additional
+CLI features, install it with:
+
+```sh
+pip install smartextract[cli-extras]
+```
+
+Then type, for instance
+
+```sh
+smartextract get-user-info
+```
+
+to make a request, and
+
+```sh
+smartextract --help
+```
+
+for more information on all available commands and switches.
+
+If you want to use an API key instead of the interactive OAuth authentication,
+generate an [API key](https://app.smartextract.ai/settings/api-keys) and set
+your environment variable `SMARTEXTRACT_API_KEY`.
+
+Finally, see `smartextract completion --help` for instructions on how to set up
+command-line completion in your shell.

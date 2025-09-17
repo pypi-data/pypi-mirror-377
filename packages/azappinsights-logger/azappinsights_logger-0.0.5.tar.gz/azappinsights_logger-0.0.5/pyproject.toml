@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]  # Build backend requirements
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "azappinsights-logger"
+version = "0.0.5"
+authors = [
+  { name="Ranti Familusi", email="ranti.familusi@ibm.com" },
+]
+description = "A simple logging utility for sending logs to azure application insights using AzureLogHandler"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  "python-dotenv",
+  "azure-monitor-opentelemetry",
+  "opentelemetry-sdk"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://dev.azure.com/IBM-CA-MSPRACTICE/Maximo-Copilot/_git/utilities/az-app-insight-logger"
+"Bug Tracker" = "https://dev.azure.com/IBM-CA-MSPRACTICE/Maximo-Copilot/_workitems/edit/146"

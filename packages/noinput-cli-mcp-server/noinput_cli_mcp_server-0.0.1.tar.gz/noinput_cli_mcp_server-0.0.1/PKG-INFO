@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: noinput-cli-mcp-server
+Version: 0.0.1
+Summary: Command line interface for MCP clients with secure execution and customizable security policies (no STDIN)
+Author: Amna AI/Run Team
+Author-email: Mladen <fangs-lever6n@icloud.com>
+License-File: LICENSE
+License-File: NOTICE
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.6.0
+Description-Content-Type: text/markdown
+
+# Non-interactive CLI MCP Server
+
+This server is a fork of https://github.com/MladenSU/cli-mcp-server by MLaden. It short-circuits the child process 
+STDIN to /dev/null, thus preventing sporadic application timeouts on Windows platforms.

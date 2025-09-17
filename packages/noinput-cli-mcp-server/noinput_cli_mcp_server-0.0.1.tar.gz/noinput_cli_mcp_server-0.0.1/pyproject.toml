@@ -1,0 +1,18 @@
+[project]
+name = "noinput-cli-mcp-server"
+version = "0.0.1"
+description = "Command line interface for MCP clients with secure execution and customizable security policies (no STDIN)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["mcp>=1.6.0"]
+authors = [
+    { name = "Mladen", email = "fangs-lever6n@icloud.com" },
+    { name = "Amna AI/Run Team" }
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+noinput-cli-mcp-server = "noinput_cli_mcp_server:main"

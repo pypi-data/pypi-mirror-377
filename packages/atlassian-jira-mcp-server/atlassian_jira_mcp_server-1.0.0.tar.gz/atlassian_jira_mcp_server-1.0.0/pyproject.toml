@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atlassian-jira-mcp-server"
+version = "1.0.0"
+description = "Jira MCP (Model Context Protocol) server built with FastMCP for Jira Cloud API v3"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Jason Schulz", email = "jason@schulz.studio" }]
+keywords = ["mcp", "jira", "api", "fastmcp", "model-context-protocol", "atlassian"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = ["fastmcp>=2.12.1", "httpx>=0.25.0", "python-dotenv>=1.0.0", "adf-lib>=0.2.0"]
+
+[project.urls]
+Homepage = "https://github.com/your-username/atlassian-jira-mcp-server"
+Repository = "https://github.com/your-username/atlassian-jira-mcp-server"
+Issues = "https://github.com/your-username/atlassian-jira-mcp-server/issues"
+
+[project.scripts]
+atlassian-jira-mcp-server = "server:main"
+
+[project.entry-points."mcp.servers"]
+jira = "server:mcp"
+
+[tool.setuptools]
+py-modules = ["server"]
+packages = ["utils", "modules", "modules.tools", "modules.resources", "modules.prompts", "modules.registries", "modules.utilities"]
+
+[tool.setuptools.package-data]
+"*" = ["*.py", "*.md", "*.txt", "*.env.example"]

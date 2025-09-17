@@ -1,0 +1,494 @@
+Metadata-Version: 2.4
+Name: atlassian-jira-mcp-server
+Version: 1.0.0
+Summary: Jira MCP (Model Context Protocol) server built with FastMCP for Jira Cloud API v3
+Author-email: Jason Schulz <jason@schulz.studio>
+License: MIT
+Project-URL: Homepage, https://github.com/your-username/atlassian-jira-mcp-server
+Project-URL: Repository, https://github.com/your-username/atlassian-jira-mcp-server
+Project-URL: Issues, https://github.com/your-username/atlassian-jira-mcp-server/issues
+Keywords: mcp,jira,api,fastmcp,model-context-protocol,atlassian
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastmcp>=2.12.1
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: adf-lib>=0.2.0
+Dynamic: license-file
+
+# Jira MCP Server
+
+A comprehensive MCP (Model Context Protocol) server for Jira Cloud integration, built with FastMCP. This server provides a clean, well-structured interface to Jira's API with automatic ADF (Atlassian Document Format) handling for rich text formatting.
+
+## Features
+
+- **5 Core Tools** for complete Jira interaction
+- **9 Resource endpoints** for quick data access
+- **Automatic ADF formatting** for descriptions and comments
+- **Email to Account ID resolution** for user assignments
+- **JQL support** for powerful search capabilities
+- **Automatic transition detection** when fetching issues
+- **Jira Cloud API v3** compatibility
+- **Basic Authentication** with API tokens
+
+## Installation
+
+### Prerequisites
+
+- Python 3.10+
+- Jira Cloud account
+- Jira API token ([create one here](https://id.atlassian.com/manage-profile/security/api-tokens))
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended) or pip
+
+### Installation Methods
+
+#### Method 1: UV Tool Installation (Recommended for MCP usage)
+
+This method installs the server as a standalone tool, ideal for use with Claude Desktop or other MCP clients.
+
+```bash
+# Install directly from source
+uv tool install . --force --reinstall
+
+# Or clone first, then install
+git clone https://github.com/your-username/atlassian-jira-mcp-server
+cd atlassian-jira-mcp-server
+uv tool install . --force --reinstall
+```
+
+Test the installation:
+
+```bash
+# Should show environment variable requirements
+atlassian-jira-mcp-server
+```
+
+#### Method 2: Virtual Environment Installation (Development)
+
+For development or when you need to run the server directly:
+
+```bash
+git clone https://github.com/your-username/atlassian-jira-mcp-server
+cd atlassian-jira-mcp-server
+
+# Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install in development mode
+pip install -e .
+```
+
+#### Method 3: Direct pip Installation
+
+**Note**: If you get "externally managed environment" errors, use Method 1 or 2 instead.
+
+```bash
+pip install -e .
+```
+
+### Environment Configuration
+
+1. **Create environment file**:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env` with your Jira credentials**:
+
+   ```env
+   JIRA_BASE_URL=https://your-domain.atlassian.net
+   JIRA_USERNAME=your-email@domain.com
+   JIRA_API_TOKEN=your-api-token
+   JIRA_DEFAULT_PROJECT=PROJ  # Optional
+   ```
+
+3. **Test configuration**:
+
+   ```bash
+   # With virtual environment
+   source .venv/bin/activate
+   python test_server.py
+
+   # With uv tool installation
+   JIRA_BASE_URL=https://your-domain.atlassian.net \
+   JIRA_USERNAME=your-email@domain.com \
+   JIRA_API_TOKEN=your-api-token \
+   atlassian-jira-mcp-server
+   ```
+
+## Usage
+
+### Running the Server
+
+#### With UV Tool Installation
+
+```bash
+atlassian-jira-mcp-server
+```
+
+#### With Virtual Environment
+
+```bash
+source .venv/bin/activate
+python server.py
+# or
+atlassian-jira-mcp-server
+```
+
+### Development Workflow
+
+After making code changes:
+
+```bash
+# Reinstall with uv tool
+uv tool uninstall atlassian-jira-mcp-server && uv tool install . --reinstall
+
+# Or with virtual environment
+source .venv/bin/activate
+pip install -e .
+```
+
+### Connecting with Claude Desktop
+
+#### Option 1: Install as Package (Recommended)
+
+First, install the server:
+
+```bash
+pip install atlassian-jira-mcp-server
+# or for development:
+pip install -e /path/to/atlassian-jira-mcp-server
+```
+
+Then add to your Claude Desktop configuration (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "atlassian-jira-mcp-server",
+      "args": [],
+      "env": {
+        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
+        "JIRA_USERNAME": "${JIRA_EMAIL}",
+        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}",
+        "JIRA_DEFAULT_PROJECT": "PROJ"
+      }
+    }
+  }
+}
+```
+
+You can use environment variable substitution with `${VAR_NAME}` to reference system environment variables.
+
+#### Option 2: Run Directly with Python
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "python",
+      "args": ["/path/to/atlassian-jira-mcp-server/server.py"],
+      "env": {
+        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
+        "JIRA_USERNAME": "your-email@domain.com",
+        "JIRA_API_TOKEN": "your-api-token",
+        "JIRA_DEFAULT_PROJECT": "PROJ"
+      }
+    }
+  }
+}
+```
+
+## Available Tools (5 Active)
+
+### Core Tools
+
+1. **get_issue** - Get complete issue details with transitions included
+
+   ```python
+   get_issue(issue_key="PROJ-123")
+   # Returns LLM-optimized format with 'content' (text) and 'data' (structured)
+   ```
+
+2. **search_issues** - Search with JQL
+
+   ```python
+   search_issues(jql="project = PROJ AND status = 'In Progress'", max_results=50)
+   # Returns formatted results with both text summary and structured data
+   ```
+
+3. **create_issue** - Create new issue with rich formatting
+
+   ```python
+   create_issue(
+       project_key="PROJ",
+       issue_type="Story",
+       summary="Implement feature",
+       description="## Overview\nDetailed description with **markdown** support"
+   )
+   ```
+
+4. **get_project** - Get project configuration
+
+   ```python
+   get_project(project_key="PROJ")
+   # Returns project details, issue types, and workflows
+   ```
+
+5. **update_issue** - Unified tool for all issue modifications
+
+   ```python
+   # Update fields
+   update_issue(issue_key="PROJ-123", priority="High", labels=["backend"])
+
+   # Transition status
+   update_issue(issue_key="PROJ-123", transition="Done", resolution="Fixed")
+
+   # Add comment
+   update_issue(issue_key="PROJ-123", comment="Review complete")
+
+   # Assign issue
+   update_issue(issue_key="PROJ-123", assignee="user@example.com")
+
+   # Delete issue
+   update_issue(issue_key="PROJ-123", delete=True)
+
+   # Combined operations
+   update_issue(
+       issue_key="PROJ-123",
+       transition="In Progress",
+       assignee="dev@example.com",
+       comment="Starting work on this"
+   )
+   ```
+
+## Resource Endpoints (9 Resources)
+
+Access common data quickly through resource URIs:
+
+- `jira://active-users` - Active Atlassian users for assignment/mentions
+- `jira://current-user/info` - Current user details
+- `jira://my-issues` - Your assigned issues
+- `jira://recent-issues` - Recently updated issues
+- `jira://projects/list` - All projects
+- `jira://metadata/issue-types` - Issue type schemas
+- `jira://metadata/priorities` - Priority levels
+- `jira://metadata/statuses` - Status information
+- `jira://adf-examples` - ADF formatting guide
+
+## ADF (Atlassian Document Format) Support
+
+The server automatically converts plain text and markdown to ADF format:
+
+### Plain Text
+
+```python
+description = "Simple text description"
+```
+
+### Markdown
+
+````python
+description = """
+## Overview
+This issue implements **important** features.
+
+### Acceptance Criteria
+- First criterion
+- Second criterion
+
+```python
+def example():
+    return "code block"
+````
+
+"""
+
+````
+
+### Structured Descriptions
+```python
+from adf_utils import create_issue_description
+
+description = create_issue_description(
+    overview="Main description",
+    acceptance_criteria=["AC1", "AC2", "AC3"],
+    technical_details="Implementation notes",
+    notes="Additional information"
+)
+````
+
+## JQL Examples
+
+```python
+# My open issues
+search_issues(jql="assignee = currentUser() AND statusCategory != Done")
+
+# High priority bugs
+search_issues(jql="priority = High AND issuetype = Bug")
+
+# Sprint backlog
+search_issues(jql="sprint in openSprints() AND project = PROJ")
+
+# Recent comments
+search_issues(jql="comment ~ 'search text' AND updated >= -7d")
+```
+
+## Error Handling
+
+The server provides detailed error messages from Jira's API:
+
+```python
+try:
+    result = await create_issue(...)
+except Exception as e:
+    # Error message includes field-specific validation errors
+    print(f"Error: {e}")
+```
+
+## Architecture
+
+```
+atlassian-jira-mcp-server/
+├── server.py          # FastMCP server initialization
+├── tools.py           # 17 tool implementations
+├── resources.py       # 8 resource endpoints
+├── adf_utils.py       # ADF formatting utilities
+├── utils/
+│   ├── auth.py        # Authentication handling
+│   ├── config.py      # Configuration management
+│   └── api_client.py  # Jira API client
+└── requirements.txt   # Dependencies
+```
+
+## Development
+
+### Running Tests
+
+```bash
+pytest tests/
+```
+
+### Adding New Tools
+
+1. Implement in `tools.py`:
+
+```python
+async def new_tool(param: str) -> dict:
+    """Tool implementation"""
+    return await make_request("GET", f"endpoint/{param}")
+```
+
+2. Register in `server.py`:
+
+```python
+@mcp.tool(description="Tool description")
+async def new_tool(param: str) -> dict:
+    return await tools.new_tool(param)
+```
+
+## Troubleshooting
+
+### Installation Issues
+
+#### "externally-managed-environment" Error
+
+```
+× This environment is externally managed
+```
+
+**Solution**: Use Method 1 (uv tool) or Method 2 (virtual environment) instead of direct pip installation.
+
+#### "ModuleNotFoundError: No module named 'prompts'" with uv tool
+
+This was a packaging issue that has been fixed. If you encounter this:
+
+```bash
+uv tool uninstall atlassian-jira-mcp-server
+uv tool install . --force --reinstall
+```
+
+#### Python/pip not found with pyenv
+
+```bash
+pyenv: python: command not found
+```
+
+**Solution**: Either set a global Python version or use `python3` explicitly:
+
+```bash
+# Set global Python version
+pyenv global 3.12.11
+
+# Or use python3 directly
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### Authentication Issues
+
+- Ensure your API token is valid
+- Check JIRA_BASE_URL includes https://
+- Verify email address matches Jira account
+
+### Permission Errors
+
+- Confirm user has appropriate Jira permissions
+- Check project access rights
+- Verify issue type availability in project
+
+### ADF Formatting
+
+- Use `convert_to_adf()` for automatic conversion
+- Check `jira://adf-examples` resource for examples
+- Validate ADF structure with `is_adf_format()`
+
+### Development Issues
+
+#### After Code Changes
+
+Always reinstall after making changes:
+
+```bash
+# UV tool method
+uv tool uninstall atlassian-jira-mcp-server && uv tool install . --reinstall
+
+# Virtual environment method
+source .venv/bin/activate && pip install -e .
+```
+
+## Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Support
+
+- [Report issues](https://github.com/your-username/atlassian-jira-mcp-server/issues)
+- [Jira Cloud API Documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v3/)
+- [MCP Documentation](https://modelcontextprotocol.io/)
+- [FastMCP Documentation](https://github.com/jlowin/fastmcp)
+
+<!-- uv tool uninstall atlassian-jira-mcp-server && uv tool install . --reinstall -->

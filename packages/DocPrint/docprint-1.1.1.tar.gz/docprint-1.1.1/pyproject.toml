@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "DocPrint"
+version = "1.1.1"
+description = "Runtime documentation generation tool for live markdown output"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+    { name="Jay Baleine", email="jay@banes-lab.com" }
+]
+keywords = ["documentation", "markdown", "runtime", "logging"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: System :: Logging"
+]
+dependencies = ["regex>=2025.9.1", "xxhash>=3.5.0"]
+
+[project.optional-dependencies]
+performance = ["ujson>=5.11.0", "orjson>=3.11.3"]
+
+[project.urls]
+Homepage = "https://github.com/Varietyz/DocPrint"
+Repository = "https://github.com/Varietyz/DocPrint"
+Issues = "https://github.com/Varietyz/DocPrint/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["docprint*"]

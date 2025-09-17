@@ -1,0 +1,215 @@
+{
+  "mono_discover": {
+    "id": 1234,
+    "command": "mono_discover",
+    "results": {
+      "count": 1
+
+    },
+    "errors": []
+  },
+  "mono_list": {
+    "command": "mono_list",
+    "errors": [],
+    "id": 0,
+    "results":
+    {
+      "devices": [
+        {
+          "deviceType": "HORIBA Scientific iHR",
+          "index": 0,
+          "serialNumber":"1745B-2017-iHR320       "
+        }
+      ]
+    }
+  },
+  "mono_listCount": {
+    "id": 1234,
+    "command": "mono_listCount",
+    "results": {
+      "count": 2
+    },
+    "errors": []
+  },
+  "mono_open": {
+    "id": 1234,
+    "command": "mono_open",
+    "errors": []
+  },
+  "mono_close": {
+    "id": 1234,
+    "command": "mono_close",
+    "errors": []
+  },
+  "mono_isOpen": {
+    "id": 1234,
+    "command": "mono_isOpen",
+    "results":{
+      "open": true
+    },
+    "errors": []
+  },
+  "mono_isBusy": {
+    "id": 1234,
+    "command": "mono_isBusy",
+    "results":{
+      "busy": false
+    },
+    "errors": []
+  },
+  "mono_init": {
+    "id": 1234,
+    "command": "mono_init",
+    "errors": []
+  },
+  "mono_getConfig": {
+    "id": 1234,
+    "command": "mono_getConfig",
+    "results": {
+      "configuration": {
+        "filterWheels": [
+          {"location":1},
+          {"location":2}
+        ],
+        "gratings": [
+          {"blaze":0,"grooveDensity":1800,"positionIndex":0},
+          {"blaze":0,"grooveDensity":1200,"positionIndex":1},
+          {"blaze":0,"grooveDensity":300,"positionIndex":2}
+        ],
+        "mirrors": [
+          {"blaze":0,"grooveDensity":1800,"positionIndex":0},
+          {"blaze":0,"grooveDensity":1200,"positionIndex":1},
+          {"blaze":0,"grooveDensity":300,"positionIndex":2}
+        ],
+        "monoModel":"iHR320",
+        "ports": [
+          {"monoPortLocation":1,"slitType":2},
+          {"monoPortLocation":2,"slitType":2},
+          {"monoPortLocation":4,"slitType":2}
+        ],
+        "procuctId":"257",
+        "serialNumber":""
+      }
+    },
+    "errors": []
+  },
+  "mono_setConfig": {},
+  "mono_getPosition": {
+    "id": 1234,
+    "command": "mono_getPosition",
+    "results":{
+      "wavelength": 320.0
+    },
+    "errors": []
+  },
+  "mono_setPosition": {
+    "id": 1234,
+    "command": "mono_setPosition",
+    "errors": []
+  },
+  "mono_moveToPosition": {
+    "id": 1234,
+    "command": "mono_moveToPosition",
+    "errors": []
+  },
+  "mono_getGratingPosition": {
+    "id": 1234,
+    "command": "mono_getPosition",
+    "results":{
+      "position": 1
+    },
+    "errors": []
+  },
+  "mono_moveGrating": {
+    "id": 1234,
+    "command": "mono_getPosition",
+    "results":{
+      "position": 1
+    },
+    "errors": []
+  },
+  "mono_getFilterWheelPosition": {
+    "id": 1234,
+    "command": "mono_getFilterWheelPosition",
+    "results":{
+      "position": 0
+    },
+    "errors": []
+  },
+  "mono_moveFilterWheel": {
+    "id": 1234,
+    "command": "mono_moveFilterWheel",
+    "results":{
+    },
+    "errors": []
+  },
+  "mono_getMirrorPosition": {
+    "id": 1234,
+    "command": "mono_getMirrorPosition",
+    "results": {
+      "position": 0
+    },
+    "errors": []
+  },
+  "mono_moveMirror": {
+    "id": 1234,
+    "command": "mono_moveMirror",
+    "results": {},
+    "errors": []
+  },
+  "mono_getSlitPositionInMM": {
+    "id": 1234,
+    "command": "mono_getSlitPositionInMM",
+    "results": {
+      "position": 0
+    },
+    "errors": []
+  },
+  "mono_moveSlitMM": {
+    "id": 1234,
+    "command": "mono_moveSlitMM",
+    "results": {},
+    "errors": []
+  },
+  "mono_shutterOpen": {
+    "id": 1234,
+    "command": "mono_shutterOpen",
+    "results": {},
+    "errors": []
+  },
+  "mono_shutterClose": {
+    "id": 1234,
+    "command": "mono_shutterClose",
+    "results": {},
+    "errors": []
+  },
+  "mono_getShutterStatus": {
+    "id": 1234,
+    "command": "mono_getShutterStatus",
+    "results": {
+      "shutter 1": 0,
+      "shutter 2": 1
+    },
+    "errors": []
+  },
+  "mono_getSlitStepPosition": {
+    "command": "mono_getSlitStepPosition",
+    "id": 1234,
+    "results": {
+      "position":0
+    },
+    "errors":[]
+  },
+  "mono_moveSlit": {
+    "id": 1234,
+    "command": "mono_moveSlit",
+    "results": {},
+    "errors": []
+  },
+  "mono_enableLaser": {},
+  "mono_getLaserStatus": {},
+  "mono_setLaserPower": {},
+  "mono_getLaserPower": {},
+  "mono_getLidStatus": {},
+  "mono_getSwitchStatus": {}
+}

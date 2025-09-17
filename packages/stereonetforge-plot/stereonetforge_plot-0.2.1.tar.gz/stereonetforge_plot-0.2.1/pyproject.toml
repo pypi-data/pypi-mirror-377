@@ -1,0 +1,35 @@
+# pyproject.toml for publishing StereonetForge to PyPI
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stereonetforge-plot"
+version = "0.2.1"
+description = "StereonetForge: dependency-light stereonet plotter for planes (Dip/DipDir) with 1..N groups"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Dr. Aram Fathian" }]
+keywords = ["stereonet", "geology", "structural geology", "geoscience", "kde", "plotting"]
+dependencies = [
+  "numpy>=1.20",
+  "pandas>=1.3",
+  "matplotlib>=3.4",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.scripts]
+stereonet-plot = "stereonet_forge:main_cli"
+
+[tool.setuptools]
+py-modules = ["stereonet_forge"]
+
+[project.urls]
+Homepage = "https://github.com/<your-username>/StereonetForge"
+Issues = "https://github.com/<your-username>/StereonetForge/issues"

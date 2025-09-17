@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crear_app_full_django_anyelser"
+version = "0.1.1"
+description = "Una librería para crear app mas personalizadas en django"
+authors = [{ name = "Anyelser", email = "anyelserperez@gmail.com" }]
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 5.0",
+]
+dependencies = [
+    "Django>=5.0",  # ¡Aquí declares Django!
+]
+
+[project.scripts]
+crear-app-full-django = "app_full_django.crear_app:main"
+
+[project.urls]
+Homepage = "https://github.com/anyelser1213/CrearAppFullDjango"

@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: pyDbs
+Version: 0.1.8
+Summary: Custom database class (relies on pandas, numpy, scipy)
+Home-page: https://github.com/ChampionApe/pyDbs
+Author: Rasmus K. Skjødt Berg
+Author-email: rasmus.kehlet.berg@econ.ku.dk
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: openpyxl
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# pyDbs
+The current repo contains the code for the pypi package ```pyDbs```. The package is used to add specific structure to data using popular python packages like pandas and numpy. 
+
+The package contains three main files: 
+1. base.py: This defines classes "adj", "Broadcast", "ExcelSymbolLoader", and "adjMultiIndex". 
+2. gpy.py: This defines symbol classes "GpySet, GpyVariable", and "GpyScalar", to give structure to symbols added using pandas series, pandas indices, or scalars. 
+3. simpleDB.py: This defines two simple database classes "GpyDict" and "SimpleDB". The GpyDict class is a simple keyword database with Gpy symbols with a few auxiliary methods included. The "SimpleDB" is also a simple keyword database with Gpy symbols, but with a bit more structure. For instance, it features "aliased sets" as in GAMS, add-or-merge methods, a mergeDbs that allows merging with another SimpleDB instance, and it can add all relevant GpySets to the database by reading from already defined variables (```readSets``` method).
+

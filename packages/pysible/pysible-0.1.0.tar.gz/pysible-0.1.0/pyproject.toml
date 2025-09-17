@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysible"
+version = "0.1.0"
+description = "Security library for FastAPI (RBAC, rate limiting, jwtAuth etc.)"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+  { name="Akshat Mishra", email="mails.akshat@gmail.com" }
+]
+dependencies = ["typer[all]", "redis", "fastapi[standard]", "python-jose", "python-dotenv"]
+
+[project.scripts]
+pysible = "pysible.cli:action"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pysible*"]
+exclude = ["tests*", "static*"]
+
+[project.urls]
+"Homepage" = "https://github.com/AKSHATM99/pysible.git"

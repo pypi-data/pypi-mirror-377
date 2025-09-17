@@ -1,0 +1,834 @@
+Metadata-Version: 2.4
+Name: kwimage
+Version: 0.11.6
+Summary: The kwimage module
+Home-page: https://gitlab.kitware.com/computer-vision/kwimage
+Author: Jon Crall
+Author-email: jon.crall@kitware.com
+License: Apache 2
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: scipy>=1.14.1; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: scipy>=1.11.2; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: scipy>=1.9.2; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: scipy>=1.7.2; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: scipy>=1.5.4; python_version < "3.10" and python_version >= "3.9"
+Requires-Dist: scipy>=1.5.4; python_version < "3.9" and python_version >= "3.8"
+Requires-Dist: scipy>=1.5.3; python_version < "3.8" and python_version >= "3.7"
+Requires-Dist: scipy>=1.5.3; python_version < "3.7" and python_version >= "3.6"
+Requires-Dist: numpy>=2.1.0; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: numpy>=1.26.0; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: numpy>=1.23.2; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: numpy>=1.21.6; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: numpy>=1.19.3; python_version < "3.10" and python_version >= "3.9"
+Requires-Dist: numpy>=1.19.3; python_version < "3.9" and python_version >= "3.8"
+Requires-Dist: shapely>=2.0.6; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: shapely>=2.0.2; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: shapely>=1.8.5; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: shapely>=1.8.2; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: shapely>=1.7.1; python_version < "3.10" and python_version >= "3.9"
+Requires-Dist: shapely>=1.7.1; python_version < "3.9" and python_version >= "3.8"
+Requires-Dist: Pillow>=10.4.0; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: Pillow>=10.0.0; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: Pillow>=9.2.0; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: Pillow>=9.1.0; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: Pillow>=8.0.0; python_version < "3.10" and python_version >= "3.6"
+Requires-Dist: scikit-image>=0.25.1; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: scikit-image>=0.22.0; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: scikit-image>=0.20.0; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: scikit-image>=0.19.0; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: scikit-image>=0.18.0; python_version < "3.10" and python_version >= "3.9"
+Requires-Dist: scikit-image>=0.17.2; python_version < "3.9" and python_version >= "3.8"
+Requires-Dist: networkx>=3.0; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: networkx>=2.8; python_version < "3.13" and python_version >= "3.11"
+Requires-Dist: networkx>=2.7; python_version < "3.11" and python_version >= "3.8"
+Requires-Dist: ubelt>=1.3.3
+Requires-Dist: kwarray>=0.6.19
+Requires-Dist: distinctipy>=1.2.1; python_version < "4.0" and python_version >= "3.8"
+Requires-Dist: parse>=1.14.0
+Requires-Dist: affine>=2.3.0
+Requires-Dist: lazy_loader>=0.4
+Provides-Extra: all
+Requires-Dist: scipy>=1.14.1; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: scipy>=1.11.2; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: scipy>=1.9.2; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: scipy>=1.7.2; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: scipy>=1.5.4; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: scipy>=1.5.4; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: scipy>=1.5.3; (python_version < "3.8" and python_version >= "3.7") and extra == "all"
+Requires-Dist: scipy>=1.5.3; (python_version < "3.7" and python_version >= "3.6") and extra == "all"
+Requires-Dist: numpy>=2.1.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: numpy>=1.26.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: numpy>=1.23.2; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: numpy>=1.21.6; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: numpy>=1.19.3; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: numpy>=1.19.3; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: shapely>=2.0.6; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: shapely>=2.0.2; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: shapely>=1.8.5; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: shapely>=1.8.2; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: shapely>=1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: shapely>=1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: Pillow>=10.4.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: Pillow>=10.0.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: Pillow>=9.2.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: Pillow>=9.1.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: Pillow>=8.0.0; (python_version < "3.10" and python_version >= "3.6") and extra == "all"
+Requires-Dist: scikit-image>=0.25.1; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: scikit-image>=0.22.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: scikit-image>=0.20.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: scikit-image>=0.19.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: scikit-image>=0.18.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: scikit-image>=0.17.2; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: networkx>=3.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: networkx>=2.8; (python_version < "3.13" and python_version >= "3.11") and extra == "all"
+Requires-Dist: networkx>=2.7; (python_version < "3.11" and python_version >= "3.8") and extra == "all"
+Requires-Dist: ubelt>=1.3.3; extra == "all"
+Requires-Dist: kwarray>=0.6.19; extra == "all"
+Requires-Dist: distinctipy>=1.2.1; (python_version < "4.0" and python_version >= "3.8") and extra == "all"
+Requires-Dist: parse>=1.14.0; extra == "all"
+Requires-Dist: affine>=2.3.0; extra == "all"
+Requires-Dist: lazy_loader>=0.4; extra == "all"
+Requires-Dist: coverage>=7.2.7; (python_version < "4.0" and python_version >= "3.12") and extra == "all"
+Requires-Dist: coverage>=5.3.1; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: coverage>=5.3.1; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: coverage>=5.3.1; python_version < "3.10" and extra == "all"
+Requires-Dist: xdoctest>=1.1.5; extra == "all"
+Requires-Dist: pytest>=6.2.5; extra == "all"
+Requires-Dist: timerit>=0.3.0; extra == "all"
+Requires-Dist: pytest-cov>=2.12.1; python_version >= "3.6.0" and extra == "all"
+Requires-Dist: pytest-cov<2.6.0,>=2.0.0; python_version < "3.6.0" and extra == "all"
+Requires-Dist: matplotlib>=3.9.2; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: matplotlib>=3.7.3; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: matplotlib>=3.6.2; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: matplotlib>=3.5.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.8" and python_version >= "3.7") and extra == "all"
+Requires-Dist: matplotlib>=3.1.0; (python_version < "3.7" and python_version >= "3.6") and extra == "all"
+Requires-Dist: torch>=2.5.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all"
+Requires-Dist: torch>=2.2.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all"
+Requires-Dist: torch>=2.0.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: torch>=2.0.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: torch>=1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: torch>=1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: torch>=1.7.0; (python_version < "3.8" and python_version >= "3.7") and extra == "all"
+Requires-Dist: torch>=1.7.0; (python_version < "3.7" and python_version >= "3.6") and extra == "all"
+Requires-Dist: itk-io>=5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "all"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "all"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "all"
+Requires-Dist: kwimage_ext>=0.3.1; (python_version < "4.0" and python_version >= "3.11") and extra == "all"
+Requires-Dist: kwimage_ext>=0.2.1; python_version < "3.11" and extra == "all"
+Requires-Dist: PyTurboJPEG; extra == "all"
+Requires-Dist: colormath>=3.0.0; extra == "all"
+Provides-Extra: headless
+Requires-Dist: opencv-python-headless>=4.10.0.84; (python_version < "4.0" and python_version >= "3.13") and extra == "headless"
+Requires-Dist: opencv-python-headless>=4.5.5.64; (python_version < "3.13" and python_version >= "3.11") and extra == "headless"
+Requires-Dist: opencv-python-headless>=4.5.4.58; (python_version < "3.11" and python_version >= "3.10") and extra == "headless"
+Requires-Dist: opencv-python-headless>=3.4.15.55; (python_version < "3.10" and python_version >= "3.9") and extra == "headless"
+Provides-Extra: graphics
+Requires-Dist: opencv-python>=4.10.0.84; (python_version < "4.0" and python_version >= "3.13") and extra == "graphics"
+Requires-Dist: opencv-python>=4.5.5.64; (python_version < "3.13" and python_version >= "3.11") and extra == "graphics"
+Requires-Dist: opencv-python>=4.5.4.58; (python_version < "3.11" and python_version >= "3.10") and extra == "graphics"
+Requires-Dist: opencv-python>=3.4.15.55; (python_version < "3.10" and python_version >= "3.9") and extra == "graphics"
+Provides-Extra: docs
+Requires-Dist: sphinx>=5.0.1; extra == "docs"
+Requires-Dist: sphinx-autobuild>=2021.3.14; extra == "docs"
+Requires-Dist: sphinx_rtd_theme>=1.0.0; extra == "docs"
+Requires-Dist: sphinxcontrib-napoleon>=0.7; extra == "docs"
+Requires-Dist: sphinx-autoapi>=1.8.4; extra == "docs"
+Requires-Dist: Pygments>=2.9.0; extra == "docs"
+Requires-Dist: myst_parser>=0.18.0; extra == "docs"
+Requires-Dist: sphinx-reredirects>=0.0.1; extra == "docs"
+Requires-Dist: kwplot; extra == "docs"
+Requires-Dist: six; extra == "docs"
+Requires-Dist: coverage>=7.2.7; (python_version < "4.0" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: coverage>=5.3.1; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: coverage>=5.3.1; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: coverage>=5.3.1; python_version < "3.10" and extra == "docs"
+Requires-Dist: xdoctest>=1.1.5; extra == "docs"
+Requires-Dist: pytest>=6.2.5; extra == "docs"
+Requires-Dist: timerit>=0.3.0; extra == "docs"
+Requires-Dist: pytest-cov>=2.12.1; python_version >= "3.6.0" and extra == "docs"
+Requires-Dist: pytest-cov<2.6.0,>=2.0.0; python_version < "3.6.0" and extra == "docs"
+Requires-Dist: opencv-python-headless>=4.10.0.84; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: opencv-python-headless>=4.5.5.64; (python_version < "3.13" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: opencv-python-headless>=4.5.4.58; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: opencv-python-headless>=3.4.15.55; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: matplotlib>=3.9.2; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: matplotlib>=3.7.3; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: matplotlib>=3.6.2; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: matplotlib>=3.5.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.8" and python_version >= "3.7") and extra == "docs"
+Requires-Dist: matplotlib>=3.1.0; (python_version < "3.7" and python_version >= "3.6") and extra == "docs"
+Requires-Dist: torch>=2.5.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: torch>=2.2.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: torch>=2.0.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: torch>=2.0.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: torch>=1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: torch>=1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: torch>=1.7.0; (python_version < "3.8" and python_version >= "3.7") and extra == "docs"
+Requires-Dist: torch>=1.7.0; (python_version < "3.7" and python_version >= "3.6") and extra == "docs"
+Requires-Dist: itk-io>=5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: kwimage_ext>=0.3.1; (python_version < "4.0" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: kwimage_ext>=0.2.1; python_version < "3.11" and extra == "docs"
+Requires-Dist: PyTurboJPEG; extra == "docs"
+Requires-Dist: colormath>=3.0.0; extra == "docs"
+Requires-Dist: scipy>=1.14.1; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: scipy>=1.11.2; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: scipy>=1.9.2; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: scipy>=1.7.2; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: scipy>=1.5.4; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: scipy>=1.5.4; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: scipy>=1.5.3; (python_version < "3.8" and python_version >= "3.7") and extra == "docs"
+Requires-Dist: scipy>=1.5.3; (python_version < "3.7" and python_version >= "3.6") and extra == "docs"
+Requires-Dist: numpy>=2.1.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: numpy>=1.26.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: numpy>=1.23.2; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: numpy>=1.21.6; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: numpy>=1.19.3; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: numpy>=1.19.3; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: shapely>=2.0.6; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: shapely>=2.0.2; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: shapely>=1.8.5; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: shapely>=1.8.2; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: shapely>=1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: shapely>=1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: Pillow>=10.4.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: Pillow>=10.0.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: Pillow>=9.2.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: Pillow>=9.1.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: Pillow>=8.0.0; (python_version < "3.10" and python_version >= "3.6") and extra == "docs"
+Requires-Dist: scikit-image>=0.25.1; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: scikit-image>=0.22.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs"
+Requires-Dist: scikit-image>=0.20.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: scikit-image>=0.19.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs"
+Requires-Dist: scikit-image>=0.18.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs"
+Requires-Dist: scikit-image>=0.17.2; (python_version < "3.9" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: networkx>=3.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs"
+Requires-Dist: networkx>=2.8; (python_version < "3.13" and python_version >= "3.11") and extra == "docs"
+Requires-Dist: networkx>=2.7; (python_version < "3.11" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: ubelt>=1.3.3; extra == "docs"
+Requires-Dist: kwarray>=0.6.19; extra == "docs"
+Requires-Dist: distinctipy>=1.2.1; (python_version < "4.0" and python_version >= "3.8") and extra == "docs"
+Requires-Dist: parse>=1.14.0; extra == "docs"
+Requires-Dist: affine>=2.3.0; extra == "docs"
+Requires-Dist: lazy_loader>=0.4; extra == "docs"
+Requires-Dist: sympy; extra == "docs"
+Provides-Extra: gdal
+Requires-Dist: GDAL>=3.10.0; (python_version < "4.0" and python_version >= "3.13") and extra == "gdal"
+Requires-Dist: GDAL>=3.7.2; (python_version < "3.13" and python_version >= "3.12") and extra == "gdal"
+Requires-Dist: GDAL>=3.5.2; (python_version < "3.12" and python_version >= "3.11") and extra == "gdal"
+Requires-Dist: GDAL<=3.11.0,>=3.4.1; (python_version < "3.11" and python_version >= "3.9") and extra == "gdal"
+Provides-Extra: linting
+Requires-Dist: flake8>=5.0.0; extra == "linting"
+Provides-Extra: optional
+Requires-Dist: matplotlib>=3.9.2; (python_version < "4.0" and python_version >= "3.13") and extra == "optional"
+Requires-Dist: matplotlib>=3.7.3; (python_version < "3.13" and python_version >= "3.12") and extra == "optional"
+Requires-Dist: matplotlib>=3.6.2; (python_version < "3.12" and python_version >= "3.11") and extra == "optional"
+Requires-Dist: matplotlib>=3.5.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "optional"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "optional"
+Requires-Dist: matplotlib>=3.4.0; (python_version < "3.8" and python_version >= "3.7") and extra == "optional"
+Requires-Dist: matplotlib>=3.1.0; (python_version < "3.7" and python_version >= "3.6") and extra == "optional"
+Requires-Dist: torch>=2.5.0; (python_version < "4.0" and python_version >= "3.13") and extra == "optional"
+Requires-Dist: torch>=2.2.0; (python_version < "3.13" and python_version >= "3.12") and extra == "optional"
+Requires-Dist: torch>=2.0.0; (python_version < "3.12" and python_version >= "3.11") and extra == "optional"
+Requires-Dist: torch>=2.0.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional"
+Requires-Dist: torch>=1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "optional"
+Requires-Dist: torch>=1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "optional"
+Requires-Dist: torch>=1.7.0; (python_version < "3.8" and python_version >= "3.7") and extra == "optional"
+Requires-Dist: torch>=1.7.0; (python_version < "3.7" and python_version >= "3.6") and extra == "optional"
+Requires-Dist: itk-io>=5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "optional"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "optional"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "optional"
+Requires-Dist: itk-io>=5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "optional"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "optional"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "optional"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "optional"
+Requires-Dist: itk-filtering>=5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "optional"
+Requires-Dist: kwimage_ext>=0.3.1; (python_version < "4.0" and python_version >= "3.11") and extra == "optional"
+Requires-Dist: kwimage_ext>=0.2.1; python_version < "3.11" and extra == "optional"
+Requires-Dist: PyTurboJPEG; extra == "optional"
+Requires-Dist: colormath>=3.0.0; extra == "optional"
+Provides-Extra: problematic
+Requires-Dist: gdal>=3.3.0; extra == "problematic"
+Requires-Dist: imgaug; extra == "problematic"
+Provides-Extra: runtime
+Requires-Dist: scipy>=1.14.1; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime"
+Requires-Dist: scipy>=1.11.2; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime"
+Requires-Dist: scipy>=1.9.2; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime"
+Requires-Dist: scipy>=1.7.2; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime"
+Requires-Dist: scipy>=1.5.4; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime"
+Requires-Dist: scipy>=1.5.4; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime"
+Requires-Dist: scipy>=1.5.3; (python_version < "3.8" and python_version >= "3.7") and extra == "runtime"
+Requires-Dist: scipy>=1.5.3; (python_version < "3.7" and python_version >= "3.6") and extra == "runtime"
+Requires-Dist: numpy>=2.1.0; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime"
+Requires-Dist: numpy>=1.26.0; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime"
+Requires-Dist: numpy>=1.23.2; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime"
+Requires-Dist: numpy>=1.21.6; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime"
+Requires-Dist: numpy>=1.19.3; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime"
+Requires-Dist: numpy>=1.19.3; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime"
+Requires-Dist: shapely>=2.0.6; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime"
+Requires-Dist: shapely>=2.0.2; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime"
+Requires-Dist: shapely>=1.8.5; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime"
+Requires-Dist: shapely>=1.8.2; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime"
+Requires-Dist: shapely>=1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime"
+Requires-Dist: shapely>=1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime"
+Requires-Dist: Pillow>=10.4.0; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime"
+Requires-Dist: Pillow>=10.0.0; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime"
+Requires-Dist: Pillow>=9.2.0; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime"
+Requires-Dist: Pillow>=9.1.0; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime"
+Requires-Dist: Pillow>=8.0.0; (python_version < "3.10" and python_version >= "3.6") and extra == "runtime"
+Requires-Dist: scikit-image>=0.25.1; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime"
+Requires-Dist: scikit-image>=0.22.0; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime"
+Requires-Dist: scikit-image>=0.20.0; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime"
+Requires-Dist: scikit-image>=0.19.0; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime"
+Requires-Dist: scikit-image>=0.18.0; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime"
+Requires-Dist: scikit-image>=0.17.2; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime"
+Requires-Dist: networkx>=3.0; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime"
+Requires-Dist: networkx>=2.8; (python_version < "3.13" and python_version >= "3.11") and extra == "runtime"
+Requires-Dist: networkx>=2.7; (python_version < "3.11" and python_version >= "3.8") and extra == "runtime"
+Requires-Dist: ubelt>=1.3.3; extra == "runtime"
+Requires-Dist: kwarray>=0.6.19; extra == "runtime"
+Requires-Dist: distinctipy>=1.2.1; (python_version < "4.0" and python_version >= "3.8") and extra == "runtime"
+Requires-Dist: parse>=1.14.0; extra == "runtime"
+Requires-Dist: affine>=2.3.0; extra == "runtime"
+Requires-Dist: lazy_loader>=0.4; extra == "runtime"
+Provides-Extra: tests
+Requires-Dist: coverage>=7.2.7; (python_version < "4.0" and python_version >= "3.12") and extra == "tests"
+Requires-Dist: coverage>=5.3.1; (python_version < "3.12" and python_version >= "3.11") and extra == "tests"
+Requires-Dist: coverage>=5.3.1; (python_version < "3.11" and python_version >= "3.10") and extra == "tests"
+Requires-Dist: coverage>=5.3.1; python_version < "3.10" and extra == "tests"
+Requires-Dist: xdoctest>=1.1.5; extra == "tests"
+Requires-Dist: pytest>=6.2.5; extra == "tests"
+Requires-Dist: timerit>=0.3.0; extra == "tests"
+Requires-Dist: pytest-cov>=2.12.1; python_version >= "3.6.0" and extra == "tests"
+Requires-Dist: pytest-cov<2.6.0,>=2.0.0; python_version < "3.6.0" and extra == "tests"
+Provides-Extra: all-strict
+Requires-Dist: scipy==1.14.1; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: scipy==1.11.2; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: scipy==1.9.2; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: scipy==1.7.2; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: scipy==1.5.4; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: scipy==1.5.4; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: scipy==1.5.3; (python_version < "3.8" and python_version >= "3.7") and extra == "all-strict"
+Requires-Dist: scipy==1.5.3; (python_version < "3.7" and python_version >= "3.6") and extra == "all-strict"
+Requires-Dist: numpy==2.1.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: numpy==1.26.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: numpy==1.23.2; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: numpy==1.21.6; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: numpy==1.19.3; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: numpy==1.19.3; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: shapely==2.0.6; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: shapely==2.0.2; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: shapely==1.8.5; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: shapely==1.8.2; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: shapely==1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: shapely==1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: Pillow==10.4.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: Pillow==10.0.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: Pillow==9.2.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: Pillow==9.1.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: Pillow==8.0.0; (python_version < "3.10" and python_version >= "3.6") and extra == "all-strict"
+Requires-Dist: scikit-image==0.25.1; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: scikit-image==0.22.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: scikit-image==0.20.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: scikit-image==0.19.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: scikit-image==0.18.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: scikit-image==0.17.2; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: networkx==3.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: networkx==2.8; (python_version < "3.13" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: networkx==2.7; (python_version < "3.11" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: ubelt==1.3.3; extra == "all-strict"
+Requires-Dist: kwarray==0.6.19; extra == "all-strict"
+Requires-Dist: distinctipy==1.2.1; (python_version < "4.0" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: parse==1.14.0; extra == "all-strict"
+Requires-Dist: affine==2.3.0; extra == "all-strict"
+Requires-Dist: lazy_loader==0.4; extra == "all-strict"
+Requires-Dist: coverage==7.2.7; (python_version < "4.0" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: coverage==5.3.1; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: coverage==5.3.1; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: coverage==5.3.1; python_version < "3.10" and extra == "all-strict"
+Requires-Dist: xdoctest==1.1.5; extra == "all-strict"
+Requires-Dist: pytest==6.2.5; extra == "all-strict"
+Requires-Dist: timerit==0.3.0; extra == "all-strict"
+Requires-Dist: pytest-cov==2.12.1; python_version >= "3.6.0" and extra == "all-strict"
+Requires-Dist: pytest-cov<2.6.0,==2.0.0; python_version < "3.6.0" and extra == "all-strict"
+Requires-Dist: matplotlib==3.9.2; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: matplotlib==3.7.3; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: matplotlib==3.6.2; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: matplotlib==3.5.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.8" and python_version >= "3.7") and extra == "all-strict"
+Requires-Dist: matplotlib==3.1.0; (python_version < "3.7" and python_version >= "3.6") and extra == "all-strict"
+Requires-Dist: torch==2.5.0; (python_version < "4.0" and python_version >= "3.13") and extra == "all-strict"
+Requires-Dist: torch==2.2.0; (python_version < "3.13" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: torch==2.0.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: torch==2.0.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: torch==1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: torch==1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: torch==1.7.0; (python_version < "3.8" and python_version >= "3.7") and extra == "all-strict"
+Requires-Dist: torch==1.7.0; (python_version < "3.7" and python_version >= "3.6") and extra == "all-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "all-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "all-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "all-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "all-strict"
+Requires-Dist: kwimage_ext==0.3.1; (python_version < "4.0" and python_version >= "3.11") and extra == "all-strict"
+Requires-Dist: kwimage_ext==0.2.1; python_version < "3.11" and extra == "all-strict"
+Requires-Dist: PyTurboJPEG; extra == "all-strict"
+Requires-Dist: colormath==3.0.0; extra == "all-strict"
+Provides-Extra: headless-strict
+Requires-Dist: opencv-python-headless==4.10.0.84; (python_version < "4.0" and python_version >= "3.13") and extra == "headless-strict"
+Requires-Dist: opencv-python-headless==4.5.5.64; (python_version < "3.13" and python_version >= "3.11") and extra == "headless-strict"
+Requires-Dist: opencv-python-headless==4.5.4.58; (python_version < "3.11" and python_version >= "3.10") and extra == "headless-strict"
+Requires-Dist: opencv-python-headless==3.4.15.55; (python_version < "3.10" and python_version >= "3.9") and extra == "headless-strict"
+Provides-Extra: graphics-strict
+Requires-Dist: opencv-python==4.10.0.84; (python_version < "4.0" and python_version >= "3.13") and extra == "graphics-strict"
+Requires-Dist: opencv-python==4.5.5.64; (python_version < "3.13" and python_version >= "3.11") and extra == "graphics-strict"
+Requires-Dist: opencv-python==4.5.4.58; (python_version < "3.11" and python_version >= "3.10") and extra == "graphics-strict"
+Requires-Dist: opencv-python==3.4.15.55; (python_version < "3.10" and python_version >= "3.9") and extra == "graphics-strict"
+Provides-Extra: docs-strict
+Requires-Dist: sphinx==5.0.1; extra == "docs-strict"
+Requires-Dist: sphinx-autobuild==2021.3.14; extra == "docs-strict"
+Requires-Dist: sphinx_rtd_theme==1.0.0; extra == "docs-strict"
+Requires-Dist: sphinxcontrib-napoleon==0.7; extra == "docs-strict"
+Requires-Dist: sphinx-autoapi==1.8.4; extra == "docs-strict"
+Requires-Dist: Pygments==2.9.0; extra == "docs-strict"
+Requires-Dist: myst_parser==0.18.0; extra == "docs-strict"
+Requires-Dist: sphinx-reredirects==0.0.1; extra == "docs-strict"
+Requires-Dist: kwplot; extra == "docs-strict"
+Requires-Dist: six; extra == "docs-strict"
+Requires-Dist: coverage==7.2.7; (python_version < "4.0" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: coverage==5.3.1; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: coverage==5.3.1; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: coverage==5.3.1; python_version < "3.10" and extra == "docs-strict"
+Requires-Dist: xdoctest==1.1.5; extra == "docs-strict"
+Requires-Dist: pytest==6.2.5; extra == "docs-strict"
+Requires-Dist: timerit==0.3.0; extra == "docs-strict"
+Requires-Dist: pytest-cov==2.12.1; python_version >= "3.6.0" and extra == "docs-strict"
+Requires-Dist: pytest-cov<2.6.0,==2.0.0; python_version < "3.6.0" and extra == "docs-strict"
+Requires-Dist: opencv-python-headless==4.10.0.84; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: opencv-python-headless==4.5.5.64; (python_version < "3.13" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: opencv-python-headless==4.5.4.58; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: opencv-python-headless==3.4.15.55; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.9.2; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.7.3; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.6.2; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.5.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.8" and python_version >= "3.7") and extra == "docs-strict"
+Requires-Dist: matplotlib==3.1.0; (python_version < "3.7" and python_version >= "3.6") and extra == "docs-strict"
+Requires-Dist: torch==2.5.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: torch==2.2.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: torch==2.0.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: torch==2.0.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: torch==1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: torch==1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: torch==1.7.0; (python_version < "3.8" and python_version >= "3.7") and extra == "docs-strict"
+Requires-Dist: torch==1.7.0; (python_version < "3.7" and python_version >= "3.6") and extra == "docs-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: kwimage_ext==0.3.1; (python_version < "4.0" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: kwimage_ext==0.2.1; python_version < "3.11" and extra == "docs-strict"
+Requires-Dist: PyTurboJPEG; extra == "docs-strict"
+Requires-Dist: colormath==3.0.0; extra == "docs-strict"
+Requires-Dist: scipy==1.14.1; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: scipy==1.11.2; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: scipy==1.9.2; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: scipy==1.7.2; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: scipy==1.5.4; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: scipy==1.5.4; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: scipy==1.5.3; (python_version < "3.8" and python_version >= "3.7") and extra == "docs-strict"
+Requires-Dist: scipy==1.5.3; (python_version < "3.7" and python_version >= "3.6") and extra == "docs-strict"
+Requires-Dist: numpy==2.1.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: numpy==1.26.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: numpy==1.23.2; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: numpy==1.21.6; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: numpy==1.19.3; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: numpy==1.19.3; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: shapely==2.0.6; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: shapely==2.0.2; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: shapely==1.8.5; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: shapely==1.8.2; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: shapely==1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: shapely==1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: Pillow==10.4.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: Pillow==10.0.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: Pillow==9.2.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: Pillow==9.1.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: Pillow==8.0.0; (python_version < "3.10" and python_version >= "3.6") and extra == "docs-strict"
+Requires-Dist: scikit-image==0.25.1; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: scikit-image==0.22.0; (python_version < "3.13" and python_version >= "3.12") and extra == "docs-strict"
+Requires-Dist: scikit-image==0.20.0; (python_version < "3.12" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: scikit-image==0.19.0; (python_version < "3.11" and python_version >= "3.10") and extra == "docs-strict"
+Requires-Dist: scikit-image==0.18.0; (python_version < "3.10" and python_version >= "3.9") and extra == "docs-strict"
+Requires-Dist: scikit-image==0.17.2; (python_version < "3.9" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: networkx==3.0; (python_version < "4.0" and python_version >= "3.13") and extra == "docs-strict"
+Requires-Dist: networkx==2.8; (python_version < "3.13" and python_version >= "3.11") and extra == "docs-strict"
+Requires-Dist: networkx==2.7; (python_version < "3.11" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: ubelt==1.3.3; extra == "docs-strict"
+Requires-Dist: kwarray==0.6.19; extra == "docs-strict"
+Requires-Dist: distinctipy==1.2.1; (python_version < "4.0" and python_version >= "3.8") and extra == "docs-strict"
+Requires-Dist: parse==1.14.0; extra == "docs-strict"
+Requires-Dist: affine==2.3.0; extra == "docs-strict"
+Requires-Dist: lazy_loader==0.4; extra == "docs-strict"
+Requires-Dist: sympy; extra == "docs-strict"
+Provides-Extra: gdal-strict
+Requires-Dist: GDAL==3.10.0; (python_version < "4.0" and python_version >= "3.13") and extra == "gdal-strict"
+Requires-Dist: GDAL==3.7.2; (python_version < "3.13" and python_version >= "3.12") and extra == "gdal-strict"
+Requires-Dist: GDAL==3.5.2; (python_version < "3.12" and python_version >= "3.11") and extra == "gdal-strict"
+Requires-Dist: GDAL<=3.11.0,==3.4.1; (python_version < "3.11" and python_version >= "3.9") and extra == "gdal-strict"
+Provides-Extra: linting-strict
+Requires-Dist: flake8==5.0.0; extra == "linting-strict"
+Provides-Extra: optional-strict
+Requires-Dist: matplotlib==3.9.2; (python_version < "4.0" and python_version >= "3.13") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.7.3; (python_version < "3.13" and python_version >= "3.12") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.6.2; (python_version < "3.12" and python_version >= "3.11") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.5.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.4.0; (python_version < "3.8" and python_version >= "3.7") and extra == "optional-strict"
+Requires-Dist: matplotlib==3.1.0; (python_version < "3.7" and python_version >= "3.6") and extra == "optional-strict"
+Requires-Dist: torch==2.5.0; (python_version < "4.0" and python_version >= "3.13") and extra == "optional-strict"
+Requires-Dist: torch==2.2.0; (python_version < "3.13" and python_version >= "3.12") and extra == "optional-strict"
+Requires-Dist: torch==2.0.0; (python_version < "3.12" and python_version >= "3.11") and extra == "optional-strict"
+Requires-Dist: torch==2.0.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional-strict"
+Requires-Dist: torch==1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "optional-strict"
+Requires-Dist: torch==1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "optional-strict"
+Requires-Dist: torch==1.7.0; (python_version < "3.8" and python_version >= "3.7") and extra == "optional-strict"
+Requires-Dist: torch==1.7.0; (python_version < "3.7" and python_version >= "3.6") and extra == "optional-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "optional-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "optional-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "optional-strict"
+Requires-Dist: itk-io==5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "optional-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "4.0" and python_version >= "3.12") and extra == "optional-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.12" and python_version >= "3.11") and extra == "optional-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.11" and python_version >= "3.10") and extra == "optional-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.10" and python_version >= "3.9") and extra == "optional-strict"
+Requires-Dist: itk-filtering==5.4.0; (python_version < "3.9" and python_version >= "3.8") and extra == "optional-strict"
+Requires-Dist: kwimage_ext==0.3.1; (python_version < "4.0" and python_version >= "3.11") and extra == "optional-strict"
+Requires-Dist: kwimage_ext==0.2.1; python_version < "3.11" and extra == "optional-strict"
+Requires-Dist: PyTurboJPEG; extra == "optional-strict"
+Requires-Dist: colormath==3.0.0; extra == "optional-strict"
+Provides-Extra: problematic-strict
+Requires-Dist: gdal==3.3.0; extra == "problematic-strict"
+Requires-Dist: imgaug; extra == "problematic-strict"
+Provides-Extra: runtime-strict
+Requires-Dist: scipy==1.14.1; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime-strict"
+Requires-Dist: scipy==1.11.2; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime-strict"
+Requires-Dist: scipy==1.9.2; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime-strict"
+Requires-Dist: scipy==1.7.2; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime-strict"
+Requires-Dist: scipy==1.5.4; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime-strict"
+Requires-Dist: scipy==1.5.4; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime-strict"
+Requires-Dist: scipy==1.5.3; (python_version < "3.8" and python_version >= "3.7") and extra == "runtime-strict"
+Requires-Dist: scipy==1.5.3; (python_version < "3.7" and python_version >= "3.6") and extra == "runtime-strict"
+Requires-Dist: numpy==2.1.0; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime-strict"
+Requires-Dist: numpy==1.26.0; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime-strict"
+Requires-Dist: numpy==1.23.2; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime-strict"
+Requires-Dist: numpy==1.21.6; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime-strict"
+Requires-Dist: numpy==1.19.3; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime-strict"
+Requires-Dist: numpy==1.19.3; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime-strict"
+Requires-Dist: shapely==2.0.6; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime-strict"
+Requires-Dist: shapely==2.0.2; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime-strict"
+Requires-Dist: shapely==1.8.5; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime-strict"
+Requires-Dist: shapely==1.8.2; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime-strict"
+Requires-Dist: shapely==1.7.1; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime-strict"
+Requires-Dist: shapely==1.7.1; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime-strict"
+Requires-Dist: Pillow==10.4.0; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime-strict"
+Requires-Dist: Pillow==10.0.0; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime-strict"
+Requires-Dist: Pillow==9.2.0; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime-strict"
+Requires-Dist: Pillow==9.1.0; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime-strict"
+Requires-Dist: Pillow==8.0.0; (python_version < "3.10" and python_version >= "3.6") and extra == "runtime-strict"
+Requires-Dist: scikit-image==0.25.1; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime-strict"
+Requires-Dist: scikit-image==0.22.0; (python_version < "3.13" and python_version >= "3.12") and extra == "runtime-strict"
+Requires-Dist: scikit-image==0.20.0; (python_version < "3.12" and python_version >= "3.11") and extra == "runtime-strict"
+Requires-Dist: scikit-image==0.19.0; (python_version < "3.11" and python_version >= "3.10") and extra == "runtime-strict"
+Requires-Dist: scikit-image==0.18.0; (python_version < "3.10" and python_version >= "3.9") and extra == "runtime-strict"
+Requires-Dist: scikit-image==0.17.2; (python_version < "3.9" and python_version >= "3.8") and extra == "runtime-strict"
+Requires-Dist: networkx==3.0; (python_version < "4.0" and python_version >= "3.13") and extra == "runtime-strict"
+Requires-Dist: networkx==2.8; (python_version < "3.13" and python_version >= "3.11") and extra == "runtime-strict"
+Requires-Dist: networkx==2.7; (python_version < "3.11" and python_version >= "3.8") and extra == "runtime-strict"
+Requires-Dist: ubelt==1.3.3; extra == "runtime-strict"
+Requires-Dist: kwarray==0.6.19; extra == "runtime-strict"
+Requires-Dist: distinctipy==1.2.1; (python_version < "4.0" and python_version >= "3.8") and extra == "runtime-strict"
+Requires-Dist: parse==1.14.0; extra == "runtime-strict"
+Requires-Dist: affine==2.3.0; extra == "runtime-strict"
+Requires-Dist: lazy_loader==0.4; extra == "runtime-strict"
+Provides-Extra: tests-strict
+Requires-Dist: coverage==7.2.7; (python_version < "4.0" and python_version >= "3.12") and extra == "tests-strict"
+Requires-Dist: coverage==5.3.1; (python_version < "3.12" and python_version >= "3.11") and extra == "tests-strict"
+Requires-Dist: coverage==5.3.1; (python_version < "3.11" and python_version >= "3.10") and extra == "tests-strict"
+Requires-Dist: coverage==5.3.1; python_version < "3.10" and extra == "tests-strict"
+Requires-Dist: xdoctest==1.1.5; extra == "tests-strict"
+Requires-Dist: pytest==6.2.5; extra == "tests-strict"
+Requires-Dist: timerit==0.3.0; extra == "tests-strict"
+Requires-Dist: pytest-cov==2.12.1; python_version >= "3.6.0" and extra == "tests-strict"
+Requires-Dist: pytest-cov<2.6.0,==2.0.0; python_version < "3.6.0" and extra == "tests-strict"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+The Kitware Image Module
+========================
+
+
+.. # TODO Get CI services running on gitlab
+.. #
+
+|GitlabCIPipeline| |GitlabCICoverage| |Appveyor| |Pypi| |PypiDownloads| |ReadTheDocs|
+
++------------------+-------------------------------------------------------+
+| Read the docs    | https://kwimage.readthedocs.io                        |
++------------------+-------------------------------------------------------+
+| Gitlab (main)    | https://gitlab.kitware.com/computer-vision/kwimage    |
++------------------+-------------------------------------------------------+
+| Github (mirror)  | https://github.com/Kitware/kwimage                    |
++------------------+-------------------------------------------------------+
+| Pypi             | https://pypi.org/project/kwimage                      |
++------------------+-------------------------------------------------------+
+
+The main webpage for this project is: https://gitlab.kitware.com/computer-vision/kwimage
+
+The ``kwimage`` module handles low-level image operations at a high level.
+
+The core ``kwimage`` is a functional library with image-related helper
+functions that are either unimplemented in or more have a more general
+interface then their opencv counterparts.
+
+The ``kwimage`` module builds on ``kwarray`` and provides tools commonly needed
+when addressing computer vision problems. This includes functions for reading
+images, resizing, image warp transformations, run-length-encoding, and
+non-maximum-suppression.
+
+
+The ``kwimage`` module is also the current home of my annotation data
+structures, which provide efficient ways to interoperate between different
+common annotation formats (e.g. different bounding box / polygon / point
+formats).  These data structures have both a ``.draw`` and ``.draw_on`` method
+for overlaying visualizations on matplotlib axes or numpy image matrices
+respectively.
+
+
+Read the docs at: http://kwimage.readthedocs.io/en/main/
+
+
+The top-level API is:
+
+
+.. code:: python
+
+    from .algo import (available_nms_impls, daq_spatial_nms, non_max_supression,)
+    from .im_alphablend import (ensure_alpha_channel, overlay_alpha_images,
+                                overlay_alpha_layers,)
+    from .im_color import (Color,)
+    from .im_core import (atleast_3channels, ensure_float01, ensure_uint255,
+                          exactly_1channel, find_robust_normalizers,
+                          make_channels_comparable, normalize, normalize_intensity,
+                          num_channels, padded_slice,)
+    from .im_cv2 import (connected_components, convert_colorspace, gaussian_blur,
+                         gaussian_patch, imcrop, imresize, imscale, morphology,
+                         warp_affine, warp_image, warp_projective,)
+    from .im_demodata import (checkerboard, grab_test_image,
+                              grab_test_image_fpath,)
+    from .im_draw import (draw_boxes_on_image, draw_clf_on_image, draw_header_text,
+                          draw_line_segments_on_image, draw_text_on_image,
+                          draw_vector_field, fill_nans_with_checkers,
+                          make_heatmask, make_orimask, make_vector_field,
+                          nodata_checkerboard,)
+    from .im_filter import (fourier_mask, radial_fourier_mask,)
+    from .im_io import (imread, imwrite, load_image_shape,)
+    from .im_runlen import (decode_run_length, encode_run_length, rle_translate,)
+    from .im_stack import (stack_images, stack_images_grid,)
+    from .structs import (Box, Boxes, Coords, Detections, Heatmap, Mask, MaskList,
+                          MultiPolygon, Points, PointsList, Polygon, PolygonList,
+                          Segmentation, SegmentationList, smooth_prob,)
+    from .transform import (Affine, Linear, Matrix, Projective, Transform,)
+    from .util_warp import (add_homog, remove_homog, subpixel_accum,
+                            subpixel_align, subpixel_getvalue, subpixel_maximum,
+                            subpixel_minimum, subpixel_set, subpixel_setvalue,
+                            subpixel_slice, subpixel_translate, warp_points,
+                            warp_tensor,)
+
+
+NOTE: THE KWIMAGE STRUCTS MAY? EVENTUALLY MOVE TO THE KWANNOT REPO
+(But this transition might take awhile)
+
+
+The most notable feature of the ``kwimage`` module are the ``kwimage.structs``
+objects. This includes the primitive ``Boxes``, ``Mask``, and ``Coords`` objects, The
+semi-primitive ``Points``, ``Polygon`` structures, and the composite ``Heatmap`` and
+``Detections`` structures (note: ``Heatmap`` is just a composite of array-like
+structures).
+
+The primitive and semi-primitive objects store and manipulate annotation
+geometry, and the composite structures combine primitives into a single
+object that jointly manipulates the primitives using ``warp`` operations.
+
+The ``Detections`` structure is a meta-structure that associates the other more
+primitive components, and allows a developer to compose them into something
+that represents objects of interest.  The details of this composition are left
+up to the end-application.
+
+The ``Detections`` object can also be "rasterized" and converted into a ``Heatmap``
+object, which represents the same information, but is in a form that is more
+suitable for use when training convolutional neural networks. Likewise, the
+output of neural networks can be directly encoded in a ``kwimage.Heatmap``
+object. The ``Heatmap.detect`` method can then be used to convert the dense
+heatmap representation into a spare ``Detections`` representation that is more
+suitable for use in an object-detection system. We note that the ``detect``
+function is not a special detection algorithm. The detection algorithm (which
+is outside the scope of kwimage) produces the heatmap, and the ``detect`` method
+effectively "inverts" the ``rasterize`` procedure of ``Detections`` by finding
+peaks in the heatmap, and running non-maximum suppression.
+
+
+This module contains data structures for three image annotation primitives:
+
+    * Boxes  # technically this could be made out of Coords, probably not for efficiency and decoupling
+    * Mask   # likewise this could be renamed to Raster
+    * Coords #
+
+These primative structures are used to define these metadata-containing composites:
+
+    * Detections
+    * Polygon
+    * Heatmap
+    * MultiPolygon
+    * PolygonList
+    * MaskList
+
+All of these structures have a ``self.data`` attribute that holds a pointer to
+the underlying data representation.
+
+Some of these structures have a ``self.format`` attribute describing the
+underlying data representation.
+
+Most of the composite structures also have a ``self.meta`` attribute, which
+holds user-level metadata (e.g. info about the classes).
+
+
+Installation
+------------
+
+There are a few small quirks with installing kwimage. There is an issue with
+the opencv python bindings such that we could rely on either the
+`opencv-python` or `opencv-python-headless` package. If you have either of
+these module already installed you can simply `pip install kwimage` without
+encountering any issues related to this. But if you do not already have a
+module that provides `import cv2` installed, then you should install kwimage
+with one of the following "extra install" tags:
+
+.. code-block:: bash
+
+    # We recommend using the headless version
+    pip install kwimage[headless]
+
+    # OR
+
+    # If other parts of your system depend on the opencv qt libs
+    # (NOT RECOMMENDED: this can conflict with pyqt5)
+    pip install kwimage[graphics]
+
+
+Some features also require the ``kwimage_ext`` package to be installed, which
+contains binary extensions that used to be distributed with this package in
+older versions. These extension can be obtained by explicitly
+``pip install kwimage_ext`` or via ``pip install kwimage[optional]`` (which also
+brings in other optional libraries). You can disable loading of c-extensions at
+runtime by setting the environment variable: `KWIMAGE_DISABLE_C_EXTENSIONS=1`.
+
+
+A Note on GDAL
+--------------
+
+The kwimage library can use `GDAL <https://github.com/OSGeo/gdal/>`_ library
+for certain tasks (e.g. IO of geotiffs).  GDAL can be a pain to install without
+relying on conda.  Kitware also has a pypi index that hosts GDAL wheels for
+linux systems:
+
+.. code-block:: bash
+
+    pip install --find-links https://girder.github.io/large_image_wheels GDAL
+
+
+
+.. |Pypi| image:: https://img.shields.io/pypi/v/kwimage.svg
+   :target: https://pypi.python.org/pypi/kwimage
+
+.. |PypiDownloads| image:: https://img.shields.io/pypi/dm/kwimage.svg
+   :target: https://pypistats.org/packages/kwimage
+
+.. |ReadTheDocs| image:: https://readthedocs.org/projects/kwimage/badge/?version=release
+    :target: http://kwimage.readthedocs.io/en/release/
+
+.. # See: https://ci.appveyor.com/project/jon.crall/kwimage/settings/badges
+.. |Appveyor| image:: https://ci.appveyor.com/api/projects/status/py3s2d6tyfjc8lm3/branch/main?svg=true
+   :target: https://ci.appveyor.com/project/jon.crall/kwimage/branch/main
+
+.. |GitlabCIPipeline| image:: https://gitlab.kitware.com/computer-vision/kwimage/badges/main/pipeline.svg
+   :target: https://gitlab.kitware.com/computer-vision/kwimage/-/jobs
+
+.. |GitlabCICoverage| image:: https://gitlab.kitware.com/computer-vision/kwimage/badges/main/coverage.svg
+    :target: https://gitlab.kitware.com/computer-vision/kwimage/commits/main

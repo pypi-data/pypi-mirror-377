@@ -1,0 +1,147 @@
+Metadata-Version: 2.4
+Name: veilcord-tls
+Version: 0.0.7.5
+Summary: VeilCord // @imvast
+Home-page: http://pypi.python.org/pypi/veilcord
+Author: @imvast
+Author-email: dev@vast.sh
+License: MIT
+Project-URL: Homepage, https://github.com/imvast
+Project-URL: Suggestions, https://github.com/imvast/veilcord/issues
+Project-URL: Support, https://t.me/skiddos
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Requires-Python: ~=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: terminut>=0.0.0.901
+Requires-Dist: colorama>=0.4.6
+Requires-Dist: requests>=2.30.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: tls_client>=0.2.1
+Requires-Dist: websocket-client>=1.5.1
+Requires-Dist: google-re2>=1.1
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# VeilCord.
+<img src="https://img.shields.io/pypi/v/veilcord?style=for-the-badge&logo=python">
+<a href="https://github.com/imvast" target="_blank">
+    <img alt="followers" src="https://img.shields.io/github/followers/imvast?color=f429ff&style=for-the-badge&logo=github&label=Follow"/>
+</a>
+
+```less
+                > Custom Discord Tools Going To Be Used For My Projects
+                      And Available To Anyone Else Who Wants To Use <
+```
+
+
+---
+
+### Installation
+```yaml
+pip install veilcord-tls
+```
+
+### Example Usages
+```py
+from veilcord-tls import VeilCord
+
+veilcord = VeilCord(
+    session = ..., # for custom tls_client sessions
+    device_type = "browser", # types : browser, mobile, app (aka desktop)
+    user_agent = ... # for custom user agent
+)
+```
+
+```py
+# GETTING X-Super-Properties
+xsup = veilcord.generateXProp()
+print(f"(+) Retrieved XSup: {xsup}")
+```
+
+```py
+# GETTING ALL THE COOKIES AND FINGERPRINT
+fp, cookies = veilcord.getFingerprint(
+    xsup, 
+    withCookies = True, # true or false -- will return cookies that are returned in the expirements req
+    cookieType = "json" # if withCookies is true this can be either "json" or "cookiejar"  -- by default its cookiejar
+)
+print(f"(+) Retrieved Fingerprint: {fp}")
+print(f"(+) Retrieved Cookies: {cookies}")
+# returns a tuple.  [0] - Fingerprint  |  [1] - COOKIESJAR or JSON
+```
+
+```py
+# GET THE NEW SESSION ID BS
+
+_, sessionID = veilcord.getSession(
+    token = "",
+)
+if sessionID == "invalid token":
+    print("invalid token :(")
+else:
+    print(f"(+) Got Session ID: {sessionID}")
+```
+
+```py
+## Getting Discord build number
+
+buildNum = VeilCord.getBuildNum()
+print(buildNum)
+```
+
+#### Custom Sessions
+```py
+session = veilcord.openSession(
+    custom_rpc = {
+        "status": "online",
+        "since": 0,
+        "activities": [{
+            "name": "Custom Status",
+            "type": 4,
+            "state": "vast#1337",
+            "emoji": ""
+        }],
+        "afk": False
+    }
+)
+
+veilcord.getSession(
+    token = "", # obv the token
+    session = session, # the session returned from veilcord.openSession()  (if u are using keepAlive)
+    keep_alive = True,  # keep the session alive until closed with veilcord.closeSession()
+    show_hb = True # prints when it sends the heartbeat and when the next one is
+)
+
+# close the session, if keepAlive is enabled.
+veilcord.closeSession(session)
+```
+
+---
+
+## > [imvast@discord](https://discord.com/users/1158425528886374401) | [imvast@github](https://github.com/imvast) | [vast.sh](https://vast.sh) <

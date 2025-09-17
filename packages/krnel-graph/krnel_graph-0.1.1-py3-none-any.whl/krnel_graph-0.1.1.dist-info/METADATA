@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: krnel-graph
+Version: 0.1.1
+Summary: Krnel graph library
+Author-email: Kimberly Wilber <kimmy+pypispam@krnel.ai>, Peyman Faratin <peyman+pypispam@krnel.ai>
+License-Expression: Apache-2.0
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fsspec>=2024.0.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: numpy>=2.2
+Requires-Dist: pandas>=2.3.1
+Requires-Dist: pyarrow>=21.0.0
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: structlog>=25.4.0
+Provides-Extra: test
+Requires-Dist: pytest>=7.0.0; extra == "test"
+Requires-Dist: pytest-cov>=4.0.0; extra == "test"
+Requires-Dist: pandas>=2.3.1; extra == "test"
+Provides-Extra: viz
+Requires-Dist: numba>=0.61.2; extra == "viz"
+Requires-Dist: umap-learn; extra == "viz"
+Requires-Dist: jupyter-scatter>=0.22.0; extra == "viz"
+Requires-Dist: seaborn>=0.13.2; extra == "viz"
+Provides-Extra: cli
+Requires-Dist: rich>=13.7.1; extra == "cli"
+Requires-Dist: cyclopts>=3.22.5; extra == "cli"
+Requires-Dist: humanize>=4.0.0; extra == "cli"
+Provides-Extra: docs
+Requires-Dist: sphinx>=7.1.0; extra == "docs"
+Requires-Dist: sphinx-autoapi>=3.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=2.0.0; extra == "docs"
+Requires-Dist: myst-parser>=2.0.0; extra == "docs"
+Requires-Dist: sphinx-autobuild>=2024.0.0; extra == "docs"
+Dynamic: license-file

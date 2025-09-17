@@ -1,0 +1,29 @@
+{{ site_name|default:project_name }} - Your Login Code
+
+Hello {{ user.get_full_name|default:user.username|default:"User" }},
+
+You requested a login code for your account. Use the code below to sign in:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔐 LOGIN CODE: {{ otp_code }}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⏰ This code expires in {{ expires_minutes|default:10 }} minutes.
+
+{% if otp_link %}
+🔗 Quick Login Link: {{ otp_link }}
+{% endif %}
+
+⚠️ IMPORTANT: 
+- This code will expire in {{ expires_minutes|default:10 }} minutes
+- If you didn't request this code, please ignore this email
+- Never share this code with anyone
+
+🛡️ SECURITY NOTICE:
+{{ site_name|default:project_name }} will never ask for your verification code via phone, email, or any other method.
+
+If you're having trouble, you can request a new code or contact our support team.
+
+---
+This is an automated message from {{ site_name|default:project_name }}.
+Please do not reply to this email.

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-obsidian-cloud"
+version = "0.2.0"
+description = "MCP server for Obsidian Cloud Stack - remote vault access"
+authors = [{name = "Guilherme Giorgi", email = "guilherme@ggailabs.com"}]
+dependencies = [
+    "mcp>=1.0.0",
+    "requests>=2.25.0",
+    "pydantic>=2.0.0"
+]
+
+[project.scripts]
+mcp-obsidian-cloud = "mcp_obsidian_cloud.server_final:main"
+

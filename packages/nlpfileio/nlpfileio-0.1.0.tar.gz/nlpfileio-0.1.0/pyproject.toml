@@ -1,0 +1,43 @@
+[project]
+name = "nlpfileio"
+version = "0.1.0"
+description ="An open-source Python library for CLI and NLP tasks"
+authors = [
+    {name = "Fatemeh Ahmadzadeh",email = "ahmadzade920@gmail.com"}
+]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/Ahmadzadeh920/nlpcli-pakage-library"
+repository = "https://github.com/Ahmadzadeh920/nlpcli-pakage-library"
+keywords = ["cli", "nlp", "text", "utilities"]
+packages = [{include = "nlpcli", from = "src"}]
+requires-python = ">=3.10"
+
+dependencies = [
+    "click",
+    "colorama",
+    "textblob",
+    "pyfiglet",
+    "spacy",
+    "setuptools",
+    "click-config-file",
+    "click-params",
+    "pandas",
+    "click-help-colors",
+    "rich",
+    "commonmark"
+]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+black = "*"
+isort = "*"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[project.scripts]
+nlpfileio-download = "nlpfileio.setup:download_resources"
+nlpfileio = "nlpfileio.cli:main"

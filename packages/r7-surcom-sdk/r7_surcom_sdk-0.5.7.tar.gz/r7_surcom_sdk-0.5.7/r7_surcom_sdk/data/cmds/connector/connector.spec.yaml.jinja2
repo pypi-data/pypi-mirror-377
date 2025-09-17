@@ -1,0 +1,87 @@
+
+id: {{data.connector_id}}
+name: {{data.display_name}}
+author: {{data.author}}
+version: 1.0.0
+notice: Copyright © 2025 {{data.author}}
+
+# Add one or two entries that describe changes in this version.
+# The publishing process maintains prior changelog entries.
+current_changes:
+  - Initial release
+
+# IDs of Surface Command types in this connector.
+# Type IDs must be unique across all connectors. Prefix each with a SnakeCaked
+# version of the connector ID.
+types:
+  - {{data.type_prefix}}A
+  - {{data.type_prefix}}B
+
+# Functions provided by this connector. Include a `test` function and at least
+# one other function that returns one or more types defined in `types`.
+functions:
+  - id: test
+
+  - id: import_all
+    title: Import All
+    description: Import all Items
+    return_types:
+      - {{data.type_prefix}}A
+
+# Configuration settings for this connector.
+settings:
+  url:
+    type: string
+    title: URL
+    example: https://example.com
+    default: https://insight.rapid7.com
+
+  api_key:
+    type: string
+    title: API Key
+    format: password
+
+  verify_tls:
+    type: boolean
+    title: Verify TLS?
+    description: If enabled, verify the server's identity
+    default: true
+
+  severity:
+    type: string
+    title: Severity Threshold
+    enum:
+      - High
+      - Medium
+      - Low
+    default: High
+
+  look_back_days:
+    type: integer
+    title: Vulnerability Look Back Days
+    description: Number of days to look back for Vulnerabilities
+    default: 30
+    nullable: true
+
+# Runtime platform for this connector.
+runtime: py311
+
+# Add required Python dependencies here. Pin each dependency to a specific
+# version.
+# python_dependencies:
+#  - "another_dependency==1.0.0"
+
+# Categories for this connector in the Extension Library.
+categories:
+  - vulnerability_management
+{#
+## TODO: enable this when we have support for import functions
+## TODO: create a py file that returns a generator based on this markup
+import_feeds:
+  import_feed_1:
+    - {{data.function_id}}
+    - mock_function_two
+  import_feed_2:
+    - mock_function_two
+    - mock_function_three
+#}

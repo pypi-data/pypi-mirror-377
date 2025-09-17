@@ -1,0 +1,84 @@
+# Documentation Heading
+
+Follow this documentation to setup this Connector
+
+{% if data.app_manifest.settings %}
+## Settings
+
+The following settings are required to enable the connector:
+
+| Name | Description | Type |
+| ---- | ----------- | ---- |
+{% for item in data.app_manifest.settings -%}
+| {{ item.title }} | {{ item.description }} | {% if item.format %}{{ item.format }}{% else %}{{ item.type }}{% endif %} |
+{% endfor %}{% endif %}
+
+
+{% if data.app_manifest.connector_deps %}
+## Dependencies
+
+Ensure that these Connectors are available on your platform prior to installing:
+
+{% for dep in data.app_manifest.connector_deps -%}
+  - {{ dep }}
+{% endfor %}
+{% endif %}
+
+{% if data.app_manifest.requirements %}
+## Setup
+
+{{ data.app_manifest.requirements }}
+{% endif %}
+
+
+## Components
+
+{% if data.app_manifest.types %}
+### Types
+{{ data.app_manifest.name }} defines the following entity types:
+
+| Name | Title | Extends |
+|----------|-------|-------|
+{% for item in data.app_manifest.types -%}
+| `{{ item.id }}` | {{ item.title }} | {{ item.extends }} |
+{% endfor %}{% endif %}
+
+{% if data.noetic_ingest_feeds %}
+### Import Feeds
+{{ data.app_manifest.name }} includes the following import feeds:
+
+| Name | Description |
+|------|-------------|
+{% for item in data.noetic_ingest_feeds -%}
+| **{{ item.name }}** | {{ item.description }} |
+{% endfor %}{% endif %}
+
+{% if data.app_manifest.queries %}
+### Saved Queries
+{{ data.app_manifest.name }} defines the following saved queries:
+
+| Name | Description |
+|------|-------------|
+{% for item in data.app_manifest.queries -%}
+| **{{ item.name }}** | {{ item.description }} |
+{% endfor %}{% endif %}
+
+{% if data.noetic_workflows %}
+### Workflows
+{{ data.app_manifest.name }} includes the following workflows:
+
+| Name | Description |
+|------|-------------|
+{% for item in data.noetic_workflows -%}
+| **{{ item.name }}** | {{ item.description }} |
+{% endfor %}{% endif %}
+
+{% if data.app_manifest.functions %}
+### Functions
+{{ data.app_manifest.name }} includes the following workflow functions:
+
+| Name | Description |
+|------|-------------|
+{% for item in data.app_manifest.functions -%}
+| **{{ item.name }}** | {{ item.description }} |
+{% endfor %}{% endif %}

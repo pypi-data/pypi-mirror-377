@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: r7_surcom_sdk
+Version: 0.5.7
+Summary: Python SDK used to interact and develop with Rapid7 Surface Command
+Author-email: Rapid7 <integrationalliance@rapid7.com>
+License-Expression: MIT
+Keywords: rapid7,Rapid7,r7_surcom_sdk,r7-surcom-sdk,SurfaceCommand,Surface,Command,sdk
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Natural Language :: English
+Classifier: Topic :: Software Development :: Build Tools
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: jinja2~=3.1
+Requires-Dist: PyYAML~=6.0
+Requires-Dist: packaging~=25.0
+Requires-Dist: requests==2.32.4
+Requires-Dist: argcomplete~=3.6
+Requires-Dist: genson~=1.3
+Provides-Extra: debug
+Requires-Dist: debugpy~=1.8; extra == "debug"
+Provides-Extra: developer
+Requires-Dist: pytest; extra == "developer"
+Requires-Dist: tox; extra == "developer"
+Requires-Dist: pre-commit; extra == "developer"
+Requires-Dist: pip-tools; extra == "developer"
+Dynamic: license-file
+
+# Surface Command SDK
+
+The `surcom-sdk` helps you build Surface Command data connectors for the Rapid7 platform.
+
+## Installation
+
+* Install the `surcom-sdk`:
+
+  ```bash
+  pip install r7-surcom-sdk
+  ```
+
+* Verify the installed version:
+
+  ```bash
+  surcom --version
+  ```
+
+* Install the SDK with debugging dependencies:
+  
+  ```bash
+  pip install 'r7-surcom-sdk[debug]'
+  ```
+
+## Configuration
+
+* Initialize the `surcom-sdk` configuration:
+
+  ```bash
+  surcom config init
+  ```
+
+## Documentation
+
+* View detailed help for any SDK command by adding `--help`:
+  
+  ```bash
+  surcom connector --help
+  ```

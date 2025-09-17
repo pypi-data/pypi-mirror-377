@@ -1,0 +1,26 @@
+#!/bin/sh
+###################################################################
+# Title: pre-commit hook
+# Description: This script runs pre-commit hooks for all files
+#               in the repository.
+# Copyright (c) 2024, Aydin Abdi.
+# License: MIT
+# Author: Aydin Abdi
+###################################################################
+set -e
+
+# Default githooks directory
+MAMBA_GITHOOK_PROJECT_GITHOOKS_DIR=${MAMBA_GITHOOK_PROJECT_GITHOOKS_DIR:=".githooks.d"}
+
+run_pre_commit_hooks() {
+  # printf "Updating pre-commit hooks configuration file\n"
+  # pre-commit autoupdate -c "${MAMBA_GITHOOK_PROJECT_GITHOOKS_DIR}/.pre-commit-config.yaml"
+  printf "Running pre-commit hooks for all files\n"
+  pre-commit run --all-files -c "${MAMBA_GITHOOK_PROJECT_GITHOOKS_DIR}/.pre-commit-config.yaml"
+}
+
+main() {
+  run_pre_commit_hooks
+}
+
+main "$@"

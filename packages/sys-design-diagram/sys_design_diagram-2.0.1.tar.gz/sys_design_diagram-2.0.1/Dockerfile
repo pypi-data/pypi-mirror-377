@@ -1,0 +1,126 @@
+# syntax=docker/dockerfile:1
+
+# Base stage
+FROM python:3.12-slim AS base
+LABEL maintainer="Aydin A."
+
+# Set environment variables
+ENV USER_NAME=sdd-user
+ENV GROUP_NAME=sdd-group
+ENV HOME=/home/$USER_NAME
+ENV PATH="$HOME/.local/bin:$PATH"
+ENV SDD_DESIGNS_DIR=/designs
+ENV SDD_OUTPUT_DIR=/output
+
+# Set the working directory
+WORKDIR $HOME
+
+# Create a non-root user and group
+RUN groupadd -r $GROUP_NAME && \
+    useradd -r -g $GROUP_NAME -d $HOME -s /bin/bash $USER_NAME && \
+    mkdir -p $HOME/.local/bin && \
+    chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME
+
+# Builder stage
+FROM base AS builder
+
+# Install dependencies for building the package
+USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch back to the non-root user
+USER $USER_NAME
+
+# Install the dependencies and build the package
+RUN pip install --user --upgrade pip && \
+    pip install --user sys-design-diagram
+
+# Final stage
+FROM base AS final
+
+# Set the working directory
+WORKDIR $HOME
+
+ARG IMAGE_NAME="sys-design-diagram"
+ARG IMAGE_VERSION="latest"
+ARG IMAGE_AUTHOR="Aydin A."
+ARG IMAGE_LICENSE="MIT"
+ARG IMAGE_DESCRIPTION="System Design Diagram Generator"
+ARG BUILD_DATE
+ARG GIT_COMMIT
+
+ENV IMAGE_NAME="${IMAGE_NAME}"
+ENV IMAGE_VERSION="${IMAGE_VERSION}"
+ENV IMAGE_AUTHOR="${IMAGE_AUTHOR}"
+ENV IMAGE_LICENSE="${IMAGE_LICENSE}"
+ENV IMAGE_DESCRIPTION="${IMAGE_DESCRIPTION}"
+
+LABEL org.opencontainers.image.title="${IMAGE_NAME}" \
+      org.opencontainers.image.description="${IMAGE_DESCRIPTION}" \
+      org.opencontainers.image.authors="${IMAGE_AUTHOR}" \
+      org.opencontainers.image.licenses="${IMAGE_LICENSE}" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.url="https://github.com/aydabd/sys-design-diagram" \
+      org.opencontainers.image.documentation="https://github.com/aydabd/sys-design-diagram/blob/main/README.rst" \
+      org.opencontainers.image.source="https://github.com/aydabd/sys-design-diagram" \
+      org.opencontainers.image.version="${IMAGE_VERSION}" \
+      org.opencontainers.image.revision="${GIT_COMMIT}"
+
+## Install runtime dependencies (PlantUML, Graphviz, Node, Chromium, Fonts + mermaid-cli)
+## NOTE: Original Dockerfile used Alpine package names for fonts; here we translate to Debian package names.
+USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        plantuml \
+        graphviz \
+        nodejs \
+        npm \
+        chromium \
+        fonts-noto-cjk \
+        fonts-noto-color-emoji \
+        fonts-terminus \
+        fonts-dejavu \
+        fonts-freefont-ttf \
+        fonts-font-awesome \
+        fonts-inconsolata \
+        fonts-linuxlibertine \
+        fontconfig && \
+    fc-cache -f && \
+    npm install -g @mermaid-js/mermaid-cli && \
+    npm cache clean --force && \
+    rm -rf /var/lib/apt/lists/* /root/.npm /tmp/*
+
+# Environment variables for puppeteer / mermaid-cli
+ENV PUPPETEER_SKIP_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium \
+    CHROME_BIN=/usr/bin/chromium \
+    MERMAID_PUPPETEER_CONFIG=/opt/puppeteer-config.json
+
+# Provide backward compatibility name if chromium-browser is expected anywhere
+RUN if [ ! -e /usr/bin/chromium-browser ] && [ -e /usr/bin/chromium ]; then ln -s /usr/bin/chromium /usr/bin/chromium-browser; fi \
+    && echo '{"args": ["--no-sandbox","--disable-setuid-sandbox","--disable-dev-shm-usage","--disable-gpu","--disable-software-rasterizer"]}' > /opt/puppeteer-config.json \
+    && chmod 644 /opt/puppeteer-config.json
+
+# Switch back to the non-root user
+USER $USER_NAME
+
+# Copy the installed dependencies from the builder image
+COPY --from=builder --chown=$USER_NAME:$GROUP_NAME $HOME/.local $HOME/.local
+
+# Create conventional mount points for designs and output (kept outside $HOME for clarity)
+USER root
+RUN mkdir -p /designs /output && chown -R $USER_NAME:$GROUP_NAME /designs /output
+USER $USER_NAME
+
+# Expose the output directory as a volume (backward compatible name kept via ENV)
+VOLUME /output
+
+# Set the entrypoint to the installed package which will create the diagrams in output directory
+ENTRYPOINT ["sys-design-diagram"]
+
+# Set the default command to show the help message
+CMD ["--help"]

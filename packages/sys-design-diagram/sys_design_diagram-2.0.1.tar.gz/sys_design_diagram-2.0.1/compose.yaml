@@ -1,0 +1,55 @@
+###############################################################################
+# System Design Diagram - Docker Compose
+#
+# Usage examples:
+#   docker compose up --build process-all
+#   docker compose run --rm diagrams
+#   docker compose run --rm plantuml
+#   docker compose up --build               # start all services
+#
+# The CLI accepts env vars SDD_DESIGNS_DIR & SDD_OUTPUT_DIR so we can omit -d/-o.
+# Each service mounts test design sources read-only and a distinct output folder.
+###############################################################################
+
+x-base-local: &base-local
+  image: sdd-local:latest
+  build:
+    context: .
+    dockerfile: ./Dockerfile_local
+  environment:
+    SDD_DESIGNS_DIR: /designs
+    SDD_OUTPUT_DIR: /output
+  volumes:
+    - ./tests-data:/designs:ro
+
+services:
+  mermaid:
+    <<: *base-local
+    shm_size: 256m        # extra shared memory for headless Chromium if needed
+    volumes:
+      - ./sdd-outputs/mermaid:/output
+      - ./tests-data:/designs:ro
+    command: ["mermaid"]
+
+  plantuml:
+    <<: *base-local
+    volumes:
+      - ./sdd-outputs/plantuml:/output
+      - ./tests-data:/designs:ro
+    command: ["plantuml"]
+
+  diagrams:
+    <<: *base-local
+    volumes:
+      - ./sdd-outputs/diagrams:/output
+      - ./tests-data:/designs:ro
+    command: ["diagrams"]
+
+  local-all:
+    <<: *base-local
+    volumes:
+      - ./sdd-outputs/all:/output
+      - ./tests-data:/designs:ro
+    command: ["process-all"]
+
+networks: {}

@@ -1,0 +1,55 @@
+name: copilot-setup-steps
+
+on:
+  workflow_dispatch:
+    inputs:
+        run-test-lint:
+            description: 'Run tests and linters'
+            required: false
+            default: 'false'
+        build-docker-image:
+            description: 'Build Docker image after setup'
+            required: false
+            default: 'false'
+        generate-diagrams:
+            description: 'Generate diagrams after setup'
+            required: false
+            default: 'false'
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+     # setup micromamba
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: '.githooks.d/pre-commit_environment.yml'
+          cache-environment: true
+          cache-downloads: false
+          cache-environment-key: micromamba-env-key-${{ github.run_id }}
+
+      - name: Install dependencies
+        run: micromamba install -n sys-design-diagram-env nodejs
+
+      - name: Install npm packages mermaid and puppeteer
+        run: micromamba run -n sys-design-diagram-env npm install -g @mermaid-js/mermaid-cli puppeteer
+
+      - name: Display Environment Info
+        run: micromamba run -n sys-design-diagram-env micromamba info && micromamba run -n sys-design-diagram-env micromamba list
+
+      - name: Run Tests
+        if: ${{ inputs.run-test-lint == 'true' }}
+        run: micromamba run -n sys-design-diagram-env pre-commit run --all-files -c .githooks.d/.pre-commit-config.yaml
+
+      - name: Build Docker Image
+        if: ${{ inputs.build-docker-image == 'true' }}
+        run: docker build -f Dockerfile_local -t sys-design-diagram-local:latest .
+
+      - name: Generate Diagrams
+        if: ${{ inputs.generate-diagrams == 'true' }}
+        run: |
+          mkdir -p test-diagrams-output
+          docker run --rm -v ${{ github.workspace }}/test-diagrams-output:/output sys-design-diagram-local:latest process-all

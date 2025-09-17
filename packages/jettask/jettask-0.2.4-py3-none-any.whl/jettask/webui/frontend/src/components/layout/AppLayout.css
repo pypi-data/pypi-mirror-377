@@ -1,0 +1,95 @@
+/* 整体布局 */
+.app-layout {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 主布局区域 */
+.main-layout {
+  transition: margin-left 0.2s;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 顶部导航栏 */
+.app-header {
+  background: #2a2d31;
+  padding: 0;
+  height: 48px;
+  line-height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f2f5;
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+
+.header-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 16px;
+}
+
+/* 内容区域 */
+.app-content {
+  flex: 1;
+  overflow: auto;
+  background: #f0f2f5;
+  padding: 0;
+}
+
+/* 页面内容容器 */
+.page-container {
+  height: 100%;
+  background: #fff;
+}
+
+/* 滚动条样式 */
+.app-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.app-content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.app-content::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 4px;
+}
+
+.app-content::-webkit-scrollbar-thumb:hover {
+  background: #8c8c8c;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .main-layout {
+    margin-left: 0 !important;
+  }
+  
+  .app-sider {
+    position: fixed;
+    z-index: 1000;
+    height: 100vh;
+    left: -200px;
+    transition: left 0.2s;
+  }
+  
+  .app-sider.ant-layout-sider-collapsed {
+    left: 0;
+  }
+}

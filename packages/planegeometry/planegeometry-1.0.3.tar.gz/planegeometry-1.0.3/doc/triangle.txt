@@ -1,0 +1,30 @@
+INTERFACE FOR TRIANGLES
+----------------------------------------------------------------------
+from planegeometry.structures.triangles import Triangle
+
+triangle = Triangle(x1, y1, x2, y2, x3, y3)
+triangle = Triangle(point1, point2, point3)
+triangle = Triangle()   # Triangle(0, 0, 1, 0, 0, 1)
+repr(triangle)   # return string
+hash(triangle)
+triangle.copy()   # return triangle
+triangle.area()
+triangle.center()   # return point
+triangle.make3()    # return three smaller triangles (tuple)
+triangle.make4()    # return four smaller triangles (tuple)
+triangle.move(x, y)   # return new triangle
+triangle.move(point)   # return new triangle
+t1 == t2, t1 != t2
+point in triangle   # return bool
+segment in triangle   # return bool
+triangle.orientation()   # return +1|0|-1
+t1.common_segment(t2)   # return segment
+triangle.third_node(point1, point2)   # return a third point
+triangle.circumcenter()   # return point
+triangle.in_circumcircle(point)   # return bool
+triangle.iterpoints()   # counterclockwise
+triangle.itersegments()   # segment.pt1 < segment.pt2
+triangle.itersegments_oriented()   # the face is on the right
+triangle.gnu()   # return gnuplot string
+----------------------------------------------------------------------
+EOF

@@ -1,0 +1,38 @@
+CHANGELOG
+
+2025-09-16
+* Different polygon triangulations are added (v1.0.3).
+
+2024-01-03
+* Using collections.deque for queue (v1.0.2).
+
+2022-04-22
+* Using 'range = xrange' in Py2.
+
+2021-03-26
+* New tests: segment1 in segment2, segment in rectangle, segment in triangle.
+* iterpoints() in Polygon, Rectangle, Triangle.
+
+2021-03-25
+* itersegments_oriented() in Triangle and Rectangle. Faces are on the right.
+
+2021-03-11
+* Making simple planar maps: PlanarMap(segment), PlanarMap(triangle), 
+PlanarMap(rectangle), PlanarMap(polygon).
+* Segment.intersection_point() with Fraction and float separately.
+* Segment.calculate_y() with Fraction and float separately.
+* Segment.calculate_x() with Fraction and float separately.
+* Point.alpha() with Fraction and float separately.
+
+2021-03-10
+* Graph updated from graphtheory package (iteredges_connected, iterface).
+* PlanarMap with map overlay added, M3 = M1.map_overlay(M2).
+
+2021-03-04
+* TriangleCollection with sets, faster searching and removing triangles.
+No the same triangles in collections.
+
+2020-06-09
+* Plots with matplotlib added.
+
+EOF

@@ -1,0 +1,30 @@
+INTERFACE FOR SEGMENTS
+----------------------------------------------------------------------
+from planegeometry.structures.segments import Segment
+
+segment = Segment(x1, y1, x2, y2)   # Point(x1, y1) != Point(x2, y2)
+segment = Segment(point1, point2)   # point1 != point2
+segment = Segment()   # Segment(0, 0, 1, 1)
+repr(segment)   # return string
+hash(segment)
+segment.source == segment.pt1   # property (for graphs)
+segment.target == segment.pt2   # property (for graphs)
+segment.weight == segment.length()   # property (for graphs)
+~segment          # return inverted segment
+s1 == s2, s1 != s2, s1 < s2, s1 <= s2, s1 > s2, s1 >= s2
+segment.copy()    # return segment
+segment.center()   # return point
+segment.length()
+segment.move(x, y)    # return new segment
+segment.move(point)    # return new segment
+point in segment      # return bool
+s1 in s2   # return bool
+s1.intersect(s2)   # return bool
+s1.intersection_point(s2)   # return point or None
+s1.parallel(s2)   # return bool
+s1.perpendicular(s2)   # return bool
+segment.calculate_y(x)   # return y, Point(x, y) in segment
+segment.calculate_x(y)   # return x, Point(x, y) in segment
+segment.gnu()   # return gnuplot string
+----------------------------------------------------------------------
+EOF

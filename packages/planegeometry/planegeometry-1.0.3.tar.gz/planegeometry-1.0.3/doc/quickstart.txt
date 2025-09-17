@@ -1,0 +1,57 @@
+QUICK START
+----------------------------------------------------------------------
+INSTALLING AN OFFICIAL RELEASE
+
+Requires: Python >= 3.7, numpy, matplotlib
+
+python3 -m pip install --upgrade pip
+python3 -m pip install planegeometry
+----------------------------------------------------------------------
+INSTALLING FROM SOURCE
+
+1. Clone the project into the git repository
+
+git clone https://github.com/ufkapano/planegeometry.git
+
+2. Install the package in the editable mode
+
+cd planegeometry
+python3 -m pip install -e .
+
+3. You can update the package any time
+
+git pull
+----------------------------------------------------------------------
+MAIN CLASSES
+
+# Total ordering in Point, Segment, Rectangle, Circle.
+
+from planegeometry.structures.points import Point
+from planegeometry.structures.segments import Segment
+from planegeometry.structures.rectangles import Rectangle
+from planegeometry.structures.circles import Circle
+from planegeometry.structures.polygons import Polygon
+from planegeometry.structures.triangles import Triangle
+from planegeometry.structures.trianglecollections import TriangleCollection
+----------------------------------------------------------------------
+GEOMTOOLS
+
+from planegeometry.algorithms.geomtools import orientation
+
+from planegeometry.algorithms.geomtools import find_two_furthest_points1
+# brute force, O(n^2) time
+
+from planegeometry.algorithms.geomtools import find_two_furthest_points2
+# anti-clockwise orientation of points is required, O(n) time
+
+from planegeometry.algorithms.geomtools import iter_all_antipodal_pairs
+# anti-clockwise orientation of points is required, O(n) time
+----------------------------------------------------------------------
+BOUNDING BOX
+
+# Bounding box as a rectangle.
+from planegeometry.structures.rectangles import bounding_box
+# Bounding box as a polygon.
+from planegeometry.structures.polygons import bounding_box
+----------------------------------------------------------------------
+EOF

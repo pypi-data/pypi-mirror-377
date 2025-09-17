@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: StatsAnalyzer
+Version: 0.1.0
+Summary: Perform advanced statistical analysis on numerical data
+Author: ola al_qbita
+Author-email: ola al_qbita <ola784377022@gmail.com>
+License: 8MIT License
+        
+        Copyright (c) 2025 Your Name
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        [...تابع نص MIT الكامل مثل AdvancedCipherLib...]
+        
+Project-URL: Homepage, https://pypi.org/project/StatsAnalyzer/
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# StatsAnalyzer
+
+مكتبة Python لتحليل البيانات الرقمية وإجراء إحصائيات متقدمة.
+
+## تثبيت
+
+py -m pip install StatsAnalyzer
+
+python
+نسخ الكود
+
+## استخدام
+
+from statsanalyzer import mean, median, variance, std_dev, min_max, summary
+
+data = [10, 20, 30, 40, 50]
+
+print("Mean:", mean(data))
+print("Median:", median(data))
+print("Variance:", variance(data))
+print("Standard Deviation:", std_dev(data))
+print("Min/Max:", min_max(data))
+print("Summary:", summary(data))

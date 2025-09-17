@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=80", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcd-regression"
+license = {file = "LICENSE"}
+readme = "README.md"
+authors = [
+    { name = "Steven Stetzler", email = "steven.stetzler@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+]
+dynamic = ["version"]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "scipy",
+    "scikit-learn",
+]
+description = "Robust linear regression in the multiple regression and multivariate regression cases using the minimum covariance determinant (MCD)."
+
+[project.urls]
+"Source Code" = "https://github.com/stevenstetzler/mcd_regression"
+
+[tool.setuptools_scm]
+write_to = "src/mcd_regression/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
+
+[project.optional-dependencies]
+dev = [
+    "matplotlib" # Used for examples
+]

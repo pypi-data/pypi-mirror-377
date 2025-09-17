@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: li-easymail
+Version: 0.1.3
+Summary: Simple Gmail API mail sender
+Home-page: https://goldstac.github.io/Easymail-Site/
+Author: Li Productions
+Author-email: none@example.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: google-auth
+Requires-Dist: google-auth-oauthlib
+Requires-Dist: google-api-python-client
+
+# Easymail
+
+Easymail is a lightweight Python wrapper for the Gmail API that simplifies sending emails.  
+It handles authentication, token storage, and message creation so you can focus on writing your messages instead of boilerplate code.
+
+- Simple and intuitive API
+- Automatic Gmail OAuth2 authentication
+- Local token storage for seamless reuse
+- Minimal setup – authenticate once and send emails in seconds
+
+## Installation
+
+```bash
+pip install li-easymail
+```
+
+## Usage
+
+```python
+from easymail import easymail
+
+easymail.credentials("client_secret.json")
+easymail.sendmail.subject("Hello!")
+easymail.sendmail.recipient("example@gmail.com")
+easymail.sendmail("This is a test email sent using Easymail 🚀")
+```

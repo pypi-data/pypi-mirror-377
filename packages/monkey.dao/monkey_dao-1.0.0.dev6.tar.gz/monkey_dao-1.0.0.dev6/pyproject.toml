@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "monkey.dao"
+version = "1.0.0.dev6"
+description = "Simple Data Access Object pattern implementation."
+readme = "README.rst"
+license-files = ["LICENSE"]
+
+authors = [
+    { name = "Xavier ROY", email = "xavier@regbuddy.eu" }
+]
+maintainers = [
+
+]
+
+requires-python = ">= 3.12"
+
+dependencies = [
+
+]
+
+classifiers = [
+    'Programming Language :: Python',
+    'Development Status :: 1 - Planning',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Intended Audience :: Developers'
+]
+
+[project.urls]
+Repository = "https://bitbucket.org/monkey-python/monkey-dao/"
+
+[dependency-groups]
+doc = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "mkdocs-autorefs",
+    "mkdocs-material"
+]
+test = [
+    "pytest",
+    "mongomock"
+]
+tools = [
+    "pip-tree"
+]
+all = [
+    { include-group = "doc" },
+    { include-group = "test" },
+    { include-group = "tools" }
+]
+
+[tool.distutils.egg_info]
+egg_base = "."
+
+[tool.setuptools]
+package-dir = {"" = "src/main/python"}
+
+[tool.setuptools.packages.find]
+where = ["src/main/python"]
+namespaces = true

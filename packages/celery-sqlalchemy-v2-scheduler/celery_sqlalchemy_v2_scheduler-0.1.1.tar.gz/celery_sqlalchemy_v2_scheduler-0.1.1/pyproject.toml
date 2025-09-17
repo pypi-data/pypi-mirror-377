@@ -1,0 +1,31 @@
+[project]
+name = "celery-sqlalchemy-v2-scheduler"
+version = "0.1.1"
+description = "Celery beat scheduler using SQLAlchemy, patched for SQLAlchemy 2.x"
+authors = [{ name="haiconmeo", email="haiconmeo54@gmail.com" }]
+readme = "README.md"
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+homepage = "https://github.com/haiconnmeo/celery-sqlalchemy-scheduler"
+repository = "https://github.com/haiconnmeo/celery-sqlalchemy-scheduler"
+keywords = ["celery", "scheduler", "sqlalchemy", "beat"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+]
+packages = [{ include = "celery_sqlalchemy_v2_scheduler" }]
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+celery = ">=4.2"
+sqlalchemy = "*"
+pytz = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

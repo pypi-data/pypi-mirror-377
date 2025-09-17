@@ -1,0 +1,85 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "data-repository"
+version = "0.0.2"
+description = "A simple platform for complex data"
+readme = "docs/README.md"
+requires-python = ">=3.8"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Gautham Acharya", email = "gautacharya@gmail.com" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 5 - Production/Stable",
+]
+dependencies = [
+    "boto3>=1.26.20",
+    "deltalake>=0.25.4, <1", # need to upgrade with https://delta-io.github.io/delta-rs/upgrade-guides/guide-1.0.0/
+    "polars>=1.9.0, <1.14.0", # 1.15 fails due to hive_paritioning error, https://github.com/pola-rs/polars/pull/19902, 1.14 has a CI failure that needs investigation
+    "pyarrow>=17.0.0",
+    "ipython>=8.5.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "mkdocs>=1.5.0",
+    "mkdocstrings>=0.29.1",
+    "mkdocstrings-python>=1.7.0",
+    "pytest>=7.0.0",
+    "mkdocs-material>=9.6.14",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "boto3-stubs>=1.39.0",
+    "pyarrow-stubs>=20.0.0",
+]
+
+[tool.hatch.build]
+include = [
+    "src/datarepo/**/*",
+    "docs/README.md",
+]
+exclude = [
+    "src/datarepo/export/static_site/node_modules/**/*",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/datarepo/**/*",
+    "docs/README.md",
+]
+exclude = [
+    "src/datarepo/export/static_site/node_modules/**/*",
+]
+
+[tool.hatch.build.hooks.custom]
+path = "src/datarepo/export/static_site/build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/datarepo"]
+only-include = ["src/datarepo"]
+include = [
+    "src/datarepo/**/*",
+    "docs/README.md",
+]
+exclude = [
+    "src/datarepo/export/static_site/node_modules/**/*",
+]
+metadata-version = "2.1"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[project.urls]
+Homepage = "https://github.com/neuralinkcorp/datarepo"
+Issues = "https://github.com/neuralinkcorp/datarepo/issues"

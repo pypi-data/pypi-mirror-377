@@ -1,0 +1,31 @@
+[build-system]
+# 指定构建依赖和后端（Hatch需要hatchling）
+requires = ["hatchling>=1.21.0"]
+build-backend = "hatchling.build"
+
+[project]
+# 项目元数据（必填，包名必须唯一）
+name = "mcp-weather-zk"  
+version = "0.1.1"          
+authors = [
+  { name = "anny", email = "anqian1208@qq.com" }
+]
+description = "魔搭社区天气MCP服务Demo" 
+readme = "README.md"       
+requires-python = ">=3.8"  
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+# 依赖配置（根据你的代码添加，如fastmcp、requests等）
+dependencies = [
+  "fastmcp>=0.1.0",
+  "requests>=2.31.0",
+]
+
+[tool.hatch.build.targets.wheel]
+# 关键：指定你的包所在路径（替换为实际包目录）
+# 格式：["src/你的包名"]，与src下的目录名一致
+packages = ["src/weather_mcp"]

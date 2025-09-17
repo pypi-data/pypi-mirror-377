@@ -1,0 +1,24 @@
+
+# Read peaklist and spectrum info
+PEAKLIST=peaks.fuda
+SPECFILE=test/test_protein_L/test1.ft2
+PARAMETERFILE=(bruker;vclist)
+ZCORR=ncyc
+NOISE=18287318.0 # you'll need to adjust this
+BASELINE=N
+VERBOSELEVEL=5
+PRINTDATA=Y
+LM=(MAXFEV=250;TOL=1e-5)
+#Specify the default values. All values are in ppm:
+DEF_LINEWIDTH_F1=0.4
+DEF_LINEWIDTH_F2=0.04
+DEF_RADIUS_F1=0.4
+DEF_RADIUS_F2=0.04
+SHAPE=GLORE
+# OVERLAP PEAKS
+OVERLAP_PEAKS=(None_dummy_6;None_dummy_7)
+OVERLAP_PEAKS=(None_dummy_8;None_dummy_9)
+OVERLAP_PEAKS=(None_dummy_23;None_dummy_25;None_dummy_26)
+OVERLAP_PEAKS=(None_dummy_31;None_dummy_32;None_dummy_33)
+OVERLAP_PEAKS=(None_dummy_37;None_dummy_38)
+OVERLAP_PEAKS=(None_dummy_50;None_dummy_54)

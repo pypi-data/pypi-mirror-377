@@ -1,0 +1,150 @@
+# SmartPaste Configuration
+# Copy this file to 'config.yaml' and customize as needed
+
+# General Settings
+general:
+  # Directory where markdown files will be saved
+  output_directory: "./smartpaste_data"
+  
+  # Whether to replace clipboard content with enriched version
+  replace_clipboard: false
+  
+  # Minimum delay between clipboard checks (seconds)
+  check_interval: 0.5
+  
+  # Maximum length of content to process (characters)
+  max_content_length: 10000
+
+# Feature toggles - enable/disable specific content handlers
+features:
+  url_handler: true
+  number_handler: true
+  text_handler: true
+  image_handler: false  # Requires pytesseract installation
+  
+# URL Handler Settings
+url_handler:
+  # Enable title extraction from web pages
+  extract_title: true
+  
+  # Enable content summarization
+  generate_summary: true
+  
+  # Enable keyword extraction
+  extract_keywords: true
+  
+  # Number of keywords to extract
+  max_keywords: 3
+  
+  # Request timeout for web requests (seconds)
+  request_timeout: 10
+  
+  # User agent for web requests
+  user_agent: "SmartPaste/0.1.0 (https://github.com/AbdHajjar/smartpaste)"
+
+# Number Handler Settings
+number_handler:
+  # Supported unit conversions
+  conversions:
+    temperature:
+      - "celsius"
+      - "fahrenheit"
+      - "kelvin"
+    length:
+      - "meter"
+      - "kilometer"
+      - "mile"
+      - "foot"
+      - "inch"
+    weight:
+      - "kilogram"
+      - "pound"
+      - "gram"
+      - "ounce"
+    volume:
+      - "liter"
+      - "gallon"
+      - "milliliter"
+      - "cup"
+
+# Text Handler Settings
+text_handler:
+  # Enable language detection
+  detect_language: true
+  
+  # Enable text summarization
+  generate_summary: true
+  
+  # Minimum text length for processing (characters)
+  min_text_length: 50
+  
+  # Maximum summary length (characters)
+  max_summary_length: 200
+  
+  # Supported languages for processing
+  supported_languages:
+    - "en"  # English
+    - "de"  # German
+    - "fr"  # French
+    - "es"  # Spanish
+    - "it"  # Italian
+
+# Image Handler Settings (OCR)
+image_handler:
+  # Tesseract OCR language
+  ocr_language: "eng"
+  
+  # Minimum confidence for OCR text extraction
+  min_confidence: 60
+  
+  # Enable text post-processing
+  post_process: true
+
+# Markdown Output Settings
+markdown:
+  # Date format for daily files
+  date_format: "%Y-%m-%d"
+  
+  # Time format for entries
+  time_format: "%H:%M:%S"
+  
+  # Include source information in entries
+  include_source: true
+  
+  # Template for markdown entries
+  entry_template: |
+    ## {timestamp} - {content_type}
+    
+    **Source:** {source}
+    
+    {content}
+    
+    ---
+
+# Logging Settings
+logging:
+  # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  
+  # Log file path (null for console only)
+  file: null
+  
+  # Maximum log file size (MB)
+  max_file_size: 10
+  
+  # Number of backup log files to keep
+  backup_count: 3
+
+# AI/ML Settings
+ai:
+  # Model for sentence transformers (for text similarity/keywords)
+  sentence_transformer_model: "all-MiniLM-L6-v2"
+  
+  # Device for AI models ('cpu', 'cuda', 'auto')
+  device: "auto"
+  
+  # Enable caching of AI models
+  cache_models: true
+  
+  # Cache directory for AI models
+  cache_directory: "./model_cache"

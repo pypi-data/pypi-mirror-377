@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPaste AI - AI-Powered Clipboard Assistant</title>
+    <meta name="description" content="A context-aware AI clipboard assistant that intelligently enriches your copied content with contextual information.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>📋 SmartPaste AI</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#usage">Usage</a></li>
+                <li><a href="#documentation">Docs</a></li>
+                <li><a href="https://github.com/AbdHajjar/smartpaste" class="github-link">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Transform Your Clipboard Into an 
+                <span class="highlight">AI Assistant</span>
+            </h1>
+            <p class="hero-subtitle">
+                SmartPaste AI monitors your clipboard and intelligently enriches copied content with contextual information, 
+                summaries, and metadata - making every copy operation smarter.
+            </p>
+            <div class="hero-actions">
+                <a href="#installation" class="btn btn-primary">Get Started</a>
+                <a href="https://github.com/AbdHajjar/smartpaste" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+        <div class="hero-demo">
+            <div class="demo-card">
+                <div class="demo-input">
+                    <span class="copy-icon">📋</span>
+                    <span>Copy: https://example.com/article</span>
+                </div>
+                <div class="demo-arrow">↓</div>
+                <div class="demo-output">
+                    <div class="output-item">📰 <strong>Title:</strong> Amazing Article</div>
+                    <div class="output-item">📝 <strong>Summary:</strong> Key insights about...</div>
+                    <div class="output-item">🏷️ <strong>Keywords:</strong> AI, Technology, Innovation</div>
+                    <div class="output-item">💾 <strong>Saved:</strong> smartpaste_data/2025-09-16.md</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Intelligent Content Processing</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>URL Enhancement</h3>
+                    <p>Automatically extracts webpage titles, generates summaries, and identifies relevant keywords from any URL you copy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔢</div>
+                    <h3>Unit Conversion</h3>
+                    <p>Instantly converts numbers with units - temperature, length, weight, volume. Copy "25°C" and get Fahrenheit, Kelvin automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Text Analysis</h3>
+                    <p>Language detection, readability scoring, automatic summarization, and keyword extraction for any text content.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>OCR Processing</h3>
+                    <p>Extract text from images using advanced OCR technology. Screenshots become searchable, editable text.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Configurable</h3>
+                    <p>YAML-based configuration system. Enable/disable features, customize processing parameters, and adapt to your workflow.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>Extensible</h3>
+                    <p>Modular handler system makes adding new content types easy. Plugin-like architecture for maximum flexibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="installation" class="installation">
+        <div class="container">
+            <h2>Quick Installation</h2>
+            <div class="install-tabs">
+                <button class="tab-btn active" onclick="showTab('pip')">pip Install</button>
+                <button class="tab-btn" onclick="showTab('git')">From Source</button>
+                <button class="tab-btn" onclick="showTab('dev')">Development</button>
+            </div>
+            
+            <div id="pip" class="tab-content active">
+                <pre><code># Install from PyPI
+pip install smartpaste-ai
+
+# Start monitoring
+smartpaste</code></pre>
+            </div>
+            
+            <div id="git" class="tab-content">
+                <pre><code># Clone repository
+git clone https://github.com/AbdHajjar/smartpaste.git
+cd smartpaste
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run directly
+python -m smartpaste</code></pre>
+            </div>
+            
+            <div id="dev" class="tab-content">
+                <pre><code># Clone for development
+git clone https://github.com/AbdHajjar/smartpaste.git
+cd smartpaste
+
+# Install in development mode
+pip install -e .
+
+# Run tests
+pytest
+
+# Start with verbose logging
+smartpaste -v</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="usage" class="usage">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="usage-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Start SmartPaste AI</h3>
+                        <p>Run <code>smartpaste</code> in your terminal. It monitors your clipboard silently in the background.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Copy Content</h3>
+                        <p>Copy any URL, text, number with units, or image. SmartPaste AI automatically detects the content type.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Get Enhanced Results</h3>
+                        <p>SmartPaste AI enriches your content with metadata, summaries, and contextual information automatically.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Organized Storage</h3>
+                        <p>All processed content is saved in organized markdown files by date in <code>smartpaste_data/</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="documentation" class="documentation">
+        <div class="container">
+            <h2>Documentation</h2>
+            <div class="docs-grid">
+                <a href="configuration.html" class="doc-card">
+                    <h3>⚙️ Configuration</h3>
+                    <p>Learn how to customize SmartPaste AI with YAML configuration files and environment settings.</p>
+                </a>
+                <a href="handlers.html" class="doc-card">
+                    <h3>🔧 Content Handlers</h3>
+                    <p>Deep dive into URL, Number, Text, and Image handlers. Learn to create custom handlers.</p>
+                </a>
+                <a href="api.html" class="doc-card">
+                    <h3>📚 API Reference</h3>
+                    <p>Complete API documentation for all classes, methods, and utilities in SmartPaste AI.</p>
+                </a>
+                <a href="examples.html" class="doc-card">
+                    <h3>💡 Examples</h3>
+                    <p>Real-world usage examples, integration patterns, and workflow optimizations.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>📋 SmartPaste AI</h3>
+                    <p>Making your clipboard smarter, one copy at a time.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/AbdHajjar/smartpaste">GitHub</a>
+                    <a href="https://github.com/AbdHajjar/smartpaste/issues">Issues</a>
+                    <a href="https://github.com/AbdHajjar/smartpaste/blob/main/CONTRIBUTING.md">Contributing</a>
+                    <a href="https://github.com/AbdHajjar/smartpaste/blob/main/LICENSE">License</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

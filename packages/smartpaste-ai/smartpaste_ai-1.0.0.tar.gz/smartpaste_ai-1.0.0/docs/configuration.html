@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - SmartPaste AI Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .docs-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        .docs-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            line-height: 1.8;
+        }
+        .config-example {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .config-example pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Monaco', monospace;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1><a href="index.html" style="color: inherit; text-decoration: none;">📋 SmartPaste AI</a></h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="handlers.html">Handlers</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="examples.html">Examples</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="docs-header">
+        <div class="container">
+            <h1>Configuration Guide</h1>
+            <p>Learn how to customize SmartPaste AI with YAML configuration files</p>
+        </div>
+    </header>
+
+    <main class="docs-content">
+        <h2>Configuration File Structure</h2>
+        <p>SmartPaste AI uses YAML configuration files to customize its behavior. The default configuration file is <code>config.yaml</code>, but you can specify a custom path using the <code>-c</code> flag.</p>
+
+        <div class="config-example">
+            <h3>Example Configuration</h3>
+            <pre><code># SmartPaste AI Configuration
+app:
+  # Clipboard monitoring interval (seconds)
+  check_interval: 1.0
+  
+  # Output directory for processed content
+  output_dir: "smartpaste_data"
+  
+  # Enable/disable auto-saving to files
+  auto_save: true
+  
+  # Maximum content length to process (characters)
+  max_content_length: 50000
+
+# Content Handlers Configuration
+handlers:
+  # URL Content Handler
+  url:
+    enabled: true
+    # Timeout for web requests (seconds)
+    timeout: 10
+    # User agent for web scraping
+    user_agent: "SmartPaste AI/1.0"
+    # Generate summaries for web content
+    generate_summary: true
+    # Extract keywords from content
+    extract_keywords: true
+    # Maximum summary length (characters)
+    max_summary_length: 500
+
+  # Number and Unit Conversion Handler
+  number:
+    enabled: true
+    # Temperature conversions
+    temperature_units: ["celsius", "fahrenheit", "kelvin"]
+    # Length conversions
+    length_units: ["meters", "feet", "inches", "centimeters"]
+    # Weight conversions
+    weight_units: ["kilograms", "pounds", "ounces", "grams"]
+    # Volume conversions
+    volume_units: ["liters", "gallons", "milliliters", "cups"]
+
+  # Text Analysis Handler
+  text:
+    enabled: true
+    # Minimum text length for processing
+    min_length: 50
+    # Enable language detection
+    detect_language: true
+    # Generate text summaries
+    generate_summary: true
+    # Extract keywords from text
+    extract_keywords: true
+    # Calculate readability scores
+    calculate_readability: true
+
+  # Image OCR Handler
+  image:
+    enabled: true
+    # OCR engine settings (requires pytesseract)
+    ocr_engine: "tesseract"
+    # OCR language (use 'eng' for English)
+    ocr_language: "eng"
+    # Preprocessing options
+    preprocess_image: true
+    # Minimum confidence threshold
+    confidence_threshold: 60
+
+# Logging Configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+  # Log file path (optional)
+  file: null
+  # Include timestamps in logs
+  include_timestamp: true
+
+# Advanced Settings
+advanced:
+  # Enable concurrent processing
+  concurrent_processing: false
+  # Maximum number of worker threads
+  max_workers: 4
+  # Cache processed content
+  enable_caching: true
+  # Cache expiration time (hours)
+  cache_expiration: 24</code></pre>
+        </div>
+
+        <h2>Configuration Sections</h2>
+
+        <h3>Application Settings</h3>
+        <ul>
+            <li><strong>check_interval</strong>: How often to check the clipboard for changes (in seconds)</li>
+            <li><strong>output_dir</strong>: Directory where processed content files are saved</li>
+            <li><strong>auto_save</strong>: Whether to automatically save processed content to files</li>
+            <li><strong>max_content_length</strong>: Maximum length of content to process</li>
+        </ul>
+
+        <h3>Handler Configuration</h3>
+        <p>Each content handler can be individually configured:</p>
+
+        <h4>URL Handler</h4>
+        <ul>
+            <li><strong>enabled</strong>: Enable/disable URL processing</li>
+            <li><strong>timeout</strong>: Maximum time to wait for web page loading</li>
+            <li><strong>user_agent</strong>: User agent string for web requests</li>
+            <li><strong>generate_summary</strong>: Create automatic summaries of web content</li>
+            <li><strong>extract_keywords</strong>: Extract relevant keywords from web pages</li>
+        </ul>
+
+        <h4>Number Handler</h4>
+        <ul>
+            <li><strong>enabled</strong>: Enable/disable number and unit conversion</li>
+            <li><strong>*_units</strong>: Specify which unit types to convert for each category</li>
+        </ul>
+
+        <h4>Text Handler</h4>
+        <ul>
+            <li><strong>min_length</strong>: Minimum text length required for processing</li>
+            <li><strong>detect_language</strong>: Enable automatic language detection</li>
+            <li><strong>generate_summary</strong>: Create text summaries</li>
+            <li><strong>extract_keywords</strong>: Extract important keywords</li>
+        </ul>
+
+        <h4>Image Handler</h4>
+        <ul>
+            <li><strong>enabled</strong>: Enable/disable OCR processing</li>
+            <li><strong>ocr_language</strong>: Language code for OCR recognition</li>
+            <li><strong>confidence_threshold</strong>: Minimum confidence for OCR results</li>
+        </ul>
+
+        <h2>Environment Variables</h2>
+        <p>You can also configure SmartPaste AI using environment variables:</p>
+
+        <div class="config-example">
+            <pre><code># Set configuration file path
+export SMARTPASTE_CONFIG="/path/to/config.yaml"
+
+# Set output directory
+export SMARTPASTE_OUTPUT_DIR="/path/to/output"
+
+# Set log level
+export SMARTPASTE_LOG_LEVEL="DEBUG"
+
+# Disable specific handlers
+export SMARTPASTE_DISABLE_IMAGE_HANDLER="true"</code></pre>
+        </div>
+
+        <h2>Runtime Configuration</h2>
+        <p>Some settings can be modified at runtime using command-line arguments:</p>
+
+        <div class="config-example">
+            <pre><code># Use custom configuration file
+smartpaste -c /path/to/custom-config.yaml
+
+# Enable verbose logging
+smartpaste -v
+
+# Show version and exit
+smartpaste --version</code></pre>
+        </div>
+
+        <h2>Configuration Validation</h2>
+        <p>SmartPaste AI validates your configuration on startup and will show helpful error messages if there are issues. Common validation errors include:</p>
+
+        <ul>
+            <li>Invalid YAML syntax</li>
+            <li>Missing required fields</li>
+            <li>Invalid data types (e.g., string instead of number)</li>
+            <li>Invalid file paths</li>
+            <li>Unsupported handler options</li>
+        </ul>
+
+        <h2>Best Practices</h2>
+        <ul>
+            <li>Start with the example configuration and modify as needed</li>
+            <li>Keep separate configurations for development and production</li>
+            <li>Use version control for your configuration files</li>
+            <li>Test configuration changes in a development environment first</li>
+            <li>Document any custom settings for your team</li>
+        </ul>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>📋 SmartPaste AI</h3>
+                    <p>Making your clipboard smarter, one copy at a time.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/AbdHajjar/smartpaste">GitHub</a>
+                    <a href="index.html">Home</a>
+                    <a href="handlers.html">Handlers</a>
+                    <a href="api.html">API</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

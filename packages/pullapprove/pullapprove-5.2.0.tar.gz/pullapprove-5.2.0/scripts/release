@@ -1,0 +1,5 @@
+#!/bin/sh -e
+# Bump the version first if you need to...
+rm -r dist
+uv build
+uv publish

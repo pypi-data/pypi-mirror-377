@@ -1,0 +1,8 @@
+include README.md
+include greenlight/models/katzin_2021/definition/*.json
+
+recursive-include tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include docs *.rst conf.py *.jpg *.png *.gif

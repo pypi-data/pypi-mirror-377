@@ -1,0 +1,35 @@
+[project]
+name = "keras-fft"
+version = "1.0.0"
+description = "FFT pack for Keras3"
+authors = [
+  { name="Mathies Wedler", email="mathies.wedler@gmail.com" },
+]
+readme = "README.md"
+dependencies = [
+  "keras"
+]
+
+requires-python = ">=3.8"
+license = "GPL-3.0-or-later"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+tensorflow = [
+  "tensorflow"
+]
+jax = [
+  "jax",
+  "jaxlib"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+"Homepage" = "https://github.com/MathiesW/KerasFFT"
+"Source" = "https://github.com/MathiesW/KerasFFT"

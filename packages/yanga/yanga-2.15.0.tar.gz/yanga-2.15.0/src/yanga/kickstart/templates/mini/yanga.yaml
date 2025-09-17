@@ -1,0 +1,53 @@
+components:
+  - name: main
+    path: src
+    sources:
+      - main.c
+  - name: greeter
+    path: src/greeter
+    sources:
+      - greeter.c
+    docs_sources:
+      - greeter.md
+    testing:
+      sources:
+        - greeter_test.cc
+      mocking:
+        strict: false
+
+variants:
+  - name: EnglishVariant
+    description: Say hello in English.
+    components:
+      - main
+      - greeter
+  - name: GermanVariant
+    description: Say hello in German.
+    components:
+      - main
+      - greeter
+    features_selection_file: "config_de.txt"
+
+pipeline:
+  install:
+    - step: CreateVEnv
+      module: pypeline.steps.create_venv
+      config:
+        python_executable: python3
+    - step: ScoopInstall
+      module: pypeline.steps.scoop_install
+      description: Install scoop dependencies
+      timeout_sec: 120
+    - step: GenerateEnvSetupScript
+      module: pypeline.steps.env_setup_script
+    - step: WestInstall
+      module: yanga.steps.west_install
+      description: Install west dependencies
+  gen:
+    - step: KConfigGen
+      module: yanga.steps.kconfig_gen
+  build:
+    - step: GenerateBuildSystemFiles
+      module: yanga.steps.execute_build
+    - step: ExecuteBuild
+      module: yanga.steps.execute_build

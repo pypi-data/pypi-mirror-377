@@ -1,0 +1,12 @@
+{# base_template.jinja2 #}
+{% include 'header.jinja2' %}
+
+<div class="main-content">
+    ---
+    {% block content %}
+        {# This is where your specific prompt content will go #}
+    {% endblock %}
+    ---
+</div>
+
+{% include 'footer.jinja2' %}

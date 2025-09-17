@@ -1,0 +1,215 @@
+site_name: Flet-Easy
+site_url: https://daxexs.github.io/flet-easy/
+site_author: Daxexs
+site_description: >-
+  Flet-Easy is a user-friendly add-on package for Flet, offering a cleaner code structure with numerous customizable features like JWT, routers, decorators, middleware and more.
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; <span id="dynamic-year"></span> Daxexs
+repo_name: Daxexs/flet-easy
+repo_url: https://github.com/Daxexs/flet-easy
+
+theme:
+  custom_dir: docs/overrides
+  name: material
+  palette:
+    - media: "(prefers-color-scheme)"
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  font:
+    text: Lexend
+    code: Fira Code
+    font: false
+  language: en
+  direction: ltr
+  logo: assets/images/logo.png
+  favicon: assets/images/favicon.png
+  icon:
+    edit: material/pencil-remove-outline
+    view: material/eye
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.instant.preview
+    - navigation.tracking
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.footer
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.action.edit
+
+plugins:
+  - search:
+      lang:
+        - en
+        - es
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+      pipeline:
+        - stemmer
+        - stopWordFilter
+        - trimmer
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+        remove_empty_space: true
+      cache_safe: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  status:
+    new: Recently added
+    deprecated: Deprecated
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Daxexs/flet-easy
+      name: Repository
+  generator: false
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX
+  seo:
+    meta:
+      - name: description
+        content: "Flet-Easy: A comprehensive Python framework for building modern Flet applications with advanced routing, JWT authentication, middleware, and responsive design capabilities."
+      - name: keywords
+        content: "Flet, flet-easy, Python GUI, web framework, desktop apps, mobile apps, JWT authentication, routing, middleware, decorators, responsive design, MVC pattern, CLI tools"
+      - name: author
+        content: "Daxexs"
+      - name: robots
+        content: "index, follow"
+      - property: "og:type"
+        content: "website"
+      - property: "og:title"
+        content: "Flet-Easy Documentation - Modern Python GUI Framework"
+      - property: "og:description"
+        content: "Complete guide to Flet-Easy: Build beautiful desktop, web, and mobile apps with Python using advanced routing, authentication, and responsive design."
+      - property: "og:url"
+        content: "https://daxexs.github.io/flet-easy/"
+      - property: "og:image"
+        content: "https://daxexs.github.io/flet-easy/assets/images/logo.png"
+      - name: "twitter:card"
+        content: "summary_large_image"
+      - name: "twitter:title"
+        content: "Flet-Easy Documentation - Modern Python GUI Framework"
+      - name: "twitter:description"
+        content: "Complete guide to Flet-Easy: Build beautiful desktop, web, and mobile apps with Python using advanced routing, authentication, and responsive design."
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: installation.md
+      - Quick Start: begin.md
+      - Basic Usage: how-to-use.md
+      - Running Your App: run-the-app.md
+  - Core Concepts:
+      - FletEasy Class: core/fletEasy.md
+      - Datasy Object: core/datasy.md
+      - Page Management: core/pagesy.md
+      - View System: core/viewsy.md
+  - Routing & Navigation:
+      - Dynamic Routes: dynamic-routes.md
+      - Route Protection: customized-app/route-protection.md
+      - Data Sharing: data-sharing-between-pages.md
+      - Navigation Methods: core/navigation.md
+  - Adding Pages:
+      - Through Decorators: add-pages/through-decorators.md
+      - Using Functions: add-pages/by-means-of-functions.md
+      - Class-Based Views: add-pages/through-classes.md
+      - Automatic Routing: add-pages/in-automatic.md
+  - Advanced Features:
+      - Middleware System: middleware.md
+      - JWT Authentication: basic-jwt.md
+      - Event Handling: 
+          - Keyboard Events: events/keyboard-event.md
+          - Resize Events: events/on-resize.md
+          - Custom Events: customized-app/events.md
+      - Responsive Controls: responsiveControlsy.md
+      - Reference System: ref.md
+  - Configuration:
+      - App Settings: customized-app/general-settings.md
+      - View Configuration: customized-app/control-view-configuration.md
+      - Custom 404 Pages: customized-app/page-404.md
+  - CLI Tools:
+      - Project Creation: cli-to-create-app.md
+      - CLI Commands: cli/commands.md
+  - Integration:
+      - Working with Other Apps: working-with-other-apps.md
+      - Deployment Guide: deployment/guide.md
+  - API Reference:
+      - Complete API: api/reference.md
+      - Examples Gallery: examples/gallery.md
+
+extra_javascript:
+  - assets/js/dynamic-year.js

@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uh2sc"
+version = "1.0.0"
+authors = [
+  { name="Daniel L. Villa", email="dlvilla@sandia.gov" },
+]
+dependencies = [
+     "Cython",
+     "numpy",
+     "scipy",
+     "CoolProp",
+     "cerberus",
+     "pandas",
+     "pyyaml",
+     "rich-click",
+     "scikit-learn",
+     "joblib",
+     "matplotlib",
+     "plotly"
+]
+
+description = "This package simulates salt caverns with hydrogen and other gas mixtures"
+readme = "README.md"
+requires-python = ">3.8"
+license = "BSD-3-Clause"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "matplotlib",
+  "py-pde"
+]
+docs = [
+  "sphinx",
+  "furo",
+  "sphinx-autodoc-typehints"
+]
+
+[project.scripts]
+uh2sc = "uh2sc.main:cli"
+
+[project.urls]
+Homepage = "https://github.com/sandialabs/uh2sc"
+Issues = "https://github.com/sandialabs/uh2sc/issues"
+
+[tool.pylint.messages_control]
+disable = [
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "too-many-instance-attributes",
+  "too-many-return-statements",
+  "too-few-public-methods",
+  "too-many-branches",
+  "too-many-arguments",
+  "too-many-statements",
+  "too-many-locals",
+  "import-error",
+  "duplicate-code",
+  "no-name-in-module"
+]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"]}
+version = {attr = "uh2sc.__init__.__version__"}
+
+[tool.setuptools.package-data]
+"uh2sc" = ["ml_fluids/*","input_schemas/*"] # Includes all files directly inside 'ml_fluids'

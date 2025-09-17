@@ -1,0 +1,1 @@
+This is a sample package to understand how to make packages. The current package only inlcudes an add one function which will take a number and add one.

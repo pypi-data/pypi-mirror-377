@@ -1,0 +1,161 @@
+Metadata-Version: 2.4
+Name: pudupy
+Version: 1.0.0b3
+Summary: Protocol Unified Design Unit
+Author-email: Gonzalo Vidal <govi9038@colorado.edu>, Oscar Rodriguez <osro6012@colorado.edu>
+Maintainer-email: Gonzalo Vidal <govi9038@colorado.edu>, Oscar Rodriguez <osro6012@colorado.edu>
+License: MIT License
+        
+        Copyright (c) 2022 Rudge Lab
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/MyersResearchGroup/PUDU
+Project-URL: Bug Tracker, https://github.com/MyersResearchGroup/PUDU/issues
+Keywords: pudu,lab,automation,opentrons,synthetic biology
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aionotify>=0.3.1
+Requires-Dist: annotated-types>=0.7.0
+Requires-Dist: anyio>=3.6.1
+Requires-Dist: attrs>=22.2.0
+Requires-Dist: biopython>=1.81
+Requires-Dist: certifi>=2022.12.7
+Requires-Dist: charset-normalizer>=3.0.1
+Requires-Dist: click>=8.1.3
+Requires-Dist: Deprecated>=1.2.13
+Requires-Dist: et-xmlfile>=1.1.0
+Requires-Dist: graphviz>=0.20.1
+Requires-Dist: idna>=3.4
+Requires-Dist: isodate>=0.6.1
+Requires-Dist: jsonschema>=4.17.3
+Requires-Dist: lxml>=4.9.2
+Requires-Dist: numpy>=1.24.2
+Requires-Dist: openpyxl>=3.1.1
+Requires-Dist: opentrons>=8.4.1
+Requires-Dist: opentrons-shared-data>=8.4.1
+Requires-Dist: ordered-set>=4.1.0
+Requires-Dist: owlrl>=6.0.2
+Requires-Dist: packaging>=23.0
+Requires-Dist: prettytable>=2.5.0
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: pydantic-settings>=2.9.1
+Requires-Dist: pydantic_core>=2.33.2
+Requires-Dist: PyLaTeX>=1.4.1
+Requires-Dist: pyparsing>=2.4.7
+Requires-Dist: PyPDF2>=3.0.1
+Requires-Dist: pyrsistent>=0.19.3
+Requires-Dist: pyserial>=3.5
+Requires-Dist: pyshacl>=0.18.1
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: python-dotenv>=1.1.0
+Requires-Dist: pyusb>=1.2.1
+Requires-Dist: rdflib>=6.2.0
+Requires-Dist: requests>=2.28.2
+Requires-Dist: sbol-factory>=1.1.1.post1
+Requires-Dist: sbol-utilities>=1.0a16
+Requires-Dist: sbol2>=1.4.1
+Requires-Dist: sbol3>=1.0.1
+Requires-Dist: six>=1.16.0
+Requires-Dist: sniffio>=1.3.0
+Requires-Dist: SPARQLWrapper>=2.0.0
+Requires-Dist: typing_extensions>=4.14.0
+Requires-Dist: tyto>=1.4
+Requires-Dist: urllib3>=1.26.14
+Requires-Dist: wcwidth>=0.2.6
+Requires-Dist: wrapt>=1.15.0
+Requires-Dist: xlsxwriter>=3.2.5
+Provides-Extra: test
+Requires-Dist: pytest>=7.0.0; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Dynamic: license-file
+
+# PUDU
+Welcome to the PUDU (Protocol Unified Design Unit) repository, our Python package for liquid handling robot control on Synthetic Biology workflows.
+
+
+<img src="https://github.com/MyersResearchGroup/PUDU/blob/main/images/PUDU_Logo.png#gh-light-mode-only" alt="PUDU logo" width="250"/>
+<img src="https://github.com/MyersResearchGroup/PUDU/blob/main/images/PUDU_Logo_dark.png#gh-dark-mode-only" alt="PUDU night logo" width="250"/>
+
+## *The art of automated liquid handling*
+
+As you may have noticed, our logo features a beautiful pudu _[(Pudu puda)](https://en.wikipedia.org/wiki/Pudu)_; a deer native to the southern forests of Chile and Argentina known for being the smallest deer of the world[.](https://youtu.be/xRQnJyP77tY)
+This package intends to make the code to program liquid handling robots as small and simple as possible.
+
+## No Installation required protocols
+
+Some scripts have "libre" in their name, this means that users can modify these scripts and use them to run protocols whithout the need to install PUDU.
+
+### Calibrate your plate reader using PUDU script libre
+
+[Human protocol](https://github.com/RudgeLab/PUDU/blob/main/protocols/Multicolor_fluorescence_per_particle_calibration_protocol_igem/Automated_protocol_user_instructions.xlsx) (Excel to set the OT2 deck)
+
+[Robot protocol](https://github.com/RudgeLab/PUDU/blob/main/scripts/run_iGEM2022_rgb_od_libre.py) (Python script to run the OT2)
+
+Reference: [Original protocol](https://old.igem.org/wiki/images/a/a4/InterLab_2022_-_Calibration_Protocol_v2.pdf) (2022 iGEM InterLab study)
+
+## Recommended workflow
+
+- Install PUDU in your computer
+- Install PUDU in the OT2 that will perform the automation
+- Develop protocols in your computer
+- To simulate your protocols you can open the PUDU folder in your terminal and run `opentrons_simulate ./scripts/run_Loop_assembly.py ` for example [[instructions](https://support.opentrons.com/s/article/Simulating-OT-2-protocols-on-your-computer?)]
+- Transfer the script file (.py) to the computer used to run the protocol on the OT2 (if its the same, omit)
+- Load the script file (.py) on the Opentrons App
+- Follow Oppentrons App instruction
+- Set the OT2 deck with the information provided by the Opentrons App and PUDU human readable dictionaries at the top of the simulation output.
+- Run your protocol and enjoy automation (Now you have more time to design your next experiment! :wink: )
+
+## Installation
+
+### Computer installation
+
+Installing PUDU is way easier than pronuncing it! 
+
+Run:
+
+`pip install pudupy`
+
+This code can be executed in the terminal and in jupyter notebooks.
+
+For more details please refer to our Wiki (TODO) for installation instructions and developer guides.
+
+### OT-2 installation
+
+To install it on an OT2 you first need to SSH into it.
+
+Only the first time you need to set the SSH connection [[instructions](https://support.opentrons.com/s/article/Setting-up-SSH-access-to-your-OT-2)]
+
+Afterwards you can just SSH into the OT2 [[instructions](https://support.opentrons.com/s/article/Connecting-to-your-OT-2-with-SSH)]
+
+then in the OT-2 terminal run:
+
+`pip install pudupy`
+
+## Documentation
+
+ Please visit our documentation with API reference at Read the Docs (TODO)
+
+## Tutorials
+
+TODO

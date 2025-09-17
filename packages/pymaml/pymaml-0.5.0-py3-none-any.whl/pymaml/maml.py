@@ -1,0 +1,109 @@
+"""
+Main maml object.
+"""
+
+import os
+
+import yaml
+from yaml import SafeDumper
+
+
+from .read import read_maml
+from .model_v1p0 import V1P0
+from .model_v1p1 import V1P1
+from .parse import MODELS, _assert_version
+
+
+
+def _remove_nones(obj):
+    if isinstance(obj, dict):
+        return {
+            k: _remove_nones(v)
+            for k, v in obj.items()
+            if v is not None
+        }
+    if isinstance(obj, list):
+        return [_remove_nones(v) for v in obj if v is not None]
+    return obj
+
+class MAML:
+    """
+    Main MAML class
+    """
+
+    def __init__(self, data: dict, version):
+        """
+        Initializaing and checking that the version is supported
+        """
+        _assert_version(version)
+        self.version = version
+        self.meta = MODELS[version](**data)
+
+    @classmethod
+    def from_file(cls, file_name: str, version: str) -> "MAML":
+        """
+        Creates a new maml object from file.
+        """
+        _assert_version(version)
+        data = read_maml(file_name)
+        return cls(data, version)
+
+    def to_dict(self, include_none: bool = True) -> dict:
+        """
+        Returns dictionary represenation of the model base class.
+        """
+        raw = self.meta.model_dump(mode="json")
+        if not include_none:
+            return _remove_nones(raw)
+        return raw
+
+    def to_file(self, file_name: str) -> dict:
+        """
+        Creates a dictionary representation of the base model.
+        """
+        SafeDumper.add_representer(
+            type(None),
+            lambda dumper, _: dumper.represent_scalar("tag:yaml.org,2002:null", ""),
+        )
+        root, ext = os.path.splitext(file_name)
+        if ext != ".maml":
+            raise ValueError(f"Extension '{ext}' is not a valid maml extension.")
+        with open(f"{root}.maml", "w", encoding="utf8") as file:
+            yaml.safe_dump(
+                self.to_dict(), file, sort_keys=False, default_flow_style=False
+            )
+
+
+class MAMLBuilder:
+    """
+    Builder pattern for constructing the MAML format based on whatever version is decided.
+    """
+
+    def __init__(self, version: str):
+        """
+        Initializing and checking version is valid.
+        """
+        _assert_version(version)
+        self.version: str = version
+        self._model_cls = MODELS[version]
+        self._data: dict = {}
+
+    def set(self, field, value):
+        """
+        For setting scalar values
+        """
+        self._data[field] = value
+        return self
+
+    def add(self, field, value):
+        """
+        For adding vector values
+        """
+        self._data.setdefault(field, []).append(value)
+        return self
+
+    def build(self):
+        """
+        Attempts to build the class for the current version
+        """
+        return MAML(self._data, self.version)

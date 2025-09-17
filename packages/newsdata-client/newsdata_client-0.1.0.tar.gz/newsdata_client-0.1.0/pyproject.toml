@@ -1,0 +1,28 @@
+[project]
+name = "newsdata-client"
+version = "0.1.0"
+authors = [
+    { name = "Aditya Vikram Singh", email="adivik672@gmail.com" },
+]
+description = "Newsdata Python Client"
+readme = "README.md"
+requires-python = ">=3.13"
+keywords = [ "newsdata", "news", "newsdata-api"]
+dependencies = [
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.5",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/Vikuuu/newsdata-client"
+Issues = "https://github.com/Vikuuu/newsdata-client/issues"
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"

@@ -1,0 +1,95 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sibilant"
+description = "sibilant makes python communicate over VoIP"
+authors = [
+    {name = "abk16", email = "awaken.mulled505@4wrd.cc"}
+]
+version = "0.4.1"
+requires-python = ">=3.10,<3.13"
+license = {text = "MPL-2.0"}
+license-files = {paths = ["LICENSE"]}
+readme = "README.md"
+dynamic = ["dependencies", "optional-dependencies"]
+
+[project.urls]
+"Homepage" = "https://github.com/andreabak/sibilant"
+
+[tool.hatch.metadata]
+packages = ["sibilant*"]
+license-files = ["LICENSE"]
+include-package-data = true
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
+
+[tool.hatch.metadata.hooks.requirements_txt.optional-dependencies]
+dev = ["requirements-dev.txt"]
+
+[tool.hatch.build]
+include = [
+    "sibilant",
+    "tests",
+    "/requirements*.txt",
+]
+
+[tool.hatch.envs.default]
+python = "3.12"
+installer = "uv"
+
+[tool.hatch.envs.dev]
+features = ["dev"]
+
+[tool.hatch.envs.hatch-test]
+template = "dev"
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
+[tool.ruff]
+fix = true
+show-fixes = true
+preview = true
+output-format = "concise"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "N", "D", "UP", "ASYNC", "S", "BLE", "FBT", "B", "C4", "DTZ", "T10", "EXE", "ISC003", "ICN", "G010", "G1", "G2", "PIE", "T20", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "INT", "TCH", "INT", "ARG", "PTH", "TD", "FIX", "ERA", "PGH", "PL", "TRY", "FLY", "NPY", "PERF", "FURB", "LOG", "RUF"]
+ignore = ["F403", "N816", "N818", "D105", "D107", "D203", "D212", "D205", "D400", "C408", "RET505", "TD001", "TD002", "TD003", "TRY003", "B904", "TRY301", "S101", "S104", "S311", "S324", "PLW0602", "PGH004", "PLW1641", "FBT003", "PTH123", "ARG002", "ARG003", "PT011", "PT012"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "S", "T", "SLF001", "PLR2004", "PLR6301"]
+
+[tool.ruff.lint.pycodestyle]
+ignore-overlong-task-comments = true
+max-line-length = 100
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+lines-after-imports = 2
+
+[tool.ruff.lint.flake8-self]
+ignore-names = ["_name_", "_value_", "_wrapped_value_", "_dtcls_value_", "_time_cache_expiry", "_track_call", "_untrack_call", "_send_msg", "_track_future", "_track_dialog", "_untrack_dialog", "_schedule"]
+
+[tool.ruff.lint.pylint]
+max-args = 10
+max-bool-expr = 8
+max-branches = 20
+max-returns = 8
+max-public-methods = 30
+max-statements = 70
+max-nested-blocks = 8
+allow-dunder-method-names = ["__registry_new_for__", "__registry_get_class_for__"]
+
+[tool.mypy]
+show_error_codes = true
+ignore_missing_imports = true
+warn_return_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+
+[tool.pytest.ini_options]
+addopts = "-vrxPs --cov=sibilant"

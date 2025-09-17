@@ -1,0 +1,43 @@
+[project]
+name = "pretix-cashfree"
+dynamic = ["version"]
+description = "Pretix plugin for accepting payments via Cashfree."
+readme = "README.rst"
+license = {text = "Apache"}
+keywords = ["pretix"]
+authors = [
+    {name = "Diptangshu Chakrabarty", email = "cdiptangshu@gmail.com"},
+]
+maintainers = [
+    {name = "Diptangshu Chakrabarty", email = "cdiptangshu@gmail.com"},
+]
+
+dependencies = [
+    "cashfree_pg"
+]
+
+[project.entry-points."pretix.plugin"]
+pretix_cashfree = "pretix_cashfree:PretixPluginMeta"
+
+[project.entry-points."distutils.commands"]
+build = "pretix_plugin_build.build:CustomBuild"
+
+[build-system]
+requires = [
+    "setuptools",
+    "pretix-plugin-build",
+]
+
+[project.urls]
+homepage = "https://github.com/cdiptangshu/pretix-cashfree"
+repository = "https://github.com/cdiptangshu/pretix-cashfree"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "pretix_cashfree.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["pretix*"]
+namespaces = false

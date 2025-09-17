@@ -1,0 +1,35 @@
+[project]
+name = "profinder"
+version = "0.2.1"
+description = "Functions to find profiles in ocean pressure data"
+readme = "README.md"
+authors = [
+    { name = "Jesse Cusack", email = "jesse.cusack@oregonstate.edu" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.3.2",
+    "scipy>=1.16.1",
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://oceancascades.github.io/profinder/"
+source-code = "https://github.com/oceancascades/profinder"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "ruff>=0.12.8",
+    "scipy-stubs>=1.16.1.0",
+]

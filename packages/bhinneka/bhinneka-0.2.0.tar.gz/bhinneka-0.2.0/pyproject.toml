@@ -1,0 +1,37 @@
+[project]
+name = "bhinneka"
+version = "0.2.0"
+description = "Unified MCP toolkit: Google Flights utilities and SearXNG web search"
+authors = [
+    { name = "Batista Harahap", email = "batista@bango29.com" }
+]
+dependencies = [
+    "fastmcp>=2.12.3",
+    "fast-flights>=2.2",
+    "typer>=0.17.4",
+    "rich>=14.1.0",
+    "httpx>=0.28.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[project.scripts]
+# New preferred entry points
+bhinneka = "bhinneka.cli:main"
+bn = "bhinneka.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.13.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bhinneka"]

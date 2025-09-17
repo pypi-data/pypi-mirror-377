@@ -1,0 +1,91 @@
+# Option Trading Strategy Configuration
+# Script: option_trading_strategy.py
+# This configuration defines time-based option trading parameters
+
+exchange: myntapi
+
+strategy:
+  # Time-based trading parameters
+  start_time: "18:21:00"  # Market entry time (HH:MM:SS)
+  end_time: "22:45:10"    # Market exit time (HH:MM:SS)
+  square_off_time: "22:03:30" # Square off time (HH:MM:SS)
+  overall_target: 1000 # Overall target in INR
+  overall_stop_loss: 1000 # Overall stop loss in INR
+  idx_pair: "NSE:NIFTY 50" # Index pair
+  
+  legs:
+    1:
+      exch: "NFO"  # Base symbol for options
+      symbol: "NIFTY"  # Base symbol for options
+      expiry: "16-09-2025" # current week, next week, current month, next month
+      option_type: "CE" # CE, PE
+      # strike_price: "ITM+2" # ATM,ITM,OTM,ATM+1,ATM-1 or premium price or strike
+      lot_size: 10 # 1, 2, 5, 10
+      order_type: "market"           # market or limit
+      product_type: "I"              # I for Intraday, M for MIS
+      price_premium: 50
+
+    2:
+      exch: "NFO"  # Base symbol for options
+      symbol: "NIFTY"  # Base symbol for options
+      expiry: "16-09-2025" # current week, next week, current month, next month, DD-MM-YYYY
+      option_type: "PE" # CE, PE
+      # strike_price: "ITM+2" # 0 = ATM, or specific strike
+      lot_size: 1 # 1, 2, 5, 10
+      order_type: "market"           # market or limit
+      product_type: "I" 
+      price_premium: 100
+      # entry_time: "16:22:00" # Entry time (HH:MM:SS)
+      # exit_time: "16:23:00" # Exit time (HH:MM:SS)
+
+    3:
+      exch: "NFO"  # Base symbol for options
+      symbol: "NIFTY"  # Base symbol for options
+      expiry: "16-09-2025" # current week, next week, current month, next month, DD-MM-YYYY
+      option_type: "CE" # CE, PE
+      lot_size: 1 # 1, 2, 5, 10
+      order_type: "market"           # market or limit
+      product_type: "I" 
+      price_premium: 25
+      
+
+    4:
+      exch: "NFO"  # Base symbol for options
+      symbol: "NIFTY"  # Base symbol for options
+      expiry: "16-09-2025" # current week, next week, current month, next month, DD-MM-YYYY
+      option_type: "PE" # CE, PE
+      lot_size: 1 # 1, 2, 5, 10
+      order_type: "market"           # market or limit
+      product_type: "I" 
+      price_premium: 75
+
+    5:
+      exch: "NFO"  # Base symbol for options
+      symbol: "NIFTY"  # Base symbol for options
+      expiry: "16-09-2025" # current week, next week, current month, next month, DD-MM-YYYY
+      option_type: "CE" # CE, PE
+      lot_size: 1 # 1, 2, 5, 10
+      order_type: "market"           # market or limit
+      product_type: "I" 
+      price_premium: 150
+
+    6:
+      exch: "NFO"  # Base symbol for options
+      symbol: "NIFTY"  # Base symbol for options
+      expiry: "16-09-2025" # current week, next week, current month, next month, DD-MM-YYYY
+      option_type: "PE" # CE, PE
+      lot_size: 10 # 1, 2, 5, 10
+      order_type: "market"           # market or limit
+      product_type: "I" 
+      price_premium: 200
+
+
+# Logging configuration
+logging:
+  level: INFO
+  file: option_trading_strategy.log
+  max_size: 10MB
+  backup_count: 5
+  log_orders: true
+  log_ticks: false
+  log_status_interval: 100  # Log status every N ticks

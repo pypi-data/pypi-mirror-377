@@ -1,0 +1,36 @@
+# ZebuBot Configuration Template
+# Copy this file to zebubot_config.yaml and update with your credentials
+
+# MyntAPI Configuration
+myntapi:
+  enabled: true
+  user_id: "your_user_id"
+  password: "your_password"
+  factor2: "your_factor2"  # TOTP secret
+  vc: "your_vc"  # Vendor code
+  app_key: "your_app_key"
+  imei: "your_imei"
+  api_url: "https://api.shoonya.com/NorenWClientTP/"
+  websocket_url: "wss://api.shoonya.com/NorenWSTP/"
+
+# Trading Configuration
+trading:
+  default_pair: "NSE|2885"  # Default symbol (SBIN)
+  risk_management:
+    max_position_size: 10000  # Maximum position size in INR
+    stop_loss_percentage: 2.0  # Stop loss percentage
+    take_profit_percentage: 4.0  # Take profit percentage
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  file: "zebubot.log"
+  max_size: "10MB"
+  backup_count: 5
+
+# Exchange Settings
+exchanges:
+  myntapi:
+    enabled: true
+    timeout: 30
+    retry_count: 3

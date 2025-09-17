@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: splurge-lazyframe-compare
+Version: 2025.3.1
+Summary: A Python package for comparing splurge and lazyframe functionality
+Author: Jim Schilling
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/jim-schilling/splurge-lazyframe-compare
+Keywords: splurge,lazyframe,compare,polars,dataframe,comparison
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: polars>=1.32.0
+Requires-Dist: tabulate>=0.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: pytest-xdist>=3.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: pre-commit>=2.20.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Dynamic: license-file
+
+# splurge-lazyframe-compare
+
+[![PyPI - Version](https://img.shields.io/pypi/v/splurge-lazyframe-compare.svg)](https://pypi.org/project/splurge-lazyframe-compare)
+[![License](https://img.shields.io/pypi/l/splurge-lazyframe-compare.svg)](LICENSE)
+[![CI (general)](https://img.shields.io/github/actions/workflow/status/jim-schilling/splurge-lazyframe-compare/ci.yml?branch=main&label=CI)](https://github.com/jim-schilling/splurge-lazyframe-compare/actions)
+
+[![Py 3.10](https://img.shields.io/github/actions/workflow/status/jim-schilling/splurge-lazyframe-compare/test-py310.yml?branch=main&label=py3.10)](https://github.com/jim-schilling/splurge-lazyframe-compare/actions/workflows/test-py310.yml)
+[![Py 3.11](https://img.shields.io/github/actions/workflow/status/jim-schilling/splurge-lazyframe-compare/test-py311.yml?branch=main&label=py3.11)](https://github.com/jim-schilling/splurge-lazyframe-compare/actions/workflows/test-py311.yml)
+[![Py 3.12](https://img.shields.io/github/actions/workflow/status/jim-schilling/splurge-lazyframe-compare/test-py312.yml?branch=main&label=py3.12)](https://github.com/jim-schilling/splurge-lazyframe-compare/actions/workflows/test-py312.yml)
+[![Py 3.13](https://img.shields.io/github/actions/workflow/status/jim-schilling/splurge-lazyframe-compare/test-py313.yml?branch=main&label=py3.13)](https://github.com/jim-schilling/splurge-lazyframe-compare/actions/workflows/test-py313.yml)
+
+[![Coverage](https://raw.githubusercontent.com/jim-schilling/splurge-lazyframe-compare/main/docs/coverage-badge.svg)](https://raw.githubusercontent.com/jim-schilling/splurge-lazyframe-compare/main/docs/coverage-badge.svg)
+[![ruff](https://img.shields.io/badge/ruff-passed-brightgreen)](https://github.com/charliermarsh/ruff)
+[![mypy](https://img.shields.io/badge/mypy-passed-brightgreen)](https://mypy-lang.org/)
+
+A compact, high-performance toolkit for comparing Polars LazyFrames and generating structured difference reports.
+
+See the detailed documentation for usage, configuration, API reference, examples, and advanced topics:
+
+- Detailed docs: docs/README-DETAILS.md
+- Changelog: CHANGELOG.md
+
+## Quick install
+
+```bash
+pip install splurge-lazyframe-compare
+```
+
+## Minimal example
+
+```python
+from splurge_lazyframe_compare import LazyFrameComparator, ComparisonConfig
+import polars as pl
+
+left = pl.LazyFrame({"id": [1,2], "value": [10, 20]})
+right = pl.LazyFrame({"id": [1,2], "value": [10, 21]})
+
+config = ComparisonConfig(pk_columns=["id"])  # basic config for identical columns
+comp = LazyFrameComparator(config)
+results = comp.compare(left, right)
+print(results.summary)
+```
+
+For full details, examples, and troubleshooting, see docs/README-DETAILS.md.
+
+Contributions welcome — see CONTRIBUTING.md for guidelines.
+

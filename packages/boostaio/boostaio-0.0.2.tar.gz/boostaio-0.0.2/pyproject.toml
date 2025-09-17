@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boostaio"
+version = "0.0.2"
+description = "Python bindings for the BoostAIO C++ HTTP client library"
+authors = [
+    { name = "Alex", email = "alex_help_desk@exdonuts.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["http", "bindings", "boost", "aio", "networking"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS"
+]
+
+[tool.setuptools.package-data]
+"BoostAIO" = ["*.so", "*.dylib"]
+[tool.setuptools.packages.find]
+where = ["."]

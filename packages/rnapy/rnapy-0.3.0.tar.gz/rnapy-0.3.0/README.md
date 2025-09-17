@@ -1,0 +1,432 @@
+# RNAPy — Unified RNA Analysis Toolkit
+
+RNAPy is a unified Python toolkit that wraps several powerful RNA models with a consistent, easy-to-use API. It currently integrates:
+
+- RNA-FM / mRNA-FM for sequence embeddings and 2D secondary structure prediction
+- RhoFold for 3D structure prediction
+- RiboDiffusion for inverse folding (sequence generation from structure)
+- RhoDesign for inverse folding (structure-to-sequence, optional 2D guidance)
+- RNA-MSM for MSA-based embeddings, attention, consensus, and conservation
+
+
+## Key Features
+
+- Consistent high-level API via `RNAToolkit`
+- 2D structure prediction (RNA-FM / mRNA-FM)
+- 3D structure prediction (RhoFold)
+- Inverse folding (RiboDiffusion, RhoDesign)
+- MSA analysis and features (RNA-MSM: embeddings, attention, consensus, conservation)
+
+
+## Project Structure
+
+```
+RNAPy
+├── rnapy/                    # Library source
+│   ├── core/                 # Base classes, factory, config, exceptions
+│   ├── providers/            # Model providers (rna_fm/mrna_fm, rhofold, RiboDiffusion, rhodesign, rna_msm)
+│   ├── interfaces/           # Public interfaces
+│   └── utils/                # Utilities
+├── configs/                  # Global and model configs (YAML)
+├── demos/                    # Ready-to-run examples
+│   ├── models/               # Put pretrained weights here
+│   ├── results/              # Default output location for demos
+│   └── demo_*.py             # Demo scripts
+├── requirements.txt
+├── setup.py
+└── README.md
+```
+
+
+## Installation
+
+Recommended: Python 3.10+ and a recent PyTorch build compatible with your CPU/GPU.
+
+Windows PowerShell example:
+
+```powershell
+# 1) Create and activate a virtual environment (optional but recommended)
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 2) Install RNAPy in editable mode
+pip install -e .
+
+# 3) Install runtime dependencies (if not pulled via setup)
+pip install -r requirements.txt
+```
+
+Note: Ensure your installed `torch` matches your CUDA setup if you plan to use GPU.
+
+
+## Documentation
+
+- Toolkit usage guide: `docs/RNAToolkit_Usage_Guide.md`
+
+
+## Model Weights
+
+Place checkpoints under `./models/` (paths used in the demos):
+
+- RhoFold: `./models/RhoFold_pretrained.pt`
+- RiboDiffusion: `./models/exp_inf.pth`
+- mRNA-FM (or RNA-FM alternative): `./models/mRNA-FM_pretrained.pth` (or `./models/RNA-FM_pretrained.pth`)
+- RhoDesign: `./models/ss_apexp_best.pth` (with-2D variant; accepts optional secondary structure file)
+- RNA-MSM: `./models/RNA_MSM_pretrained_weights.pt` (or `RNA_MSM_pretrained.ckpt`)
+
+You can customize locations through your own code or configs.
+
+
+## Quick Start
+
+### 1) mRNA-FM (2D structure + embeddings)
+
+```python
+from rnapy import RNAToolkit
+
+sequence = "AGAUAGUCGUGGGUUCCCUUUCUGGAGGGAGAGGGAAUUCCACGUUGACCGGGGGAACCGGCCAGGCCCGGAAGGGAGCAACCGUGCCCGGCUAUC"
+
+# Initialize
+toolkit = RNAToolkit(device="cpu")
+
+# Load model (choose one)
+model_path = "./models/mRNA-FM_pretrained.pth"  # or RNA-FM_pretrained.pth
+toolkit.load_model("mrna-fm", model_path)
+# toolkit.load_model("rna-fm", "./models/RNA-FM_pretrained.pth")
+
+# 2D structure prediction
+result = toolkit.predict_structure(
+    sequence,
+    structure_type="2d",
+    model="mrna-fm",
+    save_dir="./results/rna_fm/demo.ct",
+)
+
+# Embeddings
+embeddings = toolkit.extract_embeddings(
+    sequence,
+    model="mrna-fm",
+    save_dir="./results/rna_fm/embeddings.npy",
+)
+
+print(result.get("secondary_structure"))
+print(result.get("confidence_scores"))
+```
+
+### 2) RhoFold (3D structure prediction)
+
+```python
+from rnapy import RNAToolkit
+
+sequence = "GGAUCCCGCGCCCCUUUCUCCCCGGUGAUCCCGCGAGCCCCGGUAAGGCCGGGUCC"
+
+toolkit = RNAToolkit(device="cpu")
+
+# Load RhoFold
+toolkit.load_model("rhofold", "./models/RhoFold_pretrained.pt")
+
+# Predict 3D
+result = toolkit.predict_structure(
+    sequence,
+    structure_type="3d",
+    model="rhofold",
+    save_dir="./results/rhofold",
+    relax_steps=500,
+)
+
+pdb_file = result.get("structure_3d_refined", result.get("structure_3d_unrelaxed"))
+print("3D structure:", pdb_file)
+```
+
+### 3) RiboDiffusion (inverse folding from PDB)
+
+```python
+from rnapy import RNAToolkit
+
+structure_file = "./input/R1107.pdb"
+
+toolkit = RNAToolkit(device="cpu")
+
+# Load RiboDiffusion
+toolkit.load_model("ribodiffusion", "./models/exp_inf.pth")
+
+# Generate sequences from structure
+result = toolkit.generate_sequences_from_structure(
+    structure_file=structure_file,
+    model="ribodiffusion",
+    n_samples=2,
+    sampling_steps=100,
+    cond_scale=0.5,
+    dynamic_threshold=True,
+    save_dir="./results/ribodiffusion",
+)
+
+print("Generated count:", result.get("sequence_count", 0))
+print("Output dir:", result.get("output_directory"))
+```
+
+### 4) RhoDesign (inverse folding with optional 2D guidance)
+
+```python
+from rnapy import RNAToolkit
+
+pdb_path = "./input/2zh6_B.pdb"
+ss_path = "./input/2zh6_B.npy"  # optional numpy file with secondary-structure/contact info
+
+toolkit = RNAToolkit(device="cpu")
+
+# Load RhoDesign (with-2D variant checkpoint)
+toolkit.load_model("rhodesign", "./models/ss_apexp_best.pth")
+
+# Generate one sequence from structure (RhoDesign samples one sequence per call)
+res = toolkit.generate_sequences_from_structure(
+    structure_file=pdb_path,
+    model="rhodesign",
+    secondary_structure_file=ss_path,  # omit or set None to run without 2D guidance
+    save_dir="./results/rhodesign"
+)
+
+print("Predicted sequence:", res["sequences"][0])
+print("Recovery rate:", res.get("quality_metrics", {}).get("sequence_recovery_rate"))
+print("FASTA:", res.get("files", {}).get("fasta_files", [None])[0])
+```
+
+### 5) RNA-MSM (MSA features, consensus, conservation)
+
+```python
+from rnapy import RNAToolkit
+
+# Initialize
+toolkit = RNAToolkit(device="cpu")
+
+# Load RNA-MSM
+toolkit.load_model("rna-msm", "./models/RNA_MSM_pretrained_weights.pt")
+
+# Prepare an example MSA (aligned sequences)
+msa_sequences = [
+    "AUGGCGAUUUUAUUUACCGCAGUCGUUACCAACAUACUCGACUUUAAAUGCC",
+    "AUGGCAAUUUUAUUUACCGCAGUCGUUACCAACAUACUCGACUUUAAAUGCC",
+    "AUGGCGAUUUCAUUUACCGCAGUCGUUACCAACAUACUCGACUUUAAAUGCC",
+    "AUGGCGAUUUUAUUUACCGCAGUCGUUACCAGCAUACUCGACUUUAAAUGCC",
+]
+
+# Extract embeddings (per-position, last layer by default)
+features = toolkit.extract_msa_features(
+    msa_sequences,
+    feature_type="embeddings",
+    model="rna-msm",
+    save_dir="./results/rna_msm",
+)
+
+# Analyze MSA for consensus and conservation
+msa_result = toolkit.analyze_msa(
+    msa_sequences,
+    model="rna-msm",
+    extract_consensus=True,
+    extract_conservation=True,
+    save_dir="./results/rna_msm",
+)
+
+print("Consensus:", msa_result.get("consensus_sequence"))
+print("Conservation (first 10):", (msa_result.get("conservation_scores") or [])[:10])
+```
+
+
+## Command Line Interface (CLI)
+
+The package installs a console script named `rnapy` (via setup entry point). After installation, you can run `rnapy` from your shell.
+
+- Show top-level help:
+  - `rnapy --help`
+- Show help for a subcommand:
+  - `rnapy seq embed --help`
+
+### Global options
+
+These options are shared by all subcommands:
+
+- `--device {cpu,cuda}`: Computing device (default: `cpu`)
+- `--model {rna-fm,mrna-fm,rhofold,ribodiffusion,rhodesign,rna-msm}`: Model provider (required)
+- `--model-path PATH`: Path to the model checkpoint (required)
+- `--config-dir PATH`: Configuration directory (default: `configs`)
+- `--provider-config PATH`: Optional provider-specific config file
+- `--seed INT`: Random seed
+- `--save-dir DIR`: Output directory
+- `--verbose` or `-v`: Verbose logs and full tracebacks on errors
+
+Input conventions:
+
+- Use exactly one of `--seq` or `--fasta`
+  - `--seq` accepts a single RNA sequence or multiple sequences separated by commas
+  - `--fasta` accepts a `.fasta/.fa/.fas` file path
+
+### Subcommands
+
+1) Sequence embeddings
+
+Extract embeddings from RNA-FM/mRNA-FM:
+
+```bash
+rnapy seq embed \
+  --model mrna-fm \
+  --model-path ./models/mRNA-FM_pretrained.pth \
+  --seq "AGAUAGUCGUGGGU...UCGGCUAUC" \
+  --layer -1 \
+  --format mean \
+  --save-dir ./results/rna_fm
+```
+
+- `--layer`: which layer to use (default: `-1`, i.e., last layer)
+- `--format {raw,mean,bos}`: output format (default: `mean`)
+- You can also pass `--fasta path/to/input.fasta` instead of `--seq`
+
+2) Structure prediction
+
+Predict 2D (RNA-FM / mRNA-FM) or 3D (RhoFold) structure:
+
+```bash
+# 2D with mRNA-FM
+rnapy struct predict \
+  --model mrna-fm \
+  --model-path ./models/mRNA-FM_pretrained.pth \
+  --seq "AGAUAGUCGUGGGU...UCGGCUAUC" \
+  --structure-type 2d \
+  --save-dir ./results/rna_fm_struct
+
+# 3D with RhoFold (structure-type will auto-infer to 3d)
+rnapy struct predict \
+  --model rhofold \
+  --model-path ./models/RhoFold_pretrained.pt \
+  --seq "GGAUCCCGCGCCC...GCCGGGUCC" \
+  --save-dir ./results/rhofold_3d
+```
+
+- If `--structure-type` is omitted: `rhofold` -> `3d`; `rna-fm`/`mrna-fm` -> `2d`
+
+3) Inverse folding (generate sequences from structure)
+
+RiboDiffusion and RhoDesign take a PDB as input:
+
+```bash
+# RiboDiffusion: generate multiple sequences
+rnapy invfold gen \
+  --model ribodiffusion \
+  --model-path ./models/exp_inf.pth \
+  --pdb ./input/R1107.pdb \
+  --n-samples 2 \
+  --save-dir ./results/ribodiffusion
+
+# RhoDesign: optional 2D guidance via NPY
+rnapy invfold gen \
+  --model rhodesign \
+  --model-path ./models/ss_apexp_best.pth \
+  --pdb ./input/2zh6_B.pdb \
+  --ss-npy ./input/2zh6_B.npy \
+  --save-dir ./results/rhodesign
+```
+
+- `--pdb`: required
+- `--ss-npy`: optional; only used by RhoDesign (2D guidance)
+- `--n-samples`: number of sequences to sample (RhoDesign samples one per call; RiboDiffusion supports many)
+
+4) MSA features (RNA-MSM)
+
+Extract embeddings/attention from an aligned MSA:
+
+```bash
+rnapy msa features \
+  --model rna-msm \
+  --model-path ./models/RNA_MSM_pretrained_weights.pt \
+  --fasta ./input/example_msa.fasta \
+  --feature-type embeddings \
+  --layer -1 \
+  --save-dir ./results/rna_msm_features
+```
+
+- `--feature-type {embeddings,attention,both}` (default: `embeddings`)
+- `--layer`: which layer to extract (default: `-1`)
+
+5) MSA analysis (RNA-MSM)
+
+Compute consensus and/or conservation from an MSA:
+
+```bash
+rnapy msa analyze \
+  --model rna-msm \
+  --model-path ./models/RNA_MSM_pretrained_weights.pt \
+  --fasta ./input/example_msa.fasta \
+  --extract-consensus \
+  --extract-conservation \
+  --save-dir ./results/rna_msm_analyze
+```
+
+- If you pass a single `--seq` (not multiple), this subcommand will error because it requires multiple sequences or a FASTA file
+
+### Outputs and logging
+
+- When `--save-dir` is provided, results are written under that directory. The exact filenames depend on the provider/task (e.g., `.npy` for embeddings, `.ct` for 2D, `.pdb`/folder for 3D, `.json` for analysis summaries). The CLI prints a brief summary and (when applicable) a path hint.
+- Exit codes: `0` on success; non-zero on errors. Add `-v/--verbose` for full tracebacks.
+
+### Common pitfalls
+
+- Do not pass both `--seq` and `--fasta` at the same time.
+- Ensure the `--model-path` points to the correct checkpoint for the chosen `--model`.
+- `rhofold` defaults to 3D; RNA-FM/mRNA-FM default to 2D if `--structure-type` is omitted.
+- `msa analyze` requires multiple sequences (comma-separated via `--seq`) or a FASTA file.
+
+
+## Run the Demos
+
+From the repository root:
+
+```powershell
+# mRNA-FM / RNA-FM demo
+cd .\demos
+python .\demo_rna_fm.py
+
+# RhoFold demo
+python .\demo_rhofold.py
+
+# RiboDiffusion demo
+python .\demo_ribodiffusion.py
+
+# RhoDesign demo
+python .\demo_rhodesign.py
+
+# RNA-MSM demo
+python .\demo_rna_msm.py
+```
+
+Additional examples may be available: `rna_fm_demo.py`, `rhofold_demo.py`, `ribodiffusion_demo.py`.
+
+## Configuration
+
+YAML configs are provided under `./configs/` and `./demos/configs/`. You can:
+
+- Pass `config_dir` to `RNAToolkit` to use custom defaults
+- Override per-call parameters in `load_model(...)` and task methods
+
+Example (global excerpt):
+
+```yaml
+global:
+  device: "cpu"
+  precision: "float32"
+  cache_dir: "./cache"
+```
+
+Model-specific YAMLs (e.g., `rna_fm.yaml`, `rhofold.yaml`, `ribodiffusion.yaml`) control provider defaults. For models without a dedicated YAML, pass options via `load_model(..., **kwargs)` or call-time kwargs.
+
+
+## License
+
+MIT License
+
+
+## Acknowledgements
+
+- RNA-FM: https://github.com/ml4bio/RNA-FM
+- RhoFold: https://github.com/ml4bio/RhoFold
+- RiboDiffusion: https://github.com/ml4bio/RiboDiffusion
+- RhoDesign: https://github.com/ml4bio/RhoDesign
+- RNA-MSM: https://github.com/yikunpku/RNA-MSM

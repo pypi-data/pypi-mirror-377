@@ -1,0 +1,147 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Where to publish"
+        type: choice
+        default: pypi
+        options: [pypi, testpypi]
+
+# 避免同一 tag 重复发布
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write   # ✅ Trusted Publishing 需要
+
+jobs:
+  build_wheels:
+    name: Wheels ${{ matrix.os }} ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            cibw_arch: x86_64
+          - os: macos-latest
+            cibw_arch: arm64
+          # macOS universal2（单轮子同时覆盖 x86_64 + arm64）
+          - os: macos-latest
+            cibw_arch: universal2
+          # Windows x86_64
+          - os: windows-latest
+            cibw_arch: AMD64
+
+    env:
+      CIBW_BUILD: "cp310-*"
+      CIBW_SKIP: "*-win32 *-manylinux_i686"
+      CIBW_ARCHS_LINUX: ${{ matrix.cibw_arch }}
+      CIBW_ARCHS_MACOS: ${{ matrix.cibw_arch }}
+      CIBW_ARCHS_WINDOWS: ${{ matrix.cibw_arch }}
+      CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+      CIBW_MANYLINUX_AARCH64_IMAGE: manylinux_2_28
+      CIBW_BEFORE_ALL_LINUX: >
+        /bin/sh -exc '
+          if command -v apk >/dev/null 2>&1; then
+            apk add --no-cache curl
+          elif command -v yum >/dev/null 2>&1; then
+            yum install -y curl
+          elif command -v dnf >/dev/null 2>&1; then
+            dnf install -y curl
+          fi
+          curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+        '
+      CIBW_ENVIRONMENT_LINUX: "PATH=$HOME/.cargo/bin:$PATH"
+      CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=11.0"
+      CIBW_TEST_COMMAND: >
+        python -c "import word2vec_matryoshka as m; print(getattr(m, '__version__', 'ok'))"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      - name: Build wheels (abi3)
+        uses: pypa/cibuildwheel@v3.1.4
+        with:
+          package-dir: .
+
+      - name: Upload wheels (job artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: word2vec_matryoshka-${{ matrix.os }}-${{ matrix.cibw_arch }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+
+  build_sdist:
+    name: Source dist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Build sdist
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist .
+          ls -l dist
+
+      - name: Upload sdist (job artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: word2vec_matryoshka-sdist
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  publish:
+    name: Publish to ${{ inputs.repository || 'pypi' }}
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download wheels
+        uses: actions/download-artifact@v4
+        with:
+          pattern: word2vec_matryoshka-*
+          merge-multiple: true
+          path: dist
+
+      - name: Download sdist
+        uses: actions/download-artifact@v4
+        with:
+          name: word2vec_matryoshka-sdist
+          path: dist
+
+      - name: Show artifacts to publish
+        run: ls -l dist
+
+      # ✅ Trusted Publishing（推荐）
+      - name: Publish to PyPI via OIDC
+        uses: pypa/gh-action-pypi-publish@v1.12.4
+        with:
+          packages-dir: dist
+          # 如果是手动触发且选择 testpypi，则改用 TestPyPI
+          repository-url: ${{ (github.event_name == 'workflow_dispatch' && inputs.repository == 'testpypi') && 'https://test.pypi.org/legacy/' || '' }}
+
+      # 🔁 令牌方式（可选，若未配置 Trusted Publishing，取消注释并在仓库 Secrets 配置 PYPI_API_TOKEN / TEST_PYPI_API_TOKEN）
+      # - name: Publish with API token (fallback)
+      #   if: failure()
+      #   uses: pypa/gh-action-pypi-publish@v1.12.4
+      #   with:
+      #     packages-dir: dist
+      #     user: __token__
+      #     password: ${{ (github.event_name == 'workflow_dispatch' && inputs.repository == 'testpypi') && secrets.TEST_PYPI_API_TOKEN || secrets.PYPI_API_TOKEN }}
+      #     repository-url: ${{ (github.event_name == 'workflow_dispatch' && inputs.repository == 'testpypi') && 'https://test.pypi.org/legacy/' || '' }}

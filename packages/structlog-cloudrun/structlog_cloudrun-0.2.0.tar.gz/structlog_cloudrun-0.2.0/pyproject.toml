@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "structlog-cloudrun"
+version = "0.2.0"
+description = "A structlog processor for Google Cloud Run logging."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Sam Yao", email = "turisesonia@gmail.com" },
+]
+keywords = ["structlog", "cloud-run", "google-cloud", "logging", "gcp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
+]
+dependencies = ["structlog>=25.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/turisesonia/structlog-cloudrun"
+Repository = "https://github.com/turisesonia/structlog-cloudrun"
+Issues = "https://github.com/turisesonia/structlog-cloudrun/issues"
+
+[dependency-groups]
+dev = [
+    "google-cloud-logging>=3.12.1",
+    "pytest>=8.4.2",
+    "pytest-cov>=6.0.0",
+    "coverage>=7.6.0",
+]

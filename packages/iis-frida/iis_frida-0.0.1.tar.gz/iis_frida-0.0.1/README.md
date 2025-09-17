@@ -1,0 +1,73 @@
+
+# Frida Role Connection in Python
+
+This module provides a simple API to connect to the Frida Role API via Python.
+
+Documentation: Link not provided yet
+
+# Installation
+
+Installation via pip:
+
+```bash
+pip install iis-frida --extra-index-url https://__token__:<your_personal_token>@git01.iis.fhg.de/api/v4/projects/8042/packages/pypi/simple
+```
+
+Or via PIP Configuration (`.pypirc`):
+
+```ini
+[gitlab]
+repository = https://git01.iis.fhg.de/api/v4/projects/8042/packages/pypi
+username = __token__
+password = <your personal access token>
+```
+
+## Supported Frida Role API Objects
+
+The marked Active Directory objects are fully parsed by this module
+
+- [x] Service
+- [x] Membership
+
+If you require further classes please open a GitLab issue.
+
+## Usage
+
+Please have look at example.py for an example.
+
+```
+python -m iis_frida --help
+python -m iis_frida --token token --recipient sunn@gmail.com --action sync-user
+```
+
+# Development
+
+## Create Virtual Environment for Development
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+## Run Tests
+
+All available tests can be executed using the `Makefile`:
+
+```bash
+make lint
+make test
+make coverage
+```
+
+## Build Package
+
+Update `pyproject.toml` and change the version number. The PIP-Package is automatically built using the GitLab CI and will be stored in the [GitLab Package Registry](https://git01.iis.fhg.de/Intranet/packages/-/packages)
+
+Build the Package locally:
+
+```bash
+make clean
+make build
+```
+

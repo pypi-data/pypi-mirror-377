@@ -1,0 +1,280 @@
+import WebSocket from 'ws';
+import http from 'http';
+import express from 'express';
+import { WebSocketServer } from 'ws';
+
+// Import the server creation logic from app.ts
+// We'll need to refactor app.ts to export the server creation function
+// For now, we'll duplicate the setup here for testing
+
+describe('Chat Server Connect/Disconnect Tests', () => {
+  let server: http.Server;
+  let wss: WebSocketServer;
+  let port: number;
+
+  // Store active connections and rooms (same as in app.ts)
+  const clients = new Map<WebSocket, { userId: string; roomId: string }>();
+  const rooms = new Map<string, Set<WebSocket>>();
+  const userRooms = new Map<string, string>();
+
+  beforeAll((done) => {
+    // Create test server
+    const app = express();
+    server = http.createServer(app);
+    wss = new WebSocketServer({ server });
+
+    // Basic health check
+    app.get('/', (_req, res) => {
+      res.json({
+        status: 'Chat server running',
+        clients: clients.size,
+        rooms: rooms.size
+      });
+    });
+
+    // WebSocket connection handler (simplified for testing)
+    wss.on('connection', (ws: WebSocket) => {
+      console.log('New client connected');
+
+      ws.on('message', (data) => {
+        try {
+          const message = JSON.parse(data.toString());
+          if (message.type === 'join' && message.userId) {
+            const targetRoom = message.roomId || message.userId;
+            clients.set(ws, { userId: message.userId, roomId: targetRoom });
+            userRooms.set(message.userId, targetRoom);
+
+            if (!rooms.has(targetRoom)) {
+              rooms.set(targetRoom, new Set());
+            }
+            rooms.get(targetRoom)!.add(ws);
+
+            // Send join confirmation
+            ws.send(JSON.stringify({
+              type: 'joined',
+              roomId: targetRoom,
+              userId: message.userId,
+              message: `Joined room: ${targetRoom}`
+            }));
+          }
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      });
+
+      ws.on('close', () => {
+        const client = clients.get(ws);
+        if (client) {
+          const { userId, roomId } = client;
+          const roomClients = rooms.get(roomId);
+
+          if (roomClients) {
+            roomClients.delete(ws);
+            if (roomClients.size === 0) {
+              rooms.delete(roomId);
+            }
+          }
+
+          clients.delete(ws);
+          userRooms.delete(userId);
+          console.log(`User ${userId} disconnected from room ${roomId}`);
+        }
+      });
+    });
+
+    // Start server on random port
+    server.listen(0, () => {
+      const address = server.address();
+      if (address && typeof address === 'object') {
+        port = address.port;
+        console.log(`Test server started on port ${port}`);
+        done();
+      }
+    });
+  });
+
+  afterAll((done) => {
+    wss.close(() => {
+      server.close(done);
+    });
+  });
+
+  afterEach(() => {
+    // Clean up any remaining connections
+    clients.clear();
+    rooms.clear();
+    userRooms.clear();
+  });
+
+  test('should allow client to connect and disconnect', (done) => {
+    const client = new WebSocket(`ws://localhost:${port}`);
+
+    client.on('open', () => {
+      expect(client.readyState).toBe(WebSocket.OPEN);
+      client.close();
+    });
+
+    client.on('close', () => {
+      expect(client.readyState).toBe(WebSocket.CLOSED);
+      done();
+    });
+
+    client.on('error', (error) => {
+      done(error);
+    });
+  });
+
+  test('should handle multiple clients connecting and disconnecting', (done) => {
+    const clients_test: WebSocket[] = [];
+    const numClients = 3;
+    let connectedCount = 0;
+    let disconnectedCount = 0;
+
+    for (let i = 0; i < numClients; i++) {
+      const client = new WebSocket(`ws://localhost:${port}`);
+      clients_test.push(client);
+
+      client.on('open', () => {
+        connectedCount++;
+        if (connectedCount === numClients) {
+          // All clients connected, now disconnect them all
+          clients_test.forEach(c => c.close());
+        }
+      });
+
+      client.on('close', () => {
+        disconnectedCount++;
+        if (disconnectedCount === numClients) {
+          done();
+        }
+      });
+
+      client.on('error', (error) => {
+        done(error);
+      });
+    }
+  });
+
+  test('should handle client joining a room and then disconnecting', (done) => {
+    const client = new WebSocket(`ws://localhost:${port}`);
+    const testUserId = 'testUser123';
+    let joinReceived = false;
+
+    client.on('open', () => {
+      // Send join message
+      const joinMessage = {
+        type: 'join',
+        userId: testUserId
+      };
+      client.send(JSON.stringify(joinMessage));
+    });
+
+    client.on('message', (data) => {
+      const message = JSON.parse(data.toString());
+      if (message.type === 'joined') {
+        expect(message.userId).toBe(testUserId);
+        expect(message.roomId).toBe(testUserId); // Default room is userId
+        joinReceived = true;
+        
+        // Verify server state
+        expect(clients.size).toBe(1);
+        expect(rooms.size).toBe(1);
+        expect(userRooms.get(testUserId)).toBe(testUserId);
+        
+        client.close();
+      }
+    });
+
+    client.on('close', () => {
+      expect(joinReceived).toBe(true);
+      
+      // Verify cleanup - need to wait a bit for cleanup to complete
+      setTimeout(() => {
+        expect(clients.size).toBe(0);
+        expect(rooms.size).toBe(0);
+        expect(userRooms.size).toBe(0);
+        done();
+      }, 10);
+    });
+
+    client.on('error', (error) => {
+      done(error);
+    });
+  });
+
+  test('should maintain server state correctly during connections', (done) => {
+    const client1 = new WebSocket(`ws://localhost:${port}`);
+    const client2 = new WebSocket(`ws://localhost:${port}`);
+    const userId1 = 'user1';
+    const userId2 = 'user2';
+    let client1Joined = false;
+    let client2Joined = false;
+
+    client1.on('open', () => {
+      client1.send(JSON.stringify({
+        type: 'join',
+        userId: userId1
+      }));
+    });
+
+    client2.on('open', () => {
+      client2.send(JSON.stringify({
+        type: 'join',
+        userId: userId2
+      }));
+    });
+
+    client1.on('message', (data) => {
+      const message = JSON.parse(data.toString());
+      if (message.type === 'joined' && message.userId === userId1) {
+        client1Joined = true;
+        checkBothJoined();
+      }
+    });
+
+    client2.on('message', (data) => {
+      const message = JSON.parse(data.toString());
+      if (message.type === 'joined' && message.userId === userId2) {
+        client2Joined = true;
+        checkBothJoined();
+      }
+    });
+
+    function checkBothJoined() {
+      if (client1Joined && client2Joined) {
+        // Both clients should be connected
+        expect(clients.size).toBe(2);
+        expect(rooms.size).toBe(2); // Each user has their own default room
+        expect(userRooms.size).toBe(2);
+
+        // Close first client
+        client1.close();
+      }
+    }
+
+    client1.on('close', () => {
+      // After first client disconnects
+      setTimeout(() => {
+        expect(clients.size).toBe(1);
+        expect(rooms.size).toBe(1);
+        expect(userRooms.size).toBe(1);
+        
+        // Close second client
+        client2.close();
+      }, 10);
+    });
+
+    client2.on('close', () => {
+      // After both clients disconnect
+      setTimeout(() => {
+        expect(clients.size).toBe(0);
+        expect(rooms.size).toBe(0);
+        expect(userRooms.size).toBe(0);
+        done();
+      }, 10);
+    });
+
+    client1.on('error', (error) => done(error));
+    client2.on('error', (error) => done(error));
+  });
+});

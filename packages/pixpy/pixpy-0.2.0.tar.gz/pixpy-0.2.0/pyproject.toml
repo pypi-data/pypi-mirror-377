@@ -1,0 +1,59 @@
+[project]
+name = "pixpy"
+version = "0.2.0"
+description = "Graphics library"
+authors = [
+    {name = "Jonas Minnberg", email="sasq64@gmail.com"}
+]
+license = "MIT"
+readme = "docs/index.md"
+requires-python = ">=3.9"
+
+[project.urls]
+repository = "https://github.com/sasq64/pix"
+documentation = "https://pixpy.readthedocs.org"
+
+[build-system]
+requires = [ "scikit-build-core>=0.11" ]
+build-backend = "scikit_build_core.build"
+[tool.scikit-build]
+sdist.exclude = ["NOTES.md", "data/", "examples/"]
+minimum-version = "build-system.requires"
+cmake.args=[
+    "--no-warn-unused-cli",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DPYTHON_MODULE=ON",
+    "-DMACOSX_DEPLOYMENT_TARGET=10.15",
+]
+
+[tool.black]
+line-length = 80
+
+[tool.coverage.run]
+source = ["pixide"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/build/*",
+    "*/stubs/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError"
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+

@@ -1,0 +1,110 @@
+[tool.poetry]
+name = "koda-validate"
+version = "5.0.1"
+readme = "README.md"
+description = "Typesafe, composable validation"
+documentation = "https://koda-validate.readthedocs.io/en/stable/"
+authors = ["Keith Philpott"]
+license = "MIT"
+homepage = "https://github.com/keithasaurus/koda-validate"
+keywords = ["validation", "type hints", "asyncio", "serialization", "typesafe", "validate", "validators", "predicate", "processor"]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: MacOS X',
+    'Environment :: Web Environment',
+    'Intended Audience :: Developers',
+    'Operating System :: MacOS',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: Unix',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Utilities',
+    'Typing :: Typed'
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+koda = "1.4.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.3.5"
+pytest-cov = "5.0.0"
+isort = "6.0.1"
+flake8 = "7.2.0"
+pre-commit = "3.8.0"
+mypy = "1.15.0"
+pydantic = "2.11.4"
+pytest-asyncio = "0.26.0"
+voluptuous = "0.15.2"
+ssort = "0.14.0"
+jsonschema = "4.23.0"
+types-jsonschema = "4.23.0.20240712"
+sphinx  = "7.4.7"
+furo = "2024.8.6"
+flask = {version = "3.1.0", extras = ["async"]}
+django = "4.2.21"
+django-stubs = "5.0.4"
+pytest-django = "4.11.1"
+sphinx-autodoc-typehints = "1.25.3"
+darglint = "1.8.1"
+black = "25.1.0"
+
+[tool.mypy]
+exclude = ["build", "bench"]
+allow_redefinition = false
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+# we need to wait for this to be up-to-date
+#enable_recursive_aliases = true
+ignore_errors = false
+ignore_missing_imports = false
+local_partial_types = true
+no_implicit_optional = true
+no_implicit_reexport = true
+strict_optional = true
+strict_equality = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+
+[tool.pytest.ini_options]
+addopts ="""
+  --cov=koda_validate
+  --cov-report=term:skip-covered
+  --cov-report=html
+  --cov-branch
+  --cov-fail-under=94
+  --ds=examples.django_example.django_example.settings
+"""
+# ^^  --ds = "django settings module"
+
+
+[tool.coverage.run]
+omit = [
+    "koda_validate/validate_and_map.py",
+    "tests/*"
+]
+
+[tool.isort]
+line_length = 90
+profile = "black"
+
+[tool.black]
+line_length = 90
+target_version = ['py310']
+
+[tool.pyright]
+include = ["koda_validate", "tests", "examples"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

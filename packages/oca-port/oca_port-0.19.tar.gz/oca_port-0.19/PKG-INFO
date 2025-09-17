@@ -1,0 +1,359 @@
+Metadata-Version: 2.4
+Name: oca_port
+Version: 0.19
+Summary: OCA tool to help with modules migration
+Author: Odoo Community Association (OCA)
+Author-email: Sébastien Alix <sebastien.alix@camptocamp.com>, Simone Orsi <simone.orsi@camptocamp.com>
+License:                    GNU LESSER GENERAL PUBLIC LICENSE
+                               Version 3, 29 June 2007
+        
+         Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+         Everyone is permitted to copy and distribute verbatim copies
+         of this license document, but changing it is not allowed.
+        
+        
+          This version of the GNU Lesser General Public License incorporates
+        the terms and conditions of version 3 of the GNU General Public
+        License, supplemented by the additional permissions listed below.
+        
+          0. Additional Definitions.
+        
+          As used herein, "this License" refers to version 3 of the GNU Lesser
+        General Public License, and the "GNU GPL" refers to version 3 of the GNU
+        General Public License.
+        
+          "The Library" refers to a covered work governed by this License,
+        other than an Application or a Combined Work as defined below.
+        
+          An "Application" is any work that makes use of an interface provided
+        by the Library, but which is not otherwise based on the Library.
+        Defining a subclass of a class defined by the Library is deemed a mode
+        of using an interface provided by the Library.
+        
+          A "Combined Work" is a work produced by combining or linking an
+        Application with the Library.  The particular version of the Library
+        with which the Combined Work was made is also called the "Linked
+        Version".
+        
+          The "Minimal Corresponding Source" for a Combined Work means the
+        Corresponding Source for the Combined Work, excluding any source code
+        for portions of the Combined Work that, considered in isolation, are
+        based on the Application, and not on the Linked Version.
+        
+          The "Corresponding Application Code" for a Combined Work means the
+        object code and/or source code for the Application, including any data
+        and utility programs needed for reproducing the Combined Work from the
+        Application, but excluding the System Libraries of the Combined Work.
+        
+          1. Exception to Section 3 of the GNU GPL.
+        
+          You may convey a covered work under sections 3 and 4 of this License
+        without being bound by section 3 of the GNU GPL.
+        
+          2. Conveying Modified Versions.
+        
+          If you modify a copy of the Library, and, in your modifications, a
+        facility refers to a function or data to be supplied by an Application
+        that uses the facility (other than as an argument passed when the
+        facility is invoked), then you may convey a copy of the modified
+        version:
+        
+           a) under this License, provided that you make a good faith effort to
+           ensure that, in the event an Application does not supply the
+           function or data, the facility still operates, and performs
+           whatever part of its purpose remains meaningful, or
+        
+           b) under the GNU GPL, with none of the additional permissions of
+           this License applicable to that copy.
+        
+          3. Object Code Incorporating Material from Library Header Files.
+        
+          The object code form of an Application may incorporate material from
+        a header file that is part of the Library.  You may convey such object
+        code under terms of your choice, provided that, if the incorporated
+        material is not limited to numerical parameters, data structure
+        layouts and accessors, or small macros, inline functions and templates
+        (ten or fewer lines in length), you do both of the following:
+        
+           a) Give prominent notice with each copy of the object code that the
+           Library is used in it and that the Library and its use are
+           covered by this License.
+        
+           b) Accompany the object code with a copy of the GNU GPL and this license
+           document.
+        
+          4. Combined Works.
+        
+          You may convey a Combined Work under terms of your choice that,
+        taken together, effectively do not restrict modification of the
+        portions of the Library contained in the Combined Work and reverse
+        engineering for debugging such modifications, if you also do each of
+        the following:
+        
+           a) Give prominent notice with each copy of the Combined Work that
+           the Library is used in it and that the Library and its use are
+           covered by this License.
+        
+           b) Accompany the Combined Work with a copy of the GNU GPL and this license
+           document.
+        
+           c) For a Combined Work that displays copyright notices during
+           execution, include the copyright notice for the Library among
+           these notices, as well as a reference directing the user to the
+           copies of the GNU GPL and this license document.
+        
+           d) Do one of the following:
+        
+               0) Convey the Minimal Corresponding Source under the terms of this
+               License, and the Corresponding Application Code in a form
+               suitable for, and under terms that permit, the user to
+               recombine or relink the Application with a modified version of
+               the Linked Version to produce a modified Combined Work, in the
+               manner specified by section 6 of the GNU GPL for conveying
+               Corresponding Source.
+        
+               1) Use a suitable shared library mechanism for linking with the
+               Library.  A suitable mechanism is one that (a) uses at run time
+               a copy of the Library already present on the user's computer
+               system, and (b) will operate properly with a modified version
+               of the Library that is interface-compatible with the Linked
+               Version.
+        
+           e) Provide Installation Information, but only if you would otherwise
+           be required to provide such information under section 6 of the
+           GNU GPL, and only to the extent that such information is
+           necessary to install and execute a modified version of the
+           Combined Work produced by recombining or relinking the
+           Application with a modified version of the Linked Version. (If
+           you use option 4d0, the Installation Information must accompany
+           the Minimal Corresponding Source and Corresponding Application
+           Code. If you use option 4d1, you must provide the Installation
+           Information in the manner specified by section 6 of the GNU GPL
+           for conveying Corresponding Source.)
+        
+          5. Combined Libraries.
+        
+          You may place library facilities that are a work based on the
+        Library side by side in a single library together with other library
+        facilities that are not Applications and are not covered by this
+        License, and convey such a combined library under terms of your
+        choice, if you do both of the following:
+        
+           a) Accompany the combined library with a copy of the same work based
+           on the Library, uncombined with any other library facilities,
+           conveyed under the terms of this License.
+        
+           b) Give prominent notice with the combined library that part of it
+           is a work based on the Library, and explaining where to find the
+           accompanying uncombined form of the same work.
+        
+          6. Revised Versions of the GNU Lesser General Public License.
+        
+          The Free Software Foundation may publish revised and/or new versions
+        of the GNU Lesser General Public License from time to time. Such new
+        versions will be similar in spirit to the present version, but may
+        differ in detail to address new problems or concerns.
+        
+          Each version is given a distinguishing version number. If the
+        Library as you received it specifies that a certain numbered version
+        of the GNU Lesser General Public License "or any later version"
+        applies to it, you have the option of following the terms and
+        conditions either of that published version or of any later version
+        published by the Free Software Foundation. If the Library as you
+        received it does not specify a version number of the GNU Lesser
+        General Public License, you may choose any version of the GNU Lesser
+        General Public License ever published by the Free Software Foundation.
+        
+          If the Library as you received it specifies that a proxy can decide
+        whether future versions of the GNU Lesser General Public License shall
+        apply, that proxy's public statement of acceptance of any version is
+        permanent authorization for you to choose that version for the
+        Library.
+        
+Project-URL: homepage, https://github.com/OCA/oca-port
+Project-URL: documentation, https://github.com/OCA/oca-port
+Project-URL: repository, https://github.com/OCA/oca-port
+Keywords: odoo,oca,port,migration,modules,addons
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Framework :: Odoo
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: gitpython
+Requires-Dist: requests
+Requires-Dist: giturlparse
+Requires-Dist: git-filter-repo
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: coverage; extra == "test"
+Dynamic: license-file
+
+[![Pre-commit Status](https://github.com/OCA/oca-port/actions/workflows/pre-commit.yml/badge.svg?branch=main)](https://github.com/OCA/oca-port/actions/workflows/pre-commit.yml?query=branch%3Amain)
+
+# oca-port
+
+Tool helping to port an addon or missing commits of an addon from one branch
+to another.
+
+1. [Installing](#install)
+2. [Using](#use)
+    1. [GitHub Token](#gh_token)
+    2. [Example](#example)
+    3. [Module located in subfolder](#subfolder)
+    4. [Move/rename a module](#rename)
+    5. [Blacklist](#blacklist)
+4. [Migration of addon](#migrate)
+5. [Port of commits/Pull Requests](#port_commits)
+6. [API](#api)
+
+## <a name="install"/>Installing
+
+    $ pipx install oca-port
+    $ #OR
+    $ git clone git@github.com:oca/oca-port.git
+    $ cd oca-port
+    $ pipx install .
+
+To automatically apply code patterns with [odoo-module-migrator](https://github.com/OCA/odoo-module-migrator), install library with below syntax:
+
+    $ pipx inject --include-deps  oca-port git+https://github.com/OCA/odoo-module-migrator.git@master
+
+## <a name="use"/>Using
+
+If the addon does not exist on the target branch, it will assist the user in
+the migration, following the OCA migration guide.
+
+If the addon already exists on the target branch, it will retrieve commits
+not fully ported grouped by Pull Request and propose to port them.
+
+Syntax:
+
+    $ oca-port <source> <target> <module_path> [options]
+    $ oca-port --help
+
+### <a name="gh_token"/>GitHub Token
+
+`GITHUB_TOKEN` can be passed by exposing to environment:
+
+    $ export GITHUB_TOKEN=<token>
+
+Alternatively, you can pass the token directly using the `--github-token` option
+
+If neither method is used, the tool will attempt to obtain the token using the `gh` client (if it's installed).
+
+### <a name="example"/>Example
+
+To check if an addon could be migrated or to get eligible commits to port:
+
+    $ cd <path/to/OCA/cloned_repository>
+    $ oca-port origin/16.0 origin/18.0 <module_path> --verbose --dry-run
+
+To effectively migrate the addon or port its commits, remove the `--dry-run` option
+so the tool will create a working local branch automatically (called destination)
+from the `<target>` branch:
+
+    $ oca-port origin/16.0 origin/18.0 <module_path>
+
+You can control the destination with the `--destination` option:
+
+    $ oca-port origin/16.0 origin/18.0 <module_path> --destination camptocamp/18.0-port-things
+
+### <a name="subfolder"/>Module located in subfolder
+
+The module can be located in a subfolder, and the tool can be used in any kind of repository, e.g:
+
+    $ oca-port origin/main origin/18.0-mig --source-version=16.0 --target-version=18.0 --upstream-org=camptocamp ./odoo/local-src/MY_MODULE --verbose --destination sebalix/18.0-mig-MY_MODULE
+
+- parameters `--source-version` and `--target-version` are mandatory as soon as
+  the `source`/`target` parameters cannot be recognized as Odoo versions (here
+  `origin/main` is hosting a `16.0` version)
+- `--upstream-org` defaults to `OCA`, here we set it to `camptocamp` for GitHub API requests
+
+### <a name="rename"/>Move/rename a module
+
+To move or rename a module, the `--move-to` parameter can be used:
+
+    $ oca-port origin/16.0 origin/18.0 <module_path> --move-to <new_module_path>
+
+NOTE: the rename will be handled thanks to [`git-filter-repo`](https://github.com/newren/git-filter-repo)
+so the whole git history will be available in the new folder.
+
+### <a name="blacklist"/>Blacklist
+
+You can also directly blacklist a bunch of PRs on a given branch thanks to the
+`oca-port-pr` tool:
+
+    $ oca-port-pr blacklist OCA/wms#250,OCA/wms#251 16.0 shopfloor
+
+You could give a more detailed reason of this blacklist with `--reason` parameter:
+
+    $ oca-port-pr blacklist OCA/wms#250,OCA/wms#251 16.0 shopfloor --reason "Refactored in 16.0, not needed anymore"
+
+And if the module has been moved to another repository, you can specify its remote as well:
+
+    $ git remote add new_repo git@github.com:OCA/new-repo.git
+    $ oca-port-pr blacklist OCA/wms#250,OCA/wms#251 16.0 shopfloor --remote new_repo
+
+## <a name="migrate"/>Migration of addon
+
+The tool follows the usual OCA migration guide to port commits of an addon,
+and will invite the user to fullfill the mentionned steps that can't be
+performed automatically.
+
+**Output example:**
+![image](https://user-images.githubusercontent.com/5315285/129355442-f863adff-33c0-4c91-b0cb-b6882312e340.png)
+
+If used with the `--non-interactive` option, the returned exit code is `100`
+if an addon could be migrated.
+
+## <a name="port_commits"/>Port of commits/Pull Requests
+
+The tool will ask the user if he wants to open draft pull requests against
+the upstream repository.
+
+If there are several Pull Requests to port, it will ask the user if he wants
+to base the next PR on the previous one, allowing the user to cumulate ported
+PRs in one branch and creating a draft PR against the upstream repository
+with all of them.
+
+More details here : [OCA Days 2022 - Sébastien Alix and Simone Orsi: oca-port:new OCA tool to help with modules migration](https://www.youtube.com/watch?v=idGLkQiJ5N0)
+
+**Output example (with --verbose):**
+![oca_port_pr_verbose](https://user-images.githubusercontent.com/5315285/129207041-12ac6c4a-ea96-4b8c-bd68-ae661531ad92.png)
+
+If used with the `--non-interactive` option, the returned exit code is `110`
+if some pull requests/commits could be ported.
+
+## <a name="api"/>API
+
+You can also use `oca-port` as a Python package:
+
+```python
+>>> import oca_port,json
+>>> app = oca_port.App(
+...     source="origin/14.0",
+...     target="origin/16.0",
+...     addon_path="stock_move_auto_assign",
+...     upstream_org="OCA",
+...     repo_path="/home/odoo/OCA/stock-logistics-warehouse",
+...     output="json",
+...     fetch=True,
+...     github_token="<TOKEN>"
+... )
+>>> json_data = app.run()
+>>> data = json.loads(json_data)
+>>> from pprint import pprint as pp
+>>> pp(data)
+{'process': 'port_commits',
+ 'results': {'1631': {'author': 'TDu',
+                      'merged_at': '2023-04-04T17:06:03Z',
+                      'missing_commits': ['41416c1d7dad15ce4745e07d0541c79e938c2710',
+                                          'd43985a443e29641447a3811f2310d54b886ab3d',
+                                          '6bd9fcff3e814a6802c7aefadb9c646194cde42b'],
+                      'ref': 'OCA/stock-logistics-warehouse#1631',
+                      'title': '[14][ADD] stock_move_auto_assign_auto_release '
+                               '- backport',
+                      'url': 'https://github.com/OCA/stock-logistics-warehouse/pull/1631'}}}
+```

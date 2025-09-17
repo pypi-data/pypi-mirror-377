@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cf_proxy"
+version = "0.2.0"
+description = "Python package utilizing Cloudflare Workers to proxy requests"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+dependencies = [
+    "httpx >= 0.24.0",
+]
+authors = [{ name = "kevintsoii", email = "kevin.tsoi44@gmail.com" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Source = "https://github.com/kevintsoii/cf_proxy"

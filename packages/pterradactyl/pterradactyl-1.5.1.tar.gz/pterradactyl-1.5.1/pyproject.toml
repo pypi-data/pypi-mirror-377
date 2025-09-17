@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "pterradactyl"
+version = "1.5.1"
+description = "hiera-inspired terraform wrapper"
+authors = [
+    "Rob King <rob.king@nike.com>",
+    "Vincent Liu <vincent.liu@nike.com>"
+]
+readme = "README.md"
+license = "Apache-2.0"
+maintainers = [
+  "Mohamed Abdul Huq Ismail <Abdul.Ismail@nike.com>",
+  "Manasi Waghmare <Manasi.Waghmare@nike.com>",
+  "Marcin Zalewski <Marcin.Zalewski@nike.com"
+]
+packages = [
+    { include = "pterradactyl" },
+]
+repository = "https://github.com/Nike-Inc/pterradactyl"
+
+[tool.poetry.dependencies]
+python = "^3.10.10"
+pyyaml = { version = "^6.0.0" }
+jinja2 = { version = "^3.1.2" }
+appdirs = { version = "^1.4.4" }
+jsonpath-ng = { version = "^1.5.3" }
+semantic_version = { version = "^2.10.0" }
+phiera = { version = "^2.1.0" }
+requests = { version = "^2.31.0" }
+
+[tool.poetry.group.dev.dependencies]
+pytest = { version = "^7.3.1" }
+pytest-cov = { version = "^4.1.0" }
+testfixtures = { version = "^7.1.0" }
+responses = { version = "^0.23.1" }
+
+[tool.poetry.scripts]
+pt = "pterradactyl.__main__:main"
+
+[tool.poetry.plugins."pterradactyl.registered_commands"]
+apply = "pterradactyl.commands.manifest:ManifestCommand"
+console = "pterradactyl.commands.manifest:ManifestCommand"
+destroy = "pterradactyl.commands.manifest:ManifestCommand"
+env = "pterradactyl.commands.env:EnvCommand"
+fmt = "pterradactyl.commands.manifest:ManifestCommand"
+force-unlock = "pterradactyl.commands.manifest:ManifestCommand"
+get = "pterradactyl.commands.manifest:ManifestCommand"
+graph = "pterradactyl.commands.manifest:ManifestCommand"
+import = "pterradactyl.commands.manifest:ManifestCommand"
+output = "pterradactyl.commands.manifest:ManifestCommand"
+plan = "pterradactyl.commands.manifest:ManifestCommand"
+providers = "pterradactyl.commands.manifest:ManifestCommand"
+refresh = "pterradactyl.commands.manifest:ManifestCommand"
+show = "pterradactyl.commands.manifest:ManifestCommand"
+taint = "pterradactyl.commands.manifest:ManifestCommand"
+untaint = "pterradactyl.commands.manifest:ManifestCommand"
+validate = "pterradactyl.commands.manifest:ManifestCommand"
+workspace = "pterradactyl.commands.manifest:ManifestCommand"
+state = "pterradactyl.commands.state:StateCommand"
+root-module = "pterradactyl.commands.dump:DumpRootModuleCommand"
+facts = "pterradactyl.commands.dump:DumpFactsCommand"
+lookup = "pterradactyl.commands.lookup:LookupCommand"
+
+[tool.poetry.plugins."pterradactyl.facters"]
+arguments = "pterradactyl.facter.arguments:ArgumentsFacter"
+jinja = "pterradactyl.facter.jinja:JinjaFacter"
+shell = "pterradactyl.facter.shell:ShellFacter"
+environment = "pterradactyl.facter.environment:EnvironmentFacter"
+regex = "pterradactyl.facter.regex:RegexFacter"
+
+[tool.poetry.plugins."pterradactyl.validators"]
+version = "pterradactyl.validator.version:VersionValidator"
+
+[build-system]
+requires = ["poetry-core>=1.5.3"]
+build-backend = "poetry.core.masonry.api"

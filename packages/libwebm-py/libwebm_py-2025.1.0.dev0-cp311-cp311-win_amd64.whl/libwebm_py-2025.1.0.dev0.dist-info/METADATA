@@ -1,0 +1,224 @@
+Metadata-Version: 2.4
+Name: libwebm-py
+Version: 2025.1.0.dev0
+Summary: Python bindings for libwebm (via nanobind)
+Author-Email: "Shiguredo Inc." <contact+pypi@shiguredo.jp>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: C++
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Project-URL: Source, https://github.com/shiguredo/libwebm-py
+Project-URL: Discord, https://discord.gg/shiguredo
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+
+# libwebm-py
+
+[![PyPI](https://img.shields.io/pypi/v/libwebm-py)](https://pypi.org/project/libwebm-py/)
+[![image](https://img.shields.io/pypi/pyversions/libwebm-py.svg)](https://pypi.python.org/pypi/libwebm-py)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Actions status](https://github.com/shiguredo/libwebm-py/workflows/wheel/badge.svg)](https://github.com/shiguredo/libwebm-py/actions)
+
+## About Shiguredo's open source software
+
+We will not respond to PRs or issues that have not been discussed on Discord. Also, Discord is only available in Japanese.
+
+Please read <https://github.com/shiguredo/oss/blob/master/README.en.md> before use.
+
+## 時雨堂のオープンソースソフトウェアについて
+
+利用前に <https://github.com/shiguredo/oss> をお読みください。
+
+## libwebm-py について
+
+[libwebm](https://github.com/webmproject/libwebm/) の Python バインディングです。WebM コンテナフォーマットの読み書きをサポートしています。
+
+- libwebm バージョン: `1.0.0.32`
+- バインディング: nanobind を使用
+
+## 対応プラットフォーム
+
+- macOS 15 arm64
+- macOS 14 arm64
+- Ubuntu 24.04 x86_64
+- Ubuntu 24.04 arm64
+- Windows 11 x86_64
+
+## 対応 Python
+
+- 3.13
+- 3.12
+- 3.11
+
+## インストール
+
+```bash
+uv add libwebm-py
+```
+
+## 使い方（基本 API）
+
+- 提供: `WebMReader`, `WebMWriter`
+- ビデオ/オーディオトラックの読み書きをサポート
+- VP8/VP9、Opus/Vorbis コーデック対応
+
+### WebM ファイルの読み込み
+
+```python
+import webm
+
+# WebM ファイルを開く
+reader = webm.WebMReader()
+if not reader.open("input.webm"):
+    print("Failed to open file")
+    exit(1)
+
+# ファイル情報を取得
+duration = reader.get_duration()
+if duration:
+    print(f"Duration: {duration:.2f} seconds")
+
+tracks_count = reader.get_tracks_count()
+print(f"Number of tracks: {tracks_count}")
+
+# ビデオ解像度を取得
+resolution = reader.get_video_resolution()
+if resolution:
+    print(f"Video resolution: {resolution[0]}x{resolution[1]}")
+
+reader.close()
+```
+
+### WebM ファイルの作成
+
+```python
+import webm
+
+writer = webm.WebMWriter()
+writer.open("output.webm")
+
+# ビデオトラックを追加 (640x480, VP8 コーデック)
+video_track = writer.add_video_track(640, 480, "V_VP8")
+
+# オーディオトラックを追加 (48kHz, 2チャンネル, Opus コーデック)
+audio_track = writer.add_audio_track(48000, 2, "A_OPUS")
+
+# フレームを追加
+for i in range(30):
+    timestamp_ns = i * 33333333  # 30fps
+    is_keyframe = (i % 10) == 0  # 10フレームごとにキーフレーム
+
+    # ビデオフレームを追加 (実際のデータに置き換えてください)
+    video_data = b'\x00' * 1000
+    writer.add_frame(video_data, video_track, timestamp_ns, is_keyframe)
+
+    # オーディオフレームを追加
+    audio_data = b'\x00' * 500
+    writer.add_frame(audio_data, audio_track, timestamp_ns, False)
+
+writer.finalize()
+```
+
+### トラック情報の取得
+
+```python
+import webm
+
+reader = webm.WebMReader()
+reader.open("input.webm")
+
+# トラックタイプを取得
+track_types = reader.get_track_types()
+print(f"Track types: {track_types}")  # 例: ['video', 'audio']
+
+# 各トラックの詳細情報にアクセス
+# (詳細な API は今後拡張予定)
+
+reader.close()
+```
+
+> [!WARNING]
+>
+> - 現在は基本的な読み書き機能のみをサポートしています
+> - シーク機能やフレームごとのデコードは未実装です
+
+## サンプル
+
+- `examples/read.py`: WebM ファイルの情報を読み取るサンプル
+- `examples/write.py`: WebM ファイルを作成するサンプル
+- `examples/version.py`: ライブラリバージョンを確認
+
+実行例:
+
+```bash
+uv run python examples/read.py input.webm
+uv run python examples/write.py
+```
+
+## ビルド
+
+```bash
+uv build --wheel
+```
+
+## libwebm ライセンス
+
+BSD 3-Clause License
+
+```text
+Copyright (c) 2010, Google Inc. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+  * Neither the name of Google nor the names of its contributors may
+    be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+## libwebm-py ライセンス
+
+Apache License 2.0
+
+```text
+Copyright 2025-2025, Shiguredo Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

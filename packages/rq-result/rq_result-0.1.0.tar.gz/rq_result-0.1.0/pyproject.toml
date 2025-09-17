@@ -1,0 +1,17 @@
+[project]
+name = "rq-result"
+version = "0.1.0"
+description = "Simple job result"
+readme = "README.md"
+authors = [
+    { name = "pyqf" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "django>=5.2.5",
+    "psycopg[binary]>=3.2.9",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"

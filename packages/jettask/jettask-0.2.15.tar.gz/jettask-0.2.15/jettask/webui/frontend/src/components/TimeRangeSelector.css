@@ -1,0 +1,21 @@
+/* 时间范围选择器样式 */
+.time-range-selector-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* 预设标签覆盖层 hover 效果 */
+.preset-label-overlay:hover {
+  border-color: #4096ff !important;
+}
+
+/* 隐藏下面的 RangePicker 输入框文字，但保留交互 */
+.time-range-selector-wrapper .ant-picker-input {
+  position: relative;
+}
+
+/* 确保日历图标在覆盖层之上 */
+.time-range-selector-wrapper .ant-picker-suffix {
+  position: relative;
+  z-index: 2;
+}

@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: encodelikepro
+Version: 0.1.0
+Summary: A Python package for base69 encoding
+Author-email: Ahmed Tuzinac <tuzinac96@gmail.com>
+Project-URL: Homepage, https://github.com/yourusername/base69
+Project-URL: Issues, https://github.com/yourusername/base69/issues
+Keywords: encoding,base69
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# Base69
+
+A Python package for Base69 encoding and decoding.
+
+## Installation
+
+```bash
+pip install base69
+```
+
+## Usage
+
+```python
+from base69 import encode, decode
+
+# Encode bytes to Base69
+encoded = encode(b"Hello, World!")
+print(encoded)
+
+# Decode Base69 back to bytes
+decoded = decode(encoded)
+print(decoded)
+```
+
+## Development
+
+To install for development:
+
+```bash
+pip install -e .
+```
+
+## License
+
+MIT

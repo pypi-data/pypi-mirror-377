@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: hestia_earth_converters
+Version: 0.0.6
+Summary: HESTIA's set of file converters
+Home-page: https://gitlab.com/hestia-earth/hestia-convert-base
+Author: @ToffeeLabs
+Author-email: community@hestia.earth
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Provides-Extra: SimaPro
+License-File: LICENSE
+
+# HESTIA Converters
+
+> Library to convert from/to HESTIA format.
+
+## Usage
+
+1. Install the library and the converters you want to use:
+```
+pip install hestia-earth-converters
+pip install "hestia-earth-converters[simapro]"
+```
+2. Convert an HESTIA ImpactAssessment to SimaPro format:
+```
+hestia-convert --output-folder samples --input-format HESTIA --output-format SimaPro --hestia-impact-id cocoaSeedWhole-ghana-2010-2025-20250916
+```
+
+The converted file will be stored under `samples` directory.
+
+You can also use `hestia-convert --help` to see the all available formats.
+
+

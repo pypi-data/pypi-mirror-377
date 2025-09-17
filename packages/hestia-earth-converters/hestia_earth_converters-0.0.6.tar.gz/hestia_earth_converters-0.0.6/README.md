@@ -1,0 +1,19 @@
+# HESTIA Converters
+
+> Library to convert from/to HESTIA format.
+
+## Usage
+
+1. Install the library and the converters you want to use:
+```
+pip install hestia-earth-converters
+pip install "hestia-earth-converters[simapro]"
+```
+2. Convert an HESTIA ImpactAssessment to SimaPro format:
+```
+hestia-convert --output-folder samples --input-format HESTIA --output-format SimaPro --hestia-impact-id cocoaSeedWhole-ghana-2010-2025-20250916
+```
+
+The converted file will be stored under `samples` directory.
+
+You can also use `hestia-convert --help` to see the all available formats.

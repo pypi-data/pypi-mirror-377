@@ -1,0 +1,32 @@
+[project]
+name = "py_log_mjk"
+version = "0.1.4"
+description = "Um pacote de logging completo e profissional para aplicações Python."
+authors = [
+    {name = "Mauricio Araujo",email = "mjk_araujo@hotmail.com"}
+]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "py_log_mjk", from = "src" }]
+homepage = "https://github.com/mjkAraujo/py_log_mjk"
+repository = "https://github.com/seu-usuario/py_log_mjk"
+keywords = ["python", "logging", "toolkit", "log", "logging-library"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+rich = "^13.7.1"
+python-dotenv = "^1.0.1"
+tzdata = "^2025.2"
+setuptools = "^80.9.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"

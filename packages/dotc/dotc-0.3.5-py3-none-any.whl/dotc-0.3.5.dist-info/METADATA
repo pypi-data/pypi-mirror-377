@@ -1,0 +1,147 @@
+Metadata-Version: 2.4
+Name: dotc
+Version: 0.3.5
+Summary: DOTC (like Yahtzee) - Access Nested Dicts and Lists via Dots
+Author-email: Mike Steele <mike@mikesteele.us>
+License: MIT License
+        
+        Copyright (c) 2023 soulrx
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/soulrx/dotc
+Keywords: nested,dot,dict,list,datastructure,dotspace,dotdict,dotlist,xml,dotc
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: bumpver; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: wheel; extra == "dev"
+Requires-Dist: setuptools; extra == "dev"
+Dynamic: license-file
+
+# dotc
+DOTC (like Yahtzee) - Access Nested Dicts and Lists via Dots (Dotc objects all the way down) 
+
+pip install dotc
+python
+from dotc import Dotc
+
+d1 = Dotc( data={'some':'data'}, node='root or name of data object - defaults to empty string')
+
+
+# optionally
+from dotc import DataPath
+dp = DataPath()
+
+Converts Python Data Structures (dicts, lists, scalars) to a nested object structure
+
+    - can access nested data with dot notation and _listindex for lists
+
+      - example:
+            data = {'a':1,'b':{'c':3,'d':[4,5,'6']}}
+            node = 'root' # optional node name; defaults to '', but child nodes get their names from keys
+            o = Dotc(data,node) or o = Dotc(data=data,node='root')
+            o.a returns 1
+            o.b.c returns 3
+            o.b.d._0 returns 4
+    
+    - if _strict=0 (default), accessing a non-existent attribute returns _default instead of raising AttributeError
+
+      - example using o from above:
+            o.b.x returns None (the default _default value)
+
+    - if _strict=1, setting a value on a non-existent path raises an exception
+
+    - if setting _strict=1 after instantiation, it has no effect on child nodes (TODO: fix with @property(s))
+
+    - use ._ to get fully resolved data structure otherwise ._val is the scalar/resultant value if set
+        otherwise the Dotc object is returned so you can keep traversing with dot notation
+
+      - example using d from above:
+            o._ returns {'a':1,'b':{'c':3,'d':[4,5,'6']}}
+            o.b._ returns {'c':3,'d':[4,5,'6']} where as d.b returns the Dotc object itself so that:
+            o.b.d._ returns [4,5,'6']
+
+    - explore (using o from above) passing in the dotc object (or not for self) 
+        and optionally v for verbosity:
+        
+        >>> o._show()
+        {'_key_ct': 2,
+        '_ls_ct': 0,
+        '_node': 'root',
+        '_parent': None,
+        '_strict': 0,
+        '_val': None}
+
+        >>> o._show(v=1)
+        {'_key_ct': 2,
+        '_ls_ct': 0,
+        '_node': 'root',
+        '_parent': None,
+        '_strict': 0,
+        '_val': None,
+        'a': 1,
+        'b': Dotc( "b", _val=None, _key_ct=2, _ls_ct=0 )}
+
+        >>> o._show(o.b.d, v=1)
+        {'_0': 4,
+        '_1': 5,
+        '_2': '6',
+        '_key_ct': 0,
+        '_ls_ct': 3,
+        '_node': 'd',
+        '_parent': 'b',
+        '_strict': 0,
+        '_val': None}
+
+    - backported DataPath which was the original tool used without self dot access for programmatically accessing nested objects
+      now it can be used on Dotc objects
+      
+      - example (using o from above):
+
+        from dotc import DataPath as DP
+        
+        dp = DP()
+        >>> dp.get('b.d',o)
+        [4, 5, '6']
+
+        >>> r = dp.get('b.d',o,debug=1)
+        DEBUG: getting b from o=Dotc( "root", _val=None, _key_ct=2, _ls_ct=0 )
+        DEBUG: getting d from o=Dotc( "b", _val=None, _key_ct=2, _ls_ct=0 )
+        DEBUG: final obj: got Dotc object obj=Dotc( "d", _val=None, _key_ct=0, _ls_ct=3 )
+        >>> r
+        [4, 5, '6']
+
+        >>> dp.get('b.d.2',o,debug=1)
+        DEBUG: getting b from o=Dotc( "root", _val=None, _key_ct=2, _ls_ct=0 )
+        DEBUG: getting d from o=Dotc( "b", _val=None, _key_ct=2, _ls_ct=0 )
+        '6'
+
+        NOTE: '.2' could be used instead of '._2' (required for actual dotc attribute access) as DataPath converts it for dotc objects
+
+        NOTE: Also, DataPath works on other nested datastructures in Python
+
+        >>> dp.get('b.d.2', data, debug=1)
+        '6'

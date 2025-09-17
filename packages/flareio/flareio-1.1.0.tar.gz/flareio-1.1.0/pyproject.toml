@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "flareio"
+version = "1.1.0"
+description = "Python SDK for the flare.io API."
+authors = ["Alexandre Viau <alexandre.viau@flare.io>"]
+readme = "README.md"
+repository = "https://github.com/Flared/python-flareio"
+license = "MIT"
+keywords = [
+    "flare",
+    "sdk",
+]
+classifiers = [
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Developers",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+packages = [
+    { include = "flareio" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+requests = ">=2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.3.2"
+mypy = "^1.11.1"
+requests-mock = "^1.12.1"
+types-requests = "^2.32.0.20240712"
+
+[tool.ruff.lint]
+extend-select = [
+    "I",
+    "C411",
+    "C413",
+    "C414",
+    "C416",
+    "C417",
+    "C419",
+]
+
+
+[tool.ruff.lint.isort]
+force-single-line = true
+no-sections = true
+lines-after-imports = 2
+lines-between-types = 1
+force-wrap-aliases = true
+combine-as-imports = true
+forced-separate = [
+    "typing",
+    "flareio",
+]

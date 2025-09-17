@@ -1,0 +1,78 @@
+name: ${prefix}draft_ms_with_qpd
+node_type: cube
+owners:
+- yshang@netflix.com
+display_name: draft MS with QPD
+description: ''
+mode: published
+metrics:
+- ${prefix}total_missing_covariates
+- ${prefix}overall_streaming_lift
+- ${prefix}qpd
+- ${prefix}engagement_quality_score
+- ${prefix}qpd_normalization__35
+dimensions:
+- common.dimensions.xp.measure_date.dateint
+- member.is_jfk_profile.is_jfk_profile
+- common.dimensions.hardware_category.hw_category
+- common.dimensions.client_category.client_name
+columns:
+- name: users.yshang.member.total_missing_covariates
+  type: int
+  display_name: Total Missing Covariates
+  description: null
+  attributes: []
+  partition: null
+- name: users.yshang.member.overall_streaming_lift
+  type: float
+  display_name: Overall Streaming Lift
+  description: null
+  attributes: []
+  partition: null
+- name: users.yshang.member.qpd
+  type: float
+  display_name: Video QPD per 28d
+  description: null
+  attributes: []
+  partition: null
+- name: users.yshang.member.engagement_quality_score
+  type: double
+  display_name: Engagement Quality Score
+  description: null
+  attributes: []
+  partition: null
+- name: users.yshang.member.qpd_normalization__35
+  type: float
+  display_name: QPD (normalization = 35)
+  description: null
+  attributes: []
+  partition: null
+- name: common.dimensions.xp.measure_date.dateint
+  type: int
+  display_name: Dateint
+  description: null
+  attributes:
+  - temporal
+  - primary_key
+  partition: null
+- name: member.is_jfk_profile.is_jfk_profile
+  type: int
+  display_name: Is Jfk Profile
+  description: null
+  attributes:
+  - primary_key
+  partition: null
+- name: common.dimensions.hardware_category.hw_category
+  type: string
+  display_name: Hw Category
+  description: null
+  attributes:
+  - primary_key
+  partition: null
+- name: common.dimensions.client_category.client_name
+  type: string
+  display_name: Client Name
+  description: null
+  attributes:
+  - primary_key
+  partition: null

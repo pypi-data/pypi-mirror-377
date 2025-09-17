@@ -1,0 +1,8 @@
+name: ${prefix}overall_streaming_lift
+node_type: metric
+owners:
+- yshang@netflix.com
+display_name: Overall Streaming Lift
+description: ''
+mode: published
+query: SELECT CAST(SUM(view_secs / 3600.0) AS FLOAT) FROM ${prefix}playbacks

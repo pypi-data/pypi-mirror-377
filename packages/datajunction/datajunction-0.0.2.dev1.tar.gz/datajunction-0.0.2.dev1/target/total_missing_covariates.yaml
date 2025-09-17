@@ -1,0 +1,19 @@
+name: ${prefix}total_missing_covariates
+node_type: metric
+owners:
+- yshang@netflix.com
+display_name: Total Missing Covariates
+description: ''
+mode: published
+query: |-
+  SELECT MAX(
+    CAST(
+      CASE
+        WHEN common.dimensions.xp.allocation_day.alloc_country_iso_code IS NULL
+          OR common.dimensions.xp.allocation_day.alloc_group_id IS NULL
+        THEN 1
+        ELSE 0
+      END
+      AS INT
+    )
+  ) FROM ${prefix}playbacks

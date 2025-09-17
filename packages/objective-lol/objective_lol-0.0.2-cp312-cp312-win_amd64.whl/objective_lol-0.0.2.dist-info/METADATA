@@ -1,0 +1,141 @@
+Metadata-Version: 2.4
+Name: objective_lol
+Version: 0.0.2
+Summary: Python bindings for Objective-LOL
+Home-page: https://github.com/bjia56/objective-lol
+Author: Brett Jia
+Author-email: dev.bjia56@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: summary
+
+# Objective-LOL Python Bindings
+
+Python bindings for the Objective-LOL programming language - a modern, strongly-typed language inspired by LOLCODE.
+
+## Installation
+
+```bash
+pip install objective-lol
+```
+
+## Quick Start
+
+```python
+import objective_lol as olol
+
+# Create a VM instance
+vm = olol.ObjectiveLOLVM()
+
+# Execute Objective-LOL code
+code = """
+I CAN HAS STDIO?
+HAI ME TEH FUNCSHUN MAIN
+    I HAS A VARIABLE X TEH INTEGR ITZ 42
+    SAYZ WIT X
+KTHXBAI
+"""
+
+vm.execute(code)  # Prints: 42
+```
+
+## Features
+
+- **Execute Objective-LOL code**: Run complete programs or code snippets
+- **Python integration**: Call Python functions from Objective-LOL and vice versa
+- **Type conversion**: Automatic conversion between Python and Objective-LOL types
+- **Module system**: Import and use custom modules
+- **Class definitions**: Define and use classes from Python
+
+## Advanced Usage
+
+### Defining Python Functions for Objective-LOL
+
+```python
+vm = olol.ObjectiveLOLVM()
+
+def add_numbers(a, b):
+    return a + b
+
+vm.define_function("add_numbers", add_numbers)
+
+code = """
+I CAN HAS STDIO?
+HAI ME TEH FUNCSHUN MAIN
+    I HAS A VARIABLE RESULT TEH INTEGR ITZ add_numbers WIT 10 AN WIT 20
+    SAYZ WIT RESULT
+KTHXBAI
+"""
+
+vm.execute(code)  # Prints: 30
+```
+
+### Working with Classes
+
+```python
+vm = olol.ObjectiveLOLVM()
+
+class Calculator:
+    def add(self, x, y):
+        return x + y
+
+    def multiply(self, x, y):
+        return x * y
+
+vm.define_class(Calculator)
+
+code = """
+I CAN HAS STDIO?
+HAI ME TEH FUNCSHUN MAIN
+    I HAS A VARIABLE CALC TEH Calculator ITZ NEW Calculator
+    I HAS A VARIABLE SUM TEH INTEGR ITZ CALC DO add WIT 5 AN WIT 3
+    SAYZ WIT SUM
+KTHXBAI
+"""
+
+vm.execute(code)  # Prints: 8
+```
+
+## Type Mapping
+
+| Objective-LOL Type | Python Type |
+|-------------------|-------------|
+| INTEGR            | int         |
+| DUBBLE            | float       |
+| STRIN             | str         |
+| BOOL              | bool        |
+| NOTHIN            | None        |
+| BUKKIT (array)    | list        |
+| BASKIT (map)      | dict        |
+
+## Links
+
+- [Main Project](https://github.com/bjia56/objective-lol)
+- [Language Documentation](https://github.com/bjia56/objective-lol/tree/main/docs)
+
+## License
+
+MIT License
+
+## Changelog
+
+### [0.0.2] - 2025-09-16
+
+#### Changed
+- Modified octal prefix from `0` to `0o`
+
+#### Fixed
+- Fixed a stack corruption crash on Windows by using compatibility function calls with separate goroutines
+
+### [0.0.1] - 2025-09-14
+
+#### Added
+- Initial Python bindings for Objective-LOL interpreter
+- Pre-built wheels for Windows, macOS, and Linux for Python 3.9+

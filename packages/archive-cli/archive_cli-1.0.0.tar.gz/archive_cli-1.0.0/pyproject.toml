@@ -1,0 +1,13 @@
+[project]
+name = "archive-cli"
+version = "1.0.0"
+description = "A CLI tool for creating and extracting archives with interactive prompts"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "prompt-toolkit>=3.0.52",
+    "typer>=0.17.4",
+]
+
+[project.scripts]
+archive-cli = "archive_cli.archive_cli:main"

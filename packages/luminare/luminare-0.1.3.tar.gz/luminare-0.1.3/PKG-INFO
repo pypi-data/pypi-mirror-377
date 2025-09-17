@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: luminare
+Version: 0.1.3
+Summary: A brief description of your package
+Author-email: Andy Casey <andycasey@gmail.com>
+Maintainer-email: Andy Casey <andycasey@gmail.com>
+License: MIT
+Keywords: keyword1,keyword2,keyword3
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: jax==0.4.38
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: tqdm
+Requires-Dist: exojax
+Requires-Dist: scipy
+Requires-Dist: marimo>=0.15.2
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.900; extra == "dev"
+Requires-Dist: ipython; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0; extra == "docs"
+
+<div align="Center">
+
+###  luminare
+
+[![Test Status](https://github.com/andycasey/luminare/actions/workflows/ci.yml/badge.svg)](https://github.com/andycasey/luminare/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/andycasey/luminare/badge.svg?branch=main&service=github)](https://coveralls.io/github/andycasey/luminare?branch=main)
+
+</div>
+
+```
+uv add luminare
+```
+
+

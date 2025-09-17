@@ -1,0 +1,133 @@
+Metadata-Version: 2.4
+Name: gradient-agent
+Version: 0.1.0
+Summary: Python SDK for building and instrumenting AI agents with FastAPI integration
+Project-URL: Homepage, https://github.com/your-org/gradient-agent
+Project-URL: Repository, https://github.com/your-org/gradient-agent
+Project-URL: Documentation, https://gradient-agent.readthedocs.io
+Project-URL: Changelog, https://github.com/your-org/gradient-agent/blob/main/CHANGELOG.md
+Author-email: Your Name <your.email@example.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: agents,ai,fastapi,instrumentation,langgraph
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: fastapi>=0.104.0
+Requires-Dist: pydantic>=2.5.0
+Requires-Dist: typing-extensions>=4.8.0
+Requires-Dist: uvicorn[standard]>=0.24.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: httpx>=0.25.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Requires-Dist: mypy>=1.7.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest>=7.4.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Gradient Agent
+
+A Python SDK for building and instrumenting AI agents with FastAPI integration and comprehensive runtime tracking.
+
+## Features
+
+- **@entrypoint decorator** - Easy FastAPI server creation from agent functions
+- **Runtime instrumentation** - Complete observability for LangGraph-based agents
+- **Request tracking** - Monitor agent performance and behavior
+- **Context management** - Maintain state across agent executions
+
+## Quick Start
+
+```python
+from gradient_sdk import entrypoint
+
+@entrypoint
+def my_agent(prompt: str, max_tokens: int = 100) -> str:
+    """Simple echo agent"""
+    return f"Echo: {prompt} [max_tokens={max_tokens}]"
+
+# The decorator automatically creates a FastAPI server
+# Access at http://localhost:8080 when running
+```
+
+## Installation
+
+```bash
+pip install gradient-agent
+```
+
+## Usage
+
+### Basic Agent
+
+```python
+from gradient_agent import entrypoint
+
+@entrypoint
+def simple_agent(prompt: str) -> str:
+    return f"Response to: {prompt}"
+```
+
+### LangGraph Integration
+
+```python
+from gradient_agent import entrypoint
+from langgraph.graph import StateGraph
+from gradient_agent.runtime import get_runtime_manager
+
+@entrypoint
+def langgraph_agent(prompt: str) -> str:
+    # Your LangGraph agent code here
+    # Runtime tracking is automatically enabled
+    pass
+```
+
+### Manual Server Control
+
+```python
+from gradient_agent import get_app
+import uvicorn
+
+# Import your agent modules first
+import my_agent
+
+# Get the FastAPI app
+app = get_app()
+
+# Run with custom configuration
+uvicorn.run(app, host="0.0.0.0", port=8080)
+```
+
+## API Endpoints
+
+When you use the `@entrypoint` decorator, your agent automatically gets:
+
+- `POST /completions` - Main agent endpoint
+- `GET /health` - Health check
+- `GET /` - Basic info
+
+## Runtime Tracking
+
+The SDK includes comprehensive runtime tracking for LangGraph-based agents:
+
+- Node execution timing
+- Request context management  
+- Performance metrics
+- Error tracking
+
+## Development
+
+This SDK is part of the larger Gradient ecosystem for AI agent development and deployment.
+
+## License
+
+MIT

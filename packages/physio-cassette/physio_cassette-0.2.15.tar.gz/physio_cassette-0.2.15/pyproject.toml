@@ -1,0 +1,46 @@
+[build-system]
+requires = [
+    "setuptools"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "physio_cassette"
+version = "0.2.15"
+description = "Storage structures for signals (mostly physiological data), metadata and event annotations"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+]
+keywords = ['data storage', 'physiological signals', 'event records']
+dependencies = [
+    "numpy>2.0",
+    "openpyxl<=3.1",
+    "openpyxl-dictreader>=0.1.9",
+    "xlrd>=2.0.2",
+    "pyedflib>=0.1.40",
+    "pymatreader>=1.0.0",
+    "python-dateutil>=2.9.0",
+    "scipy>=1.16",
+    "traces>=0.5.1",
+    "wfdb>=4.3.0",
+    "xmltodict>=0.13.0"
+]
+
+[project.urls]
+homepage = "https://codeberg.org/LucaCerina/physio-cassette"
+"Bug Tracker" = "https://codeberg.org/LucaCerina/physio-cassette/issues"
+
+[metadata]
+author = "LucaCerina"
+author_email = "lccerina@duck.com"
+license = "MIT"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]

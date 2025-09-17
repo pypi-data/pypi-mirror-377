@@ -1,0 +1,112 @@
+<!-- Copyright 2025 OpenSynergy Indonesia
+     Copyright 2025 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<!-- Search View -->
+<record id="consulting_service_business_process_view_search" model="ir.ui.view">
+    <field name="name">consulting_service_business_process - search</field>
+    <field name="model">consulting_service.business_process</field>
+    <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_search"
+        />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="title" />
+                <field name="service_id" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<!-- Tree View -->
+<record id="consulting_service_business_process_view_tree" model="ir.ui.view">
+    <field name="name">consulting_service_business_process - tree</field>
+    <field name="model">consulting_service.business_process</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_tree" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="partner_id" />
+                <field name="title" />
+                <field name="parent_id" />
+                <field name="area_id" />
+                <field name="service_id" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<!-- Form View -->
+<record id="consulting_service_business_process_view_form" model="ir.ui.view">
+    <field name="name">consulting_service_business_process - form</field>
+    <field name="model">consulting_service.business_process</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_form" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="partner_id" />
+                <field name="service_id" />
+                <field name="area_id" />
+                <field name="parent_id" />
+            </xpath>
+            <xpath expr="//group[@name='header_right']" position="inside">
+                <field name="date" />
+                <field name="s3_prefix" />
+            </xpath>
+            <xpath expr="//group[@name='header_center']" position="inside">
+                <label for="title" colspan="2" />
+                <field name="title" colspan="2" nolabel="1" />
+            </xpath>
+            <xpath expr="//page[1]" position="before">
+                <page name="graphml" string="Graphml">
+                    <group name="graphml_1" colspan="4" col="2">
+                        <field name="graphml_s3_url" string="S3 URL" widget="url" />
+                    </group>
+                    <separator string="Raw" />
+                    <field name="graphml" widget="ace" />
+                </page>
+                <page name="analysis" string="Analysis">
+                    <group name="analysis_1" colspan="4" col="2">
+                        <field
+                                name="analysis_s3_url"
+                                string="Analysis URL"
+                                widget="url"
+                            />
+                        <field
+                                name="analysis_json_url"
+                                string="Anlysis (JSON) URL"
+                                widget="url"
+                            />
+                    </group>
+                    <separator string="Result" />
+                    <field name="analysis" widget="ace" />
+                </page>
+                <page name="child" string="Child Business Process">
+                    <field name="child_ids" />
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<record id="consulting_service_business_process_action" model="ir.actions.act_window">
+    <field name="name">Business Process</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">consulting_service.business_process</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem
+        id="consulting_service_business_process_menu"
+        name="Business Process"
+        action="consulting_service_business_process_action"
+        groups="consulting_service_viewer_group"
+        parent="menu_root_consulting"
+        sequence="40"
+    />
+</odoo>

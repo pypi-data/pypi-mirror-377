@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pvshadesim"
+version = "0.0.8"
+authors = [
+  { name="Kiran Balasubramanian", email="kiran.balasubramanian@maxeon.com" },
+]
+maintainers = [
+  {name = "Kiran Balasubramanian", email = "kiran.balasubramanian@maxeon.com"},
+]
+description = "A physical and electrical shade model using Shapely and PVMismatch."
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "numpy",
+  "pandas",
+  "openpyxl",
+  "v_pvmismatch",
+  "shapely",
+  "matplotlib",
+  "seaborn",
+  "plotly",
+  "dataframe_image",
+]
+keywords = ["pvmismatch", "PV", "shading", "mismatch", "IV", "shapely"]
+
+[tool.setuptools]
+# ...
+# By default, include-package-data is true in pyproject.toml, so you do
+# NOT have to specify this line.
+include-package-data = true
+
+[tool.setuptools.packages.find]
+# scanning for namespace packages is true by default in pyproject.toml, so
+# you need NOT include this configuration.
+namespaces = true
+where = ["src"]
+
+[tool.setuptools.package-data]
+pvshadesim = ["*.csv"]
+"pvshadesim.data" = ["*.pickle"]
+"pvshadesim.db" = ["*.csv", "*.xlsx"]
+
+[project.urls]
+Homepage = "https://github.com/Maxeon-RnD/PVShadeSim"
+Issues = "https://github.com/Maxeon-RnD/PVShadeSim/issues"

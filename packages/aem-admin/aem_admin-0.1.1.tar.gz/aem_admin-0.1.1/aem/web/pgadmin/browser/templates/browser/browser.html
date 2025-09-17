@@ -1,0 +1,21 @@
+{% if known %}
+<p>
+  {{ _('Your browser was detected as <strong>{0}</strong> version
+  <strong>{1}</strong>, which is either deprecated or not supported by
+  AEM-Admin.').format(browser, version) }}
+</p>
+{% else %}
+<p>
+  {{ _('Your browser was detected as <strong>{0}</strong> version
+  <strong>{1}</strong>, which AEM-Admin has not been tested with. AEM-Admin may
+  not work as expected, and any issues reported when using this browser may not
+  be fixed.').format(browser, version) }}
+</p>
+{% endif %}
+<p>
+  {{ _('Please visit the
+  <a class="alert-link" href="skaiworldwide.com/?ckattempt=1" target="_new"
+    >FAQ</a
+  >
+  to see the supported browsers.') }}
+</p>

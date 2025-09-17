@@ -1,0 +1,21 @@
+{% macro TO_DAYS( value ) -%}
+    select
+        CASE WHEN epoched_days > 0 THEN epoched_days ELSE 0 END
+    FROM
+        date_part('days', justify_interval('{{value}})')) as epoched_days
+{%- endmacro %}
+
+{% macro TO_HOURS( value ) -%}
+    select
+        CASE WHEN epoched_hours > 0 THEN epoched_hours ELSE 0 END
+    FROM
+        date_part('hours', justify_interval('{{value}})') as epoched_hours
+{%- endmacro %}
+
+{% macro TO_MINUTES( value ) -%}
+    select
+        CASE WHEN epoched_minutes > 0 THEN epoched_minutes ELSE 0 END
+    FROM
+        date_part('minutes', justify_interval('{{value}})') as epoched_minutes
+{%- endmacro %}
+

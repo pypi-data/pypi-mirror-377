@@ -1,0 +1,11 @@
+# Include top-level static and templates
+recursive-include aem/web/static *
+recursive-include aem/web/templates *
+
+# Include pgadmin static and templates (recursively at any depth)
+recursive-include aem/web/pgadmin/static **
+recursive-include aem/web/pgadmin/templates **
+
+# Catch ALL nested templates and static files inside pgadmin submodules (any depth)
+recursive-include aem/web/pgadmin **/templates *
+recursive-include aem/web/pgadmin **/static *

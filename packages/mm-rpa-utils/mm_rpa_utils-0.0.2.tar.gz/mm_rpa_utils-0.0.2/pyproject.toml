@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mm_rpa_utils"  # Debe ser único en PyPI
+version = "0.0.2"
+description = "Un módulo con funciones básicas"
+authors = [
+  { name="Carlos Sancho", email="carlos@memorandum.es" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+
+dependencies = [
+  "selenium~=4.17.2",
+  "requests~=2.32.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/tu_usuario/mi_modulo"

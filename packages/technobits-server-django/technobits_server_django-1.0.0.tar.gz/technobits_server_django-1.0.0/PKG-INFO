@@ -1,0 +1,414 @@
+Metadata-Version: 2.4
+Name: technobits-server-django
+Version: 1.0.0
+Summary: Technobits Server Django Package - Modular auth, payments, and utilities for Django
+Home-page: https://github.com/technobits/technobits-library
+Author: Technobits
+Author-email: Technobits <dev@technobits.com>
+License: MIT
+Project-URL: Homepage, https://github.com/technobits/technobits-library
+Project-URL: Documentation, https://github.com/technobits/technobits-library/docs
+Project-URL: Repository, https://github.com/technobits/technobits-library
+Project-URL: Issues, https://github.com/technobits/technobits-library/issues
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.0
+Classifier: Framework :: Django :: 4.1
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: Django<6.0,>=4.0
+Requires-Dist: djangorestframework>=3.14.0
+Requires-Dist: djangorestframework-simplejwt>=5.3.0
+Requires-Dist: django-cors-headers>=4.3.0
+Requires-Dist: google-auth>=2.23.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: sib-api-v3-sdk>=7.6.0
+Requires-Dist: python-dotenv>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-django>=4.5; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: flake8>=6.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Provides-Extra: redis
+Requires-Dist: redis>=4.0; extra == "redis"
+Provides-Extra: postgres
+Requires-Dist: psycopg2-binary>=2.9; extra == "postgres"
+Provides-Extra: stripe
+Requires-Dist: stripe>=5.0; extra == "stripe"
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# Technobits Django Authentication Backend Package
+
+A complete Django backend package providing authentication and email services with minimal setup. Focused on secure user authentication, Google OAuth, and SendInBlue email integration.
+
+## 🚀 Quick Installation
+
+### 1. Install the Package
+
+```bash
+# Install from local development
+pip install -e /path/to/Library/packages/server-django
+
+# Or install from PyPI (when published)
+pip install technobits-server-django
+```
+
+### 2. Add to Django Settings
+
+```python
+# settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    
+    # Required third-party apps
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
+    
+    # Technobits modules
+    'technobits.auth',
+    'technobits.email',
+]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# REST Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+# JWT Configuration
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend URL
+    "http://127.0.0.1:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# Technobits Configuration
+TECHNOBITS_CONFIG = {
+    'AUTH': {
+        'GOOGLE_OAUTH_CLIENT_ID': os.getenv('GOOGLE_OAUTH_CLIENT_ID', ''),
+        'ENABLE_GOOGLE_LOGIN': True,
+        'ENABLE_EMAIL_VERIFICATION': True,
+        'JWT_EXPIRY_HOURS': 24,
+    },
+    'EMAIL': {
+        'FROM_EMAIL': os.getenv('FROM_EMAIL', 'noreply@example.com'),
+        'SMTP_HOST': os.getenv('EMAIL_HOST', 'smtp.gmail.com'),
+        'SMTP_PORT': int(os.getenv('EMAIL_PORT', '587')),
+        'SMTP_USER': os.getenv('EMAIL_HOST_USER', ''),
+        'SMTP_PASSWORD': os.getenv('EMAIL_HOST_PASSWORD', ''),
+        'USE_TLS': True,
+    }
+}
+```
+
+### 3. Add URLs
+
+```python
+# urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # Technobits API endpoints
+    path('api/auth/', include('technobits.auth.urls')),
+    path('api/email/', include('technobits.email.urls')),
+]
+```
+
+### 4. Run Migrations
+
+```bash
+python manage.py migrate
+```
+
+### 5. Create Environment File
+
+Create a `.env` file in your project root:
+
+```env
+# Django Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+
+# Google OAuth
+GOOGLE_OAUTH_CLIENT_ID=your-google-client-id
+
+# reCAPTCHA (optional)
+RECAPTCHA_SECRET_KEY=your-recaptcha-secret-key
+
+# Email
+FROM_EMAIL=noreply@yoursite.com
+# SendInBlue API (recommended for production)
+SENDINBLUE_API_KEY=your-sendinblue-api-key
+
+# Or use SMTP
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-email-password
+```
+
+## 🎯 Available API Endpoints
+
+### Authentication
+- `POST /api/auth/register/` - User registration
+- `POST /api/auth/login/` - User login
+- `POST /api/auth/google/` - Google OAuth login
+- `POST /api/auth/logout/` - User logout
+- `POST /api/auth/refresh/` - Refresh JWT token
+- `GET /api/auth/me/` - Get current user
+- `POST /api/auth/forgot-password/` - Request password reset
+- `POST /api/auth/reset-password/` - Reset password
+- `POST /api/auth/change-password/` - Change password
+- `GET /api/auth/health/` - Health check
+
+### Email Services
+- `POST /api/email/send/` - Send plain email
+- `POST /api/email/send-template/` - Send template email using SendInBlue
+
+## 📝 Usage Examples
+
+### Registration API Call
+
+```python
+import requests
+
+response = requests.post('http://localhost:8000/api/auth/register/', {
+    'email': 'user@example.com',
+    'password': 'securepassword123',
+    'name': 'John Doe'
+})
+
+print(response.json())
+# Output: {"user": {"id": 1, "email": "user@example.com", "name": "John Doe"}, "message": "User registered successfully"}
+```
+
+### Login API Call
+
+```python
+response = requests.post('http://localhost:8000/api/auth/login/', {
+    'email': 'user@example.com',
+    'password': 'securepassword123'
+})
+
+data = response.json()
+access_token = data['access']
+refresh_token = data['refresh']
+```
+
+### Send Email with Template
+
+```python
+response = requests.post('http://localhost:8000/api/email/send-template/', {
+    'to': 'user@example.com',
+    'template_id': 1,  # Password reset template
+    'params': {
+        'name': 'John Doe',
+        'reset_url': 'https://yoursite.com/reset-password?token=abc123'
+    }
+}, headers={
+    'Authorization': f'Bearer {access_token}'
+})
+
+email_response = response.json()
+```
+
+### Forgot Password Flow
+
+```python
+# Step 1: Request password reset
+response = requests.post('http://localhost:8000/api/auth/forgot-password/', {
+    'email': 'user@example.com'
+})
+
+# This sends an email with reset instructions
+print(response.json())
+# Output: {"message": "Password reset instructions sent to your email"}
+```
+
+## 🔧 Advanced Configuration
+
+### Custom User Model
+
+```python
+# settings.py
+AUTH_USER_MODEL = 'auth.User'  # Uses Django's default User model
+
+# Or extend with custom fields
+TECHNOBITS_CONFIG = {
+    'AUTH': {
+        'USER_MODEL': 'myapp.CustomUser',
+        'ENABLE_EMAIL_VERIFICATION': True,
+        'ENABLE_GOOGLE_LOGIN': True,
+    }
+}
+```
+
+### Email Templates
+
+```python
+# Custom email templates
+TECHNOBITS_CONFIG = {
+    'EMAIL': {
+        'TEMPLATES': {
+            'PASSWORD_RESET': 'emails/password_reset.html',
+            'EMAIL_VERIFICATION': 'emails/verify_email.html',
+        }
+    }
+}
+```
+
+### SendInBlue Integration
+
+```python
+# settings.py
+TECHNOBITS_CONFIG = {
+    'EMAIL': {
+        'USE_SENDINBLUE': True,
+        'SENDINBLUE_API_KEY': os.getenv('SENDINBLUE_API_KEY'),
+        'TEMPLATES': {
+            'PASSWORD_RESET': 1,
+            'EMAIL_VERIFICATION': 2,
+            'WELCOME': 3,
+        }
+    }
+}
+```
+
+## 🚀 Production Deployment
+
+### 1. Environment Variables
+
+```bash
+# Production environment
+DEBUG=False
+ALLOWED_HOSTS=yoursite.com,www.yoursite.com
+SECRET_KEY=your-production-secret-key
+
+# Database
+DATABASE_URL=postgresql://user:pass@localhost/dbname
+
+# Email (SendInBlue recommended)
+SENDINBLUE_API_KEY=your-production-sendinblue-api-key
+
+# Google OAuth (Production)
+GOOGLE_OAUTH_CLIENT_ID=your-production-google-client-id
+GOOGLE_OAUTH_CLIENT_SECRET=your-production-google-client-secret
+
+# reCAPTCHA (Production)
+RECAPTCHA_SECRET_KEY=your-production-recaptcha-secret
+```
+
+### 2. Security Settings
+
+```python
+# settings.py (production)
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+```
+
+## 🔍 Testing
+
+### Run Tests
+
+```bash
+# Install test dependencies
+pip install technobits-server-django[dev]
+
+# Run tests
+python manage.py test technobits
+```
+
+### Test API Endpoints
+
+```bash
+# Health check
+curl http://localhost:8000/api/auth/health/
+
+# Register user
+curl -X POST http://localhost:8000/api/auth/register/ \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "password": "testpass123", "name": "Test User"}'
+
+# Login
+curl -X POST http://localhost:8000/api/auth/login/ \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "password": "testpass123"}'
+```
+
+## 📦 Dependencies
+
+The package automatically installs:
+
+- **Django** (>=4.0,<6.0) - Web framework
+- **Django REST Framework** (>=3.14.0) - API framework
+- **Simple JWT** (>=5.3.0) - JWT authentication
+- **CORS Headers** (>=4.3.0) - CORS support
+- **Google Auth** (>=2.23.0) - Google OAuth integration
+- **Requests** (>=2.31.0) - HTTP requests
+- **Python Dotenv** (>=1.0.0) - Environment variables
+- **SendInBlue API** (>=7.6.0) - Email service with templates
+
+## 🤝 Support
+
+- Check the health endpoint: `GET /api/auth/health/`
+- Enable debug mode: `DEBUG=True` in settings
+- Check Django logs for detailed error messages
+- Verify environment variables are loaded correctly
+
+## 📄 License
+
+MIT License - see LICENSE file for details.

@@ -1,0 +1,165 @@
+<!-- SpecPulse Task List Template v3.0 - AI-Optimized -->
+<!-- AI Instructions: Generate from implementation plan using SDD gates -->
+
+# Task List: {{ feature_name }}
+
+## Metadata
+- **Plan Reference**: SPEC-{{ feature_id }}
+- **Total Tasks**: {{ task_count }}
+- **Estimated Duration**: {{ total_duration }}
+- **Parallel Groups**: {{ parallel_groups }}
+
+## Task Organization
+
+{% for group in parallel_groups %}
+### Parallel Group {{ loop.index }}
+*These tasks can be executed simultaneously*
+
+{% for task in group.tasks %}
+#### {{ task.id }}: {{ task.name }}
+- **Type**: {{ task.type }}
+- **Priority**: {{ task.priority }}
+- **Estimate**: {{ task.estimate }}
+- **Dependencies**: {{ task.dependencies | join(", ") | default("None") }}
+- **Description**: {{ task.description }}
+- **Acceptance**: {{ task.acceptance }}
+- **Files**: {{ task.files | join(", ") }}
+- **Assignable**: {{ task.assignable }}
+{% endfor %}
+{% endfor %}
+
+### Sequential Tasks
+*These tasks must be completed in order*
+
+{% for task in sequential_tasks %}
+#### {{ task.id }}: {{ task.name }}
+- **Dependencies**: {{ task.dependencies | join(", ") }}
+- **Type**: {{ task.type }}
+- **Priority**: {{ task.priority }}
+- **Estimate**: {{ task.estimate }}
+- **Description**: {{ task.description }}
+- **Acceptance**: {{ task.acceptance }}
+{% endfor %}
+
+### Critical Path
+*Tasks that directly impact timeline*
+
+{% for path in critical_path %}
+{{ loop.index }}. {{ path.tasks | join(" -> ") }}
+{% endfor %}
+- Estimated critical path duration: {{ critical_path_duration }}
+
+## SDD Gates Compliance
+
+### Pre-Implementation Validation
+{% for gate in SDD_gates %}
+#### {{ gate.name }}
+- [ ] {{ gate.check_1 }}
+- [ ] {{ gate.check_2 }}
+- [ ] {{ gate.check_3 }}
+- [ ] {{ gate.check_4 }}
+**Status**: {{ gate.status | default("PENDING") }}
+{% endfor %}
+
+## Task Details by Category
+
+{% for category in task_categories %}
+### {{ category.name }} Tasks {% if category.parallel %}[P]{% endif %}
+{% for task in category.tasks %}
+- [ ] {{ task.id }}: {{ task.name }}
+{% endfor %}
+{% endfor %}
+
+## Execution Schedule
+
+{% for phase in execution_schedule %}
+### {{ phase.name }}
+{% for time_block in phase.time_blocks %}
+- {{ time_block.timing }}: {{ time_block.tasks | join(", ") }}{% if time_block.parallel %} (parallel){% endif %}
+{% endfor %}
+{% endfor %}
+
+## Progress Tracking
+```yaml
+status:
+  total: {{ task_count }}
+  completed: 0
+  in_progress: 0
+  blocked: 0
+  
+metrics:
+  velocity: {{ velocity | default("2-3 tasks/day") }}
+  estimated_completion: {{ estimated_completion }}
+  blockers: []
+  
+parallel_groups:
+{% for group in parallel_groups %}
+  - name: "{{ group.name }}"
+    tasks: [{{ group.tasks | map(attribute='id') | join(", ") }}]
+    can_start: {{ group.can_start }}
+{% endfor %}
+
+sequential_tasks:
+{% for task in sequential_tasks %}
+  - name: "{{ task.name }}"
+    id: {{ task.id }}
+    dependencies: [{{ task.dependencies | join(", ") }}]
+{% endfor %}
+```
+
+## Task Execution Guidelines
+
+### AI-Assisted Development Process
+All task execution should be handled by AI assistants (Claude or Gemini) following the SpecPulse methodology:
+
+1. **Task Selection**: AI assistants should select tasks based on:
+   - Dependency order (sequential tasks first)
+   - Parallel execution opportunities
+   - Current context and feature priorities
+   - Resource availability
+
+2. **Implementation Process**: For each task:
+   ```markdown
+   ## Task: {{ task.id }} - {{ task.name }}
+   
+   **Status**: [ ] Pending / [x] Completed / [-] In Progress / [!] Blocked
+   **Dependencies**: {{ task.dependencies | join(", ") | default("None") }}
+   **Acceptance**: {{ task.acceptance }}
+   ```
+
+3. **Parallel Execution Strategy**: When tasks can be executed in parallel:
+   - AI assistants should work on multiple tasks simultaneously
+   - Coordinate task completion status
+   - Handle cross-task dependencies
+   - Maintain code consistency
+
+### Task Dependencies Management
+
+- **Sequential Dependencies**: Tasks must be completed in specific order
+- **Parallel Opportunities**: Independent tasks can be worked on simultaneously
+- **Dependency Resolution**: AI should resolve conflicts and blocking issues
+- **Progress Coordination**: Multiple AI assistants should coordinate task completion
+
+## AI Integration Notes
+
+### SDD Gates
+- All tasks MUST pass SDD compliance before implementation
+- Use `/sp-validate` command to check compliance status
+- Mark gates as completed only after actual validation
+
+### Progress Tracking
+- Update task status in real-time using markdown checkboxes: `[ ]` → `[-]` → `[x]`
+- Document blockers immediately with `[!]` status and resolution notes
+- Use velocity metrics to refine future estimates
+- Coordinate with other AI assistants for parallel task execution
+
+### Quality Assurance
+- Each task requires specific acceptance criteria
+- Testing strategy based on Principle 6: Quality Assurance
+- Appropriate tests for your project type
+
+---
+**Generated by**: {{ ai_assistant }} on {{ date }}
+**Feature**: {{ feature_name }}
+**SDD Gates**: {{ SDD_status | default("PENDING VALIDATION") }}
+**Next Steps**: Execute tasks following SDD order

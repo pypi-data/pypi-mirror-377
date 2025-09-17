@@ -1,0 +1,147 @@
+.idea
+.ipynb_checkpoints
+.mypy_cache
+.vscode
+__pycache__
+.pytest_cache
+.ruff_cache
+htmlcov
+dist
+site
+.coverage
+coverage.xml
+.netlify
+test.db
+log.txt
+Pipfile.lock
+env3.*
+env
+docs_build
+venv
+docs.zip
+archive.zip
+logs/
+.codegpt
+
+# vim temporary files
+*~
+.*.sw?
+.venv/
+
+#workbench
+workbench/**/*.*
+gfatpy/env_files/**/*.*
+
+# MULHACEN DATA
+tests/datos/PRODUCTS/mulhacen/**/*.nc
+tests/datos/PRODUCTS/mulhacen/**/*.nc
+tests/datos/PRODUCTS/mulhacen/**/*.csv
+tests/datos/PRODUCTS/mulhacen/**/*.png
+tests/datos/PRODUCTS/mulhacen/**/*.dat
+tests/datos/PRODUCTS/mulhacen/QA/telecover/*
+tests/datos/PRODUCTS/mulhacen/QA/rayleight_fit/*
+
+tests/datos/PRODUCTS/mulhacen/QA/telecover/*
+tests/datos/PRODUCTS/mulhacen/QA/rayleight_fit/*
+
+# ALHAMBRA DATA
+tests/datos/RAW/alhambra/**/*.zip
+tests/datos/PRODUCTS/alhambra/**/*.nc
+tests/datos/PRODUCTS/alhambra/**/*.csv
+tests/datos/PRODUCTS/alhambra/**/*.png
+tests/datos/PRODUCTS/alhambra/**/*.zip
+
+# NEPHELE DATA
+tests/datos/RAW/nephele/**/*.*
+tests/datos/PRODUCTS/nephele/**/*.nc
+
+# NEBULA DATA
+tests/datos/RAW/nebula_ka/**/*.*
+tests/datos/RAW/nebula_w/**/*.*
+tests/datos/PRODUCTS/nebula_ka/**/*.nc
+tests/datos/PRODUCTS/nebula_w/**/*.nc
+
+# PERICLES DATA
+tests/datos/RAW/pericles/**/*.*
+tests/datos/PRODUCTS/pericles/**/*.*
+
+# GENERALIFE DATA
+tests/datos/RAW/generalife/**/*.*
+tests/datos/PRODUCTS/generalife/**/*.*
+
+tmp*
+**/*.nc.*
+**/*.log
+*.txt
+public/
+*.png
+notebooks/Untitled.ipynb
+gfatpy/.DS_Store
+
+#Keep for help
+!gfatpy/env_files/info_scc_example.yml
+
+# Not the used for calibration
+#conftest.py run_linc_mhc
+!tests/datos/RAW/mulhacen/2022/08/08/RS_20220808_1131
+!tests/datos/RAW/mulhacen/2022/08/08/RS_20220808_2001
+!tests/datos/RAW/mulhacen/2022/08/08/DC_20220808_2001
+!tests/datos/RAW/mulhacen/2022/08/08/DC_20220808_1131
+!tests/datos/RAW/mulhacen/2022/06/17/DP_20220617_1115
+!tests/datos/RAW/mulhacen/2022/06/17/DC_20220617_1115
+!tests/datos/RAW/mulhacen/2022/06/18/DC_20220618_0040
+!tests/datos/RAW/mulhacen/2022/06/18/RS_20220618_0040
+
+#conftest.py run_linc_alh | test_utils_2_unzip_file.py
+!tests/datos/RAW/alhambra/2023/08/30/*.zip
+
+# test plot scc raw
+!tests/datos/PRODUCTS/alhambra/scc/scc781/2023/02/22/products/raw_20230222gra0030.zip
+
+# test plot scc elpp
+!tests/datos/PRODUCTS/alhambra/scc/scc781/2023/02/22/products/preprocessed_20230222gra0030.zip
+
+#test plot scc elda
+!tests/datos/PRODUCTS/alhambra/scc/scc781/2023/02/22/products/optical_20230222gra0030.zip
+
+#test plot scc preprocessing
+!tests/datos/PRODUCTS/alhambra/scc/scc781/2024/02/19/products/raw_20240219gra1030.zip
+
+#test_lidar_depo.py
+!tests/datos/PRODUCTS/mulhacen/1a/2023/08/30/alh_1a_Pdc_rs_xf_20230830_0245.nc"
+!tests/datos/PRODUCTS/alhambra/1a/2022/08/08/mhc_1a_Pdc_rs_xf_20220808_1131.nc"
+
+!tests/datos/PRODUCTS/mulhacen/QA/depolarization_calibration/mhc_eta-star_20220617_1115.nc
+
+#test_lidar_GHK.py
+!tests/datos/PRODUCTS/mulhacen/QA/GHK/output_optic_input_mhc_rot_532x_20130101_GHK_0.9.8h_Py3.7.dat
+!tests/datos/PRODUCTS/alhambra/QA/GHK/output_optic_input_alh_hwp_355f_20180101_GHK.dat
+!tests/datos/PRODUCTS/alhambra/QA/GHK/output_optic_input_alh_hwp_355n_20180101_GHK.dat
+!tests/datos/PRODUCTS/alhambra/QA/GHK/output_optic_input_alh_hwp_532n_20180101_GHK.dat
+
+#test_radar_reader.py
+!test/datos/cloudnet/20211218_granada_rpg-fmcw-94.nc
+
+#test_radar_reader_rpg | radar_class_binary
+!tests\datos\RAW\nebula_w\2024\03\13\240313_150001_P00_ZEN.LV0
+
+#test_radar_utils
+!tests\datos\PRODUCTS\nebula_ka\2024\03\13\240313_150001_P00_ZEN.LV1.nc
+
+#test_radar_class_nc_lv0
+!tests\datos\PRODUCTS\nebula_ka\2024\03\13\240313_150001_P00_ZEN.LV0.nc
+
+#test_radar_class_nc_lv1 | radar_plot_lv1
+!tests\datos\PRODUCTS\nephele\2024\02\09\240209_015959_P00_ZEN.LV1.nc
+!tests\datos\PRODUCTS\nephele\2023\05\17\230517_084500_P00_PPI.LV1.nc
+!tests\datos\PRODUCTS\nephele\2024\02\09\240209_022515_P00_RHI.LV1.nc
+
+# test_radar_2_plot_lv0_binary
+!tests\datos\RAW\nebula_ka\2024\03\13\240313_150001_P00_ZEN.LV0
+
+# test_radar_2_plot_lv0
+tests\datos\RAW\nephele\2021\09\13\210913_110000-110006_P05_ZEN.LV0.nc
+
+#tests\generalife\test_nc_convert.py
+!tests\datos\RAW\generalife\2024\05\20\RS_20240520_0910.zip
+

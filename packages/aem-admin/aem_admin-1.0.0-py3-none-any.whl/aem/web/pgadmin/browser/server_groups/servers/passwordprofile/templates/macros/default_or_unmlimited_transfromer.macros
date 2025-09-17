@@ -1,0 +1,7 @@
+--default_or_unmlimited_transfromer.sql
+{%- macro DEFAULT_OR_UNLIMITED_TRANSFORMER( target_name, table_name, signed_int_string) -%}
+    CASE WHEN {{signed_int_string}} = -2 THEN True ELSE False END AS _prf{{target_name}}_unlimited ,
+    CASE WHEN {{signed_int_string}} = -1 THEN True ELSE False END AS _prf{{target_name}}_default,
+    CASE WHEN {{signed_int_string}} > 0 THEN {{signed_int_string}} ELSE 0 END AS {{table_name}}
+{%- endmacro -%}
+

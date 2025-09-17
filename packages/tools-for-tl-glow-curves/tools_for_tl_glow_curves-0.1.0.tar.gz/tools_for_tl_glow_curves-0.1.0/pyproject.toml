@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tools-for-tl-glow-curves"
+version = "0.1.0"
+description = "Python tools for analyzing Thermoluminescence (TL) glow curves"
+readme = "README.md"
+authors = [
+  { name="Jorge Eduardo Tenopala Peralta" }
+]
+license = { text="MIT" }
+dependencies = [
+  "numpy",
+  "matplotlib",
+  "pandas",
+  "scikit-learn",
+  "ipython"
+]
+requires-python = ">=3.8"

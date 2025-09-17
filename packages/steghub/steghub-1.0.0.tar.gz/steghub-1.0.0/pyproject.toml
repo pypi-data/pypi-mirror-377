@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "steghub"
+version = "1.0.0"
+description = "Advanced steganography toolkit - installs all StegHub tools"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "kaizoku73", email = "ultimate0134@gmail.com"}
+]
+keywords = ["steganography", "toolkit", "meta-package", "gradus", "resono", "shadowbits"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Security :: Cryptography",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+# This is the key - install all your tools as dependencies
+dependencies = [
+    "gradus>=1.0.1",
+    "resono>=1.0.1",  # Adjust version when resono is published
+    "shadowbits>=1.0.1",  # Adjust version when shadowbits is published
+]
+
+[project.urls]
+Homepage = "https://github.com/kaizoku73/StegHub"
+Repository = "https://github.com/kaizoku73/StegHub" 
+"Bug Reports" = "https://github.com/kaizoku73/StegHub/issues"
+Documentation = "https://kaizoku.gitbook.io/steganography/"
+
+[project.scripts]
+steghub = "steghub.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["steghub*"]

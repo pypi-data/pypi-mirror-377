@@ -1,0 +1,50 @@
+# Tools for TL Glow Curves
+
+
+This Python package provides tools for analyzing **thermoluminescence (TL) glow curves**.  
+It includes functions for calculating activation energies using various classical methods, extracting peak parameters, and generating informative visualizations of TL peaks.
+
+---
+
+## Features
+
+- **Initial Rise Method (`Initial_rise_TL`)**  
+  Estimates the activation energy (Ea) from the initial rise of the TL glow curve.  
+  Generates plots of TL vs Temperature and ln(TL) vs 1/(kT) with linear fit.
+
+- **Peak Parameters (`TL_peak_parameters`)**  
+  Extracts key TL peak features:  
+  - Maximum intensity (**Imax**)  
+  - Half intensity (**I½**)  
+  - Temperatures (**T1**, **T2**, **Tm**)  
+  - Peak widths: left (**τ**), right (**δ**), total (**ω**)  
+  - Shape factor (**μ**)  
+  Generates plots with TL curve and marked peak points.
+
+- **Activation Energy from Peak Shape (`energy_activation_peak_parameters`)**  
+  Calculates Ea using three methods based on peak geometry: τ, δ, and ω.  
+  Computes the geometric shape factor μ.  
+  Generates annotated TL plots.
+
+- **Activation Energy from Peak Position (`energy_activation_peak_position`)**  
+  Estimates Ea from the peak temperature (**Tm**) using semi-empirical relations.  
+  Requires the frequency factor (**s**) as input.  
+  Produces a plot highlighting the peak position.
+
+```
+
+# Example: TL curve
+T =   # Temperature in K
+I =  # TL peak
+
+# Apply Initial Rise method
+Initial_rise_TL(T, I, Tini=100, Tfin=200)
+
+# Extract peak parameters
+TL_peak_parameters(T, I)
+
+# Estimate activation energy from peak shape
+energy_activation_peak_parameters(T, I)
+
+# Estimate activation energy from peak position (requires frequency factor s)
+energy_activation_peak_position(T, I, s=1e12)

@@ -1,0 +1,102 @@
+Metadata-Version: 2.4
+Name: isat-sam-backend
+Version: 1.0.1
+Summary: ISAT SAM encoding backend.
+Home-page: https://github.com/yatengLG/ISAT_with_segment_anything
+Author: yatengLG
+Author-email: yatenglg@foxmail.com
+License: Apache2.0
+Keywords: annotation tool,segment anything,image annotation,semantic segmentation,instance segmentation
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Natural Language :: Chinese (Simplified)
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi
+Requires-Dist: python-multipart
+Requires-Dist: uvicorn
+Requires-Dist: torch>=2.1.1
+Requires-Dist: torchvision
+Requires-Dist: timm
+Requires-Dist: hydra-core>=1.3.2
+Requires-Dist: tqdm>=4.66.1
+Requires-Dist: iopath
+Requires-Dist: tqdm
+Requires-Dist: tabulate
+Requires-Dist: requests
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+<h1 align='center'>ISAT_with_segment_anything_backend</h1>
+<h2 align='center'>Support <a href="https://github.com/yatengLG/ISAT_with_segment_anything">ISAT</a> to use remote server for SAM encoding</h2>
+    <p align="center">Deploy <b>isat-sam-backend</b> to a remote server. </p>
+<p align="center">Run <b>isat-sam</b> on the local machine and connect to the remote server to perform sam encoding. </p>
+<p align='center'>
+    <a href='https://github.com/yatengLG/ISAT_with_segment_anything_backend' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything_backend"></a>
+    <a href='https://github.com/yatengLG/ISAT_with_segment_anything_backend' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything_backend"></a>
+    <a href='https://pypi.org/project/isat-sam-backend/' target="_blank"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/isat-sam-backend"></a>
+    <a href='https://pypi.org/project/isat-sam-backend/' target="_blank"><img alt="Pepy Total Downlods" src="https://img.shields.io/pepy/dt/isat-sam-backend"></a>
+</p>
+
+# Use
+
+## install
+- Create a conda environment(recommended, optional)
+```shell
+# create environment
+conda create -n isat_backend_env python=3.8
+
+# activate environment
+conda activate isat_backend_env
+```
+
+- Install
+```shell
+pip install isat-sam-backend
+```
+
+- Run
+
+
+**The feature map of the SAM HQ model is too large, don`t use it on remote server.**
+```shell
+# default model: mobile_sam.pt
+# default host: 127.0.0.1 
+# default port: 8000
+
+isat-sam-backend --checkpoint [model_name] --host [ip] --port [port]
+```
+
+## Model manage
+- list model
+```shell
+isat-sam-backend model --list
+```
+
+- download model
+```shell
+isat-sam-backend model --download [model_name]
+```
+
+- remove model
+```shell
+isat-sam-backend model --remove [model_name]
+```
+

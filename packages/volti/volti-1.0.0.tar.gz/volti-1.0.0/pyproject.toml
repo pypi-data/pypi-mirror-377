@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "volti"
+version = "1.0.0"
+description = "A simple library to securely store and retrieve API keys"
+authors = [{name = "Lokesh", email = "lokeshpantangi@gmail.com"}, {name = "Aditya", email = "aditya268244@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "cryptography>=3.4.8",
+    "click>=8.0.0",
+    "pywin32; platform_system == 'Windows'",
+    "argon2-cffi",
+    "pyperclip"
+]
+
+[project.scripts]
+volti = "apilib.commands:main"
+# Minimal CLI commands
+add = "apilib.commands:add_command"
+get = "apilib.commands:get_command"
+remove = "apilib.commands:remove_command"
+list = "apilib.commands:list_command"
+clear = "apilib.commands:clear_command"
+setup = "apilib.commands:setup_command"
+auth = "apilib.password_commands:check_auth_status_command"
+gitignore = "apilib.commands:gitignore_command"
+help = "apilib.commands:help_command"
+
+[project.urls]
+Homepage = "https://github.com/lokeshpantangi/apilibrary"
+Repository = "https://github.com/lokeshpantangi/apilibrary.git"
+Issues = "https://github.com/lokeshpantangi/apilibrary/issues"

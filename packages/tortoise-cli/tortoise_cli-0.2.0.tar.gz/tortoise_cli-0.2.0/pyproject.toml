@@ -1,0 +1,111 @@
+[project]
+name = "tortoise-cli"
+dynamic = []
+description = "A cli tool for tortoise-orm, build on top of click and ptpython."
+authors = [
+    { name = "long2ice", email = "long2ice@gmail.com" },
+]
+license = "Apache-2.0"
+readme = "README.md"
+keywords = [
+    "tortoise",
+    "shell",
+    "cli",
+    "tortoise-orm",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "tortoise-orm",
+    "ptpython",
+    "asyncclick (>=8.1.7,<9.0.0)",
+    "tomlkit (>=0.11.4,<1.0.0); python_version < '3.11'",
+]
+version = "0.2.0"
+
+[project.urls]
+homepage = "https://github.com/tortoise/tortoise-cli"
+repository = "https://github.com/tortoise/tortoise-cli.git"
+documentation = "https://github.com/tortoise/tortoise-cli"
+
+[project.scripts]
+tortoise-cli = "tortoise_cli.cli:main"
+
+[tool.poetry]
+version = "0.0.0"
+packages = [
+    { include = "tortoise_cli" },
+]
+
+[tool.pdm.version]
+source = "file"
+path = "tortoise_cli/__init__.py"
+
+[tool.pdm.build]
+excludes = [
+    "./**/.git",
+    "./**/.*_cache",
+    "images",
+]
+include = [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+]
+
+[tool.aerich]
+tortoise_orm = "examples.TORTOISE_ORM"
+
+[tool.mypy]
+pretty = true
+check_untyped_defs = true
+warn_unused_ignores = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+ignore = [
+    "E501",
+]
+extend-select = [
+    "I",
+    "SIM",
+    "FA",
+    "UP",
+    "RUF100",
+]
+
+[tool.bandit]
+exclude_dirs = [
+    "tests",
+    "conftest.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "@overload",
+    "if __name == \"__main__\":",
+]
+
+[dependency-groups]
+test = [
+    "pytest >=8.4.0",
+    "pytest-xdist >=3.7.0",
+    "pytest-sugar >=1.0.0",
+    "pytest-cov >=6.2.1",
+]
+dev = [
+    "ruff >=0.11.13",
+    "bandit >=1.8.3",
+    "mypy >=1.17.1",
+    "twine >=6.1.0",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"

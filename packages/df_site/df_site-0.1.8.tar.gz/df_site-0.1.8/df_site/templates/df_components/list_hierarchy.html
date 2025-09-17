@@ -1,0 +1,25 @@
+{% if show_hierarchy %}{% load df_site %}
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if hierarchy_title %}
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        {{ hierarchy_title }}</span>
+                </li>
+            {% endif %}
+            {% if hierarchy_back %}
+                <li class="page-item">
+                    <a href="{{ hierarchy_back.link }}"
+                       class="page-link">{% fa6_icon 'undo' %} {{ hierarchy_back.title }}</a>
+                </li>
+            {% endif %}
+            {% for choice in hierarchy_choices %}
+                {% if choice.link %}
+                    <li class="page-item"><a class="page-link" href="{{ choice.link }}">{{ choice.title }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link active" aria-disabled="true">{{ choice.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endif %}

@@ -1,0 +1,36 @@
+{% load i18n admin_list df_site %}
+{% block list_filters %}
+    {% if cl.has_filters %}
+        <div class="card mb-2">
+            {% if cl.model_admin.filters_title %}
+                <h2 class="card-header text-center">{{ cl.model_admin.filters_title }}
+                    <a class="btn {% if cl.has_active_filters %}btn-primary{% else %}btn-secondary{% endif %} d-md-none" data-bs-toggle="collapse" href="#{{ cl.model_admin.id_prefix }}-filters">
+                        {% fa6_icon 'bars' %}
+                    </a>
+                </h2>
+            {% endif %}
+            <div class="collapse d-md-block" id="{{ cl.model_admin.id_prefix }}-filters">
+                {% if cl.is_facets_optional or cl.has_active_filters %}
+                    <div class="card-body">
+                        {% if cl.is_facets_optional %}
+                            <span>
+                    {% if cl.add_facets %}
+                        <a href="{{ cl.remove_facet_link }}"
+                           class="hidelink">{% fa6_icon 'eye-slash' %} {% translate "Hide counts" %}</a>
+                    {% else %}
+                        <a href="{{ cl.add_facet_link }}"
+                           class="viewlink">{% fa6_icon 'eye' %} {% translate "Show counts" %}</a>{% endif %}
+                </span>
+                        {% endif %}
+                        {% if cl.has_active_filters %}
+                            <span>
+                        <a href="{{ cl.clear_all_filters_qs }}">{% fa6_icon 'times' %} {% translate "Clear all filters" %}</a>
+                    </span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock list_filters %}

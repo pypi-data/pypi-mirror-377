@@ -1,0 +1,46 @@
+{% load df_site i18n %}
+{% with prefix=fieldset.formset.prefix|default:"fieldset" id_prefix=id_prefix|default:"0" id_suffix=id_suffix|default:"0" name=fieldset.name|default:""|slugify %}
+    <fieldset class="card mb-3 aligned {{ fieldset.classes }}"{% if name %}
+              aria-labelledby="{{ prefix }}-{{ id_prefix }}-{{ name }}-{{ id_suffix }}-heading"{% endif %}>
+        {% if name or fieldset.is_collapsible %}
+        <h{{ heading_level|default:2 }} id="{{ prefix }}-{{ id_prefix }}-{{ name }}-{{ id_suffix }}-heading"
+                                        class="card-header fieldset-heading">{{ fieldset.name }}
+        {% if fieldset.is_collapsible %}
+            <button class="navbar-toggler float-end" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#{{ prefix }}-{{ id_prefix }}-{{ name }}-{{ id_suffix }}-body" aria-controls="{{ prefix }}-{{ id_prefix }}-{{ name }}-{{ id_suffix }}-body"
+                    aria-expanded="false"
+                    aria-label="{% trans 'Toggle content' %}">
+                {% fa6_icon 'bars'  %}
+            </button>
+
+        {% endif %}
+
+        </h{{ heading_level|default:2 }}>
+        {% endif %}
+        <div class="{% if fieldset.is_collapsible %}collapse{% endif %}" id="{{ prefix }}-{{ id_prefix }}-{{ name }}-{{ id_suffix }}-body">
+            {% if fieldset.description %}
+                <div class="card-body description">{{ fieldset.description|safe }}</div>
+            {% endif %}
+            <div class="card-body">
+                {% for line in fieldset %}
+                    <div
+                        class="row
+                            {% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                        {% for field in line %}
+                            <div
+                                class="{% if line.fields|length == 1 %}col-12{% elif line.fields|length == 2 %}col-sm-12 col-md-6{% elif line.fields|length == 3 %}col-sm-12 col-md-4{% else %}col-sm-12 col-md-3{% endif %}
+                        flex-container{% if not line.fields|length == 1 %} fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endif %}">
+                                {% if field.is_checkbox %}
+                                    {{ field.field }}{{ field.label_tag }}
+                                {% else %}
+                                    {{ field.label_tag }}
+                                    {{ field.contents }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </fieldset>
+{% endwith %}

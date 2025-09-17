@@ -1,0 +1,51 @@
+{% extends "df_site/app.html" %}{% load i18n %}
+{% block body_banner %}
+{% endblock body_banner %}
+
+{% block body_content %}
+    <div class="d-md-flex flex-nowrap mt-5 pt-5 offset-lg-2 ">
+        <div class="d-flex flex-column flex-shrink-0 p-0 list-group">
+            {% with request.resolver_match.url_name as url_name %}
+                {% url 'users:settings' as settings_url %}
+                {% url 'postman:inbox' as pm_url %}
+                {% url 'account_email' as email_url %}
+                {% url 'account_change_password' as change_password_url %}
+                {% url 'socialaccount_connections' as socialaccount_url %}
+                {% url 'mfa_index' as mfa_url %}
+                {% url 'usersessions_list' as usersessions_list_url %}
+                <a class="list-group-item list-group-item-action {% if request.resolver_match.namespace == 'postman' %}active{% endif %}"
+                   href="{{ pm_url }}">{% trans "Messaging" %}</a>
+                <a class="list-group-item list-group-item-action {% if url_name == 'settings' %}active{% endif %}"
+                   href="{{ settings_url }}">{% trans "Settings" %}</a>
+                {% if email_url %}
+                    <a class="list-group-item list-group-item-action {% if 'account_' in url_name and '_email' in url_name %}active{% endif %}"
+                       href="{{ email_url }}">{% trans "Change Email" %}</a>
+                {% endif %}
+                {% if change_password_url %}
+                    <a class="list-group-item list-group-item-action {% if 'account_' in url_name and '_password' in url_name %}active{% endif %}"
+                       href="{{ change_password_url }}">{% trans "Change Password" %}</a>
+                {% endif %}
+                {% if mfa_url %}
+                    <a class="list-group-item list-group-item-action {% if 'mfa_' in url_name %}active{% endif %}"
+                       href="{{ mfa_url }}">{% trans "Two-Factor Authentication" %}</a>
+                {% endif %}
+                {% if socialaccount_url %}
+                    <a class="list-group-item list-group-item-action {% if 'socialaccount_' in url_name %}active{% endif %}"
+                       href="{{ socialaccount_url }}">{% trans "Social Accounts" %}</a>
+                {% endif %}
+                {% if usersessions_list_url %}
+                    <a class="list-group-item list-group-item-action {% if 'usersessions_' in url_name %}active{% endif %}"
+                       href="{{ usersessions_list_url }}">{% trans "Sessions" %}</a>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="d-flex flex-column flex-shrink-0 col-lg-8 col-md-10 card p-0">
+            {% block inner_content %}
+                {% block content %}
+                {% endblock content %}
+            {% endblock inner_content %}
+        </div>
+        {% block extra_body %}
+        {% endblock extra_body %}
+    </div>
+{% endblock body_content %}

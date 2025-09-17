@@ -1,0 +1,5 @@
+Contact: mailto:{{ security_email }}
+Expires: {{ security_expires|date:"c" }}
+Preferred-Languages: {{ security_language_code }}
+{% if security_gpg_key %}Encryption: {{ security_gpg_key }}
+{% endif %}Canonical: {{ security_txt_path }}

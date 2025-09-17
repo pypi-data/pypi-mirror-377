@@ -1,0 +1,29 @@
+{% extends "df_site/app.html" %}
+{% load i18n cookie_consent_tags %}
+{% block body_classes %}d-flex align-items-center py-lg-4 text-bg-body-secondary{% endblock body_classes %}
+{% block navbar %}{% endblock navbar %}
+
+{% block body %}
+    <main class="container pt-lg-5">
+        <div class="row mt-lg-5">
+            {% block popup_body %}
+                <div class="col-md-4 offset-md-4 bg-body-tertiary p-0">
+                    <nav class="navbar sticky-top text-bg-primary mb-5 text-center">
+                        {% block popup_title %}
+                            <a class="w-100 nav-link text-light fs-3"
+                               href="{% url 'index' %}">{{ PAGE_TITLE|default:DF_SITE_TITLE }}</a>
+                        {% endblock popup_title %}
+                    </nav>
+                    <div class="m-2">
+                        {% block popup_content %}
+                        {% endblock popup_content %}
+                    </div>
+                    {% block popup_copyright %}
+                        <p class="mx-2 mt-5 mb-3 text-body-secondary">© {% now "Y" %} {{ DF_SITE_ORGANIZATION }}</p>
+                    {% endblock popup_copyright %}
+                </div>
+            {% endblock popup_body %}
+        </div>
+    </main>
+{% endblock body %}
+

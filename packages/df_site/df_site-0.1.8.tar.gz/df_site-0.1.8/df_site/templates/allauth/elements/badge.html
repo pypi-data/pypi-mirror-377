@@ -1,0 +1,4 @@
+{% load allauth df_site %}
+<span class="badge {% if "danger" in attrs.tags %}text-bg-danger{% elif "warning" in attrs.tags %}text-bg-warning{% elif "success" in attrs.tags %}text-bg-success{% elif "secondary" in attrs.tags %}text-bg-secondary{% else %}text-bg-primary{% endif %}">
+     {% if "danger" in attrs.tags %}{% fa6_icon 'exclamation-triangle' %}{% elif "warning" in attrs.tags %}{% fa6_icon 'exclamation-triangle' %}{% elif "success" in attrs.tags %}{% fa6_icon 'check' %}{% endif %}
+    {% slot %} {% endslot %}</span>

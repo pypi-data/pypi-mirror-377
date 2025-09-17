@@ -1,0 +1,112 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poetry]
+authors = ["d9pouces <github@19pouces.net>"]
+classifiers = [
+  'Development Status :: 5 - Production/Stable',
+  'Framework :: Django :: 5.0',
+  'License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)',
+  'Operating System :: MacOS :: MacOS X',
+  'Operating System :: POSIX :: BSD',
+  'Operating System :: POSIX :: Linux',
+  'Operating System :: Unix',
+  'Natural Language :: English',
+  'Natural Language :: French',
+  'Programming Language :: Python :: 3 :: Only',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3.12',
+  'Programming Language :: Python :: 3.13'
+]
+description = "More batteries to Django"
+documentation = 'https://github.com/d9pouces/df_site'
+license = "CeCILL-B"
+maintainers = ["d9pouces <github@19pouces.net>"]
+name = "df_site"
+packages = [{include = "df_site"}]
+readme = "README.md"
+repository = 'https://github.com/d9pouces/df_site'
+version = "0.1.8"
+
+[tool.poetry.dependencies]
+df-config = ">=1.2.42"
+df-websockets = "^1.0.9"
+django = ">=5.0"
+django-allauth = {extras = ["mfa", "socialaccount"], version = "^65.11.2"}
+django-bootstrap5 = ">=23.3"
+django-ckeditor-5 = "^0.2.13"
+django-cookie-consent = "^0.6.0"
+django-csp = "^4.0"
+django-minio-storage = "^0.5.7"
+django-pipeline = "^4.1.0"
+django-postman = "^4.5"
+django-prometheus = "^2.4.1"
+django-prose-editor = "^0.18.3"
+django-recaptcha = "^4.1.0"
+django-redis = "^6.0.0"
+django-redis-sessions = "^0.6.2"
+django-tinymce = "^4.1.0"
+fido2 = "^2.0.0"
+jsmin = "^3.0.1"
+lxml-html-clean = "^0.4.1"
+nh3 = "^0.3.0"
+psycopg = "^3.2.10"
+python = "^3.10"
+redis = "^6.4.0"
+uvicorn-worker = "^0.3.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+coverage = "^7.6.1"
+daphne = "^4.1.2"
+django-debug-toolbar = "^4.4.6"
+djt-csp = "^0.9.9"
+djt-nvu = "^0.9.2"
+djt-og = "^0.9.7"
+greenlet = "^3.1.1"
+hypothesis = "^6.115.5"
+ipython = "^8.28.0"
+poetry = "^1.7.1"
+pytest = "^8.3.4"
+pytest-django = "^4.9.0"
+pytest-env = "^1.1.5"
+recommonmark = "^0.7.1"
+sphinx = "^8.0.2"
+sphinx-immaterial = "^0.12.2"
+
+[tool.poetry.group.shell.dependencies]
+ipython = "^8.26.0"
+
+[tool.poetry.scripts]
+df_site-ctl = 'df_config.management:manage'
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "df_config.config.base"
+minversion = "6.0"
+required_plugins = "pytest-django"
+testpaths = ["df_site_tests"]
+
+[tool.pytest_env]
+DF_CONF_NAME = "df_site"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = [
+  "E",
+  "EXE",
+  "F",
+  "D",
+  "DJ",
+  "I",
+  "N",
+  "UP",
+  "S",
+  "W"
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

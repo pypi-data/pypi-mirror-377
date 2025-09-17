@@ -1,0 +1,8 @@
+{% extends 'df_site/app.html' %}
+{% load static pipeline_sri websockets df_site %}
+
+
+{% block body_content %}
+    {% bootstrap_breadcrumb detail_breadcrumb %}
+    {% component detail_component %}
+{% endblock body_content %}

@@ -1,0 +1,38 @@
+{% load i18n static df_site %}
+{% if cl.search_fields %}
+    {% if cl.search_help_text %}
+        <div class="col-md-12 ">
+            <div class="alert alert-secondary" id="{{ cl.model_admin.id_prefix }}_helptext">
+                {{ cl.search_help_text }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="col-md-12">
+        <form method="get" role="search">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+                       name="{{ search_var }}" value="{{ cl.query }}"
+                       placeholder="{% trans 'Search' %}"
+                       aria-label="{% trans 'Search' %}" {% if cl.search_help_text %} aria-describedby="{{ cl.model_admin.id_prefix }}_helptext"{% endif %}>
+                <button type="submit" class="btn btn-primary">{% fa6_icon 'search' %}</button>
+                {% if show_result_count %}
+                <span class="input-group-text">{% blocktranslate count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktranslate %}</span>
+                    <span class="input-group-text">
+                <a class="" href="?{% if cl.is_popup %}{{ is_popup_var }}=1{% if cl.add_facets %}&{% endif %}{% endif %}{% if cl.add_facets %}{{ is_facets_var }}{% endif %}">
+                    {% translate "Show all" %}
+                </a>&nbsp;
+                    {% if cl.show_full_result_count %}
+                        <span class="badge text-bg-secondary">{{ cl.full_result_count }}</span>
+                    {% endif %}
+                    </span>
+                {% endif %}
+            </div>
+            <div><!-- DIV needed for valid HTML -->
+                {% for pair in cl.params.items %}
+                    {% if pair.0 != search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+{% endif %}

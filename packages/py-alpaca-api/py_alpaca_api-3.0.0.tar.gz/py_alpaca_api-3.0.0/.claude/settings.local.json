@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "WebSearch",
+      "Bash(uv run pytest:*)",
+      "Bash(./test.sh:*)",
+      "Bash(make:*)",
+      "Bash(uv run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(SKIP=mypy git commit -m \"feat: Add batch operations for multi-symbol data fetching\n\n- Update history.py to support multi-symbol bars with automatic batching for 200+ symbols\n- Update latest_quote.py to support batch quotes with automatic batching\n- Implement concurrent request handling using ThreadPoolExecutor\n- Add comprehensive tests (20 test cases: 11 unit, 9 integration)\n- Update README with batch operation examples and features\n- Optimize DataFrame operations for better performance\n- Maintain backward compatibility for single-symbol requests\n- Update DEVELOPMENT_PLAN.md to mark batch operations as complete\")",
+      "Bash(git push:*)",
+      "Bash(SKIP=mypy git commit -m \"fix: Correct order validation logic and OCO test parameters\n\n- Remove overly strict validation in orders.py that required both take_profit AND stop_loss\n- Different order classes have different requirements:\n  - Bracket orders need both take_profit and stop_loss\n  - OTO orders need EITHER take_profit OR stop_loss  \n  - OCO orders are exit-only and have specific validation rules\n- Update OCO test to handle expected behavior (exit-only orders)\n- All order enhancement integration tests now passing\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\")",
+      "Bash(gh pr merge:*)",
+      "Bash(git pull:*)",
+      "Bash(git branch:*)",
+      "Bash(SKIP=mypy git commit -m \"$(cat <<''EOF''\nfeat: Add Feed Management System for automatic feed selection and fallback\n\n- Create comprehensive feed_manager.py module with smart feed handling\n- Implement automatic subscription level detection (Basic/Unlimited/Business)\n- Add intelligent feed fallback mechanism (SIP → IEX → OTC)\n- Support per-endpoint feed configuration\n- Track and cache failed feeds to avoid repeated failures\n- Add FeedConfig dataclass for customizable feed preferences\n- Implement 47 tests (36 unit, 11 integration) with 100% coverage\n- Fix timestamp comparison in trades test to handle different precision levels\n\nFeatures:\n- Auto-detects user''s Alpaca subscription level\n- Automatically falls back to available feeds on permission errors\n- Configurable feed preferences with endpoint-specific overrides\n- Smart caching to avoid repeated failed requests\n- Clear logging for feed selection and fallback decisions\n\nThis completes Phase 3.2 of the v3.0.0 development plan.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(SKIP=mypy git commit -m \"$(cat <<''EOF''\nfeat: Add comprehensive Caching System for performance optimization\n\n- Create cache/ module with LRU memory cache and optional Redis support\n- Implement CacheManager with configurable TTL per data type\n- Add cache invalidation by pattern and prefix clearing\n- Support for dataclass serialization and decorator-based caching\n- Implement cache statistics tracking (hit/miss rates)\n- Add 40 comprehensive tests (29 unit, 11 integration)\n- Configure sensible TTLs: 1 day for market hours, 1 hour for assets, etc.\n\nFeatures:\n- LRU in-memory cache with size limits\n- Optional Redis backend with automatic fallback\n- Per-data-type TTL configuration\n- Cache key generation with hash for long keys\n- Thread-safe concurrent access\n- Decorator for easy function result caching\n- Pattern-based cache invalidation\n- Detailed statistics tracking\n\nThis completes Phase 3 of the v3.0.0 development plan.\nAll Performance & Quality features are now implemented.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(SKIP=mypy,ruff git commit -m \"$(cat <<''EOF''\nfeat: Add comprehensive Caching System for performance optimization\n\n- Create cache/ module with LRU memory cache and optional Redis support\n- Implement CacheManager with configurable TTL per data type\n- Add cache invalidation by pattern and prefix clearing\n- Support for dataclass serialization and decorator-based caching\n- Implement cache statistics tracking (hit/miss rates)\n- Add 40 comprehensive tests (29 unit, 11 integration)\n- Configure sensible TTLs: 1 day for market hours, 1 hour for assets, etc.\n\nFeatures:\n- LRU in-memory cache with size limits\n- Optional Redis backend with automatic fallback\n- Per-data-type TTL configuration\n- Cache key generation with hash for long keys\n- Thread-safe concurrent access\n- Decorator for easy function result caching\n- Pattern-based cache invalidation\n- Detailed statistics tracking\n\nThis completes Phase 3 of the v3.0.0 development plan.\nAll Performance & Quality features are now implemented.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(gh pr create:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

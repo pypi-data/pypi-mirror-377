@@ -1,0 +1,115 @@
+[tool.poetry]
+name = "logger_color"
+version = "0.2.0"
+description = "Color the log message headers and add more logging levels for diagnostics."
+authors = ["Vladimirs Prusakovs <vladimir.prusakovs@gmail.com>"]
+readme = "README.rst"
+license = "Apache-2.0"
+homepage = "https://github.com/vladimirs-git/logger-color"
+repository = "https://github.com/vladimirs-git/logger-color"
+keywords = ["logging", "logger", "color"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.8",
+    "Natural Language :: English",
+]
+
+[[tool.poetry.source]]
+name = "pypi-public"
+url = "https://pypi.org/simple/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.1"
+poetry = "^1.8.3"
+pygments = "^2.16.1"  # rst-lint
+pylint = "^3.2.6"
+pytest = "^8.3.2"
+restructuredtext-lint = "^1.4.0"
+ruff = "^0.6.1"
+twine = "^4.0.2"
+types-pyyaml = "^6.0.12.12"
+typing-extensions = "^4.12.2"
+vhelpers = "^0.3.0"
+
+[tool.setuptools.package-data]
+logger_color = ["py.typed"]
+
+[tool.poetry.extras]
+test = ["pytest"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/vladimirs-git/logger-color/issues"
+"Download URL" = "https://github.com/vladimirs-git/logger-color/archive/refs/tags/0.2.0.tar.gz"
+
+[tool.pylint]
+disable = "fixme"
+max-args = 10
+max-attributes = 10
+max-line-length = 100
+max-locals = 10
+max-nested-blocks = 6
+
+#[tool.pylint.message_control]
+#enable = ["too-many-public-methods"]
+#max-public-methods = 50
+
+#[tool.pylint."tests.*"]
+#disable = [
+#    "assigning-non-slot",
+#    "duplicate-code",
+#    "no-member",
+#    "protected-access",
+#    "redefined-builtin",
+#    "redefined-outer-name",
+#    "too-many-statements",
+#    "unused-import",
+#    "use-dict-literal",
+#]
+
+[tool.mypy]
+python_version = "3.8"
+
+#[[tool.mypy.overrides]]
+#module = "pynetbox.*"
+#ignore_missing_imports = true
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".idea",
+    ".mypy_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".venv",
+    "_notes",
+    "dist",
+    "examples",
+    "temp",
+    "tmp",
+    "venv",
+]
+line-length = 100
+indent-width = 4
+target-version = "py38"
+#select = ["E4", "E7", "E9", "F"]
+#ignore = []
+#fixable = ["ALL"]
+#unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false  # arguments on separate lines
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"  # docstring style
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wingman-run"
+version = "0.1.2"
+description = "Simple text replacer that replaces 'helloworld' with 'Hello World!' using a global hotkey"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["text", "replacement", "hotkey", "automation", "macos"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: MacOS X",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Utilities",
+    "License :: Other/Proprietary License",
+]
+dependencies = [
+    "requests>=2.32",
+    "pyautogui==0.9.54",
+    "pyperclip>=1.9",
+    "python-dotenv>=1.0",
+    "sseclient-py>=1.8",
+    "pynput>=1.7.6",
+    "click>=8.1.0",
+    "pyobjc-framework-Quartz>=9.0 ; sys_platform == 'darwin'",
+    "pyobjc-framework-ApplicationServices>=9.0 ; sys_platform == 'darwin'",
+    "pyobjc-framework-Cocoa>=9.0 ; sys_platform == 'darwin'",
+]
+
+[project.scripts]
+wingman-run = "wingman_run.client:main"
+
+[project.urls]
+Homepage = "https://wingman.run"
+Repository = "https://github.com/yourusername/wingman"
+Issues = "https://github.com/yourusername/wingman/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+wingman_run = ["py.typed"]

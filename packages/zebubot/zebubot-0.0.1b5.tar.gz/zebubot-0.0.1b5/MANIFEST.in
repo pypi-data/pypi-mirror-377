@@ -1,0 +1,25 @@
+include README.md
+include LICENSE
+include requirements.txt
+include env.template
+include pyproject.toml
+include setup.py
+include zebubot_config_template.yaml
+include setup_zebubot.py
+recursive-include zebubot *.py
+recursive-include zebubot *.yaml
+recursive-include zebubot *.json
+recursive-include zebubot/scripts *.py
+recursive-include scripts *.py
+recursive-include templates *.py
+recursive-include templates *.yaml
+recursive-include configs *.yaml
+recursive-include configs *.json
+recursive-include docs *.md
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude *.so
+global-exclude *.pyd
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.egg-info

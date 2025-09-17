@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: stellarmesh
+Version: 0.0.0
+Summary: Meshing library for nuclear workflows.
+Author: Alex Koen
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pymmg
+Requires-Dist: meshio[all]
+Provides-Extra: dev
+Requires-Dist: cadquery-ocp-stubs==7.8.1.1.post1; extra == "dev"
+Requires-Dist: ocp-vscode>=2.9.0; extra == "dev"
+Requires-Dist: pip>=25.2; extra == "dev"
+Requires-Dist: pytest>=8.4.1; extra == "dev"
+Requires-Dist: pytest-cov>=6.2.1; extra == "dev"
+Requires-Dist: pytest-benchmark>=5.1.0; extra == "dev"
+Requires-Dist: ruff>=0.12.8; extra == "dev"
+Dynamic: license-file

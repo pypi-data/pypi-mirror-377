@@ -1,0 +1,93 @@
+[project]
+name = "vid2pdf"
+version = "1.2.0"
+description = "Convert a video file into PDF image series"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "sco1", email = "sco1.git@gmail.com"}
+]
+
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+]
+
+requires-python = ">=3.11"
+dependencies = [
+    "ffmpy~=0.5",
+    "pillow~=11.0",
+    "python-dotenv~=1.1",
+    "tqdm~=4.67",
+    "typer-slim~=0.17",
+]
+
+[project.urls]
+Homepage = "https://github.com/sco1/"
+Documentation = "https://github.com/sco1/vid2pdf/blob/main/README.md"
+Repository = "https://github.com/sco1/vid2pdf.git"
+Issues = "https://github.com/sco1/vid2pdf/issues"
+Changelog = "https://github.com/sco1/vid2pdf/blob/main/CHANGELOG.md"
+
+[project.scripts]
+vid2pdf = "vid2pdf.vid2pdf:vid2pdf_cli"
+
+[dependency-groups]
+dev = [
+    "black~=25.0",
+    "cogapp~=3.5",
+    "flake8~=7.1",
+    "flake8-annotations~=3.1",
+    "flake8-define-class-attributes~=0.2",
+    "isort~=6.0",
+    "mypy~=1.14",
+    "pre-commit~=4.0",
+    "ruff~=0.9",
+    "sco1-bumper~=2.0",
+]
+
+[project.optional-dependencies]
+build = [
+    "nuitka~=2.7",
+]
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+case_sensitive = true
+known_first_party = "vid2pdf,tests"
+no_lines_before = "LOCALFOLDER"
+order_by_type = false
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+enable_error_code = "exhaustive-match"
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.uv.build-backend]
+module-name = "vid2pdf"
+module-root = ""
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"

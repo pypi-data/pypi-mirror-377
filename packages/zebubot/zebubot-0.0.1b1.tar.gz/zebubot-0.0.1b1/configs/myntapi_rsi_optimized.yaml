@@ -1,0 +1,27 @@
+# Per-script configuration for ZebuBot (MyntAPI)
+# Script: myntapi_rsi_optimized.py
+# Symbols use user-friendly format like NSE:SBIN-EQ; they will be converted automatically.
+symbols:
+  - NSE:NIFTY 50
+exchange: myntapi
+strategy:
+  rsi_period: 14
+  sma_fast: 20
+  sma_slow: 50
+  bb_period: 20
+  bb_stddev: 2.0
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  # Additional symbols to trade when primary signal is generated
+  additional_symbols:
+    - NSE:RELIANCE-EQ
+    - NSE:TCS-EQ
+    - NSE:HDFCBANK-EQ
+    - NSE:INFY-EQ
+    - NSE:HINDUNILVR-EQ
+risk:
+  min_position_inr: 1000
+  max_position_pct: 0.04
+  # Position size per additional symbol (0.5% of margin)
+  additional_symbol_position_pct: 0.005

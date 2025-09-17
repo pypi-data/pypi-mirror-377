@@ -1,0 +1,37 @@
+[project]
+name = "mcp-polaris-ai-datainsight"
+version = "1.0.0"
+description = "This tool supports the extraction of text, images, and other elements from various document formats."
+authors = [
+    { name = "Polaris Office", email = "ai@polarisoffice.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+keywords = ["polaris", "datainsight", "mcp"]
+
+[project.urls]
+homepage = "https://datainsight.polarisoffice.com/"
+repository = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight/"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.scripts]
+mcp-polaris-ai-datainsight = "mcp_polaris_ai_datainsight.server:run"
+
+[tool.poetry.dependencies]
+polaris-ai-datainsight = "^1.0.0"
+mcp = {extras = ["cli"], version = "^1.6.0"}
+
+# [tool.poetry.group.dev.dependencies]
+# polaris-ai-datainsight = {path = "../polaris-ai-datainsight", develop = true}
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.5"
+
+[tool.poetry.group.codespell.dependencies]
+codespell = "^2.2.6"
+
+[tool.poetry.group.typing.dependencies]
+mypy = "^1.10"

@@ -1,0 +1,117 @@
+Metadata-Version: 2.4
+Name: jettask
+Version: 0.2.9
+Summary: A high-performance distributed task queue system with web monitoring
+Author-email: JetTask Team <support@jettask.io>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/yourusername/jettask
+Project-URL: Bug Tracker, https://github.com/yourusername/jettask/issues
+Project-URL: Documentation, https://jettask.readthedocs.io
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: redis>=4.5.0
+Requires-Dist: aioredis>=2.0.0
+Requires-Dist: msgpack>=1.0.0
+Requires-Dist: watchdog>=3.0.0
+Requires-Dist: uvloop>=0.17.0
+Requires-Dist: ujson>=5.6.0
+Requires-Dist: fastapi>=0.100.0
+Requires-Dist: uvicorn[standard]>=0.23.0
+Requires-Dist: websockets>=11.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-multipart>=0.0.6
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: sqlalchemy[asyncio]>=2.0.0
+Requires-Dist: psycopg[binary,pool]>=3.1.0
+Requires-Dist: asyncpg>=0.28.0
+Requires-Dist: croniter>=1.4.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: psutil>=5.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: flake8>=6.0; extra == "dev"
+Requires-Dist: mypy>=1.4.0; extra == "dev"
+Requires-Dist: coverage>=7.0; extra == "dev"
+Dynamic: license-file
+
+# JetTask
+
+一个高性能的分布式任务队列系统，支持Web监控界面。
+
+## 特性
+
+- 🚀 高性能异步任务执行
+- 📊 实时Web监控界面
+- ⏰ 支持定时任务和延迟任务
+- 🔄 任务重试和错误处理
+- 🎯 多队列和优先级支持
+- 🌍 多命名空间隔离
+- 📈 任务统计和性能监控
+- 🔧 简单易用的API
+
+## 安装
+
+```bash
+pip install jettask
+```
+
+## 快速开始
+
+### 1. 创建任务
+
+```python
+from jettask import JetTask
+
+app = JetTask()
+
+@app.task(queue="default")
+async def hello_task(name):
+    return f"Hello, {name}!"
+```
+
+### 2. 启动Worker
+
+```bash
+jettask worker -a app:app --queues default
+```
+
+### 3. 发送任务
+
+```python
+result = await hello_task.send("World")
+print(result)  # Hello, World!
+```
+
+### 4. 启动Web监控界面
+
+```bash
+# 启动API服务
+jettask api
+
+# 启动前端界面
+jettask frontend
+```
+
+然后访问 http://localhost:3000 查看监控界面。
+
+## 文档
+
+详细文档请参见 [docs/](docs/) 目录。
+
+## 许可证
+
+MIT License

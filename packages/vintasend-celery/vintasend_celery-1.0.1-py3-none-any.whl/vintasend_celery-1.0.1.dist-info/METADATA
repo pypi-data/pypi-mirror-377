@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: vintasend-celery
+Version: 1.0.1
+Summary: Celery adapter for VintaSend
+License: MIT
+License-File: LICENSE.txt
+Author: Hugo bessa
+Author-email: hugo@vinta.com.br
+Requires-Python: >=3.10,<3.14
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: celery (>=5.4.0,<6.0.0)
+Requires-Dist: vintasend (>=1.0.1,<2.0.0)
+Description-Content-Type: text/markdown
+
+# VintaSend Celery
+
+Celery adapter base implementation for VintaSend. 
+
+This package doesn't implement an actual adapter, but it helps you to make an existing adapter to run from a Celery worker.
+
+
+## Installation
+
+To install VintaSend Celery you need to run the following command:
+
+```shell
+pip install vintasend vintasend-celery
+```
+
+
+## Quick start
+
+To use VintaSend Celery you need to manually register your tasks
+

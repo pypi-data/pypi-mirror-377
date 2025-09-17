@@ -1,0 +1,18 @@
+qdrant-client>=1.7.0
+pydantic>=2.6
+typer>=0.12
+rich>=13.7
+tomlkit>=0.12
+questionary>=2.0
+openai>=1.30.0
+huggingface_hub>=0.24
+pymongo>=4.7
+google-generativeai>=0.5.0
+voyageai>=0.1.8
+chromadb>=0.5
+
+[minilm]
+sentence-transformers>=2.6
+
+[minilm:platform_machine != "wasm32"]
+torch>=2

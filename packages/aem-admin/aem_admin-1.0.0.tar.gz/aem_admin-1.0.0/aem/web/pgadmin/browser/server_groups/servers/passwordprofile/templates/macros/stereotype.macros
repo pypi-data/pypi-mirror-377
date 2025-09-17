@@ -1,0 +1,118 @@
+{% macro DAYS_TO_EPOCHED_INTERVAL( target_name, str_value ) -%}
+        EXTRACT(EPOCH FROM INTERVAL '{{str_value}} days') AS {{target_name}}_d,
+{%- endmacro %}
+
+
+{% macro ZERO_VALUE_AS_COLUMN( target_name ) -%}
+    (select 0 as {{target_name}}_d) as {{target_name}}_d,
+{%- endmacro %}
+
+{% macro SELECT_PHRASE_OF_EPOCH( target_name, isdefault, isunlimited  ) -%}        
+        {%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+            0 AS prfpassword{{target_name}}time
+        {%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+            0 AS prfpassword{{target_name}}time
+        {% else %}
+            (({{target_name}}_days+{{target_name}}_hours+{{target_name}}_minutes) / 60 / 60 / 24 ) AS prfpassword{{target_name}}time
+        {% endif %}
+{%- endmacro %}
+
+{% macro FROM_PHRASE_OF_EPOCH_DAYS( target_name, epoched_days_value  ) -%}
+        {% if epoched_days_value and epoched_days_value != '0' %}
+            EXTRACT(EPOCH FROM INTERVAL '{{epoched_days_value}} days') AS {{target_name}}_days
+        {% else %}
+            (SELECT 0 AS {{target_name}}_days) as {{target_name}}_days
+        {% endif %}
+{%- endmacro %}
+
+{% macro FROM_PHRASE_OF_EPOCH_HOURS( target_name, epoched_hours_value  ) -%}
+        {% if epoched_hours_value and epoched_hours_value != '0' %}
+            EXTRACT(EPOCH FROM INTERVAL '{{epoched_hours_value}} hours') AS {{target_name}}_hours
+        {% else %}
+            (SELECT 0 AS {{target_name}}_hours) as {{target_name}}_hours
+        {% endif %}
+{%- endmacro %}
+
+{% macro FROM_PHRASE_OF_EPOCH_MINUTES( target_name, epoched_minutes_value  ) -%}
+        {% if epoched_minutes_value and epoched_minutes_value != '0' %}
+            EXTRACT(EPOCH FROM INTERVAL '{{epoched_minutes_value}} minutes') AS {{target_name}}_minutes
+        {% else %}
+            (SELECT 0 AS {{target_name}}_minutes) as {{target_name}}_minutes
+        {% endif %}
+{%- endmacro %}
+
+
+
+--unepoch.sql
+{% macro SELECT_PHRASE_OF_UNEPOCH( target_name, str_value ) -%}
+        date_part('days', justify_interval({{str_value}}::TEXT::INTERVAL)) as _prfpassword{{target_name}}time_day,
+        date_part('hours', justify_interval({{str_value}}::TEXT::INTERVAL)) as _prfpassword{{target_name}}time_hour,
+        date_part('minutes', justify_interval({{str_value}}::TEXT::INTERVAL)) as _prfpassword{{target_name}}time_minute
+{%- endmacro %}
+
+{%- macro TARGET_PROFILE_PROPERTY_VALUE_SELECTOR( target_name, int_or_float_string, isdefault, isunlimited ) -%}
+    {%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+        {{target_name}}  DEFAULT
+    {%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+        {{target_name}}  UNLIMITED
+    {%- elif not int_or_float_string|float  -%}
+    {%- elif int_or_float_string|float >= 0 -%}
+        {{target_name}} {{int_or_float_string}}
+    {%- endif -%}
+{%- endmacro -%}
+
+--properties.sql
+{% macro CASE_DATE_PART_SELECTOR( target_name ) -%}
+    CASE WHEN ( prfpassword{{target_name}}time = -172800 OR prfpassword{{target_name}}time = -2 ) THEN True ELSE False END AS _prfpassword{{target_name}}time_unlimited ,
+    CASE WHEN ( prfpassword{{target_name}}time = -86400 OR prfpassword{{target_name}}time = -1 ) THEN True ELSE False END AS _prfpassword{{target_name}}time_default ,
+    CASE WHEN prfpassword{{target_name}}time > 0 THEN date_part('days', justify_hours(prfpassword{{target_name}}time::text::interval)) ELSE 0 END AS _prfpassword{{target_name}}time_day ,
+    CASE WHEN prfpassword{{target_name}}time > 0 THEN date_part('hours', justify_interval(prfpassword{{target_name}}time::text::interval)) ELSE 0 END AS _prfpassword{{target_name}}time_hour ,
+    CASE WHEN prfpassword{{target_name}}time > 0 THEN date_part('minutes', justify_interval(prfpassword{{target_name}}time::text::interval)) ELSE 0 END AS _prfpassword{{target_name}}time_minute
+{%- endmacro %}
+
+{% macro CASE_INTEGER_SELECTOR( target_name ) -%}
+    CASE WHEN {{target_name}} = -2 THEN True ELSE False END AS _{{target_name}}_unlimited ,
+    CASE WHEN {{target_name}} = -1 THEN True ELSE False END AS _{{target_name}}_default ,
+    CASE WHEN {{target_name}} > 0 THEN {{target_name}} ELSE null END AS {{target_name}}
+{%- endmacro %}
+
+--update.sql
+{%- macro TARGET_PROFILE_PROPERTY_UPDATE_VALUE_SELECTOR( target_name, int_or_float_string, isdefault, isunlimited ) -%}
+    {%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+        {{target_name}}  DEFAULT
+    {%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+        {{target_name}}  UNLIMITED
+    {%- elif int_or_float_string|float >= 0 and int_or_float_string|float is defined -%}
+        {{target_name}} {{int_or_float_string}}
+    {%- endif -%}
+{%- endmacro -%}
+
+--default_or_unmlimited_transfromer.sql
+{%- macro DEFAULT_OR_UNLIMITED_TRANSFORMER( target_name, table_name, signed_int_string) -%}
+    CASE WHEN {{signed_int_string}} = -2 THEN True ELSE False END AS _prf{{target_name}}_unlimited ,
+    CASE WHEN {{signed_int_string}} = -1 THEN True ELSE False END AS _prf{{target_name}}_default,
+    CASE WHEN {{signed_int_string}} > 0 THEN {{signed_int_string}} ELSE 0 END AS {{table_name}}
+{%- endmacro -%}
+
+-- msql_epoch.sql
+{% macro MSQL_SELECT_PHRASE_OF_EPOCH( target_name, isdefault, isunlimited  ) -%}
+    {%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+        0 AS prfpassword{{target_name}}time
+    {%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+        0 AS prfpassword{{target_name}}time
+    {% else %}
+        (({{target_name}}_days+{{target_name}}_hours+{{target_name}}_minutes) / 60 / 60 / 24 ) AS prfpassword{{target_name}}time
+    {% endif %}
+{%- endmacro %}
+
+-- msql_create.sql
+{%- macro MSQL_TARGET_PROFILE_PROPERTY_VALUE_SELECTOR( target_name, int_or_float_string, isdefault, isunlimited ) -%}
+    {%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+    {%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+        {{target_name}}  UNLIMITED
+    {%- elif not int_or_float_string|float  -%}
+    {%- elif int_or_float_string|float >= 0 -%}
+        {{target_name}} {{int_or_float_string}}
+    {%- endif -%}
+{%- endmacro -%}
+

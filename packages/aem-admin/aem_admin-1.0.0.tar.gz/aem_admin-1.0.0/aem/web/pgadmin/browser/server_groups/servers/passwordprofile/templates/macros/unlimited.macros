@@ -1,0 +1,11 @@
+{% macro TO_INTEGER( value ) -%}
+    {% if value %} -2 {% endif %}
+{%- endmacro %}
+
+{% macro TO_BOOLEAN( value ) -%}
+    {% if value == -2 %}
+        True
+    {% else %}
+        False
+    {% endif %}
+{%- endmacro %}

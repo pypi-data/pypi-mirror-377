@@ -1,0 +1,6 @@
+--unepoch.sql
+{% macro SELECT_PHRASE_OF_UNEPOCH( target_name, str_value ) -%}
+        date_part('days', justify_interval({{str_value}}::TEXT::INTERVAL)) as _prfpassword{{target_name}}time_day,
+        date_part('hours', justify_interval({{str_value}}::TEXT::INTERVAL)) as _prfpassword{{target_name}}time_hour,
+        date_part('minutes', justify_interval({{str_value}}::TEXT::INTERVAL)) as _prfpassword{{target_name}}time_minute
+{%- endmacro %}

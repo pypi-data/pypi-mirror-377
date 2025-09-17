@@ -1,0 +1,9 @@
+{%- macro TARGET_PROFILE_PROPERTY_UPDATE_VALUE_SELECTOR( target_name, int_or_float_string, isdefault, isunlimited ) -%}
+{%- if (isdefault is defined and isdefault == "true") or (isdefault is defined and isdefault is sameas true) -%}
+    {{target_name}}  DEFAULT
+{%- elif (isunlimited is defined and isunlimited == "true") or (isunlimited is defined and isunlimited is sameas true)  -%}
+    {{target_name}}  UNLIMITED
+{%- elif int_or_float_string|float >= 0 and int_or_float_string|float is defined -%}
+    {{target_name}} {{int_or_float_string}}
+{%- endif -%}
+{%- endmacro -%}

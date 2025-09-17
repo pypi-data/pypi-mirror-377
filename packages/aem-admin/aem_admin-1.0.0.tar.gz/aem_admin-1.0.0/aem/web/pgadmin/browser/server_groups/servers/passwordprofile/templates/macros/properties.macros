@@ -1,0 +1,13 @@
+{% macro CASE_DATE_PART_SELECTOR( target_name ) -%}
+    CASE WHEN prfpassword{{target_name}}time = -2 THEN True ELSE False END AS _prfpassword{{target_name}}time_unlimited ,
+    CASE WHEN prfpassword{{target_name}}time = -1 THEN True ELSE False END AS _prfpassword{{target_name}}time_default ,
+    CASE WHEN prfpassword{{target_name}}time > 0 THEN date_part('days', justify_hours(prfpassword{{target_name}}time::text::interval)) ELSE null END AS _prfpassword{{target_name}}time_day,
+    CASE WHEN prfpassword{{target_name}}time > 0 THEN date_part('hours', justify_interval(prfpassword{{target_name}}time::text::interval)) ELSE null END AS _prfpassword{{target_name}}time_hour,
+    CASE WHEN prfpassword{{target_name}}time > 0 THEN date_part('minutes', justify_interval(prfpassword{{target_name}}time::text::interval)) ELSE null END AS _prfpassword{{target_name}}time_minute
+{%- endmacro %}
+
+{% macro CASE_INTEGER_SELECTOR( target_name ) -%}
+    CASE WHEN {{target_name}} = -2 THEN True ELSE False END AS _{{target_name}}_unlimited,
+    CASE WHEN {{target_name}} = -1 THEN True ELSE False END AS _{{target_name}}_default,
+    CASE WHEN {{target_name}} > 0 THEN {{target_name}} ELSE null END AS {{target_name}}
+{%- endmacro %}

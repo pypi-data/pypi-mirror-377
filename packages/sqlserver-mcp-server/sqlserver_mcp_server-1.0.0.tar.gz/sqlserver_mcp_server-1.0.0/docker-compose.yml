@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  sqlserver-mcp:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SQLSERVER_MCP_LOG_LEVEL=INFO
+      - SQLSERVER_MCP_LOG_FORMAT=json
+      - SQLSERVER_MCP_SERVER_HOST=0.0.0.0
+      - SQLSERVER_MCP_SERVER_PORT=8000
+    volumes:
+      - ./config.json:/app/config.json:ro
+    depends_on:
+      - sqlserver
+    networks:
+      - mcp-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - mcp-network
+
+  sqlserver-mcp-dev:
+    build: .
+    ports:
+      - "8001:8000"
+    environment:
+      - SQLSERVER_MCP_LOG_LEVEL=DEBUG
+      - SQLSERVER_MCP_LOG_FORMAT=json
+      - SQLSERVER_MCP_SERVER_HOST=0.0.0.0
+      - SQLSERVER_MCP_SERVER_PORT=8000
+    volumes:
+      - .:/app
+      - ./config.json:/app/config.json:ro
+    depends_on:
+      - sqlserver
+    networks:
+      - mcp-network
+    command: ["python", "-m", "src.mcp_tools"]
+
+volumes:
+  sqlserver_data:
+
+networks:
+  mcp-network:
+    driver: bridge

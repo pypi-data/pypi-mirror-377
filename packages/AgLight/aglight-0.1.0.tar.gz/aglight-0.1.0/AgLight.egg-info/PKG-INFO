@@ -1,0 +1,62 @@
+Metadata-Version: 2.4
+Name: AgLight
+Version: 0.1.0
+Summary: Ultra-accelerating decorator for scientific and numerical Python functions.
+Author: AG
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Provides-Extra: numba
+Requires-Dist: numba; extra == "numba"
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AgLight
+
+AgLight is a Python module that provides an ultra-accelerating decorator for scientific and numerical functions. It automatically uses Numba JIT compilation and parallelization if available, or falls back to multiprocessing for heavy computations if Numba is not installed.
+
+## Features
+- **@light decorator**: Accelerates your functions with minimal code changes.
+- Uses Numba JIT and parallelization for optimal speed.
+- Falls back to multiprocessing for large workloads if Numba is unavailable.
+- Simple API: just decorate your function with `@light`.
+
+## Installation
+
+```bash
+pip install AgLight
+```
+
+## Usage
+
+```python
+from AgLight import light
+
+@light
+def my_heavy_function(n):
+    total = 0
+    for i in range(n):
+        total += i * i
+    return total
+
+print(my_heavy_function(1000000))
+```
+
+## Requirements
+- Python 3.7+
+- numpy
+- (Optional) numba for maximum acceleration
+
+## License
+MIT

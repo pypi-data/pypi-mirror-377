@@ -1,0 +1,45 @@
+image: python:3.12-slim
+
+include:
+  - project: 'public-corner/skillcorner-CICD'
+    ref: stable
+    file: '.skillcorner-ci-common.yml'
+
+stages:
+  - test
+  - build_and_publish
+  - prepare_release
+  - release
+
+
+ruff:
+  stage: test
+  extends: .ruff
+
+test:
+  stage: test
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.9", "3.10", "3.11", "3.12"]
+  variables:
+    UV_PYTHON: ${PYTHON_VERSION}
+  extends: .uv_test_with_coverage
+
+
+
+package:gitlab:
+  stage: build_and_publish
+  extends: .uv_build_and_publish
+
+package:pypi:
+  stage: build_and_publish
+  extends: .uv_build_and_publish_pypi
+  tags: [saas-linux-small-amd64]
+
+prepare_job:
+  stage: prepare_release
+  extends: .gitlab_release_prepare
+
+release_job:
+  stage: release
+  extends: .gitlab_release_job

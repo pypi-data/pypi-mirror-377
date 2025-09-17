@@ -1,0 +1,41 @@
+site_name: SkillCorner On Demand
+site_url: https://tactical.skillcorner.com
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: green
+      accent: light-green
+
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+      primary: green
+      accent: light-green
+
+dev_addr: "127.0.0.1:8888"
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            allow_inspection: false
+  - search
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Quick Start: quick-start.md
+  - API Reference: api-reference.md

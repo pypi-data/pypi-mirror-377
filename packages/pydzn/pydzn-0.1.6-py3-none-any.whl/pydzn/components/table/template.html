@@ -1,0 +1,79 @@
+<div {{ attrs|safe }}>
+    {% if show_toolbar %}
+    <div class="flex items-center justify-between px-3 py-2 border-b border-subtle">
+      <div class="flex items-center gap-2">
+        <!-- Slot for future toolbar items (filters, search). Keep simple for now. -->
+      </div>
+      <div class="flex items-center gap-2">
+        {% if add_column_url %}
+        <button
+          class="rounded-sm border bg-[white] text-[black] px-3 py-2 hover:bg-[rgba(15,23,42,.04)]"
+          hx-get="{{ add_column_url }}"
+          hx-target="#{{ id }}"
+          hx-swap="outerHTML">
+          + Column
+        </button>
+        {% endif %}
+        {% if export_url %}
+        <button
+          class="rounded-sm border bg-[white] text-[black] px-3 py-2 hover:bg-[rgba(15,23,42,.04)]"
+          onclick="window.location.href='{{ export_url }}'">
+          Export
+        </button>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  
+    <div class="overflow-auto">
+      <table class="w-[100%]">
+        <thead>
+          <tr class="border-b border-subtle">
+            {% for col in columns %}
+              {% set align = col.align or 'left' %}
+              {% set th_dzn = (col.dzn or '') + ' ' + cell_pad_dzn %}
+              {% set th_cls = th_dzn + ' ' + ('text-left' if align=='left' else ('text-right' if align=='right' else 'text-center')) %}
+              <th
+                class="{{ th_cls }}"
+                {% if col.width %} style="width:{{ col.width }}"{% endif %}>
+                {% if sort_url and col.sortable %}
+                  {# build toggle dir based on current state #}
+                  {% set next_dir = (toggle_dir if sort_key==col.key else 'asc') %}
+                  <button
+                    class="no-underline bg-[transparent] border-0 text-[inherit] hover:underline"
+                    hx-get="{{ sort_url }}?sort={{ col.key }}&dir={{ next_dir }}"
+                    hx-target="#{{ id }}"
+                    hx-swap="outerHTML"
+                    hx-push-url="true">
+                    <span>{{ col.label }}</span>
+                    {% if sort_key == col.key %}
+                      <span aria-hidden="true">{{ '▲' if sort_dir=='asc' else '▼' }}</span>
+                    {% endif %}
+                  </button>
+                {% else %}
+                  <span>{{ col.label }}</span>
+                {% endif %}
+              </th>
+            {% endfor %}
+          </tr>
+        </thead>
+  
+        <tbody>
+          {% for row in rows %}
+            {# zebra striping without :odd/:even — compute server-side #}
+            {% set row_bg = 'bg-[rgba(15,23,42,.03)]' if striped and loop.index0 % 2 == 1 else '' %}
+            <tr class="border-b border-subtle {{ row_bg }}">
+              {% for col in columns %}
+                {% set align = col.align or 'left' %}
+                {% set td_cls = cell_pad_dzn + ' ' + ('text-left' if align=='left' else ('text-right' if align=='right' else 'text-center')) %}
+                <td class="{{ td_cls }}">
+                  {{ (row.get(col.key, '')|safe) }}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

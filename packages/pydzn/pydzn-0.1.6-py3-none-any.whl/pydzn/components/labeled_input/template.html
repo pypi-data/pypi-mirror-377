@@ -1,0 +1,26 @@
+<div {{ attrs|safe }}>
+    <label for="{{ input_id }}" class="{{ dzn_label }}">{{ label }}</label>
+  
+    <input
+      id="{{ input_id }}"
+      name="{{ name }}"
+      type="{{ type_ }}"
+      class="{{ dzn_input }}"
+      {% if value %}value="{{ value }}"{% endif %}
+      {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+      {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if disabled %}disabled{% endif %}
+      {% if readonly %}readonly{% endif %}
+      {% for k, v in input_attrs.items() %} {{ k }}="{{ v }}"{% endfor %}
+    />
+  
+    {% if hint %}
+      <div class="{{ dzn_hint }}">{{ hint }}</div>
+    {% endif %}
+  
+    {% if error %}
+      <div class="{{ dzn_error }}">{{ error }}</div>
+    {% endif %}
+  </div>
+  

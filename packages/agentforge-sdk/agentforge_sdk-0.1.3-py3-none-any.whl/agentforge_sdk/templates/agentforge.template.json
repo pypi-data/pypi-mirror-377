@@ -1,0 +1,43 @@
+{
+  "manifestVersion": "1.0.0",
+  "name": "Weather Reporter",
+  "pluginId": "com.develope.weather-reporter", 
+  "version": "1.0.0", 
+  "author": "Your Name <your.email@example.com>",
+  "description": "A plugin to get real-time weather information from various sources.",
+  "roleName": "Weather Specialist", 
+  "pricing": { 
+    "type": "FREE" 
+  },
+  "tools": [
+    {
+      "name": "get_current_weather",
+      "description": "Gets the current weather for a given location.",
+      "entrypoint": "tools.get_weather:GetCurrentWeatherTool",
+      "parameters": [ 
+        {
+          "name": "location",
+          "type": "string",
+          "description": "The city and state, e.g., San Francisco, CA",
+          "required": true
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "description": "The temperature unit (celsius or fahrenheit).",
+          "required": false,
+          "default": "celsius"
+        }
+      ]
+    }
+  ],
+  "personaPrompt":"your best prompt"
+  "requirements": [
+    "requests==2.28.0",
+    "beautifulsoup4"
+  ],
+  "permissions": [
+    "network_access:api.weather.com", 
+    "filesystem_read:false"
+  ]
+}

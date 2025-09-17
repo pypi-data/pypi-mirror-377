@@ -1,0 +1,38 @@
+[project]
+name = "automea"
+version = "0.0.18"
+authors = [
+  { name="Vinicius Hernandes", email="viniciusfhernandes@gmail.com" },
+]
+description = "Automated analysis of MEA datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "h5py>=3.7.0,<4.0.0",
+    "matplotlib==3.6.0",
+    "numpy==1.22.4",
+    "pandas==1.5.0",
+    "tensorflow>=2.13.0,<2.14.0",
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/QMAI/papers/autoMEA"
+
+
+[tool.setuptools]
+# ...
+package-dir = {"" = "src"}
+license-files = []
+
+[tool.setuptools.package-data]
+automea = ["models/*"]
+
+
+
+

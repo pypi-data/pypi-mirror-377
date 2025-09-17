@@ -1,0 +1,124 @@
+Metadata-Version: 2.4
+Name: automea
+Version: 0.0.18
+Summary: Automated analysis of MEA datasets
+Author-email: Vinicius Hernandes <viniciusfhernandes@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Vinicius Hernandes
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://gitlab.com/QMAI/papers/autoMEA
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: h5py<4.0.0,>=3.7.0
+Requires-Dist: matplotlib==3.6.0
+Requires-Dist: numpy==1.22.4
+Requires-Dist: pandas==1.5.0
+Requires-Dist: tensorflow<2.14.0,>=2.13.0
+
+# autoMEA
+
+*autoMEA* (Automated analysis of MEA datasets) is a open-source Python package for the analysis of Micro-Electrode Array (MEA) datasets. 
+
+## How does autoMEA work?
+
+Bursts are detected using the *Max Interval Method*. Users can manually set *Max Interval Parameters*, or can use a machine learning model that dynamically predicts optimal parameters for specific recording times. Several models are distributed with *automea*, and users are free to fine-tune the existing models for their specific needs, or upload new models completely.  
+
+The machine-learning-based burst detection routine is explained in the paper accompanying the package. 
+
+Tutorials and documentation can be found on [readthedocs](https://automea.readthedocs.io).
+
+
+## Installation
+
+The preferred way to install `autoMEA` is using **Conda**.
+
+Create a new environment with Python 3.10 and activate it:
+
+```bash
+conda create -n automea_env python=3.10
+conda activate automea_env
+```
+
+Install autoMEA using pip:
+```bash
+pip install automea
+```
+
+## Reproducibility
+
+All the data used to train and evaluate the machine learning models distributed with autoMEA can be found on [zenodo](https://zenodo.org/records/12685150).
+
+## Citing
+
+If you have used autoMEA for work that has led to a scientific publication, please cite it as
+
+```bibtex
+@article {Hernandes2024.05.08.593078,
+	author = {Hernandes, Vinicius and Heuvelmans, Anouk M. and Gualtieri, Valentina and Meijer, Dimphna H. and van Woerden, Geeske M. and Greplova, Eliska},
+	title = {autoMEA: Machine learning-based burst detection for multi-electrode array datasets},
+	elocation-id = {2024.05.08.593078},
+	year = {2024},
+	doi = {10.1101/2024.05.08.593078},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2024/05/08/2024.05.08.593078},
+	journal = {bioRxiv}
+}
+
+@dataset{hernandes_2024_12685150,
+  author       = {Hernandes, Vinicius and
+                  Heuvelmans, Anouk M. and
+                  Gualtieri, Valentina and
+                  Meijer, Dimphna H. and
+                  van Woerden, Geeske M. and
+                  Greplova, Eliska},
+  title        = {{Data and scripts used in: "autoMEA: Machine 
+                   learning-based burst detection for multi-electrode
+                   array datasets"}},
+  month        = jul,
+  year         = 2024,
+  publisher    = {Zenodo},
+  doi          = {10.1101/2024.05.08.593078},
+  url          = {https://doi.org/10.1101/2024.05.08.593078}
+}
+```
+
+## Authors
+
+Here is a list of authors who have contributed to this project:
+- Vinicius Hernandes
+- Anouk M. Heuvelmans
+- Valentina Gualtieri
+- Dimphna H. Meijer
+- Geeske M. van Woerden
+- Eliska Greplova
+
+## Contributing
+
+autoMEA is an open source package, and we invite you to contribute!
+You contribute by opening [issues](https://gitlab.com/QMAI/papers/autoMEA),
+fixing them, and spreading the word about `autoMEA`.
+
+## License
+
+This work is licensed under a [MIT License](https://opensource.org/licenses/MIT)

@@ -1,0 +1,208 @@
+name: Build and Test
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # Ensure conda is activated in all steps
+        shell: bash -el {0}
+    steps:
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        fetch-depth: 0 # Fetch all history for tags
+
+    - name: Set up conda
+      uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+      with:
+        activate-environment: ""
+        auto-activate-base: true
+
+    - name: Install build packages
+      run: |
+        # We're jumping through a lot of hoops here to make sure we
+        # are getting the latest versions of all packaging tools with
+        # minimal use of pip. By installing twine via conda first then
+        # pip we're getting all of its dependencies via conda.
+        conda update --all
+        conda install conda-forge::conda-build hatchling twine
+        conda remove twine --force
+        pip install twine
+
+    - name: Set version
+      run: |
+        chmod +x .githooks/pre-commit
+        .githooks/pre-commit
+        VERSION=$(grep "__version__ = " proxyspy.py | cut -d'"' -f2)
+        echo "Package version: $VERSION"
+
+    - name: Build pip package
+      run: |
+        hatchling build
+        twine check dist/*
+
+    - name: Build conda package
+      run: |
+        conda build conda.recipe --no-test
+        cp -r ${CONDA_PREFIX}/conda-bld dist/conda
+        find dist
+
+    - name: Upload packages
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: packages
+        path: dist
+        retention-days: 1
+
+  test:
+    needs: build
+    defaults:
+      run:
+        shell: bash -el {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-13, macos-14, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+    - name: Set up conda
+      uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+      with:
+        activate-environment: ""
+        auto-activate-base: true
+
+    - name: Download built packages
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+      with:
+        name: packages
+        path: dist
+
+    - name: Add random delay to space out tests
+      run: |
+        DELAY=$(( $RANDOM % 20 ))
+        echo "Waiting $DELAY seconds before starting tests"
+        sleep $DELAY
+
+    - name: Test package (conda)
+      run: |
+        conda_pkg=$(basename dist/conda/noarch/proxyspy-* | \
+                    sed -E 's@^(.*)-(.*)-(.*)[.](conda|tar.bz2)$@\1=\2=\3@')
+        conda create -n testconda -c ./dist/conda \
+          python=${{ matrix.python-version }} \
+          "$conda_pkg" pytest requests psutil
+        conda activate testconda
+        pytest -v tests || pytest -v tests
+
+    - name: Test package (pip)
+      run: |
+        wheel_file=$(ls dist/proxyspy-*.whl)
+        conda create -n testpip python=${{ matrix.python-version }}
+        pip install "${wheel_file}[test]"
+        pytest -v tests || pytest -v tests
+
+    - name: Example output for timing study
+      run: |
+        conda activate testconda
+        proxyspy --debug --return-code 200 --return-data "hello" -- \
+          python -c 'import urllib.request; urllib.request.urlopen("https://httpbingo.org")'
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+    - name: Determine if we are actually publishing
+      id: set-mode
+      run: |
+        if [ ${{ github.event_name }} = "pull_request" ]; then
+          echo "Pull request; running in dry run mode."
+          echo "label=dry-run" >> $GITHUB_OUTPUT
+        elif [[ ${{ github.ref }} = refs/tags/* ]]; then
+          echo "Tagged version; publishing to conda and PyPi."
+          echo "label=main" >> $GITHUB_OUTPUT
+        else
+          echo "Untagged version; publishing to conda dev label only."
+          echo "label=dev" >> $GITHUB_OUTPUT
+        fi
+        error=no
+        if [ -z "${{ secrets.ANACONDA_CHANNEL }}" ]; then
+          echo "ERROR: missing the ANACONDA_CHANNEL secret"
+          error=yes
+        fi
+        if [ -z "${{ secrets.ANACONDA_TOKEN }}" ]; then
+          echo "ERROR: missing the ANACONDA_TOKEN secret"
+          error=yes
+        fi
+        if [ -z "${{ secrets.PYPI_API_TOKEN }}" ]; then
+          echo "ERROR: missing the PYPI_API_TOKEN secret"
+          error=yes
+        fi
+        if [ $error = yes ]; then
+          echo "Populate these secrets before proceeding."
+          false
+        fi
+
+    - name: Download built packages
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+      with:
+        name: packages
+        path: dist
+
+    - name: Set up conda
+      uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+      with:
+        activate-environment: ""
+        auto-activate-base: true
+
+    - name: Install publishing packages
+      run: |
+        # Duplicate our approach from above for installing twine
+        conda update --all
+        conda install anaconda-client twine
+        conda remove twine --force
+        pip install twine
+
+    - name: Publish to PyPI (tagged releases only)
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        LABEL: ${{ steps.set-mode.outputs.label }}
+      run: |
+        command=check
+        if [ "$LABEL" = dry-run ]; then
+          echo "Pull request; NOT publishing to PyPi."
+        elif [ "$LABEL" = dev ]; then
+          echo "Untagged build; NOT publishing to PyPi."
+        else
+          echo "Tagged build; publishing to PyPi."
+          command=upload
+        fi
+        twine $command dist/*.whl dist/*.tar.gz
+
+    - name: Upload to Anaconda.org (tagged and untagged releases)
+      env:
+        ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+        LABEL: ${{ steps.set-mode.outputs.label }}
+        USER: ${{ secrets.ANACONDA_CHANNEL }}
+      run: |
+        if [ "$LABEL" = dry-run ]; then
+          echo "Pull request; NOT publishing to the channel '$USER'."
+          anaconda --version
+        else
+          echo "Publishing to conda: channel '$USER', label '$LABEL'."
+          find dist/conda -name "*.tar.bz2" -o -name "*.conda" | while read file; do
+            anaconda upload --force -u "$USER" -l "$LABEL" "$file"
+          done
+        fi

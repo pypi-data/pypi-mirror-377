@@ -1,0 +1,123 @@
+jdbc2 — Minimal Python DB‑API over JDBC (with SQLAlchemy support)
+
+Overview
+- jdbc2 is a lightweight, experimental DB‑API 2.0 driver that talks to databases via JDBC using JPype.
+- Includes a minimal SQLAlchemy dialect so you can use SQLAlchemy by supplying a creator.
+- Comes with runnable examples for SQLite and PostgreSQL.
+
+Status
+- This project is intended for demonstration/learning purposes. APIs may change.
+
+Requirements
+- Python 3.8+
+- JPype1 (pip install jpype1)
+- A JDBC driver JAR for your target database (e.g., Xerial SQLite JAR, PostgreSQL JAR)
+- On Windows, use backslashes in paths (e.g., C:\path\to\driver.jar)
+
+Quickstart (DB‑API)
+- Connect using jdbc2.core.connect and pass the JDBC URL, driver class, and the JAR path(s).
+
+Example (SQLite):
+    from jdbc2.core import connect
+
+    jdbc_url = r"jdbc:sqlite:C:\\tmp\\demo.db"
+    driver = "org.sqlite.JDBC"
+    jar = r"C:\\path\\to\\sqlite-jdbc-3.45.3.0.jar"
+
+    with connect(jdbc_url=jdbc_url, driver=driver, jars=[jar]) as conn:
+        cur = conn.cursor()
+        cur.execute("select 1 as x")
+        print(cur.fetchall())
+
+Using with SQLAlchemy
+- The package provides a simple SQLAlchemy dialect registered as "jdbc2".
+- Create an engine using a creator that returns a jdbc2.core.Connection.
+
+Example (SQLAlchemy + SQLite):
+    from sqlalchemy import create_engine, text 
+
+    jdbc_url = r"jdbc:sqlite:C:\\tmp\\sa_demo.db"
+    driver = "org.sqlite.JDBC"
+    jar = r"C:\\path\\to\\sqlite-jdbc-3.45.3.0.jar"
+
+    engine = create_engine(
+        "jdbc2://",  # placeholder; real connection is provided by the args
+        (jdbc_url=jdbc_url, driver=driver, jars=[jar])
+
+    with engine.begin() as conn:
+        res = conn.execute(text("select 1 as x"))
+        print(list(res))
+
+Examples
+- All examples live in the examples\ folder and read settings from examples\config.ini.
+- A template file examples\config.ini.sample is included—copy it to config.ini and edit paths/credentials.
+
+Run DB‑API examples:
+- SQLite:    python examples\sqlite_example.py
+- PostgreSQL: python examples\postgres_example.py
+
+Run SQLAlchemy examples:
+- SQLite (Core):    python examples\sqlalchemy_sqlite_example.py
+- SQLite (ORM):     python examples\sqlalchemy_sqlite_orm_example.py
+- PostgreSQL:       python examples\sqlalchemy_postgres_example.py
+
+Documentation
+- See doc\index.md for detailed instructions, configuration, and troubleshooting.
+
+Quick reference: JDBC URLs and drivers (common databases)
+- SQLite
+  - Driver: org.sqlite.JDBC
+  - URL: jdbc:sqlite:C:\\path\\to\\file.db
+  - JAR: Xerial SQLite JDBC (sqlite-jdbc-<version>.jar)
+- PostgreSQL
+  - Driver: org.postgresql.Driver
+  - URL: jdbc:postgresql://localhost:5432/yourdb
+  - JAR: postgresql-<version>.jar
+- MySQL
+  - Driver: com.mysql.cj.jdbc.Driver
+  - URL: jdbc:mysql://localhost:3306/yourdb?serverTimezone=UTC
+  - JAR: mysql-connector-j-<version>.jar
+- MariaDB
+  - Driver: org.mariadb.jdbc.Driver
+  - URL: jdbc:mariadb://localhost:3306/yourdb
+  - JAR: mariadb-java-client-<version>.jar
+- Microsoft SQL Server
+  - Driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  - URL: jdbc:sqlserver://localhost:1433;databaseName=yourdb;encrypt=true;trustServerCertificate=true
+  - JAR: mssql-jdbc-<version>.jar
+- Oracle
+  - Driver: oracle.jdbc.OracleDriver
+  - URL (Service): jdbc:oracle:thin:@//host:1521/servicename
+  - URL (SID):     jdbc:oracle:thin:@host:1521:SID
+  - JAR: ojdbc8.jar (or ojdbc11.jar for newer JDKs)
+- H2
+  - Driver: org.h2.Driver
+  - URL (file): jdbc:h2:C:\\path\\to\\h2db
+  - URL (mem):  jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+  - JAR: h2-<version>.jar
+- HSQLDB
+  - Driver: org.hsqldb.jdbc.JDBCDriver
+  - URL (file): jdbc:hsqldb:file:C:\\path\\to\\hsqldb
+  - URL (mem):  jdbc:hsqldb:mem:mymemdb
+  - JAR: hsqldb-<version>.jar
+- IBM Db2
+  - Driver: com.ibm.db2.jcc.DB2Driver
+  - URL: jdbc:db2://localhost:50000/YOURDB
+  - JAR: db2jcc4.jar (plus license jar if required)
+- Snowflake
+  - Driver: net.snowflake.client.jdbc.SnowflakeDriver
+  - URL: jdbc:snowflake://<account>.snowflakecomputing.com/?db=YOURDB&schema=PUBLIC&warehouse=COMPUTE_WH&role=SYSADMIN
+  - JAR: snowflake-jdbc-<version>.jar
+- Microsoft Access (via UCanAccess)
+  - Driver: net.ucanaccess.jdbc.UcanaccessDriver
+  - URL: jdbc:ucanaccess://C:/path/to/file.accdb;memory=false
+  - JARs: ucanaccess-<version>.jar and dependencies (jackcess, hsqldb, commons-logging, commons-lang)
+  - Note: Place all dependency JARs on the classpath (pass them in the `jars` list).
+
+Troubleshooting
+- ImportError: Install JPype1 -> pip install jpype1
+- Class not found / JVM startup issues: Ensure the JDBC driver JAR path is correct and accessible.
+- PostgreSQL auth issues: Verify URL/user/password and server connectivity.
+
+License
+- Sample/demo code for educational purposes.

@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jdbc2"
+version = "0.1.1"
+description = "Minimal Python DB-API 2.0 over JDBC via JPype, with a lightweight SQLAlchemy dialect"
+readme = "README.md"
+authors = [
+  { name = "jdbc2 Authors" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+  "JPype1>=1.3.0",
+]
+keywords = ["jdbc", "dbapi", "sqlalchemy", "jpype", "database"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Database",
+]
+
+[project.optional-dependencies]
+sqlalchemy = [
+  "SQLAlchemy>=1.4",
+]
+
+[project.urls]
+Homepage = "https://example.com/jdbc2"
+Repository = "https://example.com/jdbc2.git"
+
+[tool.setuptools]
+packages = ["jdbc2"]
+
+[project.entry-points."sqlalchemy.dialects"]
+# This allows: create_engine("jdbc2://")
+jdbc2 = "jdbc2.sqlalchemy_dialect:JDBC2Dialect"

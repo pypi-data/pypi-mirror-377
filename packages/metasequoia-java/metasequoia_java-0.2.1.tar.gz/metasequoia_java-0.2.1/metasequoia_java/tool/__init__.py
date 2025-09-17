@@ -1,0 +1,1 @@
+from metasequoia_java.tool.parse_properties import parse_properties

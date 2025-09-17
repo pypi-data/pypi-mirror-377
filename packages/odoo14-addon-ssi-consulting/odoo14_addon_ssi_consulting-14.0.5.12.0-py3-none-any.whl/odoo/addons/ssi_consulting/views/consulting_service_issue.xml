@@ -1,0 +1,188 @@
+<!-- Copyright 2025 OpenSynergy Indonesia
+     Copyright 2025 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<!-- Search View -->
+<record id="consulting_service_issue_view_search" model="ir.ui.view">
+    <field name="name">consulting_service_issue - search</field>
+    <field name="model">consulting_service.issue</field>
+    <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_search"
+        />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="title" />
+                <field name="partner_id" />
+                <field name="service_id" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<!-- Tree View -->
+<record id="consulting_service_issue_view_tree" model="ir.ui.view">
+    <field name="name">consulting_service_issue - tree</field>
+    <field name="model">consulting_service.issue</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_tree" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="partner_id" />
+                <field name="title" />
+                <field name="service_id" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<!-- Form View -->
+<record id="consulting_service_issue_view_form" model="ir.ui.view">
+    <field name="name">consulting_service_issue - form</field>
+    <field name="model">consulting_service.issue</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_form" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="partner_id" />
+                <field name="service_id" />
+            </xpath>
+            <xpath expr="//group[@name='header_right']" position="inside">
+                <field name="date" />
+                <field name="s3_prefix" />
+            </xpath>
+            <xpath expr="//group[@name='header_center']" position="inside">
+                <label for="title" colspan="2" />
+                <field name="title" colspan="2" nolabel="1" />
+            </xpath>
+            <xpath expr="//page[1]" position="before">
+                <page name="mv" string="Materialized Views">
+                    <field name="materialized_view_ids" />
+                </page>
+                <page name="business_process_area" string="Business Process Area">
+                    <field name="business_process_area_ids" />
+                </page>
+                <page name="business_process" string="Business Process">
+                    <field name="business_process_ids" />
+                </page>
+                <page name="system_prompting" string="System Prompting">
+                    <group name="system_prompting_1" colspan="4" col="2">
+                        <field
+                                name="system_prompting_schema_parser_id"
+                                string="Schema Parser"
+                            />
+                        <field
+                                name="system_prompting_s3_url"
+                                string="S3 URL"
+                                widget="url"
+                            />
+                    </group>
+                    <separator string="Specification" />
+                    <field name="system_prompting_specification" widget="ace" />
+                    <group
+                            name="system_prompting_2"
+                            colspan="4"
+                            col="2"
+                            string="Specification Validation"
+                        >
+                        <field
+                                name="system_prompting_specification_valid"
+                                string="Valid?"
+                            />
+                        <field
+                                name="system_prompting_specification_error_message"
+                                string="Error Message"
+                            />
+                    </group>
+                    <separator string="Parsing" />
+                    <field name="system_prompting" widget="ace" />
+                    <group
+                            name="system_prompting_3"
+                            colspan="4"
+                            col="2"
+                            string="Parsing Validation"
+                        >
+                        <field name="system_prompting_valid" string="Valid?" />
+                        <field
+                                name="system_prompting_error_message"
+                                string="Error Message"
+                            />
+                    </group>
+                </page>
+                <page name="user_prompting" string="User Prompting">
+                    <group name="user_prompting_1" colspan="4" col="2">
+                        <field
+                                name="user_prompting_schema_parser_id"
+                                string="Schema Parser"
+                            />
+                        <field
+                                name="user_prompting_s3_url"
+                                string="S3 URL"
+                                widget="url"
+                            />
+                    </group>
+                    <separator string="Specification" />
+                    <field name="user_prompting_specification" widget="ace" />
+                    <group
+                            name="user_prompting_2"
+                            colspan="4"
+                            col="2"
+                            string="Specification Validation"
+                        >
+                        <field
+                                name="user_prompting_specification_valid"
+                                string="Valid?"
+                            />
+                        <field
+                                name="user_prompting_specification_error_message"
+                                string="Error Message"
+                            />
+                    </group>
+                    <separator string="Parsing" />
+                    <field name="user_prompting" widget="ace" />
+                    <group
+                            name="user_prompting_3"
+                            colspan="4"
+                            col="2"
+                            string="Parsing Validation"
+                        >
+                        <field name="user_prompting_valid" string="Valid?" />
+                        <field
+                                name="user_prompting_error_message"
+                                string="Error Message"
+                            />
+                    </group>
+                </page>
+                <page name="analysis" string="Analysis">
+                    <group name="url" string="S3 URL" colspan="4" col="2">
+                        <field name="analysis_jason_s3_url" string="Raw" widget="url" />
+                        <field name="analysis_s3_url" string="Analysis" widget="url" />
+                    </group>
+                    <separator string="Result" />
+                    <field name="analysis" widget="ace" />
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<record id="consulting_service_issue_action" model="ir.actions.act_window">
+    <field name="name">Issues</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">consulting_service.issue</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem
+        id="consulting_service_issue_menu"
+        name="Issues"
+        action="consulting_service_issue_action"
+        groups="consulting_service_viewer_group"
+        parent="menu_root_consulting"
+        sequence="20"
+    />
+</odoo>

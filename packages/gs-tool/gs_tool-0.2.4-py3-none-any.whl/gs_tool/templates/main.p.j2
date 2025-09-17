@@ -1,0 +1,14 @@
+#include "project.inc"
+
+// Функция, вызываемая системой при запуске скрипта (настройка происходит в init)
+public start()
+{
+    Diagnostics("Script started\n");
+    
+    // Бесконечный цикл с выводом названия скрипта каждые 1000 мс
+    while(true)
+    {
+        Diagnostics("Running: {{ config_name }}\n");
+        Delay(1000);
+    }
+} 

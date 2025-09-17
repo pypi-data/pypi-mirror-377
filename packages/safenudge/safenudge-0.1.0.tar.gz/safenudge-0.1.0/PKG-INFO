@@ -1,0 +1,128 @@
+Metadata-Version: 2.4
+Name: safenudge
+Version: 0.1.0
+Summary: A Python library with the implementation for the algorithms used in 'Safeguarding large language models in real-time with tunable safety-performance trade-offs', by J. Fonseca, A. Bell and J. Stoyanovich.
+Home-page: https://github.com/joaopfonseca/safenudge
+Download-URL: https://github.com/joaopfonseca/safenudge
+Maintainer: J. Fonseca
+Maintainer-email: jpm9748@nyu.edu
+License: MIT
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sentence-transformers>=3.3.1
+Requires-Dist: transformers>=4.46.3
+Requires-Dist: torch>=2.5.1
+Requires-Dist: tqdm>=4.67.0
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: numpy>=2.0.2
+Requires-Dist: matplotlib>=3.9.2
+Requires-Dist: scikit-learn>=1.5.2
+Provides-Extra: optional
+Provides-Extra: docs
+Provides-Extra: examples
+Provides-Extra: tests
+Provides-Extra: all
+Requires-Dist: sentence-transformers>=3.3.1; extra == "all"
+Requires-Dist: transformers>=4.46.3; extra == "all"
+Requires-Dist: torch>=2.5.1; extra == "all"
+Requires-Dist: tqdm>=4.67.0; extra == "all"
+Requires-Dist: pandas>=2.2.3; extra == "all"
+Requires-Dist: numpy>=2.0.2; extra == "all"
+Requires-Dist: matplotlib>=3.9.2; extra == "all"
+Requires-Dist: scikit-learn>=1.5.2; extra == "all"
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+# SafeNudge
+
+A Python library with the implementation for the algorithms used in
+"Safeguarding large language models in real-time with tunable safety-performance
+trade-offs", by J. Fonseca, A. Bell and J. Stoyanovich.
+
+`CTG` provides methods to guide model responses based on various criteria,
+helping ensure safe, high-quality, and controllable text generation.
+
+## Implemented methods
+
+- **Controlled Text Generation (CTG)**: The SafeNudge implementation.
+- **WildGuard Integration (WildguardCTG)**: SafeNudge using the WildGuard classifier
+- **Token Masking (TokenMaskingCTG)**: c-FUDGE, as described in the paper
+
+## Installation
+
+A Python distribution of version >= 3.12 is required to run this project.
+Earlier Python versions might work in most cases, but they were never tested.
+
+
+### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/joaopfonseca/SafeNudge.git
+cd Output-Steering
+
+# Install in development mode
+pip install -e .
+```
+
+### Using pip
+
+```bash
+pip install git+https://github.com/joaopfonseca/SafeNudge.git
+```
+
+## Examples
+
+Check the [notebooks directory](https://github.com/joaopfonseca/SafeNudge/tree/main/notebooks) 
+for some examples Andrew and I developed while working on SafeNudge and setting
+up the experiments!
+
+## Project Structure
+
+```
+Output-Steering/
+├── ctg/                    # Core library code
+├── experiments/            # Experimental code and evaluation
+└── notebooks/              # Jupyter notebooks with examples
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Citation
+
+If you use this code in your research, please cite:
+
+```
+@article{fonseca2025safeguarding,
+  title={Safeguarding large language models in real-time with tunable safety-performance trade-offs},
+  author={Fonseca, Joao and Bell, Andrew and Stoyanovich, Julia},
+  journal={arXiv preprint arXiv:2501.02018},
+  year={2025}
+}
+```

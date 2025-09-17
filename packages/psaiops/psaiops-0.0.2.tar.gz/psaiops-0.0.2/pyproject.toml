@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "psaiops"
+version = "0.0.2"
+description = "Web apps to inspect & engineer NN activations."
+license = ".github/LICENSE.md"
+readme = ".github/README.md"
+authors = ["apehex <apehex@protonmail.com>"]
+packages = [{include = "psaiops"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.14"
+deformers = ">=0.0"
+gradio = ">=5.0"
+requests = ">=2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,23 @@
+setup:
+  output_directories:
+    short_form: "diags/global_mean"
+
+  canesm_version: "6.0"
+  file_format: "netcdf4"
+
+  stages:
+    - short_form
+
+short_form:
+  variables:
+    - ST
+    - ST_first_day:
+        branch: ST
+        groupby: {group: "time.year"}
+        first: {}
+        area_mean: True
+    - ST_last_day:
+        branch: ST
+        groupby: {group: "time.year"}
+        last: {}
+        area_mean: True

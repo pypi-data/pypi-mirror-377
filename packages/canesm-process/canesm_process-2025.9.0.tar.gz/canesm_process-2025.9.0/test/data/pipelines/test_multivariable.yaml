@@ -1,0 +1,26 @@
+setup:
+  output_directories:
+    combine: "diags/data"
+
+  canesm_version: "6.0"
+  file_format: "netcdf4"
+
+  stages:
+    - open
+    - combine
+
+
+# make this its own stage since we don't want to output this
+open:
+  variables:
+    - all:
+        source: "{input}/*grid_t*"
+    - prsn:
+       extract_from: all
+    - hfds:
+       extract_from: all
+
+combine:
+  reuse: open
+  variables:
+    - icemod: prsn * hfds

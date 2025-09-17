@@ -1,0 +1,30 @@
+setup:
+  output_directories:
+    custom_area: "diags/area"
+
+  canesm_version: "6.0"
+  file_format: "netcdf4"
+
+  stages:
+    - stage_weights
+    - flnd_stage
+    - area_weights
+
+stage_weights:
+  area_mean:
+    weights: FLND
+  variables:
+    - ST
+
+flnd_stage:
+  variables:
+    - FLND:
+        scale: 1.0
+
+area_weights:
+  reuse: flnd_stage
+  variables:
+    - FLND
+    - GT:
+        area_mean:
+          weights: FLND

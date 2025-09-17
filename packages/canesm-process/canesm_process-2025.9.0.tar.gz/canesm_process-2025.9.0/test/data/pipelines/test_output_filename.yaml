@@ -1,0 +1,44 @@
+setup:
+
+  output_directories:
+    yearly: "diags/rtd"
+    monthly: "diags/rtd"
+
+  canesm_version: "6.0"
+  file_format: "netcdf4"
+  source: "{input}/*/{variable}.nc"
+
+  stages:
+    - monthly
+    - yearly
+
+monthly:
+  variables:
+    - PCP:
+        rename: pr
+        metadata:
+          long_name: "Precipitation"
+          units: "kg m-2 s-1"
+
+    - RH:
+        rename: hur
+        scale: 100.0
+        metadata:
+          long_name: "Monthly Relative Humidity"
+          units: "%"
+
+    - FDL:
+        destination: null
+    - FLG:
+        destination: null
+    - rlus:
+        compute: FDL-FLG
+        metadata:
+          long_name: "Monthly Surface Upwelling Longwave Radiation"
+          units: "W m-2"
+
+yearly:
+  reuse: monthly
+  variables:
+    - rlus
+    - RH

@@ -1,0 +1,40 @@
+[project]
+name = "cob-ai"
+version = "0.1.1"
+description = "Python client for the COB SharePoint search"
+authors = [
+    {name = "Lennart Timmermans", email = "lennart@vondr.ai"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+keywords = ["sharepoint", "search", "api", "client"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "attrs>=23.1.0",
+    "requests>=2.25.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/vondr/cob-ai"
+Repository = "https://github.com/vondr/cob-ai"
+Issues = "https://github.com/vondr/cob-ai/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

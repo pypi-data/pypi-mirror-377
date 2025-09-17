@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pixtools"
+version = "0.1.0"
+description = "A collection of multimedia utilities for AI-powered applications"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+keywords = ["ai", "multimedia", "openai", "text-to-speech", "image-generation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "openai>=1.0.0",
+    "pyaudio>=0.2.11",
+    "pillow>=10.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/pixtools"
+Repository = "https://github.com/yourusername/pixtools"
+Issues = "https://github.com/yourusername/pixtools/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-mock>=3.0",
+    "ruff>=0.1.0",
+    "pyright>=1.1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pixtools*"]

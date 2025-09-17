@@ -1,0 +1,27 @@
+Remove upper bound on packaging (#1272)
+
+# Description
+
+This third-party dependency had an upper bound that caused compatibility
+issues with `cognite-toolkit` due to differing upper and lower bounds.
+The upper bound was recently removed with this change in
+`cognite-toolkit`:
+https://github.com/cognitedata/toolkit/commit/2d0ef1383325e2a074e607b9fbaf06fc24a0e1de
+
+This commit removes the upper bound in Neat as well, ensuring both
+packages can now be installed in the same repo. Verified locally with an
+install with `cognite-toolkit=0.6.26` and using this branch as target
+for `cognite-neat`.
+
+## Bump
+
+- [x] Patch
+- [ ] Minor
+- [ ] Skip
+
+## Changelog
+
+### Fixed
+
+- Removed upper bound on third-party dependency `packaging`. This makes
+Neat compatible with toolkit.

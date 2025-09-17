@@ -1,0 +1,63 @@
+[project]
+
+name = "mcfine"
+version = "0.3"
+description = "Monte-Carlo, Multi-Component ISM Fitting"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+
+authors = [
+    {name = "Thomas G. Williams", email = "thomas.williams-4@manchester.ac.uk"},
+    {name = "Elizabeth J. Watkins", email = "elizabeth.watkins@manchester.ac.uk"},
+]
+maintainers = [
+    {name = "Thomas G. Williams", email = "thomas.williams-4@manchester.ac.uk"},
+]
+
+classifiers = [
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 3 - Alpha",
+
+  # License
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "astropy == 7.1.0",
+    "corner == 2.2.3",
+    "emcee == 3.1.6",
+    "lmfit == 1.3.4",
+    "matplotlib == 3.10.6",
+    "numdifftools == 0.9.41",
+    "numpy == 2.3.3",
+    "scipy == 1.16.2",
+    "specutils == 2.1.0",
+    "threadpoolctl == 3.6.0",
+    "tqdm == 4.67.1",
+]
+
+# Because readthedocs fails on ndradexhyperfine, set up optionals here
+[project.optional-dependencies]
+rt = [
+    "ndradex == 0.3.1",
+]
+
+docs = [
+    "sphinx-automodapi",
+    "sphinx-rtd-theme",
+]
+
+[project.urls]
+"Homepage" = "https://mcfine.readthedocs.io"
+"Bug Reports" = "https://github.com/thomaswilliamsastro/issues"
+"Source" = "https://github.com/thomaswilliamsastro/mcfine"
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"

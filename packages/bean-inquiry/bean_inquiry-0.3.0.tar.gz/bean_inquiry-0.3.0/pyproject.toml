@@ -1,0 +1,28 @@
+[project]
+name = "bean-inquiry"
+version = "0.3.0"
+description = "A CLI tool to INject parameters into Beancount queries specified in your ledger"
+authors = [
+    {name = "aleyoscar",email = "mail@aleyoscar.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beanquery (>=0.2.0,<0.3.0)"
+]
+license = "GPL-3.0-only"
+license-files = ["LICEN[CS]E*"]
+
+[tool.poetry]
+packages = [{include = "bean_inquiry", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.scripts]
+bean-inquiry = "bean_inquiry.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/aleyoscar/beancount-inquiry"
+Issues = "https://github.com/aleyoscar/beancount-inquiry/issues"

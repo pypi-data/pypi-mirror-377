@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: buildtools4py
+Version: 0.1.2
+Summary: python wrapper for (some) Android build-tools
+License: Apache-2.0
+Author: Michael Pöhn
+Author-email: michael@poehn.at
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+
+<!--
+SPDX-FileCopyrightText: 2025 Michael Pöhn <michael@poehn.at>
+SPDX-License-Identifier: Apache-2.0
+-->
+
+# buildtools4py
+
+python wrapper for (some) Android build-tools
+
+## install
+
+This project is published to pypi, you can install it using:
+
+```
+pip install buildtools4py
+```
+
+This project wraps Android build-tools. e.g. Those can be installed with SDK
+manager from Android SDK like this:
+
+```
+apt install sdkmanager
+sdkmanager 'build-tools;36.0.0'
+```
+
+
+## apksigner verify
+
+```
+from buildtools4py.apksigner import apksigner_verify
+
+r = apksigner_verify('example.apk')
+
+assert r.verifies
+assert len(r.signers) == 1
+assert r.signers[0].certificate_sha256 == "abcdef...abcdef"
+```
+
+You can also convert the data into a dict/json:
+
+```
+from buildtools4py.apksigner import apksigner_verify
+from dataclasses import asdict
+
+data = apksigner_verify('example.apk')
+datadict = asdict(data)
+datajson = json.dumps(datadict, indent=2)
+```
+

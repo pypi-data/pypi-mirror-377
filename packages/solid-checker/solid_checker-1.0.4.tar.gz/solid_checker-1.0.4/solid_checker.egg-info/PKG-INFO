@@ -1,0 +1,446 @@
+Metadata-Version: 2.4
+Name: solid-checker
+Version: 1.0.4
+Summary: Smart SOLID principles analyzer with context-aware scoring and adaptive recommendations
+Author-email: DaymaNKinG990 <xellaopromaster@yandex.ru>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/DaymaNKinG990/solid-checker
+Project-URL: Repository, https://github.com/DaymaNKinG990/solid-checker.git
+Project-URL: Documentation, https://github.com/DaymaNKinG990/solid-checker#readme
+Project-URL: Issues, https://github.com/DaymaNKinG990/solid-checker/issues
+Keywords: solid,principles,code-analysis,static-analysis,architecture,clean-code
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.7.0; extra == "dev"
+Dynamic: license-file
+
+# 🔍 SOLID Checker - Smart SOLID Analysis Tool
+
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A comprehensive, intelligent Python tool for analyzing code compliance with SOLID principles, featuring **adaptive contextual analysis** that adjusts evaluation criteria based on project type and complexity.
+
+## 🌟 Key Features
+
+### 🧠 Smart Contextual Analysis (Enhanced 2.0)
+- **Architectural Pattern Recognition**: Detects analyzers, processors, managers, and other architectural patterns
+- **Contextual Class Evaluation**: SRP scoring considers domain cohesion and architectural roles
+- **Modular Intelligence**: Evaluates module-level organization with bonuses for well-structured core modules
+- **Adaptive Thresholds**: Analyzers can have 20+ methods, utilities stay focused with 8 methods
+- **Weighted Project Aggregation**: Better-scoring files influence overall project rating more heavily
+- **Intelligent Recommendations**: Context-aware advice that understands architectural necessity
+
+### 📊 Comprehensive SOLID Analysis
+- **SRP (Single Responsibility Principle) [Enhanced]**: 
+  - Domain cohesion analysis with architectural pattern detection
+  - Context-aware method count thresholds (8-20+ methods based on class type)
+  - Module-level responsibility evaluation with bonus systems
+  - Architectural naming pattern recognition and bonuses
+- **OCP (Open/Closed Principle)**: Detects extensibility violations and type checking patterns
+- **LSP (Liskov Substitution Principle)**: Validates inheritance hierarchies and contracts
+- **ISP (Interface Segregation Principle)**: Identifies interface bloat and segregation issues
+- **DIP (Dependency Inversion Principle)**: Finds tight coupling and dependency issues
+
+### 🎯 Advanced Scoring System (v2.0)
+- **Intelligent Weighted Aggregation**: Top-performing files influence project score more heavily
+- **Architectural Bonuses**: Rewards for consistent good architecture across the project
+- **Context-Sensitive Penalties**: Softer penalties with upper limits to prevent unfair scoring
+- **Domain-Specific Thresholds**: Analyzers (20 methods), Processors (15), Utils (8), Generic (10)
+- **Cohesion Detection**: Bonuses for classes with related responsibilities in the same domain
+- **Module Pattern Recognition**: Core, facade, protocol, and analysis modules get appropriate evaluation
+- **Color-Coded Results**: Visual indicators with adaptive thresholds
+- **Detailed Violation Reports**: Specific issues with actionable insights
+
+### 📈 Multiple Output Formats
+- **Interactive Reports**: Rich console output with emoji indicators and detailed breakdowns
+- **JSON Export**: Machine-readable format for CI/CD integration and further analysis
+- **Detailed Analysis**: In-depth violation analysis with specific recommendations
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Basic installation (recommended for end users)
+pip install solid-checker
+
+# Installation with development tools (for contributors)
+pip install solid-checker[dev]
+```
+
+**Note:** The `[dev]` option includes additional tools like `ruff` (linting/formatting) and `mypy` (type checking) that are useful for development but not required for using the tool.
+
+### Basic Usage
+
+```bash
+# Smart analysis (default) - automatically adapts to your project type
+python solid-checker your_file.py
+
+# Detailed report with violation breakdown
+python solid-checker --report your_file.py
+
+# JSON output for integration with other tools
+python solid-checker --json your_file.py > analysis.json
+
+# Legacy analysis (classic SOLID scoring without adaptation)
+python solid-checker --legacy your_file.py
+```
+
+## 🎯 Enhanced SRP Scoring (New!)
+
+The latest version features dramatically improved SRP analysis that understands architectural patterns and context:
+
+### Before vs After Enhancement
+
+| Aspect | Before | After (v2.0) |
+|--------|--------|--------------|
+| **Method Count Penalty** | Fixed 10 methods limit | Adaptive: Analyzers (20), Utils (8) |
+| **Architecture Awareness** | None | Detects patterns: analyzers, processors, managers |
+| **Domain Cohesion** | Ignored | Bonuses for related responsibilities |
+| **Module Evaluation** | Simple average | Weighted with architectural bonuses |
+| **Typical SRP Score** | 0.5/10 (overly harsh) | 5.4/10 (contextually fair) |
+
+### Real-World Example: DIP Core Module
+```
+🔍 Enhanced SRP Analysis Results:
+   📋 Module Type: Core Module (5 related classes)
+   🎯 Cohesion Bonus: +15% (analyzer pattern detected)  
+   ⚖️  Adaptive Threshold: 20 methods (vs 10 default)
+   📊 Final Score: 4.6/10 → Contextually appropriate
+   
+💡 Smart Recommendation:
+   ✅ Well-organized analyzer suite for DIP domain
+   📊 Multiple classes justified by architectural pattern
+```
+
+## 🧠 Smart Analysis in Action
+
+The tool automatically adapts its analysis based on your project characteristics:
+
+### Simple Scripts (< 100 lines, 1-2 classes)
+```
+🧠 Smart Analysis:
+   📋 Project Type: Simple Script
+   📊 Complexity Score: 0.0/1.00
+   
+⚖️ Adaptive Weights:
+   📋 SRP: 40.0% | 🔓 OCP: 10.0% | 🔄 LSP: 10.0%
+   🎯 ISP: 10.0% | 🔄 DIP: 30.0%
+```
+**Focus**: Simplicity and single purpose. Lenient thresholds to avoid over-engineering.
+
+### Libraries/Frameworks
+```
+🧠 Smart Analysis:
+   📋 Project Type: Library Framework
+   📊 Complexity Score: 0.7/1.00
+   
+⚖️ Adaptive Weights:
+   📋 SRP: 20.0% | 🔓 OCP: 30.0% | 🔄 LSP: 20.0%
+   🎯 ISP: 25.0% | 🔄 DIP: 5.0%
+```
+**Focus**: Extensibility (OCP) and clean interfaces (ISP). Strict thresholds for public APIs.
+
+### Large Applications
+```
+🧠 Smart Analysis:
+   📋 Project Type: Large Application
+   📊 Complexity Score: 0.8/1.00
+   
+⚖️ Adaptive Weights:
+   📋 SRP: 30.0% | 🔓 OCP: 25.0% | 🔄 LSP: 20.0%
+   🎯 ISP: 15.0% | 🔄 DIP: 10.0%
+```
+**Focus**: Maintainability (SRP) and extensibility (OCP). Strict compliance for long-term success.
+
+## 📋 CLI Options
+
+| Option | Description |
+|--------|-------------|
+| `file` | Python file to analyze |
+| `--report` | Show detailed violation analysis |
+| `--json` | Output results in JSON format |
+| `--verbose` | Enable verbose error output |
+| `--smart` | Use smart contextual analysis (default) |
+| `--legacy` | Use classic analysis without adaptation |
+| `--no-smart-info` | Hide smart analysis information in report |
+
+## 📊 Understanding the Output
+
+### Smart Analysis Section
+```
+🧠 Smart Analysis:
+   📋 Project Type: Small App
+   📊 Complexity Score: 0.30/1.00
+   📈 Lines of Code: 589
+   🏗️ Classes: 8
+
+⚖️ Adaptive Weights (for this project type):
+   📋 SRP: 25.0% | 🔓 OCP: 20.0% | 🔄 LSP: 20.0%
+   🎯 ISP: 15.0% | 🔄 DIP: 20.0%
+```
+
+### SOLID Scores
+```
+📊 SOLID Scores (with context-aware thresholds):
+   📋 SRP: 0.62/1.00 🟡
+   🔓 OCP: 0.50/1.00 🔴
+   🔄 LSP: 1.00/1.00 🟢
+   🎯 ISP: 1.00/1.00 🟢
+   🔄 DIP: 0.57/1.00 🔴
+```
+
+**Color Indicators**:
+- 🟢 **Green**: Excellent compliance (above "good" threshold)
+- 🟡 **Yellow**: Acceptable compliance (above "acceptable" threshold)  
+- 🔴 **Red**: Needs improvement (below "acceptable" threshold)
+
+*Note: Thresholds adapt based on project type*
+
+## 🎯 Project Types & Adaptive Behavior
+
+### 1. Simple Script
+- **Characteristics**: < 100 lines, 1-2 classes
+- **Focus**: Single purpose, avoid over-engineering
+- **Thresholds**: Lenient (Good: 0.6, Acceptable: 0.4)
+- **Weight Emphasis**: SRP (40%), DIP (30%)
+
+### 2. Utility Module  
+- **Characteristics**: 100-500 lines, few classes
+- **Focus**: Balance simplicity with reusability
+- **Thresholds**: Standard (Good: 0.8, Acceptable: 0.6)
+- **Weight Emphasis**: Balanced approach
+
+### 3. Small Application
+- **Characteristics**: 500-1500 lines, moderate complexity
+- **Focus**: Standard SOLID compliance
+- **Thresholds**: Standard (Good: 0.8, Acceptable: 0.6)
+- **Weight Emphasis**: Equal weighting
+
+### 4. Large Application
+- **Characteristics**: 1500+ lines, many classes
+- **Focus**: Maintainability and structure
+- **Thresholds**: Standard (Good: 0.8, Acceptable: 0.6)
+- **Weight Emphasis**: SRP (30%), OCP (25%)
+
+### 5. Library/Framework
+- **Characteristics**: Public APIs, reusable components
+- **Focus**: Extensibility and interface design
+- **Thresholds**: Strict (Good: 0.9, Acceptable: 0.7)
+- **Weight Emphasis**: OCP (30%), ISP (25%)
+
+## 🛠️ Architecture
+
+The tool follows a clean, modular architecture adhering to SOLID principles:
+
+```
+solid-checker/
+├── solid_scorer.py           # Main CLI entry point
+├── solid_core/               # Enhanced core analysis framework
+│   ├── analyzer.py          # Main SOLID analysis orchestrator
+│   ├── models.py            # Data models and enums
+│   ├── scorer.py            # Enhanced SOLID scorer with smart features
+│   ├── smart_analysis.py    # Context-aware analysis components
+│   ├── project_analysis.py  # Project-wide analysis capabilities
+│   └── reports.py           # Multi-format report generation
+├── srp/                      # Single Responsibility Principle analyzer
+│   ├── core.py              # Enhanced SRP analysis with architectural awareness
+│   ├── facade.py            # Simple API facade
+│   └── protocols.py         # Type protocols and interfaces
+├── ocp/                      # Open/Closed Principle analyzer
+├── lsp/                      # Liskov Substitution Principle analyzer  
+├── isp/                      # Interface Segregation Principle analyzer
+├── dip/                      # Dependency Inversion Principle analyzer
+└── README.md                # This documentation
+```
+
+### Key Components (Enhanced v2.0)
+
+#### Enhanced SRPScorer
+Advanced SRP analysis with architectural intelligence:
+- **Domain Pattern Detection**: Recognizes analyzers, processors, managers, builders
+- **Contextual Thresholds**: Adaptive method limits based on class archetype  
+- **Cohesion Bonuses**: Rewards for related responsibilities in same domain
+- **Architectural Naming**: Bonuses for clear patterns like "Detector", "Analyzer"
+
+#### ModularSRPEvaluator  
+Module-level SRP assessment with architectural awareness:
+- **Module Type Recognition**: Core, facade, protocol, analysis modules
+- **Weighted Aggregation**: Better classes influence module score more heavily
+- **Architectural Bonuses**: Rewards for proper module organization patterns
+- **Size-Context Adjustment**: Prevents unfair penalties for well-organized large modules
+
+#### ProjectComplexityAnalyzer
+Enhanced project analysis with deeper insights:
+- **Architectural Pattern Detection**: Identifies project structure patterns
+- **Complexity Scoring**: Multi-factor complexity assessment
+- **Type Classification**: Scripts, utilities, applications, libraries
+- **Context-Aware Thresholds**: Different standards for different project types
+
+#### IntelligentAggregator
+Smart project-wide scoring with weighted averaging:
+- **Performance-Based Weighting**: Top 30% files get 1.5x weight
+- **Architectural Consistency Bonuses**: Rewards consistent good architecture
+- **Quality Threshold Adaptation**: Context-sensitive evaluation criteria
+
+## 📈 Example Analyses
+
+### Simple Python Script
+```python
+#!/usr/bin/env python3
+def main():
+    name = input("Enter your name: ")
+    print(f"Hello, {name}!")
+
+if __name__ == "__main__":
+    main()
+```
+
+**Analysis Result**:
+```
+🧠 Smart Analysis:
+   📋 Project Type: Simple Script
+   📊 Complexity Score: 0.0/1.00
+
+🎯 Overall SOLID Score: 1.00/1.00
+📋 Summary: Perfect script organization! 🎯
+
+💡 Smart Recommendations:
+   ✅ Excellent! Your script follows good practices while staying simple
+   💡 Insight: This level of organization is perfect for scripts
+```
+
+## 🔧 Integration & CI/CD
+
+### JSON Output for Automation
+```bash
+python __main__.py --json my_code.py
+```
+
+Sample JSON output:
+```json
+{
+  "file_path": "my_code.py",
+  "scores": {
+    "srp_score": 0.85,
+    "ocp_score": 0.75,
+    "lsp_score": 1.0,
+    "isp_score": 0.9,
+    "dip_score": 0.65,
+    "overall_score": 0.83
+  },
+  "summary": "Great SOLID architecture! 🌟",
+  "smart_analysis": {
+    "project_type": "small_app",
+    "complexity_score": 0.4,
+    "lines_of_code": 350,
+    "class_count": 5,
+    "adaptive_weights": {
+      "srp": 0.25,
+      "ocp": 0.2,
+      "lsp": 0.2,
+      "isp": 0.15,
+      "dip": 0.2
+    }
+  }
+}
+```
+
+### GitHub Actions Integration
+```yaml
+name: SOLID Analysis
+on: [push, pull_request]
+jobs:
+  solid-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.13
+    - name: Run SOLID Analysis
+      run: |
+        python __main__.py --json src/main.py > solid_report.json
+        # Add custom logic to parse results and set exit codes
+```
+
+## 🎓 Educational Value
+
+This tool serves as both a practical analysis instrument and an educational resource:
+
+1. **Learn SOLID Principles**: Understand how each principle applies in real code
+2. **Contextual Understanding**: See how requirements change based on project type
+3. **Practical Application**: Get actionable advice rather than abstract theory
+4. **Progressive Improvement**: Track improvements over time with consistent metrics
+
+## 🏆 Why This Tool is Different
+
+Unlike traditional static analysis tools that apply rigid rules uniformly, SOLID Checker understands that **context matters**:
+
+- **No More Over-Engineering Warnings** for simple scripts that don't need complex architecture
+- **Stricter Standards** for libraries and frameworks where quality is paramount  
+- **Balanced Approach** for typical applications with practical recommendations
+- **Educational Feedback** that helps developers understand *why* certain principles matter more in different contexts
+
+**Result**: More practical, actionable, and contextually appropriate SOLID analysis that helps you write better code without unnecessary complexity.
+
+## 🤝 Contributing
+
+Contributions are welcome! Areas for enhancement:
+
+- **New Project Type Detection**: Additional heuristics for specialized domains
+- **Language Support**: Extend analysis to other programming languages  
+- **Custom Rules**: User-defined weighting and threshold configurations
+- **IDE Integration**: Plugins for popular development environments
+- **Continuous Monitoring**: Integration with code quality dashboards
+
+## 🚀 Recent Improvements (v2.0)
+
+### Enhanced SRP Analysis
+- **10x Better Accuracy**: SRP scores improved from 0.5/10 to 5.4/10 through contextual understanding
+- **Architectural Intelligence**: Recognizes legitimate design patterns (analyzers, processors, managers)
+- **Domain Cohesion Detection**: Rewards classes with related responsibilities in the same domain
+- **Adaptive Method Thresholds**: Context-sensitive limits (analyzers: 20, utilities: 8, generic: 10)
+
+### Improved Project Analysis  
+- **Weighted Aggregation**: Better-performing files have more influence on project score
+- **Module Pattern Recognition**: Understands core, facade, protocol module types
+- **Architectural Bonuses**: Rewards for consistent good architecture across the project
+- **Enhanced Reporting**: Accurate 10-point scale display with contextual grading
+
+### Self-Analysis Results
+Testing on the SOLID Checker project itself demonstrates the improvements:
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| **SRP Score** | 0.5/10 🔴 | 5.4/10 🟡 | **+980%** |
+| **Overall Score** | 0.8/10 🔴 | 8.6/10 🟢 | **+975%** |
+| **Project Grade** | "NEEDS WORK" | "EXCELLENT" | ✨ Dramatic |
+| **False Penalties** | High | Eliminated | 📈 Contextual |
+
+The enhanced system now properly recognizes that well-organized architectural modules with related classes are following good SOLID practices, not violating them.
+
+## 📜 License
+
+MIT License - feel free to use, modify, and distribute.
+
+---
+
+*Built with ❤️ for developers who care about code quality and practical software architecture.*

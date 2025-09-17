@@ -1,0 +1,17 @@
+[project]
+name = "penelope-crypto-tools"
+version = "0.1.0"
+description = "Package of tools used by Penelope services."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.11.7",
+    "requests>=2.32.5",
+]
+
+[project.scripts]
+penelope-crypto-tools = "penelope_crypto_tools:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

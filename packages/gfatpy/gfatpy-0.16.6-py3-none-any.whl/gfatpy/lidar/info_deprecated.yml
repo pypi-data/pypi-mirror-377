@@ -1,0 +1,342 @@
+lidars:
+  mulhacen:
+    modules:
+    - xf
+    channels:
+      532xpa:
+        bin_zero: 5
+      532xpp:
+        bin_zero: -2
+        dead_time_ns: 4
+      532xsa:
+        bin_zero: 5
+      532xsp:
+        bin_zero: -1
+        dead_time_ns: 4
+      355xta:
+        bin_zero: 5
+      355xtp:
+        bin_zero: -2
+        dead_time_ns: 4
+      1064xta:
+        bin_zero: 5
+      607xtp:
+        bin_zero: -2
+        dead_time_ns: 4
+      387xtp:
+        bin_zero: -2
+        dead_time_ns: 4
+      408xtp:
+        bin_zero: -2
+        dead_time_ns: 4
+      # Updated channels
+      530xtp:
+        bin_zero: -2
+        dead_time_ns: 4
+      354xtp:
+        bin_zero: -2
+        dead_time_ns: 4
+    polarized_channels:
+      xf:
+        532:
+          a:
+            T: 532xsa
+            R: 532xpa
+          p:
+            T: 532xsp
+            R: 532xpp
+          g:
+            T: 532xsg
+            R: 532xpg
+    GHK_channels:
+      - 532x
+    product_channels:
+      532xta:
+        532xpa: R
+        532xsa: T
+      lvd_532xa:
+        532xpa: R
+        532xsa: T
+      532xtp:
+        532xpp: T
+        532xsp: R
+      lvd_532xp:
+        532xpp: R
+        532xsp: T
+  veleta:
+    modules:
+      - xf
+    channels: 
+      355xpa:
+        bin_zero: 5
+      355xpp:
+        bin_zero: -2
+        dead_time_ns: 4
+      355xsa:
+        bin_zero: 5
+      355xsp:
+        bin_zero: -1
+        dead_time_ns: 4
+    polarized_channels:
+      xf:
+        355:
+          355xpa: Tan
+          355xpp: Tpc
+          355xsa: Ran
+          355xsp: Rpc
+    product_channels:
+      355xta:
+        - 355xpa
+        - 355xsa
+      lvd_355xa:
+        - 355xpa
+        - 355xpa
+      355xtp:
+        - 355xpp
+        - 355xsp
+      lvd_355xp:
+        - 355xpp
+        - 355xsp
+    GHK_channels:
+      - 355x
+  alhambra:
+    modules:
+      - nf
+      - ff
+    channels:
+      1064fta:
+        bin_zero: 33
+      1061fta:
+        bin_zero: 33
+      1061ftp:
+        bin_zero: 33        
+        dead_time_ns: 4
+      532fta:
+        bin_zero: 33
+      532ftp:
+        bin_zero: 31
+        dead_time_ns: 4
+      531fta:
+        bin_zero: 33
+      531ftp:
+        bin_zero: 31
+        dead_time_ns: 4
+      355fpa:
+        bin_zero: 33
+      355fpp:
+        bin_zero: 31
+        dead_time_ns: 4
+      355fsa:
+        bin_zero: 33
+      355fsp:
+        bin_zero: 31
+        dead_time_ns: 4
+      354fta:
+        bin_zero: 33
+      354ftp:
+        bin_zero: 31
+        dead_time_ns: 4
+      408fta:
+        bin_zero: 33
+      408ftp:
+        bin_zero: 31
+        dead_time_ns: 4
+      1064nta:
+        bin_zero: 11
+      1064ntp:
+        bin_zero: 11
+        dead_time_ns: 4
+      532npa:
+        bin_zero: 11
+      532npp:
+        bin_zero: 9
+        dead_time_ns: 4
+      532nsa:
+        bin_zero: 11
+      532nsp:
+        bin_zero: 9
+        dead_time_ns: 4
+      355npa:
+        bin_zero: 11
+      355npp:
+        bin_zero: 9
+        dead_time_ns: 4
+      355nsa:
+        bin_zero: 11
+      355nsp:
+        bin_zero: 9
+        dead_time_ns: 4
+      387nta:
+        bin_zero: 11
+      387ntp:
+        bin_zero: 9
+        dead_time_ns: 4
+      607nta:
+        bin_zero: 11
+      607ntp:
+        bin_zero: 9    
+        dead_time_ns: 4
+      408nta:
+        bin_zero: 11    
+      408ntp:
+        bin_zero: 9    
+        dead_time_ns: 4
+    polarized_channels:
+      nf:
+        355:
+          a: 
+            T: 355nsa
+            R: 355npa
+          p:
+            T: 355nsp
+            R: 355npp
+          g:
+            T: 355nsg
+            R: 355npg
+        532:
+          a: 
+            T: 532nsa
+            R: 532npa
+          p:
+            T: 532nsp
+            R: 532npp
+          g:
+            T: 532nsg
+            R: 532npg
+      ff:
+        355:
+          a: 
+            T: 355fsa
+            R: 355fpa
+          p:
+            T: 355fsp
+            R: 355fpp
+          g:
+            T: 355fsg
+            R: 355fpg        
+    product_channels:
+      355fta:
+        - 355fpa
+        - 355fsa
+      lvd_355fa:
+        - 355fpa
+        - 355fpa
+      355ftp:
+        - 355fpp
+        - 355fsp
+      lvd_355fp:
+        - 355fpp
+        - 355fsp
+      355nta:
+        - 355npa
+        - 355nsa
+      lvd_355na:
+        - 355npa
+        - 355nsa
+      355ntp:
+        - 355npp
+        - 355nsp
+      lvd_355np:
+        - 355npp
+        - 355nsp
+      532nta:
+        - 532npa
+        - 532nsa
+      lvd_532na:
+        - 532npa
+        - 532nsa
+      532ntp:
+        - 532npp
+        - 532nsp
+      lvd_532np:
+        - 532npp
+        - 532nsp
+    GHK_channels:
+      - 355n
+      - 532n
+      - 355f
+    overlap_channels:
+      355fpa: 355npa
+      532fta: 532npa
+      1064fta: 1064nta
+    overlap_linked_channels:
+      355fpa: 
+        355fpa
+        355fpp
+        355fsa
+        355fsp
+        354fta
+        354ftp
+        408fta
+        408ftp        
+      532fta:
+        532fta
+        532ftp
+        531fta
+        531ftp
+      1064fta: 
+        1064fta
+        1061fta
+        1064ftp
+  pericles:
+    modules:
+      - xf      
+    channels:
+      355xta:
+        bin_zero: 0
+      355xtp:        
+        bin_zero: 0
+        dead_time_ns: 4
+      470xtp:
+        bin_zero: 0
+        dead_time_ns: 4
+metadata:
+  nick2name:
+    mhc: mulhacen
+    alh: alhambra
+    vlt: veleta
+    prc: pericles
+  name2nick:
+    mulhacen: mhc
+    alhambra: alh
+    veleta: vlt
+    pericles: prc
+  measurement_type:
+    - RS
+    - DC
+    - TC
+    - DP
+    - HF
+    - OT
+  code_telescope_str2number:
+    xf: 1
+    ff: 1
+    nf: 2
+  code_telescope_number2str:
+    xf: 0
+    ff: 1
+    nf: 2
+  code_mode_str2number:
+    a: 0
+    p: 1
+    g: 2
+  code_polarization_str2number:
+    t: 0
+    p: 1
+    s: 2
+  code_mode_number2str:
+    0: a
+    1: p
+    2: g
+  code_polarization_number2str:
+    0: t
+    1: p
+    2: s
+  code_polarization_str2long_name:
+    t: all
+    p: parallel
+    s: perpendicular
+  code_mode_str2long_name:
+    a: analog
+    p: photoncounting
+    g: gluing

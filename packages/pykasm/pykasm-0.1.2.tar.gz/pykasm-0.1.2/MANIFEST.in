@@ -1,0 +1,8 @@
+graft src/pykasm
+
+recursive-include src/pykasm/rasm/keystone/lbuild/llvm/lib *.so *.so.*
+recursive-include src/pykasm/rasm/keystone/winbuild/llvm/lib *.dll *.a
+recursive-include src/pykasm/rasm/lib *.so *.so.* *.dll *.a
+recursive-include src/pykasm/lib *.so *.so.* *.dll *.a
+
+global-exclude *.o

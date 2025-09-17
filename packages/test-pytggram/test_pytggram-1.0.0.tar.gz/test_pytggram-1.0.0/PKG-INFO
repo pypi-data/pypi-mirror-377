@@ -1,0 +1,549 @@
+Metadata-Version: 2.4
+Name: test-pytggram
+Version: 1.0.0
+Summary: An advanced, easy-to-use Telegram Bot Framework with MongoDB support
+Home-page: https://github.com/hasnainkk-07/PyTgGram
+Author: Endtrz
+Author-email: Endtrz <endtrz@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Hasnain khan
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/hasnainkk-07/PyTgGram
+Project-URL: Documentation, https://github.com/hasnainkk-07/PyTgGram/wiki
+Project-URL: Repository, https://github.com/hasnainkk-07/PyTgGram
+Project-URL: Issues, https://github.com/hasnainkk-07/PyTgGram/issues
+Keywords: telegram,bot,api,framework,async,mongodb
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Internet
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.20.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=0.991; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=5.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
+Provides-Extra: speed
+Requires-Dist: uvloop>=0.17.0; extra == "speed"
+Requires-Dist: aiodns>=3.0.0; extra == "speed"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+### PyTgGram - Advanced Telegram Bot Framework
+
+**PyTgGram is a powerful, easy-to-use asynchronous Telegram Bot Framework built with Python 3.7+. It provides a simple and intuitive API for building Telegram bots with advanced features like MongoDB integration, flood control, rate limiting, and plugin support**.
+
+### 🌟 Features
+
+**· 🚀 Asynchronous by design - Built on async/await for high performance
+· 💾 Multiple storage options - Memory, Redis, JSON, and MongoDB support
+· 🛡️ Flood control - Automatic handling of Telegram rate limits
+· ⚡ Rate limiting - Controlled API request pacing
+· 🔌 Plugin system - Extensible architecture for custom functionality
+· 📋 Advanced filters - Complex filter combinations for precise message handling
+· 🔧 Sync & Async clients - Both synchronous and asynchronous interfaces
+· 📊 MongoDB integration - Full MongoDB support with models and CRUD operations
+· 🎯 Type hints - Full type hint support for better development experience
+· 📦 Comprehensive API - Support for all major Telegram Bot API methods**
+
+### 📦 Installation
+
+From PyPI (Coming Soon)
+
+```bash
+pip install pytggram
+```
+
+From Source
+
+```bash
+git clone https://github.com/hasnainkk-07/pytgbot.git
+cd pytggram
+pip install -e .
+```
+
+Dependencies
+
+```bash
+pip install aiohttp motor redis
+```
+
+### 🚀 Quick Start
+
+Create a simple bot:
+
+```python
+from pytggram import Client, filters
+
+# Create bot instance
+bot = Client("YOUR_BOT_TOKEN_HERE")
+
+# Command handler
+@bot.command(['start', 'help'])
+async def start_command(client, message):
+    await message.reply(
+        "🚀 Welcome to PyTgGram Bot!\n\n"
+        "Available commands:\n"
+        "/start - Show this help\n"
+        "/echo [text] - Echo your text\n"
+        "/info - Get user info"
+    )
+
+# Message handler with filter
+@bot.on_message(filters.Text(contains='thank') & filters.Private)
+async def thank_you_handler(client, message):
+    await message.reply("You're welcome! 😊")
+
+if __name__ == "__main__":
+    bot.run()
+```
+
+### 📁 Project Structure
+
+```
+pytggram/
+├── __init__.py                 # Package exports and version info
+├── client.py                   # Main asynchronous client
+├── sync_client.py              # Synchronous client wrapper
+├── exceptions.py               # Custom exceptions
+├── dispatcher.py               # Update dispatcher with priority groups
+├── router.py                   # Handler routing system
+├── types/                      # Telegram API types
+│   ├── __init__.py
+│   ├── message.py              # Message type
+│   ├── user.py                 # User type
+│   ├── chat.py                 # Chat type
+│   ├── callback.py             # Callback query type
+│   ├── inline.py               # Inline query types
+│   ├── poll.py                 # Poll types
+│   └── payments.py             # Payment types
+├── handlers/                   # Update handlers
+│   ├── __init__.py
+│   ├── message_handler.py      # Message handler
+│   ├── callback_handler.py     # Callback handler
+│   ├── inline_handler.py       # Inline handler
+│   ├── poll_handler.py         # Poll handler
+│   └── handler.py              # Base handler class
+├── filters.py                  # Message filters system
+├── methods/                    # Telegram API methods
+│   ├── __init__.py
+│   ├── auth.py                 # Authentication methods
+│   ├── messages.py             # Message methods
+│   ├── chats.py                # Chat methods
+│   ├── inline.py               # Inline methods
+│   ├── payments.py             # Payment methods
+│   └── advanced.py             # Advanced methods
+├── utils/                      # Utility functions
+│   ├── __init__.py
+│   ├── helpers.py              # Helper functions
+│   ├── decorators.py           # Decorators
+│   ├── rate_limiter.py         # Rate limiting
+│   ├── flood_control.py        # Flood control
+│   └── mongodb_helpers.py      # MongoDB utilities
+├── storage/                    # Storage backends
+│   ├── __init__.py
+│   ├── memory_storage.py       # In-memory storage
+│   ├── redis_storage.py        # Redis storage
+│   ├── json_storage.py         # JSON file storage
+│   └── mongodb_storage.py      # MongoDB storage
+├── plugins/                    # Plugin system
+│   ├── __init__.py
+│   └── example_plugin.py       # Example plugin
+├── api/                        # API utilities
+│   ├── __init__.py
+│   └── telegram_api.py         # Low-level API wrapper
+└── database/                   # MongoDB database layer
+    ├── __init__.py
+    ├── models.py               # Database models
+    ├── crud.py                 # CRUD operations
+    └── connection.py           # Database connection
+```
+
+### 🔧 Usage Examples
+
+Basic Bot with Commands
+
+```python
+from pytggram import Client, filters
+
+bot = Client("YOUR_BOT_TOKEN_HERE")
+
+@bot.command(['start', 'help'])
+async def start_handler(client, message):
+    await message.reply("Hello! I'm a PyTgGram bot!")
+
+@bot.command(['echo'])
+async def echo_handler(client, message):
+    if message.command_args:
+        await message.reply(f"Echo: {message.command_args}")
+    else:
+        await message.reply("Please provide text to echo")
+
+@bot.on_message(filters.Private)
+async def private_message_handler(client, message):
+    await message.reply("Thanks for your message in private chat!")
+
+if __name__ == "__main__":
+    bot.run()
+```
+
+### Advanced Bot with MongoDB
+
+```python
+from pytggram import Client, filters, MongoDBStorage
+
+# Create bot with MongoDB storage
+bot = Client("YOUR_BOT_TOKEN_HERE")
+mongo_storage = MongoDBStorage("mongodb://localhost:27017", "my_bot_db")
+
+@bot.command(['start'])
+async def start_handler(client, message):
+    user = message.from_user
+    # Store user in MongoDB
+    await mongo_storage.set(user.id, "start_count", 1)
+    await message.reply(f"Welcome {user.full_name}! You're user #{user.id}")
+
+@bot.command(['stats'])
+async def stats_handler(client, message):
+    user = message.from_user
+    start_count = await mongo_storage.get(user.id, "start_count", 0)
+    await message.reply(f"You've started the bot {start_count} times")
+
+async def main():
+    await mongo_storage.connect()
+    bot.run()
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
+```
+
+### Inline Query Bot
+
+```python
+from pytggram import Client, filters, types
+
+bot = Client("YOUR_BOT_TOKEN_HERE")
+
+@bot.inline_handler()
+async def inline_query_handler(client, inline_query):
+    from pytggram.types import InlineQueryResultArticle, InputTextMessageContent
+    
+    results = [
+        InlineQueryResultArticle(
+            id="1",
+            title="Hello World",
+            input_message_content=InputTextMessageContent("Hello from PyTgGram! 🚀")
+        ),
+        InlineQueryResultArticle(
+            id="2",
+            title="Current Time",
+            input_message_content=InputTextMessageContent(f"Current time: {datetime.now()}")
+        )
+    ]
+    
+    await client.answer_inline_query(inline_query.id, results, cache_time=300)
+
+if __name__ == "__main__":
+    bot.run()
+```
+
+### Bot with Keyboard Buttons
+
+```python
+from pytggram import Client, filters, types
+
+bot = Client("YOUR_BOT_TOKEN_HERE")
+
+@bot.command(['start'])
+async def start_handler(client, message):
+    from pytggram.types import ReplyKeyboardMarkup, KeyboardButton
+    
+    keyboard = ReplyKeyboardMarkup([
+        [KeyboardButton("Option 1"), KeyboardButton("Option 2")],
+        [KeyboardButton("Contact", request_contact=True)],
+        [KeyboardButton("Location", request_location=True)]
+    ], resize_keyboard=True)
+    
+    await message.reply("Choose an option:", reply_markup=keyboard)
+
+@bot.on_message(filters.Text("Option 1"))
+async def option1_handler(client, message):
+    await message.reply("You selected Option 1!")
+
+@bot.on_message(filters.Text("Option 2"))
+async def option2_handler(client, message):
+    await message.reply("You selected Option 2!")
+
+if __name__ == "__main__":
+    bot.run()
+```
+
+### 📚 API Reference
+
+Client Class
+
+The main client class for interacting with the Telegram Bot API.
+
+```python
+from pytggram import Client
+
+bot = Client(
+    token="YOUR_BOT_TOKEN",
+    max_retries=3,              # Maximum retry attempts
+    request_timeout=30,          # Request timeout in seconds
+    flood_sleep_threshold=10     # Flood control threshold
+)
+```
+
+### Handlers
+
+PyTgGram supports various handler types:
+
+```python
+# Message handler
+@bot.on_message(filters.Command('start'))
+async def handler(client, message):
+    pass
+
+# Callback handler
+@bot.on_callback(filters.CallbackData('button_click'))
+async def handler(client, callback):
+    pass
+
+# Inline handler
+@bot.on_inline(filters.InlinePattern('search'))
+async def handler(client, inline_query):
+    pass
+
+# Poll handler
+@bot.on_poll()
+async def handler(client, poll):
+    pass
+```
+
+### Filters
+
+Advanced filtering system for precise message handling:
+
+```python
+from pytggram import filters
+
+# Command filter
+filters.Command(['start', 'help'])
+
+# Text filter
+filters.Text(contains='hello')
+filters.Text(startswith='hi')
+filters.Text(endswith='bye')
+
+# Regex filter
+filters.Regex(r'^hello.*')
+
+# Chat type filters
+filters.Private
+filters.Group
+filters.Channel
+
+# Combined filters
+filters.Command('start') & filters.Private
+filters.Text(contains='help') | filters.Command('help')
+```
+
+### Storage Options
+
+Multiple storage backends available:
+
+```python
+from pytggram import MemoryStorage, RedisStorage, JSONStorage, MongoDBStorage
+
+# In-memory storage (default)
+storage = MemoryStorage()
+
+# Redis storage
+storage = RedisStorage(host='localhost', port=6379, db=0)
+
+# JSON file storage
+storage = JSONStorage('data.json')
+
+# MongoDB storage
+storage = MongoDBStorage('mongodb://localhost:27017', 'bot_db')
+```
+
+### 🔌 Plugins System
+
+Extend functionality with plugins:
+
+```python
+# plugins/my_plugin.py
+from pytggram import Client, filters
+
+def setup_plugin(client: Client):
+    @client.command(['plugin'])
+    async def plugin_command(client, message):
+        await message.reply("This is from a plugin!")
+    
+    return {
+        'name': 'My Plugin',
+        'version': '1.0.0',
+        'description': 'Example plugin for PyTgGram'
+    }
+
+# main.py
+from pytggram import Client
+from plugins.my_plugin import setup_plugin
+
+bot = Client("YOUR_BOT_TOKEN_HERE")
+setup_plugin(bot)
+
+if __name__ == "__main__":
+    bot.run()
+```
+
+### ⚙️ Configuration
+
+Environment Variables
+
+```bash
+export BOT_TOKEN="your_bot_token"
+export MONGODB_URI="mongodb://localhost:27017"
+export REDIS_URL="redis://localhost:6379"
+```
+
+### Custom Session Configuration
+
+```python
+import aiohttp
+from pytggram import Client
+
+session = aiohttp.ClientSession(
+    timeout=aiohttp.ClientTimeout(total=30),
+    connector=aiohttp.TCPConnector(limit=100)
+)
+
+bot = Client("YOUR_BOT_TOKEN_HERE", session=session)
+```
+
+### 🚨 Error Handling
+
+```python
+from pytggram import Client, APIException, FloodException
+
+bot = Client("YOUR_BOT_TOKEN_HERE")
+
+@bot.on_message(filters.Command('test'))
+async def test_handler(client, message):
+    try:
+        # Some API call that might fail
+        await client.send_message(message.chat.id, "Test message")
+    except FloodException as e:
+        print(f"Flood control: wait {e.retry_after} seconds")
+    except APIException as e:
+        print(f"API error: {e} (code: {e.code})")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+```
+
+### 📊 MongoDB Integration
+
+PyTgGram provides full MongoDB integration:
+
+```python
+from pytggram import Client, MongoDBStorage, MongoDBCRUD
+from pytggram.database import User, Chat, Message
+
+bot = Client("YOUR_BOT_TOKEN_HERE")
+storage = MongoDBStorage("mongodb://localhost:27017", "bot_db")
+crud = MongoDBCRUD(storage.connection)
+
+@bot.on_message(filters.Private)
+async def message_handler(client, message):
+    # Save user to database
+    user = await crud.get_or_create_user(message.from_user.__dict__)
+    
+    # Save chat to database
+    chat = await crud.get_or_create_chat(message.chat.__dict__)
+    
+    # Save message to database
+    message_data = Message(
+        message_id=message.message_id,
+        chat_id=message.chat.id,
+        user_id=message.from_user.id,
+        text=message.text
+    )
+    await crud.save_message(message_data)
+    
+    # Store user data
+    await storage.set(message.from_user.id, "message_count", 1)
+```
+
+### 🤝 Contributing
+
+We welcome contributions! Please see our Contributing Guidelines for details.
+
+Development Setup
+
+```bash
+git clone https://github.com/hasnainkk-07/pytgbot.git
+cd pytggram
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -e .[dev]
+```
+
+Running Tests
+
+```bash
+pytest tests/ -v
+```
+
+### 📄 License
+
+PyTgGram is licensed under the MIT License. See LICENSE for details.
+
+
+🙏 Acknowledgments
+
+· Inspired by Pyrogram and python-telegram-bot
+· Built with aiohttp for async HTTP requests
+· MongoDB support with motor
+
+---
+
+PyTgGram - Making Telegram Bot Development Easy and Fun! 🚀

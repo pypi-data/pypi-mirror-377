@@ -1,0 +1,580 @@
+{
+  "ides": {
+    "cursor": {
+      "display_name": "Cursor",
+      "description": "AI-first code editor with predictive editing",
+      "mcp_config": {
+        "config_file_path": ".cursor/mcp.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "AGENTS.md",
+        "guidelines": "Create AGENTS.md file in project root for AI agent instructions and guidelines."
+      },
+      "supported": true,
+      "installation_method": "JSON configuration in .cursor/mcp.json with both remote HTTP and local npm options. One-click install available.",
+      "verification_method": "Check .cursor/mcp.json exists and contains mcpServers configuration",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": true
+    },
+    "claude_code": {
+      "display_name": "Claude Code",
+      "description": "Anthropic's official CLI with advanced code understanding",
+      "mcp_config": {
+        "config_file_path": "~/.claude_code_config.json",
+        "config_method": "command",
+        "config_format": "cli",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "CLAUDE.md",
+        "guidelines": "Create CLAUDE.md file in project root for Claude Code instructions and guidelines. Use claude mcp add command to configure MCP servers. Supports both remote HTTP/SSE and local npm installation."
+      },
+      "supported": true,
+      "installation_method": "CLI command: claude mcp add with support for HTTP, SSE, and local server connections",
+      "verification_method": "Run claude mcp list to verify server installation",
+      "connection_types": ["remote_http", "remote_sse", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "windsurf": {
+      "display_name": "Windsurf",
+      "description": "AI-powered development environment",
+      "mcp_config": {
+        "config_file_path": "~/.codeium/windsurf/mcp_config.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": ".windsurfrules",
+        "file_name": ".windsurfrules",
+        "guidelines": "Create .windsurfrules file in project root. Use TOML format with [[calls]] sections for tool invocation rules."
+      },
+      "supported": true,
+      "installation_method": "JSON configuration in Windsurf MCP config file with remote and local server options",
+      "verification_method": "Check ~/.codeium/windsurf/mcp_config.json contains server configuration",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "vscode": {
+      "display_name": "VS Code",
+      "description": "Microsoft's editor with AI extensions",
+      "mcp_config": {
+        "config_file_path": "settings.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcp.servers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "AGENTS.md",
+        "guidelines": "Create AGENTS.md file in project root for AI agent instructions and guidelines."
+      },
+      "supported": true,
+      "installation_method": "JSON configuration in VS Code settings with mcp.servers object. One-click install available.",
+      "verification_method": "Check settings.json contains mcp.servers configuration",
+      "connection_types": ["remote_http", "local_stdio"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": true
+    },
+    "cline": {
+      "display_name": "Cline",
+      "description": "AI assistant extension with MCP support",
+      "mcp_config": {
+        "config_file_path": "cline_mcp_settings.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Cline MCP Server Marketplace or manual JSON configuration"
+      },
+      "supported": true,
+      "installation_method": "Install through Cline MCP Server Marketplace by searching for Context7",
+      "verification_method": "Check Cline MCP server list contains Context7",
+      "connection_types": ["marketplace", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": true
+    },
+    "zed": {
+      "display_name": "Zed",
+      "description": "High-performance code editor with AI integration",
+      "mcp_config": {
+        "config_file_path": "settings.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "context_servers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "settings.json",
+        "guidelines": "Configure in Zed settings.json under context_servers section"
+      },
+      "supported": true,
+      "installation_method": "Install via Zed Extensions or manual settings.json configuration",
+      "verification_method": "Check Zed Extensions or settings.json for Context7 configuration",
+      "connection_types": ["extension", "local_npm"],
+      "platform_support": ["macos", "linux"],
+      "one_click_install": true
+    },
+    "augment_code": {
+      "display_name": "Augment Code",
+      "description": "AI-powered code completion and assistance",
+      "mcp_config": {
+        "config_file_path": "settings.json",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "augment.advanced.mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through UI Settings > Tools > Add MCP or manually in settings.json"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Settings > Tools > Add MCP or manual settings.json edit",
+      "verification_method": "Check MCP servers list in Augment Code settings",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "roo_code": {
+      "display_name": "Roo Code",
+      "description": "AI development environment",
+      "mcp_config": {
+        "config_file_path": "mcp_config.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Roo Code MCP configuration file"
+      },
+      "supported": true,
+      "installation_method": "JSON configuration with streamable-http remote or local npm server",
+      "verification_method": "Check MCP configuration file contains Context7 server",
+      "connection_types": ["remote_streamable_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "gemini_cli": {
+      "display_name": "Gemini CLI",
+      "description": "Google's Gemini command-line interface",
+      "mcp_config": {
+        "config_file_path": "~/.gemini/settings.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure in ~/.gemini/settings.json under mcpServers section"
+      },
+      "supported": true,
+      "installation_method": "JSON configuration in ~/.gemini/settings.json with HTTP or local server options",
+      "verification_method": "Check ~/.gemini/settings.json contains mcpServers configuration",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "claude_desktop": {
+      "display_name": "Claude Desktop",
+      "description": "Anthropic's desktop application for Claude",
+      "mcp_config": {
+        "config_file_path": "claude_desktop_config.json",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Claude Desktop Settings > Connectors or developer settings"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Settings > Connectors > Add Custom Connector or developer settings file",
+      "verification_method": "Check connectors list in Claude Desktop settings",
+      "connection_types": ["remote_connector", "local_npm"],
+      "platform_support": ["windows", "macos"],
+      "one_click_install": false
+    },
+    "opencode": {
+      "display_name": "Opencode",
+      "description": "Open-source AI code editor",
+      "mcp_config": {
+        "config_file_path": "config.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcp"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure in Opencode configuration file under mcp section"
+      },
+      "supported": true,
+      "installation_method": "JSON configuration with remote or local server options",
+      "verification_method": "Check configuration file contains MCP server entry",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "openai_codex": {
+      "display_name": "OpenAI Codex",
+      "description": "OpenAI's code generation model interface",
+      "mcp_config": {
+        "config_file_path": "config.toml",
+        "config_method": "file",
+        "config_format": "toml",
+        "config_key": "mcp_servers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure in TOML format with mcp_servers section"
+      },
+      "supported": true,
+      "installation_method": "TOML configuration with local npm server connection",
+      "verification_method": "Check config.toml contains mcp_servers configuration",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "jetbrains_ai": {
+      "display_name": "JetBrains AI Assistant",
+      "description": "AI assistant for JetBrains IDEs",
+      "mcp_config": {
+        "config_file_path": "IDE Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through IDE Settings > Tools > AI Assistant > Model Context Protocol (MCP)"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Settings > Tools > AI Assistant > MCP with JSON format",
+      "verification_method": "Check MCP servers list in JetBrains IDE settings",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "kiro": {
+      "display_name": "Kiro",
+      "description": "AI development assistant",
+      "mcp_config": {
+        "config_file_path": "MCP Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Kiro > MCP Servers UI with JSON configuration"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Kiro > MCP Servers with JSON format",
+      "verification_method": "Check MCP servers list in Kiro settings",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "trae": {
+      "display_name": "Trae",
+      "description": "AI development environment",
+      "mcp_config": {
+        "config_file_path": "mcp_config.json",
+        "config_method": "manual",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Use Add manually feature and provide JSON configuration information"
+      },
+      "supported": true,
+      "installation_method": "Manual JSON configuration through Add manually feature",
+      "verification_method": "Check manually added MCP server configuration",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "lm_studio": {
+      "display_name": "LM Studio",
+      "description": "Local language model interface with MCP support",
+      "mcp_config": {
+        "config_file_path": "mcp.json",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Program > Install > Edit mcp.json or use one-click install"
+      },
+      "supported": true,
+      "installation_method": "One-click install or manual configuration through Program > Install > Edit mcp.json",
+      "verification_method": "Check MCP servers list in LM Studio Program section",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": true
+    },
+    "visual_studio_2022": {
+      "display_name": "Visual Studio 2022",
+      "description": "Microsoft's flagship IDE with AI integration",
+      "mcp_config": {
+        "config_file_path": "mcp_config.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "servers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Visual Studio MCP config file with servers section"
+      },
+      "supported": true,
+      "installation_method": "JSON configuration with SSE remote or stdio local server options",
+      "verification_method": "Check Visual Studio MCP configuration file",
+      "connection_types": ["remote_sse", "local_stdio"],
+      "platform_support": ["windows"],
+      "one_click_install": false
+    },
+    "crush": {
+      "display_name": "Crush",
+      "description": "Terminal-based AI assistant",
+      "mcp_config": {
+        "config_file_path": "crush.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcp"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure in crush.json with JSON schema and mcp section"
+      },
+      "supported": true,
+      "installation_method": "JSON configuration with HTTP, SSE, or stdio connection types",
+      "verification_method": "Check crush.json contains MCP configuration",
+      "connection_types": ["remote_http", "remote_sse", "local_stdio"],
+      "platform_support": ["macos", "linux"],
+      "one_click_install": false
+    },
+    "boltai": {
+      "display_name": "BoltAI",
+      "description": "AI assistant application with plugin support",
+      "mcp_config": {
+        "config_file_path": "Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Settings > Plugins with JSON configuration"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Settings > Plugins with JSON format",
+      "verification_method": "Check plugins settings contains MCP server configuration",
+      "connection_types": ["local_npm"],
+      "platform_support": ["macos", "ios"],
+      "one_click_install": false
+    },
+    "rovo_dev_cli": {
+      "display_name": "Rovo Dev CLI",
+      "description": "Atlassian's development CLI with AI integration",
+      "mcp_config": {
+        "config_file_path": "MCP Config",
+        "config_method": "command",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through acli rovodev mcp command"
+      },
+      "supported": true,
+      "installation_method": "CLI command configuration with acli rovodev mcp",
+      "verification_method": "Run acli rovodev mcp to verify configuration",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "zencoder": {
+      "display_name": "Zencoder",
+      "description": "AI-powered coding assistant",
+      "mcp_config": {
+        "config_file_path": "MCP Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Zencoder menu > Agent tools > Add custom MCP"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through menu > Agent tools > Add custom MCP",
+      "verification_method": "Check Agent tools contains custom MCP configuration",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "qodo_gen": {
+      "display_name": "Qodo Gen",
+      "description": "AI code generation and analysis tool",
+      "mcp_config": {
+        "config_file_path": "MCP Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Qodo Gen chat panel > Connect more tools > Add new MCP"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through chat panel with Connect more tools option",
+      "verification_method": "Check connected tools list contains MCP server",
+      "connection_types": ["remote_http", "local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    },
+    "perplexity_desktop": {
+      "display_name": "Perplexity Desktop",
+      "description": "AI search and research assistant with MCP support",
+      "mcp_config": {
+        "config_file_path": "Connectors Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "connectors"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Settings > Connectors > Add Connector > Advanced"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Settings > Connectors > Add Connector > Advanced",
+      "verification_method": "Check connectors list contains custom MCP server",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos"],
+      "one_click_install": false
+    },
+    "warp": {
+      "display_name": "Warp",
+      "description": "AI-powered terminal with MCP integration",
+      "mcp_config": {
+        "config_file_path": "MCP Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Settings > AI > Manage MCP servers"
+      },
+      "supported": true,
+      "installation_method": "UI configuration through Settings > AI > Manage MCP servers",
+      "verification_method": "Check MCP servers list in Warp AI settings",
+      "connection_types": ["local_npm"],
+      "platform_support": ["macos"],
+      "one_click_install": false
+    },
+    "copilot_coding_agent": {
+      "display_name": "GitHub Copilot Coding Agent",
+      "description": "GitHub's AI coding assistant with MCP support",
+      "mcp_config": {
+        "config_file_path": "Repository Settings",
+        "config_method": "ui",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure through Repository > Settings > Copilot > Coding agent > MCP configuration"
+      },
+      "supported": true,
+      "installation_method": "Repository settings configuration with specific tools specification",
+      "verification_method": "Check repository Copilot settings contains MCP configuration",
+      "connection_types": ["remote_http"],
+      "platform_support": ["web"],
+      "one_click_install": false
+    },
+    "amazon_q_cli": {
+      "display_name": "Amazon Q Developer CLI",
+      "description": "Amazon's AI development assistant CLI",
+      "mcp_config": {
+        "config_file_path": "config.json",
+        "config_method": "file",
+        "config_format": "json",
+        "config_key": "mcpServers"
+      },
+      "custom_instructions": {
+        "file_path": "",
+        "file_name": "",
+        "guidelines": "Configure in Amazon Q Developer CLI configuration file"
+      },
+      "supported": true,
+      "installation_method": "JSON configuration in Amazon Q Developer CLI config file",
+      "verification_method": "Check Amazon Q CLI configuration file",
+      "connection_types": ["local_npm"],
+      "platform_support": ["windows", "macos", "linux"],
+      "one_click_install": false
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2025-01-23",
+    "source": "https://github.com/upstash/context7/blob/master/README.md",
+    "total_supported": 26,
+    "categories": {
+      "desktop_ides": ["cursor", "vscode", "windsurf", "jetbrains_ai", "visual_studio_2022", "zed"],
+      "cli_tools": ["claude_code", "gemini_cli", "rovo_dev_cli", "amazon_q_cli", "crush", "warp"],
+      "ai_assistants": ["claude_desktop", "cline", "boltai", "perplexity_desktop", "qodo_gen"],
+      "specialized": ["opencode", "openai_codex", "kiro", "trae", "lm_studio", "zencoder", "augment_code", "roo_code", "copilot_coding_agent"]
+    },
+    "connection_types": {
+      "remote_http": "HTTP-based remote server connection",
+      "remote_sse": "Server-Sent Events remote connection", 
+      "remote_streamable_http": "Streamable HTTP remote connection",
+      "local_npm": "Local server via npm/npx",
+      "local_stdio": "Local server with stdio transport",
+      "marketplace": "Installation through built-in marketplace",
+      "extension": "Installation via extension marketplace",
+      "ui": "Configuration through user interface",
+      "command": "Command-line based configuration"
+    },
+    "platform_support": {
+      "windows": "Microsoft Windows support",
+      "macos": "Apple macOS support", 
+      "linux": "Linux distribution support",
+      "ios": "iOS mobile support",
+      "web": "Web-based interface"
+    }
+  }
+}

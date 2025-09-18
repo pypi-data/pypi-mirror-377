@@ -1,0 +1,419 @@
+Metadata-Version: 2.4
+Name: agenthub-sdk
+Version: 0.1.3
+Summary: AgentHub - The App Store for AI Agents
+Project-URL: Homepage, https://github.com/agenthub/agenthub
+Project-URL: Documentation, https://docs.agenthub.dev
+Project-URL: Repository, https://github.com/agenthub/agenthub
+Project-URL: Issues, https://github.com/agenthub/agenthub/issues
+Project-URL: Changelog, https://github.com/agenthub/agenthub/blob/main/CHANGELOG.md
+Author-email: William <william@agenthub.dev>
+Maintainer-email: William <william@agenthub.dev>
+License: MIT License
+        
+        Copyright (c) 2025 Agent Hub
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: agent-framework,agent-management,agent-marketplace,agents,ai,artificial-intelligence,automation,llm,machine-learning,mcp,model-context-protocol,tools
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Classifier: Typing :: Typed
+Requires-Python: >=3.11
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: aisuite>=0.1.0
+Requires-Dist: anthropic>=0.45.0
+Requires-Dist: asyncio-throttle>=1.0.0
+Requires-Dist: beautifulsoup4>=4.12.0
+Requires-Dist: click>=8.1.7
+Requires-Dist: cryptography>=42.0.0
+Requires-Dist: ddgs>=9.5.0
+Requires-Dist: docstring-parser>=0.16
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: markdown>=3.5.0
+Requires-Dist: mcp[cli]>=1.13.1
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: openai>=1.50.0
+Requires-Dist: openpyxl>=3.1.0
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: pydantic>=2.11.0
+Requires-Dist: pypdf>=4.0.0
+Requires-Dist: python-docx>=1.1.0
+Requires-Dist: python-pptx>=0.6.0
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: requests>=2.31.0
+Requires-Dist: rich>=13.7.1
+Requires-Dist: uv>=0.5.0
+Provides-Extra: code
+Requires-Dist: docker>=7.0.0; extra == 'code'
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == 'dev'
+Requires-Dist: coverage>=7.9.0; extra == 'dev'
+Requires-Dist: mypy>=1.8.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.6.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.23.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest-mock>=3.14.0; extra == 'dev'
+Requires-Dist: pytest>=8.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.2.0; extra == 'dev'
+Requires-Dist: safety>=3.0.0; extra == 'dev'
+Requires-Dist: types-pyyaml>=6.0.12; extra == 'dev'
+Provides-Extra: full
+Requires-Dist: agenthub[code,dev,rag]; extra == 'full'
+Provides-Extra: rag
+Requires-Dist: chromadb>=1.0.0; extra == 'rag'
+Requires-Dist: faiss-cpu>=1.11.0; extra == 'rag'
+Requires-Dist: llama-index>=0.12.0; extra == 'rag'
+Requires-Dist: sentence-transformers>=5.0.0; extra == 'rag'
+Description-Content-Type: text/markdown
+
+# 🤖 AgentHub
+
+<div align="center">
+
+**The "App Store for AI Agents"** - Discover, install, and use AI agents with one-line simplicity
+
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Beta-green.svg)]()
+[![PyPI version](https://badge.fury.io/py/agenthub-sdk.svg)](https://badge.fury.io/py/agenthub-sdk)
+[![PyPI downloads](https://pepy.tech/badge/agenthub-sdk)](https://pepy.tech/project/agenthub-sdk)
+
+[📖 Documentation](https://docs.agenthub.dev) • [🚀 Quick Start](#-quick-start) • [🤝 Contributing](#-contributing) • [📧 Contact](#-contact)
+
+</div>
+
+## 🚀 What is AgentHub?
+
+Transform weeks of AI agent integration into **one line of code**. AgentHub makes powerful AI agents as easy to use as installing a Python package.
+
+### Before AgentHub
+```python
+# Traditional approach: 2-4 weeks setup
+# 1. Find agent on GitHub
+# 2. Clone repository
+# 3. Read documentation
+# 4. Install dependencies (version conflicts!)
+# 5. Configure environment
+# 6. Debug integration issues
+# 7. Write wrapper code
+# 8. Test and validate
+```
+
+### With AgentHub
+```python
+# One line, 30 seconds
+import agenthub as ah
+coding_agent = ah.load_agent("agentplug/coding-agent")
+code = coding_agent.generate_code("neural network class")
+```
+
+## ✨ Key Features
+
+- **🏪 Agent Marketplace**: Discover and install agents from GitHub
+- **🔌 One-Line Integration**: `ah.load_agent("user/agent")`
+- **🛠️ Custom Tools**: Create and inject tools with `@tool` decorator
+- **🔒 Isolated Environments**: No dependency conflicts
+- **⚡ Auto-Installation**: Agents install automatically when needed
+- **🎯 CLI Interface**: Full command-line management
+
+## 🚀 Quick Start
+
+### ⚡ Install AgentHub
+
+```bash
+# Install AgentHub
+pip install agenthub-sdk
+
+# Verify installation
+agenthub --version
+```
+
+### 🎯 Your First Agent (30 seconds)
+
+```python
+import agenthub as ah
+
+# 🪄 One line to load any agent
+paper_analyzer = ah.load_agent("agentplug/scientific-paper-analyzer")
+
+# 📄 Use the agent immediately
+result = paper_analyzer.analyze_paper("research_paper.pdf")
+print(f"📊 Summary: {result['summary'][:200]}...")
+
+# ✅ Magic happens automatically:
+# • GitHub repository cloned
+# • Virtual environment created
+# • Dependencies installed
+# • Agent validated and ready
+```
+
+### 🛠️ Using Custom Tools
+
+Create powerful agents with your own tools:
+
+```python
+from agentplug.core.tools import tool, run_resources
+
+@tool(name="web_search", description="Search the web for information")
+def web_search(query: str, max_results: int = 10) -> list:
+    """Search the web and return results."""
+    # Your search implementation here
+    return [f"Result {i+1} for '{query}'" for i in range(min(max_results, 3))]
+
+@tool(name="data_analyzer", description="Analyze data patterns")
+def data_analyzer(data: list, analysis_type: str = "basic") -> dict:
+    """Analyze data and return insights."""
+    return {
+        "type": analysis_type,
+        "count": len(data),
+        "insights": f"Analyzed {len(data)} items"
+    }
+
+# 🚀 Start the tool server
+if __name__ == "__main__":
+    print("🔧 Starting tool server...")
+    run_resources()  # Starts MCP server for tool execution
+```
+
+```python
+# 🤖 Use tools with agents (run in separate process/terminal)
+import agenthub as ah
+
+# Load agent with custom tools
+agent = ah.load_agent("agentplug/analysis-agent", tools=["web_search", "data_analyzer"])
+
+# Agent's AI decides when and how to use tools
+result = agent.analyze("What are the latest AI trends?")
+# Agent automatically uses web_search and data_analyzer as needed!
+```
+
+### 💻 CLI Commands
+
+```bash
+# List all agents
+agenthub list
+
+# Get agent information
+agenthub info agentplug/scientific-paper-analyzer
+
+# Install new agent
+agenthub agent install agentplug/scientific-paper-analyzer
+
+# Execute agent method (multiple ways)
+agenthub exec agentplug/scientific-paper-analyzer analyze_paper "research.pdf"
+agenthub exec agentplug/scientific-paper-analyzer analyze_paper '{"file": "research.pdf"}'
+agenthub exec agentplug/scientific-paper-analyzer analyze_paper --interactive
+
+# Agent management commands
+agenthub agent list                                    # List installed agents
+agenthub agent status agentplug/scientific-paper-analyzer  # Check agent status
+agenthub agent remove agentplug/scientific-paper-analyzer  # Remove an agent
+agenthub agent backup agentplug/scientific-paper-analyzer  # Create backup
+agenthub agent restore agentplug/scientific-paper-analyzer # Restore from backup
+agenthub agent repair agentplug/scientific-paper-analyzer  # Repair broken agent
+agenthub agent migrate agentplug/scientific-paper-analyzer # Migrate Python version
+agenthub agent optimize agentplug/scientific-paper-analyzer # Optimize environment
+agenthub agent analyze-deps agentplug/scientific-paper-analyzer # Analyze dependencies
+
+# System validation
+agenthub validate
+```
+
+## 🛠️ Creating Your Own Agent
+
+### 1. Create Agent Files
+
+```bash
+mkdir my-coding-agent
+cd my-coding-agent/
+```
+
+Create `agent.py`:
+```python
+class CodingAgent:
+    def __init__(self):
+        self.name = "Coding Agent"
+
+    def generate_code(self, description: str) -> str:
+        """Generate code based on description."""
+        return f"# Generated code for: {description}\nprint('Hello, World!')"
+
+    def review_code(self, code: str) -> str:
+        """Review and improve code."""
+        return f"Code review: {code} looks good!"
+```
+
+Create `agent.yaml`:
+```yaml
+name: coding-agent
+version: 1.0.0
+description: AI agent for code generation and review
+author: your-username
+entry_point: agent.py:CodingAgent
+```
+
+### 2. Test Locally
+
+```bash
+agenthub exec ./my-coding-agent generate_code "hello world"
+```
+
+### 3. Publish to GitHub
+
+```bash
+git init
+git add .
+git commit -m "Initial agent release"
+git remote add origin https://github.com/your-username/my-coding-agent.git
+git push -u origin main
+```
+
+### 4. Share with the World!
+
+```python
+# Anyone can now use your agent:
+import agenthub as ah
+agent = ah.load_agent("your-username/my-coding-agent")
+code = agent.generate_code("React component")
+```
+
+## 📚 Examples
+
+### Code Generation Agent
+```python
+import agenthub as ah
+
+# Load coding agent
+coding_agent = ah.load_agent("agentplug/coding-agent")
+
+# Generate code
+code = coding_agent.generate_code("React component for data table")
+print(code)
+
+# Review existing code
+review = coding_agent.review_code("def hello(): print('world')")
+print(review)
+```
+
+### Data Analysis Agent
+```python
+import agenthub as ah
+
+# Load analysis agent with tools
+data_agent = ah.load_agent("agentplug/analysis-agent", tools=["data_analyzer", "web_search"])
+
+# Analyze data
+insights = data_agent.analyze("sales_data.csv")
+print(insights)
+```
+
+### Scientific Paper Analyzer
+```python
+import agenthub as ah
+
+# Load paper analyzer
+paper_agent = ah.load_agent("agentplug/scientific-paper-analyzer")
+
+# Analyze research paper
+result = paper_agent.analyze_paper("research.pdf")
+print(f"Summary: {result['summary']}")
+print(f"Key findings: {result['key_findings']}")
+```
+
+## 🎯 Available Agents
+
+| Agent | Description | Usage |
+|-------|-------------|-------|
+| `agentplug/coding-agent` | Generate and review code | `ah.load_agent("agentplug/coding-agent")` |
+| `agentplug/analysis-agent` | Data analysis and insights | `ah.load_agent("agentplug/analysis-agent")` |
+| `agentplug/scientific-paper-analyzer` | Analyze research papers | `ah.load_agent("agentplug/scientific-paper-analyzer")` |
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+### 🚀 Development Setup
+
+```bash
+# 1. Fork and clone
+git clone https://github.com/YOUR_USERNAME/agenthub.git
+cd agenthub
+
+# 2. Setup environment
+python3.12 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -e ".[dev]"
+
+# 3. Run tests
+pytest tests/ -v
+
+# 4. Make changes
+git checkout -b feature/your-feature
+```
+
+### 🎯 Ways to Contribute
+
+- **🐛 Bug Reports**: [Open an Issue](https://github.com/agentplug/agenthub/issues)
+- **📖 Documentation**: Improve guides and examples
+- **🔧 Code**: Fix bugs, add features
+- **🎨 Design**: UI/UX improvements
+- **📊 Testing**: Help improve test coverage
+
+## 📞 Support & Community
+
+### 💬 Get Help
+
+| Platform | Purpose | Link |
+|:---------|:--------|:-----|
+| **💬 Discord** | Live chat and support | [Join Server](https://discord.gg/agenthub) |
+| **🐦 Twitter** | Updates and announcements | [@AgentHub](https://twitter.com/agenthub) |
+| **📧 Email** | Business inquiries | [agenthub@agentplug.net](mailto:agenthub@agentplug.net) |
+
+### 🐛 Report Issues
+
+- **Bug Reports**: [GitHub Issues](https://github.com/agentplug/agenthub/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/agentplug/agenthub/discussions)
+- **Security Issues**: [agenthub@agentplug.net](mailto:agenthub@agentplug.net)
+
+## 📄 License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+# 🚀 **AgentHub** - Making AI agents as easy as `pip install`
+
+**One line. Infinite possibilities.**
+
+</div>

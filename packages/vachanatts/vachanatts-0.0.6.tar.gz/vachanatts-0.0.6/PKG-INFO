@@ -1,0 +1,46 @@
+Metadata-Version: 2.4
+Name: vachanatts
+Version: 0.0.6
+Summary: VachanaTTS Text-to-Speech ภาษาไทย รวดเร็วและใช้งานง่าย.
+Description-Content-Type: text/markdown
+Requires-Dist: pythainlp
+Requires-Dist: ssg
+Requires-Dist: onnxruntime
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: summary
+
+# Vachana TTS
+
+VachanaTTS คือโมเดล **Text-to-Speech (TTS)** สำหรับภาษาไทย  
+สร้างเสียงพูดจากข้อความอย่างรวดเร็ว รองรับการใช้งานทั้ง **CPU** และ **GPU** ผ่าน `onnxruntime`  
+
+- 🔥 สถาปัตยกรรม: [VITS](https://github.com/jaywalnut310/vits)  
+- ⚡ โค้ดหลักและการเทรน: [PiperTTS](https://github.com/OHF-Voice/piper1-gpl)  
+
+
+## 🚀 เริ่มต้นใช้งาน  
+
+### ติดตั้ง
+
+```
+pip install vachanatts
+```
+
+ ### การใช้งาน
+
+```
+from vachanatts import TTS
+
+text = "สวัสดีครับ/ค่ะ นี่คือเสียงพูดภาษาไทย"
+
+# เสียงพูดที่รองรับ th_f_1, th_m_1, th_f_2, th_m_2
+
+TTS(text,
+    voice="th_f_1",
+    output="output.wav",
+    volume=1.0,
+    speed=1.0
+)
+```

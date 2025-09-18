@@ -1,0 +1,22 @@
+[project]
+name = "calculate-tool-lengyue1084"
+version = "0.1.11"
+description = "一个简单的计算工具包，提供基本的数学运算和问候功能"
+authors = [
+  { name = "lengyue1084", email = "95695864@qq.com" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+dependencies = [
+    "mcp",  # 基础包
+]
+
+[project.scripts]
+calculate-tool-lengyue1084 = "calculate_tool_lengyue1084.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/calculate_tool_lengyue1084"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/calculate_tool_lengyue1084"]

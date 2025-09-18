@@ -1,0 +1,27 @@
+title: Storyteller
+
+description_html: |
+  <p>Explore Demographic and Health Survey (DHS) datasets with ease. See the <a href="/about" target="_blank" rel="noopener">About</a> page to learn more.</p>
+
+about_html: |
+  <div style="text-align: center; font-size: 90%;">
+    <p>
+      © Kofiyatech · Powered by <a href="https://datasette.io" target="_blank">Datasette</a>
+    </p>
+  </div>
+
+nav:
+  - label: Home
+    url: /
+  - label: About
+    url: /about
+
+extra_css_urls:
+  - /assets/style.css?v=2
+
+plugins:
+  datasette:
+    pages:
+      about:
+        title: About
+        template: about.html

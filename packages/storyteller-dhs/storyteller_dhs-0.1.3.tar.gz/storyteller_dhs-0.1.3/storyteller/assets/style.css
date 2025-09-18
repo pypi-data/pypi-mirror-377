@@ -1,0 +1,99 @@
+/* Base styles */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f9f9fb;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #2a4d69;
+  margin-top: 1.5em;
+}
+
+/* Homepage title */
+h1 {
+  font-size: 2.2em;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Navigation bar */
+nav, .navbar, .site-nav {
+  background: #2a4d69;
+  color: #fff;
+}
+
+nav a, .navbar a, .site-nav a {
+  color: #fff !important;
+  text-decoration: none;
+  margin-right: 1em;
+}
+
+nav a:hover, .navbar a:hover, .site-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Unordered lists (bullets) */
+ul {
+  list-style-type: disc !important;
+  margin-left: 2em;
+  padding-left: 0;
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 2em;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.6em 1em;
+}
+
+th {
+  background: #f1f4f8;
+  color: #2a4d69;
+}
+
+/* Buttons */
+button, .btn {
+  background: #2a4d69;
+  color: #fff;
+  border: none;
+  padding: 0.5em 1.2em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background: #41729f;
+}
+
+/* Links */
+a {
+  color: #2a4d69;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #41729f;
+  text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  body {
+    font-size: 1em;
+  }
+  table {
+    font-size: 0.95em;
+  }
+  h1 {
+    font-size: 1.5em;
+  }
+}

@@ -1,0 +1,1 @@
+from cwl2nx.cwl2nx import CWLToNetworkxConnector

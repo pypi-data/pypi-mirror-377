@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cwl2nx"
+version = "0.0.1"
+requires-python = ">= 3.12"
+description = "Lightweight python module to load, validate and visualize CWL (Common Workflow Language) files through networkx graphs."
+authors = [
+    {name="Marius Garénaux Gruau", email = "marius.garenaux-gruau@irisa.fr"}
+]
+maintainers = [
+    {name="Marius Garénaux Gruau", email = "marius.garenaux-gruau@irisa.fr"}
+]
+readme = "README.md"
+keywords = [
+    "cwl",
+    "workflow",
+    "graphs",
+    "networkx",
+    "visualization"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "APACHE-2.0"
+license-files = ["LICENSE-2.0.txt"]
+dynamic = ["dependencies"]
+
+[projects.urls]
+Repository = "https://github.com/mariusgarenaux/cwl2nx"
+
+[tool.setuptools.dynamic]
+dependencies = {file=["requirements.txt"]}
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cwl2nx"]

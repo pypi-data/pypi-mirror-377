@@ -1,0 +1,365 @@
+Metadata-Version: 2.4
+Name: mysingle
+Version: 0.3.2
+Summary: Common library for MySingle services
+Author-email: Dan Kim <daniel@mysingle.io>
+Requires-Python: >=3.12
+Requires-Dist: beanie>=1.25.0
+Requires-Dist: fastapi>=0.116.1
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: motor>=3.5.0
+Requires-Dist: prometheus-client>=0.19.0
+Requires-Dist: pydantic-settings>=2.2.1
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: pydantic[email]>=2.7.0
+Requires-Dist: pyjwt>=2.8.0
+Requires-Dist: redis>=6.4.0
+Provides-Extra: build
+Requires-Dist: build>=1.0.0; extra == 'build'
+Requires-Dist: twine>=4.0.0; extra == 'build'
+Provides-Extra: dev
+Requires-Dist: mypy>=1.17.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.24.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=8.4.1; extra == 'dev'
+Requires-Dist: ruff>=0.4.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# MySingle
+
+A comprehensive common library for MySingle services providing authentication, RBAC, storage, security, and middleware components.
+
+[![Build Status](https://github.com/your-org/mysingle/workflows/Build%20and%20Publish/badge.svg)](https://github.com/your-org/mysingle/actions)
+[![PyPI version](https://badge.fury.io/py/mysingle.svg)](https://badge.fury.io/py/mysingle)
+[![Python Version](https://img.shields.io/pypi/pyversions/mysingle.svg)](https://pypi.org/project/mysingle/)
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+pip install mysingle
+```
+
+### Basic Usage
+
+```python
+from mysingle import config, database
+from mysingle.auth import AuthClient
+from mysingle.rbac import RBACClient
+
+# Configuration
+settings = config.Settings()
+
+# Database connection
+db = database.get_database()
+
+# Authentication
+auth_client = AuthClient(settings.auth_service_url)
+
+# RBAC
+rbac_client = RBACClient(settings.rbac_service_url)
+```
+
+## 📦 Features
+
+### Core Components
+
+- **🔐 Authentication**: JWT-based authentication with token management
+- **👥 RBAC**: Role-based access control with permission checking
+- **💾 Storage**: Unified storage interface for different backends
+- **🛡️ Security**: Security utilities including JWT handling
+- **🔧 Middleware**: FastAPI middleware for auth, metrics, and RBAC
+- **🚫 Guardrails**: Comprehensive security and privacy guardrails
+
+### Quality Assurance
+
+- **✅ Type Safety**: Full type hints with mypy checking
+- **🧪 Testing**: Comprehensive test suite with pytest
+- **📏 Code Quality**: Automated linting and formatting with ruff
+- **📊 Coverage**: Code coverage reporting
+- **🔄 CI/CD**: Automated testing and deployment
+
+## 🛠️ Development
+
+### Quick Setup
+
+```bash
+# Complete development setup
+make dev-setup
+
+# Or manually:
+uv sync --dev
+make setup-hooks
+```
+
+### Available Commands
+
+```bash
+# Development
+make dev-install     # Install dev dependencies
+make setup-hooks     # Setup git hooks
+
+# Quality checks
+make test           # Run tests
+make lint           # Run linting
+make format         # Format code
+make type-check     # Run type checking
+make quality-check  # Run all quality checks
+
+# Version management
+make version-current  # Show current version
+make version-patch   # Bump patch version
+make version-minor   # Bump minor version
+make version-major   # Bump major version
+
+# Publishing
+make publish-dry-run # Test build process
+make publish-test    # Publish to Test PyPI
+make publish         # Full publish to PyPI
+```
+
+### Enhanced Build System
+
+This package includes a sophisticated build and deployment system:
+
+```bash
+# Automatic version detection and publishing
+./scripts/build_publish_enhanced.sh
+
+# Manual version type specification
+./scripts/build_publish_enhanced.sh -t patch   # Bug fixes
+./scripts/build_publish_enhanced.sh -t minor   # New features
+./scripts/build_publish_enhanced.sh -t major   # Breaking changes
+
+# Development options
+./scripts/build_publish_enhanced.sh -d         # Dry run
+./scripts/build_publish_enhanced.sh -s         # Skip tests
+./scripts/build_publish_enhanced.sh -f         # Force publish
+```
+
+For detailed information, see [BUILD_GUIDE.md](BUILD_GUIDE.md).
+
+## 📚 Module Documentation
+
+### Authentication (`mysingle.auth`)
+
+```python
+from mysingle.auth import AuthClient, AuthUtils
+
+# Initialize auth client
+auth_client = AuthClient("https://auth.example.com")
+
+# Verify token
+user_info = await auth_client.verify_token(token)
+
+# Auth utilities
+is_valid = AuthUtils.validate_token_format(token)
+```
+
+### RBAC (`mysingle.rbac`)
+
+```python
+from mysingle.rbac import RBACClient, require_permission
+
+# Initialize RBAC client
+rbac_client = RBACClient("https://rbac.example.com")
+
+# Check permissions
+has_permission = await rbac_client.check_permission(
+    user_id="user123",
+    resource="documents",
+    action="read"
+)
+
+# Use as decorator
+@require_permission("documents", "write")
+async def create_document():
+    pass
+```
+
+### Storage (`mysingle.storage`)
+
+```python
+from mysingle.storage import StorageClient
+
+# Initialize storage client
+storage_client = StorageClient(config)
+
+# Upload file
+await storage_client.upload("bucket", "key", data)
+
+# Download file
+data = await storage_client.download("bucket", "key")
+```
+
+### Middleware (`mysingle.middleware`)
+
+```python
+from fastapi import FastAPI
+from mysingle.middleware import AuthMiddleware, MetricsMiddleware
+
+app = FastAPI()
+
+# Add authentication middleware
+app.add_middleware(AuthMiddleware, auth_service_url="https://auth.example.com")
+
+# Add metrics middleware
+app.add_middleware(MetricsMiddleware)
+```
+
+### Guardrails (`mysingle.guardrails`)
+
+```python
+from mysingle.guardrails import PrivacyGuardrail, AuditLogger
+
+# Privacy protection
+privacy_guard = PrivacyGuardrail()
+safe_data = privacy_guard.mask_pii(sensitive_data)
+
+# Audit logging
+audit_logger = AuditLogger()
+audit_logger.log_access("user123", "document456", "read")
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+# Database
+MONGODB_URL=mongodb://localhost:27017
+DATABASE_NAME=mysingle
+
+# Redis (for caching)
+REDIS_URL=redis://localhost:6379
+
+# Authentication
+AUTH_SERVICE_URL=https://auth.example.com
+JWT_SECRET_KEY=your-secret-key
+
+# RBAC
+RBAC_SERVICE_URL=https://rbac.example.com
+
+# Storage
+STORAGE_BACKEND=s3  # or 'local', 'gcs'
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+AWS_REGION=us-west-2
+```
+
+### Configuration Class
+
+```python
+from mysingle.config import Settings
+
+settings = Settings()
+print(settings.mongodb_url)
+print(settings.redis_url)
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+make test
+
+# Run with coverage
+uv run pytest --cov=src/mysingle --cov-report=html
+
+# Run specific test file
+uv run pytest tests/test_auth.py
+
+# Run with verbose output
+uv run pytest -v
+```
+
+## 🚀 Deployment
+
+### GitHub Actions CI/CD
+
+This package includes automated CI/CD with GitHub Actions:
+
+- **Quality Checks**: Automated testing, linting, and type checking on PRs
+- **Test PyPI**: Automatic deployment to Test PyPI from `develop` branch
+- **Production PyPI**: Automatic deployment to PyPI when tags are pushed
+- **GitHub Releases**: Automatic release creation with changelog
+
+### Manual Deployment
+
+```bash
+# Test deployment
+./scripts/build_publish_enhanced.sh -t patch
+
+# Production deployment (creates git tag)
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+## 📊 Project Structure
+
+```
+mysingle/
+├── src/mysingle/           # Main package
+│   ├── auth/              # Authentication components
+│   ├── rbac/              # Role-based access control
+│   ├── storage/           # Storage abstraction
+│   ├── security/          # Security utilities
+│   ├── middleware/        # FastAPI middleware
+│   ├── guardrails/        # Security guardrails
+│   └── base/              # Base classes
+├── scripts/               # Build and development scripts
+│   ├── build_publish_enhanced.sh
+│   ├── version_manager.py
+│   └── pre-commit.sh
+├── .github/workflows/     # GitHub Actions
+├── tests/                 # Test suite
+├── BUILD_GUIDE.md         # Detailed build guide
+└── Makefile              # Development commands
+```
+
+## 🤝 Contributing
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes and add tests**
+4. **Run quality checks**: `make quality-check`
+5. **Commit your changes**: `git commit -m 'feat: add amazing feature'`
+6. **Push to the branch**: `git push origin feature/amazing-feature`
+7. **Open a Pull Request**
+
+### Commit Message Convention
+
+We use conventional commits:
+
+- `feat:` New features
+- `fix:` Bug fixes
+- `docs:` Documentation changes
+- `style:` Code style changes
+- `refactor:` Code refactoring
+- `test:` Test-related changes
+- `chore:` Maintenance tasks
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- **Documentation**: [BUILD_GUIDE.md](BUILD_GUIDE.md)
+- **Issues**: [GitHub Issues](https://github.com/your-org/mysingle/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/mysingle/discussions)
+
+## 🗺️ Roadmap
+
+- [ ] Enhanced security features
+- [ ] Additional storage backends
+- [ ] Performance optimizations
+- [ ] Extended middleware collection
+- [ ] Comprehensive documentation site
+- [ ] Plugin system for extensions
+
+---
+
+Made with ❤️ by the MySingle team

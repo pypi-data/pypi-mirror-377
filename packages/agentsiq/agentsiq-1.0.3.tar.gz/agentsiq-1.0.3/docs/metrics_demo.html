@@ -1,0 +1,14 @@
+
+<!doctype html><html><head><meta charset="utf-8"><title>AgentsIQ Metrics Demo</title>
+<style>
+body{background:#0b0f17;color:#e5e7eb;font-family:system-ui,Segoe UI,Arial,sans-serif;padding:1rem}
+table{width:100%;border-collapse:collapse;border:1px solid #1f2937;border-radius:12px;overflow:hidden}
+th,td{padding:10px;border-bottom:1px solid #1f2937} th{background:#0f172a;text-align:left}
+</style></head><body>
+<h1>AgentsIQ Metrics Demo</h1>
+<table>
+<thead><tr><th>Agent</th><th>Calls</th><th>Avg Latency</th><th>Avg Conf.</th><th>Model Mix</th><th>Sparkline</th><th>Percentiles</th></tr></thead>
+<tbody>
+<tr><td>Researcher</td><td>7</td><td>7.434s</td><td>0.78</td><td>openai:gpt-4o-mini×3, google:gemini-pro×4</td><td><svg width='240' height='60' viewBox='0 0 240 60'><polyline fill='none' stroke='#60a5fa' stroke-width='3' points='0.0,20.0 40.0,0.0 80.0,30.8 120.0,55.0 160.0,54.1 200.0,56.6 240.0,55.2'/></svg></td><td>p50 2.056s<br>p90 16.854s<br>p99 20.634s</td></tr><tr><td>Analyst</td><td>7</td><td>0.228s</td><td>0.78</td><td>tool:summarize×2, anthropic:claude-3-haiku×1, google:gemini-pro×4</td><td><svg width='240' height='60' viewBox='0 0 240 60'><polyline fill='none' stroke='#60a5fa' stroke-width='3' points='0.0,60.0 40.0,60.0 80.0,0.0 120.0,56.5 160.0,56.4 200.0,56.8 240.0,56.3'/></svg></td><td>p50 0.076s<br>p90 0.566s<br>p99 1.223s</td></tr>
+</tbody></table>
+</body></html>

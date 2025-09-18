@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: speexaec
+Version: 0.1.2
+Summary: Python bindings for SpeexDSP audio processing library
+Home-page: https://github.com/leitat-raise/package-speexaec
+Author: J.David Luque
+Author-email: jdluque@leitat.org
+License: BSD-3-Clause
+Project-URL: Source, https://github.com/leitat-raise/package-speexaec
+Project-URL: Tracker, https://github.com/leitat-raise/package-speexaec/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Cython
+Classifier: Topic :: Multimedia :: Sound/Audio :: Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=2
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# SpeexAEC - Python Bindings for SpeexDSP
+
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
+[![CI/CD](https://github.com/leitat-raise/package-speexaec/actions/workflows/publish.yml/badge.svg)](https://github.com/leitat-raise/package-speexaec/actions/workflows/ci-cd.yml)
+
+High-performance Python bindings for the [SpeexDSP](https://gitlab.xiph.org/xiph/speexdsp) audio processing library. Designed for real-time audio applications including VoIP, video conferencing, and embedded audio processing.
+
+## Features
+
+- **🔊 Echo Cancellation**: Advanced acoustic echo cancellation using adaptive filters
+- **🔇 Noise Suppression**: Real-time spectral noise reduction
+- **🎙️ Voice Activity Detection**: Automatic speech vs silence detection  
+- **📊 Automatic Gain Control**: Dynamic volume adjustment
+- **🔄 Audio Resampling**: High-quality sample rate conversion
+- **🚀 Real-time Performance**: Optimized for low-latency applications
+- **🔗 NumPy Integration**: Seamless numpy array processing

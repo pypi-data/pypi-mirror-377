@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools>=78.1.1", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nyaml"
+dynamic = ["version"]
+authors = [
+    { name = "The NOMAD Authors" },
+]
+description = "A tool to convert NeXus definitions from NXDL/XML format to YAML and vice versa."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "click",
+    "lxml",
+    "pyyaml"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/FAIRmat-NFDI/nyaml"
+"Bug Tracker" = "https://github.com/FAIRmat-NFDI/nyaml/issues"
+
+[project.optional-dependencies]
+dev = [
+    "mypy",
+    "ruff>=0.12.0",
+    "pytest",
+    "types-lxml",
+    "pip-tools",
+    "pre-commit",
+    "types-pyyaml",
+    "lxml-stubs",
+]
+
+docs = [
+    "mkdocs",
+    "mkdocs-mermaid2-plugin",
+    "mkdocstrings",
+    "mkdocs-click",
+    "mkdocs-material",
+]
+
+[project.scripts]
+nyaml2nxdl = "nyaml.cli:launch_tool"
+n2n = "nyaml.cli:launch_tool"
+
+[tool.setuptools_scm]
+
+[tool.ruff]
+include = ["src/nyaml/*.py", "src/tests/*.py"]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "PL", # pylint
+    "UP", # pyupgrade
+    "I001", # sort imports
+]
+ignore = [
+    "E402", # Module level import not at top of file
+    "E501", # Line too long ({width} > {limit} characters)
+    "E701", # Multiple statements on one line (colon)
+    "E731", # Do not assign a lambda expression, use a def
+    "PLC0415", # `import` should be at the top-level of a file
+    "PLR0904", # too-many-public-methods
+    "PLR0911", # Too many return statements
+    "PLR0912", # Too many branches
+    "PLR0913", # Too many arguments in function definition
+    "PLR0915", # Too many statements
+    "PLR0917", # too-many-positional-arguments
+    "PLR1714", # consider-using-in
+    "PLR2004", # Magic value used instead of constant
+    "PLR5501", # else-if-used
+    "PLW0603", # Using the global statement
+    "PLW2901", # redefined-loop-name,
+]
+fixable = ["ALL"]
+isort.split-on-trailing-comma = false
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+strict = false
+ignore_missing_imports = true
+follow_imports = "silent"
+no_strict_optional = true
+disable_error_code = "import, annotation-unchecked"

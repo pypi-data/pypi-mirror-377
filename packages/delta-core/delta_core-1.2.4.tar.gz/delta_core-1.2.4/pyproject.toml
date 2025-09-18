@@ -1,0 +1,45 @@
+[project]
+name = "delta-core"
+description = "Delta core"
+readme = "README.md"
+classifiers = ["License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)"]
+dynamic = ["version", "dependencies"]
+requires-python = "~=3.11"
+
+[build-system]
+requires = ["setuptools>=68", "setuptools_scm[toml]>=7"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["delta*"]
+namespaces = true
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools_scm]
+write_to = "delta/core/_version.py"
+
+[tool.mypy]
+python_version = "3.11"
+namespace_packages = true
+explicit_package_bases = true
+packages = ["delta.cloud.run.orchestrator"]
+plugins = ["sqlalchemy.ext.mypy.plugin"]
+follow_imports = "silent"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 79
+target-version = ["py311"]
+include = '\.py$'
+preview = true
+
+[tool.ruff]
+include = ["delta"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "C"]

@@ -1,0 +1,47 @@
+{
+  "name": "privacy-prompt-library-js",
+  "version": "1.0.0",
+  "description": "A privacy-preserving prompt transformation library that redacts disability mentions while maintaining functional context - JavaScript/Node.js version (Python version available as 'privacy-prompt-library' on PyPI)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node tests/test-runner.js",
+    "dev": "node --watch src/index.js",
+    "validate": "node tests/validation.js"
+  },
+  "keywords": [
+    "privacy",
+    "accessibility",
+    "disability",
+    "prompt",
+    "transformation",
+    "ai",
+    "redaction",
+    "javascript",
+    "nodejs"
+  ],
+  "author": "Accessibility Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/git-markkuria/kanuni-layer-sdk.git"
+  },
+  "homepage": "https://github.com/git-markkuria/kanuni-layer-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/git-markkuria/kanuni-layer-sdk/issues"
+  },
+  "python": {
+    "note": "Python version available as 'privacy-prompt-library' on PyPI",
+    "install": "pip install privacy-prompt-library"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

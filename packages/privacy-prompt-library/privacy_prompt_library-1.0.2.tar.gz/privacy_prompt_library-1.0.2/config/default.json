@@ -1,0 +1,39 @@
+{
+  "privacyLevel": "high",
+  "addContext": true,
+  "preserveIntent": true,
+  "maxContextItems": 3,
+  "maxProcessingTime": 5000,
+  "confidenceThreshold": 0.85,
+  
+  "categories": {
+    "enabled": true,
+    "strictMode": true,
+    "allowPartialMatches": false
+  },
+  
+  "redaction": {
+    "aggressive": true,
+    "contextualReplacement": true,
+    "preserveCapitalization": true
+  },
+  
+  "context": {
+    "autoEnrichment": true,
+    "prioritizeHighConfidence": true,
+    "maxItemsPerCategory": 2
+  },
+  
+  "validation": {
+    "privacyCheck": true,
+    "coherenceCheck": true,
+    "intentCheck": true,
+    "minimumCoherenceScore": 0.7
+  },
+  
+  "logging": {
+    "level": "info",
+    "logTransformations": false,
+    "logPrivacyViolations": true
+  }
+}

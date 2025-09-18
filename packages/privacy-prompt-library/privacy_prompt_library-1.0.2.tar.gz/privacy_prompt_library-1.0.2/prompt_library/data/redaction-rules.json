@@ -1,0 +1,228 @@
+{
+  "Physical Disabilities": {
+    "Mobility Impairments": [
+      {
+        "id": "mobility_001",
+        "pattern": "\\b(I am|I'm)\\s+(a\\s+)?wheelchair user\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "contextual": true,
+        "priority": "high"
+      },
+      {
+        "id": "mobility_002", 
+        "pattern": "\\b(I am|I'm)\\s+(paralyz(ed|is)|paralys(ed|is))\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "contextual": true,
+        "priority": "high"
+      },
+      {
+        "id": "mobility_003",
+        "pattern": "\\b(I am|I'm)\\s+(paraplegic|quadriplegic)\\b", 
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "contextual": true,
+        "priority": "high"
+      },
+      {
+        "id": "mobility_004",
+        "pattern": "\\bmy wheelchair\\b",
+        "replacement": "my disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      },
+      {
+        "id": "mobility_005",
+        "pattern": "\\bbecause of my paralysis\\b",
+        "replacement": "due to my disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      },
+      {
+        "id": "mobility_006",
+        "pattern": "\\bas a wheelchair user\\b",
+        "replacement": "as someone with disability{redacted}", 
+        "flags": "gi",
+        "priority": "medium"
+      }
+    ],
+    "Chronic Physical": [
+      {
+        "id": "chronic_001",
+        "pattern": "\\b(I have|I've got)\\s+(arthritis|muscular dystrophy|multiple sclerosis)\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "chronic_002", 
+        "pattern": "\\bmy (arthritis|fibromyalgia|lupus|ms)\\b",
+        "replacement": "my disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "chronic_003",
+        "pattern": "\\bbecause of my (chronic pain|arthritis|fibromyalgia)\\b",
+        "replacement": "due to my disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      }
+    ]
+  },
+  "Visual Impairments": {
+    "Blindness": [
+      {
+        "id": "blind_001",
+        "pattern": "\\b(I am|I'm)\\s+blind\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "blind_002",
+        "pattern": "\\b(I am|I'm)\\s+visually impaired\\b", 
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "blind_003",
+        "pattern": "\\bbecause (I am|I'm) blind\\b",
+        "replacement": "because $1 disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      },
+      {
+        "id": "blind_004",
+        "pattern": "\\bmy blindness\\b",
+        "replacement": "my disability{redacted}", 
+        "flags": "gi",
+        "priority": "medium"
+      },
+      {
+        "id": "blind_005",
+        "pattern": "\\bas a blind person\\b",
+        "replacement": "as someone with disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      }
+    ],
+    "Low Vision": [
+      {
+        "id": "lowvision_001",
+        "pattern": "\\b(I have|I've got)\\s+(low vision|macular degeneration|glaucoma)\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "lowvision_002",
+        "pattern": "\\bmy (low vision|poor vision|blurry vision)\\b", 
+        "replacement": "my disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      }
+    ]
+  },
+  "Hearing Impairments": {
+    "Deafness": [
+      {
+        "id": "deaf_001",
+        "pattern": "\\b(I am|I'm)\\s+deaf\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "deaf_002",
+        "pattern": "\\b(I can't hear|I cannot hear)\\b",
+        "replacement": "I have disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      }
+    ],
+    "Hard of Hearing": [
+      {
+        "id": "hoh_001",
+        "pattern": "\\b(I am|I'm)\\s+hard of hearing\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      }
+    ]
+  },
+  "Learning Disabilities": {
+    "Dyslexia": [
+      {
+        "id": "dyslexia_001",
+        "pattern": "\\b(I am|I'm)\\s+dyslexic\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "dyslexia_002",
+        "pattern": "\\b(I have|I've got)\\s+dyslexia\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      }
+    ],
+    "Dyscalculia": [
+      {
+        "id": "dyscalculia_001",
+        "pattern": "\\b(I have|I've got)\\s+dyscalculia\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      }
+    ]
+  },
+  "Autism Spectrum": {
+    "Classic Autism": [
+      {
+        "id": "autism_001",
+        "pattern": "\\b(I am|I'm)\\s+autistic\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "autism_002",
+        "pattern": "\\b(I have|I've got)\\s+autism\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      }
+    ]
+  },
+  "Mental Health": {
+    "Mood Disorders": [
+      {
+        "id": "depression_001",
+        "pattern": "\\b(I have|I've got)\\s+depression\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      },
+      {
+        "id": "bipolar_001",
+        "pattern": "\\b(I have|I've got)\\s+bipolar\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "high"
+      }
+    ],
+    "Anxiety Disorders": [
+      {
+        "id": "anxiety_001",
+        "pattern": "\\b(I have|I've got)\\s+anxiety\\b",
+        "replacement": "$1 disability{redacted}",
+        "flags": "gi",
+        "priority": "medium"
+      }
+    ]
+  }
+}

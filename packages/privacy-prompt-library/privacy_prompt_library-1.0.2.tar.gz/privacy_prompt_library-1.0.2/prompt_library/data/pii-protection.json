@@ -1,0 +1,153 @@
+{
+  "personalInformation": {
+    "phoneNumbers": {
+      "patterns": [
+        "\\\\b\\\\d{3}[-.]?\\\\d{3}[-.]?\\\\d{4}\\\\b",
+        "\\\\(\\\\d{3}\\\\)\\\\s*\\\\d{3}[-.]?\\\\d{4}",
+        "\\\\+1[-. ]?\\\\d{3}[-. ]?\\\\d{3}[-. ]?\\\\d{4}"
+      ],
+      "replacement": "phone_number{redacted}",
+      "severity": "high",
+      "description": "Phone numbers in various formats"
+    },
+    
+    "emailAddresses": {
+      "patterns": [
+        "\\\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Z|a-z]{2,}\\\\b"
+      ],
+      "replacement": "email{redacted}",
+      "severity": "high", 
+      "description": "Email addresses"
+    },
+    
+    "socialSecurityNumbers": {
+      "patterns": [
+        "\\\\b\\\\d{3}[-]?\\\\d{2}[-]?\\\\d{4}\\\\b"
+      ],
+      "replacement": "ssn{redacted}",
+      "severity": "critical",
+      "description": "Social Security Numbers"
+    },
+    
+    "creditCardNumbers": {
+      "patterns": [
+        "\\\\b\\\\d{4}[-\\\\s]?\\\\d{4}[-\\\\s]?\\\\d{4}[-\\\\s]?\\\\d{4}\\\\b"
+      ],
+      "replacement": "credit_card{redacted}",
+      "severity": "critical",
+      "description": "Credit card numbers"
+    },
+    
+    "streetAddresses": {
+      "patterns": [
+        "\\\\b\\\\d+\\\\s+[A-Za-z\\\\s]+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct|Place|Pl)\\\\b"
+      ],
+      "replacement": "address{redacted}",
+      "severity": "high",
+      "description": "Street addresses"
+    },
+    
+    "datesOfBirth": {
+      "patterns": [
+        "\\\\b\\\\d{1,2}\\\\/\\\\d{1,2}\\\\/\\\\d{4}\\\\b",
+        "\\\\b\\\\d{4}-\\\\d{2}-\\\\d{2}\\\\b",
+        "\\\\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\\\\s+\\\\d{1,2},?\\\\s+\\\\d{4}\\\\b"
+      ],
+      "replacement": "date_of_birth{redacted}",
+      "severity": "high",
+      "description": "Dates of birth in various formats"
+    },
+    
+    "driverLicenseNumbers": {
+      "patterns": [
+        "\\\\b[A-Z]\\\\d{7,8}\\\\b",
+        "\\\\b\\\\d{8,9}\\\\b"
+      ],
+      "replacement": "driver_license{redacted}",
+      "severity": "high",
+      "description": "Driver license numbers"
+    },
+    
+    "bankAccountNumbers": {
+      "patterns": [
+        "\\\\b\\\\d{8,17}\\\\b"
+      ],
+      "replacement": "bank_account{redacted}",
+      "severity": "critical",
+      "description": "Bank account numbers"
+    },
+    
+    "ipAddresses": {
+      "patterns": [
+        "\\\\b(?:\\\\d{1,3}\\\\.){3}\\\\d{1,3}\\\\b"
+      ],
+      "replacement": "ip_address{redacted}",
+      "severity": "medium",
+      "description": "IP addresses"
+    },
+    
+    "fullNames": {
+      "patterns": [
+        "\\\\bmy name is [A-Z][a-z]+ [A-Z][a-z]+\\\\b",
+        "\\\\bI am [A-Z][a-z]+ [A-Z][a-z]+\\\\b",
+        "\\\\bI'm [A-Z][a-z]+ [A-Z][a-z]+\\\\b"
+      ],
+      "replacement": "full_name{redacted}",
+      "severity": "medium",
+      "description": "Full names in introductions"
+    }
+  },
+  
+  "medicalInformation": {
+    "medicalRecordNumbers": {
+      "patterns": [
+        "\\\\bMRN[:\\\\s]*\\\\d+\\\\b",
+        "\\\\bmedical record[:\\\\s]*\\\\d+\\\\b"
+      ],
+      "replacement": "medical_record{redacted}",
+      "severity": "critical",
+      "description": "Medical record numbers"
+    },
+    
+    "insuranceNumbers": {
+      "patterns": [
+        "\\\\binsurance[:\\\\s]*[A-Z0-9-]+\\\\b",
+        "\\\\bpolicy[:\\\\s]*[A-Z0-9-]+\\\\b"
+      ],
+      "replacement": "insurance_number{redacted}",
+      "severity": "high",
+      "description": "Insurance policy numbers"
+    },
+    
+    "prescriptionNumbers": {
+      "patterns": [
+        "\\\\bRx[:\\\\s]*\\\\d+\\\\b",
+        "\\\\bprescription[:\\\\s]*\\\\d+\\\\b"
+      ],
+      "replacement": "prescription{redacted}",
+      "severity": "high",
+      "description": "Prescription numbers"
+    }
+  },
+  
+  "financialInformation": {
+    "routingNumbers": {
+      "patterns": [
+        "\\\\brouting[:\\\\s]*\\\\d{9}\\\\b",
+        "\\\\bABA[:\\\\s]*\\\\d{9}\\\\b"
+      ],
+      "replacement": "routing_number{redacted}",
+      "severity": "critical",
+      "description": "Bank routing numbers"
+    },
+    
+    "accountNumbers": {
+      "patterns": [
+        "\\\\baccount[:\\\\s]*\\\\d{8,17}\\\\b"
+      ],
+      "replacement": "account_number{redacted}",
+      "severity": "critical",
+      "description": "Account numbers"
+    }
+  }
+}

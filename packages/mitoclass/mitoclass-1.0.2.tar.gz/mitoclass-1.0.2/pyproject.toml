@@ -1,0 +1,102 @@
+[project]
+name = "mitoclass"
+version = "1.0.2"
+description = "MitoClass is a napari plugin for classifying mitochondrial morphology from microscopy images: it allows preprocessing data, predicting classes (connected, fragmented, intermediate), visualizing overlays and 3D summaries, and managing a prediction history."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Jules Malard"},            
+  {name = "David Rousseau"},
+  {name = "Arnaud Chevrollier"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: napari",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+requires-python = ">=3.10"
+dependencies = [
+     "numpy",
+    "magicgui",
+    "qtpy",
+    "scikit-image",
+    "tifffile",
+    "tensorflow",        # pin version if needed, e.g. 'tensorflow<2.16'
+    "pandas",
+    "scikit-learn",
+    "plotly",
+    "napari[all]",
+ ]
+[project.optional-dependencies]
+all = ["napari[all]"]            # Full installation for napari
+testing = [
+    "tox",
+    "pytest",
+    "pytest-cov",
+    "pytest-qt",
+    "napari[qt]",
+]
+
+[project.entry-points."napari.manifest"]
+mitoclass = "mitoclass:napari.yaml"  # Ensure the right manifest file
+
+[project.urls]
+"Documentation" = "https://github.com/malardjules/MitoClass/blob/master/README.md"
+"Source Code" = "https://github.com/malardjules/MitoClass"
+
+[build-system]
+requires = ["setuptools>=42.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml"]
+
+
+[tool.black]
+line-length = 79
+target-version = ['py310', 'py311', 'py312', 'py313']
+
+[tool.ruff]
+line-length = 79
+lint.select = [
+    "E", "F", "W", #flake8
+    "UP", # pyupgrade
+    "I", # isort
+    "BLE", # flake8-blind-exception
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "C4", # flake8-comprehensions
+    "ISC", # flake8-implicit-str-concat
+    "G", # flake8-logging-format
+    "PIE", # flake8-pie
+    "SIM", # flake8-simplify
+]
+lint.ignore = [
+    "E501", # line too long. let black handle this
+    "UP006", "UP007", # type annotation
+]
+
+exclude = [
+    ".bzr", ".direnv", ".eggs", ".git", ".mypy_cache", ".pants.d", ".ruff_cache",
+    ".svn", ".tox", ".venv", "__pypackages__", "_build", "buck-out", "build", "dist",
+    "node_modules", "venv", "*vendored*", "*_vendor*",
+]
+
+target-version = "py310"
+fix = true

@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[project]
+name = "limoon"
+dynamic = ["version", "readme"]
+description = "Web scraper base Pythonic API for Ekşi Sözlük"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "beucismis", email = "beucismis@tutamail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["requests-html==0.10.0", "lxml-html-clean==0.4.2", "fake-useragent==2.2.0"]
+
+[project.urls]
+Source = "https://github.com/beucismis/limoon"
+Issues = "https://github.com/beucismis/limoon/issues"
+Documentation = "https://github.com/beucismis/limoon/DOCUMENTATION.md"
+
+[tool.hatch.version]
+path = "src/limoon/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = ["pytest", "pydoc-markdown"]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest tests/* -v"
+doc = "pydoc-markdown -I src --render-toc > DOCUMENTATION.md"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"

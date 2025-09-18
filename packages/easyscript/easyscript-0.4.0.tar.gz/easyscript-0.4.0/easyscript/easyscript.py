@@ -1,0 +1,552 @@
+"""
+EasyScript - A simple scripting language that blends Python and JavaScript syntax
+
+EasyScript is designed to be an easy-to-use scripting language for:
+- Simple expression evaluation
+- Business rule processing
+- LDAP/user object manipulation
+- Conditional logic
+
+Features:
+- JavaScript-style string concatenation (string + number)
+- Python-style boolean operators (and, or) with JS alternatives (&&, ||)
+- Object property access with dot notation (user.cn, user.mail)
+- Built-in variables: day, month, year
+- Built-in functions: len(), log()
+- Regex matching with ~ operator (string ~ pattern)
+- Optional return keyword in conditionals
+- Support for both True/False and true/false
+"""
+
+import re
+import datetime
+from enum import Enum
+from typing import Any, Dict, List, Union, Optional
+from dataclasses import dataclass
+
+
+
+class TokenType(Enum):
+    NUMBER = "NUMBER"
+    STRING = "STRING"
+    IDENTIFIER = "IDENTIFIER"
+    OPERATOR = "OPERATOR"
+    KEYWORD = "KEYWORD"
+    LPAREN = "LPAREN"
+    RPAREN = "RPAREN"
+    LBRACKET = "LBRACKET"
+    RBRACKET = "RBRACKET"
+    COLON = "COLON"
+    COMMA = "COMMA"
+    DOT = "DOT"
+    EOF = "EOF"
+
+
+@dataclass
+class Token:
+    type: TokenType
+    value: Any
+    position: int
+
+
+class EasyScriptEvaluator:
+    """Main EasyScript evaluation engine"""
+
+    def __init__(self):
+        self.tokens: List[Token] = []
+        self.current_token_index = 0
+        self.variables = self._initialize_builtin_variables()
+
+    def _initialize_builtin_variables(self) -> Dict[str, Any]:
+        now = datetime.datetime.now()
+
+        return {
+            'day': now.day,
+            'month': now.month,
+            'year': now.year
+        }
+
+    def tokenize(self, code: str) -> List[Token]:
+        tokens = []
+        i = 0
+
+        while i < len(code):
+            if code[i].isspace():
+                i += 1
+                continue
+
+            # Numbers
+            if code[i].isdigit():
+                start = i
+                while i < len(code) and (code[i].isdigit() or code[i] == '.'):
+                    i += 1
+                value = code[start:i]
+                tokens.append(Token(TokenType.NUMBER, float(value) if '.' in value else int(value), start))
+                continue
+
+            # Strings
+            if code[i] == '"':
+                start = i
+                i += 1
+                string_value = ""
+                while i < len(code) and code[i] != '"':
+                    string_value += code[i]
+                    i += 1
+                if i < len(code):
+                    i += 1  # Skip closing quote
+                tokens.append(Token(TokenType.STRING, string_value, start))
+                continue
+
+            # Identifiers and keywords
+            if code[i].isalpha() or code[i] == '_':
+                start = i
+                while i < len(code) and (code[i].isalnum() or code[i] == '_'):
+                    i += 1
+                value = code[start:i]
+
+                if value in ['if', 'return', 'and', 'or', 'not', 'True', 'False', 'true', 'false']:
+                    tokens.append(Token(TokenType.KEYWORD, value, start))
+                else:
+                    tokens.append(Token(TokenType.IDENTIFIER, value, start))
+                continue
+
+            # Two-character operators
+            if i < len(code) - 1:
+                two_char = code[i:i+2]
+                if two_char in ['>=', '<=', '==', '!=', '&&', '||']:
+                    # Convert JS-style operators to Python-style
+                    if two_char == '&&':
+                        tokens.append(Token(TokenType.OPERATOR, 'and', i))
+                    elif two_char == '||':
+                        tokens.append(Token(TokenType.OPERATOR, 'or', i))
+                    else:
+                        tokens.append(Token(TokenType.OPERATOR, two_char, i))
+                    i += 2
+                    continue
+
+            # Single-character tokens
+            if code[i] == '(':
+                tokens.append(Token(TokenType.LPAREN, '(', i))
+            elif code[i] == ')':
+                tokens.append(Token(TokenType.RPAREN, ')', i))
+            elif code[i] == '[':
+                tokens.append(Token(TokenType.LBRACKET, '[', i))
+            elif code[i] == ']':
+                tokens.append(Token(TokenType.RBRACKET, ']', i))
+            elif code[i] == ':':
+                tokens.append(Token(TokenType.COLON, ':', i))
+            elif code[i] == ',':
+                tokens.append(Token(TokenType.COMMA, ',', i))
+            elif code[i] == '.':
+                tokens.append(Token(TokenType.DOT, '.', i))
+            elif code[i] in '+-*/><!~=':
+                tokens.append(Token(TokenType.OPERATOR, code[i], i))
+
+            i += 1
+
+        tokens.append(Token(TokenType.EOF, None, len(code)))
+        return tokens
+
+    def current_token(self) -> Token:
+        if self.current_token_index < len(self.tokens):
+            return self.tokens[self.current_token_index]
+        return self.tokens[-1]  # EOF token
+
+    def consume_token(self):
+        if self.current_token_index < len(self.tokens) - 1:
+            self.current_token_index += 1
+
+    def parse_expression(self) -> Any:
+        return self.parse_assignment()
+
+    def parse_assignment(self) -> Any:
+        """Parse assignment expressions like object.property = value"""
+        # Check if this looks like an assignment by looking ahead
+        if self._is_assignment():
+            return self._parse_assignment_expression()
+        else:
+            return self.parse_or_expression()
+
+    def _is_assignment(self) -> bool:
+        """Look ahead to see if this is an assignment expression"""
+        saved_index = self.current_token_index
+        
+        try:
+            # Try to parse identifier.property pattern
+            if self.current_token().type != TokenType.IDENTIFIER:
+                return False
+            
+            self.consume_token()  # consume identifier
+            
+            # Must have at least one dot for property access
+            if self.current_token().type != TokenType.DOT:
+                return False
+            
+            # Skip through property chain
+            while self.current_token().type == TokenType.DOT:
+                self.consume_token()  # consume '.'
+                if self.current_token().type != TokenType.IDENTIFIER:
+                    return False
+                self.consume_token()  # consume property name
+            
+            # Check if next token is '='
+            is_assignment = (self.current_token().type == TokenType.OPERATOR and 
+                           self.current_token().value == '=')
+            
+            return is_assignment
+            
+        finally:
+            # Restore position
+            self.current_token_index = saved_index
+
+    def _parse_assignment_expression(self) -> Any:
+        """Parse a complete assignment expression"""
+        # Parse the left side (object.property)
+        if self.current_token().type != TokenType.IDENTIFIER:
+            raise SyntaxError("Assignment target must start with an identifier")
+        
+        obj_name = self.current_token().value
+        self.consume_token()
+        
+        if obj_name not in self.variables:
+            raise NameError(f"Variable '{obj_name}' is not defined")
+        
+        obj = self.variables[obj_name]
+        property_chain = []
+        
+        # Handle property access chain (e.g., user.cn, user.department)
+        while self.current_token().type == TokenType.DOT:
+            self.consume_token()  # consume '.'
+            if self.current_token().type != TokenType.IDENTIFIER:
+                raise SyntaxError("Expected property name after '.'")
+            
+            property_name = self.current_token().value
+            property_chain.append(property_name)
+            self.consume_token()
+        
+        if not property_chain:
+            raise SyntaxError("Cannot assign to variable directly, only to object properties")
+        
+        # Consume the '=' operator
+        if (self.current_token().type == TokenType.OPERATOR and 
+            self.current_token().value == '='):
+            self.consume_token()
+        else:
+            raise SyntaxError("Expected '=' in assignment")
+        
+        # Parse the right side (the value to assign)
+        value = self.parse_or_expression()
+        
+        # Perform the assignment
+        return self._perform_assignment(obj, property_chain, value)
+
+    def _perform_assignment(self, obj: Any, property_chain: List[str], value: Any) -> Any:
+        """Perform the actual assignment operation"""
+        # Navigate to the parent object (all but the last property)
+        current_obj = obj
+        for prop in property_chain[:-1]:
+            if not hasattr(current_obj, prop):
+                raise AttributeError(f"Object has no attribute '{prop}'")
+            current_obj = getattr(current_obj, prop)
+        
+        # Set the final property
+        final_property = property_chain[-1]
+        setattr(current_obj, final_property, value)
+        
+        return value
+
+    def parse_or_expression(self) -> Any:
+        left = self.parse_and_expression()
+
+        while ((self.current_token().type == TokenType.OPERATOR and self.current_token().value in ['or', '||']) or
+               (self.current_token().type == TokenType.KEYWORD and self.current_token().value == 'or')):
+            self.consume_token()
+            right = self.parse_and_expression()
+            left = left or right
+
+        return left
+
+    def parse_and_expression(self) -> Any:
+        left = self.parse_comparison()
+
+        while ((self.current_token().type == TokenType.OPERATOR and self.current_token().value in ['and', '&&']) or
+               (self.current_token().type == TokenType.KEYWORD and self.current_token().value == 'and')):
+            self.consume_token()
+            right = self.parse_comparison()
+            left = left and right
+
+        return left
+
+    def parse_comparison(self) -> Any:
+        left = self.parse_additive()
+
+        while self.current_token().type == TokenType.OPERATOR and self.current_token().value in ['>', '<', '>=', '<=', '==', '!=', '~']:
+            op = self.current_token().value
+            self.consume_token()
+            right = self.parse_additive()
+
+            if op == '>':
+                left = left > right
+            elif op == '<':
+                left = left < right
+            elif op == '>=':
+                left = left >= right
+            elif op == '<=':
+                left = left <= right
+            elif op == '==':
+                left = left == right
+            elif op == '!=':
+                left = left != right
+            elif op == '~':
+                # Regex matching: left ~ right (string matches pattern)
+                if not isinstance(left, str):
+                    left = str(left)
+                if not isinstance(right, str):
+                    raise TypeError(f"Regex pattern must be a string, got {type(right).__name__}")
+                try:
+                    left = bool(re.search(right, left))
+                except re.error as e:
+                    raise ValueError(f"Invalid regex pattern '{right}': {e}")
+
+        return left
+
+    def parse_additive(self) -> Any:
+        left = self.parse_multiplicative()
+
+        while self.current_token().type == TokenType.OPERATOR and self.current_token().value in ['+', '-']:
+            op = self.current_token().value
+            self.consume_token()
+            right = self.parse_multiplicative()
+
+            if op == '+':
+                # Handle JavaScript-like string concatenation
+                if isinstance(left, str) or isinstance(right, str):
+                    left = str(left) + str(right)
+                else:
+                    left = left + right
+            elif op == '-':
+                left = left - right
+
+        return left
+
+    def parse_multiplicative(self) -> Any:
+        left = self.parse_unary()
+
+        while self.current_token().type == TokenType.OPERATOR and self.current_token().value in ['*', '/']:
+            op = self.current_token().value
+            self.consume_token()
+            right = self.parse_unary()
+
+            if op == '*':
+                left = left * right
+            elif op == '/':
+                left = left / right
+
+        return left
+
+    def parse_unary(self) -> Any:
+        """Handle unary operators like negative numbers"""
+        token = self.current_token()
+        
+        if token.type == TokenType.OPERATOR and token.value == '-':
+            self.consume_token()
+            # Recursively parse the right side and negate it
+            return -self.parse_unary()
+        else:
+            return self.parse_primary()
+
+    def parse_primary(self) -> Any:
+        token = self.current_token()
+        result = None
+
+        if token.type == TokenType.NUMBER:
+            self.consume_token()
+            result = token.value
+
+        elif token.type == TokenType.STRING:
+            self.consume_token()
+            result = token.value
+
+        elif token.type == TokenType.KEYWORD:
+            if token.value in ['True', 'true']:
+                self.consume_token()
+                result = True
+            elif token.value in ['False', 'false']:
+                self.consume_token()
+                result = False
+
+        elif token.type == TokenType.IDENTIFIER:
+            name = token.value
+            self.consume_token()
+
+            # Check for function call
+            if self.current_token().type == TokenType.LPAREN:
+                result = self.parse_function_call(name)
+            else:
+                # Check for property access (dot notation)
+                if name in self.variables:
+                    obj = self.variables[name]
+                else:
+                    raise NameError(f"Variable '{name}' is not defined")
+
+                # Handle property access chain (e.g., user.cn, user.mail)
+                while self.current_token().type == TokenType.DOT:
+                    self.consume_token()  # consume '.'
+                    if self.current_token().type != TokenType.IDENTIFIER:
+                        raise SyntaxError("Expected property name after '.'")
+
+                    property_name = self.current_token().value
+                    self.consume_token()
+
+                    if hasattr(obj, property_name):
+                        obj = getattr(obj, property_name)
+                    else:
+                        raise AttributeError(f"Object has no attribute '{property_name}'")
+
+                result = obj
+
+        elif token.type == TokenType.LPAREN:
+            self.consume_token()
+            result = self.parse_expression()
+            if self.current_token().type == TokenType.RPAREN:
+                self.consume_token()
+            # result is already set
+
+        if result is None:
+            raise SyntaxError(f"Unexpected token: {token.value}")
+
+        # Handle indexing and slicing for any result (numbers, strings, lists, etc.)
+        while self.current_token().type == TokenType.LBRACKET:
+            result = self.parse_indexing_or_slicing(result)
+
+        return result
+
+    def parse_indexing_or_slicing(self, obj: Any) -> Any:
+        """Parse indexing (a[0]) or slicing (a[1:3], a[:5], a[2:]) operations"""
+        self.consume_token()  # consume '['
+        
+        # Check if the object is subscriptable
+        if not hasattr(obj, '__getitem__'):
+            raise TypeError(f"'{type(obj).__name__}' object is not subscriptable")
+        
+        # Check if the first token is a colon (e.g., [:5])
+        if self.current_token().type == TokenType.COLON:
+            # This is a slice with no start index: [:end]
+            self.consume_token()  # consume ':'
+            
+            if self.current_token().type == TokenType.RBRACKET:
+                # This is just [:] - slice everything
+                self.consume_token()  # consume ']'
+                return obj[:]
+            else:
+                # Parse the end index - use parse_or_expression to avoid issues with :-
+                end_expr = self.parse_or_expression()
+                if self.current_token().type == TokenType.RBRACKET:
+                    self.consume_token()  # consume ']'
+                    return obj[:end_expr]
+                else:
+                    raise SyntaxError("Expected ']' after slice end index")
+        
+        # Parse the first expression (could be index or start of slice)
+        first_expr = self.parse_or_expression()
+        
+        # Check if this is a slice (contains colon)
+        if self.current_token().type == TokenType.COLON:
+            self.consume_token()  # consume ':'
+            
+            if self.current_token().type == TokenType.RBRACKET:
+                # This is a slice with no end index: [start:]
+                self.consume_token()  # consume ']'
+                return obj[first_expr:]
+            else:
+                # Parse the end index: [start:end] - use parse_or_expression to avoid issues with :-
+                end_expr = self.parse_or_expression()
+                if self.current_token().type == TokenType.RBRACKET:
+                    self.consume_token()  # consume ']'
+                    return obj[first_expr:end_expr]
+                else:
+                    raise SyntaxError("Expected ']' after slice end index")
+        else:
+            # This is simple indexing: [index]
+            if self.current_token().type == TokenType.RBRACKET:
+                self.consume_token()  # consume ']'
+                return obj[first_expr]
+            else:
+                raise SyntaxError("Expected ']' after index")
+
+    def parse_function_call(self, function_name: str) -> Any:
+        self.consume_token()  # consume '('
+
+        args = []
+        while self.current_token().type != TokenType.RPAREN:
+            args.append(self.parse_expression())
+            if self.current_token().type == TokenType.COMMA:
+                self.consume_token()
+
+        self.consume_token()  # consume ')'
+
+        # Built-in functions
+        if function_name == 'len':
+            if len(args) != 1:
+                raise TypeError(f"len() takes exactly one argument ({len(args)} given)")
+            return len(args[0])
+        elif function_name == 'log':
+            if len(args) != 1:
+                raise TypeError(f"log() takes exactly one argument ({len(args)} given)")
+            value = args[0]
+            print(value)
+            return value
+        else:
+            raise NameError(f"Function '{function_name}' is not defined")
+
+    def parse_statement(self) -> Any:
+        if self.current_token().type == TokenType.KEYWORD and self.current_token().value == 'if':
+            return self.parse_if_statement()
+        elif self.current_token().type == TokenType.KEYWORD and self.current_token().value == 'return':
+            self.consume_token()
+            return self.parse_expression()
+        else:
+            return self.parse_expression()
+
+    def parse_if_statement(self) -> Any:
+        self.consume_token()  # consume 'if'
+
+        condition = self.parse_expression()
+
+        if self.current_token().type == TokenType.COLON:
+            self.consume_token()
+
+        # Handle optional return keyword
+        if self.current_token().type == TokenType.KEYWORD and self.current_token().value == 'return':
+            self.consume_token()
+
+        # If there's more content after the condition (and optional return), parse it as the return value
+        if (self.current_token().type != TokenType.EOF):
+            return_value = self.parse_expression()
+
+            if condition:
+                return return_value
+            else:
+                return None
+
+        # If no return value specified, just return the condition result
+        return condition
+
+    def evaluate(self, code: str, variables: Optional[Dict[str, Any]] = None) -> Any:
+        """
+        Evaluate an EasyScript expression or statement
+
+        Args:
+            code: The EasyScript code to evaluate
+            variables: Optional dictionary of additional variables
+
+        Returns:
+            The result of the evaluation
+        """
+        if variables:
+            self.variables.update(variables)
+
+        self.tokens = self.tokenize(code)
+        self.current_token_index = 0
+
+        return self.parse_statement()

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rolemap>
+  <roles>
+    <role name="Gestore Comunicati" />
+  </roles>
+  <permissions>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Manage Settings"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Manage Channels"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Gestore Comunicati" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Access Channels"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Gestore Comunicati" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Access History"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Gestore Comunicati" />
+      <role name="Contributor" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Add Comunicato Stampa"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Contributor" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Add Invito Stampa"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Contributor" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Add Cartella Stampa"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Contributor" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="rer.ufficiostampa: Send"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Gestore Comunicati" />
+      <role name="Contributor" />
+      <role name="Editor" />
+    </permission>
+
+    <!-- this is needed to access elevate settings controlpanel -->
+    <permission acquire="True"
+                name="Plone Site Setup: Overview"
+    >
+      <role name="Gestore Comunicati" />
+    </permission>
+  </permissions>
+</rolemap>

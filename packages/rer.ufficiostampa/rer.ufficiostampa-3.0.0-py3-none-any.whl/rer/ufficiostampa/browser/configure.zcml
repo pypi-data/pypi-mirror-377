@@ -1,0 +1,101 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="rer.ufficiostampa"
+    >
+
+  <!-- Publish static files -->
+  <plone:static
+      directory="static"
+      name="rer.ufficiostampa"
+      type="plone"
+      />
+
+  <browser:page
+      name="ufficiostampa-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.UfficiostampaSettingsControlPanel"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+
+  <adapter
+      factory=".controlpanel.UfficiostampaSettingsConfigletPanel"
+      provides="rer.ufficiostampa.interfaces.settings.IUfficioStampaControlPanel"
+      name="rer.ufficiostampa"
+      />
+
+  <adapter
+      factory=".controlpanel.UfficiostampaChannelsConfigletPanel"
+      provides="rer.ufficiostampa.interfaces.settings.IUfficioStampaManageChannels"
+      name="ufficiostampa-managechannels"
+      />
+
+  <adapter
+      factory=".controlpanel.UfficiostampaHistoryConfigletPanel"
+      provides="rer.ufficiostampa.interfaces.settings.IUfficioStampaManageHistory"
+      name="ufficiostampa-managehistory"
+      />
+
+  <browser:page
+      name="show-send-links"
+      for="*"
+      class=".show_send_links.View"
+      permission="rer.ufficiostampa.Send"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+
+  <!-- send previrew page -->
+  <browser:page
+      name="send-preview"
+      for="rer.ufficiostampa.interfaces.IComunicatoStampa"
+      class=".send_mail_helpers.SendPreviewView"
+      template="templates/send_preview.pt"
+      permission="rer.ufficiostampa.Send"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+
+  <browser:page
+      name="download"
+      for=".send_mail_helpers.IView"
+      class=".send_mail_helpers.Download"
+      permission="rer.ufficiostampa.Send"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+
+
+  <!-- end send preview -->
+
+  <browser:page
+      name="send_mail_template"
+      for="rer.ufficiostampa.interfaces.IComunicatoStampa"
+      class=".send_mail_helpers.SendMailView"
+      template="templates/send_mail_template.pt"
+      permission="rer.ufficiostampa.Send"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+  <browser:page
+      name="cancel_subscriptions_notify_template"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      template="templates/cancel_subscriptions_notify_template.pt"
+      permission="zope2.View"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+
+
+  <!-- Logo -->
+  <browser:page
+      name="ufficiostampa-logo"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".send_mail_helpers.UfficioStampaLogoView"
+      permission="zope.Public"
+      />
+  <browser:page
+      name="images"
+      for="rer.ufficiostampa.interfaces.IUfficioStampaLogoView"
+      class=".send_mail_helpers.ImagesLogoView"
+      permission="zope.Public"
+      />
+</configure>

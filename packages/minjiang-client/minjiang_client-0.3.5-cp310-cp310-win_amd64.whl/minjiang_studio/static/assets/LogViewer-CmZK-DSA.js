@@ -1,0 +1,1 @@
+import{C as t}from"./CommingSoon-DLBtx1fm.js";import{d as o,b as s,e as a,f as n,i as c,w as r,h as i,t as m,l as _}from"./index-BRYl8bDl.js";const l={class:"mt-52"},d={class:"text-center"},x=o({__name:"LogViewer",setup(p){const{t:e}=s();return(f,u)=>(n(),a("div",l,[c(t,null,{default:r(()=>[i("div",d,m(_(e)("common.developing")),1)]),_:1})]))}});export{x as default};

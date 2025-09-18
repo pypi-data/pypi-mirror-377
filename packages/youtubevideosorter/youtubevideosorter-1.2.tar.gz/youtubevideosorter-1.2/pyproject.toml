@@ -1,0 +1,26 @@
+[project]
+name = "youtubevideosorter"
+version = "1.2"
+authors = [
+  { name="Swee", email="meow@swee.codes" },
+]
+description = "Simple tool to sort videos with directories by channel"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "google-api-python-client",
+  "requests",
+  "rich"
+]
+[project.license]
+text = "Unlicense"
+[project.scripts]
+ytvs = "youtubevideosorter.cli:app"
+[project.urls]
+Repository = "https://git.swee.codes/swee/youtubevideosorter"
+Issues = "https://git.swee.codes/swee/youtubevideosorter/issues"
+Changelog = "https://git.swee.codes/swee/youtubevideosorter/releases"

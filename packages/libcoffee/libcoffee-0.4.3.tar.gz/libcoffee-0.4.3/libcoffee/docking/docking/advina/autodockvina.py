@@ -1,0 +1,2 @@
+class ADVina:
+    pass

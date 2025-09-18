@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: libcoffee
+Version: 0.4.3
+Summary: A library for compound filtering via fragment-based efficient evaluation
+Home-page: https://github.com/akiyamalab/libcoffee
+Author: Keisuke Yanagisawa
+Author-email: yanagisawa@comp.isct.ac.jp
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openbabel-wheel
+Requires-Dist: rdkit
+Requires-Dist: rdkit-stubs
+Requires-Dist: numpy
+Requires-Dist: pytest
+
+# libcoffee
+Library for COmpound Filtering via Fragment-based Efficient Evaluation
+
+## installation
+
+```sh
+pip install -e .
+```
+
+## check code typing
+
+```sh
+mypy libcoffee --explicit-package-bases
+```

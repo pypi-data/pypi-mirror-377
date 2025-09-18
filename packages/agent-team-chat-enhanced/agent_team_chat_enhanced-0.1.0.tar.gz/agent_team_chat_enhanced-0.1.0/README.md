@@ -1,0 +1,108 @@
+Agent Team Chat Enhanced (MCP Server)
+
+Production-ready MCP server scaffolding for multi-agent team chat with signed webhooks, token-bucket rate limiting, presence, floor control, project digests, and a DocStation subsystem backed by SQLite FTS5.
+
+Features
+- Natural team chat (agents + humans); images by path or base64.
+- Signed webhooks (HMAC-SHA256) with async httpx delivery and retries for 5xx
+- Token-bucket per-agent-per-project rate limits with polite retry_after
+- Presence/status and optional floor control
+- Project digests from recent messages
+- DocStation: register text/URL, chunk (≈700–900 tokens by words), FTS5 search, chunk retrieval, version listing
+- Universal MCP-friendly tools: stateless calls, pagination args, JSON error shapes
+
+Requirements
+- Python 3.11+ required (FTS5 support and modern async features)
+
+Install
+1) **Development install** (recommended for testing):
+   ```bash
+   pip install -e .
+   ```
+
+2) **Production install**:
+   ```bash
+   pip install -r requirements.txt
+   pip install .
+   ```
+
+3) **Environment (optional)**:
+   ```bash
+   cp .env.example .env
+   # Edit ATC_DB_PATH, ATC_IMAGE_DIR, etc.
+   ```
+
+## Smoke Test
+Verify installation with these 3 quick steps:
+
+```bash
+# 1. Install editable
+pip install -e .
+
+# 2. Test console script
+agent-team-chat --help  # Should show MCP server startup
+
+# 3. Test core functionality
+python examples/demo_multi_agent.py
+```
+
+MCP Client Config
+Add this snippet to your client configuration:
+```json
+{
+  "mcpServers": {
+    "agent-team-chat": {
+      "command": "agent-team-chat",
+      "args": []
+    }
+  }
+}
+```
+
+CLI
+- `agent-team-chat` - Starts the MCP server with all 16 tools available
+- FTS5 availability is checked on startup (fails fast if missing)
+- Use `ATC_*` environment variables for configuration
+
+Security Notes
+- Filenames are sanitized, images restricted to PNG/JPEG/GIF/WEBP with an 8MB cap
+- Webhooks are HMAC-SHA256 signed: `X-ATC-Timestamp`, `X-ATC-Signature` over `"{timestamp}." + body`
+- SQLite FTS5 (porter stemming) is required and checked on startup
+- Rate limiting is per-agent-per-project (prevents cross-project interference)
+
+DocStation: Agent Etiquette (also seeded as guidance)
+1. Call get_recent_messages() and search_docs() before acting.
+2. Only add new signal; avoid acknowledgements.
+3. Respect {retry_after} and floor control.
+4. Use upload_image(_base64) for visuals; keep messages concise.
+
+Quick Demo
+1) Create a project
+   - Use tool `create_project` with `name="demo"`.
+
+2) Post messages and rate limit
+   - Call `send_message` 6 times rapidly (default cap 5/60s).
+   - Expect `{ success:false, error:{ code:"RATE_LIMITED", retry_after: <seconds> } }` on the 6th call.
+
+3) Register a webhook and verify signature
+   - Call `register_webhook` with `url` and `secret` and events `["message.created"]`.
+   - Post a message; your receiver should get `X-ATC-Event`, `X-ATC-Timestamp`, `X-ATC-Signature`.
+
+4) Docs: register text and search
+   - `register_doc` title+text; then `search_docs` for terms; use `get_doc_chunk`.
+
+5) Image upload
+   - `upload_image` with a file path or `upload_image_base64`.
+
+6) Presence + Floor Control
+   - `set_agent_status`/`get_agent_status`.
+   - `take_floor`/`release_floor` for optional coordination.
+
+Running Tests
+```bash
+pip install -e .  # Install in development mode
+python -m unittest discover -s tests -v
+```
+
+All tests should pass with the new async httpx implementation!
+

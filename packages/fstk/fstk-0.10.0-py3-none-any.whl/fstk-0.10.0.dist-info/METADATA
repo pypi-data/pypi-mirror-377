@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: fstk
+Version: 0.10.0
+Summary: Fast Switch Time Keeper
+Author: Meow
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+Requires-Dist: PySide2>=5.10
+Requires-Dist: requests>=2
+Requires-Dist: importlib_resources; python_version < "3.8.5"
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# FSTK
+
+*Fast Switch Time Keeper* - A Time Keeping desktop widget focused on tracking the time spent on (possibly interleaved) daily tasks.
+Written in Python and PyQT5/PySide2
+
+## Installation, configuration and use
+
+1\. Create a virtual environment
+
+~~~
+virtualenv env -p python3
+source env/bin/activate
+~~~
+
+2\. Install the package
+
+~~~
+pip install fstk
+~~~
+
+3\. First start the app with the following command, this will install a finder shortcut.
+After the first run the software can be launched from finder
+
+~~~
+python -m fstk
+~~~

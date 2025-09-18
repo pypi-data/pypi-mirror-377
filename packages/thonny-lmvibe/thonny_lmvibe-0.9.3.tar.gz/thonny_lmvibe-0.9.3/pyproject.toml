@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thonny-lmvibe"
+version = "0.9.3"
+authors = [
+  { name = "Aka Tecker", email = "akatecker@hromatka.com" },
+]
+description = "Little mans vibe coding assistant integrated into Thonny IDE."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "thonny>=4.0.0",
+    "google-generativeai",
+    "markdown-it-py",
+    "openai",
+    "ollama",
+]
+
+[project.urls]
+Homepage = "https://github.com/akatecker/thonny-lmvibe"
+"Bug Tracker" = "https://github.com/akatecker/thonny-lmvibe/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"thonnycontrib.lmvibe" = ["*.png"]
+
+[tool.setuptools]
+license-files = ["LICENSE"]

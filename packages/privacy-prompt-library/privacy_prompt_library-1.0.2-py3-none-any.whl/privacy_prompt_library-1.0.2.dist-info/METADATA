@@ -1,0 +1,227 @@
+Metadata-Version: 2.4
+Name: privacy-prompt-library
+Version: 1.0.2
+Summary: A privacy-preserving prompt transformation library that redacts disability mentions while maintaining functional context
+Project-URL: Homepage, https://github.com/git-markkuria/kanuni-layer-sdk
+Project-URL: Repository, https://github.com/git-markkuria/kanuni-layer-sdk.git
+Project-URL: Documentation, https://github.com/git-markkuria/kanuni-layer-sdk#readme
+Project-URL: Issues, https://github.com/git-markkuria/kanuni-layer-sdk/issues
+Author-email: Accessibility Team <accessibility@example.com>
+Maintainer-email: Sherry Kisilu <t-skisilu@microsoft.com>
+License: MIT License
+        
+        Copyright (c) 2025 Accessibility Team
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: accessibility,ai,disability,nlp,privacy,prompt,redaction,transformation
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.8
+Requires-Dist: aiofiles>=23.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: flake8>=6.0.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == 'docs'
+Requires-Dist: sphinx>=6.0.0; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'test'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'test'
+Requires-Dist: pytest>=7.0.0; extra == 'test'
+Description-Content-Type: text/markdown
+
+# Privacy-Preserving Prompt Library
+
+A comprehensive Python library that transforms user prompts to protect disability privacy while maintaining functional context for AI interactions.
+
+## 🎯 Purpose
+
+This library helps users interact with AI models without disclosing specific medical conditions by:
+- **Detecting** disability mentions in prompts
+- **Redacting** medical/diagnostic terms
+- **Adding** functional context for better AI responses
+- **Preserving** user privacy and intent
+
+## 🔄 How It Works
+
+```
+Input: "I'm paralyzed and need help finding accessible restaurants"
+↓
+Output: "I use mobility equipment and need help finding accessible restaurants. I need step-free access to buildings and accessible parking close to entrances."
+```
+
+## 🏗️ Architecture
+
+- **14 Disability Categories** with comprehensive subgroups
+- **Pattern Detection Engine** for identifying disability mentions
+- **Redaction Engine** for replacing medical terms
+- **Context Enrichment** for adding functional needs
+- **Privacy Validation** to ensure no medical data leaks
+
+## � Installation
+
+```bash
+pip install privacy-prompt-library
+```
+
+## �🚀 Quick Start
+
+### Python API
+```python
+from prompt_library import transform_prompt
+
+# Transform a single prompt
+result = transform_prompt("I'm blind and need coding help")
+print(result['output'])
+# "I use screen readers and need coding help. Please ensure any visual content includes text descriptions and is compatible with screen readers."
+
+# Get library information
+from prompt_library import get_library_info
+info = get_library_info()
+print(f"Library version: {info['version']}")
+```
+
+### Command Line Interface
+```bash
+# Transform a prompt via CLI
+privacy-prompt "I have ADHD and need focus strategies"
+
+# Get library information
+privacy-prompt --info
+
+# Custom privacy level
+privacy-prompt --privacy-level medium "Your prompt here"
+```
+
+### Async Support
+```python
+from prompt_library import PromptLibrary
+
+library = PromptLibrary()
+await library.initialize()
+result = await library.transform_prompt("I'm autistic and need help with social situations")
+print(result['output'])
+```
+
+## 📋 Categories Supported
+
+1. Physical Disabilities
+2. Visual Impairments  
+3. Hearing Impairments
+4. Speech & Language
+5. Intellectual Disabilities
+6. Learning Disabilities
+7. Autism Spectrum
+8. Developmental Disabilities
+9. Mental Health
+10. Emotional & Behavioral
+11. Invisible Disabilities
+12. Multiple Disabilities
+13. Neurological
+14. Genetic & Rare Disorders
+
+## 🔒 Privacy Guarantee
+
+- ✅ No medical terms in output
+- ✅ No diagnostic language
+- ✅ Functional descriptions only
+- ✅ Complete user anonymity
+
+## 🐍 Python Package Features
+
+This repository now includes a fully-featured Python package with:
+
+- **Modern Packaging**: Uses `pyproject.toml` and is available on PyPI
+- **Async Support**: Full async/await compatibility
+- **CLI Tool**: Command-line interface for easy integration
+- **Type Hints**: Complete typing for better development experience
+- **Testing**: Comprehensive test suite with pytest
+
+### Python Installation & Usage
+
+```bash
+# Install from PyPI
+pip install privacy-prompt-library
+
+# Basic usage
+python -c "from prompt_library import transform_prompt; print(transform_prompt('I have autism and need help'))"
+
+# CLI usage
+privacy-prompt --info
+privacy-prompt "I'm deaf and need communication help"
+```
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/git-markkuria/kanuni-layer-sdk.git
+cd kanuni-layer-sdk
+
+# Install in development mode
+pip install -e .
+
+# Run tests
+pytest tests/
+```
+
+## 📁 Repository Structure
+
+```
+├── prompt_library/          # Python package
+│   ├── core/               # Core processing engines
+│   ├── engines/            # Context and redaction engines
+│   ├── data/               # JSON data files
+│   └── cli.py              # Command-line interface
+├── src/                    # JavaScript/Node.js version
+├── tests/                  # Python tests
+├── pyproject.toml          # Python packaging config
+└── package.json            # Node.js config
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

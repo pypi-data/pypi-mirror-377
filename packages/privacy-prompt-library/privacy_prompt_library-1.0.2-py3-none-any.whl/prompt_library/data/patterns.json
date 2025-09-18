@@ -1,0 +1,109 @@
+{
+  "Physical Disabilities": {
+    "subgroups": {
+      "Mobility Impairments": [
+        { "pattern": "\\b(wheelchair|wheelchairs?)\\b", "type": "assistive_device", "severity": "high" },
+        { "pattern": "\\b(paralyz(ed|is)|paralys(ed|is))\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(paraplegic|quadriplegic)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(spinal cord injury|sci)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(can't walk|cannot walk|unable to walk)\\b", "type": "functional_limitation", "severity": "medium" },
+        { "pattern": "\\b(mobility impaired|mobility impairment)\\b", "type": "functional_description", "severity": "medium" },
+        { "pattern": "\\b(cerebral palsy|cp)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(amputee|amputation)\\b", "type": "medical_condition", "severity": "high" }
+      ],
+      "Chronic Physical": [
+        { "pattern": "\\b(arthritis|arthritic)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(muscular dystrophy|md)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(multiple sclerosis|ms)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(chronic pain|persistent pain)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(fibromyalgia|fibro)\\b", "type": "medical_condition", "severity": "high" }
+      ]
+    }
+  },
+  "Visual Impairments": {
+    "subgroups": {
+      "Blindness": [
+        { "pattern": "\\b(blind|blindness)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(can't see|cannot see|unable to see)\\b", "type": "functional_limitation", "severity": "high" },
+        { "pattern": "\\b(screen reader|jaws|nvda|voiceover)\\b", "type": "assistive_technology", "severity": "high" },
+        { "pattern": "\\b(braille|tactile)\\b", "type": "assistive_technology", "severity": "high" },
+        { "pattern": "\\b(white cane|guide dog|seeing eye dog)\\b", "type": "assistive_device", "severity": "high" }
+      ],
+      "Low Vision": [
+        { "pattern": "\\b(low vision|partial sight)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(magnifier|magnification)\\b", "type": "assistive_technology", "severity": "high" },
+        { "pattern": "\\b(large print|big text)\\b", "type": "accessibility_need", "severity": "medium" },
+        { "pattern": "\\b(macular degeneration|amd)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(glaucoma|cataracts)\\b", "type": "medical_condition", "severity": "high" }
+      ]
+    }
+  },
+  "Hearing Impairments": {
+    "subgroups": {
+      "Deafness": [
+        { "pattern": "\\b(deaf|deafness)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(can't hear|cannot hear|unable to hear)\\b", "type": "functional_limitation", "severity": "high" },
+        { "pattern": "\\b(sign language|asl|bsl)\\b", "type": "communication_method", "severity": "high" },
+        { "pattern": "\\b(cochlear implant|ci)\\b", "type": "assistive_device", "severity": "high" }
+      ],
+      "Hard of Hearing": [
+        { "pattern": "\\b(hard of hearing|hoh)\\b", "type": "functional_description", "severity": "high" },
+        { "pattern": "\\b(hearing aid|hearing aids)\\b", "type": "assistive_device", "severity": "high" },
+        { "pattern": "\\b(hearing loss|hearing impaired)\\b", "type": "medical_condition", "severity": "medium" }
+      ]
+    }
+  },
+  "Learning Disabilities": {
+    "subgroups": {
+      "Dyslexia": [
+        { "pattern": "\\b(dyslexia|dyslexic)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(reading difficulties|reading problems)\\b", "type": "functional_limitation", "severity": "medium" },
+        { "pattern": "\\b(text to speech|tts)\\b", "type": "assistive_technology", "severity": "medium" }
+      ],
+      "Dyscalculia": [
+        { "pattern": "\\b(dyscalculia|dyscalculic)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(math difficulties|number problems)\\b", "type": "functional_limitation", "severity": "medium" }
+      ],
+      "Dysgraphia": [
+        { "pattern": "\\b(dysgraphia|dysgraphic)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(writing difficulties|handwriting problems)\\b", "type": "functional_limitation", "severity": "medium" }
+      ]
+    }
+  },
+  "Autism Spectrum": {
+    "subgroups": {
+      "High Functioning": [
+        { "pattern": "\\b(asperger|aspergers)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(high functioning autism|hfa)\\b", "type": "medical_condition", "severity": "high" }
+      ],
+      "Classic Autism": [
+        { "pattern": "\\b(autism|autistic)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(asd|autism spectrum)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(sensory processing|sensory issues)\\b", "type": "functional_limitation", "severity": "medium" }
+      ]
+    }
+  },
+  "Mental Health": {
+    "subgroups": {
+      "Mood Disorders": [
+        { "pattern": "\\b(depression|depressed)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(bipolar|manic depression)\\b", "type": "medical_condition", "severity": "high" }
+      ],
+      "Anxiety Disorders": [
+        { "pattern": "\\b(anxiety|anxious)\\b", "type": "medical_condition", "severity": "medium" },
+        { "pattern": "\\b(panic disorder|panic attacks)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(ocd|obsessive compulsive)\\b", "type": "medical_condition", "severity": "high" }
+      ]
+    }
+  },
+  "Intellectual Disabilities": {
+    "subgroups": {
+      "Mild to Moderate": [
+        { "pattern": "\\b(intellectual disability|id)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(down syndrome|downs)\\b", "type": "medical_condition", "severity": "high" },
+        { "pattern": "\\b(cognitive impairment)\\b", "type": "functional_description", "severity": "medium" }
+      ]
+    }
+  }
+}
+

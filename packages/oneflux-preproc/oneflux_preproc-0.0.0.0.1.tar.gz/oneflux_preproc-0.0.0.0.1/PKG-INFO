@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: oneflux_preproc
+Version: 0.0.0.0.1
+Summary: Eddy Covariance Software for Python. This package provides tools for processing and analyzing Eddy Covariance data, Written by pedrohenriquecoimbra
+Home-page: https://github.com/pedrohenriquecoimbra/fluxpipe
+Author: Pedro Henrique Coimbra
+Author-email: pedro-henrique.herig-coimbra@inrae.fr
+License: MIT
+Keywords: EC,ICOS,partitionning
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Other Environment
+Classifier: Framework :: Jupyter
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Other/Nonlisted Topic
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: matplotlib>=3.1.0
+Requires-Dist: numpy>=1.24
+Requires-Dist: PyWavelets>=1.4.0
+Requires-Dist: scipy>=1.10.0
+Requires-Dist: scikit-learn
+Requires-Dist: PyYAML
+Requires-Dist: Pint
+Requires-Dist: pint_xarray
+Requires-Dist: xlrd
+Requires-Dist: xarray
+Requires-Dist: fluxprint
+Requires-Dist: configobj
+Provides-Extra: cwt
+Requires-Dist: pycwt; extra == "cwt"
+Provides-Extra: fcwt
+Requires-Dist: pycwt; extra == "fcwt"
+Requires-Dist: fcwt; extra == "fcwt"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: platform
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

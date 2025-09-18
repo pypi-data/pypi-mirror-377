@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exso-sdk"
+version = "0.1.1"
+description = "Exoplanet candidate classification SDK (3-class) with preprocessing, features, model, and API."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Darwin Danish", email = "lumina.ai.devs@gmail.com" }]
+license = "MIT"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent"
+]
+dependencies = [
+  "flask>=1.1",
+  "llvmlite>=0.44.0",
+  "numpy>=1.18",
+  "pandas>=1.0",
+  "requests",
+  "scikit-learn>=0.22",
+  "torch>=1.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourname/exso-sdk"
+
+[project.scripts]
+exso-sdk-api = "exso_sdk.api:main"
+
+[tool.setuptools]
+packages = ["exso_sdk"]

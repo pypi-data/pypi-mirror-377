@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SBOM Upload Validator API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        .endpoint { background: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .method { display: inline-block; padding: 5px 10px; border-radius: 3px; color: white; font-weight: bold; }
+        .get { background: #4CAF50; }
+        .post { background: #2196F3; }
+        code { background: #e8e8e8; padding: 2px 5px; border-radius: 3px; }
+        pre { background: #f9f9f9; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .hierarchy { background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <h1>SBOM Upload Validator API</h1>
+    <p>REST API for uploading SBOMs to Dependency-Track with hierarchical project management.</p>
+
+    <div class="hierarchy">
+        <h3>🏗️ Project Hierarchy</h3>
+        <p><strong>District</strong> (SuperParent) → <strong>Business Line</strong> (Parent) → <strong>Project</strong> (Child)</p>
+        <ul>
+            <li>Each new SBOM creates a new <em>version</em>, not a new project</li>
+            <li>New versions are cloned from the latest version, preserving vulnerability analysis</li>
+            <li>Rich metadata and tagging for GitLab pipeline integration</li>
+        </ul>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span> /api/v1/sbom/upload</h3>
+        <p>Upload SBOM with metadata for GitLab pipeline integration.</p>
+        
+        <h4>Required Form Fields:</h4>
+        <ul>
+            <li><code>district</code> - District name (SuperParent)</li>
+            <li><code>business_line</code> - Business line name (Parent)</li>
+            <li><code>project_name</code> - Project name (Child)</li>
+            <li><code>version</code> - Project version</li>
+            <li><code>sbom</code> - SBOM file (multipart/form-data)</li>
+        </ul>
+
+        <h4>Optional Form Fields:</h4>
+        <ul>
+            <li><code>gitlab_project_id</code> - GitLab project ID</li>
+            <li><code>gitlab_pipeline_id</code> - GitLab pipeline ID</li>
+            <li><code>commit_sha</code> - Git commit SHA</li>
+            <li><code>branch</code> - Git branch (default: main)</li>
+            <li><code>tags</code> - Comma-separated custom tags</li>
+        </ul>
+
+        <h4>Example cURL:</h4>
+        <pre>curl -X POST http://localhost:8888/api/v1/sbom/upload \
+  -F "district=North America" \
+  -F "business_line=Financial Services" \
+  -F "project_name=payment-api" \
+  -F "version=1.2.3" \
+  -F "gitlab_project_id=123" \
+  -F "commit_sha=abc123def456" \
+  -F "branch=main" \
+  -F "tags=production,api" \
+  -F "sbom=@/path/to/sbom.json"</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /api/v1/projects/hierarchy</h3>
+        <p>Get project hierarchy for a district/business line.</p>
+        
+        <h4>Query Parameters:</h4>
+        <ul>
+            <li><code>district</code> (required) - District name</li>
+            <li><code>business_line</code> (optional) - Filter by business line</li>
+        </ul>
+
+        <h4>Example:</h4>
+        <pre>GET /api/v1/projects/hierarchy?district=North%20America&business_line=Financial%20Services</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /api/v1/projects/{project_name}/versions</h3>
+        <p>Get all versions for a specific project.</p>
+        
+        <h4>Query Parameters:</h4>
+        <ul>
+            <li><code>district</code> (required) - District name</li>
+            <li><code>business_line</code> (required) - Business line name</li>
+        </ul>
+
+        <h4>Example:</h4>
+        <pre>GET /api/v1/projects/payment-api/versions?district=North%20America&business_line=Financial%20Services</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> /health</h3>
+        <p>Health check endpoint for load balancers.</p>
+        
+        <h4>Response:</h4>
+        <pre>{"status": "healthy", "service": "sbom-upload-validator"}</pre>
+    </div>
+
+    <h2>🔧 Configuration</h2>
+    <p>Environment variables:</p>
+    <ul>
+        <li><code>DT_URL</code> - Dependency-Track server URL</li>
+        <li><code>DT_API_KEY</code> - Dependency-Track API key</li>
+        <li><code>PORT</code> - Server port (default: 8888)</li>
+        <li><code>FLASK_ENV</code> - Set to 'development' for debug mode</li>
+    </ul>
+
+    <h2>🔗 GitLab CI/CD Integration</h2>
+    <p>Example GitLab CI job for SBOM upload:</p>
+    <pre>sbom_upload:
+  stage: security
+  script:
+    - |
+      curl -X POST $SBOM_VALIDATOR_URL/api/v1/sbom/upload \
+        -F "district=$DISTRICT" \
+        -F "business_line=$BUSINESS_LINE" \
+        -F "project_name=$CI_PROJECT_NAME" \
+        -F "version=$CI_COMMIT_TAG" \
+        -F "gitlab_project_id=$CI_PROJECT_ID" \
+        -F "gitlab_pipeline_id=$CI_PIPELINE_ID" \
+        -F "commit_sha=$CI_COMMIT_SHA" \
+        -F "branch=$CI_COMMIT_REF_NAME" \
+        -F "sbom=@sbom.json"
+  only:
+    - tags</pre>
+</body>
+</html>

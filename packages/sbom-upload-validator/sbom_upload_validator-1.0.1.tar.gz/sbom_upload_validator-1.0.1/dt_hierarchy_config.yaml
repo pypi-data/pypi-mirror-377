@@ -1,0 +1,350 @@
+# Dependency-Track Hierarchical Structure Configuration
+# Format: District (SuperParent) -> Business Line (Parent) -> Project (Child)
+#
+# This configuration defines the organizational structure that will be created
+# in Dependency-Track. Customize this file for your federal network environment.
+
+metadata:
+  version: "1.0"
+  description: "Enterprise organizational hierarchy for Dependency-Track"
+  created_by: "SBOM Upload Validator"
+  last_updated: "2025-08-27"
+
+# Global configuration settings
+settings:
+  # ACL inheritance settings
+  enable_acl_inheritance: true
+  
+  # Default teams that get access at each level
+  # Format: team_uuid or team_name (will be resolved at runtime)
+  default_teams:
+    district_level:
+      - "security-team-uuid"
+      - "compliance-team-uuid" 
+      - "enterprise-admins-uuid"
+    business_line_level:
+      - "division-managers-uuid"
+      - "division-security-uuid"
+    project_level:
+      - "development-team-uuid"
+      - "devops-team-uuid"
+
+  # Default tags applied at each level
+  default_tags:
+    district:
+      - "environment:production"
+      - "compliance:required"
+    business_line:
+      - "tier:business-critical"
+    project:
+      - "lifecycle:active"
+
+# Organizational Hierarchy Structure
+# Customize this section for your federal network
+hierarchy:
+  
+  # District 1: Technology Operations
+  "Technology Operations":
+    description: "IT infrastructure and software development division"
+    tags:
+      - "category:technology"
+      - "clearance:secret"
+    teams:
+      - "tech-ops-admins-uuid"
+      - "cio-office-uuid"
+    
+    business_lines:
+      "Software Development":
+        description: "Application development and maintenance"
+        tags:
+          - "function:development"
+          - "methodology:agile"
+        teams:
+          - "dev-managers-uuid"
+          - "senior-developers-uuid"
+        
+        projects:
+          - name: "code-repository"
+            description: "Enterprise source code management system"
+            tags: ["type:scm", "criticality:high"]
+            
+          - name: "ci-cd-pipeline" 
+            description: "Continuous integration and deployment platform"
+            tags: ["type:cicd", "criticality:high"]
+            
+          - name: "testing-framework"
+            description: "Automated testing and quality assurance system"
+            tags: ["type:testing", "criticality:medium"]
+
+      "Infrastructure Services":
+        description: "Network, server, and cloud infrastructure"
+        tags:
+          - "function:infrastructure" 
+          - "scope:enterprise-wide"
+        teams:
+          - "infra-managers-uuid"
+          - "system-admins-uuid"
+        
+        projects:
+          - name: "server-monitor"
+            description: "Infrastructure monitoring and alerting system"
+            tags: ["type:monitoring", "criticality:high"]
+            
+          - name: "network-analyzer"
+            description: "Network performance and security analysis"
+            tags: ["type:network", "criticality:high"]
+            
+          - name: "backup-system" 
+            description: "Enterprise backup and disaster recovery"
+            tags: ["type:backup", "criticality:critical"]
+
+      "Cybersecurity":
+        description: "Information security and threat management"
+        tags:
+          - "function:security"
+          - "clearance:top-secret"
+        teams:
+          - "ciso-office-uuid"
+          - "security-analysts-uuid"
+        
+        projects:
+          - name: "threat-detection"
+            description: "Advanced threat detection and response platform"
+            tags: ["type:security", "criticality:critical"]
+            
+          - name: "access-control"
+            description: "Identity and access management system" 
+            tags: ["type:iam", "criticality:critical"]
+            
+          - name: "vulnerability-scanner"
+            description: "Automated vulnerability assessment platform"
+            tags: ["type:vulnerability", "criticality:high"]
+
+  # District 2: Mission Operations  
+  "Mission Operations":
+    description: "Core mission-critical systems and operations"
+    tags:
+      - "category:mission-critical"
+      - "clearance:top-secret"
+    teams:
+      - "mission-ops-admins-uuid"
+      - "mission-commanders-uuid"
+    
+    business_lines:
+      "Command and Control":
+        description: "Mission command and control systems"
+        tags:
+          - "function:command"
+          - "availability:24x7"
+        teams:
+          - "command-staff-uuid"
+          - "ops-managers-uuid"
+        
+        projects:
+          - name: "command-dashboard"
+            description: "Real-time mission command interface"
+            tags: ["type:dashboard", "criticality:critical"]
+            
+          - name: "situation-awareness"
+            description: "Operational situational awareness platform"
+            tags: ["type:awareness", "criticality:critical"]
+            
+          - name: "decision-support"
+            description: "Mission decision support system"
+            tags: ["type:decision", "criticality:high"]
+
+      "Communications":
+        description: "Secure communications infrastructure"
+        tags:
+          - "function:communications"
+          - "encryption:required"
+        teams:
+          - "comms-managers-uuid"
+          - "signal-officers-uuid"
+        
+        projects:
+          - name: "secure-messaging"
+            description: "Encrypted messaging and collaboration platform"
+            tags: ["type:messaging", "criticality:critical"]
+            
+          - name: "radio-gateway"
+            description: "Digital radio communication gateway"
+            tags: ["type:radio", "criticality:high"]
+            
+          - name: "satellite-comms"
+            description: "Satellite communication management system"
+            tags: ["type:satellite", "criticality:high"]
+
+      "Intelligence":
+        description: "Intelligence gathering and analysis systems"
+        tags:
+          - "function:intelligence"
+          - "clearance:top-secret-sci"
+        teams:
+          - "intel-analysts-uuid"
+          - "intel-managers-uuid"
+        
+        projects:
+          - name: "data-fusion"
+            description: "Multi-source intelligence data fusion platform"
+            tags: ["type:fusion", "criticality:critical"]
+            
+          - name: "analysis-workbench"
+            description: "Intelligence analysis and reporting tools"
+            tags: ["type:analysis", "criticality:high"]
+            
+          - name: "collection-management"
+            description: "Intelligence collection management system"
+            tags: ["type:collection", "criticality:high"]
+
+  # District 3: Support Services
+  "Support Services":
+    description: "Administrative and support functions"
+    tags:
+      - "category:support"
+      - "clearance:secret"
+    teams:
+      - "support-managers-uuid"
+      - "admin-staff-uuid"
+    
+    business_lines:
+      "Human Resources":
+        description: "Personnel management and administration"
+        tags:
+          - "function:hr"
+          - "pii:protected"
+        teams:
+          - "hr-managers-uuid"
+          - "hr-specialists-uuid"
+        
+        projects:
+          - name: "personnel-system"
+            description: "Personnel records and management system"
+            tags: ["type:hr", "criticality:medium", "data:pii"]
+            
+          - name: "training-tracker"
+            description: "Training and certification tracking system"
+            tags: ["type:training", "criticality:medium"]
+            
+          - name: "security-clearance"
+            description: "Security clearance management system"
+            tags: ["type:clearance", "criticality:high", "data:classified"]
+
+      "Finance and Acquisition":
+        description: "Financial management and procurement systems"
+        tags:
+          - "function:finance"
+          - "compliance:required"
+        teams:
+          - "finance-managers-uuid"
+          - "contracting-officers-uuid"
+        
+        projects:
+          - name: "budget-system"
+            description: "Budget planning and execution system"
+            tags: ["type:finance", "criticality:high"]
+            
+          - name: "procurement-portal"
+            description: "Acquisition and procurement management"
+            tags: ["type:procurement", "criticality:medium"]
+            
+          - name: "expense-tracker"
+            description: "Travel and expense management system"
+            tags: ["type:expenses", "criticality:low"]
+
+      "Facilities":
+        description: "Facility and asset management"
+        tags:
+          - "function:facilities"
+          - "scope:physical"
+        teams:
+          - "facilities-managers-uuid"
+          - "security-guards-uuid"
+        
+        projects:
+          - name: "building-automation"
+            description: "Facility automation and control systems"
+            tags: ["type:automation", "criticality:medium"]
+            
+          - name: "asset-tracker"
+            description: "Physical asset tracking and inventory"
+            tags: ["type:inventory", "criticality:medium"]
+            
+          - name: "access-badge"
+            description: "Physical access control and badging system"
+            tags: ["type:physical-access", "criticality:high"]
+
+# Team definitions for reference
+# These should be customized with your actual team UUIDs from Dependency-Track
+teams:
+  # Enterprise-level teams
+  security-team-uuid: "Security Operations Team"
+  compliance-team-uuid: "Compliance and Risk Management"
+  enterprise-admins-uuid: "Enterprise Administrators"
+  
+  # Technology Operations teams
+  tech-ops-admins-uuid: "Technology Operations Administrators" 
+  cio-office-uuid: "Chief Information Officer Staff"
+  dev-managers-uuid: "Development Managers"
+  senior-developers-uuid: "Senior Development Staff"
+  infra-managers-uuid: "Infrastructure Managers"
+  system-admins-uuid: "System Administrators"
+  ciso-office-uuid: "Chief Information Security Officer Staff"
+  security-analysts-uuid: "Cybersecurity Analysts"
+  
+  # Mission Operations teams
+  mission-ops-admins-uuid: "Mission Operations Administrators"
+  mission-commanders-uuid: "Mission Command Staff"
+  command-staff-uuid: "Command and Control Staff"
+  ops-managers-uuid: "Operations Managers"
+  comms-managers-uuid: "Communications Managers"
+  signal-officers-uuid: "Signal Officers"
+  intel-analysts-uuid: "Intelligence Analysts"
+  intel-managers-uuid: "Intelligence Managers"
+  
+  # Support Services teams
+  support-managers-uuid: "Support Services Managers"
+  admin-staff-uuid: "Administrative Staff"
+  hr-managers-uuid: "Human Resources Managers"
+  hr-specialists-uuid: "HR Specialists"
+  finance-managers-uuid: "Finance Managers"
+  contracting-officers-uuid: "Contracting Officers"
+  facilities-managers-uuid: "Facilities Managers"
+  security-guards-uuid: "Physical Security Staff"
+
+# Version templates for projects
+# These define what versions should be created for each project type
+version_templates:
+  default:
+    versions: ["1.0.0", "1.1.0", "1.2.0"]
+    
+  critical_system:
+    versions: ["2.0.0", "2.1.0", "2.1.1", "2.2.0"]
+    
+  new_project:
+    versions: ["0.9.0", "1.0.0"]
+
+# Project type mappings
+# Maps project names to version templates and additional metadata
+project_configurations:
+  # Critical systems get more versions
+  threat-detection:
+    version_template: "critical_system"
+    additional_tags: ["compliance:fisma", "security:critical"]
+    
+  access-control:
+    version_template: "critical_system" 
+    additional_tags: ["compliance:fisma", "security:critical"]
+    
+  command-dashboard:
+    version_template: "critical_system"
+    additional_tags: ["availability:99.9%", "security:critical"]
+    
+  # New projects get fewer versions
+  expense-tracker:
+    version_template: "new_project"
+    additional_tags: ["priority:low"]
+    
+  asset-tracker:
+    version_template: "new_project"
+    additional_tags: ["priority:medium"]

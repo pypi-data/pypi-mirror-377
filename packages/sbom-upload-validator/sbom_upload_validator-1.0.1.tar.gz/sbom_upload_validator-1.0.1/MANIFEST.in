@@ -1,0 +1,35 @@
+# Include package data files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include requirements.txt
+include pyproject.toml
+
+# Include configuration templates
+include dt_hierarchy_config.yaml
+include dt_hierarchy_config.example.yaml
+
+# Include Docker files
+include Dockerfile
+include Dockerfile.production
+include docker-compose.yml
+
+# Include templates
+recursive-include templates *.html
+recursive-include sbom_upload_validator/templates *.html
+
+# Include configuration examples
+recursive-include sbom_upload_validator/config *.yaml *.yml
+
+# Include documentation
+recursive-include docs *.md *.rst *.txt
+
+# Exclude development and build files
+exclude .env
+exclude .env.example
+exclude *.log
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude *.swp
+global-exclude *.swo

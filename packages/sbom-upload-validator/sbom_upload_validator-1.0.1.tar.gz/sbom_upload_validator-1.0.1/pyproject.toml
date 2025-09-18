@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sbom-upload-validator"
+authors = [
+    {name = "SBOM Upload Validator Project", email = "sbom-validator@example.com"},
+]
+description = "Production-ready API for GitLab SBOM uploads to Dependency-Track with hierarchical management"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators", 
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+]
+keywords = [
+    "sbom", "software-bill-of-materials", "dependency-track", "owasp", 
+    "security", "vulnerability", "gitlab", "cicd", "federal", "compliance"
+]
+dependencies = [
+    "Flask>=2.3.0,<3.0.0",
+    "requests>=2.31.0,<3.0.0",
+    "python-dotenv>=1.0.0,<2.0.0",
+    "PyYAML>=6.0.0,<7.0.0",
+    "Werkzeug>=2.3.0,<3.0.0",
+]
+version = "1.0.1"
+
+[project.urls]
+Homepage = "https://github.com/StL-Jim/sbom-upload-validator"
+Documentation = "https://github.com/StL-Jim/sbom-upload-validator/blob/main/README.md"
+Repository = "https://github.com/StL-Jim/sbom-upload-validator.git"
+"Bug Reports" = "https://github.com/StL-Jim/sbom-upload-validator/issues"
+"Docker Hub" = "https://hub.docker.com/r/stljim/sbom-upload-validator"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0", 
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+docker = [
+    "gunicorn>=21.0.0",
+]
+
+[project.scripts]
+sbom-validator = "sbom_upload_validator.cli:main"
+dt-hierarchy-init = "sbom_upload_validator.hierarchy_cli:main" 
+dt-config-validate = "sbom_upload_validator.config_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sbom_upload_validator*"]
+
+
+[tool.setuptools.package-data]
+sbom_upload_validator = [
+    "templates/*.html",
+    "config/*.yaml", 
+    "config/*.yml",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "--cov=sbom_upload_validator --cov-report=html --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

@@ -1,0 +1,74 @@
+# Multi-stage production Dockerfile for SBOM Upload Validator
+# Optimized for federal network deployments
+
+# Stage 1: Build stage
+FROM python:3.12-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Stage 2: Runtime stage
+FROM python:3.12-alpine AS runtime
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S sbom && \
+    adduser -u 1001 -S sbom -G sbom
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    wget \
+    curl \
+    ca-certificates \
+    tzdata
+
+# Copy Python packages from builder stage
+COPY --from=builder /root/.local /home/sbom/.local
+
+# Set working directory
+WORKDIR /app
+
+# Copy application code
+COPY --chown=sbom:sbom . .
+
+# Set environment variables
+ENV PATH="/home/sbom/.local/bin:$PATH" \
+    PYTHONPATH="/app" \
+    PYTHONUNBUFFERED=1 \
+    PORT=8888
+
+# Switch to non-root user
+USER sbom
+
+# Expose port
+EXPOSE 8888
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/health || exit 1
+
+# Add metadata labels for federal compliance
+LABEL maintainer="SBOM Upload Validator Project" \
+      org.opencontainers.image.title="SBOM Upload Validator" \
+      org.opencontainers.image.description="Production-ready API for GitLab SBOM uploads to Dependency-Track with hierarchical management" \
+      org.opencontainers.image.version="1.0.0" \
+      org.opencontainers.image.vendor="Federal Network Compatible" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.source="https://github.com/StL-Jim/sbom-upload-validator" \
+      security.compliance="Federal Ready" \
+      security.scan-policy="Required"
+
+# Run application
+CMD ["python", "app.py"]

@@ -1,0 +1,210 @@
+/* Textual CSS for chat interface */
+
+Screen {
+    background: $background;
+}
+
+Header {
+    background: $primary;
+    color: $text;
+    text-style: bold;
+}
+
+Footer {
+    background: $accent;
+    color: $text;
+}
+
+/* Dynamic Footer with context-aware hints */
+DynamicFooter {
+    dock: bottom;
+    height: 1;
+    background: $accent;
+    color: $text;
+    text-align: center;
+    padding: 0 1;
+}
+
+ChatArea {
+    height: 1fr;
+    border: round $primary;
+    margin: 1;
+    padding: 1;
+    background: $surface;
+}
+
+.user-message {
+    color: $text;
+    text-align: left;
+    margin: 0 0 1 0;
+    background: $boost;
+    border: round $accent;
+    padding: 0 1;
+}
+
+.agent-message {
+    color: $text;
+    text-align: left;
+    margin: 0 0 1 0;
+    background: $surface;
+    border: round $primary;
+    padding: 0 1;
+}
+
+/* Selection mode visual indicators */
+.selection-mode {
+    border: thick $accent;
+    background: $boost;
+}
+
+.selection-mode .user-message {
+    border: thick $warning;
+    background: $warning 20%;
+}
+
+.selection-mode .agent-message {
+    border: thick $success;
+    background: $success 20%;
+}
+
+ChatInput {
+    dock: bottom;
+    height: auto;
+    min-height: 3;
+    margin: 1;
+}
+
+ChatInput Input {
+    height: 3;
+    border: round $accent;
+}
+
+ChatInput Input:focus {
+    border: round $primary;
+}
+
+/* Command Autocomplete Styles */
+CommandAutocomplete {
+    display: none;
+    height: auto;
+    max-height: 8;
+    background: $surface;
+    border: round $primary;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1;
+    margin-right: 1;
+}
+
+CommandAutocomplete.visible {
+    display: block;
+}
+
+CommandOption {
+    height: 1;
+    padding: 0 1;
+    margin: 0;
+    background: transparent;
+    color: $text;
+}
+
+CommandOption.selected {
+    background: $primary;
+    color: $background;
+}
+
+CommandOption:hover {
+    background: $accent;
+    color: $background;
+}
+
+/* Loading indicator */
+.loading {
+    text-style: italic;
+    color: $warning;
+}
+
+/* Welcome Screen Styles */
+WelcomeScreen {
+    height: 1fr;
+    margin: 1;
+    padding: 1;
+    background: $surface;
+    border: round $primary;
+}
+
+.welcome-container {
+    height: 1fr;
+    align: center middle;
+}
+
+.juno-ascii {
+    color: $primary;
+    text-style: bold;
+    text-align: center;
+    margin: 0 0 2 0;
+}
+
+.welcome-title {
+    color: $primary;
+    text-style: bold;
+    text-align: center;
+    margin: 0 0 1 0;
+}
+
+.status-section {
+    margin: 0 0 1 0;
+    padding: 0 1;
+    background: $boost;
+    border: round $accent;
+    height: auto;
+}
+
+.status-item {
+    margin: 0 0 1 0;
+    color: $text;
+}
+
+.status-value {
+    color: $primary;
+}
+
+.status-good {
+    color: $success;
+}
+
+.status-warning {
+    color: $warning;
+}
+
+.status-error {
+    color: $error;
+}
+
+.setup-message {
+    text-align: center;
+    margin: 2 0 0 0;
+    padding: 1;
+    border: round;
+}
+
+.setup-complete {
+    color: $success;
+    background: $boost;
+    border: round $success;
+}
+
+.setup-incomplete {
+    color: $warning;
+    background: $boost;
+    border: round $warning;
+}
+
+/* Welcome Info Panel */
+WelcomeInfoPanel {
+    margin: 1;
+    padding: 1;
+    background: $boost;
+    border: round $accent;
+    height: auto;
+}

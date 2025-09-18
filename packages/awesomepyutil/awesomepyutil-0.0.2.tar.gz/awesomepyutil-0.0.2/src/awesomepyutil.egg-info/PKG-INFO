@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: awesomepyutil
+Version: 0.0.2
+Summary: An awesome Python package
+Home-page: https://gitlab.com/easycloudapi
+Author: Indranil Pal
+Author-email: info.easycloudapi@gmail.com
+Project-URL: Bug Tracker, https://github.com/Indra-Learn/awesomepyutil/issues
+Project-URL: repository, https://github.com/Indra-Learn/awesomepyutil
+Keywords: NSE,Stock Market,GCP,AWS,AZURE,Snowflake,Office365,Cloud,Data Pipeline,ETL,ELT,SQL,Python
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas==2.2.3
+Requires-Dist: requests==2.32.3
+Dynamic: license-file
+
+# [AWESOMEPYUTIL](https://pypi.org/project/awesomepyutil/0.0.1/)
+
+Simple python package.
+
+# How To Use The Package
+
+1. Install The Package
+    ```shell
+    pip install awesomepyutil==0.0.1
+    ```
+2. Use `Arithmetic Operations`
+    ```shell
+    from awesomepyutil.arithmetic_ops.arithmetic_operations import func_divide
+
+    out = func_divide(5,2)
+    print(f"out: {out}")
+
+    # Out: 2.5
+    ```
+
+3. Use `NSE`
+    ```shell
+    from awesomepyutil.stock_market.nse import NSE
+    
+    # create NSE Object
+    nse = NSE()
+    
+    # Get daily index gainers
+    out = nse.get_index_gainers()
+    print(out)
+    
+    # Get daily index loosers
+    out = nse.get_index_loosers()
+    print(out)
+    
+    out = nse.get_marketstate_daily()
+    print(f"{out}")
+    ```
+MIT License
+
+Copyright (c) [2025] [Indranil Pal]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

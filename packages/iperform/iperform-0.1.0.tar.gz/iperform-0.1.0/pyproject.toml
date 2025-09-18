@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iperform"
+version = "0.1.0"
+description = "Suivi de performance du business"
+authors = [
+    {name = "ILUNGA BUABUA Patrick", email = "buabua@internet.ru"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=1.3",
+    "numpy>=1.21",
+    "matplotlib>=3.4",
+    "seaborn>=0.11"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+    "ipython"
+]
+
+[project.urls]
+Homepage = "https://github.com/tonpseudo/iperform"

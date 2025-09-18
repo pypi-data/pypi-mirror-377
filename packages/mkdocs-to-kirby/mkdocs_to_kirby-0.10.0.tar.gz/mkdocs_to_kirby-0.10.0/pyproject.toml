@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkdocs-to-kirby"
+description = "Mkdocs plugin to kirby content structure"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = {text = "MIT"}
+keywords = ["mkdocs", "kirby", "plugin"]
+urls = {Homepage = "https://github.com/kreemer/mkdocs-to-kirby"}
+version = "0.10.0"
+requires-python = ">=3.11"
+dependencies = ["mkdocs>=1.0"]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Documentation",
+    "Topic :: Text Processing",
+]
+
+[project.entry-points."mkdocs.plugins"]
+mkdocs-to-kirby = "mkdocs_to_kirby.plugin:MkdocsToKirbyPlugin"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[dependency-groups]
+dev = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.7",
+    "mkdocs-static-i18n>=1.9.0",
+]

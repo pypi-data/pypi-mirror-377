@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "duro-tools"
+version = "2.0.0.dev1"
+description = ""
+authors = ["Nathaniel Mallick <nmallick@carnegierobotics.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sbp = "4.1.1"
+monotonic = "^1.6"
+future = "^1.0.0"
+numpy = "2.2.0"
+pyyaml = "^6.0.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.4.2"
+coverage = "^7.10.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

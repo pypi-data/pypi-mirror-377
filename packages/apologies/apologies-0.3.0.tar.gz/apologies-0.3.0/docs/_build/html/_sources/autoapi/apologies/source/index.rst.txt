@@ -1,0 +1,185 @@
+apologies.source
+================
+
+.. py:module:: apologies.source
+
+.. autoapi-nested-parse::
+
+   Character input sources.  A character could be a person or could be computer-driven.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: CharacterInputSource
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   A generic source of input for a character, which could be a person or could be computer-driven.
+   Concrete character input sources must have a valid zero-arguments constructor.
+
+
+   .. py:property:: fullname
+      :type: str
+
+
+      Get the fully-qualified name of the character input source.
+
+
+   .. py:property:: name
+      :type: str
+
+
+      Get the fully-qualified name of the character input source.
+
+
+   .. py:method:: choose_move(mode: apologies.game.GameMode, view: apologies.game.PlayerView, legal_moves: list[apologies.rules.Move], evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> apologies.rules.Move
+      :abstractmethod:
+
+
+      Choose the next move for a character.
+
+      There is always at least one legal move: a forfeit.  Nothing else is legal, so the
+      character must choose to discard one card.  In standard mode, there is effectively no
+      choice (since there is only one card in play), but in adult mode the character can choose
+      which to discard.  If a move has an empty list of actions, then this is a forfeit.
+
+      The source `must` return a move from among the passed-in set of legal moves.  If a source
+      returns an illegal move, then a legal move will be chosen at random and executed.  This way,
+      a misbehaving source (or a source attempting to cheat) does not get an advantage.  The game
+      rules require a player to make a legal move if one is available, even if that move is
+      disadvantageous.
+
+      :param mode: Game mode
+      :type mode: GameMode
+      :param view: Player-specific view of the game
+      :type view: PlayerView
+      :param legal_moves: The set of legal moves
+      :type legal_moves: List[Move]
+      :param evaluator: Function to evaluate a move, returning new state
+      :type evaluator: Callable[[PlayerView, Move], PlayerView]
+
+      :returns: The character's next move as described above
+      :rtype: Move
+
+
+
+.. py:class:: NoOpInputSource
+
+   Bases: :py:obj:`CharacterInputSource`
+
+
+   A no-op input source, which raises an error if ever used.
+
+   The Apologies library is designed with a synchronous callback model in mind.  If your
+   application uses a different model, you may use lower-level methods to interact with
+   the game engine directly, rather than getting user input from a callback.  In that case,
+   you will use this character input source.  If you get an error, you'll know that you've
+   done something wrong.
+
+
+   .. py:method:: choose_move(_mode: apologies.game.GameMode, _view: apologies.game.PlayerView, _moves: list[apologies.rules.Move], _evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> apologies.rules.Move
+      :abstractmethod:
+
+
+      Choose the next move for a character.
+
+      There is always at least one legal move: a forfeit.  Nothing else is legal, so the
+      character must choose to discard one card.  In standard mode, there is effectively no
+      choice (since there is only one card in play), but in adult mode the character can choose
+      which to discard.  If a move has an empty list of actions, then this is a forfeit.
+
+      The source `must` return a move from among the passed-in set of legal moves.  If a source
+      returns an illegal move, then a legal move will be chosen at random and executed.  This way,
+      a misbehaving source (or a source attempting to cheat) does not get an advantage.  The game
+      rules require a player to make a legal move if one is available, even if that move is
+      disadvantageous.
+
+      :param mode: Game mode
+      :type mode: GameMode
+      :param view: Player-specific view of the game
+      :type view: PlayerView
+      :param legal_moves: The set of legal moves
+      :type legal_moves: List[Move]
+      :param evaluator: Function to evaluate a move, returning new state
+      :type evaluator: Callable[[PlayerView, Move], PlayerView]
+
+      :returns: The character's next move as described above
+      :rtype: Move
+
+
+
+.. py:class:: RandomInputSource
+
+   Bases: :py:obj:`CharacterInputSource`
+
+
+   A source of input for a character which chooses randomly from among legal moves.
+
+
+   .. py:method:: choose_move(_mode: apologies.game.GameMode, _view: apologies.game.PlayerView, legal_moves: list[apologies.rules.Move], _evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> apologies.rules.Move
+
+      Randomly choose the next move for a character.
+
+
+
+.. py:class:: RewardInputSource
+
+   Bases: :py:obj:`CharacterInputSource`
+
+
+   A source of input for a character which chooses its next move based on a reward calculation.
+
+
+   .. py:method:: calculate(view: apologies.game.PlayerView, move: apologies.rules.Move, evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> tuple[apologies.rules.Move, float]
+      :abstractmethod:
+
+
+      Calculate the reward associated with a move, returning a tuple of (Move, reward).
+
+
+
+   .. py:method:: choose_move(_mode: apologies.game.GameMode, view: apologies.game.PlayerView, legal_moves: list[apologies.rules.Move], evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> apologies.rules.Move
+
+      Choose the next move for a player by evaluating and scoring the available moves.
+
+
+
+.. py:class:: RewardV1InputSource
+
+   Bases: :py:obj:`RewardInputSource`
+
+
+   A source of input for a character which chooses its next move based on the RewardCalculatorV1.
+
+
+   .. py:attribute:: calculator
+
+
+   .. py:method:: calculate(view: apologies.game.PlayerView, move: apologies.rules.Move, evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> tuple[apologies.rules.Move, float]
+
+      Calculate the reward associated with a move, returning a tuple of (Move, reward).
+
+
+
+.. py:function:: source(name: str) -> CharacterInputSource
+
+   Create a character input source by name.
+
+   As a special case, if the name is not fully-qualified, we will assume "apologies.source".
+
+   :param name: Fully-qualified name of the source, like "apologies.source.RandomInputSource"
+   :type name: str
+
+   :returns: An instance of the named source
+   :rtype: CharacterInputSource
+
+   :raises ValueError: If the named source does not exist or is not a CharacterInputSource
+
+

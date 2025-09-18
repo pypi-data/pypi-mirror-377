@@ -1,0 +1,244 @@
+apologies.rules
+===============
+
+.. py:module:: apologies.rules
+
+.. autoapi-nested-parse::
+
+   Implements rules related to game play.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: ActionType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Enumeration of all actions that a character can take.
+
+
+   .. py:attribute:: MOVE_TO_START
+      :value: 'Move to start'
+
+
+
+   .. py:attribute:: MOVE_TO_POSITION
+      :value: 'Move to position'
+
+
+
+.. py:class:: Action
+
+   An action that can be taken as part of a move.
+
+   .. attribute:: actiontype
+
+      The type of action
+
+      :type: ActionType
+
+   .. attribute:: pawn
+
+      The pawn that the action operates on
+
+      :type: Pawn
+
+   .. attribute:: position
+
+      Optionally, a position the pawn should move to
+
+      :type: Position
+
+
+   .. py:attribute:: actiontype
+      :type:  ActionType
+
+
+   .. py:attribute:: pawn
+      :type:  apologies.game.Pawn
+
+
+   .. py:attribute:: position
+      :type:  apologies.game.Position | None
+      :value: None
+
+
+
+.. py:class:: Move
+
+   A player's move on the board, which consists of one or more actions.
+
+   Note that the actions associated with a move include both the immediate actions that the player
+   chose (such as moving a pawn from start or swapping places with a different pawn), but also
+   any side-effects (such as pawns that are bumped back to start because of a slide).  As a result,
+   executing a move becomes very easy and no validation is required.  All of the work is done
+   up-front.
+
+   .. attribute:: card
+
+      The card that is being played by this move
+
+      :type: Card
+
+   .. attribute:: actions
+
+      List of actions to execute
+
+      :type: List[Action]
+
+   .. attribute:: side_effects
+
+      List of side effects that occurred as a result of the actions
+
+      :type: List[Action]
+
+   .. attribute:: id
+
+      Identifier for this move, which must be unique among all legal moves this move is grouped with
+
+      :type: str
+
+
+   .. py:attribute:: card
+      :type:  apologies.game.Card
+
+
+   .. py:attribute:: actions
+      :type:  list[Action]
+
+
+   .. py:attribute:: side_effects
+      :type:  list[Action]
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+.. py:class:: BoardRules
+
+   Rules related to the way the board works.
+
+
+   .. py:method:: construct_legal_moves(color: apologies.game.PlayerColor, card: apologies.game.Card, pawn: apologies.game.Pawn, all_pawns: list[apologies.game.Pawn]) -> list[Move]
+
+      Return the set of legal moves for a pawn using a card, possibly empty.
+
+      .. attribute:: card
+
+         Card to be played
+
+         :type: Card
+
+      .. attribute:: pawn
+
+         Pawn that the card will be applied to
+
+         :type: Pawn
+
+      .. attribute:: all_pawns
+
+         All pawns on the board, including the one to be played
+
+         :type: List[Pawn]
+
+      :returns: Set of legal moves for the pawn using the card.
+
+
+
+   .. py:method:: distance_to_home(pawn: apologies.game.Pawn) -> int
+      :staticmethod:
+
+
+      Return the distance to home for this pawn, a number of squares when moving forward.
+
+
+
+.. py:class:: Rules
+
+   Implements rules related to game play.
+
+   .. attribute:: mode
+
+      The game mode
+
+      :type: GameMode
+
+
+   .. py:attribute:: mode
+      :type:  apologies.game.GameMode
+
+
+   .. py:method:: draw_again(card: apologies.game.Card) -> bool
+
+      Whether the player gets to draw again based on the passed-in card.
+
+
+
+   .. py:method:: start_game(game: apologies.game.Game) -> None
+
+      Start the game.
+
+      :param game: Game to operate on
+      :type game: Game
+
+
+
+   .. py:method:: construct_legal_moves(view: apologies.game.PlayerView, card: apologies.game.Card | None = None) -> list[Move]
+
+      Return the set of all legal moves for a player and its opponents.
+
+      .. attribute:: view
+
+         Player-specific view of the game
+
+         :type: PlayerView
+
+      .. attribute:: card
+
+         The card to play, or None if move should come from player's hand
+
+         :type: Card, optional
+
+      :returns: Set of legal moves for the player, as described above.
+      :rtype: List[Move]
+
+
+
+   .. py:method:: execute_move(game: apologies.game.Game, player: apologies.game.Player, move: Move) -> None
+
+      Execute a player's move, updating game state.
+
+      :param game: Game to operate on
+      :type game: Game
+      :param player: Color of the player associated with the move
+      :type player: Player
+      :param move: Move to validate
+      :type move: Move
+
+
+
+   .. py:method:: evaluate_move(view: apologies.game.PlayerView, move: Move) -> apologies.game.PlayerView
+      :staticmethod:
+
+
+      Construct the new player view that results from executing the passed-in move.
+
+      This is equivalent to execute_move() but has no permanent effect on the game.  It's intended for
+      use by a character, to evaluate the results of each legal move.
+
+      :param view:
+      :type view: PlayerView
+      :param move:
+      :type move: Move
+
+      :returns: The new state after executing the move.
+      :rtype: PlayerView
+
+
+

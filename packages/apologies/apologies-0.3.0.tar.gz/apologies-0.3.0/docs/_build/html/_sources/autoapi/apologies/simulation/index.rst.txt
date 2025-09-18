@@ -1,0 +1,38 @@
+apologies.simulation
+====================
+
+.. py:module:: apologies.simulation
+
+.. autoapi-nested-parse::
+
+   Run a simulation to see how well different character input sources behave.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: BASE_HEADERS
+   :value: ['Scenario', 'Mode', 'Iterations', 'Players', 'Player 1', 'Player 2', 'Player 3', 'Player 4',...
+
+
+.. py:data:: SOURCE_HEADERS
+   :value: ['Median Turns', 'Mean Turns', 'Median Duration (ms)', 'Mean Duration (ms)', 'Wins', 'Win %']
+
+
+.. py:function:: run_simulation(iterations: int, output: str, sources: list[apologies.source.CharacterInputSource]) -> None
+
+   Run a simulation.
+
+   :param iterations: The number of iterations (number of times to play the game)
+   :type iterations: int
+   :param output: Path to the output file to write
+   :type output: str
+   :param sources: The source to use for each player in the game
+   :type sources: List[CharacterInputSource]
+
+

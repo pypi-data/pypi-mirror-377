@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>apologies.source &#8212; apologies 0.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="apologies.util" href="../util/index.html" />
+    <link rel="prev" title="apologies.simulation" href="../simulation/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-apologies.source">
+<span id="apologies-source"></span><h1>apologies.source<a class="headerlink" href="#module-apologies.source" title="Link to this heading">¶</a></h1>
+<p>Character input sources.  A character could be a person or could be computer-driven.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.source.CharacterInputSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.source.</span></span><span class="sig-name descname"><span class="pre">CharacterInputSource</span></span><a class="headerlink" href="#apologies.source.CharacterInputSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>A generic source of input for a character, which could be a person or could be computer-driven.
+Concrete character input sources must have a valid zero-arguments constructor.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="apologies.source.CharacterInputSource.fullname">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fullname</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#apologies.source.CharacterInputSource.fullname" title="Link to this definition">¶</a></dt>
+<dd><p>Get the fully-qualified name of the character input source.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="apologies.source.CharacterInputSource.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#apologies.source.CharacterInputSource.name" title="Link to this definition">¶</a></dt>
+<dd><p>Get the fully-qualified name of the character input source.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.source.CharacterInputSource.choose_move">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.GameMode" title="apologies.game.GameMode"><span class="pre">apologies.game.GameMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_moves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><span class="pre">collections.abc.Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a></span></span><a class="headerlink" href="#apologies.source.CharacterInputSource.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose the next move for a character.</p>
+<p>There is always at least one legal move: a forfeit.  Nothing else is legal, so the
+character must choose to discard one card.  In standard mode, there is effectively no
+choice (since there is only one card in play), but in adult mode the character can choose
+which to discard.  If a move has an empty list of actions, then this is a forfeit.</p>
+<p>The source <cite>must</cite> return a move from among the passed-in set of legal moves.  If a source
+returns an illegal move, then a legal move will be chosen at random and executed.  This way,
+a misbehaving source (or a source attempting to cheat) does not get an advantage.  The game
+rules require a player to make a legal move if one is available, even if that move is
+disadvantageous.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<a class="reference internal" href="../game/index.html#apologies.game.GameMode" title="apologies.game.GameMode"><em>GameMode</em></a>) – Game mode</p></li>
+<li><p><strong>view</strong> (<a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><em>PlayerView</em></a>) – Player-specific view of the game</p></li>
+<li><p><strong>legal_moves</strong> (<em>List</em><em>[</em><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><em>Move</em></a><em>]</em>) – The set of legal moves</p></li>
+<li><p><strong>evaluator</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><em>PlayerView</em></a><em>, </em><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><em>Move</em></a><em>]</em><em>, </em><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><em>PlayerView</em></a><em>]</em>) – Function to evaluate a move, returning new state</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The character’s next move as described above</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move">Move</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.source.NoOpInputSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.source.</span></span><span class="sig-name descname"><span class="pre">NoOpInputSource</span></span><a class="headerlink" href="#apologies.source.NoOpInputSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#apologies.source.CharacterInputSource" title="apologies.source.CharacterInputSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CharacterInputSource</span></code></a></p>
+<p>A no-op input source, which raises an error if ever used.</p>
+<p>The Apologies library is designed with a synchronous callback model in mind.  If your
+application uses a different model, you may use lower-level methods to interact with
+the game engine directly, rather than getting user input from a callback.  In that case,
+you will use this character input source.  If you get an error, you’ll know that you’ve
+done something wrong.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.source.NoOpInputSource.choose_move">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.GameMode" title="apologies.game.GameMode"><span class="pre">apologies.game.GameMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">_view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">_moves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_evaluator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><span class="pre">collections.abc.Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a></span></span><a class="headerlink" href="#apologies.source.NoOpInputSource.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose the next move for a character.</p>
+<p>There is always at least one legal move: a forfeit.  Nothing else is legal, so the
+character must choose to discard one card.  In standard mode, there is effectively no
+choice (since there is only one card in play), but in adult mode the character can choose
+which to discard.  If a move has an empty list of actions, then this is a forfeit.</p>
+<p>The source <cite>must</cite> return a move from among the passed-in set of legal moves.  If a source
+returns an illegal move, then a legal move will be chosen at random and executed.  This way,
+a misbehaving source (or a source attempting to cheat) does not get an advantage.  The game
+rules require a player to make a legal move if one is available, even if that move is
+disadvantageous.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<a class="reference internal" href="../game/index.html#apologies.game.GameMode" title="apologies.game.GameMode"><em>GameMode</em></a>) – Game mode</p></li>
+<li><p><strong>view</strong> (<a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><em>PlayerView</em></a>) – Player-specific view of the game</p></li>
+<li><p><strong>legal_moves</strong> (<em>List</em><em>[</em><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><em>Move</em></a><em>]</em>) – The set of legal moves</p></li>
+<li><p><strong>evaluator</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><em>PlayerView</em></a><em>, </em><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><em>Move</em></a><em>]</em><em>, </em><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><em>PlayerView</em></a><em>]</em>) – Function to evaluate a move, returning new state</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The character’s next move as described above</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move">Move</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.source.RandomInputSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.source.</span></span><span class="sig-name descname"><span class="pre">RandomInputSource</span></span><a class="headerlink" href="#apologies.source.RandomInputSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#apologies.source.CharacterInputSource" title="apologies.source.CharacterInputSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CharacterInputSource</span></code></a></p>
+<p>A source of input for a character which chooses randomly from among legal moves.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.source.RandomInputSource.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.GameMode" title="apologies.game.GameMode"><span class="pre">apologies.game.GameMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">_view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_moves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_evaluator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><span class="pre">collections.abc.Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a></span></span><a class="headerlink" href="#apologies.source.RandomInputSource.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Randomly choose the next move for a character.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.source.RewardInputSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.source.</span></span><span class="sig-name descname"><span class="pre">RewardInputSource</span></span><a class="headerlink" href="#apologies.source.RewardInputSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#apologies.source.CharacterInputSource" title="apologies.source.CharacterInputSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CharacterInputSource</span></code></a></p>
+<p>A source of input for a character which chooses its next move based on a reward calculation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.source.RewardInputSource.calculate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><span class="pre">collections.abc.Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#apologies.source.RewardInputSource.calculate" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the reward associated with a move, returning a tuple of (Move, reward).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.source.RewardInputSource.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.GameMode" title="apologies.game.GameMode"><span class="pre">apologies.game.GameMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_moves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><span class="pre">collections.abc.Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a></span></span><a class="headerlink" href="#apologies.source.RewardInputSource.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose the next move for a player by evaluating and scoring the available moves.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.source.RewardV1InputSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.source.</span></span><span class="sig-name descname"><span class="pre">RewardV1InputSource</span></span><a class="headerlink" href="#apologies.source.RewardV1InputSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#apologies.source.RewardInputSource" title="apologies.source.RewardInputSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RewardInputSource</span></code></a></p>
+<p>A source of input for a character which chooses its next move based on the RewardCalculatorV1.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.source.RewardV1InputSource.calculator">
+<span class="sig-name descname"><span class="pre">calculator</span></span><a class="headerlink" href="#apologies.source.RewardV1InputSource.calculator" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.source.RewardV1InputSource.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><span class="pre">collections.abc.Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../game/index.html#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">apologies.game.PlayerView</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../rules/index.html#apologies.rules.Move" title="apologies.rules.Move"><span class="pre">apologies.rules.Move</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#apologies.source.RewardV1InputSource.calculate" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the reward associated with a move, returning a tuple of (Move, reward).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="apologies.source.source">
+<span class="sig-prename descclassname"><span class="pre">apologies.source.</span></span><span class="sig-name descname"><span class="pre">source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.source.CharacterInputSource" title="apologies.source.CharacterInputSource"><span class="pre">CharacterInputSource</span></a></span></span><a class="headerlink" href="#apologies.source.source" title="Link to this definition">¶</a></dt>
+<dd><p>Create a character input source by name.</p>
+<p>As a special case, if the name is not fully-qualified, we will assume “apologies.source”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Fully-qualified name of the source, like “apologies.source.RandomInputSource”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the named source</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.source.CharacterInputSource" title="apologies.source.CharacterInputSource">CharacterInputSource</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the named source does not exist or is not a CharacterInputSource</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">apologies</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=apologies&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">apologies</a><ul>
+      <li>Previous: <a href="../simulation/index.html" title="previous chapter">apologies.simulation</a></li>
+      <li>Next: <a href="../util/index.html" title="next chapter">apologies.util</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/apologies" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>apologies.game &#8212; apologies 0.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="apologies.render" href="../render/index.html" />
+    <link rel="prev" title="apologies.engine" href="../engine/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-apologies.game">
+<span id="apologies-game"></span><h1>apologies.game<a class="headerlink" href="#module-apologies.game" title="Link to this heading">¶</a></h1>
+<p>Classes that track game state.</p>
+<p>Note that these classes track game state, but do not implement game rules.  The
+only validations are to prevent changes that literally cannot be represented in
+game state, such as selecting an invalid square.  All other rules (such as the
+restriction that only one pawn can occupy a space, or the act of sliding down a
+slider, etc.) are implemented in the rules module, using the methods available on these
+classes.</p>
+<p>In many cases, private attributes are accessible in the constructor to support
+serialization and deserialization.  In general, callers should not pass in optional
+constructor arguments and should not modify public attributes if an alternate method
+is available for use.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.MIN_PLAYERS">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">MIN_PLAYERS</span></span><a class="headerlink" href="#apologies.game.MIN_PLAYERS" title="Link to this definition">¶</a></dt>
+<dd><p>Minimum number of players in a game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.MAX_PLAYERS">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">MAX_PLAYERS</span></span><a class="headerlink" href="#apologies.game.MAX_PLAYERS" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum number of players in a game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PAWNS">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">PAWNS</span></span><a class="headerlink" href="#apologies.game.PAWNS" title="Link to this definition">¶</a></dt>
+<dd><p>Number of pawns per player</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.SAFE_SQUARES">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">SAFE_SQUARES</span></span><a class="headerlink" href="#apologies.game.SAFE_SQUARES" title="Link to this definition">¶</a></dt>
+<dd><p>Number of safe squares for each color</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.BOARD_SQUARES">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">BOARD_SQUARES</span></span><a class="headerlink" href="#apologies.game.BOARD_SQUARES" title="Link to this definition">¶</a></dt>
+<dd><p>Number of squares around the outside of the board</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.ADULT_HAND">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">ADULT_HAND</span></span><a class="headerlink" href="#apologies.game.ADULT_HAND" title="Link to this definition">¶</a></dt>
+<dd><p>Number of cards in a player’s hand for an adult mode game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.DECK_COUNTS">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">DECK_COUNTS</span></span><a class="headerlink" href="#apologies.game.DECK_COUNTS" title="Link to this definition">¶</a></dt>
+<dd><p>Dictionary from card name to number of cards in a standard deck</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card">Card</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.DECK_SIZE">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">DECK_SIZE</span></span><a class="headerlink" href="#apologies.game.DECK_SIZE" title="Link to this definition">¶</a></dt>
+<dd><p>The total expected size of a complete deck</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.DRAW_AGAIN">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">DRAW_AGAIN</span></span><a class="headerlink" href="#apologies.game.DRAW_AGAIN" title="Link to this definition">¶</a></dt>
+<dd><p>Whether each card results in a draw again action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card">Card</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CIRCLE">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">CIRCLE</span></span><a class="headerlink" href="#apologies.game.CIRCLE" title="Link to this definition">¶</a></dt>
+<dd><p>The position of the start circle for each color</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor">PlayerColor</a>, <a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.TURN">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">TURN</span></span><a class="headerlink" href="#apologies.game.TURN" title="Link to this definition">¶</a></dt>
+<dd><p>The position of the turn square for each color, where forward movement turns into safe zone</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor">PlayerColor</a>, <a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a>()</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.SLIDE">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">SLIDE</span></span><a class="headerlink" href="#apologies.game.SLIDE" title="Link to this definition">¶</a></dt>
+<dd><p>The slide start/end squares for each color</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor">PlayerColor</a>, Tuple(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">MIN_PLAYERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">MAX_PLAYERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">PAWNS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">SAFE_SQUARES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">BOARD_SQUARES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60</span></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.GameMode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">GameMode</span></span><a class="headerlink" href="#apologies.game.GameMode" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>Available game play modes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.GameMode.STANDARD">
+<span class="sig-name descname"><span class="pre">STANDARD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Standard'</span></em><a class="headerlink" href="#apologies.game.GameMode.STANDARD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.GameMode.ADULT">
+<span class="sig-name descname"><span class="pre">ADULT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Adult'</span></em><a class="headerlink" href="#apologies.game.GameMode.ADULT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.PlayerColor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">PlayerColor</span></span><a class="headerlink" href="#apologies.game.PlayerColor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>Enumeration of all player colors, listed in order of use.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PlayerColor.RED">
+<span class="sig-name descname"><span class="pre">RED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Red'</span></em><a class="headerlink" href="#apologies.game.PlayerColor.RED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PlayerColor.YELLOW">
+<span class="sig-name descname"><span class="pre">YELLOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Yellow'</span></em><a class="headerlink" href="#apologies.game.PlayerColor.YELLOW" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PlayerColor.GREEN">
+<span class="sig-name descname"><span class="pre">GREEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Green'</span></em><a class="headerlink" href="#apologies.game.PlayerColor.GREEN" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PlayerColor.BLUE">
+<span class="sig-name descname"><span class="pre">BLUE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Blue'</span></em><a class="headerlink" href="#apologies.game.PlayerColor.BLUE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.CardType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">CardType</span></span><a class="headerlink" href="#apologies.game.CardType" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>All legal types of cards.</p>
+<p>The “A” card (CARD_APOLOGIES) is like the “Sorry” card in the original game.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_1">
+<span class="sig-name descname"><span class="pre">CARD_1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_2">
+<span class="sig-name descname"><span class="pre">CARD_2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'2'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_3">
+<span class="sig-name descname"><span class="pre">CARD_3</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'3'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_4">
+<span class="sig-name descname"><span class="pre">CARD_4</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'4'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_5">
+<span class="sig-name descname"><span class="pre">CARD_5</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'5'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_7">
+<span class="sig-name descname"><span class="pre">CARD_7</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'7'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_8">
+<span class="sig-name descname"><span class="pre">CARD_8</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'8'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_10">
+<span class="sig-name descname"><span class="pre">CARD_10</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'10'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_10" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_11">
+<span class="sig-name descname"><span class="pre">CARD_11</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'11'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_11" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_12">
+<span class="sig-name descname"><span class="pre">CARD_12</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'12'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_12" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.CardType.CARD_APOLOGIES">
+<span class="sig-name descname"><span class="pre">CARD_APOLOGIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'A'</span></em><a class="headerlink" href="#apologies.game.CardType.CARD_APOLOGIES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">ADULT_HAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">DECK_COUNTS</span></span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">DECK_SIZE</span></span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">DRAW_AGAIN</span></span><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.Card">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">Card</span></span><a class="headerlink" href="#apologies.game.Card" title="Link to this definition">¶</a></dt>
+<dd><p>A card in a deck or in a player’s hand.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Card.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apologies.game.Card.id" title="Link to this definition">¶</a></dt>
+<dd><p>Unique identifier for this card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Card.cardtype">
+<span class="sig-name descname"><span class="pre">cardtype</span></span><a class="headerlink" href="#apologies.game.Card.cardtype" title="Link to this definition">¶</a></dt>
+<dd><p>The type of the card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.CardType" title="apologies.game.CardType">CardType</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">cardtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.CardType" title="apologies.game.CardType"><span class="pre">CardType</span></a></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.Deck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">Deck</span></span><a class="headerlink" href="#apologies.game.Deck" title="Link to this definition">¶</a></dt>
+<dd><p>The deck of cards associated with a game.</p>
+<p>Callers should not pass in constructor arguments. These are accessible to
+support serialization and deserialization.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Deck.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card"><span class="pre">Card</span></a></span></span><a class="headerlink" href="#apologies.game.Deck.draw" title="Link to this definition">¶</a></dt>
+<dd><p>Draw a random card from the draw pile.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Deck.discard">
+<span class="sig-name descname"><span class="pre">discard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card"><span class="pre">Card</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#apologies.game.Deck.discard" title="Link to this definition">¶</a></dt>
+<dd><p>Discard back to the discard pile.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.Position">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">Position</span></span><a class="headerlink" href="#apologies.game.Position" title="Link to this definition">¶</a></dt>
+<dd><p>The position of a pawn on the board.</p>
+<p>Callers should not pass in or directly modify the start, home, safe, or square
+attributes.  These are accessible to support serialization and deserialization.
+Instead, use the provided methods to safely modify the object in-place.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Position.start">
+<span class="sig-name descname"><span class="pre">start</span></span><a class="headerlink" href="#apologies.game.Position.start" title="Link to this definition">¶</a></dt>
+<dd><p>Whether this pawn resides in its start area</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Position.home">
+<span class="sig-name descname"><span class="pre">home</span></span><a class="headerlink" href="#apologies.game.Position.home" title="Link to this definition">¶</a></dt>
+<dd><p>Whether this pawn resides in its home area</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Position.safe">
+<span class="sig-name descname"><span class="pre">safe</span></span><a class="headerlink" href="#apologies.game.Position.safe" title="Link to this definition">¶</a></dt>
+<dd><p>Zero-based index of the square in the safe area where this pawn resides</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Position.square">
+<span class="sig-name descname"><span class="pre">square</span></span><a class="headerlink" href="#apologies.game.Position.square" title="Link to this definition">¶</a></dt>
+<dd><p>Zero-based index of the square on the board where this pawn resides</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">home</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">safe</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id13" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">square</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id14" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#apologies.game.Position.__str__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></span><a class="headerlink" href="#apologies.game.Position.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Return a fully-independent copy of the position.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.move_to_position">
+<span class="sig-name descname"><span class="pre">move_to_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></span><a class="headerlink" href="#apologies.game.Position.move_to_position" title="Link to this definition">¶</a></dt>
+<dd><p>Move the pawn to a specific position on the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A reference to the position, for chaining</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the position is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.move_to_start">
+<span class="sig-name descname"><span class="pre">move_to_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></span><a class="headerlink" href="#apologies.game.Position.move_to_start" title="Link to this definition">¶</a></dt>
+<dd><p>Move the pawn back to its start area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A reference to the position, for chaining</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the position is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.move_to_home">
+<span class="sig-name descname"><span class="pre">move_to_home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></span><a class="headerlink" href="#apologies.game.Position.move_to_home" title="Link to this definition">¶</a></dt>
+<dd><p>Move the pawn to its home area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A reference to the position, for chaining</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the position is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.move_to_safe">
+<span class="sig-name descname"><span class="pre">move_to_safe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">square</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></span><a class="headerlink" href="#apologies.game.Position.move_to_safe" title="Link to this definition">¶</a></dt>
+<dd><p>Move the pawn to a square in its safe area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>square</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Zero-based index of the square in the safe area</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A reference to the position, for chaining</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the square is not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Position.move_to_square">
+<span class="sig-name descname"><span class="pre">move_to_square</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">square</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></span></span><a class="headerlink" href="#apologies.game.Position.move_to_square" title="Link to this definition">¶</a></dt>
+<dd><p>Move the pawn to a square on the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>square</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Zero-based index of the square on the board where this pawn resides</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A reference to the position, for chaining</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the square is not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.Pawn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">Pawn</span></span><a class="headerlink" href="#apologies.game.Pawn" title="Link to this definition">¶</a></dt>
+<dd><p>A pawn on the board, belonging to a player.</p>
+<p>Callers should not pass in the position attribute.  This is accessible
+to support serialization and deserialization. Instead, use the provided
+methods to safely modify the position in-place.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Pawn.color">
+<span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#apologies.game.Pawn.color" title="Link to this definition">¶</a></dt>
+<dd><p>The color of this pawn</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Pawn.index">
+<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#apologies.game.Pawn.index" title="Link to this definition">¶</a></dt>
+<dd><p>Zero-based index of this pawn for a given user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Pawn.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#apologies.game.Pawn.name" title="Link to this definition">¶</a></dt>
+<dd><p>The full name of this pawn as “colorindex”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Pawn.position">
+<span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#apologies.game.Pawn.position" title="Link to this definition">¶</a></dt>
+<dd><p>The position of this pawn on the board</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position">Position</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor"><span class="pre">PlayerColor</span></a></em><a class="headerlink" href="#id15" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#id16" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id17" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.Position" title="apologies.game.Position"><span class="pre">Position</span></a></em><a class="headerlink" href="#id18" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Pawn.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#apologies.game.Pawn.__str__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.Player">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">Player</span></span><a class="headerlink" href="#apologies.game.Player" title="Link to this definition">¶</a></dt>
+<dd><p>A player, which has a color and a set of pawns.</p>
+<p>Callers should not pass in the hand and pawns constructor arguments.  These
+are accessible to support serialization and deserialization.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Player.color">
+<span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#apologies.game.Player.color" title="Link to this definition">¶</a></dt>
+<dd><p>The color of the player</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Player.hand">
+<span class="sig-name descname"><span class="pre">hand</span></span><a class="headerlink" href="#apologies.game.Player.hand" title="Link to this definition">¶</a></dt>
+<dd><p>List of cards in the player’s hand</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card">Card</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Player.pawns">
+<span class="sig-name descname"><span class="pre">pawns</span></span><a class="headerlink" href="#apologies.game.Player.pawns" title="Link to this definition">¶</a></dt>
+<dd><p>List of all pawns belonging to the player</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#apologies.game.Pawn" title="apologies.game.Pawn">Pawn</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Player.turns">
+<span class="sig-name descname"><span class="pre">turns</span></span><a class="headerlink" href="#apologies.game.Player.turns" title="Link to this definition">¶</a></dt>
+<dd><p>Number of turns for this player</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor"><span class="pre">PlayerColor</span></a></em><a class="headerlink" href="#id19" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">hand</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card"><span class="pre">Card</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id20" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">pawns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#apologies.game.Pawn" title="apologies.game.Pawn"><span class="pre">Pawn</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id21" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">turns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#id22" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Player.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a></span></span><a class="headerlink" href="#apologies.game.Player.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Return a fully-independent copy of the player.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Player.public_data">
+<span class="sig-name descname"><span class="pre">public_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a></span></span><a class="headerlink" href="#apologies.game.Player.public_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return a fully-independent copy of the player with only public data visible.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Player.find_first_pawn_in_start">
+<span class="sig-name descname"><span class="pre">find_first_pawn_in_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Pawn" title="apologies.game.Pawn"><span class="pre">Pawn</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#apologies.game.Player.find_first_pawn_in_start" title="Link to this definition">¶</a></dt>
+<dd><p>Find the first pawn in the start area, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Player.all_pawns_in_home">
+<span class="sig-name descname"><span class="pre">all_pawns_in_home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#apologies.game.Player.all_pawns_in_home" title="Link to this definition">¶</a></dt>
+<dd><p>Whether all of this user’s pawns are in home.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.History">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">History</span></span><a class="headerlink" href="#apologies.game.History" title="Link to this definition">¶</a></dt>
+<dd><p>Tracks an action taken during the game.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.History.action">
+<span class="sig-name descname"><span class="pre">action</span></span><a class="headerlink" href="#apologies.game.History.action" title="Link to this definition">¶</a></dt>
+<dd><p>String describing the action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.History.color">
+<span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#apologies.game.History.color" title="Link to this definition">¶</a></dt>
+<dd><p>Color of the player associated with the action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor">PlayerColor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.History.card">
+<span class="sig-name descname"><span class="pre">card</span></span><a class="headerlink" href="#apologies.game.History.card" title="Link to this definition">¶</a></dt>
+<dd><p>Card associated with the action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="#apologies.game.CardType" title="apologies.game.CardType">CardType</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.History.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#apologies.game.History.timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Timestamp tied to the action (defaults to current time)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Arrow</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">action</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id23" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor"><span class="pre">PlayerColor</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id24" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">card</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.CardType" title="apologies.game.CardType"><span class="pre">CardType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id25" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">arrow.Arrow</span></em><a class="headerlink" href="#id26" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.History.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#apologies.game.History.__str__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.PlayerView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">PlayerView</span></span><a class="headerlink" href="#apologies.game.PlayerView" title="Link to this definition">¶</a></dt>
+<dd><p>A player-specific view of the game, showing only the information a player would have available on their turn.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PlayerView.player">
+<span class="sig-name descname"><span class="pre">player</span></span><a class="headerlink" href="#apologies.game.PlayerView.player" title="Link to this definition">¶</a></dt>
+<dd><p>The player associated with the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player">Player</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.PlayerView.opponents">
+<span class="sig-name descname"><span class="pre">opponents</span></span><a class="headerlink" href="#apologies.game.PlayerView.opponents" title="Link to this definition">¶</a></dt>
+<dd><p>The player’s opponents, with private information stripped</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor">PlayerColor</a>, <a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player">Player</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">player</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a></em><a class="headerlink" href="#id27" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id28">
+<span class="sig-name descname"><span class="pre">opponents</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor"><span class="pre">PlayerColor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id28" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.PlayerView.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">PlayerView</span></a></span></span><a class="headerlink" href="#apologies.game.PlayerView.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Return a fully-independent copy of the player view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.PlayerView.get_pawn">
+<span class="sig-name descname"><span class="pre">get_pawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#apologies.game.Pawn" title="apologies.game.Pawn"><span class="pre">Pawn</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Pawn" title="apologies.game.Pawn"><span class="pre">Pawn</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#apologies.game.PlayerView.get_pawn" title="Link to this definition">¶</a></dt>
+<dd><p>Return the pawn from this view with the same color and index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.PlayerView.all_pawns">
+<span class="sig-name descname"><span class="pre">all_pawns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#apologies.game.Pawn" title="apologies.game.Pawn"><span class="pre">Pawn</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#apologies.game.PlayerView.all_pawns" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of all pawns on the board.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apologies.game.Game">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">Game</span></span><a class="headerlink" href="#apologies.game.Game" title="Link to this definition">¶</a></dt>
+<dd><p>The game, consisting of state for a set of players.</p>
+<p>Callers should not pass in optional constructor arguments.  These are accessible
+to support serialization and deserialization.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Game.playercount">
+<span class="sig-name descname"><span class="pre">playercount</span></span><a class="headerlink" href="#apologies.game.Game.playercount" title="Link to this definition">¶</a></dt>
+<dd><p>Number of players in the game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Game.players">
+<span class="sig-name descname"><span class="pre">players</span></span><a class="headerlink" href="#apologies.game.Game.players" title="Link to this definition">¶</a></dt>
+<dd><p>All players in the game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor">PlayerColor</a>, <a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player">Player</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Game.deck">
+<span class="sig-name descname"><span class="pre">deck</span></span><a class="headerlink" href="#apologies.game.Game.deck" title="Link to this definition">¶</a></dt>
+<dd><p>The deck of cards for the game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.Deck" title="apologies.game.Deck">Deck</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apologies.game.Game.history">
+<span class="sig-name descname"><span class="pre">history</span></span><a class="headerlink" href="#apologies.game.Game.history" title="Link to this definition">¶</a></dt>
+<dd><p>Game history</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#apologies.game.History" title="apologies.game.History">History</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">playercount</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#id29" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">players</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor"><span class="pre">PlayerColor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id30" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">deck</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.Deck" title="apologies.game.Deck"><span class="pre">Deck</span></a></em><a class="headerlink" href="#id31" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id32">
+<span class="sig-name descname"><span class="pre">history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#apologies.game.History" title="apologies.game.History"><span class="pre">History</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id32" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="apologies.game.Game.started">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">started</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#apologies.game.Game.started" title="Link to this definition">¶</a></dt>
+<dd><p>Whether the game has been started.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="apologies.game.Game.completed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">completed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#apologies.game.Game.completed" title="Link to this definition">¶</a></dt>
+<dd><p>Whether the game is completed.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="apologies.game.Game.winner">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">winner</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a></em><a class="headerlink" href="#apologies.game.Game.winner" title="Link to this definition">¶</a></dt>
+<dd><p>The winner of the game, if any.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Game.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Game" title="apologies.game.Game"><span class="pre">Game</span></a></span></span><a class="headerlink" href="#apologies.game.Game.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Return a fully-independent copy of the game.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Game.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#apologies.game.Game.to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the game state to JSON.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Game.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.Game" title="apologies.game.Game"><span class="pre">Game</span></a></span></span><a class="headerlink" href="#apologies.game.Game.from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize the game state from JSON.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Game.track">
+<span class="sig-name descname"><span class="pre">track</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">player</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#apologies.game.Player" title="apologies.game.Player"><span class="pre">Player</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#apologies.game.Card" title="apologies.game.Card"><span class="pre">Card</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#apologies.game.Game.track" title="Link to this definition">¶</a></dt>
+<dd><p>Tracks an action taken during the game.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apologies.game.Game.create_player_view">
+<span class="sig-name descname"><span class="pre">create_player_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#apologies.game.PlayerColor" title="apologies.game.PlayerColor"><span class="pre">PlayerColor</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#apologies.game.PlayerView" title="apologies.game.PlayerView"><span class="pre">PlayerView</span></a></span></span><a class="headerlink" href="#apologies.game.Game.create_player_view" title="Link to this definition">¶</a></dt>
+<dd><p>Return a player-specific view of the game, showing only the information a player would have available on their turn.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id33">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">CIRCLE</span></span><a class="headerlink" href="#id33" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">TURN</span></span><a class="headerlink" href="#id34" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id35">
+<span class="sig-prename descclassname"><span class="pre">apologies.game.</span></span><span class="sig-name descname"><span class="pre">SLIDE</span></span><a class="headerlink" href="#id35" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">apologies</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=apologies&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">apologies</a><ul>
+      <li>Previous: <a href="../engine/index.html" title="previous chapter">apologies.engine</a></li>
+      <li>Next: <a href="../render/index.html" title="next chapter">apologies.render</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/apologies" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

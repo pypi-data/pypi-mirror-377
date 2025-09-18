@@ -1,0 +1,44 @@
+apologies.cli
+=============
+
+.. py:module:: apologies.cli
+
+.. autoapi-nested-parse::
+
+   Implementations for command-line (CLI) tools.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: demo(argv: list[str], _stdout: IO[str], _stderr: IO[str]) -> None
+
+   Run a game with simulated players, displaying output on the terminal.
+
+
+.. py:function:: simulation(argv: list[str], _stdout: IO[str], _stderr: IO[str]) -> None
+
+   Run a simulation and display results.
+
+
+.. py:function:: render(_argv: list[str], stdout: IO[str], _stderr: IO[str]) -> None
+
+   Render an empty board.
+
+
+.. py:function:: example(argv: list[str], stdout: IO[str], stderr: IO[str]) -> None
+
+   Execute the example script, which just writes some input to its outputs.
+
+
+.. py:function:: cli(script: str) -> None
+
+   Run the main routine for the named script.
+
+   :param script: Name of the script to execute
+   :type script: str
+
+

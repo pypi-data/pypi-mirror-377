@@ -1,0 +1,173 @@
+Version 0.3.0     17 Sep 2025
+
+	* Add information about the Python runtime to suite output.
+	* Add a new 'suite -f' command to run faster subset of the suite.
+	* Upgrade to poetry-dynamic-versioning v1.9.1 for minor fixes.
+	* Add .python-version in preferred order to support pyenv.
+	* Add Sphinx configuration path to .readthedocs.yml.
+	* Migrate to Read the Docs integration via the new GitHub App.
+	* Version profiles_settings.xml to control PyCharm inspection profile.
+	* Adjust GHA build process to allow builds for stacked PRs.
+	* Add a new `run clean` target to clean up generated data.
+	* Move unit tests from `tests` into `src/tests/apologies`.
+	* Update the MyPy configuration so we're using latest rules.
+	* Replace black, isort, and pylint with the Ruff formatter and linter.
+	* Address Ruff linter warnings and modernize the code to 2025 standards.
+	* Remove importlib-metadata dependency in favor of standard library.
+	* Update all dependencies and outdated constraints.
+
+Version 0.2.1     08 Jan 2025
+
+	* Adjust pyproject.toml comments to fix pip build at readthedocs.
+
+Version 0.2.0     08 Jan 2025
+
+	* Migrate to Poetry v2 and project-managed Poetry plugins.
+	* Move configuration into pyproject.toml for pytest, mypy & coverage.
+	* Upgrade to gha-shared-workflows@v8 for Poetry v2 support.
+	* Migrate from pendulum to arrow for dates (interface change).
+	* Update all dependencies and outdated constraints.
+
+Version 0.1.56     02 Jan 2025
+
+	* Pull in latest version of run-script-framework.
+	* Fix some leftover references to the master branch.
+
+Version 0.1.55     01 Jan 2025
+
+	* Add GitHub security policy in SECURITY.md.
+	* Pull in latest version of run-script-framework.
+	* Update dependencies to address Dependabot warnings.
+	* Rename pytest.ini to .pytest.ini for a cleaner repo listing.
+	* Change the default branch in GitHub from master to main.
+
+Version 0.1.54     17 Dec 2024
+
+	* Upgrade to gha-shared-workflows@v7 with publish improvements.
+
+Version 0.1.50     15 Oct 2024
+
+	* Simplify GHA integration with coveralls.io.
+	* Pull in latest updates from run-script-framework.
+	* Update transitive dependencies to address Dependabot warnings.
+	* Add support for Python v3.13 and drop support for v3.9.
+	* Upgrade to Poetry v1.8.4 for official Python 3.13 support.
+
+Version 0.1.49     18 Mar 2024
+
+	* Updates to GHA workflows.
+
+Version 0.1.48     26 Feb 2024
+
+	* Minor improvements to unit tests based on code review.
+	* Upgrade to Poetry v1.8.0 and make related adjustments.
+	* Disable Python keyring via poetry.toml.
+	* Update Poetry install instructions in DEVELOPER.md.
+	* Pull in latest version of run-script-framework.
+	* Upgrade to gha-shared-workflows@v4 with new Poetry setup.
+	* Add support for 'run outdated' and update dependencies.
+
+Version 0.1.47     17 Jan 2024
+
+	* Update jinja2 to address CVE-2024-22195 from Dependabot.
+
+Version 0.1.46     05 Nov 2023
+
+	* Update urllib3 to address Dependabot warnings.
+	* Upgrade to Poetry v1.7.0 for official Python 3.12 support.
+
+Version 0.1.45     15 Oct 2023
+
+	* Upgrade major dependencies.
+	* Upgrade build process to Poetry v1.6.1.
+	* Add support for Python v3.12 and drop support for v3.8.
+
+Version 0.1.44     07 Jun 2023
+
+	* Fix checktabs to be safe for file named '-'
+	* Upgrade to Poetry v1.5.1 and update other dependencies.
+
+Version 0.1.43     26 Feb 2023
+
+	* Upgrade all dependencies to the latest major version.
+	* Drop support for Python 3.7; many dependencies are now doing the same.
+	* Pull Sphinx fields from metadata rather than parsing pyproject.toml.
+
+Version 0.1.42     30 Dec 2022
+
+	* Convert to latest readthedocs.io standard.
+
+Version 0.1.41     30 Dec 2022
+
+	* Bump up to final @v3 version of shared workflows.
+	* Add new hidden 'run dch' command to generate new Changelog entry.
+	* Add NOTICE file to sdist, alongside existing LICENSE file.
+
+Version 0.1.40     30 Dec 2022
+
+	* Adjust GHA build to run MacOS and Windows tests only on latest Python.
+	* Automate the existing manual release process using GitHub Actions.
+	* Pull in updates from run-sync-framework to reflect new process.
+
+Version 0.1.39     24 Oct 2022
+
+	* Pull in updates from run-sync-framework.
+
+Version 0.1.38     23 Oct 2022
+
+	* Refactor the run script and pre-commit hooks to reduce duplication.
+	* Rework the GitHub Actions build process to pull out shared code.
+
+Version 0.1.37     03 Sep 2022
+
+	* Upgrade to Poetry v1.2.0 and make related build process changes.
+	* Upgrade to Pylint v2.15.0 and make related changes to configuration
+	* Fix Pylint's configured class-attribute-naming-style to be snake_case.
+	* Adjust Black configuration to target Python 3.7, 3.8, 3.9, and 3.10.
+	* Add dependency caching to GitHub Actions workflow.
+	* Fix the GitHub Actions matrix build to properly target Windows and MacOS.
+	* Make improvements to the curses-based demo and test it in the tox suite.
+	* Address annoying PyUnresolvedReferences warnings in PyCharm.
+
+Version 0.1.36     08 Jun 2022
+
+	* Modernize usage of attrs library.
+
+Version 0.1.35     30 Apr 2022
+
+	* Adjust the pyproject.toml include directive to limit what goes into wheel.
+	* Remove the Safety scanner from the pre-commit hooks and GitHub action.
+
+Version 0.1.34     14 Nov 2021
+
+	* Adjust dependencies and build process to support Python 3.10.
+	* Run test suite with python-testdox for more verbose output.
+
+Version 0.1.33     17 Feb 2021
+
+	* Standardize the format of the Apache v2 statement in LICENSE.
+
+Version 0.1.31     07 Feb 2021
+
+	* Publish coverage data to coveralls.io in GitHub workflow.
+
+Version 0.1.30     07 Feb 2021
+
+	* Update build process to include security scans using Safety.
+	* Make other structural improvements to the build process.
+
+Version 0.1.29     17 Jan 2021
+
+	* Fix typo in DEVELOPER.md, submitted by @billykern.
+	* Improve and cleanup the Windows and PyCharm build process.
+	* Update build system to use poetry.core, submitted by @Spectre5.
+	* Fix the GitHub test suite by adding Python version into cache id.
+	* Update isort to use the new black profile, submitted by @Spectre5.
+	* Move to newer versions of various build dependencies (black, Sphinx, etc.).
+	* Standardize on UNIX line endings in Git working copy and PyPI package.
+	* Make improvements to Read the Docs integration, including a PR merge gate.
+	* Clean up badges shown in documentation, so they are links to something sane.
+	* Make improvements to the MyPy and Pylint configuration.
+	* Move to a new two-step release process based on cedar-backup3.
+	* Create a changelog for the first time, along with new release process.
+

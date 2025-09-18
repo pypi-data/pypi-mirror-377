@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: apologies
+Version: 0.3.0
+Summary: Python code to play a game similar to Sorry
+License-Expression: Apache-2.0
+License-File: LICENSE
+License-File: NOTICE
+Author: Kenneth J. Pronovici
+Author-email: pronovic@ieee.org
+Requires-Python: >=3.10,<4
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Games/Entertainment :: Board Games
+Classifier: Topic :: Software Development :: Libraries
+Provides-Extra: docs
+Requires-Dist: arrow (>=1.3.0,<2.0.0)
+Requires-Dist: attrs (>=24.2.0)
+Requires-Dist: cattrs (>=24.1.2)
+Requires-Dist: sphinx (>=8.1.3,<9.0.0) ; extra == "docs"
+Requires-Dist: sphinx-autoapi (>=3.3.3,<4.0.0) ; extra == "docs"
+Project-URL: Homepage, https://pypi.org/project/apologies/
+Project-URL: Repository, https://github.com/pronovic/apologies
+Description-Content-Type: text/markdown
+
+# Apologies Python Library
+
+[![pypi](https://img.shields.io/pypi/v/apologies.svg)](https://pypi.org/project/apologies/)
+[![license](https://img.shields.io/pypi/l/apologies.svg)](https://github.com/pronovic/apologies/blob/main/LICENSE)
+[![wheel](https://img.shields.io/pypi/wheel/apologies.svg)](https://pypi.org/project/apologies/)
+[![python](https://img.shields.io/pypi/pyversions/apologies.svg)](https://pypi.org/project/apologies/)
+[![Test Suite](https://github.com/pronovic/apologies/workflows/Test%20Suite/badge.svg)](https://github.com/pronovic/apologies/actions?query=workflow%3A%22Test+Suite%22)
+[![docs](https://readthedocs.org/projects/apologies/badge/?version=stable&style=flat)](https://apologies.readthedocs.io/en/stable/)
+[![coverage](https://coveralls.io/repos/github/pronovic/apologies/badge.svg?branch=main)](https://coveralls.io/github/pronovic/apologies?branch=main)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+
+[Apologies](https://github.com/pronovic/apologies) is a Python library that implements a game similar to the [Sorry](https://en.wikipedia.org/wiki/Sorry!_(game)) board game.  On UNIX-like platforms, it includes a console demo that plays the game with automated players, intended for use by developers and not by end users.  See the [documentation](https://apologies.readthedocs.io/en/stable) for notes about the public interface.
+
+It was written as a learning exercise and technology demonstration effort, and
+serves as a complete example of how to manage a modern (circa 2020) Python
+project, including style checks, code formatting, integration with IntelliJ, CI
+builds at GitHub, and integration with PyPI and Read the Docs.
+

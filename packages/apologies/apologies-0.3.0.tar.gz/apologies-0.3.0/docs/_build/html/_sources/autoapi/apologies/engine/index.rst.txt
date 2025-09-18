@@ -1,0 +1,213 @@
+apologies.engine
+================
+
+.. py:module:: apologies.engine
+
+.. autoapi-nested-parse::
+
+   Game engine that coordinates character actions to play a game.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: Character
+
+   A character that plays a game, which could be a person or could be computer-driven.
+
+   .. attribute:: name
+
+      The name of this character
+
+      :type: str
+
+   .. attribute:: source
+
+      The character input source from which moves are taken
+
+      :type: CharacterInputSource
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: source
+      :type:  apologies.source.CharacterInputSource
+
+
+   .. py:method:: choose_move(mode: apologies.game.GameMode, view: apologies.game.PlayerView, legal_moves: list[apologies.rules.Move], evaluator: collections.abc.Callable[[apologies.game.PlayerView, apologies.rules.Move], apologies.game.PlayerView]) -> apologies.rules.Move
+
+      Choose the next move for a character via the user input source.
+
+      :param mode: Game mode
+      :type mode: GameMode
+      :param view: Player-specific view of the game
+      :type view: PlayerView
+      :param legal_moves: The set of legal moves
+      :type legal_moves: Set[Move]
+      :param evaluator: Function to evaluate a move, returning new state
+      :type evaluator: Callable[[PlayerView, Move], PlayerView]
+
+      :returns: The character's next as chosen by the configured source
+      :rtype: Move
+
+
+
+.. py:class:: Engine
+
+   Game engine that coordinates character actions in a game.
+
+   Normally, playing a game via an engine is as simple as::
+
+       engine.start_game()
+       while not engine.completed:
+           state = engine.play_next()
+
+   This synchronously plays a turn for each player, one after another, until
+   the game is complete.  Other, more fine-grained methods exist if you need
+   to structure game play differently for your purposes (for instance, to
+   train a machine learning model or to play the game in an asynchronous
+   event-driven environment).
+
+   .. attribute:: mode
+
+      The game mode
+
+      :type: GameMode
+
+   .. attribute:: characters
+
+      Characters playing the game
+
+      :type: List[Character]
+
+   .. attribute:: first
+
+      The first player, chosen randomly by default
+
+      :type: PlayerColor
+
+
+   .. py:attribute:: mode
+      :type:  apologies.game.GameMode
+
+
+   .. py:attribute:: characters
+      :type:  list[Character]
+
+
+   .. py:attribute:: first
+      :type:  apologies.game.PlayerColor
+
+
+   .. py:property:: players
+      :type: int
+
+
+      Number of players in the game.
+
+
+   .. py:property:: state
+      :type: str
+
+
+      String describing the state of the game.
+
+
+   .. py:property:: game
+      :type: apologies.game.Game
+
+
+      A reference to the underlying game.
+
+
+   .. py:property:: started
+      :type: bool
+
+
+      Whether the game is started.
+
+
+   .. py:property:: completed
+      :type: bool
+
+
+      Whether the game is completed.
+
+
+   .. py:property:: colors
+      :type: dict[apologies.game.PlayerColor, Character]
+
+
+
+   .. py:method:: winner() -> tuple[Character, apologies.game.Player]
+
+      Return the winner of the game, as a tuple of (Character, Player)
+
+
+
+   .. py:method:: reset() -> apologies.game.Game
+
+      Reset game state.
+
+
+
+   .. py:method:: start_game() -> apologies.game.Game
+
+      Start the game, returning game state.
+
+      :returns: Current state of the game.
+      :rtype: Game
+
+
+
+   .. py:method:: next_turn() -> tuple[apologies.game.PlayerColor, Character]
+
+      Get the color and character for the next turn
+      This will give you a different player each time you call it.
+
+
+
+   .. py:method:: play_next() -> apologies.game.Game
+
+      Play the next turn of the game, returning game state as of the end of the turn.
+
+      :returns: Current state of the game.
+      :rtype: Game
+
+
+
+   .. py:method:: draw() -> apologies.game.Card
+
+      Draw a random card from the game's draw pile.
+
+
+
+   .. py:method:: discard(card: apologies.game.Card) -> None
+
+      Discard back to the game's discard pile.
+
+
+
+   .. py:method:: construct_legal_moves(view: apologies.game.PlayerView, card: apologies.game.Card | None = None) -> tuple[apologies.game.Card | None, list[apologies.rules.Move]]
+
+      Construct the legal moves based on a player view, using the passed-in card if provided.
+
+
+
+   .. py:method:: choose_next_move(character: Character, view: apologies.game.PlayerView) -> apologies.rules.Move
+
+      Choose the next move for a character based on a player view.
+
+
+
+   .. py:method:: execute_move(color: apologies.game.PlayerColor, move: apologies.rules.Move) -> bool
+
+      Execute a move for a player, returning True if the player's turn is done.
+
+
+

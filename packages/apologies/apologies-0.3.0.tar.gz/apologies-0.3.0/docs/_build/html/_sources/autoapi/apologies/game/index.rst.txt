@@ -1,0 +1,743 @@
+apologies.game
+==============
+
+.. py:module:: apologies.game
+
+.. autoapi-nested-parse::
+
+   Classes that track game state.
+
+   Note that these classes track game state, but do not implement game rules.  The
+   only validations are to prevent changes that literally cannot be represented in
+   game state, such as selecting an invalid square.  All other rules (such as the
+   restriction that only one pawn can occupy a space, or the act of sliding down a
+   slider, etc.) are implemented in the rules module, using the methods available on these
+   classes.
+
+   In many cases, private attributes are accessible in the constructor to support
+   serialization and deserialization.  In general, callers should not pass in optional
+   constructor arguments and should not modify public attributes if an alternate method
+   is available for use.
+
+   .. attribute:: MIN_PLAYERS
+
+      Minimum number of players in a game
+
+      :type: int
+
+   .. attribute:: MAX_PLAYERS
+
+      Maximum number of players in a game
+
+      :type: int
+
+   .. attribute:: PAWNS
+
+      Number of pawns per player
+
+      :type: int
+
+   .. attribute:: SAFE_SQUARES
+
+      Number of safe squares for each color
+
+      :type: int
+
+   .. attribute:: BOARD_SQUARES
+
+      Number of squares around the outside of the board
+
+      :type: int
+
+   .. attribute:: ADULT_HAND
+
+      Number of cards in a player's hand for an adult mode game
+
+      :type: int
+
+   .. attribute:: DECK_COUNTS
+
+      Dictionary from card name to number of cards in a standard deck
+
+      :type: Dict[Card, int]
+
+   .. attribute:: DECK_SIZE
+
+      The total expected size of a complete deck
+
+      :type: int
+
+   .. attribute:: DRAW_AGAIN
+
+      Whether each card results in a draw again action
+
+      :type: Dict[Card, bool]
+
+   .. attribute:: CIRCLE
+
+      The position of the start circle for each color
+
+      :type: Dict[PlayerColor, Position]
+
+   .. attribute:: TURN
+
+      The position of the turn square for each color, where forward movement turns into safe zone
+
+      :type: Dict[PlayerColor, Position()
+
+   .. attribute:: SLIDE
+
+      The slide start/end squares for each color
+
+      :type: Dict[PlayerColor, Tuple(int, int)
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: MIN_PLAYERS
+   :value: 2
+
+
+.. py:data:: MAX_PLAYERS
+   :value: 4
+
+
+.. py:data:: PAWNS
+   :value: 4
+
+
+.. py:data:: SAFE_SQUARES
+   :value: 5
+
+
+.. py:data:: BOARD_SQUARES
+   :value: 60
+
+
+.. py:class:: GameMode
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Available game play modes.
+
+
+   .. py:attribute:: STANDARD
+      :value: 'Standard'
+
+
+
+   .. py:attribute:: ADULT
+      :value: 'Adult'
+
+
+
+.. py:class:: PlayerColor
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Enumeration of all player colors, listed in order of use.
+
+
+   .. py:attribute:: RED
+      :value: 'Red'
+
+
+
+   .. py:attribute:: YELLOW
+      :value: 'Yellow'
+
+
+
+   .. py:attribute:: GREEN
+      :value: 'Green'
+
+
+
+   .. py:attribute:: BLUE
+      :value: 'Blue'
+
+
+
+.. py:class:: CardType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   All legal types of cards.
+
+   The "A" card (CARD_APOLOGIES) is like the "Sorry" card in the original game.
+
+
+   .. py:attribute:: CARD_1
+      :value: '1'
+
+
+
+   .. py:attribute:: CARD_2
+      :value: '2'
+
+
+
+   .. py:attribute:: CARD_3
+      :value: '3'
+
+
+
+   .. py:attribute:: CARD_4
+      :value: '4'
+
+
+
+   .. py:attribute:: CARD_5
+      :value: '5'
+
+
+
+   .. py:attribute:: CARD_7
+      :value: '7'
+
+
+
+   .. py:attribute:: CARD_8
+      :value: '8'
+
+
+
+   .. py:attribute:: CARD_10
+      :value: '10'
+
+
+
+   .. py:attribute:: CARD_11
+      :value: '11'
+
+
+
+   .. py:attribute:: CARD_12
+      :value: '12'
+
+
+
+   .. py:attribute:: CARD_APOLOGIES
+      :value: 'A'
+
+
+
+.. py:data:: ADULT_HAND
+   :value: 5
+
+
+.. py:data:: DECK_COUNTS
+
+.. py:data:: DECK_SIZE
+
+.. py:data:: DRAW_AGAIN
+
+.. py:class:: Card
+
+   A card in a deck or in a player's hand.
+
+   .. attribute:: id
+
+      Unique identifier for this card
+
+      :type: str
+
+   .. attribute:: cardtype
+
+      The type of the card
+
+      :type: CardType
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: cardtype
+      :type:  CardType
+
+
+.. py:class:: Deck
+
+   The deck of cards associated with a game.
+
+   Callers should not pass in constructor arguments. These are accessible to
+   support serialization and deserialization.
+
+
+   .. py:method:: draw() -> Card
+
+      Draw a random card from the draw pile.
+
+
+
+   .. py:method:: discard(card: Card) -> None
+
+      Discard back to the discard pile.
+
+
+
+.. py:class:: Position
+
+   The position of a pawn on the board.
+
+   Callers should not pass in or directly modify the start, home, safe, or square
+   attributes.  These are accessible to support serialization and deserialization.
+   Instead, use the provided methods to safely modify the object in-place.
+
+   .. attribute:: start
+
+      Whether this pawn resides in its start area
+
+      :type: boolean
+
+   .. attribute:: home
+
+      Whether this pawn resides in its home area
+
+      :type: boolean
+
+   .. attribute:: safe
+
+      Zero-based index of the square in the safe area where this pawn resides
+
+      :type: int
+
+   .. attribute:: square
+
+      Zero-based index of the square on the board where this pawn resides
+
+      :type: int
+
+
+   .. py:attribute:: start
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: home
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: safe
+      :type:  int | None
+      :value: None
+
+
+
+   .. py:attribute:: square
+      :type:  int | None
+      :value: None
+
+
+
+   .. py:method:: __str__() -> str
+
+
+   .. py:method:: copy() -> Position
+
+      Return a fully-independent copy of the position.
+
+
+
+   .. py:method:: move_to_position(position: Position) -> Position
+
+      Move the pawn to a specific position on the board.
+
+      :returns: A reference to the position, for chaining
+      :rtype: Position
+
+      :raises ValueError: If the position is invalid
+
+
+
+   .. py:method:: move_to_start() -> Position
+
+      Move the pawn back to its start area.
+
+      :returns: A reference to the position, for chaining
+      :rtype: Position
+
+      :raises ValueError: If the position is invalid
+
+
+
+   .. py:method:: move_to_home() -> Position
+
+      Move the pawn to its home area.
+
+      :returns: A reference to the position, for chaining
+      :rtype: Position
+
+      :raises ValueError: If the position is invalid
+
+
+
+   .. py:method:: move_to_safe(square: int) -> Position
+
+      Move the pawn to a square in its safe area.
+
+      :param square: Zero-based index of the square in the safe area
+      :type square: int
+
+      :returns: A reference to the position, for chaining
+      :rtype: Position
+
+      :raises ValueError: If the square is not valid
+
+
+
+   .. py:method:: move_to_square(square: int) -> Position
+
+      Move the pawn to a square on the board.
+
+      :param square: Zero-based index of the square on the board where this pawn resides
+      :type square: int
+
+      :returns: A reference to the position, for chaining
+      :rtype: Position
+
+      :raises ValueError: If the square is not valid
+
+
+
+.. py:class:: Pawn
+
+   A pawn on the board, belonging to a player.
+
+   Callers should not pass in the position attribute.  This is accessible
+   to support serialization and deserialization. Instead, use the provided
+   methods to safely modify the position in-place.
+
+   .. attribute:: color
+
+      The color of this pawn
+
+      :type: str
+
+   .. attribute:: index
+
+      Zero-based index of this pawn for a given user
+
+      :type: int
+
+   .. attribute:: name
+
+      The full name of this pawn as "colorindex"
+
+      :type: str
+
+   .. attribute:: position
+
+      The position of this pawn on the board
+
+      :type: Position
+
+
+   .. py:attribute:: color
+      :type:  PlayerColor
+
+
+   .. py:attribute:: index
+      :type:  int
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: position
+      :type:  Position
+
+
+   .. py:method:: __str__() -> str
+
+
+.. py:class:: Player
+
+   A player, which has a color and a set of pawns.
+
+   Callers should not pass in the hand and pawns constructor arguments.  These
+   are accessible to support serialization and deserialization.
+
+   .. attribute:: color
+
+      The color of the player
+
+      :type: str
+
+   .. attribute:: hand
+
+      List of cards in the player's hand
+
+      :type: List[Card]
+
+   .. attribute:: pawns
+
+      List of all pawns belonging to the player
+
+      :type: List[Pawn]
+
+   .. attribute:: turns
+
+      Number of turns for this player
+
+      :type: int
+
+
+   .. py:attribute:: color
+      :type:  PlayerColor
+
+
+   .. py:attribute:: hand
+      :type:  list[Card]
+
+
+   .. py:attribute:: pawns
+      :type:  list[Pawn]
+
+
+   .. py:attribute:: turns
+      :type:  int
+      :value: 0
+
+
+
+   .. py:method:: copy() -> Player
+
+      Return a fully-independent copy of the player.
+
+
+
+   .. py:method:: public_data() -> Player
+
+      Return a fully-independent copy of the player with only public data visible.
+
+
+
+   .. py:method:: find_first_pawn_in_start() -> Pawn | None
+
+      Find the first pawn in the start area, if any.
+
+
+
+   .. py:method:: all_pawns_in_home() -> bool
+
+      Whether all of this user's pawns are in home.
+
+
+
+.. py:class:: History
+
+   Tracks an action taken during the game.
+
+   .. attribute:: action
+
+      String describing the action
+
+      :type: str
+
+   .. attribute:: color
+
+      Color of the player associated with the action
+
+      :type: Optional[PlayerColor]
+
+   .. attribute:: card
+
+      Card associated with the action
+
+      :type: Optional[CardType]
+
+   .. attribute:: timestamp
+
+      Timestamp tied to the action (defaults to current time)
+
+      :type: Arrow
+
+
+   .. py:attribute:: action
+      :type:  str
+
+
+   .. py:attribute:: color
+      :type:  PlayerColor | None
+      :value: None
+
+
+
+   .. py:attribute:: card
+      :type:  CardType | None
+      :value: None
+
+
+
+   .. py:attribute:: timestamp
+      :type:  arrow.Arrow
+
+
+   .. py:method:: __str__() -> str
+
+
+.. py:class:: PlayerView
+
+   A player-specific view of the game, showing only the information a player would have available on their turn.
+
+   .. attribute:: player
+
+      The player associated with the view.
+
+      :type: Player
+
+   .. attribute:: opponents
+
+      The player's opponents, with private information stripped
+
+      :type: Dict[PlayerColor, Player]
+
+
+   .. py:attribute:: player
+      :type:  Player
+
+
+   .. py:attribute:: opponents
+      :type:  dict[PlayerColor, Player]
+
+
+   .. py:method:: copy() -> PlayerView
+
+      Return a fully-independent copy of the player view.
+
+
+
+   .. py:method:: get_pawn(prototype: Pawn) -> Pawn | None
+
+      Return the pawn from this view with the same color and index.
+
+
+
+   .. py:method:: all_pawns() -> list[Pawn]
+
+      Return a list of all pawns on the board.
+
+
+
+.. py:class:: Game
+
+   The game, consisting of state for a set of players.
+
+   Callers should not pass in optional constructor arguments.  These are accessible
+   to support serialization and deserialization.
+
+   .. attribute:: playercount
+
+      Number of players in the game
+
+      :type: int
+
+   .. attribute:: players
+
+      All players in the game
+
+      :type: Dict[PlayerColor, Player]
+
+   .. attribute:: deck
+
+      The deck of cards for the game
+
+      :type: Deck
+
+   .. attribute:: history
+
+      Game history
+
+      :type: History
+
+
+   .. py:attribute:: playercount
+      :type:  int
+
+
+   .. py:attribute:: players
+      :type:  dict[PlayerColor, Player]
+
+
+   .. py:attribute:: deck
+      :type:  Deck
+
+
+   .. py:attribute:: history
+      :type:  list[History]
+
+
+   .. py:property:: started
+      :type: bool
+
+
+      Whether the game has been started.
+
+
+   .. py:property:: completed
+      :type: bool
+
+
+      Whether the game is completed.
+
+
+   .. py:property:: winner
+      :type: Player
+
+
+      The winner of the game, if any.
+
+
+   .. py:method:: copy() -> Game
+
+      Return a fully-independent copy of the game.
+
+
+
+   .. py:method:: to_json() -> str
+
+      Serialize the game state to JSON.
+
+
+
+   .. py:method:: from_json(data: str) -> Game
+      :staticmethod:
+
+
+      Deserialize the game state from JSON.
+
+
+
+   .. py:method:: track(action: str, player: Player | None = None, card: Card | None = None) -> None
+
+      Tracks an action taken during the game.
+
+
+
+   .. py:method:: create_player_view(color: PlayerColor) -> PlayerView
+
+      Return a player-specific view of the game, showing only the information a player would have available on their turn.
+
+
+
+.. py:data:: CIRCLE
+
+.. py:data:: TURN
+
+.. py:data:: SLIDE
+

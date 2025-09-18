@@ -1,0 +1,156 @@
+tests.apologies.test_game
+=========================
+
+.. py:module:: tests.apologies.test_game
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: TestCard
+
+   .. py:method:: test_constructor()
+
+
+.. py:class:: TestDeck
+
+   .. py:method:: test_constructor()
+
+
+   .. py:method:: test_draw_and_discard()
+
+
+.. py:class:: TestPosition
+
+   .. py:method:: test_constructor()
+
+
+   .. py:method:: test_copy()
+
+
+   .. py:method:: test_move_to_position_valid_start()
+
+
+   .. py:method:: test_move_to_position_valid_home()
+
+
+   .. py:method:: test_move_to_position_valid_safe()
+
+
+   .. py:method:: test_move_to_position_valid_square()
+
+
+   .. py:method:: test_move_to_position_invalid_multiple()
+
+
+   .. py:method:: test_move_to_position_invalid_none()
+
+
+   .. py:method:: test_move_to_position_invalid_safe()
+
+
+   .. py:method:: test_move_to_position_invalid_square()
+
+
+   .. py:method:: test_move_to_start()
+
+
+   .. py:method:: test_move_to_home()
+
+
+   .. py:method:: test_move_to_safe_valid()
+
+
+   .. py:method:: test_move_to_safe_invalid()
+
+
+   .. py:method:: test_move_to_square_valid()
+
+
+   .. py:method:: test_move_to_square_invalid()
+
+
+.. py:class:: TestPawn
+
+   .. py:method:: test_constructor()
+
+
+   .. py:method:: test_constructor_with_name()
+
+
+.. py:class:: TestPlayer
+
+   .. py:method:: test_constructor()
+
+
+   .. py:method:: test_copy()
+
+
+   .. py:method:: test_find_first_pawn_in_start()
+
+
+   .. py:method:: test_all_pawns_in_home()
+
+
+.. py:class:: TestHistory
+
+   .. py:method:: test_constructor()
+
+
+   .. py:method:: test_str()
+
+
+.. py:class:: TestPlayerView
+
+   .. py:method:: test_constructor()
+
+
+   .. py:method:: test_copy()
+
+
+   .. py:method:: test_get_pawn()
+
+
+   .. py:method:: test_all_pawns()
+
+
+.. py:class:: TestGame
+
+   .. py:method:: test_constructor_2_players_standard()
+
+
+   .. py:method:: test_constructor_3_players_standard()
+
+
+   .. py:method:: test_constructor_4_players_standard()
+
+
+   .. py:method:: test_constructor_invalid_players()
+
+
+   .. py:method:: test_started()
+
+
+   .. py:method:: test_completed_and_winner()
+
+
+   .. py:method:: test_copy()
+
+
+   .. py:method:: test_json_roundtrip()
+
+
+   .. py:method:: test_track_no_player()
+
+
+   .. py:method:: test_track_with_color()
+
+
+   .. py:method:: test_create_player_view_invalid()
+
+
+   .. py:method:: test_create_player_view()
+
+

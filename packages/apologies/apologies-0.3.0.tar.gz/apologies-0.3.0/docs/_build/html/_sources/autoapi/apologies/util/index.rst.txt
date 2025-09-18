@@ -1,0 +1,60 @@
+apologies.util
+==============
+
+.. py:module:: apologies.util
+
+.. autoapi-nested-parse::
+
+   Utility functionality.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: ISO_TIME_FORMAT
+   :value: 'HH:mm:ss'
+
+
+.. py:data:: ISO_TIMESTAMP_FORMAT
+   :value: 'YYYY-MM-DD[T]HH:mm:ssZZ'
+
+
+.. py:class:: CattrConverter
+
+   Bases: :py:obj:`cattrs.GenConverter`
+
+
+   Cattr converter that knows how to correctly serialize/deserialize DateTime to an ISO 8601 timestamp.
+
+
+.. py:data:: T
+
+   Generic type
+
+.. py:class:: CircularQueue
+
+   Bases: :py:obj:`Generic`\ [\ :py:obj:`T`\ ]
+
+
+   A circular queue that keeps returning the original entries repeatedly, in order.
+
+
+   .. py:attribute:: entries
+      :type:  list[T]
+
+
+   .. py:attribute:: first
+      :type:  T
+
+
+   .. py:method:: next() -> T
+
+      Get the next entry from the queue.
+
+
+

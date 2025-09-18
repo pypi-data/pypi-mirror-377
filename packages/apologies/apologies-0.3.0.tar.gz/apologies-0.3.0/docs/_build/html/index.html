@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Apologies Python Library &#8212; apologies 0.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <script src="_static/documentation_options.js?v=e259d695"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="apologies-python-library">
+<h1>Apologies Python Library<a class="headerlink" href="#apologies-python-library" title="Link to this heading">¶</a></h1>
+<p>Release v0.3.0</p>
+<a class="reference external image-reference" href="https://pypi.org/project/apologies/"><img alt="https://img.shields.io/pypi/v/apologies.svg" src="https://img.shields.io/pypi/v/apologies.svg" />
+</a>
+<a class="reference external image-reference" href="https://github.com/pronovic/apologies/blob/main/LICENSE"><img alt="https://img.shields.io/pypi/l/apologies.svg" src="https://img.shields.io/pypi/l/apologies.svg" />
+</a>
+<a class="reference external image-reference" href="https://pypi.org/project/apologies/"><img alt="https://img.shields.io/pypi/wheel/apologies.svg" src="https://img.shields.io/pypi/wheel/apologies.svg" />
+</a>
+<a class="reference external image-reference" href="https://pypi.org/project/apologies/"><img alt="https://img.shields.io/pypi/pyversions/apologies.svg" src="https://img.shields.io/pypi/pyversions/apologies.svg" />
+</a>
+<a class="reference external image-reference" href="https://github.com/pronovic/apologies/actions?query=workflow%3A%22Test+Suite%22"><img alt="https://github.com/pronovic/apologies/workflows/Test%20Suite/badge.svg" src="https://github.com/pronovic/apologies/workflows/Test%20Suite/badge.svg" />
+</a>
+<a class="reference external image-reference" href="https://apologies.readthedocs.io/en/stable/"><img alt="https://readthedocs.org/projects/apologies/badge/?version=stable&amp;style=flat" src="https://readthedocs.org/projects/apologies/badge/?version=stable&amp;style=flat" />
+</a>
+<a class="reference external image-reference" href="https://coveralls.io/github/pronovic/apologies?branch=main"><img alt="https://coveralls.io/repos/github/pronovic/apologies/badge.svg?branch=main" src="https://coveralls.io/repos/github/pronovic/apologies/badge.svg?branch=main" />
+</a>
+<p><a class="reference external" href="https://pypi.org/project/apologies">Apologies</a> is a Python library that implements a game similar to the <a class="reference external" href="https://en.wikipedia.org/wiki/Sorry!_(game)">Sorry</a>
+board game.  On UNIX-like platforms, it includes a console demo that plays the
+game with automated players, intended for use by developers and not by end
+users.</p>
+<p>It was written as a learning exercise and technology demonstration effort, and
+serves as a complete example of how to manage a modern (circa 2020) Python
+project, including style checks, code formatting, integration with IntelliJ, CI
+builds at GitHub, and integration with PyPI and Read the Docs.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>Install the package with pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install apologies
+</pre></div>
+</div>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+</div>
+<p>Commonly-used classes are imported into
+<a class="reference external" href="https://github.com/pronovic/apologies/blob/main/src/apologies/__init__.py">__init__.py</a>
+to flatten the namespace and make the library easier to use.  In general, you
+should follow the examples below and import classes directly from
+<code class="docutils literal notranslate"><span class="pre">apologies</span></code>, rather than importing from submodules.</p>
+</section>
+<section id="playing-a-game">
+<h2>Playing a Game<a class="headerlink" href="#playing-a-game" title="Link to this heading">¶</a></h2>
+<p>In the Apologies system, a <cite>Game</cite> is played by one or more <cite>Characters</cite>.</p>
+<p>A <cite>Character</cite> can either be human (a <cite>Player Character</cite>) or computer-driven
+(a <cite>Non-Player Character</cite>).  The only difference between a <cite>Player Character</cite>
+and a <cite>Non-Player Character</cite> is the <cite>Character Input Source</cite> tied to the
+character.  A <cite>Character Input Source</cite> is a simply a class that decides how
+to choose between available legal moves.</p>
+<p>The central class in the Apologies system is the <a class="reference external" href="autoapi/apologies/engine/index.html#apologies.engine.Engine">Engine</a>, which coordinates
+game play via a set of <a class="reference external" href="autoapi/apologies/engine/index.html#apologies.engine.Character">Characters</a>.  Game state is maintained in the <a class="reference external" href="autoapi/apologies/game/index.html#apologies.game.Game">Game</a>
+class.  To play a game, you construct an <a class="reference external" href="autoapi/apologies/engine/index.html#apologies.engine.Engine">Engine</a>, providing a <a class="reference external" href="autoapi/apologies/game/index.html#apologies.game.GameMode">GameMode</a> and 2-4
+<a class="reference external" href="autoapi/apologies/engine/index.html#apologies.engine.Character">Characters</a> that will participate in the game.  The engine maintains game state
+and coordinates the actions required to play the game.</p>
+<p>The library comes with several <cite>Character Input Sources</cite>.  The simplest is
+called <a class="reference external" href="autoapi/apologies/source/index.html#apologies.source.RandomInputSource">RandomInputSource</a>, which chooses randomly from among all legal moves.
+<a class="reference external" href="autoapi/apologies/source/index.html#apologies.source.RewardV1InputSource">RewardV1InputSource</a> uses a <a class="reference external" href="autoapi/apologies/reward/index.html">reward</a>-based scheme, choosing the move with the
+highest calculated reward value.  More sophisticated sources can be created by
+implementing the <a class="reference external" href="autoapi/apologies/source/index.html#apologies.source.CharacterInputSource">CharacterInputSource</a> interface.</p>
+<p>If this synchronous, callback-based model does not work well for your
+application, you can use lower-level methods instead, and coordinate game play
+in whatever way works best for you.</p>
+</section>
+<section id="example-code">
+<h2>Example Code<a class="headerlink" href="#example-code" title="Link to this heading">¶</a></h2>
+<p>This is a simple script to play a 2-player, standard-mode game and print
+the results of each move:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">apologies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Character</span><span class="p">,</span> <span class="n">GameMode</span><span class="p">,</span> <span class="n">RandomInputSource</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="s2">&quot;Player 1&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">RandomInputSource</span><span class="p">())</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="s2">&quot;Player 2&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">RandomInputSource</span><span class="p">())</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">GameMode</span><span class="o">.</span><span class="n">STANDARD</span><span class="p">,</span> <span class="n">characters</span><span class="o">=</span><span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">])</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">start_game</span><span class="p">()</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">engine</span><span class="o">.</span><span class="n">completed</span><span class="p">:</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">play_next</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">state</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This example uses the <a class="reference external" href="autoapi/apologies/source/index.html#apologies.source.RandomInputSource">RandomInputSource</a>, which chooses a legal move at random.
+To create an interactive game for human players, you would implement your
+own <a class="reference external" href="autoapi/apologies/source/index.html#apologies.source.CharacterInputSource">CharacterInputSource</a> interface to get user input.</p>
+<p>If this synchronous, callback-based model does not work well for your application,
+you can use lower-level methods to accomplish the same thing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">apologies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Character</span><span class="p">,</span> <span class="n">GameMode</span><span class="p">,</span> <span class="n">NoOpInputSource</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="s2">&quot;Player 1&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">NoOpInputSource</span><span class="p">())</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="s2">&quot;Player 2&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">NoOpInputSource</span><span class="p">())</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">GameMode</span><span class="o">.</span><span class="n">STANDARD</span><span class="p">,</span> <span class="n">characters</span><span class="o">=</span><span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">])</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">start_game</span><span class="p">()</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">engine</span><span class="o">.</span><span class="n">completed</span><span class="p">:</span>
+    <span class="n">color</span><span class="p">,</span> <span class="n">character</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">next_turn</span><span class="p">()</span>
+
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>  <span class="c1"># i.e. player got a draw-again card</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">create_player_view</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">card</span><span class="p">,</span> <span class="n">moves</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">construct_legal_moves</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="n">move</span> <span class="o">=</span> <span class="n">choose_my_move</span><span class="p">(</span><span class="n">moves</span><span class="p">)</span>  <span class="c1"># however you choose a move in your system</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">execute_move</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">move</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">engine</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The steps shown here give you a game equivalent to callback-based game shown
+above.  In a real application, this would not all be done as part of the same
+loop.  Instead, you would take these individual steps and break them up to
+reflect your flow of control.  For instance, after generating the legal moves,
+you might send those moves off to a client and then come back later to execute
+the move chosen by the client.</p>
+</section>
+<section id="running-the-demo">
+<h2>Running the Demo<a class="headerlink" href="#running-the-demo" title="Link to this heading">¶</a></h2>
+<p>While this is primarily a library, it includes a quick’n’dirty console demo
+that plays a game with 2-4 automated players.  For instructions about how to
+run the demo from codebase itself, see <a class="reference external" href="https://github.com/pronovic/apologies/blob/main/DEVELOPER.md#running-the-demo">DEVELOPER.md</a>.  Otherwise, you can run
+the demo from the installed package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -c &quot;from apologies.cli import cli; cli(&#39;demo&#39;)&quot; --help
+usage: -c [-h] [--players PLAYERS] [--mode {STANDARD,ADULT}] [--source SOURCE]
+          [--delay DELAY]
+
+Run a game with simulated players, displaying output on the terminal.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --players PLAYERS     Number of simulated players in the game
+  --mode {STANDARD,ADULT}
+                        Choose the game mode
+  --source SOURCE       Fully-qualified name of the character source
+  --delay DELAY         Delay between computer-generated moves (fractional
+                        seconds)
+
+By default, the game runs in STANDARD mode with 4 players. A source is a class
+that chooses a player&#39;s move.
+</pre></div>
+</div>
+<p>It’s simplest to run a demo with the default arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -c &quot;from apologies.cli import cli; cli(&#39;demo&#39;)&quot;
+</pre></div>
+</div>
+<p>This runs a really fast game in adult mode with 3 players:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -c &quot;from apologies.cli import cli; cli(&#39;demo&#39;)&quot; -- --players=3 --mode=ADULT --delay=0.1
+</pre></div>
+</div>
+<p>Exit the demo with <cite>CTRL-C</cite>.</p>
+<p><cite>Note:</cite> The demo only works inside a UNIX-style terminal window (like an
+xterm or a MacOS terminal).  It doesn’t work in a Windows console, because it
+relies on the curses terminal library.  Some terminals (like <a class="reference external" href="https://www.iterm2.com/">iTerm2</a>) may
+require extra configuration before the terminal can be resized properly
+(see <a class="reference external" href="https://apple.stackexchange.com/a/47841/249172Z">StackExchange</a>).</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">apologies</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=apologies&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="autoapi/index.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/apologies" class="github">
+        <img src="_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

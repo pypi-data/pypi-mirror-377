@@ -1,0 +1,45 @@
+apologies.demo_unix
+===================
+
+.. py:module:: apologies.demo_unix
+
+.. autoapi-nested-parse::
+
+   Implements a quick'n'dirty game-playing demo using curses.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:exception:: TerminalSizeError(msg)
+
+   Bases: :py:obj:`Exception`
+
+
+   Common base class for all non-exit exceptions.
+
+
+   .. py:attribute:: msg
+
+
+.. py:function:: run_demo(*, players: int, mode: apologies.game.GameMode, source: apologies.source.CharacterInputSource, delay_sec: float, exit_immediately: bool) -> None
+
+   Run the quick'n'dirty demo in a terminal window.
+
+   :param players: Number of players in the game
+   :type players: int
+   :param mode: The game mode
+   :type mode: GameMode
+   :param source: The source to use for choosing player moves
+   :type source: CharacterInputSource
+   :param delay_sec: The delay between turns when executing the game
+   :type delay_sec: float
+   :param exit_immediately: If True, exit immediately when the game is complete
+   :type exit_immediately: bool
+
+

@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: flask_sweetalert2
+Version: 11.23.0.20250916
+Summary: a package to use sweetalert2 in flask
+Author-email: lix <xuzenglin@gmail.com>
+Project-URL: Homepage, https://github.com/lixxu/flask_sweetalert2
+Project-URL: Bug Tracker, https://github.com/lixxu/flask_sweetalert2/issues
+Keywords: sweetalert2
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 5 - Production/Stable
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: flask
+Requires-Dist: flask_topassets
+Dynamic: license-file
+
+# flask-sweetalert2
+
+a package to use sweetalert2 in flask
+
+## installation
+
+```bash
+pip install flask_sweetalert2
+```
+
+## usage
+
+```python
+from flask_sweetalert2 import Sweetalert2
+
+c = Sweetalert2()
+c.init_app(app)
+# or
+# Sweetalert2(app)
+
+# in templates to include css file
+{{ sweetalert2.get_path("css") }}
+
+# in templates to include js file
+{{ sweetalert2.get_path("js") }}
+{{ sweetalert2.get_path("helpers", "js") }}
+
+```

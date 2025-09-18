@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hackerone_app_sdk"
+version = "0.19.1"
+description = "POC package (beacon-only)"
+authors = [{name = "Your Name"}]
+readme = "README.md"
+requires-python = ">=3.6"
+
+[tool.setuptools]
+# This disables wheel building so pip always uses sdist (.tar.gz)

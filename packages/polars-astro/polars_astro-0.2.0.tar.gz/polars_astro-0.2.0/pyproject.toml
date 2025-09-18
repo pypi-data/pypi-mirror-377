@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name="polars_astro"
+version="0.2.0"
+authors = [
+    { name="Matthew Whitaker", email="matthew.w3000@gmail.com" },
+]
+dependencies = [
+    "fitsio",
+    "polars",
+    "numpy",
+]
+description="A package allowing simple interfacing with typical Astronomical data (FITS, numpy) in polars"
+readme="README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Sub6Resources/polars-astro"
+"Issues" = "https://github.com/Sub6Resources/polars-astro/issues"

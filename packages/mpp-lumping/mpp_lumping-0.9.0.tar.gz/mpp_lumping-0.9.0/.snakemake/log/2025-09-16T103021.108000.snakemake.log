@@ -1,0 +1,42 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: bmdiota
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 32
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+plot         2
+total        2
+
+Select jobs to execute...
+Execute 2 jobs...
+[Tue Sep 16 10:30:21 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/kl_js/Z.npy
+    output: data/aSyn/results/kl_js/sankey.pdf
+    jobid: 2
+    reason: Forced execution
+    wildcards: system=aSyn, lumping=kl_js, plot=sankey, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml KL JS -Z data/aSyn/results/kl_js/Z.npy -p sankey -o data/aSyn/results/kl_js/sankey.pdf
+Activating conda environment: mpp
+[Tue Sep 16 10:30:22 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/kl_js/Z.npy
+    output: data/aSyn/results/kl_js/sankey.png
+    jobid: 0
+    reason: Forced execution
+    wildcards: system=aSyn, lumping=kl_js, plot=sankey, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml KL JS -Z data/aSyn/results/kl_js/Z.npy -p sankey -o data/aSyn/results/kl_js/sankey.png
+Activating conda environment: mpp
+[Tue Sep 16 10:30:31 2025]
+Finished jobid: 0 (Rule: plot)
+1 of 2 steps (50%) done
+[Tue Sep 16 10:30:31 2025]
+Finished jobid: 2 (Rule: plot)
+2 of 2 steps (100%) done
+Complete log(s): /data/evaluation/MPP/stochastic_MPP_Felix/MPP/.snakemake/log/2025-09-16T103021.108000.snakemake.log

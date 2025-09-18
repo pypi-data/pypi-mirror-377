@@ -1,0 +1,29 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: bmdiota
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job        count
+-------  -------
+rmsd_CA        1
+total          1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:19:38 2025]
+localrule rmsd_CA:
+    input: data/HP35/input/config.yml, data/HP35/results/js/Z.npy
+    output: data/HP35/results/js/rmsd_CA.npy, data/HP35/results/js/rmsd_CA_mean_frames.ndx
+    jobid: 0
+    reason: Forced execution
+    wildcards: system=HP35, lumping=js
+    resources: tmpdir=/tmp, mem_mb=4041, mem_mib=3854
+Shell command: python -m MPP.run data/HP35/input/config.yml none JS -Z data/HP35/results/js/Z.npy --rmsd data/HP35/results/js/rmsd_CA.npy
+Activating conda environment: mpp
+[Tue Sep 16 13:26:41 2025]
+Finished jobid: 0 (Rule: rmsd_CA)
+1 of 1 steps (100%) done
+Complete log(s): /data/evaluation/MPP/stochastic_MPP_Felix/MPP/.snakemake/log/2025-09-16T131938.377973.snakemake.log

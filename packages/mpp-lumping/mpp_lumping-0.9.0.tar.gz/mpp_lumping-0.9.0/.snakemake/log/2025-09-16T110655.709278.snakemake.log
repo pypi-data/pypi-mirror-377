@@ -1,0 +1,29 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: bmdiota
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+plot         1
+total        1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 11:06:56 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl/Z.npy
+    output: data/HP35/results/kl/rmsd.pdf
+    jobid: 0
+    reason: Missing output files: data/HP35/results/kl/rmsd.pdf
+    wildcards: system=HP35, lumping=kl, plot=rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL none -Z data/HP35/results/kl/Z.npy -p rmsd -o data/HP35/results/kl/rmsd.pdf
+Activating conda environment: mpp
+[Tue Sep 16 11:07:07 2025]
+Finished jobid: 0 (Rule: plot)
+1 of 1 steps (100%) done
+Complete log(s): /data/evaluation/MPP/stochastic_MPP_Felix/MPP/.snakemake/log/2025-09-16T110655.709278.snakemake.log

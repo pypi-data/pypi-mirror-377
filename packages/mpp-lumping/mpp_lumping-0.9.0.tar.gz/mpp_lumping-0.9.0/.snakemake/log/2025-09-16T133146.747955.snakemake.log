@@ -1,0 +1,874 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: bmdiota
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job         count
+--------  -------
+plot           49
+plot_all       11
+total          60
+
+Select jobs to execute...
+Execute 16 jobs...
+[Tue Sep 16 13:31:47 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/sankey.png
+    jobid: 190
+    reason: Missing output files: data/aSyn/results/js/sankey.png
+    wildcards: system=aSyn, lumping=js, plot=sankey, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p sankey -o data/aSyn/results/js/sankey.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t/Z.npy
+    output: data/HP35/results/t/dendrogram.pdf
+    jobid: 57
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=t, plot=dendrogram, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T none -Z data/HP35/results/t/Z.npy -p dendrogram -o data/HP35/results/t/dendrogram.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl/Z.npy
+    output: data/HP35/results/kl/dendrogram.png
+    jobid: 209
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl, plot=dendrogram, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL none -Z data/HP35/results/kl/Z.npy -p dendrogram -o data/HP35/results/kl/dendrogram.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/js/Z.npy
+    output: data/HP35/results/js/delta_rmsd.png
+    jobid: 53
+    reason: Missing output files: data/HP35/results/js/delta_rmsd.png
+    wildcards: system=HP35, lumping=js, plot=delta_rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml none JS -Z data/HP35/results/js/Z.npy -p delta_rmsd -o data/HP35/results/js/delta_rmsd.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t/Z.npy
+    output: data/HP35/results/t/delta_rmsd.png
+    jobid: 71
+    reason: Missing output files: data/HP35/results/t/delta_rmsd.png
+    wildcards: system=HP35, lumping=t, plot=delta_rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T none -Z data/HP35/results/t/Z.npy -p delta_rmsd -o data/HP35/results/t/delta_rmsd.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/gpcca/Z.npy
+    output: data/HP35/results/gpcca/contacts.pdf
+    jobid: 96
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=gpcca, plot=contacts, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml gpcca ref -Z data/HP35/results/gpcca/Z.npy -p contacts -o data/HP35/results/gpcca/contacts.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/dendrogram.png
+    jobid: 191
+    reason: Missing output files: data/aSyn/results/js/dendrogram.png
+    wildcards: system=aSyn, lumping=js, plot=dendrogram, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p dendrogram -o data/aSyn/results/js/dendrogram.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl/Z.npy
+    output: data/HP35/results/kl/ck_test.png
+    jobid: 210
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl, plot=ck_test, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL none -Z data/HP35/results/kl/Z.npy -p ck_test -o data/HP35/results/kl/ck_test.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/macrotraj.png
+    jobid: 195
+    reason: Missing output files: data/aSyn/results/js/macrotraj.png
+    wildcards: system=aSyn, lumping=js, plot=macrotraj, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p macrotraj -o data/aSyn/results/js/macrotraj.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/gpcca/Z.npy
+    output: data/HP35/results/gpcca/macrotraj.pdf
+    jobid: 97
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=gpcca, plot=macrotraj, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml gpcca ref -Z data/HP35/results/gpcca/Z.npy -p macrotraj -o data/HP35/results/gpcca/macrotraj.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/rmsd.pdf
+    jobid: 188
+    reason: Missing output files: data/aSyn/results/js/rmsd.pdf
+    wildcards: system=aSyn, lumping=js, plot=rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p rmsd -o data/aSyn/results/js/rmsd.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/ck_test.png
+    jobid: 192
+    reason: Missing output files: data/aSyn/results/js/ck_test.png
+    wildcards: system=aSyn, lumping=js, plot=ck_test, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p ck_test -o data/aSyn/results/js/ck_test.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/gpcca/Z.npy
+    output: data/HP35/results/gpcca/ck_test.pdf
+    jobid: 94
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=gpcca, plot=ck_test, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml gpcca ref -Z data/HP35/results/gpcca/Z.npy -p ck_test -o data/HP35/results/gpcca/ck_test.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/delta_rmsd.pdf
+    jobid: 189
+    reason: Missing output files: data/aSyn/results/js/delta_rmsd.pdf
+    wildcards: system=aSyn, lumping=js, plot=delta_rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p delta_rmsd -o data/aSyn/results/js/delta_rmsd.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl/Z.npy
+    output: data/HP35/results/kl/sankey.png
+    jobid: 208
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl, plot=sankey, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL none -Z data/HP35/results/kl/Z.npy -p sankey -o data/HP35/results/kl/sankey.png
+Activating conda environment: mpp
+[Tue Sep 16 13:31:48 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/gpcca/Z.npy
+    output: data/aSyn/results/gpcca/ck_test.pdf
+    jobid: 76
+    reason: Missing output files: data/aSyn/results/gpcca/ck_test.pdf
+    wildcards: system=aSyn, lumping=gpcca, plot=ck_test, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml gpcca ref -Z data/aSyn/results/gpcca/Z.npy -p ck_test -o data/aSyn/results/gpcca/ck_test.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:31:59 2025]
+Finished jobid: 208 (Rule: plot)
+1 of 60 steps (2%) done
+Execute 1 jobs...
+[Tue Sep 16 13:31:59 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl_js/Z.npy
+    output: data/HP35/results/kl_js/delta_rmsd.png
+    jobid: 143
+    reason: Missing output files: data/HP35/results/kl_js/delta_rmsd.png
+    wildcards: system=HP35, lumping=kl_js, plot=delta_rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL JS -Z data/HP35/results/kl_js/Z.npy -p delta_rmsd -o data/HP35/results/kl_js/delta_rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:00 2025]
+Finished jobid: 210 (Rule: plot)
+2 of 60 steps (3%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:00 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/contacts.png
+    jobid: 194
+    reason: Missing output files: data/aSyn/results/js/contacts.png
+    wildcards: system=aSyn, lumping=js, plot=contacts, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p contacts -o data/aSyn/results/js/contacts.png
+Activating conda environment: mpp
+[Tue Sep 16 13:32:00 2025]
+Finished jobid: 53 (Rule: plot)
+3 of 60 steps (5%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:00 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t/Z.npy
+    output: data/HP35/results/t/rmsd.pdf
+    jobid: 62
+    reason: Missing output files: data/HP35/results/t/rmsd.pdf
+    wildcards: system=HP35, lumping=t, plot=rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T none -Z data/HP35/results/t/Z.npy -p rmsd -o data/HP35/results/t/rmsd.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:00 2025]
+Finished jobid: 94 (Rule: plot)
+4 of 60 steps (7%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:00 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t/Z.npy
+    output: data/aSyn/results/t/dendrogram.png
+    jobid: 119
+    reason: Missing output files: data/aSyn/results/t/dendrogram.png
+    wildcards: system=aSyn, lumping=t, plot=dendrogram, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T none -Z data/aSyn/results/t/Z.npy -p dendrogram -o data/aSyn/results/t/dendrogram.png
+Activating conda environment: mpp
+[Tue Sep 16 13:32:01 2025]
+Finished jobid: 190 (Rule: plot)
+5 of 60 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:01 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/kl/Z.npy
+    output: data/aSyn/results/kl/contacts.pdf
+    jobid: 6
+    reason: Missing output files: data/aSyn/results/kl/contacts.pdf
+    wildcards: system=aSyn, lumping=kl, plot=contacts, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml KL none -Z data/aSyn/results/kl/Z.npy -p contacts -o data/aSyn/results/kl/contacts.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:01 2025]
+Finished jobid: 97 (Rule: plot)
+6 of 60 steps (10%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:01 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/rmsd.png
+    jobid: 196
+    reason: Missing output files: data/aSyn/results/js/rmsd.png
+    wildcards: system=aSyn, lumping=js, plot=rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p rmsd -o data/aSyn/results/js/rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:03 2025]
+Finished jobid: 71 (Rule: plot)
+7 of 60 steps (12%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:03 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t/Z.npy
+    output: data/aSyn/results/t/ck_test.png
+    jobid: 120
+    reason: Missing output files: data/aSyn/results/t/ck_test.png
+    wildcards: system=aSyn, lumping=t, plot=ck_test, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T none -Z data/aSyn/results/t/Z.npy -p ck_test -o data/aSyn/results/t/ck_test.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:03 2025]
+Finished jobid: 191 (Rule: plot)
+8 of 60 steps (13%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:04 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t/Z.npy
+    output: data/HP35/results/t/delta_rmsd.pdf
+    jobid: 63
+    reason: Missing output files: data/HP35/results/t/delta_rmsd.pdf
+    wildcards: system=HP35, lumping=t, plot=delta_rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T none -Z data/HP35/results/t/Z.npy -p delta_rmsd -o data/HP35/results/t/delta_rmsd.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:32:04 2025]
+Finished jobid: 192 (Rule: plot)
+9 of 60 steps (15%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:04 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t_js/Z.npy
+    output: data/aSyn/results/t_js/rmsd.png
+    jobid: 178
+    reason: Missing output files: data/aSyn/results/t_js/rmsd.png
+    wildcards: system=aSyn, lumping=t_js, plot=rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T JS -Z data/aSyn/results/t_js/Z.npy -p rmsd -o data/aSyn/results/t_js/rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:05 2025]
+Finished jobid: 76 (Rule: plot)
+10 of 60 steps (17%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:05 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/delta_rmsd.png
+    jobid: 197
+    reason: Missing output files: data/aSyn/results/js/delta_rmsd.png
+    wildcards: system=aSyn, lumping=js, plot=delta_rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p delta_rmsd -o data/aSyn/results/js/delta_rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:05 2025]
+Finished jobid: 96 (Rule: plot)
+11 of 60 steps (18%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:05 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/js/Z.npy
+    output: data/HP35/results/js/delta_rmsd.pdf
+    jobid: 45
+    reason: Missing output files: data/HP35/results/js/delta_rmsd.pdf
+    wildcards: system=HP35, lumping=js, plot=delta_rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml none JS -Z data/HP35/results/js/Z.npy -p delta_rmsd -o data/HP35/results/js/delta_rmsd.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:09 2025]
+Finished jobid: 195 (Rule: plot)
+12 of 60 steps (20%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:09 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t/Z.npy
+    output: data/aSyn/results/t/contacts.png
+    jobid: 122
+    reason: Missing output files: data/aSyn/results/t/contacts.png
+    wildcards: system=aSyn, lumping=t, plot=contacts, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T none -Z data/aSyn/results/t/Z.npy -p contacts -o data/aSyn/results/t/contacts.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:10 2025]
+Finished jobid: 209 (Rule: plot)
+13 of 60 steps (22%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:10 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/js/Z.npy
+    output: data/HP35/results/js/sankey.png
+    jobid: 46
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=js, plot=sankey, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml none JS -Z data/HP35/results/js/Z.npy -p sankey -o data/HP35/results/js/sankey.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:13 2025]
+Finished jobid: 63 (Rule: plot)
+14 of 60 steps (23%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:13 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl_js/Z.npy
+    output: data/HP35/results/kl_js/macrotraj.png
+    jobid: 141
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl_js, plot=macrotraj, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL JS -Z data/HP35/results/kl_js/Z.npy -p macrotraj -o data/HP35/results/kl_js/macrotraj.png
+Activating conda environment: mpp
+[Tue Sep 16 13:32:13 2025]
+Finished jobid: 62 (Rule: plot)
+15 of 60 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:13 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/kl/Z.npy
+    output: data/aSyn/results/kl/rmsd.pdf
+    jobid: 8
+    reason: Missing output files: data/aSyn/results/kl/rmsd.pdf
+    wildcards: system=aSyn, lumping=kl, plot=rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml KL none -Z data/aSyn/results/kl/Z.npy -p rmsd -o data/aSyn/results/kl/rmsd.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:13 2025]
+Finished jobid: 119 (Rule: plot)
+16 of 60 steps (27%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:13 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/macrotraj.pdf
+    jobid: 187
+    reason: Missing output files: data/aSyn/results/js/macrotraj.pdf
+    wildcards: system=aSyn, lumping=js, plot=macrotraj, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p macrotraj -o data/aSyn/results/js/macrotraj.pdf
+Activating conda environment: mpp
+[Tue Sep 16 13:32:13 2025]
+Finished jobid: 6 (Rule: plot)
+17 of 60 steps (28%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:13 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/js/Z.npy
+    output: data/HP35/results/js/dendrogram.png
+    jobid: 47
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=js, plot=dendrogram, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml none JS -Z data/HP35/results/js/Z.npy -p dendrogram -o data/HP35/results/js/dendrogram.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:13 2025]
+Finished jobid: 120 (Rule: plot)
+18 of 60 steps (30%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:13 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t/Z.npy
+    output: data/aSyn/results/t/macrotraj.png
+    jobid: 123
+    reason: Missing output files: data/aSyn/results/t/macrotraj.png
+    wildcards: system=aSyn, lumping=t, plot=macrotraj, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T none -Z data/aSyn/results/t/Z.npy -p macrotraj -o data/aSyn/results/t/macrotraj.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:14 2025]
+Finished jobid: 143 (Rule: plot)
+19 of 60 steps (32%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:14 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t/Z.npy
+    output: data/aSyn/results/t/delta_rmsd.pdf
+    jobid: 117
+    reason: Missing output files: data/aSyn/results/t/delta_rmsd.pdf
+    wildcards: system=aSyn, lumping=t, plot=delta_rmsd, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T none -Z data/aSyn/results/t/Z.npy -p delta_rmsd -o data/aSyn/results/t/delta_rmsd.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:14 2025]
+Finished jobid: 194 (Rule: plot)
+20 of 60 steps (33%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:14 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl/Z.npy
+    output: data/HP35/results/kl/contacts.png
+    jobid: 212
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl, plot=contacts, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL none -Z data/HP35/results/kl/Z.npy -p contacts -o data/HP35/results/kl/contacts.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:16 2025]
+Finished jobid: 178 (Rule: plot)
+21 of 60 steps (35%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:16 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/gpcca/Z.npy
+    output: data/aSyn/results/gpcca/macrotraj.pdf
+    jobid: 79
+    reason: Missing output files: data/aSyn/results/gpcca/macrotraj.pdf
+    wildcards: system=aSyn, lumping=gpcca, plot=macrotraj, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml gpcca ref -Z data/aSyn/results/gpcca/Z.npy -p macrotraj -o data/aSyn/results/gpcca/macrotraj.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:18 2025]
+Finished jobid: 45 (Rule: plot)
+22 of 60 steps (37%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:18 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t_js/Z.npy
+    output: data/aSyn/results/t_js/ck_test.png
+    jobid: 174
+    reason: Missing output files: data/aSyn/results/t_js/ck_test.png
+    wildcards: system=aSyn, lumping=t_js, plot=ck_test, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T JS -Z data/aSyn/results/t_js/Z.npy -p ck_test -o data/aSyn/results/t_js/ck_test.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:19 2025]
+Finished jobid: 122 (Rule: plot)
+23 of 60 steps (38%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:19 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/kl/Z.npy
+    output: data/aSyn/results/kl/sankey.png
+    jobid: 10
+    reason: Missing output files: data/aSyn/results/kl/sankey.png
+    wildcards: system=aSyn, lumping=kl, plot=sankey, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml KL none -Z data/aSyn/results/kl/Z.npy -p sankey -o data/aSyn/results/kl/sankey.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:20 2025]
+Finished jobid: 46 (Rule: plot)
+24 of 60 steps (40%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:20 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl_js/Z.npy
+    output: data/HP35/results/kl_js/dendrogram.pdf
+    jobid: 129
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl_js, plot=dendrogram, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL JS -Z data/HP35/results/kl_js/Z.npy -p dendrogram -o data/HP35/results/kl_js/dendrogram.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:22 2025]
+Finished jobid: 57 (Rule: plot)
+25 of 60 steps (42%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:22 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/js/Z.npy
+    output: data/aSyn/results/js/contacts.pdf
+    jobid: 186
+    reason: Missing output files: data/aSyn/results/js/contacts.pdf
+    wildcards: system=aSyn, lumping=js, plot=contacts, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml none JS -Z data/aSyn/results/js/Z.npy -p contacts -o data/aSyn/results/js/contacts.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:25 2025]
+Finished jobid: 117 (Rule: plot)
+26 of 60 steps (43%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:25 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t_js/Z.npy
+    output: data/HP35/results/t_js/dendrogram.pdf
+    jobid: 147
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=t_js, plot=dendrogram, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T JS -Z data/HP35/results/t_js/Z.npy -p dendrogram -o data/HP35/results/t_js/dendrogram.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:25 2025]
+Finished jobid: 79 (Rule: plot)
+27 of 60 steps (45%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:25 2025]
+localrule plot_all:
+    input: data/aSyn/results/gpcca/sankey.pdf, data/aSyn/results/gpcca/dendrogram.pdf, data/aSyn/results/gpcca/ck_test.pdf, data/aSyn/results/gpcca/timescales.pdf, data/aSyn/results/gpcca/contacts.pdf, data/aSyn/results/gpcca/macrotraj.pdf, data/aSyn/results/gpcca/rmsd.pdf, data/aSyn/results/gpcca/delta_rmsd.pdf, data/aSyn/results/gpcca/sankey.png, data/aSyn/results/gpcca/dendrogram.png, data/aSyn/results/gpcca/ck_test.png, data/aSyn/results/gpcca/timescales.png, data/aSyn/results/gpcca/contacts.png, data/aSyn/results/gpcca/macrotraj.png, data/aSyn/results/gpcca/rmsd.png, data/aSyn/results/gpcca/delta_rmsd.png
+    output: data/aSyn/results/gpcca/plotted
+    jobid: 72
+    reason: Missing output files: data/aSyn/results/gpcca/plotted; Input files updated by another job: data/aSyn/results/gpcca/macrotraj.pdf, data/aSyn/results/gpcca/ck_test.pdf
+    wildcards: system=aSyn, lumping=gpcca
+    resources: tmpdir=/tmp
+Shell command: date > data/aSyn/results/gpcca/plotted
+[Tue Sep 16 13:32:25 2025]
+Finished jobid: 72 (Rule: plot_all)
+28 of 60 steps (47%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:25 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl_js/Z.npy
+    output: data/HP35/results/kl_js/sankey.pdf
+    jobid: 127
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl_js, plot=sankey, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL JS -Z data/HP35/results/kl_js/Z.npy -p sankey -o data/HP35/results/kl_js/sankey.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:26 2025]
+Finished jobid: 123 (Rule: plot)
+29 of 60 steps (48%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:26 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/t/Z.npy
+    output: data/aSyn/results/t/rmsd.png
+    jobid: 124
+    reason: Missing output files: data/aSyn/results/t/rmsd.png
+    wildcards: system=aSyn, lumping=t, plot=rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml T none -Z data/aSyn/results/t/Z.npy -p rmsd -o data/aSyn/results/t/rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:26 2025]
+Finished jobid: 47 (Rule: plot)
+30 of 60 steps (50%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:26 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t_js/Z.npy
+    output: data/HP35/results/t_js/delta_rmsd.png
+    jobid: 161
+    reason: Missing output files: data/HP35/results/t_js/delta_rmsd.png
+    wildcards: system=HP35, lumping=t_js, plot=delta_rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T JS -Z data/HP35/results/t_js/Z.npy -p delta_rmsd -o data/HP35/results/t_js/delta_rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:26 2025]
+Finished jobid: 8 (Rule: plot)
+31 of 60 steps (52%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:26 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/gpcca/Z.npy
+    output: data/HP35/results/gpcca/dendrogram.pdf
+    jobid: 93
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=gpcca, plot=dendrogram, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml gpcca ref -Z data/HP35/results/gpcca/Z.npy -p dendrogram -o data/HP35/results/gpcca/dendrogram.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:29 2025]
+Finished jobid: 10 (Rule: plot)
+32 of 60 steps (53%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:29 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/t_js/Z.npy
+    output: data/HP35/results/t_js/contacts.pdf
+    jobid: 150
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=t_js, plot=contacts, ext=pdf
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml T JS -Z data/HP35/results/t_js/Z.npy -p contacts -o data/HP35/results/t_js/contacts.pdf
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:29 2025]
+Finished jobid: 174 (Rule: plot)
+33 of 60 steps (55%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:29 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl_js/Z.npy
+    output: data/HP35/results/kl_js/rmsd.png
+    jobid: 142
+    reason: Missing output files: data/HP35/results/kl_js/rmsd.png
+    wildcards: system=HP35, lumping=kl_js, plot=rmsd, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL JS -Z data/HP35/results/kl_js/Z.npy -p rmsd -o data/HP35/results/kl_js/rmsd.png
+Activating conda environment: mpp
+Select jobs to execute...
+[Tue Sep 16 13:32:30 2025]
+Finished jobid: 187 (Rule: plot)
+34 of 60 steps (57%) done
+Execute 1 jobs...
+[Tue Sep 16 13:32:30 2025]
+localrule plot_all:
+    input: data/aSyn/results/t_js/sankey.pdf, data/aSyn/results/t_js/dendrogram.pdf, data/aSyn/results/t_js/ck_test.pdf, data/aSyn/results/t_js/timescales.pdf, data/aSyn/results/t_js/contacts.pdf, data/aSyn/results/t_js/macrotraj.pdf, data/aSyn/results/t_js/rmsd.pdf, data/aSyn/results/t_js/delta_rmsd.pdf, data/aSyn/results/t_js/sankey.png, data/aSyn/results/t_js/dendrogram.png, data/aSyn/results/t_js/ck_test.png, data/aSyn/results/t_js/timescales.png, data/aSyn/results/t_js/contacts.png, data/aSyn/results/t_js/macrotraj.png, data/aSyn/results/t_js/rmsd.png, data/aSyn/results/t_js/delta_rmsd.png
+    output: data/aSyn/results/t_js/plotted
+    jobid: 162
+    reason: Missing output files: data/aSyn/results/t_js/plotted; Input files updated by another job: data/aSyn/results/t_js/rmsd.png, data/aSyn/results/t_js/ck_test.png
+    wildcards: system=aSyn, lumping=t_js
+    resources: tmpdir=/tmp
+Shell command: date > data/aSyn/results/t_js/plotted
+[Tue Sep 16 13:32:30 2025]
+Finished jobid: 162 (Rule: plot_all)
+35 of 60 steps (58%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:30 2025]
+localrule plot_all:
+    input: data/aSyn/results/kl/sankey.pdf, data/aSyn/results/kl/dendrogram.pdf, data/aSyn/results/kl/ck_test.pdf, data/aSyn/results/kl/timescales.pdf, data/aSyn/results/kl/contacts.pdf, data/aSyn/results/kl/macrotraj.pdf, data/aSyn/results/kl/rmsd.pdf, data/aSyn/results/kl/delta_rmsd.pdf, data/aSyn/results/kl/sankey.png, data/aSyn/results/kl/dendrogram.png, data/aSyn/results/kl/ck_test.png, data/aSyn/results/kl/timescales.png, data/aSyn/results/kl/contacts.png, data/aSyn/results/kl/macrotraj.png, data/aSyn/results/kl/rmsd.png, data/aSyn/results/kl/delta_rmsd.png
+    output: data/aSyn/results/kl/plotted
+    jobid: 0
+    reason: Missing output files: data/aSyn/results/kl/plotted; Input files updated by another job: data/aSyn/results/kl/rmsd.pdf, data/aSyn/results/kl/contacts.pdf, data/aSyn/results/kl/sankey.png
+    wildcards: system=aSyn, lumping=kl
+    resources: tmpdir=/tmp
+Shell command: date > data/aSyn/results/kl/plotted
+[Tue Sep 16 13:32:30 2025]
+Finished jobid: 0 (Rule: plot_all)
+36 of 60 steps (60%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:30 2025]
+localrule plot_all:
+    input: data/HP35/results/js/sankey.pdf, data/HP35/results/js/dendrogram.pdf, data/HP35/results/js/ck_test.pdf, data/HP35/results/js/timescales.pdf, data/HP35/results/js/contacts.pdf, data/HP35/results/js/macrotraj.pdf, data/HP35/results/js/rmsd.pdf, data/HP35/results/js/delta_rmsd.pdf, data/HP35/results/js/sankey.png, data/HP35/results/js/dendrogram.png, data/HP35/results/js/ck_test.png, data/HP35/results/js/timescales.png, data/HP35/results/js/contacts.png, data/HP35/results/js/macrotraj.png, data/HP35/results/js/rmsd.png, data/HP35/results/js/delta_rmsd.png
+    output: data/HP35/results/js/plotted
+    jobid: 36
+    reason: Input files updated by another job: data/HP35/results/js/sankey.png, data/HP35/results/js/delta_rmsd.png, data/HP35/results/js/delta_rmsd.pdf, data/HP35/results/js/dendrogram.png
+    wildcards: system=HP35, lumping=js
+    resources: tmpdir=/tmp
+Shell command: date > data/HP35/results/js/plotted
+[Tue Sep 16 13:32:31 2025]
+Finished jobid: 36 (Rule: plot_all)
+37 of 60 steps (62%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:31 2025]
+localrule plot_all:
+    input: data/HP35/results/t/sankey.pdf, data/HP35/results/t/dendrogram.pdf, data/HP35/results/t/ck_test.pdf, data/HP35/results/t/timescales.pdf, data/HP35/results/t/contacts.pdf, data/HP35/results/t/macrotraj.pdf, data/HP35/results/t/rmsd.pdf, data/HP35/results/t/delta_rmsd.pdf, data/HP35/results/t/sankey.png, data/HP35/results/t/dendrogram.png, data/HP35/results/t/ck_test.png, data/HP35/results/t/timescales.png, data/HP35/results/t/contacts.png, data/HP35/results/t/macrotraj.png, data/HP35/results/t/rmsd.png, data/HP35/results/t/delta_rmsd.png
+    output: data/HP35/results/t/plotted
+    jobid: 54
+    reason: Input files updated by another job: data/HP35/results/t/delta_rmsd.pdf, data/HP35/results/t/delta_rmsd.png, data/HP35/results/t/rmsd.pdf, data/HP35/results/t/dendrogram.pdf
+    wildcards: system=HP35, lumping=t
+    resources: tmpdir=/tmp
+Shell command: date > data/HP35/results/t/plotted
+[Tue Sep 16 13:32:31 2025]
+Finished jobid: 54 (Rule: plot_all)
+38 of 60 steps (63%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:31 2025]
+localrule plot:
+    input: data/HP35/input/config.yml, data/HP35/results/kl_js/Z.npy
+    output: data/HP35/results/kl_js/dendrogram.png
+    jobid: 137
+    reason: Updated input files: data/HP35/input/config.yml
+    wildcards: system=HP35, lumping=kl_js, plot=dendrogram, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/HP35/input/config.yml KL JS -Z data/HP35/results/kl_js/Z.npy -p dendrogram -o data/HP35/results/kl_js/dendrogram.png
+Activating conda environment: mpp
+[Tue Sep 16 13:32:31 2025]
+Finished jobid: 212 (Rule: plot)
+39 of 60 steps (65%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:31 2025]
+localrule plot_all:
+    input: data/HP35/results/kl/sankey.pdf, data/HP35/results/kl/dendrogram.pdf, data/HP35/results/kl/ck_test.pdf, data/HP35/results/kl/timescales.pdf, data/HP35/results/kl/contacts.pdf, data/HP35/results/kl/macrotraj.pdf, data/HP35/results/kl/rmsd.pdf, data/HP35/results/kl/delta_rmsd.pdf, data/HP35/results/kl/sankey.png, data/HP35/results/kl/dendrogram.png, data/HP35/results/kl/ck_test.png, data/HP35/results/kl/timescales.png, data/HP35/results/kl/contacts.png, data/HP35/results/kl/macrotraj.png, data/HP35/results/kl/rmsd.png, data/HP35/results/kl/delta_rmsd.png
+    output: data/HP35/results/kl/plotted
+    jobid: 198
+    reason: Input files updated by another job: data/HP35/results/kl/sankey.png, data/HP35/results/kl/ck_test.png, data/HP35/results/kl/contacts.png, data/HP35/results/kl/dendrogram.png
+    wildcards: system=HP35, lumping=kl
+    resources: tmpdir=/tmp
+Shell command: date > data/HP35/results/kl/plotted
+[Tue Sep 16 13:32:32 2025]
+Finished jobid: 198 (Rule: plot_all)
+40 of 60 steps (67%) done
+[Tue Sep 16 13:32:32 2025]
+Finished jobid: 186 (Rule: plot)
+41 of 60 steps (68%) done
+[Tue Sep 16 13:32:32 2025]
+Finished jobid: 129 (Rule: plot)
+42 of 60 steps (70%) done
+[Tue Sep 16 13:32:35 2025]
+Finished jobid: 141 (Rule: plot)
+43 of 60 steps (72%) done
+[Tue Sep 16 13:32:36 2025]
+Finished jobid: 127 (Rule: plot)
+44 of 60 steps (73%) done
+[Tue Sep 16 13:32:36 2025]
+Finished jobid: 161 (Rule: plot)
+45 of 60 steps (75%) done
+[Tue Sep 16 13:32:37 2025]
+Finished jobid: 124 (Rule: plot)
+46 of 60 steps (77%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:37 2025]
+localrule plot_all:
+    input: data/aSyn/results/t/sankey.pdf, data/aSyn/results/t/dendrogram.pdf, data/aSyn/results/t/ck_test.pdf, data/aSyn/results/t/timescales.pdf, data/aSyn/results/t/contacts.pdf, data/aSyn/results/t/macrotraj.pdf, data/aSyn/results/t/rmsd.pdf, data/aSyn/results/t/delta_rmsd.pdf, data/aSyn/results/t/sankey.png, data/aSyn/results/t/dendrogram.png, data/aSyn/results/t/ck_test.png, data/aSyn/results/t/timescales.png, data/aSyn/results/t/contacts.png, data/aSyn/results/t/macrotraj.png, data/aSyn/results/t/rmsd.png, data/aSyn/results/t/delta_rmsd.png
+    output: data/aSyn/results/t/plotted
+    jobid: 108
+    reason: Missing output files: data/aSyn/results/t/plotted; Input files updated by another job: data/aSyn/results/t/macrotraj.png, data/aSyn/results/t/ck_test.png, data/aSyn/results/t/delta_rmsd.pdf, data/aSyn/results/t/contacts.png, data/aSyn/results/t/rmsd.png, data/aSyn/results/t/dendrogram.png
+    wildcards: system=aSyn, lumping=t
+    resources: tmpdir=/tmp
+Shell command: date > data/aSyn/results/t/plotted
+[Tue Sep 16 13:32:37 2025]
+Finished jobid: 108 (Rule: plot_all)
+47 of 60 steps (78%) done
+[Tue Sep 16 13:32:39 2025]
+Finished jobid: 142 (Rule: plot)
+48 of 60 steps (80%) done
+[Tue Sep 16 13:32:39 2025]
+Finished jobid: 150 (Rule: plot)
+49 of 60 steps (82%) done
+[Tue Sep 16 13:32:46 2025]
+Finished jobid: 137 (Rule: plot)
+50 of 60 steps (83%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:46 2025]
+localrule plot_all:
+    input: data/HP35/results/kl_js/sankey.pdf, data/HP35/results/kl_js/dendrogram.pdf, data/HP35/results/kl_js/ck_test.pdf, data/HP35/results/kl_js/timescales.pdf, data/HP35/results/kl_js/contacts.pdf, data/HP35/results/kl_js/macrotraj.pdf, data/HP35/results/kl_js/rmsd.pdf, data/HP35/results/kl_js/delta_rmsd.pdf, data/HP35/results/kl_js/sankey.png, data/HP35/results/kl_js/dendrogram.png, data/HP35/results/kl_js/ck_test.png, data/HP35/results/kl_js/timescales.png, data/HP35/results/kl_js/contacts.png, data/HP35/results/kl_js/macrotraj.png, data/HP35/results/kl_js/rmsd.png, data/HP35/results/kl_js/delta_rmsd.png
+    output: data/HP35/results/kl_js/plotted
+    jobid: 126
+    reason: Input files updated by another job: data/HP35/results/kl_js/delta_rmsd.png, data/HP35/results/kl_js/dendrogram.pdf, data/HP35/results/kl_js/sankey.pdf, data/HP35/results/kl_js/dendrogram.png, data/HP35/results/kl_js/macrotraj.png, data/HP35/results/kl_js/rmsd.png
+    wildcards: system=HP35, lumping=kl_js
+    resources: tmpdir=/tmp
+Shell command: date > data/HP35/results/kl_js/plotted
+[Tue Sep 16 13:32:46 2025]
+Finished jobid: 126 (Rule: plot_all)
+51 of 60 steps (85%) done
+[Tue Sep 16 13:32:47 2025]
+Finished jobid: 147 (Rule: plot)
+52 of 60 steps (87%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:32:47 2025]
+localrule plot_all:
+    input: data/HP35/results/t_js/sankey.pdf, data/HP35/results/t_js/dendrogram.pdf, data/HP35/results/t_js/ck_test.pdf, data/HP35/results/t_js/timescales.pdf, data/HP35/results/t_js/contacts.pdf, data/HP35/results/t_js/macrotraj.pdf, data/HP35/results/t_js/rmsd.pdf, data/HP35/results/t_js/delta_rmsd.pdf, data/HP35/results/t_js/sankey.png, data/HP35/results/t_js/dendrogram.png, data/HP35/results/t_js/ck_test.png, data/HP35/results/t_js/timescales.png, data/HP35/results/t_js/contacts.png, data/HP35/results/t_js/macrotraj.png, data/HP35/results/t_js/rmsd.png, data/HP35/results/t_js/delta_rmsd.png
+    output: data/HP35/results/t_js/plotted
+    jobid: 144
+    reason: Input files updated by another job: data/HP35/results/t_js/dendrogram.pdf, data/HP35/results/t_js/contacts.pdf, data/HP35/results/t_js/delta_rmsd.png
+    wildcards: system=HP35, lumping=t_js
+    resources: tmpdir=/tmp
+Shell command: date > data/HP35/results/t_js/plotted
+[Tue Sep 16 13:32:48 2025]
+Finished jobid: 144 (Rule: plot_all)
+53 of 60 steps (88%) done
+[Tue Sep 16 13:33:09 2025]
+Finished jobid: 93 (Rule: plot)
+54 of 60 steps (90%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:33:09 2025]
+localrule plot_all:
+    input: data/HP35/results/gpcca/sankey.pdf, data/HP35/results/gpcca/dendrogram.pdf, data/HP35/results/gpcca/ck_test.pdf, data/HP35/results/gpcca/timescales.pdf, data/HP35/results/gpcca/contacts.pdf, data/HP35/results/gpcca/macrotraj.pdf, data/HP35/results/gpcca/rmsd.pdf, data/HP35/results/gpcca/delta_rmsd.pdf, data/HP35/results/gpcca/sankey.png, data/HP35/results/gpcca/dendrogram.png, data/HP35/results/gpcca/ck_test.png, data/HP35/results/gpcca/timescales.png, data/HP35/results/gpcca/contacts.png, data/HP35/results/gpcca/macrotraj.png, data/HP35/results/gpcca/rmsd.png, data/HP35/results/gpcca/delta_rmsd.png
+    output: data/HP35/results/gpcca/plotted
+    jobid: 90
+    reason: Input files updated by another job: data/HP35/results/gpcca/dendrogram.pdf, data/HP35/results/gpcca/ck_test.pdf, data/HP35/results/gpcca/contacts.pdf, data/HP35/results/gpcca/macrotraj.pdf
+    wildcards: system=HP35, lumping=gpcca
+    resources: tmpdir=/tmp
+Shell command: date > data/HP35/results/gpcca/plotted
+[Tue Sep 16 13:33:09 2025]
+Finished jobid: 90 (Rule: plot_all)
+55 of 60 steps (92%) done
+[Tue Sep 16 13:50:21 2025]
+Finished jobid: 197 (Rule: plot)
+56 of 60 steps (93%) done
+[Tue Sep 16 13:50:26 2025]
+Finished jobid: 189 (Rule: plot)
+57 of 60 steps (95%) done
+[Tue Sep 16 13:50:27 2025]
+Finished jobid: 196 (Rule: plot)
+58 of 60 steps (97%) done
+[Tue Sep 16 13:50:37 2025]
+Finished jobid: 188 (Rule: plot)
+59 of 60 steps (98%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 13:50:37 2025]
+localrule plot_all:
+    input: data/aSyn/results/js/sankey.pdf, data/aSyn/results/js/dendrogram.pdf, data/aSyn/results/js/ck_test.pdf, data/aSyn/results/js/timescales.pdf, data/aSyn/results/js/contacts.pdf, data/aSyn/results/js/macrotraj.pdf, data/aSyn/results/js/rmsd.pdf, data/aSyn/results/js/delta_rmsd.pdf, data/aSyn/results/js/sankey.png, data/aSyn/results/js/dendrogram.png, data/aSyn/results/js/ck_test.png, data/aSyn/results/js/timescales.png, data/aSyn/results/js/contacts.png, data/aSyn/results/js/macrotraj.png, data/aSyn/results/js/rmsd.png, data/aSyn/results/js/delta_rmsd.png
+    output: data/aSyn/results/js/plotted
+    jobid: 180
+    reason: Missing output files: data/aSyn/results/js/plotted; Input files updated by another job: data/aSyn/results/js/rmsd.png, data/aSyn/results/js/macrotraj.pdf, data/aSyn/results/js/ck_test.png, data/aSyn/results/js/contacts.png, data/aSyn/results/js/sankey.png, data/aSyn/results/js/contacts.pdf, data/aSyn/results/js/macrotraj.png, data/aSyn/results/js/rmsd.pdf, data/aSyn/results/js/dendrogram.png, data/aSyn/results/js/delta_rmsd.png, data/aSyn/results/js/delta_rmsd.pdf
+    wildcards: system=aSyn, lumping=js
+    resources: tmpdir=/tmp
+Shell command: date > data/aSyn/results/js/plotted
+[Tue Sep 16 13:50:38 2025]
+Finished jobid: 180 (Rule: plot_all)
+60 of 60 steps (100%) done
+Complete log(s): /data/evaluation/MPP/stochastic_MPP_Felix/MPP/.snakemake/log/2025-09-16T133146.747955.snakemake.log

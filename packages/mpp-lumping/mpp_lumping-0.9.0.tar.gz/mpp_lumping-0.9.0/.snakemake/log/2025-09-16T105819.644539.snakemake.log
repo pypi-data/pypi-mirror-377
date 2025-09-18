@@ -1,0 +1,44 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: bmdiota
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 32
+Rules claiming more threads will be scaled down.
+Job stats:
+job         count
+--------  -------
+plot            1
+plot_all        1
+total           2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 10:58:19 2025]
+localrule plot:
+    input: data/aSyn/input/config.yml, data/aSyn/results/kl_js/Z.npy
+    output: data/aSyn/results/kl_js/contacts.png
+    jobid: 14
+    reason: Missing output files: data/aSyn/results/kl_js/contacts.png
+    wildcards: system=aSyn, lumping=kl_js, plot=contacts, ext=png
+    resources: tmpdir=/tmp
+Shell command: python -m MPP.run data/aSyn/input/config.yml KL JS -Z data/aSyn/results/kl_js/Z.npy -p contacts -o data/aSyn/results/kl_js/contacts.png
+Activating conda environment: mpp
+[Tue Sep 16 10:58:31 2025]
+Finished jobid: 14 (Rule: plot)
+1 of 2 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 16 10:58:31 2025]
+localrule plot_all:
+    input: data/aSyn/results/kl_js/sankey.pdf, data/aSyn/results/kl_js/dendrogram.pdf, data/aSyn/results/kl_js/ck_test.pdf, data/aSyn/results/kl_js/timescales.pdf, data/aSyn/results/kl_js/contacts.pdf, data/aSyn/results/kl_js/macrotraj.pdf, data/aSyn/results/kl_js/rmsd.pdf, data/aSyn/results/kl_js/delta_rmsd.pdf, data/aSyn/results/kl_js/sankey.png, data/aSyn/results/kl_js/dendrogram.png, data/aSyn/results/kl_js/ck_test.png, data/aSyn/results/kl_js/timescales.png, data/aSyn/results/kl_js/contacts.png, data/aSyn/results/kl_js/macrotraj.png, data/aSyn/results/kl_js/rmsd.png, data/aSyn/results/kl_js/delta_rmsd.png
+    output: data/aSyn/results/kl_js/plotted
+    jobid: 0
+    reason: Missing output files: data/aSyn/results/kl_js/plotted; Input files updated by another job: data/aSyn/results/kl_js/contacts.png
+    wildcards: system=aSyn, lumping=kl_js
+    resources: tmpdir=/tmp
+Shell command: date > data/aSyn/results/kl_js/plotted
+[Tue Sep 16 10:58:31 2025]
+Finished jobid: 0 (Rule: plot_all)
+2 of 2 steps (100%) done
+Complete log(s): /data/evaluation/MPP/stochastic_MPP_Felix/MPP/.snakemake/log/2025-09-16T105819.644539.snakemake.log

@@ -1,0 +1,341 @@
+# Tensorchat Streaming Python Client
+
+Framework-agnostic Python client for Tensorchat.io streaming API. Process multiple LLM prompts concurrently with real-time streaming responses using async/await.
+
+## Features
+
+- 🚀 **Framework Agnostic**: Works with asyncio, FastAPI, Django, Flask, or any Python framework
+- 🔄 **Real-time Streaming**: Get live updates as tensors are processed using async iterators
+- ⚡ **Concurrent Processing**: Handle multiple prompts simultaneously with asyncio
+- 🎯 **Type Safety**: Fully typed with dataclasses and type hints
+- 🔧 **Configurable**: Throttling, custom endpoints, and comprehensive error handling
+- 📦 **Lightweight**: Minimal dependencies (only aiohttp required)
+
+## Models & API Access
+
+- **400+ Models Available**: Access over 400 language models through [Openrouter](https://openrouter.ai) integration
+- **API Key**: Obtain your API key from [tensorchat.io](https://tensorchat.io) to get started
+- **Multiple Providers**: Support for OpenAI, Anthropic, Google, and many other model providers through a unified interface
+
+## Installation
+
+```bash
+pip install tensorchat-streaming
+```
+
+### Development Installation
+
+```bash
+git clone https://github.com/datacorridor/tensorchat-streaming.git
+cd tensorchat-streaming/python
+pip install -e ".[dev]"
+```
+
+## Quick Start
+
+### Basic Async Streaming
+
+```python
+import asyncio
+from tensorchat_streaming import TensorchatStreaming, TensorchatConfig, StreamRequest, TensorConfig, StreamCallbacks
+
+async def main():
+    # Configure the client
+    config = TensorchatConfig(
+        api_key="your-api-key-from-tensorchat.io",
+        base_url="https://api.tensorchat.ai",  # optional
+        throttle_ms=50  # optional, default 50ms
+    )
+    
+    # Create streaming client
+    async with TensorchatStreaming(config) as client:
+        # Define your request
+        request = StreamRequest(
+            context="Your context here",
+            model="google/gemini-2.5-flash-lite",
+            tensors=[
+                TensorConfig(
+                    messages="Your prompt here",
+                    concise=True,
+                    search=False
+                )
+            ]
+        )
+        
+        # Define callbacks
+        def on_chunk(data):
+            print(f"Chunk {data.index}: {data.chunk}")
+            
+        def on_complete(data):
+            print("Processing complete!")
+            
+        def on_error(error):
+            print(f"Error: {error}")
+        
+        callbacks = StreamCallbacks(
+            on_tensor_chunk=on_chunk,
+            on_complete=on_complete,
+            on_error=on_error
+        )
+        
+        # Start streaming
+        await client.stream_process(request, callbacks)
+
+# Run the async function
+asyncio.run(main())
+```
+
+### Using the Manager Class
+
+```python
+import asyncio
+from tensorchat_streaming import create_streaming_manager, TensorchatConfig, StreamRequest, TensorConfig
+
+async def main():
+    # Create manager instance
+    config = TensorchatConfig(api_key="your-api-key")
+    manager = create_streaming_manager(config)
+    
+    async with manager:
+        request = StreamRequest(
+            context="Analyze this data",
+            model="openai/gpt-4",
+            tensors=[
+                TensorConfig(messages="Summarize the key points"),
+                TensorConfig(messages="Extract action items"),
+                TensorConfig(messages="Identify risks")
+            ]
+        )
+        
+        # Non-streaming single request
+        result = await manager.process_single(request)
+        print(result)
+
+asyncio.run(main())
+```
+
+### FastAPI Integration
+
+```python
+from fastapi import FastAPI, HTTPException
+from tensorchat_streaming import create_streaming_manager, TensorchatConfig, StreamRequest
+import asyncio
+
+app = FastAPI()
+
+# Initialize manager at startup
+config = TensorchatConfig(api_key="your-api-key")
+streaming_manager = create_streaming_manager(config)
+
+@app.post("/stream-process")
+async def stream_process(request: StreamRequest):
+    try:
+        result = await streaming_manager.process_single(request)
+        return {"success": True, "data": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.on_event("shutdown")
+async def shutdown():
+    await streaming_manager.destroy()
+```
+
+### Django Async Views
+
+```python
+from django.http import JsonResponse
+from django.views import View
+from asgiref.sync import async_to_sync
+from tensorchat_streaming import TensorchatStreaming, TensorchatConfig, StreamRequest, TensorConfig
+
+class TensorProcessView(View):
+    async def post(self, request):
+        config = TensorchatConfig(api_key="your-api-key")
+        
+        async with TensorchatStreaming(config) as client:
+            stream_request = StreamRequest(
+                context=request.data.get("context"),
+                model=request.data.get("model", "openai/gpt-3.5-turbo"),
+                tensors=[TensorConfig(messages=request.data.get("message"))]
+            )
+            
+            result = await client.process_single(stream_request)
+            return JsonResponse({"result": result})
+```
+
+## Advanced Usage
+
+### Custom Callbacks with State Management
+
+```python
+import asyncio
+from tensorchat_streaming import TensorchatStreaming, TensorchatConfig, StreamCallbacks
+
+class StreamProcessor:
+    def __init__(self):
+        self.results = []
+        self.current_buffers = {}
+    
+    def on_start(self, data):
+        print(f"Starting {data.total_tensors} tensors with model: {data.model}")
+        
+    def on_tensor_chunk(self, data):
+        if data.index not in self.current_buffers:
+            self.current_buffers[data.index] = ""
+        self.current_buffers[data.index] += data.chunk or ""
+        
+    def on_tensor_complete(self, data):
+        final_result = self.current_buffers.get(data.index, "")
+        self.results.append({
+            "index": data.index,
+            "result": final_result,
+            "metadata": data.result
+        })
+        print(f"Tensor {data.index} completed")
+        
+    def on_complete(self, data):
+        print("All processing complete!")
+        print(f"Total results: {len(self.results)}")
+
+async def main():
+    processor = StreamProcessor()
+    config = TensorchatConfig(api_key="your-api-key")
+    
+    callbacks = StreamCallbacks(
+        on_start=processor.on_start,
+        on_tensor_chunk=processor.on_tensor_chunk,
+        on_tensor_complete=processor.on_tensor_complete,
+        on_complete=processor.on_complete
+    )
+    
+    async with TensorchatStreaming(config) as client:
+        # Your streaming logic here
+        pass
+
+asyncio.run(main())
+```
+
+### Error Handling and Retries
+
+```python
+import asyncio
+from tensorchat_streaming import TensorchatStreaming, TensorchatConfig, StreamRequest
+
+async def robust_processing():
+    config = TensorchatConfig(api_key="your-api-key")
+    max_retries = 3
+    
+    for attempt in range(max_retries):
+        try:
+            async with TensorchatStreaming(config) as client:
+                request = StreamRequest(
+                    context="Process this data",
+                    model="openai/gpt-4",
+                    tensors=[TensorConfig(messages="Analyze sentiment")]
+                )
+                
+                result = await client.process_single(request)
+                return result
+                
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
+            if attempt == max_retries - 1:
+                raise
+            await asyncio.sleep(2 ** attempt)  # Exponential backoff
+
+asyncio.run(robust_processing())
+```
+
+## API Reference
+
+### TensorchatStreaming
+
+Main async streaming client class.
+
+#### Constructor
+- `config: TensorchatConfig` - Configuration object
+
+#### Methods
+- `async stream_process(request: StreamRequest, callbacks: StreamCallbacks = None)` - Stream process tensors
+- `async process_single(request: StreamRequest)` - Process single request (non-streaming)
+- `async destroy()` - Clean up resources
+
+### TensorchatStreamingManager
+
+Framework-agnostic manager class for easier lifecycle management.
+
+#### Methods
+- `async stream_process(request, callbacks)` - Stream process with auto-initialization
+- `async process_single(request)` - Single request processing
+- `async update_config(new_config)` - Update configuration
+- `async destroy()` - Clean up resources
+
+### Data Classes
+
+#### TensorchatConfig
+```python
+@dataclass
+class TensorchatConfig:
+    api_key: str
+    base_url: Optional[str] = "https://api.tensorchat.ai"
+    throttle_ms: Optional[int] = 50
+```
+
+#### StreamRequest
+```python
+@dataclass 
+class StreamRequest:
+    context: str
+    model: str
+    tensors: List[TensorConfig]
+```
+
+#### TensorConfig
+```python
+@dataclass
+class TensorConfig:
+    messages: str
+    concise: Optional[bool] = None
+    model: Optional[str] = None
+    search: Optional[bool] = None
+```
+
+### Event Types
+
+- `START` - Stream started
+- `PROGRESS` - Tensor processing started  
+- `SEARCH_PROGRESS` - Search in progress
+- `SEARCH_COMPLETE` - Search completed
+- `TENSOR_CHUNK` - Streaming content chunk
+- `TENSOR_COMPLETE` - Tensor processing complete
+- `TENSOR_ERROR` - Tensor processing error
+- `COMPLETE` - All tensors complete
+- `ERROR` / `FATAL_ERROR` - Fatal error occurred
+
+## Development
+
+### Running Tests
+
+```bash
+pip install -e ".[test]"
+pytest
+```
+
+### Code Formatting
+
+```bash
+pip install -e ".[dev]"
+black tensorchat_streaming/
+flake8 tensorchat_streaming/
+mypy tensorchat_streaming/
+```
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+- Documentation: [tensorchat.io/docs](https://tensorchat.io/docs)
+- Issues: [GitHub Issues](https://github.com/datacorridor/tensorchat-streaming/issues)
+- Email: support@tensorchat.io

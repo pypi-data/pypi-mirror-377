@@ -1,0 +1,62 @@
+# ================================================================================
+# This file is part of `molli 1.0` 
+# (https://github.com/SEDenmarkLab/molli)
+# ================================================================================
+
+[build-system]
+requires = [
+    "setuptools>=67",
+    "wheel>=0.40",
+    "pybind11>=2.10.4",
+    "setuptools-scm>=8.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    { name = "Alexander S. Shved", email = "shvedalx@illinois.edu" },
+    { name = "Blake E. Ocampo" },
+    { name = "Elena S. Burlova" },
+    { name = "Casey L. Olen" },
+    { name = "N. Ian Rinehart" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+name = "molli"
+description = "Molecular toolbox library"
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.9.1",
+    "h5py>=3.8",
+    "msgpack>=1.0.3",
+    "msgpack-numpy>=0.4.8",
+    "attrs>=22.1.0",
+    "bidict>=0.21.2",
+    "requests>=2.28",
+    "PyYAML>=5.3",
+    "colorama>=0.4.4",
+    "networkx>=3.0",
+    "tqdm>=4.64.0",
+    "packaging>=23.1",
+    "deprecated>=1.2.14",
+    "fasteners>=0.19",
+    "joblib>=1.3.2",
+]
+dynamic = ["version"]
+
+
+[tool.setuptools.package-data]
+"molli.files" = ["*"]
+"molli.data" = ["*.yml"]
+"molli._aux.files" = ["*.html"]
+
+[tool.setuptools.packages.find]
+include = ["molli", "molli.*", "molli_test"]
+
+[project.scripts]
+molli = "molli.__main__:main"
+_molli_run = "molli.pipeline.runner:run_local"
+_molli_run_sched = "molli.pipeline.runner:run_sched"
+
+[tool.setuptools_scm]

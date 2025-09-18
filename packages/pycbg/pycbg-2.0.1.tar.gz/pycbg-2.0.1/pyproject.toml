@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "versioneer[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycbg"
+dynamic = ["version"]  # handled by versioneer
+description = "Python scripts able to generate easily CB-Geo MPM input files"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Sacha Duverger", email = "sacha.duverger@univ-amu.fr" },
+    { name = "Jérôme Duriez", email = "jerome.duriez@inrae.fr" },
+]
+dependencies = [
+    "numpy>=1.20.3",
+    "gmsh",
+    "pandas",
+    "matplotlib",
+    "pyreadline",
+    "sphinx==5.1.1",
+    "sphinx_rtd_theme==0.5.2",
+]
+
+[project.urls]
+Homepage = "https://forge.inrae.fr/mpm-at-recover/pycbg.git"
+Repository = "https://forge.inrae.fr/mpm-at-recover/pycbg.git"
+Documentation = "https://pycbg.readthedocs.io/en/latest/"
+
+[project.optional-dependencies]
+# docs = [
+#     "sphinx==5.1.1",
+#     "sphinx_rtd_theme==0.5.2",
+# ]
+full = ["ipython"]
+
+[project.scripts]
+pycbg = "pycbg.command_line_script:main"
+
+[tool.setuptools]
+zip-safe = true
+include-package-data = true
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "pycbg.__version__" }
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "src/pycbg/_version.py"
+versionfile_build = "pycbg/_version.py"
+tag_prefix = ""
+parentdir_prefix = "pycbg-"

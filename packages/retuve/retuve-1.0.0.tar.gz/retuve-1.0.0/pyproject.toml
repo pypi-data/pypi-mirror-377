@@ -1,0 +1,111 @@
+[project]
+name = "retuve"
+version = "1.0.0"
+description = ""
+authors = [
+    {name = "Sharpz7", email = "adam.mcarthur62@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "radstract>=1.0.0",
+    "fire>=0.7.0",
+    "moviepy>=2.2.1",
+    "open3d>=0.19.0",
+    "addict>=2.4.0",
+    "afterthought>=0.5.0",
+    "jinja2>=3.1.6",
+    "aiohttp>=3.12.14",
+    "deptry>=0.23.0",
+    "scikit-learn>=1.7.1",
+    "pyyaml>=6.0.2",
+    "filelock>=3.18.0",
+    "fastapi>=0.116.1",
+    "httpx>=0.28.1",
+    "python-multipart>=0.0.20",
+    "uvicorn>=0.35.0",
+    "h11>=0.16.0",
+    "setuptools>=80.9.0",
+    "starlette>=0.47.2",
+    "urllib3>=2.5.0",
+    "requests>=2.32.4",
+    "plotly>=6.3.0",
+    "kaleido>=1.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.coverage.run]
+# Specify the directory and filename for the coverage data
+data_file = "tests/.coverage"
+
+[tool.uv]
+dev-dependencies = [
+    "black>=23.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0",
+    "poethepoet>=0.20.0",
+    "vulture>=2.0.0",
+    "pdoc>=14.0.0",
+    "licensecheck>=3.0.0",
+]
+
+[tool.poe.tasks]
+# Under BSD: https://www.creatis.insa-lyon.fr/software/public/Gdcm/License.html
+license = "licensecheck --ignore-packages=gdcm"
+testcap = "pytest -vv --cov=retuve --durations=5 --capture-errors ./tests/unit"
+test = "pytest -vv -n 4 --cov=retuve --durations=5 ./tests"
+test_unit = "pytest -vv -n 4 --cov=retuve --durations=5 ./tests/unit"
+test_intergration = "pytest -vv -n 4 --cov=retuve --durations=5 ./tests/intergration"
+test_all = "pytest -vv -n 4 --cov=retuve --cov-branch --cov-report=xml --dist=loadgroup --durations=5 ./examples/_test.py ./tests"
+deadcode = "vulture retuve ./scripts/whitelist.py"
+copiedcode = [{ cmd = "sudo npm install -g jscpd" }, { cmd = "jscpd retuve" }]
+linecount = [
+    { cmd = "sudo apt install cloc" },
+    { cmd = "cloc ./retuve --exclude-dir=classes,keyphrases,defaults --not-match-f='classes.py'" },
+]
+cuda = "python -c 'import torch; print(torch.cuda.is_available())'"
+pdoc_create = "pdoc -d numpy -o web retuve --logo https://files.mcaq.me/52kj1.png"
+docs = [{ cmd = "poe pdoc_create" }]
+viewdocs = [{ cmd = "poe docs" }, { cmd = "npx http-server -o ./web/" }]
+examples = "pytest -n 4 --vv --dist=loadgroup ./examples/_test.py"
+testgen = [
+    { cmd = "uv run python ./tests/_get_test_data.py" },
+]
+testgetplugins = [
+    { cmd = "uv run python ./tests/_download_plugins.py" },
+]
+format = "black ."
+help_real.shell = """
+    echo
+    echo Retuve Script Help
+    echo ==================
+    echo
+    echo "poe license" - Check the license of the project
+    echo "poe test" - Run the unit tests
+    echo "poe test_intergration" - Run the intergration tests
+    echo "poe test_all" - Run all the tests
+    echo "poe deadcode" - Check for dead code
+    echo "poe copiedcode" - Check for copied code
+    echo "poe linecount" - Check the line count
+    echo "poe cuda" - Check if cuda is available
+    echo "poe pdoc_create" - Create the pdoc documentation
+    echo "poe docs" - Create the documentation
+    echo "poe viewdocs" - View the documentation
+    echo "poe examples" - Run the examples
+    echo "poe testgen" - Generate test data
+    echo "poe help" - Show this help
+    echo
+"""
+help = "poe -q help_real"
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'

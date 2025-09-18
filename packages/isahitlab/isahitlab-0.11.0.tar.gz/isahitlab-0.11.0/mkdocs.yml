@@ -1,0 +1,71 @@
+site_name: Lab Python SDK
+site_url: 'https://sdk-docs.lab.isahit.com/'
+nav:
+    - Getting started: index.md
+    - How to:
+      - Create tasks: tutorials/create_tasks.md
+      - Export tasks:
+          - Lab (default): tutorials/exports/lab.md
+          - Yolo: tutorials/exports/yolo.md
+          - Kili: tutorials/exports/kili.md
+          - Mask: tutorials/exports/mask.md
+      - Setup webhook: tutorials/webhook_usage.md
+      - Set properties on tasks: tutorials/set_task_properties.md
+    - Code Reference:
+        - Project: project.md
+        - Project Configuration: project_configuration.md
+        - Batch: batch.md
+        - Task: task.md
+        - Dataset: dataset.md
+        - Webhook: webhook.md
+
+theme:
+  name: "material"
+  logo: https://isahit-public.s3.eu-west-3.amazonaws.com/saas/isahit-logo-fond-fonce.png
+  favicon: assets/favicon.ico
+  features:
+    - content.code.copy
+  palette:
+    scheme: isahit
+
+extra_css:
+  - stylesheets/extra.css
+
+
+watch:
+  - src/isahitlab
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_root_heading: false
+            heading_level: 3
+            show_source: false
+            show_category_heading: false
+            show_root_toc_entry: false
+            docstring_style: google
+            filters:
+              - "!^__" # exclude all members starting with __
+            # docstring_options:
+            #   replace_admonitions: yes
+  - mike:
+      version_selector: true
+
+extra:
+  version:
+    provider: mike
+  
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

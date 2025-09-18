@@ -1,0 +1,145 @@
+# Example: Customized Federal Network Hierarchy Configuration
+# Copy this file to dt_hierarchy_config.yaml and customize for your environment
+
+metadata:
+  version: "1.0"
+  description: "Federal Network Organizational Hierarchy for Dependency-Track"
+  organization: "Your Federal Agency Name"
+  created_by: "SBOM Upload Validator"
+  last_updated: "2025-08-27"
+
+# Global settings
+settings:
+  enable_acl_inheritance: true
+  
+  # Replace these with your actual Dependency-Track team UUIDs
+  default_teams:
+    district_level:
+      - "00000000-0000-0000-0000-000000000001"  # Enterprise Security Team
+      - "00000000-0000-0000-0000-000000000002"  # Compliance Team
+    business_line_level:
+      - "00000000-0000-0000-0000-000000000003"  # Division Managers
+    project_level:
+      - "00000000-0000-0000-0000-000000000004"  # Development Teams
+
+  default_tags:
+    district:
+      - "environment:production" 
+      - "agency:your-agency-code"
+    business_line:
+      - "tier:business-critical"
+    project:
+      - "lifecycle:active"
+
+# Organizational Hierarchy - Customize this section for your agency
+hierarchy:
+
+  # Example District 1: Information Technology
+  "Information Technology":
+    description: "Enterprise IT services and infrastructure"
+    tags:
+      - "category:infrastructure"
+      - "clearance:secret"
+      - "authority:cio"
+    teams:
+      - "it-management-team-uuid"  # Replace with actual UUID
+    
+    business_lines:
+      "Enterprise Systems":
+        description: "Core enterprise applications and services"
+        tags:
+          - "function:enterprise-apps"
+          - "compliance:fisma-high"
+        teams:
+          - "enterprise-apps-team-uuid"  # Replace with actual UUID
+        
+        projects:
+          - name: "identity-management"
+            description: "Enterprise identity and access management system"
+            tags: ["type:iam", "criticality:critical", "compliance:required"]
+            
+          - name: "email-system"
+            description: "Enterprise email and collaboration platform"
+            tags: ["type:communication", "criticality:high"]
+            
+          - name: "document-management"
+            description: "Enterprise document and records management"
+            tags: ["type:records", "criticality:medium", "data:official"]
+
+      "Network Operations":
+        description: "Network infrastructure and security"
+        tags:
+          - "function:network"
+          - "security:critical"
+        teams:
+          - "network-ops-team-uuid"  # Replace with actual UUID
+        
+        projects:
+          - name: "firewall-management"
+            description: "Enterprise firewall and security appliances"
+            tags: ["type:security", "criticality:critical"]
+            
+          - name: "network-monitoring"
+            description: "Network performance and availability monitoring"
+            tags: ["type:monitoring", "criticality:high"]
+
+  # Example District 2: Mission Systems  
+  "Mission Systems":
+    description: "Core mission and operational systems"
+    tags:
+      - "category:mission-critical"
+      - "clearance:top-secret"
+      - "authority:mission-command"
+    teams:
+      - "mission-systems-team-uuid"  # Replace with actual UUID
+    
+    business_lines:
+      "Operations":
+        description: "Operational mission systems"
+        tags:
+          - "function:operations"
+          - "availability:24x7"
+        teams:
+          - "operations-team-uuid"  # Replace with actual UUID
+        
+        projects:
+          - name: "command-control"
+            description: "Mission command and control system"
+            tags: ["type:command", "criticality:critical", "classification:restricted"]
+
+# Team definitions - Replace UUIDs with your actual Dependency-Track team UUIDs
+teams:
+  "00000000-0000-0000-0000-000000000001": "Enterprise Security Team"
+  "00000000-0000-0000-0000-000000000002": "Compliance and Risk Team"
+  "00000000-0000-0000-0000-000000000003": "Division Management"
+  "00000000-0000-0000-0000-000000000004": "Development Teams"
+  "it-management-team-uuid": "IT Management"
+  "enterprise-apps-team-uuid": "Enterprise Applications Team"
+  "network-ops-team-uuid": "Network Operations Team"
+  "mission-systems-team-uuid": "Mission Systems Team"
+  "operations-team-uuid": "Operations Team"
+
+# Version templates for different project types
+version_templates:
+  default:
+    versions: ["1.0.0"]
+    
+  critical_system:
+    versions: ["2.0.0", "2.1.0", "2.2.0"]
+    
+  high_availability:
+    versions: ["1.0.0", "1.1.0", "1.2.0", "1.3.0"]
+
+# Project-specific configurations
+project_configurations:
+  identity-management:
+    version_template: "critical_system"
+    additional_tags: ["compliance:fisma", "audit:required"]
+    
+  firewall-management:
+    version_template: "high_availability" 
+    additional_tags: ["security:boundary", "monitoring:required"]
+    
+  command-control:
+    version_template: "critical_system"
+    additional_tags: ["mission:critical", "backup:required"]

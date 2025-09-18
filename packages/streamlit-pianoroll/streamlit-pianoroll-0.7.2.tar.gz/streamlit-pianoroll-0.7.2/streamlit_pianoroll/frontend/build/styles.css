@@ -1,0 +1,46 @@
+.container {
+  position: relative;
+}
+
+.pianoroll-border {
+    border: 3px solid black;
+    padding: 0px !important;
+}
+
+.pianoroll-background {
+  background-color: #F0F0F0;
+}
+
+.note-rectangle {
+  transition:
+    width 1.3s ease-in-out,
+    height 1.3s ease-in-out,
+    x 1.3s ease-in-out,
+    y 1.3s ease-in-out,
+    fill 1.3s ease-in-out;
+}
+
+
+.note-rectangle.active {
+  transition-property: width, height, x, y;
+  transition-duration: 0.1s; /* Faster transition when activated */
+}
+
+midi-player::part(control-panel) {
+	background: #F0F0F0;
+	color: black;
+	border-radius: 8px;
+}
+
+.pianoroll-link {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  width: 20px; /* Initial width */
+  height: 20px; /* Initial height */
+  transition: transform 0.4s ease; /* Smooth transition for scaling */
+}
+
+.pianoroll-link:hover {
+  transform: scale(1.2); /* Grow by 20% on hover */
+}

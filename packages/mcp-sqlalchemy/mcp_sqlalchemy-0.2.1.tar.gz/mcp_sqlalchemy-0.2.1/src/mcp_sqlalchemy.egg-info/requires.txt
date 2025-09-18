@@ -1,0 +1,15 @@
+aiosqlite>=0.21.0
+greenlet>=3.0.0
+mcp[cli]>=1.12.2
+sqlalchemy>=2.0.42
+python-dotenv>=1.0.0
+
+[all]
+mcp-sqlalchemy[postgresql]
+mcp-sqlalchemy[mysql]
+
+[mysql]
+aiomysql>=0.1.1
+
+[postgresql]
+asyncpg>=0.28.0

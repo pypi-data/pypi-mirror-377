@@ -1,0 +1,188 @@
+Metadata-Version: 2.4
+Name: taiwan-law-history-mcp
+Version: 0.1.0
+Summary: Model Context Protocol server for Taiwan law history and article scraping from Legislative Yuan database
+Project-URL: Homepage, https://github.com/yourusername/taiwan-law-history-mcp
+Project-URL: Repository, https://github.com/yourusername/taiwan-law-history-mcp
+Project-URL: Issues, https://github.com/yourusername/taiwan-law-history-mcp/issues
+Project-URL: Documentation, https://github.com/yourusername/taiwan-law-history-mcp#readme
+Author-email: Taiwan Law MCP <noreply@example.com>
+License: MIT
+License-File: LICENSE
+Keywords: law,legal,legislative-yuan,mcp,model-context-protocol,scraping,taiwan
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Legal Industry
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Requires-Python: >=3.9
+Requires-Dist: beautifulsoup4>=4.12.0
+Requires-Dist: html5lib>=1.1
+Requires-Dist: lxml>=4.9.0
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: requests>=2.31.0
+Description-Content-Type: text/markdown
+
+# Taiwan Law MCP Server
+
+[![PyPI version](https://badge.fury.io/py/taiwan-law-history-mcp.svg)](https://badge.fury.io/py/taiwan-law-history-mcp)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A Model Context Protocol (MCP) server for scraping Taiwan law information from the Legislative Yuan's legal database. This server provides comprehensive access to Taiwan's legal documents, including law articles, amendments history, and legal text processing utilities.
+
+## 🚀 Features
+
+This MCP server provides 6 different tools for interacting with Taiwan law data:
+
+### Available Tools
+
+1. **🔍 search_law** - Search for laws by name and get basic information
+2. **📜 get_law_history** - Get complete history of a specific law including all amendments
+3. **📋 get_law_articles** - Get current articles of a specific law
+4. **🔧 parse_law_text** - Parse and normalize law text, converting Chinese numbers to Arabic
+5. **📅 convert_dates** - Convert ROC (Republic of China) dates to Western dates
+6. **🔢 normalize_article_number** - Convert Chinese article numbers to Arabic format
+
+## 📦 Installation
+
+### Using pip (Recommended)
+
+```bash
+pip install taiwan-law-history-mcp
+```
+
+### Using UV
+
+```bash
+uv add taiwan-law-history-mcp
+```
+
+### From source
+
+```bash
+git clone https://github.com/yourusername/taiwan-law-history-mcp.git
+cd taiwan-law-history-mcp
+pip install -e .
+```
+
+## 🔧 Usage
+
+### As an MCP Server
+
+Add this to your MCP client configuration (e.g., Claude Desktop):
+
+```json
+{
+  "mcpServers": {
+    "taiwan-law-history-mcp": {
+      "command": "taiwan-law-history-mcp"
+    }
+  }
+}
+```
+
+### Command Line Usage
+
+```bash
+# Run the MCP server
+taiwan-law-history-mcp
+
+# Test functionality
+python -c "from taiwan_law_mcp.server import normalize_article_no; print(normalize_article_no('第十九條之一'))"
+```
+
+## Usage
+
+### As an MCP Server
+
+Add this to your MCP client configuration (e.g., Claude Desktop):
+
+```json
+{
+  "mcpServers": {
+    "law-history-mcp": {
+      "command": "uv",
+      "args": ["run", "law-history-mcp"],
+      "cwd": "/path/to/law_history_mcp"
+    }
+  }
+}
+```
+
+### Example Tool Calls
+
+#### Search for a law:
+```json
+{
+  "tool": "search_law",
+  "arguments": {
+    "law_name": "農業保險法"
+  }
+}
+```
+
+#### Get law history:
+```json
+{
+  "tool": "get_law_history",
+  "arguments": {
+    "law_name": "農業保險法"
+  }
+}
+```
+
+#### Convert ROC date:
+```json
+{
+  "tool": "convert_dates",
+  "arguments": {
+    "roc_date": "1110520 修正"
+  }
+}
+```
+
+#### Normalize article number:
+```json
+{
+  "tool": "normalize_article_number",
+  "arguments": {
+    "article_text": "第十九條之一"
+  }
+}
+```
+
+## Data Format
+
+The server returns structured JSON data with normalized fields:
+
+- Article numbers are converted from Chinese (第十九條之一) to Arabic format (19-1)
+- ROC dates are converted to Western dates (YYYY-MM-DD)
+- Text is cleaned and normalized
+- Modification types are extracted (制定, 修正, 全文修正, etc.)
+
+## Dependencies
+
+- mcp >= 1.0.0
+- requests >= 2.31.0
+- beautifulsoup4 >= 4.12.0
+- html5lib >= 1.1
+- lxml >= 4.9.0
+
+## Technical Notes
+
+- Uses custom SSL configuration to handle legacy government websites
+- Implements proper session management and retry logic
+- Handles timeout.html redirects automatically
+- Supports multiple HTML parsers (html5lib, lxml, html.parser)
+
+## License
+
+MIT License

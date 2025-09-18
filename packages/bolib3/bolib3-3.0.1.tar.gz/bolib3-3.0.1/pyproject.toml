@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bolib3"
+dynamic = ["version"]
+authors = [
+  { name="Samuel Ward", email="samuelwarda1@gmail.com" },
+]
+description = "Welcome to BOLIB3, a benchmarking library of continuous bilevel optimization problems."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE.txt"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    'License :: OSI Approved :: BSD License',
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://www.bolib.org/"
+
+[tool.hatch.version]
+path = "bolib3/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "bolib3/*.py",
+]
+[tool.hatch.build.targets.wheel]
+packages = [
+    "bolib3"
+]
+
+# python -m build
+# pip install .
+# twine upload dist/*

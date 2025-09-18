@@ -1,0 +1,156 @@
+Metadata-Version: 2.4
+Name: jaxdiffmodal
+Version: 0.1.0
+Summary: A collection of vibration models (e.g. von Kármán plates, tension-modulated and stiff strings) implemented in JAX for fast, differentiable simulations
+Project-URL: homepage, https://github.com/rodrigodzf/jaxdiffmodal
+Author-email: Rodrigo Diaz <rodrigodzf@gmail.com>
+License: GPL-3.0
+License-File: LICENSE
+Keywords: JAX,acoustics,differentiable,musical instruments,physics,simulation,vibration
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.11
+Requires-Dist: einops>=0.8.0
+Requires-Dist: equinox>=0.11.12
+Requires-Dist: jax>=0.7.0; sys_platform != 'linux'
+Requires-Dist: jax[cuda12]>=0.7.0; sys_platform == 'linux'
+Requires-Dist: jaxtyping>=0.3.2
+Requires-Dist: nemus-magpie
+Requires-Dist: numpy==2.1.0
+Requires-Dist: scipy>=1.15.1
+Requires-Dist: tabulate>=0.9.0
+Provides-Extra: benchmark
+Requires-Dist: jaxopt>=0.8.3; extra == 'benchmark'
+Requires-Dist: librosa>=0.11.0; extra == 'benchmark'
+Requires-Dist: lineax>=0.0.7; extra == 'benchmark'
+Requires-Dist: llvmlite>=0.44.0; extra == 'benchmark'
+Requires-Dist: numba>=0.57; extra == 'benchmark'
+Requires-Dist: pandas>=2.2.3; extra == 'benchmark'
+Requires-Dist: scienceplots>=2.1.1; extra == 'benchmark'
+Requires-Dist: seaborn>=0.13.2; extra == 'benchmark'
+Requires-Dist: soxr>=0.5.0.post1; extra == 'benchmark'
+Requires-Dist: spectrum>=0.9.0; extra == 'benchmark'
+Requires-Dist: torch>=2.4.1; extra == 'benchmark'
+Requires-Dist: torchaudio>=2.4.1; extra == 'benchmark'
+Provides-Extra: cuda
+Requires-Dist: cupy-cuda12x>=13.3.0; extra == 'cuda'
+Requires-Dist: cuquantum-python-cu12>=24.11.0; (sys_platform == 'linux') and extra == 'cuda'
+Provides-Extra: dev
+Requires-Dist: ffmpeg-python>=0.2.0; extra == 'dev'
+Requires-Dist: ipykernel>=6.29.5; extra == 'dev'
+Requires-Dist: matplotlib>=3.10.0; extra == 'dev'
+Requires-Dist: nbclient>=0.10.2; extra == 'dev'
+Requires-Dist: nbformat>=5.10.4; extra == 'dev'
+Requires-Dist: poethepoet>=0.32.1; extra == 'dev'
+Requires-Dist: pytest>=8.4.1; extra == 'dev'
+Requires-Dist: quartodoc>=0.11.1; extra == 'dev'
+Requires-Dist: ruff>=0.9.2; extra == 'dev'
+Requires-Dist: scienceplots>=2.1.1; extra == 'dev'
+Requires-Dist: soundfile>=0.13.1; extra == 'dev'
+Requires-Dist: tqdm>=4.67.1; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# jaxdiffmodal
+
+[![arXiv](https://img.shields.io/badge/arXiv-2505.05940-b31b1b.svg)](https://arxiv.org/abs/2505.05940)
+
+Fast, differentiable, and GPU-accelerated simulation framework for modelling the dynamics of strings, membranes, and plates using modal methods implemented in [JAX](https://github.com/google/jax).
+
+## Features
+
+- Differentiable implementation using JAX
+- Simulates linear and nonlinear models:
+  - Tension-modulated string (Kirchhoff–Carrier)
+  - Tension-modulated membrane (Berger model)
+  - von Kármán nonlinear plate
+- Fast GPU-accelerated time integration
+- Designed for real-time synthesis, inverse modelling, and dataset generation
+- Includes example notebooks to reproduce results from the paper
+
+## Installation for Development
+
+It is recommended to use the [`uv`](https://github.com/astral-sh/uv) package manager to install the environment and dependencies.
+
+```bash
+uv sync --extra dev --extra benchmark
+```
+
+Otherwise you can create a virtual environment and install the dependencies manually:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+## Testing
+
+The project includes comprehensive tests to validate the Python implementation against MATLAB reference code. Tests follow the MATLAB-Python cross-validation pattern documented in `CLAUDE.md`.
+
+### Running Tests
+
+Prerequisites: The tests use `pytest` and require `scipy` for eigenvalue computations.
+
+Run all tests from the project root directory:
+```bash
+python -m pytest tests/ -v
+```
+
+Run specific test modules:
+```bash
+# Test K and M matrix assembly with MATLAB comparison
+python -m pytest tests/test_K_M_matlab_comparison.py -v
+
+# Test integral functions (int1, int2, int4)
+python -m pytest tests/test_intx_matlab_comparison.py -v
+
+# Test matrix integration functions (i_mat)
+python -m pytest tests/test_imat_matlab_comparison.py -v
+```
+
+### Generating MATLAB Reference Data
+
+To regenerate MATLAB reference data (requires MATLAB installation):
+```bash
+cd tests
+matlab -batch test_K_M_matlab_reference
+matlab -batch test_intx_matlab_reference_fixed
+matlab -batch test_imat_matlab_reference
+```
+
+### Test Coverage
+
+- **K, M matrix assembly**: Perfect match with MATLAB (1e-8 tolerance)
+- **Airy stress coefficients**: Validated using MATLAB eigenvalues/eigenvectors as input (1e-6 tolerance)
+- **Integral functions**: Comprehensive parameter space validation
+- **Basic functionality**: Matrix properties, dimensions, and mathematical consistency
+
+See `CLAUDE.md` for detailed testing methodology and patterns.
+
+## Examples
+
+The `nbs/examples` directory includes:
+
+- Synthetic and real-world inverse modelling experiments for strings and plates
+- Optimisation of nonlinear parameters and coupling tensors
+- Scripts to reproduce figures from the paper
+
+The `benchmark` directory includes comparisons against:
+
+- An optimised C++ implementation using Eigen and BLAS
+- A JIT-compiled PyTorch implementation (GPU)
+- A MATLAB baseline
+
+> We plan to add more benchmarks, examples, and real-time synthesis demos in future updates.
+
+## Acknowledgements
+
+- Mode processing adapted from [VKPlate](https://github.com/Nemus-Project/VKPlate)
+- Plate mode computation using [magpie-python](https://github.com/Nemus-Project/magpie-python)
+- Coupling coefficient implementation based on [VKGong](https://github.com/rodrigodzf/VKGong)
+

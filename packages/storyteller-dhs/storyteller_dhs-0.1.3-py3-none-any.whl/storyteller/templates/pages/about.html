@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Storyteller</title>
+  <link rel="stylesheet" href="/-/static/app.css"> <!-- Datasette default CSS -->
+  <link rel="stylesheet" href="/assets/style.css?v=2"> <!-- Your custom CSS -->
+  <style>
+    /* Ensure bullets are visible */
+    ul {
+      list-style-type: disc;
+      margin-left: 2em;
+    }
+    #footer {
+      text-align: center;
+      font-size: 90%;
+      margin-top: 2em;
+      color: #555;
+    }
+    .cta-box {
+      background: #f5f8fa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5em;
+      margin: 2em auto;
+      text-align: center;
+      max-width: 700px;
+    }
+    .cta-box a {
+      font-weight: bold;
+      color: #0073e6;
+      text-decoration: none;
+    }
+    .cta-box a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" style="max-width: 800px; margin: auto; padding: 2em;">
+    <h1 style="text-align: center; margin-bottom: 1em;">About Storyteller</h1>
+
+    <p>
+      Unlock, search, and explore the full breadth of Demographic and Health Survey (DHS) datasets from any country or year.
+      Browse household, individual, and biomarker data with interactive tables and instant full-text search.
+      Ideal for researchers, policymakers, and students seeking insights into population, health, and social indicators worldwide.
+    </p>
+
+    <p><strong>Features:</strong></p>
+    <ul>
+      <li>Search across dozens of tables and thousands of records from any DHS survey</li>
+      <li>View variable definitions and relationships for every dataset</li>
+      <li>Download filtered data for your own analysis</li>
+      <li>Fast, user-friendly web interface; no coding required</li>
+      <li>Empowering data-driven decisions with accessible, well-organized survey information for any DHS dataset.</li>
+    </ul>
+  </div>
+
+  <!-- Call-to-Action Section -->
+  <div class="cta-box">
+    <p>
+      Want to learn more about <strong>DHS surveys</strong> and explore our exciting <strong>AI/ML projects</strong> built using DHS data?
+    </p>
+    <p>
+      👉 <a href="https://kofiyatech.com/dhs-ai-ml-toolkit/" target="_blank" rel="noopener">
+        Check out the kofiyatech DHS AI/ML Toolkit
+      </a>
+    </p>
+  </div>
+
+  <!-- Separator -->
+  <hr style="margin: 2em auto; width: 80%;">
+
+  <!-- Custom Footer -->
+  <div id="footer">
+    <p>{% block _release_note %}{% endblock %}</p>
+    <p>
+      &copy; <span id="year"></span> <a href="https://kofiyatech.com" target="_blank" rel="noopener">kofiyatech</a>. All rights reserved.
+    </p>
+    <p>
+      Powered by <a href="https://github.com/simonw/datasette" target="_blank" rel="noopener">Datasette</a>
+    </p>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+
+</body>
+</html>

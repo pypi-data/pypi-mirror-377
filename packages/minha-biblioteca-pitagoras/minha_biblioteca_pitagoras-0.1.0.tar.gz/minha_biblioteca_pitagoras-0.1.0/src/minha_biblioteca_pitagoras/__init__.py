@@ -1,0 +1,1 @@
+from .teorema_pitagoras import *

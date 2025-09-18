@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["sudorouter"]
+
+[project]
+name = "sudorouter"
+version = "0.0.1"
+description = "The official Python library for the SudoRouter"
+authors = [
+    { name = "SudoRouter" },
+]
+readme = "README.md"
+classifiers = ["Programming Language :: Python :: 3"]
+urls = { "Homepage" = "https://sudorouter.ai" }
+
+dependencies = [
+    "httpx>=0.27.0, <1",
+    "urllib3",
+    "pyOpenSSL>=25.0.0",
+    "cryptography>=45.0.0",
+]

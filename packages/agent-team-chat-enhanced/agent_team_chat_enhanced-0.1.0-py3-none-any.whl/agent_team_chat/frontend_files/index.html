@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Team Chat - Human Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 #f7fafc;
+        }
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f7fafc;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 3px;
+        }
+        .message-animation {
+            animation: slideInUp 0.3s ease-out;
+        }
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-indicator {
+            animation: pulse 1.5s infinite;
+        }
+        .online-pulse {
+            animation: onlinePulse 2s infinite;
+        }
+        @keyframes onlinePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .agent-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .human-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 h-screen flex items-center justify-center p-4">
+    <div class="flex w-full max-w-7xl bg-white rounded-xl shadow-2xl overflow-hidden h-[700px]">
+        <!-- Left Sidebar -->
+        <div class="w-80 bg-gradient-to-b from-[#1e3a5f] to-[#2c4a6b] text-white flex flex-col">
+            <!-- User Profile Section -->
+            <div class="p-4 border-b border-[#2c4a6b] flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format"
+                             alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white/20">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-[#1e3a5f] online-pulse"></div>
+                    </div>
+                    <div class="ml-3">
+                        <div class="font-semibold" id="current-user">Human User</div>
+                        <div class="text-sm opacity-75">@human_operator</div>
+                    </div>
+                </div>
+                <button class="p-2 hover:bg-white/10 rounded-md transition-colors">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="p-4 border-b border-[#2c4a6b]">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="font-bold text-sm tracking-wide opacity-90">PROJECTS</h2>
+                    <div class="flex space-x-2">
+                        <button onclick="createNewProject()" class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                            <i class="fas fa-plus text-xs"></i>
+                        </button>
+                        <button class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                            <i class="fas fa-filter text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Items -->
+                <div class="space-y-2" id="projects-list">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Online Agents Section -->
+            <div class="p-4 flex-1">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="font-bold text-sm tracking-wide opacity-90">ACTIVE AGENTS</h2>
+                    <div class="flex space-x-2">
+                        <button onclick="refreshAgents()" class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                            <i class="fas fa-sync text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Agent Items -->
+                <div class="space-y-2 scroll-container overflow-y-auto max-h-64" id="agents-list">
+                    <!-- Agents will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 border-t border-[#2c4a6b] text-xs opacity-75">
+                <div class="flex items-center justify-between">
+                    <span>Agent Team Chat v1.0</span>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-400 rounded-full online-pulse connection-indicator"></div>
+                        <span class="connection-status">Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div class="p-4 border-b bg-white/50 backdrop-blur-sm flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mr-4 shadow-lg">
+                        <i class="fas fa-comments text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800" id="current-project-name">Select a Project</h1>
+                        <div class="text-sm text-gray-600" id="project-description">Choose a project from the sidebar to start chatting</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="showProjectSummary()" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i>Summary
+                    </button>
+                    <button onclick="toggleSearchDocs()" class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors">
+                        <i class="fas fa-book mr-2"></i>Docs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages Container -->
+            <div class="flex-1 flex">
+                <!-- Messages Area -->
+                <div class="flex-1 flex flex-col">
+                    <!-- Messages -->
+                    <div class="flex-1 p-4 overflow-y-auto scroll-container" id="messages-container">
+                        <div class="space-y-4" id="messages-list">
+                            <!-- Welcome message -->
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-robot text-4xl mb-4 text-gray-400"></i>
+                                <h3 class="text-lg font-semibold mb-2">Welcome to Agent Team Chat</h3>
+                                <p>Select a project to start collaborating with AI agents</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="p-4 border-t bg-gray-50">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="toggleEmojiPicker()" class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-lg transition-colors">
+                                <i class="far fa-smile"></i>
+                            </button>
+                            <button onclick="selectImage()" class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-lg transition-colors">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <input type="file" id="image-input" accept="image/*" style="display: none;" onchange="uploadImage(this)">
+                            <div class="flex-1 relative">
+                                <input type="text"
+                                       id="message-input"
+                                       placeholder="Type your message..."
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       onkeypress="handleKeyPress(event)"
+                                       disabled>
+                                <div id="typing-indicator" class="absolute left-4 bottom-16 text-sm text-gray-500 typing-indicator" style="display: none;">
+                                    <i class="fas fa-circle text-xs"></i>
+                                    <i class="fas fa-circle text-xs"></i>
+                                    <i class="fas fa-circle text-xs"></i>
+                                    <span class="ml-2">Agent is typing...</span>
+                                </div>
+                            </div>
+                            <button onclick="sendMessage()"
+                                    id="send-button"
+                                    class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                                    disabled>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel (Docs/Info) -->
+                <div class="w-80 border-l bg-gray-50 hidden" id="right-panel">
+                    <div class="p-4 border-b bg-white">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold">Documentation</h3>
+                            <button onclick="toggleSearchDocs()" class="text-gray-600 hover:text-gray-800">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <input type="text"
+                               id="docs-search"
+                               placeholder="Search documentation..."
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                               onkeyup="searchDocs(this.value)">
+                        <div class="mt-4 space-y-2" id="docs-results">
+                            <!-- Documentation results will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Project Modal -->
+    <div id="create-project-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 w-96 shadow-2xl">
+            <h3 class="text-lg font-semibold mb-4">Create New Project</h3>
+            <input type="text"
+                   id="new-project-name"
+                   placeholder="Project name..."
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <textarea id="new-project-description"
+                      placeholder="Project description (optional)..."
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows="3"></textarea>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeCreateProjectModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                <button onclick="createProject()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include API Client -->
+    <script src="api-client.js"></script>
+
+    <script>
+        // Global variables
+        let currentProjectId = null;
+        let currentUser = 'human_operator';
+        let isConnected = false;
+        let messageUpdateInterval = null;
+        let agentUpdateInterval = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProjects();
+            refreshAgents();
+
+            // Start polling for updates every 2 seconds
+            messageUpdateInterval = setInterval(updateMessages, 2000);
+            agentUpdateInterval = setInterval(refreshAgents, 5000);
+        });
+
+        // Project Management
+        async function loadProjects() {
+            try {
+                // In a real implementation, this would call your MCP server
+                // For now, we'll simulate with some example data
+                const projects = [
+                    { id: 1, name: "Frontend Development", description: "React/Vue components", icon: "fas fa-laptop-code", color: "purple" },
+                    { id: 2, name: "Backend API", description: "REST API development", icon: "fas fa-server", color: "cyan" },
+                    { id: 3, name: "Data Analytics", description: "ML and data processing", icon: "fas fa-chart-bar", color: "orange" },
+                    { id: 4, name: "DevOps Pipeline", description: "CI/CD and deployment", icon: "fas fa-cogs", color: "green" }
+                ];
+
+                const projectsList = document.getElementById('projects-list');
+                projectsList.innerHTML = '';
+
+                projects.forEach(project => {
+                    const projectElement = document.createElement('div');
+                    projectElement.className = `flex items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer transition-colors ${currentProjectId === project.id ? 'bg-white/20' : ''}`;
+                    projectElement.onclick = () => selectProject(project.id, project.name, project.description);
+
+                    projectElement.innerHTML = `
+                        <div class="w-10 h-10 rounded-lg bg-${project.color}-500 flex items-center justify-center mr-3 shadow-md">
+                            <i class="${project.icon} text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium">${project.name}</div>
+                            <div class="text-xs opacity-75">${project.description}</div>
+                        </div>
+                    `;
+
+                    projectsList.appendChild(projectElement);
+                });
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+                showNotification('Failed to load projects', 'error');
+            }
+        }
+
+        async function selectProject(projectId, projectName, description) {
+            currentProjectId = projectId;
+
+            // Update UI
+            document.getElementById('current-project-name').textContent = projectName;
+            document.getElementById('project-description').textContent = description;
+            document.getElementById('message-input').disabled = false;
+            document.getElementById('send-button').disabled = false;
+
+            // Update project selection in sidebar
+            loadProjects();
+
+            // Load messages for this project
+            await loadMessages(projectId);
+
+            showNotification(`Switched to ${projectName}`, 'success');
+        }
+
+        // Message Management
+        async function loadMessages(projectId) {
+            try {
+                // Simulate loading messages from MCP server
+                const messages = [
+                    {
+                        id: 1,
+                        agent: "APISpecialist",
+                        role: "assistant",
+                        content: "I've implemented the user authentication endpoints. The JWT token validation is working correctly.",
+                        timestamp: Date.now() - 300000,
+                        is_agent: true
+                    },
+                    {
+                        id: 2,
+                        agent: "SecurityAuditor",
+                        role: "assistant",
+                        content: "Great work! I've reviewed the auth implementation. Just one suggestion: consider adding rate limiting to the login endpoint to prevent brute force attacks.",
+                        timestamp: Date.now() - 240000,
+                        is_agent: true
+                    },
+                    {
+                        id: 3,
+                        agent: "human_operator",
+                        role: "user",
+                        content: "Thanks for the security review! I'll implement the rate limiting. What would you recommend for the threshold?",
+                        timestamp: Date.now() - 180000,
+                        is_agent: false
+                    },
+                    {
+                        id: 4,
+                        agent: "SecurityAuditor",
+                        role: "assistant",
+                        content: "I'd recommend 5 failed attempts per 15-minute window per IP address. This balances security with user experience. You can implement this using Redis with expiring keys.",
+                        timestamp: Date.now() - 120000,
+                        is_agent: true
+                    }
+                ];
+
+                const messagesList = document.getElementById('messages-list');
+                messagesList.innerHTML = '';
+
+                messages.forEach(message => {
+                    addMessageToUI(message);
+                });
+
+                // Scroll to bottom
+                scrollToBottom();
+            } catch (error) {
+                console.error('Failed to load messages:', error);
+                showNotification('Failed to load messages', 'error');
+            }
+        }
+
+        async function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const content = messageInput.value.trim();
+
+            if (!content || !currentProjectId) return;
+
+            try {
+                // Add message to UI immediately
+                const message = {
+                    id: Date.now(),
+                    agent: currentUser,
+                    role: "user",
+                    content: content,
+                    timestamp: Date.now(),
+                    is_agent: false
+                };
+
+                addMessageToUI(message);
+                messageInput.value = '';
+                scrollToBottom();
+
+                // In a real implementation, send to MCP server here
+                // await sendMessageToServer(currentProjectId, content);
+
+                // Simulate agent response after a short delay
+                setTimeout(() => {
+                    simulateAgentResponse(content);
+                }, 1000 + Math.random() * 2000);
+
+            } catch (error) {
+                console.error('Failed to send message:', error);
+                showNotification('Failed to send message', 'error');
+            }
+        }
+
+        function addMessageToUI(message) {
+            const messagesList = document.getElementById('messages-list');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message-animation';
+
+            const isAgent = message.is_agent;
+            const avatarUrl = isAgent
+                ? 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=40&h=40&fit=crop&auto=format'
+                : 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format';
+
+            const badgeClass = isAgent ? 'agent-badge' : 'human-badge';
+            const roleIcon = isAgent ? 'fas fa-robot' : 'fas fa-user';
+
+            messageElement.innerHTML = `
+                <div class="flex">
+                    <div class="relative mr-3">
+                        <img src="${avatarUrl}" alt="${message.agent} avatar" class="w-10 h-10 rounded-full border-2 border-gray-200">
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 ${badgeClass} rounded-full flex items-center justify-center border-2 border-white">
+                            <i class="${roleIcon} text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="max-w-3xl flex-1">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <span class="font-semibold ${isAgent ? 'text-purple-600' : 'text-pink-600'}">${message.agent}</span>
+                            <span class="text-xs text-gray-500">${formatTimestamp(message.timestamp)}</span>
+                        </div>
+                        <div class="text-gray-700 leading-relaxed">${formatMessageContent(message.content)}</div>
+                    </div>
+                </div>
+            `;
+
+            messagesList.appendChild(messageElement);
+        }
+
+        function formatMessageContent(content) {
+            // Basic markdown-like formatting
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 rounded">$1</code>')
+                .replace(/\n/g, '<br>');
+        }
+
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+
+            if (diff < 60000) return 'just now';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+
+            return date.toLocaleDateString();
+        }
+
+        // Agent Status Management
+        async function refreshAgents() {
+            try {
+                // Simulate agent status data
+                const agents = [
+                    { name: "APISpecialist", status: "active", specialization: "Backend APIs", lastSeen: Date.now() - 30000 },
+                    { name: "SecurityAuditor", status: "active", specialization: "Security Review", lastSeen: Date.now() - 60000 },
+                    { name: "UIExpert", status: "idle", specialization: "Frontend UI", lastSeen: Date.now() - 300000 },
+                    { name: "DataAnalyst", status: "away", specialization: "Data Processing", lastSeen: Date.now() - 900000 },
+                    { name: "DevOpsBot", status: "active", specialization: "CI/CD Pipeline", lastSeen: Date.now() - 120000 }
+                ];
+
+                const agentsList = document.getElementById('agents-list');
+                agentsList.innerHTML = '';
+
+                agents.forEach(agent => {
+                    const agentElement = document.createElement('div');
+                    agentElement.className = 'flex items-center p-2 rounded-lg hover:bg-white/10 cursor-pointer transition-colors';
+
+                    const statusColor = {
+                        'active': 'bg-green-400',
+                        'idle': 'bg-yellow-400',
+                        'away': 'bg-gray-400'
+                    }[agent.status];
+
+                    agentElement.innerHTML = `
+                        <div class="relative mr-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <div class="absolute bottom-0 right-0 w-3 h-3 ${statusColor} rounded-full border-2 border-[#1e3a5f] ${agent.status === 'active' ? 'online-pulse' : ''}"></div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-sm">${agent.name}</div>
+                            <div class="text-xs opacity-75">${agent.specialization}</div>
+                        </div>
+                    `;
+
+                    agentsList.appendChild(agentElement);
+                });
+            } catch (error) {
+                console.error('Failed to refresh agents:', error);
+            }
+        }
+
+        // Utility Functions
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('messages-container');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create a simple notification system
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg text-white z-50 ${
+                type === 'success' ? 'bg-green-500' :
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Modal Management
+        function createNewProject() {
+            document.getElementById('create-project-modal').classList.remove('hidden');
+        }
+
+        function closeCreateProjectModal() {
+            document.getElementById('create-project-modal').classList.add('hidden');
+            document.getElementById('new-project-name').value = '';
+            document.getElementById('new-project-description').value = '';
+        }
+
+        function createProject() {
+            const name = document.getElementById('new-project-name').value.trim();
+            if (!name) return;
+
+            // In a real implementation, create project via MCP server
+            showNotification(`Project "${name}" created successfully!`, 'success');
+            closeCreateProjectModal();
+            loadProjects();
+        }
+
+        // Documentation
+        function toggleSearchDocs() {
+            const panel = document.getElementById('right-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function searchDocs(query) {
+            if (query.length < 2) return;
+
+            // Simulate doc search results
+            const results = [
+                { title: "Authentication Flow", content: "JWT token validation and refresh logic...", relevance: 0.9 },
+                { title: "Rate Limiting Guide", content: "Implementing rate limits with Redis...", relevance: 0.8 },
+                { title: "Security Best Practices", content: "OWASP guidelines for web applications...", relevance: 0.7 }
+            ];
+
+            const resultsContainer = document.getElementById('docs-results');
+            resultsContainer.innerHTML = '';
+
+            results.forEach(result => {
+                const resultElement = document.createElement('div');
+                resultElement.className = 'p-3 border border-gray-200 rounded-lg mb-2 cursor-pointer hover:bg-gray-50';
+                resultElement.innerHTML = `
+                    <div class="font-medium text-sm">${result.title}</div>
+                    <div class="text-xs text-gray-600 mt-1">${result.content}</div>
+                `;
+                resultsContainer.appendChild(resultElement);
+            });
+        }
+
+        // Simulate agent responses for demo
+        function simulateAgentResponse(userMessage) {
+            const responses = [
+                "I'll help you implement that feature. Let me check the current codebase structure first.",
+                "That's a great question! Based on the project requirements, I recommend the following approach:",
+                "I've analyzed the issue and found a potential solution. Here's what I suggest:",
+                "Let me run some tests and get back to you with the results.",
+                "I'll coordinate with other agents to ensure this change doesn't conflict with ongoing work."
+            ];
+
+            const agentNames = ["APISpecialist", "SecurityAuditor", "UIExpert", "DataAnalyst"];
+            const randomAgent = agentNames[Math.floor(Math.random() * agentNames.length)];
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+            const message = {
+                id: Date.now(),
+                agent: randomAgent,
+                role: "assistant",
+                content: randomResponse,
+                timestamp: Date.now(),
+                is_agent: true
+            };
+
+            // Show typing indicator
+            document.getElementById('typing-indicator').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('typing-indicator').style.display = 'none';
+                addMessageToUI(message);
+                scrollToBottom();
+            }, 1500);
+        }
+
+        // Image upload functionality
+        function selectImage() {
+            document.getElementById('image-input').click();
+        }
+
+        function uploadImage(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // In a real implementation, upload to MCP server
+                    showNotification('Image uploaded successfully!', 'success');
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showProjectSummary() {
+            if (!currentProjectId) {
+                showNotification('Please select a project first', 'error');
+                return;
+            }
+
+            showNotification('Generating project summary...', 'info');
+            // In a real implementation, call MCP server for project digest
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (messageUpdateInterval) clearInterval(messageUpdateInterval);
+            if (agentUpdateInterval) clearInterval(agentUpdateInterval);
+        });
+    </script>
+</body>
+</html>

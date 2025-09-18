@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: footsbviz
+Version: 0.1.0
+Summary: Zero-friction visuals for StatsBomb open data (no data engineering).
+Project-URL: Homepage, https://github.com/amitbakde99/footsbviz
+Project-URL: Issues, https://github.com/amitbakde99/footsbviz/issues
+Project-URL: Source, https://github.com/amitbakde99/footsbviz
+Author-email: Amit Bakde <amitbakde99@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Amit Bakde
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: analytics,football,soccer,statsbomb,visualization,xG
+Requires-Python: >=3.9
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: numpy>=1.23
+Requires-Dist: pandas>=1.5
+Requires-Dist: requests>=2.31
+Provides-Extra: viz
+Requires-Dist: highlight-text>=0.2.0; extra == 'viz'
+Requires-Dist: seaborn>=0.12; extra == 'viz'
+Description-Content-Type: text/markdown
+
+# footsbviz
+
+Zero-friction helpers to visualize **StatsBomb Open Data** — without manual data engineering.
+
+> Not affiliated with StatsBomb. Please respect the StatsBomb Open Data license and terms.
+
+## Install
+
+```bash
+pip install footsbviz
+# or with optional viz extras:
+pip install "footsbviz[viz]"
+```
+
+## Quickstart
+```bash
+import footsbviz as fz
+
+# events_df = (your StatsBomb events DataFrame with standard columns)
+fig, ax = fz.create_shot_map_team(
+    events_df, team_name="Belgium", team_colour="#d00",
+    pitch_length_x=120, pitch_length_y=80,
+    orientation="horizontal", aspect="full",
+    x_dimensions=10, y_dimensions=7,
+    subtitle="Example Match", save_path=None, show=True
+)
+```
+## Credits
+
+This library draws inspiration from community work on StatsBomb visuals. Certain function ideas and column expectations originated in publicly shared scripts; we re-implemented them in a package-friendly way and added a stable API. See CREDITS.md for attribution.

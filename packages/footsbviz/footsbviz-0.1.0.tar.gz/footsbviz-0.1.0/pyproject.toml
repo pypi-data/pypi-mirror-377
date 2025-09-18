@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "footsbviz"
+version = "0.1.0"
+description = "Zero-friction visuals for StatsBomb open data (no data engineering)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Amit Bakde", email = "amitbakde99@gmail.com" }]
+keywords = ["football", "soccer", "statsbomb", "analytics", "visualization", "xG"]
+
+# Keep core deps small; make the heavier ones optional later
+dependencies = [
+  "pandas>=1.5",
+  "numpy>=1.23",
+  "matplotlib>=3.7",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+viz = [
+  "highlight_text>=0.2.0",
+  "seaborn>=0.12",
+]
+# You can add mplsoccer, soccerplots, etc., later if you want.
+
+[project.urls]
+Homepage = "https://github.com/amitbakde99/footsbviz"
+Issues = "https://github.com/amitbakde99/footsbviz/issues"
+Source = "https://github.com/amitbakde99/footsbviz"
+
+[tool.hatch.build.targets.wheel]
+packages = ["footsbviz"]

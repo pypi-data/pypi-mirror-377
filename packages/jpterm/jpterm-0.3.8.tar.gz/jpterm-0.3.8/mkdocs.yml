@@ -1,0 +1,65 @@
+site_name: jpterm
+site_description: Jupyter in the terminal
+repo_url: https://github.com/davidbrochart/jpterm
+
+theme:
+  name: 'material'
+  palette:
+    - scheme: default
+      primary: 'black'
+      accent: 'black'
+      toggle:
+          icon: material/lightbulb-outline
+          name: Switch to dark mode
+    - scheme: slate
+      primary: 'black'
+      accent: 'black'
+      toggle:
+          icon: material/lightbulb
+          name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.sections
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+  logo: assets/logo.png
+
+nav:
+- Overview: index.md
+- install.md
+- Usage:
+  - usage/CLI.md
+  - usage/key_bindings.md
+- Plugins:
+  - plugins/Cell.md
+  - plugins/console.md
+  - plugins/Editors.md
+  - plugins/File_browser.md
+  - plugins/Image_viewer.md
+  - plugins/Jpterm.md
+  - plugins/Kernel.md
+  - plugins/Launcher.md
+  - plugins/Local_contents.md
+  - plugins/Local_kernels.md
+  - plugins/Local_terminals.md
+  - plugins/Markdown_viewer.md
+  - plugins/notebook_editor.md
+  - plugins/Remote_contents.md
+  - plugins/Remote_kernels.md
+  - plugins/Remote_terminals.md
+  - plugins/Terminal.md
+  - plugins/Text_editor.md
+  - plugins/Widgets.md
+  - plugins/Txl.md
+
+markdown_extensions:
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+
+plugins:
+- mkdocstrings:
+    default_handler: python

@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=70.3.0,<81.0.0", "setuptools-scm>=8.0.4,<10.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "potato_util"
+authors = [{ name = "Batkhuu Byambajav", email = "batkhuu10@gmail.com" }]
+description = "'potato_util' is collection of simple useful utils package for python."
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+keywords = ["potato_util", "utils", "utilities", "tools", "helpers"]
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Developers",
+	"Topic :: Software Development :: Libraries",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+# [tool.setuptools.packages.find]
+# where = ["src"]
+# include = ["potato_util*"]
+# namespaces = false
+
+[tool.setuptools.dynamic]
+version = { attr = "potato_util.__version__.__version__" }
+dependencies = { file = "./requirements.txt" }
+optional-dependencies.async = { file = [
+	"./requirements/requirements.async.txt",
+] }
+optional-dependencies.fastapi = { file = [
+	"./requirements/requirements.fastapi.txt",
+] }
+optional-dependencies.all = { file = [
+	"./requirements/requirements.async.txt",
+	"./requirements/requirements.fastapi.txt",
+] }
+optional-dependencies.test = { file = [
+	"./requirements/requirements.async.txt",
+	"./requirements/requirements.fastapi.txt",
+	"./requirements/requirements.test.txt",
+] }
+optional-dependencies.build = { file = [
+	"./requirements/requirements.build.txt",
+] }
+optional-dependencies.docs = { file = ["./requirements/requirements.docs.txt"] }
+optional-dependencies.dev = { file = [
+	"./requirements/requirements.async.txt",
+	"./requirements/requirements.fastapi.txt",
+	"./requirements/requirements.test.txt",
+	"./requirements/requirements.build.txt",
+	"./requirements/requirements.docs.txt",
+	"./requirements/requirements.dev.txt",
+] }
+
+# [tool.pyright]
+# venvPath = "."
+# venv = ".venv"
+
+[project.urls]
+Homepage = "https://github.com/bybatkhuu/module.python-utils"
+Documentation = "https://pyutils-docs.bybatkhuu.dev"
+Repository = "https://github.com/bybatkhuu/module.python-utils.git"
+Issues = "https://github.com/bybatkhuu/module.python-utils/issues"
+Changelog = "https://github.com/bybatkhuu/module.python-utils/blob/main/CHANGELOG.md"

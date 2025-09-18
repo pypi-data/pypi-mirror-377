@@ -1,0 +1,10 @@
+graft src/sphinx_social_cards/layouts
+graft src/sphinx_social_cards/plugins/github/layouts
+graft src/sphinx_social_cards/.fonts
+exclude src/sphinx_social_cards/.icons/**/*.svg
+include src/sphinx_social_cards/.icons/sphinx_logo.svg
+recursive-exclude .github **
+recursive-exclude docs **
+recursive-exclude tests **
+recursive-exclude cookiecutter **
+exclude .gitignore .pre-commit-config.yaml .readthedocs.yaml noxfile.py package*.json tools/svgo_config.js requirements-dev.txt

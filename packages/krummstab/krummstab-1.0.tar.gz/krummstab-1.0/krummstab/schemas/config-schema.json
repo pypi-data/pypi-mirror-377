@@ -1,0 +1,181 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "lecture_title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "assistant_email": {
+        "type": "string",
+        "format": "email"
+      },
+      "marking_mode": {
+        "type": "string",
+        "enum": [
+          "static",
+          "exercise"
+        ]
+      },
+      "use_marks_file": {
+        "type": "boolean"
+      },
+      "points_per": {
+        "type": "string",
+        "enum": [
+          "sheet",
+          "exercise"
+        ]
+      },
+      "min_point_unit": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "max_points_per_sheet": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer"
+        }
+      },
+      "max_team_size": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "classes": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "string",
+                  "format": "email"
+                }
+              ],
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        }
+      },
+      "tutor_list": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "teams": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "string",
+                "format": "email"
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 3
+          }
+        }
+      },
+      "tutor_name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "tutor_email": {
+        "type": "string",
+        "format": "email"
+      },
+      "email_signature": {
+        "type": "string"
+      },
+      "feedback_email_cc": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "smtp_url": {
+        "type": "string"
+      },
+      "smtp_port": {
+        "type": "integer"
+      },
+      "smtp_user": {
+        "type": "string"
+      },
+      "xopp": {
+        "type": "boolean"
+      },
+      "ignore_feedback_suffix": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^\\.",
+          "minLength": 2
+        }
+      },
+      "marking_command": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+        "lecture_title",
+        "marking_mode",
+        "use_marks_file",
+        "points_per",
+        "min_point_unit",
+        "max_points_per_sheet",
+        "max_team_size",
+        "assistant_email",
+        "tutor_name",
+        "tutor_email",
+        "email_signature",
+        "feedback_email_cc",
+        "smtp_url",
+        "smtp_port",
+        "smtp_user",
+        "xopp",
+        "ignore_feedback_suffix",
+        "marking_command"
+      ],
+    "if": {
+      "properties": {
+        "marking_mode": { "const": "static" }
+      }
+    },
+    "then": {
+      "required": ["classes"]
+    },
+    "else": {
+      "required": ["tutor_list", "teams"]
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,1 @@
+import{K as o,D as r,e as t,f as n,i as c}from"./index-BRYl8bDl.js";const s={};function a(_,i){const e=r("router-view");return n(),t("div",null,[c(e)])}const l=o(s,[["render",a]]);export{l as default};

@@ -1,0 +1,1 @@
+from .rickdex import Base, Personagem, Localizacao, Episodio

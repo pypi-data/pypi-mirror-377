@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mindforge-ml"
+version = "0.1.0"
+description = "MindForge is an open-source ML library offering simple, consistent, and extensible tools for building and experimenting with models. Starting with unsupervised learning and anomaly detection, it aims to expand into deep learning, NLP, and predictive analytics, making ML more accessible, modular, and production-ready."
+authors = [
+  { name="Godsave Kawurem", email="godsaveogbidor@gmail.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn",
+    "torch"
+]
+
+requires-python = ">=3.8"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mindforge_ml*"]
+
+
+[project.urls]
+"Homepage" = "https://github.com/Perfect-Aimers-Enterprise/mindforge"
+"Bug Tracker" = "https://github.com/Perfect-Aimers-Enterprise/mindforge/issues"

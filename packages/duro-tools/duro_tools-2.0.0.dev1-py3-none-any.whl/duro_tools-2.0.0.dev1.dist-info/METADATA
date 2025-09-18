@@ -1,0 +1,146 @@
+Metadata-Version: 2.1
+Name: duro-tools
+Version: 2.0.0.dev1
+Summary: 
+Author: Nathaniel Mallick
+Author-email: nmallick@carnegierobotics.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: future (>=1.0.0,<2.0.0)
+Requires-Dist: monotonic (>=1.6,<2.0)
+Requires-Dist: numpy (==2.2.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: sbp (==4.1.1)
+Description-Content-Type: text/markdown
+
+Tools for the Duro GNSS receiver
+=================================
+Python tools for the Duro GNSS receiver. This repository includes a variety of
+command line utilities (firmware bootloader, serial port data logging, etc.).
+
+Versioning
+----------
+``duro_tools`` versioning scheme is guided by the supported version of
+[libsbp](https://github.com/swift-nav/libsbp). The following major version schemes map to the supported versions of libsbp:
+| __duro_tools__ version | __libsbp__ version |
+| ---------------------- | ------------------ |
+| v2.x.x | [libsbp  v4.1.1](https://www.swiftnav.com/resource-files/Swift%20Navigation%20Binary%20Protocol/v4.1.1/Specification/Swift%20Navigation%20Binary%20Protocol%20Specification%20v4.1.1.pdf) |
+| v1.x.x | [libsbp v2.7.4](https://www.swiftnav.com/resource-files/Swift%20Navigation%20Binary%20Protocol/v2.7.4/Specification/Swift%20Navigation%20Binary%20Protocol%20Specification%20v2.7.4.pdf) |
+
+Building and Installing
+-----------------------
+``duro_tools``uses [poetry](https://python-poetry.org/) to organize dependencies and generate distributions.
+You can find more information on using potery has a packaging and dependency manager at https://python-poetry.org/.
+
+## Installing Poetry
+project version: _1.8.3_
+
+installation: [poetry installation docs](https://python-poetry.org/docs/#installation)
+
+## Building and Installing
+It is advised to install ``duro_tools`` inside a virtual environment to avoid modifying system packages.
+
+```
+$ poetry build # build distributions
+$ poetry install # install into local environment
+```
+Usage
+-----
+### Settings
+_For reading, writing and saving Duro settings/configuration_
+
+```
+usage: python -m duro_tools.settings [-h] [-p PORT] [-b BAUD] [--rtscts] [-t] [-f] [--file] [--json] [--playback] [-v] [--timeout TIMEOUT] [-s] {save,reset,read,all,write,read_to_file,write_from_file} ...
+
+Duro Settings Tool
+
+positional arguments:
+  {save,reset,read,all,write,read_to_file,write_from_file}
+    save                save all the current settings to flash
+    reset               reset settings to factory defaults
+    read                read the current setting
+    all                 read all the settings
+    write               write the current setting
+    read_to_file        read the current settings file from device
+    write_from_file     write settings file to device
+
+options:
+  -h, --help            show this help message and exit
+  -p PORT, --port PORT  specify the serial port to use
+  -b BAUD, --baud BAUD  specify the baud rate to use
+  --rtscts              enable Hardware Flow Control (RTS/CTS)
+  -t, --tcp             use a TCP connection instead of a local serial port (if TCP is selected, the port is interpreted as host:port)
+  -f, --ftdi            use pylibftdi instead of pyserial.
+  --file                read with a filedriver rather than pyserial.
+  --json                input is SBP JSON
+  --playback            emulate real input
+  -v, --verbose         print extra debugging information.
+  --timeout TIMEOUT     timeout for settings calls in seconds (default: 0.5)
+  -s, --save_after_write
+                        save settings to flash after successful write or write_from_file
+
+Returns:
+  0: Upon success
+  1: Runtime error or invalid settings request.
+  2: Improper usage
+```
+
+### File IO
+_For transferring files to and from the Duro_
+
+```
+usage: python -m duro_tools.fileio [-h] [-w SOURCE DEST] [-r SOURCE [DEST ...]] [-l LIST] [-d DELETE] [-p PORT] [-b BAUD] [-t] [-v] [-x] [-f]
+
+Duro File I/O Utility
+
+options:
+  -h, --help            show this help message and exit
+  -w SOURCE DEST, --write SOURCE DEST
+                        write a file from local SOURCE to remote destination DEST
+  -r SOURCE [DEST ...], --read SOURCE [DEST ...]
+                        read a file from remote SOURCE to local DEST. If no DEST is provided, file is read to stdout.
+  -l LIST, --list LIST  list a directory
+  -d DELETE, --delete DELETE
+                        delete a file
+  -p PORT, --port PORT  specify the serial port to use
+  -b BAUD, --baud BAUD  specify the baud rate to use
+  -t, --tcp             use a TCP connection instead of a local serial port (if TCP is selected, the port is interpreted as host:port)
+  -v, --verbose         print extra debugging information
+  -x, --hex             output in hex dump format
+  -f, --ftdi            use pylibftdi instead of pyserial
+```
+
+### Bootload
+_For updating Duro firmware_
+
+```
+usage: python -m duro_tools.bootload_v3 [-h] [-p PORT] [-b BAUD] [--rtscts] [-t] [-f] [--file] [--json] [--playback] [-v] firmware
+
+Duro Bootloader
+
+positional arguments:
+  firmware              the image set file to write to flash
+
+options:
+  -h, --help            show this help message and exit
+  -p PORT, --port PORT  specify the serial port to use
+  -b BAUD, --baud BAUD  specify the baud rate to use
+  --rtscts              enable Hardware Flow Control (RTS/CTS)
+  -t, --tcp             use a TCP connection instead of a local serial port (if TCP is selected, the port is interpreted as host:port)
+  -f, --ftdi            use pylibftdi instead of pyserial
+  --file                read with a filedriver rather than pyserial
+  --json                input is SBP JSON
+  --playback            emulate real input
+  -v, --verbose         print extra debugging information
+```
+USB issues on OS X
+------------------
+The ftdi USB drivers are finicky on some versions of OS X. See their `docs <http://pylibftdi.readthedocs.io/en/latest/troubleshooting.html#where-did-my-ttyusb-devices-go>`__ for help debugging (tl;dr if you try to plug in multiple USB devices to the same port, the subsequent ones may not appear through ftdi even if they appear in the result of ``sudo dmesg``. Only restarting your machine will fix this.)
+
+License
+-------
+Copyright (C) 2025 Carnegie Robotics LLC.
+

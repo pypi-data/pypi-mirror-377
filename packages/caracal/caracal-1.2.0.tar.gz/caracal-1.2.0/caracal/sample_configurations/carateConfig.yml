@@ -1,0 +1,293 @@
+schema_version: 1.2.0
+
+
+general:
+  prefix: mypipelinerun
+
+getdata:
+  dataid: []
+  extension: ms
+
+obsconf:
+  refant: '0'
+
+
+transform:
+  enable: true
+  field: calibrators
+  label_out: cal
+  split_field:
+    enable: true
+    col: data
+
+prep:
+  enable: true
+  label_in: cal
+  field: calibrators
+  specweights:
+    enable: true
+    mode: uniform
+
+flag:
+  enable: true
+  field: calibrators
+  label_in: cal
+  flag_rfi:
+    enable: true
+    flagger: tricolour
+    tricolour:
+      strategy: calibrator_mild_flagging.yaml
+  flag_autocorr:
+    enable: true
+  flag_shadow:
+    enable: true
+    full_mk64: true
+  flag_spw:
+    enable: true
+
+inspect:
+  label_in: cal
+  field: calibrators
+  label_plot: pre1gc
+  enable: true
+  dirname: initial
+  shadems:
+    enable: true
+    default_column: DATA
+    plots_by_field:
+      - "-x UV    -y amp    -c SCAN_NUMBER"
+      - "-x UV    -y amp    -c ANTENNA1 --cnum 64"
+      - "-x UV    -y phase  -c ANTENNA1 --cnum 64"
+      - "-x FREQ  -y amp    -c SCAN_NUMBER"
+      - "-x FREQ  -y amp    -c ANTENNA1 --cnum 64"
+      - "-x U     -y V      -c amp"
+      - "-x BASELINE -y FREQ -c amp"
+    ignore_errors: true
+  standard_plotter: ragavi_vis
+  real_imag:
+    enable: false
+    col: data
+  amp_uvwave:
+    col: data
+  phase_uvwave:
+    col: data
+    enable: false
+  amp_chan:
+    col: data
+  phase_chan:
+    col: data
+    enable: false
+
+crosscal:
+  enable: true
+  uvrange: '>150'
+  label_in: cal
+  set_model:
+    enable: true
+  primary:
+    order: KGBAKGBK
+    combine: ["", "", "", null, "","", scan, scan]
+    solint: [inf, inf, inf, null, inf, inf, inf, inf]
+    calmode: [a, ap, ap, null, a, ap, ap, a]
+    b_fillgaps: 70
+  secondary:
+    order: GAF
+    apply: KB
+    combine: ["", null, ""]
+    solint: [inf, null, inf]
+    calmode: [ap, null, ap]
+  apply_cal:
+    applyto:
+      - gcal
+      - bpcal
+
+inspect__2:
+  label_in: cal
+  field: calibrators
+  label_plot: 1gc
+  enable: true
+  dirname: crosscal
+  shadems:
+    enable: true
+    default_column: CORRECTED_DATA
+    plots_by_field:
+      - "-x BASELINE_M -y FREQ -c amp"
+      - "-x real  -y imag   -c SCAN_NUMBER --cnum 100"
+      - "-x real  -y imag   -c ANTENNA1 --cnum 100"
+      - "-x ANTENNA1 -y ANTENNA2 -c SCAN_NUMBER --cnum 100 --aaxis phase --ared std"
+      - "-x ANTENNA1 -y ANTENNA2 -c SCAN_NUMBER --cnum 100 --aaxis amp --ared mean"
+      - "-x UV    -y amp    -c SCAN_NUMBER --cnum 100"
+      - "-x UV    -y amp    -c ANTENNA1 --cnum 64"
+      - "-x UV    -y phase  -c ANTENNA1 --cnum 64"
+      - "-x FREQ  -y amp    -c SCAN_NUMBER --cnum 100"
+      - "-x FREQ  -y amp    -c ANTENNA1 --cnum 64"
+      - "-x U     -y V      -c amp"
+      - "-x U     -y V      -c phase --cmin -5 --cmax 5"
+    plots:
+      - "-x real  -y imag   -c SCAN_NUMBER --cnum 100 --col CORRECTED_DATA/MODEL_DATA --iter-field"
+      - "-x real  -y imag   -c ANTENNA1 --cnum 100 --col CORRECTED_DATA/MODEL_DATA --iter-field"
+#      - '-x FREQ -y phase --ymin -40 --ymax 40 -c SCAN_NUMBER --cnum 100 --field {bpcal} --dir {msbase}-bpcal-byant --iter-ant'
+#      - '-x FREQ -y phase --ymin -40 --ymax 40 -c SCAN_NUMBER --cnum 100 --field {gcal} --dir {msbase}-gcal-byant --iter-ant'
+#      - '-x FREQ -y phase --ymin -40 --ymax 40 -c ANTENNA1 --cnum 100 --field {all_fields} --dir {msbase}-byscan --iter-scan'
+      - '-x FREQ -y amp:I -c SCAN_NUMBER --cnum 100 --cmin 0 --cmax 30 --field {bpcal} --dir {msbase}-bpcal-iamp-byant --iter-ant'
+#      - '-x FREQ -y amp:I -c SCAN_NUMBER --cnum 100 --cmin 0 --cmax 8 --field {gcal} --dir {msbase}-gcal-iamp-byant --iter-ant'
+#      - '-x FREQ -y amp:I -c ANTENNA1    --cnum 100 --cmin 0 --cmax 30 --field {all_fields} --dir {msbase}-iamp-byscan --iter-scan'
+#      - '-x FREQ -y amp:Q -c SCAN_NUMBER --cnum 100 --cmin 0 --cmax 5 --field {bpcal} --dir {msbase}-bpcal-qamp-byant --iter-ant'
+#      - '-x FREQ -y amp:Q -c SCAN_NUMBER --cnum 100 --cmin 0 --cmax 5 --field {gcal} --dir {msbase}-gcal-qamp-byant --iter-ant'
+#      - '-x FREQ -y amp:Q -c ANTENNA1    --cnum 100 --cmin 0 --cmax 5 --field {all_fields} --dir {msbase}-qamp-byscan --iter-scan'
+      - '-x ANTENNA1 -y ANTENNA2 -a CORRECTED_DATA:amp --ared std --cmap pride --dir {msbase}-stdamp-byscan --iter-scan'
+      - '-x ANTENNA1 -y ANTENNA2 -a CORRECTED_DATA:phase --ared std --cmap pride --dir {msbase}-stdphase-byscan --iter-scan'
+      - '-x FREQ -y SCAN_NUMBER -a CORRECTED_DATA:amp --ared std --cmap pride --dir {msbase}-stdamp-byant --iter-ant'
+      - '-x FREQ -y SCAN_NUMBER -a CORRECTED_DATA:phase --ared std --cmap pride --dir {msbase}-stdphase-byant --iter-ant'
+      - '-x BASELINE_M -y FREQ --iter-scan -a CORRECTED_DATA:imag --ared std --amin 0 --amax 2 --cmap pride --dir {msbase}-stdimag-byscan'
+    ignore_errors: true
+
+transform__2:
+  enable: true
+  split_field:
+    enable: true
+    otfcal:
+      enable: true
+      label_cal: 1gc1
+
+prep__2:
+  enable: true
+  label_in: corr
+  field: target
+  specweights:
+    enable: true
+    mode: uniform
+
+flag__2:
+  enable: true
+  field: target
+  label_in: corr
+  flag_autocorr:
+    enable: true
+  flag_shadow:
+    enable: true
+    full_mk64: true
+  flag_spw:
+    enable: true
+  flag_rfi:
+    enable: true
+    flagger: aoflagger
+
+transform__3:
+  enable: true
+  label_in: corr
+  label_out: cont
+  split_field:
+    enable: true
+    chan_avg: 4
+    col: data
+
+mask:
+  enable: false
+
+flag__3:
+  enable: false
+  field: target
+  label_in: cont
+  flag_spw:
+    enable: true
+    chans: '*:1417.2~1421.0MHz'
+
+selfcal:
+  enable: true
+  label_in: cont
+  ncpu: 12
+  img_npix: 3600
+  img_cell: 2
+  img_niter: 1000000
+  img_nchans: 12
+  img_robust: -1.0
+  cal_niter: 3
+  cal_cubical:
+    chan_chunk: 0
+    shared_mem: 250GB
+    max_post_error: 0.25
+  cal_timeslots_chunk: 360
+  image:
+    enable: true
+    cleanmask_thr: [20,10,5,5]
+    clean_cutoff: [0.5,0.5,0.5,0.5]
+  calibrate:
+    enable: true
+    model: ['1','2','3']
+    gain_matrix_type: [GainDiagPhase, GainDiagPhase, GainDiagPhase]
+    gsols_chan: [0, 0, 0]
+    gsols_timeslots: [120, 60, 20]
+  transfer_apply_gains:
+    enable: true
+    interpolate:
+      timeslots_int: 20
+      timeslots_chunk: 360
+      chan_int: 0
+      chan_chunk: 0
+    transfer_to_label: corr
+  transfer_model:
+    enable: true
+    num_workers: 12
+    mem_frac: 0.05
+    transfer_to_label: corr
+
+transform__4:
+  enable: true
+  label_in: corr
+  label_out: l
+  split_field:
+    enable: true
+    col: all
+    otfcal:
+      enable: false
+
+line:
+  enable: true
+  label_in: l
+  restfreq: 1.420405752GHz
+  subtractmodelcol:
+    enable: true
+  make_cube:
+    enable: true
+    npix: [2400]
+    cell: 3
+    taper: 10
+    robust: 0
+  mstransform:
+    enable: true
+    doppler:
+      enable: true
+      telescope: meerkat
+    uvlin:
+      enable: true
+      fitorder: 3
+      fitspw: '*:1300~1417.2MHz,*:1421.0~1600MHz'
+  pb_cube:
+    enable: true
+  flag_mst_errors:
+     enable: true
+  freq_to_vel:
+    enable: true
+  remove_stokes_axis:
+    enable: true
+  sofia:
+    enable: true
+
+mosaic:
+  enable: true
+  mosaic_type: spectral
+  name: cubemos
+  domontage:
+    enable: true
+  cutoff: 0.1
+  use_mfs: false
+
+mosaic__2:
+  enable: true
+  mosaic_type: continuum
+  name: contmos
+  domontage:
+    enable: true
+  cutoff: 0.1
+  use_mfs: true

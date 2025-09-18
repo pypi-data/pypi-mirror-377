@@ -1,0 +1,232 @@
+type: map
+mapping:
+  transform:
+    desc: Split, average and/or calibrate the data.
+    type: map
+    mapping:
+      enable:
+        desc: Execute the transform worker.
+        type: bool
+        required: true
+        example: 'True'
+      field:
+        desc: Fields to be split off from the input MS (see split_field below) or whose phase centre should be changed (see changecentre below). Options are (separately) 'target', 'calibrators', 'bpcal', 'gcal' and 'fcal'. Also valid is any combination of 'bpcal', 'gcal' and 'fcal' in a comma-separated string (e.g. 'bpcal, fcal').
+        type: str
+        required: false
+        example: 'target'
+      label_in:
+        desc: Label of the input dataset. If split_field/changecentre below are enabled, label_in must be a single value. Else, if concat below is enabled, label_in must include at least two comma-separated values.
+        type: str
+        required: false
+        example: ''
+      label_out:
+        desc: Label of the output dataset.
+        type: str
+        required: false
+        example: 'corr'
+      rewind_flags:
+        desc: Rewind flags to specified version. Only works with a single-valued label_in (i.e., it does not loop over multiple comma-separated values in label_in).
+        type: map
+        mapping:
+          enable:
+            desc: Enable the 'rewind_flags' segment.
+            type: bool
+            required: false
+            example: 'False'
+          version:
+            desc: Flag version to restore. Note that all flag versions saved after this version will be deleted.
+            type: str
+            required: false
+            example: ''
+      split_field:
+        desc: Make new MS of targets or calibrators.
+        type: map
+        mapping:
+          enable:
+            desc: Enable the 'split_field' segment.
+            type: bool
+            required: false
+            example: 'True'
+          time_avg:
+            desc: Time averaging to apply to the data, in units of seconds. If this parameter is instead set to '' or '0s' then no time averaging is applied.
+            type: str
+            required: false
+            example: ''
+          chan_avg:
+            desc: Frequency averaging to apply to the data, given as the number of channels per frequency bin. If this parameter is set to '', '0', or '1', then no frequency averaging is applied.
+            type: int
+            required: false
+            example: '1'
+          col:
+            desc: Column to be split, where the default is 'corrected'.
+            type: str
+            required: false
+            example: 'corrected'
+          correlation:
+            desc: Select the correlations, e.g. 'XX', 'YY'. Setting this to '' means that all correlations are selected.
+            type: str
+            required: false
+            example: ''
+          scan:
+            desc: Select the scan(s), e.g. '0,2,5'. Setting this to '' means that all scans are selected.
+            type: str
+            required: false
+            example: ''
+          create_specweights:
+            desc: Create a WEIGHT_SPECTRUM column in the output MS.
+            type: bool
+            required: false
+            example: 'True'
+          spw:
+            desc: Select spectral windows and channels, following the same syntax as for the 'mstransform' task in CASA. Setting this to '' means that all spectral windows and channels are selected.
+            type: str
+            required: false
+            example: ''
+          antennas:
+            desc: Select antennas, following the same syntax as for the 'mstransform' task in CASA. Setting this to '' means that all antennas are selected.
+            type: str
+            required: false
+            example: ''
+          nthreads:
+            desc: Number of OMP threads to use (currently maximum limited by number of polarizations)
+            type: int
+            required: false
+            example: '1'
+          otfcal:
+            desc: Apply on-the-fly (OTF) calibration.
+            type: map
+            mapping:
+              enable:
+                desc: Enable the 'otfcal' segment.
+                type: bool
+                required: false
+                example: 'False'
+              callib:
+                desc: Name of the callib file to be used, if user has their own.
+                type: str
+                required: false
+                example: ''
+              label_cal:
+                desc: Label of the calibration tables to be used.
+                type: str
+                required: false
+                example: ''
+              pol_callib:
+                desc: Name of the polarization callib file to be used. A corresponding .json file must exist.
+                type: str
+                required: false
+                example: ''
+              label_pcal:
+                desc: Label of the polarization calibration tables to be used.
+                type: str
+                required: false
+                example: ''
+              output_pcal_ms:
+                desc: Controls which MSs are produced with polcal in effect. 'final' will have polcal-corrected data in DATA. 'intermediate' will have KGB-corrected data in DATA and polcal-corrected data in CORRECTED_DATA. 'both' will produce both (second one, the 'intermediate', will be labelled 'tmp_'+label_out).
+                type: str
+                required: false
+                enum: [final, intermediate, both]
+                example: 'final'
+              derotate_pa:
+                desc: Apply parallactic angle derotation, to put QU into the sky polarization frame.
+                type: bool
+                required: false
+                example: 'True'
+              interpolation:
+                desc: Overrides interpolations settings for OTF calibration
+                type: map
+                mapping:
+                  delay_cal:
+                    desc: Interpolation type (in time) for K-Jones (delay) solutions. 'nearest' is recommended for CASA, as 'linear' can produce unexpected results.
+                    type: str
+                    enum: [default, nearest, linear, nearestPD, linearPD]
+                    required: False
+                    example: 'nearest'
+                  gain_cal:
+                    desc: Interpolation type (in time) for G-Jones (gain) solutions.
+                    type: str
+                    enum: [default, nearest, linear, nearestPD, linearPD]
+                    required: False
+                    example: 'linear'
+                  bp_cal:
+                    desc: Interpolation type (in time) for B-Jones (bandpass) solutions.
+                    type: str
+                    enum: [default, nearest, linear, nearestPD, linearPD]
+                    required: False
+                    example: 'linear'
+      changecentre:
+        desc: Change the phase centre.
+        type: map
+        mapping:
+          enable:
+            desc: Enable the 'changecentre' segment.
+            type: bool
+            required: false
+            example: 'False'
+          ra:
+            desc: J2000 RA of the new phase centre, in the format XXhXXmXX.XXs .
+            type: str
+            required: false
+            example: '0h0m0.0s'
+          dec:
+            desc: J2000 Dec of the new phase centre, in the format XXdXXmXX.XXs .
+            type: str
+            required: false
+            example: '0d0m0.0s'
+      concat:
+        desc: For each input .MS and target, concatenate together all .MS files with the different labels included in label_in (comma-separated values). The MS files are concatenated along the frequency axis. This only works if the frequency ranges covered by the MS files are contiguous and if the number of channels is the same for all MS files.
+        type: map
+        mapping:
+          enable:
+            desc: Enable the 'concat' segment.
+            type: bool
+            required: false
+            example: 'False'
+          col:
+            desc: Column(s) to be contatenated, where the default is 'data'; use 'all' for all columns.
+            type: str
+            required: false
+            example: 'data'
+      obsinfo:
+        desc: Get observation information.
+        type: map
+        mapping:
+          enable:
+            desc: Enable the 'obsinfo' segment.
+            type: bool
+            required: false
+            example: 'True'
+          listobs:
+            desc: Run the CASA 'listobs' task to get observation information.
+            type: bool
+            required: false
+            example: 'True'
+          summary_json:
+            desc: Run the MSUtils summary function to get observation information written as a JSON file.
+            type: bool
+            required: false
+            example: 'True'
+      report:
+        type: bool
+        required: false
+        desc: (Re)generate a full HTML report at the end of this worker.
+        example: 'False'
+      cabs:
+        desc: 'Specifies non-default image versions and/or tags for Stimela cabs. Running with scissors: use with extreme caution.'
+        required: false
+        seq:
+          - type: map
+            mapping:
+              name:
+                type: str
+                required: true
+                example: 'cabname'
+              version:
+                type: str
+                required: false
+                example: ''
+              tag:
+                type: str
+                required: false
+                example: ''
+        example: ''

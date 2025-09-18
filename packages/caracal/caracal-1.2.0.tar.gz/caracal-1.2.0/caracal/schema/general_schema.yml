@@ -1,0 +1,83 @@
+type: map
+mapping:
+  general:
+    desc: General pipeline information, including data IDs, and prefixes for output files.
+    type: map
+    mapping:
+      title:
+        type: str
+        required: false
+        desc: An optional project title.
+        example: ''
+      msdir:
+        type: str
+        required: false
+        desc: Location where CARACal will write and expect to find .MS files. The only exception is that of read-only input .MS files, which can be located in rawdatadir (see below).
+        example: 'msdir'
+      rawdatadir:
+        type: str
+        required: false
+        desc: If set to an empty string this parameter is ignored. If not set to an empty string, this is the directory where CARACal expects to find the input .MS files. This directory and the input .MS files within it can be reado-only, which makes it possible to work on large data without moving them within a shared machine. Any .MS file further created by CARACal is still written to msdir (see above).
+        example: ''     
+      input:
+        type: str
+        required: false
+        desc: Location where CARACal expects to find various input files (e.g., RFI flagging strategy files).
+        example: 'input'
+      output:
+        type: str
+        required: false
+        desc: Location where CARACal writes output products.
+        example: 'output'
+      prefix:
+        type: str
+        required: false
+        desc: Prefix for CARACal output products.
+        example: 'caracal'
+      prep_workspace:
+        desc: Initialise the pipeline by copying input files (i.e. those that are MeerKAT specific, flagging strategies, beam model, etc.).
+        required: false
+        type: bool
+        example: 'True'
+      init_notebooks:
+        desc: Install standard radiopadre notebooks, given by list of basenames.
+        seq:
+          - type: str
+        required: false
+        example: std-progress-report, project-logs
+      report_notebooks:
+        desc: Like init_notebooks, but will also be automatically rendered to HTML when report=True in a worker
+        seq:
+          - type: str
+        required: false
+        example: detailed-final-report
+      final_report:
+        desc: Render report_notebooks to HTML at the end of each pipeline run
+        required: false
+        type: bool
+        example: 'False'
+      backend:
+        desc: Which container backend to use (docker, udocker, singularity, podman)
+        required: false
+        type: str
+        enum: [docker, udocker, singularity, podman]
+        example: 'docker'
+      cabs:
+        desc: 'Specifies non-default image versions and/or tags for Stimela cabs. Running with scissors: use with extreme caution.'
+        required: false
+        seq:
+          - type: map
+            mapping:
+              name:
+                type: str
+                required: true
+                example: 'cabname'
+              version:
+                type: str
+                required: false
+                example: ''
+              tag:
+                type: str
+                required: false
+                example: ''
+        example: ''

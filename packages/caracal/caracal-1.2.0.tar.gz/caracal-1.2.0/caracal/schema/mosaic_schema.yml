@@ -1,0 +1,102 @@
+type: map
+mapping:
+  mosaic:
+    desc: Mosaic the 2D-images (or cubes) made with the selfcal/crosscal (or line) worker. If not available on disc, the primary beam is built by the mosaic worker, assuming a Gaussian shape with FWHM = 1.02 lambda/D.
+    type: map
+    mapping:
+      enable:
+        desc: Execute the mosaic worker.
+        type: bool
+        required: true
+        example: 'False'
+      mosaic_type:
+        desc: Type of mosaic to be made, either continuum (2D) or spectral (3D).
+        type: str
+        enum: ['continuum', 'spectral']
+        required: true
+        example: 'continuum'
+      target_images:
+        desc: List of .FITS images/cubes to be mosaicked. Their file names must end with "image.fits" and must include the path relative to the current working directory. These images/cubes MUST be located within (sub-directories of) the current working directory.
+        seq:
+          - type: str
+        required: false
+        example: ''
+      label_in:
+        desc: For autoselection of images, this needs to match the label/label_cal setting used for the selfcal/crosscal worker (when mosaicking continuum images) or the label setting used for the line worker (when mosaicking cubes).
+        type: str
+        required: false
+        example: 'corr'
+      line_name:
+        desc: Spectral mode only -- If autoselection is used to find the final cubes, this needs to match the line_name parameter used for the line worker.
+        type: str
+        required: false
+        example: 'HI'
+      use_mfs:
+        desc: Continuum mode only -- If the images to be mosaicked were created using MFS, in the selfcal or crosscal worker, then this needs to be indicated via this parameter.
+        type: bool
+        required: false
+        example: 'False'
+      name:
+        desc: The prefix to be used for output files. Default is the pipeline prefix, as set for the general worker.
+        type: str
+        required: false
+        example: ''
+      domontage:
+        desc: Re-grid the input images, and associated beams.
+        type: map
+        mapping:
+          enable:
+            desc: Enable the 'domontage' (i.e. re-gridding) segment.
+            type: bool
+            required: false
+            example: 'True'
+      cutoff:
+        desc: The cutoff in the primary beam. It should be a number between 0 and 1.
+        type: float
+        required: false
+        example: '0.1'
+      pb_type:
+        desc: If no continuum pb.fits are already in place, user needs to choose whether a rudimentary primary beam is created ('gaussian') or one that follows the model of Mauch et al. (2020), relevant for MeerKAT data ('mauchian').   
+        type: str
+        enum: ['gaussian', 'mauchian']
+        required: false
+        example: 'gaussian' 
+      dish_diameter:
+        desc: If 'pb_type' has been set to 'gaussian', user needs to specify the dish diameter (in units of m).
+        type: float
+        required: false
+        example: '13.5'
+      ref_frequency:
+        desc: If no continuum pb.fits are already in place, user needs to specify the reference frequency (in units of Hz) so that primary beams can be created.
+        type: float
+        required: false
+        example: '1383685546.875'
+      round_cdelt3:
+        desc: If mosaic_type is "spectral", round CDELT3 in the header of the input cubes to the number of decimal digits given by this parameter (0 means do not round). This is useful when the CDELT3 values of the input cubes are not identical (which would make the mosaicking algorithm crash) but the differences are small and can be ignored. Note that the CDELT3 values of the input cubes are overwritten with the common, rounded value (if the rounding is sufficient to find a common value).
+        type: int
+        required: false
+        example: '0'
+      report:
+        type: bool
+        required: false
+        desc: (Re)generate a full HTML report at the end of this worker.
+        example: 'False'
+      cabs:
+        desc: 'Specifies non-default image versions and/or tags for Stimela cabs. Running with scissors: use with extreme caution.'
+        required: false
+        seq:
+          - type: map
+            mapping:
+              name:
+                type: str
+                required: true
+                example: 'cabname'
+              version:
+                type: str
+                required: false
+                example: ''
+              tag:
+                type: str
+                required: false
+                example: ''
+        example: ''

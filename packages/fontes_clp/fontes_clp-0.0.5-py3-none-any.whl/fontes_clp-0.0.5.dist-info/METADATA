@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: fontes_clp
+Version: 0.0.5
+Summary: Pacote com maneiras simplificadas de extrair dados das fontes do CLP
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: beautifulsoup4>=4.13.5
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: pandas>=2.3.2
+Dynamic: license-file
+
+# Bibliotecas para Extração de Fontes do CLP
+
+## TabNet Óbitos
+
+```python
+from tabnet.estados import Estado
+from tabnet.obitos import TabNetObitos as TabNet
+from tabnet.grupos import GruposCID10ObitosPorCausasExternas as GrupoCID10
+
+# Dados são retornados como um DataFrame do Pandas
+dados = TabNet(
+  ano=2023,
+  estado=Estado.RR,
+  grupo=GrupoCID10.ACIDENTES_TERRESTRES,
+).get_dados()
+
+print(dados)
+```

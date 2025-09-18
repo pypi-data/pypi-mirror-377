@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: kanuni-layer-sdk
+Version: 0.1.7
+Summary: A SDK for Kanuni
+Author-email: Kanuni Team <team@kanuni.com>
+License-Expression: MIT
+Keywords: kanuni,sdk,pwd,disability
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: privacy-prompt-library>=1.0.2
+Provides-Extra: dev
+Requires-Dist: ruff<1.0,>=0.12; extra == "dev"
+
+# Kanuni SDK
+
+## Installation
+
+Repository: https://github.com/git-markkuria/kanuni-layer-sdk
+
+## Overview
+
+The Kanuni Layer SDK provides utilities to validate and redact sensitive information from user prompts before they are sent to downstream services (for example, LLMs). It offers a small, easy-to-integrate API for prompt validation and redaction.
+
+Key features:
+
+- Prompt validation
+- Sensitive data redaction (emails, SSNs, credit cards, phone numbers, etc.)
+- Single-call integration
+
+## Installation
+
+Install from PyPI:
+
+```powershell
+pip install kanuni-layer-sdk
+```
+
+Install from GitHub (latest source):
+
+```powershell
+pip install git+https://github.com/git-markkuria/kanuni-layer-sdk.git
+```
+
+Install locally for development:
+
+```powershell
+git clone https://github.com/git-markkuria/kanuni-layer-sdk.git
+cd kanuni-layer-sdk
+python -m pip install -e .
+```
+
+## Quick start
+
+The package exposes a convenient function `reduct(prompt: str, opted_in: bool = True) -> str` that validates and redacts sensitive content.
+
+Example usage:
+
+```python
+from kanuni_layer_sdk import reduct
+
+prompt = (
+	"My name is John Doe, SSN 123-45-6789, email john.doe@example.com. "
+	"Please give me directions to the nearest pharmacy."
+)
+
+# Redact using default settings (opted_in=True)
+redacted = reduct(prompt)
+print("Redacted prompt:\n", redacted)
+
+# Force opt-out (no redaction) if you need the raw prompt
+raw = reduct(prompt, opted_in=False)
+print("Raw prompt (opted out):\n", raw)
+```
+
+Notes:
+
+- `reduct` performs basic prompt validation, optionally applies a transformation step (if configured), and then redacts sensitive values. The function returns the transformed/redacted prompt as a string.
+- Check `kanuni_layer_sdk/main.py` and the `kanuni_layer_sdk/modules` package for implementation details.
+
+## Development
+
+- Package code lives under the `kanuni_layer_sdk` package. The primary entrypoint is `kanuni_layer_sdk.reduct`.
+- See `requirements.txt` for runtime dependencies.
+
+## Contributing
+
+Issues and pull requests are welcome. Please open PRs against the repository linked above.
+
+## License
+
+See `PKG-INFO` or the repository for license details.
+
+```powershell
+
+pip install kanuni-layer-sdk

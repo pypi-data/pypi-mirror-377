@@ -1,0 +1,670 @@
+Metadata-Version: 2.4
+Name: proserve
+Version: 2.0.1
+Summary: Professional Service Framework - Revolutionary modular microservice framework with zero-config API
+Home-page: https://github.com/tom-sapletta-com/proserve
+Author: Tom Sapletta
+Author-email: info@softreck.dev
+License: Apache-2.0
+Project-URL: Documentation, https://github.com/tom-sapletta-com/proserve
+Project-URL: Source, https://github.com/tom-sapletta-com/proserve
+Project-URL: Tracker, https://github.com/tom-sapletta-com/proserve/issues
+Project-URL: Servos, https://pypi.org/project/servos/
+Keywords: microservices,manifest,service-framework,docker,kubernetes,isolation,micropython,arduino,rp2040,deployment,migration,monitoring,asyncio,aiohttp
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Topic :: System :: Systems Administration
+Classifier: Framework :: AsyncIO
+Classifier: Framework :: aiohttp
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: aiohttp-cors>=0.7.0
+Requires-Dist: structlog>=25.0.0
+Requires-Dist: rich>=14.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: astor>=0.8.1
+Requires-Dist: setuptools>=60.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Requires-Dist: wmlog>=1.0.0
+Provides-Extra: docker
+Requires-Dist: docker>=6.0.0; extra == "docker"
+Provides-Extra: kubernetes
+Requires-Dist: kubernetes>=25.0.0; extra == "kubernetes"
+Provides-Extra: monitoring
+Requires-Dist: prometheus-client>=0.15.0; extra == "monitoring"
+Requires-Dist: grafana-api>=1.0.3; extra == "monitoring"
+Provides-Extra: micropython
+Requires-Dist: adafruit-circuitpython-bundle; extra == "micropython"
+Requires-Dist: esptool>=4.4; extra == "micropython"
+Provides-Extra: arduino
+Requires-Dist: platformio>=6.1.0; extra == "arduino"
+Requires-Dist: arduino-cli>=0.30.0; extra == "arduino"
+Provides-Extra: rp2040
+Requires-Dist: picotool>=1.1.0; extra == "rp2040"
+Requires-Dist: rp2040-tools>=0.1.0; extra == "rp2040"
+Provides-Extra: testing
+Requires-Dist: pytest>=7.0.0; extra == "testing"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "testing"
+Requires-Dist: pytest-cov>=4.0.0; extra == "testing"
+Requires-Dist: requests>=2.28.0; extra == "testing"
+Provides-Extra: development
+Requires-Dist: black>=22.0.0; extra == "development"
+Requires-Dist: flake8>=5.0.0; extra == "development"
+Requires-Dist: mypy>=0.991; extra == "development"
+Provides-Extra: all
+Requires-Dist: docker>=6.0.0; extra == "all"
+Requires-Dist: kubernetes>=25.0.0; extra == "all"
+Requires-Dist: prometheus-client>=0.15.0; extra == "all"
+Requires-Dist: adafruit-circuitpython-bundle; extra == "all"
+Requires-Dist: esptool>=4.4; extra == "all"
+Requires-Dist: platformio>=6.1.0; extra == "all"
+Requires-Dist: pytest>=7.0.0; extra == "all"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "all"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🚀 ProServe - Modern Microservices Framework
+
+**Build production-ready microservices with minimal code - Python decorators or YAML manifests!**
+
+🎯 **98% Less Boilerplate • 5-Minute Start • Production Ready**
+
+ProServe is a revolutionary microservices framework that combines the simplicity of Flask with the power of modern architecture. Create APIs, static sites, real-time chat, and more with just a few lines of code.
+
+> 🚀 **Fully Modular Architecture**: All components are now modular, testable, and follow SOLID principles  
+> 🧪 **Comprehensive E2E Testing**: 8+ test suites covering real-world scenarios, security, performance, and integrations
+
+## ⚡ Quick Start (3 Lines of Code!)
+
+```python
+# app.py
+from proserve import Service
+
+app = Service("my-api")
+
+@app.endpoint("/", method="GET")
+async def hello(request):
+    return {"message": "Hello World! 🚀"}
+
+if __name__ == "__main__":
+    app.run(port=8080)
+```
+
+```bash
+python app.py
+# Open: http://localhost:8080
+```
+
+**That's it!** You have a production-ready API running.
+
+> 🎓 **New to microservices?** Check out our [Junior Quick Start Guide](./JUNIOR_QUICK_START.md) - "ProServe in 5 minutes"
+
+## 🏗️ Architecture
+
+### ProServe Ecosystem Integration
+```mermaid
+graph TB
+    subgraph "Modular Ecosystem"
+        ProServe[ProServe Framework<br/>Core Microservices]
+        Servos[Servos<br/>Environment Isolation]
+        EDPMT[EDPMT Framework<br/>Hardware Control]
+        wmlog[wmlog<br/>Centralized Logging]
+    end
+    
+    ProServe --> Servos
+    ProServe --> wmlog
+    EDPMT --> ProServe
+    Servos --> Docker[Docker Containers]
+    wmlog --> Monitoring[Real-time Monitoring]
+    
+    subgraph "ProServe Core Architecture"
+        ServiceAPI[Service API<br/>Zero-Config Decorators]
+        ManifestEngine[Manifest Engine<br/>YAML-Driven Config]
+        ServiceRunner[Service Runner<br/>Multi-Environment]
+        Discovery[Discovery & Migration<br/>Auto-Detection]
+    end
+    
+    ProServe --> ServiceAPI
+    ProServe --> ManifestEngine
+    ProServe --> ServiceRunner
+    ProServe --> Discovery
+    
+    subgraph "Deployment Targets"
+        Cloud[Cloud Native<br/>Docker/K8s]
+        Embedded[Embedded Systems<br/>MicroPython/Arduino]
+        Edge[Edge Computing<br/>RP2040/ESP32]
+        Local[Local Development<br/>Process Isolation]
+    end
+    
+    ServiceRunner --> Cloud
+    ServiceRunner --> Embedded
+    ServiceRunner --> Edge
+    ServiceRunner --> Local
+    
+    subgraph "Service Features"
+        HTTP[HTTP Endpoints]
+        WebSocket[WebSocket Handlers]
+        Background[Background Tasks]
+        Monitoring[Health & Metrics]
+        StaticFiles[Static File Serving]
+        CORS[CORS & Security]
+    end
+    
+    ServiceAPI --> HTTP
+    ServiceAPI --> WebSocket
+    ServiceAPI --> Background
+    ServiceAPI --> Monitoring
+    ServiceAPI --> StaticFiles
+    ServiceAPI --> CORS
+```
+
+### Detailed ProServe Architecture
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            ProServe Framework                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐     │
+│  │                      Developer Interface                            │     │
+│  │                                                                     │     │
+│  │  ┌────────────────┐        ┌─────────────────────────────────────┐   │     │
+│  │  │  Zero-Config   │        │      Manifest-Based                │   │     │
+│  │  │   Decorators   │        │      Configuration                  │   │     │
+│  │  │                │        │                                     │   │     │
+│  │  │ @service.      │        │  name: my-service                   │   │     │
+│  │  │  endpoint()    │        │  version: 1.0.0                     │   │     │
+│  │  │ @service.      │        │  type: http                         │   │     │
+│  │  │  websocket()   │        │  port: 8080                         │   │     │
+│  │  │ @service.      │        │  isolation:                         │   │     │
+│  │  │  background()  │        │    mode: docker                     │   │     │
+│  │  └────────────────┘        └─────────────────────────────────────┘   │     │
+│  └─────────────────────────────────────────────────────────────────────┘     │
+│                                │                                             │
+│                                ▼                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐     │
+│  │                      Core Framework                                │     │
+│  │                                                                     │     │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐  │     │
+│  │  │   Service   │ │  Manifest   │ │   Runner    │ │    Discovery    │  │     │
+│  │  │     API     │ │   Engine    │ │             │ │   & Migration   │  │     │
+│  │  │             │ │             │ │             │ │                 │  │     │
+│  │  │• Endpoints  │ │• YAML Parse │ │• Multi-Env  │ │• Auto-Detect    │  │     │
+│  │  │• WebSocket  │ │• Validation │ │• Process    │ │• Blue-Green     │  │     │
+│  │  │• Background │ │• Env Vars   │ │• Docker     │ │• Gradual        │  │     │
+│  │  │• Health     │ │• Templates  │ │• K8s        │ │  Migration      │  │     │
+│  │  │• Metrics    │ │• Inheritance│ │• MicroPy    │ │• Rollback       │  │     │
+│  │  │• CORS       │ │• Includes   │ │• Arduino    │ │• Monitor        │  │     │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────┘  │     │
+│  └─────────────────────────────────────────────────────────────────────┘     │
+│                                │                                             │
+│                                ▼                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐     │
+│  │                   Integration Layer                                │     │
+│  │                                                                     │     │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐  │     │
+│  │  │   Servos    │ │   wmlog     │ │   aiohttp   │ │      EDPMT      │  │     │
+│  │  │ Isolation   │ │  Logging    │ │   Server    │ │   Framework     │  │     │
+│  │  │             │ │             │ │             │ │                 │  │     │
+│  │  │• Process    │ │• Structured │ │• Async      │ │• Hardware       │  │     │
+│  │  │• Docker     │ │• Real-time  │ │• HTTP/WS    │ │• Manifest       │  │     │
+│  │  │• Platform   │ │• Broadcasting│ │• CORS       │ │• Service        │  │     │
+│  │  │  Detection  │ │• Context    │ │• Static     │ │  Templates      │  │     │
+│  │  │• Resource   │ │  Enrichment │ │  Files      │ │• Device         │  │     │
+│  │  │  Limits     │ │• Multi-dest │ │• Middleware │ │  Management     │  │     │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────┘  │     │
+│  └─────────────────────────────────────────────────────────────────────┘     │
+│                                │                                             │
+│                                ▼                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐     │
+│  │                  Deployment Environments                           │     │
+│  │                                                                     │     │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐  │     │
+│  │  │    Cloud    │ │  Embedded   │ │    Edge     │ │      Local      │  │     │
+│  │  │   Native    │ │   Systems   │ │  Computing  │ │  Development    │  │     │
+│  │  │             │ │             │ │             │ │                 │  │     │
+│  │  │• Docker     │ │• MicroPython│ │• RP2040     │ │• Process        │  │     │
+│  │  │• Kubernetes │ │• CircuitPy  │ │• ESP32      │ │• Thread         │  │     │
+│  │  │• Compose    │ │• Arduino    │ │• STM32      │ │• Debug          │  │     │
+│  │  │• Swarm      │ │• PlatformIO │ │• Bare Metal │ │• Hot Reload     │  │     │
+│  │  │• Scaling    │ │• RTOS       │ │• Real-time  │ │• Live Logs      │  │     │
+│  │  │• Load Bal   │ │• Low Power  │ │• IoT        │ │• Rich Console   │  │     │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────┘  │     │
+│  └─────────────────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+## ✨ Features
+
+### 🎯 **Core Framework**
+- **Manifest-Driven Architecture**: Declarative YAML-based service configuration
+- **Multi-Environment Isolation**: Process, Docker, Kubernetes, MicroPython, Arduino, RP2040
+- **Auto-Discovery & Migration**: Automatic service detection and seamless migration tools
+- **Zero Vendor Lock-in**: Export generated code and run independently
+
+### 🔧 **Advanced Capabilities**
+- **Structured Logging**: Rich console output with JSON export and WebSocket broadcasting
+- **Health & Metrics**: Built-in monitoring endpoints with Prometheus integration
+- **Dynamic Handlers**: Hot-reload Python scripts with isolation sandboxing
+- **Background Tasks**: Async periodic tasks with optional WebSocket broadcasting
+- **CORS & Security**: Configurable CORS, authentication, and request validation
+
+### 🌍 **Multi-Platform Support**
+- **Cloud Native**: Docker, Kubernetes, Docker Compose orchestration
+- **Embedded Systems**: MicroPython, CircuitPython, Arduino IDE integration
+- **Hardware Platforms**: Raspberry Pi Pico (RP2040), ESP32, STM32, Arduino boards
+- **Development Tools**: PlatformIO, Arduino CLI, esptool integration
+
+### 🚀 **DevOps & Deployment**
+- **Blue-Green Migration**: Gradual traffic shifting with automatic rollback
+- **Service Discovery**: Automatic manifest generation from existing code
+- **Monitoring Stack**: Grafana dashboards, Prometheus metrics, Alertmanager
+- **CI/CD Ready**: GitHub Actions, Docker builds, PyPI publishing
+
+## 📦 Installation
+
+### Basic Installation
+```bash
+pip install proserve
+```
+
+### With All Features
+```bash
+pip install proserve[all]
+```
+
+### Specific Feature Sets
+```bash
+# Docker & Kubernetes support
+pip install proserve[docker,kubernetes]
+
+# MicroPython & Embedded development
+pip install proserve[micropython,arduino,rp2040]
+
+# Monitoring & observability
+pip install proserve[monitoring]
+
+# Development tools
+pip install proserve[development,testing]
+```
+
+## 🚀 Quick Start
+
+### 🎯 **NEW: Simplified Decorator API (No Manifest Required!)**
+
+```python
+# app.py - Zero configuration needed!
+from proserve import Service
+
+service = Service(name="my-service")
+
+@service.endpoint("/api/hello", method="GET")
+async def hello(request):
+    return {"message": "Hello, ProServe!"}
+
+@service.websocket("/ws")
+async def websocket_handler(ws):
+    async for message in ws:
+        await ws.send(f"Echo: {message}")
+
+@service.background_task(interval=60)
+async def cleanup():
+    print("Running cleanup...")
+
+# Start the service
+if __name__ == "__main__":
+    service.run(port=8080)
+```
+
+**Run it:**
+```bash
+python app.py
+# 🚀 Service running at http://localhost:8080
+# 📊 Health check: http://localhost:8080/health
+# 📈 Metrics: http://localhost:8080/metrics
+```
+
+### 📋 **Traditional: Manifest-Based Configuration**
+
+```yaml
+# my-service.yaml
+name: my-awesome-service
+version: 1.0.0
+type: http
+port: 8080
+host: 0.0.0.0
+
+# Features
+requires_edpmt: false
+enable_cors: true
+enable_health: true
+enable_metrics: true
+
+# Endpoints
+endpoints:
+  - path: /api/hello
+    method: GET
+    script: handlers/hello.py
+
+# WebSocket handlers
+websocket_handlers:
+  - path: /ws
+    script: handlers/websocket.py
+
+# Background tasks
+background_tasks:
+  - script: handlers/background.py
+    interval: 60
+    broadcast: true
+
+# Environment isolation
+isolation:
+  mode: process  # none, process, docker, kubernetes, micropython, arduino
+  timeout: 30
+  auto_environment: true
+
+# Environment variables
+env_vars:
+  - API_KEY
+  - DATABASE_URL
+  - DEBUG
+
+# Static file serving
+static_dirs:
+  "/static": "./static"
+  "/assets": "./assets"
+```
+
+### 2. Create Handler Scripts
+
+```python
+# handlers/hello.py
+async def handle_request(request, service):
+    return {"message": "Hello from ProServe!", "service": service.manifest.name}
+
+# handlers/websocket.py  
+async def handle_websocket(ws, data, service):
+    if data.get('action') == 'ping':
+        return {'action': 'pong', 'timestamp': time.time()}
+
+# handlers/background.py
+async def background_task(service):
+    service.logger.info("Background task executed")
+    return {"status": "completed"}
+```
+
+### 3. Run Your Service
+
+```bash
+# Using CLI
+proserve run --manifest my-service.yaml
+
+# Using Python
+python -c "
+from proserve import ServiceRunner
+runner = ServiceRunner('my-service.yaml')
+runner.run()
+"
+```
+
+## 🌍 Multi-Environment Deployment
+
+### Cloud Native (Docker/Kubernetes)
+```yaml
+isolation:
+  mode: docker
+  image: python:3.11-slim
+  resources:
+    memory: "512Mi"
+    cpu: "0.5"
+```
+
+### MicroPython (RP2040/ESP32)
+```yaml  
+isolation:
+  mode: micropython
+  platform: rp2040  # or esp32, esp8266
+  firmware_version: "1.19.1"
+  memory_limit: 256KB
+```
+
+### Arduino
+```yaml
+isolation:
+  mode: arduino
+  board: esp32dev  # or nano33iot, uno_r4_wifi
+  libraries:
+    - WiFi
+    - ArduinoJson
+    - PubSubClient
+```
+
+## 🔧 Service Discovery & Migration
+
+### Discover Existing Services
+```bash
+# Automatic service discovery
+proserve-discover --project-root . --output manifests/
+
+# Generate manifests from existing code
+proserve convert legacy-service.py --output service.yaml
+```
+
+### Migrate to Manifest-Based
+```bash
+# Start migration with blue-green deployment  
+proserve-migrate migrate --service my-service --strategy blue-green
+
+# Monitor migration progress
+proserve-migrate status --service my-service
+
+# Complete migration
+proserve-migrate complete --service my-service
+```
+
+## 🐳 Docker & Orchestration
+
+### Docker Compose
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  my-service:
+    image: proserve:latest
+    environment:
+      - PROSERVE_MANIFEST=/app/my-service.yaml
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./manifests:/app/manifests:ro
+```
+
+### Multiple Architectures
+```bash
+# Build for different platforms
+make build-docker  # Builds arm64, x86_64, micropython, arduino
+
+# Deploy to specific environment
+proserve-deploy --environment production --platform kubernetes
+```
+
+## 📊 Monitoring & Observability
+
+### Built-in Endpoints
+- `GET /health` - Health check with service status
+- `GET /metrics` - Prometheus metrics endpoint
+- `GET /status` - Detailed service information
+- `WS /logs` - Real-time log streaming
+
+### Prometheus Integration
+```yaml
+# Automatic metrics collection
+monitoring:
+  prometheus: true
+  metrics_port: 9090
+  custom_metrics:
+    - request_duration_seconds
+    - background_task_duration
+    - websocket_connections_total
+```
+
+### Grafana Dashboards
+```bash
+# Setup monitoring stack
+docker-compose -f docker-compose.manifest.yml --profile monitoring up
+# Access Grafana at http://localhost:3000 (admin/admin123)
+```
+
+## 🧪 Testing & Development
+
+### Run Tests
+```bash
+make test              # All tests
+make test-unit         # Unit tests only  
+make test-integration  # Integration tests
+make test-environments # Multi-environment tests
+```
+
+### Development Setup
+```bash
+make dev-setup         # Complete dev environment
+make format           # Code formatting
+make lint             # Code linting
+make check            # All quality checks
+```
+
+## 📚 Examples
+
+### Simple HTTP Service
+```python
+from proserve import ProServeService, Manifest
+
+manifest = Manifest.from_yaml("service.yaml")
+service = ProServeService(manifest)
+
+@service.endpoint("/api/users", methods=["GET"])
+async def get_users(request):
+    return {"users": ["alice", "bob"]}
+
+service.run()
+```
+
+### MicroPython IoT Service
+```python
+# For RP2040/ESP32
+from proserve.embedded import MicroPythonService
+
+service = MicroPythonService("iot-sensor.yaml")
+
+@service.background_task(interval=30)
+async def read_sensors():
+    temperature = sensor.read_temperature()
+    service.broadcast({"temperature": temperature})
+
+service.run()
+```
+
+## 📚 Learning Path & Examples
+
+### 🎓 **NEW: Progressive Learning Examples** 
+
+We've created a complete learning path from absolute beginner to production deployment:
+
+| **Level** | **Example** | **Time** | **Skills** |
+|-----------|-------------|----------|------------|
+| **👶 Junior** | [01-hello-world](./examples/01-hello-world/) | 5 min | First API (3 lines!) |
+| | [02-static-website](./examples/02-static-website/) | 10 min | Static files + manifest |
+| | [03-simple-api](./examples/03-simple-api/) | 15 min | REST endpoints |
+| | [04-manifest-driven](./examples/04-manifest-driven/) | 20 min | YAML-only API |
+| **🧑‍💻 Mid** | [05-database-api](./examples/05-database-api/) | 30 min | SQLite + ORM patterns |
+| | [06-auth-middleware](./examples/06-auth-middleware/) | 45 min | JWT + RBAC |
+| | [07-file-upload](./examples/07-file-upload/) | 30 min | File handling + security |
+| | [08-websocket-chat](./examples/08-websocket-chat/) | 45 min | Real-time WebSocket chat |
+
+### 🚀 **Quick Start Paths**
+
+**Complete Beginner** (never built APIs):
+```bash
+cd examples/01-hello-world && python app.py
+```
+
+**Know Docker/Flask** (familiar with web development):
+```bash
+cd examples/03-simple-api && python app.py  
+```
+
+**Prefer Configuration** (like docker-compose users):
+```bash
+cd examples/04-manifest-driven && proserve run
+```
+
+### 📖 Documentation
+
+- **[🎓 Junior Quick Start](./JUNIOR_QUICK_START.md)** - "ProServe in 5 minutes" for beginners
+- **[🌐 Ecosystem Guide](./ECOSYSTEM.md)** - Complete ecosystem overview with diagrams
+- **[📚 Examples Guide](./examples/README.md)** - Progressive examples with learning path
+- **[API Reference](https://proserve.readthedocs.io/api/)** - Detailed API documentation  
+- **[Migration Guide](https://proserve.readthedocs.io/migration/)** - Legacy service migration
+- **[Deployment Guide](https://proserve.readthedocs.io/deployment/)** - Production deployment
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Workflow
+```bash
+git clone https://github.com/proserve/proserve.git
+cd proserve
+make dev-setup
+make test
+```
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Tom Sapletta**
+- Email: info@softreck.dev
+- GitHub: [@tom-sapletta-com](https://github.com/tom-sapletta-com)
+- Website: [softreck.dev](https://softreck.dev)
+
+## 🏆 Credits
+
+ProServe is built on top of excellent open-source libraries:
+- [aiohttp](https://github.com/aio-libs/aiohttp) - Async HTTP framework
+- [structlog](https://github.com/hynek/structlog) - Structured logging
+- [rich](https://github.com/Textualize/rich) - Beautiful terminal output
+- [docker-py](https://github.com/docker/docker-py) - Docker Python SDK
+- [PyYAML](https://github.com/yaml/pyyaml) - YAML processing
+
+---
+
+**Made with ❤️ by the ProServe Team**

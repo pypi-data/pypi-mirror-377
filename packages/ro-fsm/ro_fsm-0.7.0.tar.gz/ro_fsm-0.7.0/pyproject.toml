@@ -1,0 +1,18 @@
+[project]
+name = "ro-fsm"
+version = "0.7.0"
+description = "lightweight, context-driven finite state machine (FSM) library."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Rodrigo Francisco", email = "rodrigofrancisco@tecnico.ulisboa.pt" }
+]
+requires-python = ">=3.12"
+dependencies = ["PyYAML>=6.0,<7.0"]
+
+[project.scripts]
+ro-fsm = "ro_fsm:main"
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"

@@ -1,0 +1,115 @@
+Metadata-Version: 2.4
+Name: hicue
+Version: 0.3.2
+Summary: A visualisation tool for Hi-C dataset.
+Project-URL: Homepage, https://github.com/Mae-4815162342/HiCue
+Project-URL: Issues, https://github.com/Mae-4815162342/HiCue/issues
+Author-email: Maelys Delouis <maelys.delouis@pasteur.fr>
+License: CC BY-NC 4.0
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.10
+Requires-Dist: bcbio-gff
+Requires-Dist: chromosight
+Requires-Dist: click
+Requires-Dist: cooler>=0.10
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: pybigwig
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: codecov; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: hatchling; extra == 'dev'
+Requires-Dist: ipython; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pylint; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest-order; extra == 'dev'
+Requires-Dist: pytest-pylint; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: codecov; extra == 'test'
+Requires-Dist: pylint; extra == 'test'
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Requires-Dist: pytest-order; extra == 'test'
+Requires-Dist: pytest-pylint; extra == 'test'
+Requires-Dist: ruff; extra == 'test'
+Description-Content-Type: text/markdown
+
+# HiCue
+
+A visualization tool for Hi-C datasets that enables extraction, analysis, and visualization of chromatin interaction data.
+
+## Features
+
+- Extract submatrices from Hi-C data around (pairs of) genomic positions
+- Generate pileup visualizations of chromatin interactions
+- Support for multiple file formats (BED, GFF, BigWig)
+- Compare Hi-C datasets
+
+## Installation
+
+```bash
+pip install hicue
+```
+
+For development:
+
+```bash
+git clone https://github.com/Mae-4815162342/HiCue.git
+cd HiCue
+pip install -e .
+```
+
+## Usage
+
+### Extract submatrices around genomic positions
+
+```bash
+hicue extract output_dir positions.bed data.cool
+```
+
+### Generate pileup visualizations
+
+```bash
+hicue extract output_dir positions.bed data.cool --pileup
+```
+
+...
+
+## Command Line Interface
+
+HiCue provides several commands:
+
+- `extract`: Extract submatrices around genomic positions
+- `extract2d`: Extract submatrices for 2D genomic intervals
+- `tracks`: Overlay genomic tracks on Hi-C visualizations
+- `compare`: Compare two Hi-C datasets
+- `annotate`: Annotate genomic positions with GFF features
+
+Use `hicue <command> --help` for detailed options.
+
+## License
+
+This project is licensed under CC BY-NC 4.0. See the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use HiCue in your research, please cite:
+
+```
+...
+```
+

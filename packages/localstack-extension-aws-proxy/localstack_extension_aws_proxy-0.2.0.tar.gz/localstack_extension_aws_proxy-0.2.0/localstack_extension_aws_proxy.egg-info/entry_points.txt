@@ -1,0 +1,5 @@
+[localstack.extensions]
+aws-proxy = aws_proxy.server.extension:AwsProxyExtension
+
+[localstack.plugins.cli]
+aws-proxy = aws_proxy.client.cli:AwsProxyPlugin

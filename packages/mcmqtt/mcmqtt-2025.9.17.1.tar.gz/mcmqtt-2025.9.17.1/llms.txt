@@ -1,0 +1,57 @@
+# mcmqtt - FastMCP MQTT Server
+
+mcmqtt is a FastMCP server that enables MQTT integration for MCP clients with embedded broker support and fractal agent orchestration.
+
+## Quick Start
+```bash
+uvx mcmqtt                    # Start STDIO server (default)
+uvx mcmqtt --transport http   # Start HTTP server
+```
+
+## MCP Integration
+```bash
+claude mcp add task-buzz -- uvx mcmqtt
+```
+
+## Core Features
+- Zero-configuration MQTT broker spawning
+- FastMCP native Model Context Protocol server
+- Real-time message publishing and subscribing  
+- Embedded broker management
+- Cross-platform compatibility (Linux, macOS, Windows)
+
+## MQTT Tools Available
+- mqtt_connect - Connect to MQTT brokers
+- mqtt_publish - Publish messages with QoS support
+- mqtt_subscribe - Subscribe to topics with wildcards
+- mqtt_get_messages - Retrieve received messages
+- mqtt_status - Get connection and statistics
+- mqtt_spawn_broker - Create embedded brokers instantly
+- mqtt_list_brokers - Manage multiple brokers
+
+## Architecture
+Clean modular design: CLI → Config → Logging → Server → MQTT → MCP → Broker → Middleware
+
+## Use Cases
+- AI agent coordination and swarm intelligence
+- IoT sensor data collection and processing
+- Microservice event streaming and coordination
+- Real-time gaming and live applications
+- DevOps infrastructure automation
+- Multi-model AI orchestration
+
+## Installation
+```bash
+uvx mcmqtt                    # Recommended: instant execution
+uv add mcmqtt                 # Or install with uv
+pip install mcmqtt            # Or use pip
+```
+
+## Repository
+https://git.supported.systems/MCP/mcmqtt
+
+## Contributors
+Built with ❤️ by Ryan Malloy and Claude (Anthropic) for the AI developer community
+
+## License
+MIT

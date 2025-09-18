@@ -1,0 +1,77 @@
+services:
+  mcmqtt-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${ENVIRONMENT:-dev}
+    container_name: mcmqtt-server
+    restart: unless-stopped
+    ports:
+      - "${DEV_PORT:-3000}:3000"
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-dev}
+      - MQTT_BROKER_HOST=${MQTT_BROKER_HOST:-mqtt-broker}
+      - MQTT_BROKER_PORT=${MQTT_BROKER_PORT:-1883}
+      - MQTT_CLIENT_ID=${MQTT_CLIENT_ID:-mcmqtt-server}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MCP_SERVER_PORT=${MCP_SERVER_PORT:-3000}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - type: bind
+        source: ./src
+        target: /app/src
+        read_only: false
+      - type: bind
+        source: ./tests
+        target: /app/tests
+        read_only: false
+    command: >
+      sh -c "
+        if [ \"$$ENVIRONMENT\" = \"dev\" ]; then
+          uv run --reload mcmqtt.main:main
+        else
+          uv run mcmqtt.main:main
+        fi
+      "
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+    networks:
+      - mcmqtt-network
+      - caddy
+    labels:
+      - "caddy=mcmqtt.localhost"
+      - "caddy.reverse_proxy={{upstreams 3000}}"
+      - "caddy.header.Access-Control-Allow-Origin=*"
+
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0
+    container_name: mcmqtt-mqtt-broker
+    restart: unless-stopped
+    ports:
+      - "${MQTT_BROKER_PORT:-1883}:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mqtt-data:/mosquitto/data
+      - mqtt-logs:/mosquitto/log
+    networks:
+      - mcmqtt-network
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_pub -h localhost -t health -m 'test' || exit 1"]
+      interval: ${HEALTH_CHECK_INTERVAL:-30s}
+      timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+      retries: ${HEALTH_CHECK_RETRIES:-3}
+
+volumes:
+  mqtt-data:
+    driver: local
+  mqtt-logs:
+    driver: local
+
+networks:
+  mcmqtt-network:
+    driver: bridge
+  caddy:
+    external: true

@@ -1,0 +1,15 @@
+{
+    "name": "Base Rest - SomConnexio",
+    "version": "16.0.1.0.1",
+    "summary": "Expose the basic REST and public API controllers used in Som Connexió.",
+    "author": "Som Connexió SCCL, Coopdevs Treball SCCL",
+    "website": "https://git.coopdevs.org/coopdevs/som-connexio/odoo/odoo-somconnexio",
+    "license": "AGPL-3",
+    "category": "Cooperative Management",
+    "depends": ["base_rest", "auth_api_key"],
+    "data": [],
+    "demo": ["demo/auth_api_key.xml"],
+    "external_dependencies": {},
+    "application": False,
+    "installable": True,
+}

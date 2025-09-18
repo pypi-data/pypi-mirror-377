@@ -1,0 +1,47 @@
+{
+  "servers": {
+    "awesome-copilot": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest"
+      ],
+      // "envFile": "/home/xuananh/Documents/postgres-mcp/.env"
+    },
+    "postgres": {
+        "command": "/home/xuananh/Documents/postgres-mcp/.venv/bin/python",
+        "args": [
+          "-m",
+          "postgres_mcp"
+        ],
+        "env": {
+          "PYTHONPATH": "/home/xuananh/Documents/postgres-mcp/src",
+          "DATABASE_URI": "postgresql://postgres:showheroes@localhost:5432/viralize"
+        }
+      },
+    "selenium-run-directly": {
+        "command": "/home/xuananh/repo/selenium-mcp-server/.venv/bin/python",
+        "args": [
+            "-m",
+            "mcp_server_selenium",
+            "--user_data_dir=/home/xuananh/.config/google-chrome-selenium-mcp-direct",
+            "--port=9225"
+        ],
+        "env": {
+          "PYTHONPATH": "/home/xuananh/repo/selenium-mcp-server/src"
+        }
+    },
+    "selenium-installed-module": {
+        "command": "/tmp/mcp-test-fixed/test-fixed2/bin/python",
+        "args": [
+            "-m",
+            "mcp_server_selenium",
+            "--user_data_dir=/home/xuananh/.config/google-chrome-selenium-mcp-module",
+            "--port=9226"
+        ],
+    }
+  }
+}

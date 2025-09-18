@@ -1,0 +1,3 @@
+from torchvision.models.segmentation.deeplabv3 import deeplabv3_resnet50, deeplabv3_resnet101, deeplabv3_mobilenet_v3_large
+from torchvision.models.segmentation.fcn import fcn_resnet50, fcn_resnet101
+from torchvision.models.segmentation.lraspp import lraspp_mobilenet_v3_large

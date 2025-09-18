@@ -1,0 +1,26 @@
+anthropic>=0.8.0
+aiohttp>=3.9.0
+aiohttp-cors
+python-dotenv>=1.0.0
+groq
+openai
+litellm>=1.70.0
+requests
+replicate
+uvicorn
+fastapi==0.115.6
+gitpython==3.1.41
+jsonschema==4.23.0
+Pillow==11.1.0
+PyYAML==6.0.2
+rich==13.9.4
+toml==0.10.2
+# Pin MCP below 1.12 due to streamable-http performance regression (see upstream issue)
+mcp==1.11.0
+fastmcp==2.11.2
+tiktoken
+httpx>=0.27.0
+
+# Added for MCP manager SDK v2 (OAuth URL validation etc.)
+pydantic>=2.7.0
+

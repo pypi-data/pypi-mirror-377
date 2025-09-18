@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "notion_gametracker"
+version = "0.0.0"
+description = "Notion Game Tracker"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    # Esto se leerá de requirements.txt
+]
+
+[project.scripts]
+notion_gametracker = "notion_gametracker.notion_gametracker:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

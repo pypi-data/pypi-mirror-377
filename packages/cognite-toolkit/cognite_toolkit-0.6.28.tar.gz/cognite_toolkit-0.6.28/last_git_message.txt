@@ -1,0 +1,30 @@
+[CDF-25553] 🐝 Purge instances granular (#1874)
+
+# Description
+
+Stacked on <del>#1876, #1875, #1878, #1857, #1877</del>
+**Context**: This is part of the `alpha` migration tooling in Toolkit,
+for overview [see
+here](https://cognitedata.atlassian.net/wiki/spaces/~170890702/pages/5455773697/Migration+Tooling+in+Toolkit).
+
+This is used to unlink timeseries/files if the user wants to recover
+from step 3 in the process above without losing binary file content or
+datapoints.
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Added
+
+- [alpha] The `cdf purge instances` command now supports a new argument
+`instance-list` that enables deleting individual instances.
+
+## templates
+
+No changes.
+
+

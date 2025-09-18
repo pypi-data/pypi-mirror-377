@@ -1,0 +1,69 @@
+#!/bin/bash -f
+
+LOGGER_FORMAT="TEXT"
+LOGGER_LEVEL="INFO"
+
+BASEPATH=$(readlink -f "$0")
+export ENV_DIR="$(dirname "${BASEPATH}")"
+
+scripts=("converter-frontend.sh" "tiling-advisor.sh" "converter-backend.sh" "converter-fm2lm.sh" "converter-packer.sh" "converter-main.sh")
+
+warning() {
+    lc_log_level=$(echo "$LOGGER_LEVEL" | tr '[:upper:]' '[:lower:]')
+    if [[ "$lc_log_level" == "warn" || "$lc_log_level" == "info" || "$lc_log_level" == "debug" || "$lc_log_level" == "trace" ]]; then
+        local TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%S.%3NZ')
+
+        lc_log_format=$(echo "$LOGGER_FORMAT" | tr '[:upper:]' '[:lower:]')
+        if [[ "$lc_log_format" == "json" ]]; then
+            echo "{\"@timestamp\":\"$TIMESTAMP\",\"ecs.version\":\"1.2.0\",\"log.level\":\"WARNING\",\"message\":\"CODE: [SCRPT] $1\",\"process.thread.name\":\"main\",\"log.logger\":\"sdspconv\",\"component.name\":\"sdspconv\",\"component.type\":\"sdspconv-script\",\"context\":\"\",\"message.code\":\"SCRPT\"}"
+        else
+            echo "$TIMESTAMP WARNING : $1"
+        fi
+    fi
+}
+
+# Function to check execute permissions
+check_permissions() {
+    permission_missing=false
+    for script in "${scripts[@]}"; do
+        if [[ ! -e "$ENV_DIR/$script" ]]; then
+            warning "Script '$script' does not exist in path: '$ENV_DIR/$script'."
+        elif [[ ! -x "$ENV_DIR/$script" ]]; then
+            warning "Script '$script' is missing execute permissions found at '$ENV_DIR/$script'"
+            permission_missing=true
+        fi
+    done
+
+    if $permission_missing; then
+        warning "To grant execute permissions, run the following command for each required file:"
+        warning "chmod u+x <script_name>"
+    fi
+}
+
+#Store a copy of positional args
+args=("$@")
+
+# Parse command line arguments
+while [[ "$#" -gt 0 ]]; do
+    arg_lc=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    case $arg_lc in
+        --logger-format)
+          shift
+          LOGGER_FORMAT=$1
+            ;;
+        --logger-level)
+          shift
+          LOGGER_LEVEL=$1
+            ;;
+        *)
+            ;;
+    esac
+    shift
+done
+
+#restore a copy of positional args
+set -- "${args[@]}"
+
+check_permissions
+
+bash $ENV_DIR/converter-main.sh --env-dir $ENV_DIR "$@"

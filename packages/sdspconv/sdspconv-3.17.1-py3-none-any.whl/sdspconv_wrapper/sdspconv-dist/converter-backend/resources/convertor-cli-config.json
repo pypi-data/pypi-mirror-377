@@ -1,0 +1,45 @@
+{
+  "logic_model": {
+    "aliases": ["f"],
+    "type": "Dir"
+  },
+  "output": {
+    "aliases": ["o"],
+    "type": "Dir"
+  },
+  "target": {
+    "aliases": ["t"],
+    "type": "Enum",
+    "values": ["IMX500", "SVP8150"],
+    "default": "IMX500"
+  },
+  "debug": {
+    "aliases": ["d"],
+    "type": "Toggle",
+    "default": "False"
+  },
+  "json": {
+    "aliases": ["j"],
+    "type": "Toggle",
+    "default": "False"
+  },
+  "ci": {
+    "type": "Toggle",
+    "default": ""
+  },
+  "graph_mem_opt":{
+    "type": "Text",
+    "default": ""
+  },
+  "conv_version": {
+    "aliases": ["c"],
+    "type": "Text",
+    "default": ""
+  },
+    "command": {
+    "type": "Enum",
+    "values": ["Convert"],
+    "default": "Convert"
+  }
+}
+

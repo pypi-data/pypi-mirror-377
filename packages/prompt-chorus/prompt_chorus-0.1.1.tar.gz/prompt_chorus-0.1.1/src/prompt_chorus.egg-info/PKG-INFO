@@ -1,0 +1,157 @@
+Metadata-Version: 2.4
+Name: prompt-chorus
+Version: 0.1.1
+Summary: Chorus - LLM Prompt Versioning Tool
+Author-email: Maya Lekhi <maya@consensuslabs.ai>
+License-Expression: MIT
+Keywords: python,package,llm,prompt,versioning,semver,langgraph
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=7.0.0; extra == "test"
+Requires-Dist: pytest-cov>=4.0.0; extra == "test"
+Provides-Extra: lint
+Requires-Dist: black>=23.0.0; extra == "lint"
+Requires-Dist: mypy>=1.0.0; extra == "lint"
+Requires-Dist: ruff>=0.1.0; extra == "lint"
+Dynamic: license-file
+
+# Chorus
+
+A Python package for LLM prompt versioning and tracking with dual versioning system and web interface.
+
+## Features
+
+- **Dual Versioning System**: Project version (semantic) + Agent version (incremental)
+- **Automatic Prompt Extraction**: Extracts prompts from function docstrings
+- **Execution Tracking**: Captures inputs, outputs, and execution times
+- **Web Interface**: Beautiful web UI for prompt management and visualization
+- **CLI Tools**: Command-line interface for prompt management
+- **Export/Import**: JSON export/import for prompt data
+- **Semantic Versioning**: Full support for semantic versioning of prompts
+
+## Installation
+
+```bash
+pip install chorus
+```
+
+## Quick Start
+
+### 1. Basic Usage
+
+```python
+from chorus import chorus
+
+@chorus(project_version="1.0.0", description="Basic Q&A prompt")
+def ask_question(question: str) -> str:
+    """
+    You are a helpful assistant. Answer: {question}
+    """
+    return "Answer: " + question
+
+# Run the function - prompts are automatically tracked
+result = ask_question("What is Python?")
+```
+
+### 2. Auto-versioning
+
+```python
+@chorus(description="Auto-versioned prompt")
+def process_text(text: str) -> str:
+    """
+    Process this text: {text}
+    """
+    return f"Processed: {text}"
+
+# Each time you modify the prompt, agent version auto-increments
+```
+
+### 3. CLI Usage
+
+```bash
+# List all tracked prompts
+chorus list
+
+# Show specific prompt details
+chorus show ask_question 1.0.0
+
+# Start web interface
+chorus web
+
+# Export prompts
+chorus export --output my_prompts.json
+```
+
+### 4. Web Interface
+
+```bash
+chorus web --port 3000
+```
+
+Open your browser to `http://localhost:3000` for a beautiful web interface to manage your prompts.
+
+## Advanced Features
+
+### Dual Versioning System
+
+Chorus uses a dual versioning approach:
+- **Project Version**: Semantic version for project changes (e.g., "1.0.0")
+- **Agent Version**: Incremental version for prompt changes (auto-incremented)
+
+### Prompt Tracking
+
+- Automatic extraction from function docstrings
+- Execution time tracking
+- Input/output capture
+- Error handling and logging
+
+### Web Interface Features
+
+- Visual prompt management
+- Version comparison
+- Execution history
+- Export/import functionality
+
+## Development
+
+### Setup
+
+```bash
+git clone https://github.com/yourusername/chorus.git
+cd chorus
+pip install -e .
+```
+
+### Testing
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

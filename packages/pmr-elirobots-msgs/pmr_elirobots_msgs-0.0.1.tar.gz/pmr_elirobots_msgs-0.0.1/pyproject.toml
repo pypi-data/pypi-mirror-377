@@ -1,0 +1,19 @@
+[project]
+name = "pmr-elirobots-msgs"
+version = "0.0.1"
+description = ""
+authors = [
+    { name = "Felipe Gomes de Melo D'Elia", email = "felipegmelo@usp.br" },
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = ["dataclasses-json", "pydantic"]
+
+[tool.poetry]
+packages = [{ include = "pmr_elirobots_msgs", from = "src" }]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

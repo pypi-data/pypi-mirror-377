@@ -1,0 +1,108 @@
+# EqUMP
+IRT Equating for Unidimensional Mixed Format Test with Python
+
+## Motivation
+Item Respone Theory (IRT) test equating is a critical process for maintaining score comparability across different test forms. However, current implementations often rely on limited software or complex scripting environments. We introduce EqUMP, a Python package designed to streamline and democratize IRT equating for unidimensional mixed format test. Built upon the robust ecosystem of scientific computing in Python (Numpy, Scipy), it provides a flexible framework for various IRT equating methods (e.g., scale transformation, true score equating). The package is openly licensed, pip-installable, and includes comprehensive documentation and test suites, enabling researchers and practitioners to readily reproduce analysis pipelines. By leveraging Python’s accessibility and extensibility, EqUMP facilitates rigorous and reproducible test equating for a wider educational data analysists and psychometricians.
+
+## Core Principles
+- **Academically faithful code and documentation**  
+  EqUMP is designed for researchers and practitioners familiar with standard test equating literature. We follow textbook-style notation and structure—even at the cost of computational speed—to ensure clarity and pedagogical value.
+
+- **Practical focus**  
+  While many equating methods exist in the literature, some are infeasible in operational testing. EqUMP prioritizes features that reflect real-world usage and operational constraints. Users can request or contribute less common methods.
+
+- **Symmetric linking constant support**  
+  Symmetry property of equating function is a critical but often neglected aspect of Haebara or Stocking-Lord linking method. EqUMP handles this through carefully implemented two-sided(symmtric) or one-sided loss function.
+
+## Installation
+```bash
+pip install eqump
+```
+
+## Compared to other related packages
+- Before we create this package, we analyze the packages below
+- As far as we know, there are no Python-based IRT Test Equating packages.
+- We found some R packages and commercial programs below. And summarize their features in the table below.
+
+| Package/Program | Author | Category | scale-linking | true-score | observed-score | kernel | link |
+|-----------------|--------|----------|---------------|------------|----------------|--------|--------|
+| STUIRT | Kim & Kolen, 2004 | Standalone | O | X | X | X | [download](https://education.uiowa.edu/casma/computer-programs) |
+| POLYEQUATE | Kolen, 2004 | Standalone | X | O | O | X |  [download](https://education.uiowa.edu/casma/computer-programs)  |
+| IRTEQ | Han, 2009 | Standalone | O | O | X | X | [homepage](http://www.hantest.net/irteq/) |
+| kequate | Andersson et al., 2013 | R | O | X | O | O | [cran](https://cran.r-project.org/web/packages/kequate/index.html) |
+| equateIRT | Battauz, 2015 | R | O | O | O | X | [cran](https://cran.r-project.org/web/packages/equateIRT/index.html) |
+
+## Core API
+### Item Response Model
+```python
+```
+
+### Scale Transformation
+- mean-difference
+```python
+```
+
+- mean-std
+```python
+```
+
+- Haebara
+```python
+```
+
+- Stocking-Lord
+```python
+```
+
+### True Score Equating
+```python
+```
+
+### Observed Score Equating
+```python
+```
+
+### Kernel Methods
+```python
+```
+
+## How to contribute
+`EqUMP` is actively being developed, and upcoming releases will include additional item response models and equating methods.
+We welcome contributions of any kind—if you’d like to get involved, please check out our contribution [guidelines](https://github.com/huni1023/EqUMP/blob/main/CONTRIBUTE.md).
+
+## How to cite
+<pre>
+  ```
+  this section will be filled after publishing this package in a peer reviewed journal
+  ```
+</pre>
+
+## Used by
+following contents are not real at all. It's just our hope and vision
+<table>
+  <tr align="center">
+    <td>
+      <img src="" height="60"/><br/>
+      <strong>fictitious company</strong><br/>
+      scale linking, true score equating
+    </td>
+    <td>
+      <img src="" height="60"/><br/>
+      <strong>fictitious high school</strong><br/>
+      item paramter estimation
+    </td>
+    <td>
+      <img src="" height="60"/><br/>
+      <strong>CBTManager</strong><br/>
+      emulate scale linking, ploting
+    </td>
+  </tr>
+</table>
+
+> 💡 Want your organization featured? Open an [Issue](https://github.com/huni1023/eqump/issues/new) or [Pull Request](https://github.com/huni1023/eqump/pulls) to be listed.
+
+## References
+- [1] Kolen, M. J., & Brennan, R. L. (2014). Test equating, scaling, and linking: Methods and practices (3rd ed.). Springer Science + Business Media. [https://doi.org/10.1007/978-1-4939-0317-7.](https://doi.org/10.1007/978-1-4939-0317-7.)
+- [2] 김성훈. (2022). 문항반응이론 검사 동등화. 공동체.
+- [3] Andersson, B., Bränberg, K., & Wiberg, M. (2013). Performing the Kernel Method of Test Equating with the Package kequate. Journal of Statistical Software, 55(6), 1–25. https://doi.org/10.18637/jss.v055.i06
+- [4] Battauz, M. (2015). equateIRT: An R Package for IRT Test Equating. Journal of Statistical Software, 68(7), 1–22. https://doi.org/10.18637/jss.v068.i0

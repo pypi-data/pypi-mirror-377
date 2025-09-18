@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "EqUMP"
+version = "0.1.5"
+description = "IRT Equating for Unidimensional Mixed Format Test with Python"
+readme = "README.md"
+requires-python = ">=3.9, <3.14"
+license = {text = "MIT"}
+authors = [ { name = "JeeHun Sung", email = "jhun1023@naver.com" }, { name = "Youngjin Kim", email = "edu.yj.kim@gmail.com"}, { name = "Hoon Kim", email = "h000000nkim@gmail.com" }]
+keywords = ["item response theory", "test equating", "mixed format test", "unidimensional", "education"]
+dependencies = [
+    "matplotlib>=3.9.4",
+    "numpy>=2.0.2",
+    "pandas>=2.3.1",
+    "pytest>=8.4.1",
+    "python-dotenv>=1.1.1",
+    "scipy>=1.13.1",
+]
+
+[project.urls]
+Repository = "https://github.com/jhun1023/EqUMP"

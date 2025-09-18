@@ -1,0 +1,156 @@
+import unittest
+import sqlite3
+import time
+import math
+
+from core.db import create_db_context
+from core.client import *
+from core.models import *
+from core.exceptions import *
+from {{ module.name.snake_case }}.{{ model.name.snake_case }}.model import {{ model.name.pascal_case }}
+from {{ module.name.snake_case }}.{{ model.name.snake_case }}.client import *
+
+
+def test_ctx_init() -> dict:
+    ctx = create_db_context()
+    ctx.update(create_client_context())
+    return ctx
+
+
+
+class Test{{ model.name.pascal_case }}(unittest.TestCase):
+
+
+
+
+    def test_{{ model.name.snake_case }}_crud(self):
+        """
+        only need to test the client, which by also tests the server and other modules
+
+        + create
+        + read
+        + update
+        + delete
+        """
+
+        crud_ctx = test_ctx_init()
+
+        test_{{ model.name.snake_case }} = {{ model.name.pascal_case }}.example()
+        try:
+            test_{{ model.name.snake_case }}.user_id = ''
+        except AttributeError:
+            """ignore if model does not have user_id"""
+        test_{{ model.name.snake_case }}.validate()
+
+        # create #
+
+        created_{{ model.name.snake_case }} = client_create_{{ model.name.snake_case }}(crud_ctx, test_{{ model.name.snake_case }})
+        self.assertTrue(isinstance(created_{{ model.name.snake_case }}, {{ model.name.pascal_case }}))
+        created_{{ model.name.snake_case }}.validate()
+        test_{{ model.name.snake_case }}.id = created_{{ model.name.snake_case }}.id
+        try:
+            test_{{ model.name.snake_case }}.user_id = created_{{ model.name.snake_case }}.user_id
+        except AttributeError:
+            pass
+
+        self.assertEqual(created_{{ model.name.snake_case }}, test_{{ model.name.snake_case }})
+
+        # read #
+
+        test_{{ model.name.snake_case }}_read = client_read_{{ model.name.snake_case }}(crud_ctx, created_{{ model.name.snake_case }}.id)
+        self.assertTrue(isinstance(test_{{ model.name.snake_case }}_read, {{ model.name.pascal_case }}))
+        test_{{ model.name.snake_case }}_read.validate()
+        self.assertEqual(test_{{ model.name.snake_case }}_read, test_{{ model.name.snake_case }})
+
+        # update #
+
+        updated_test_{{ model.name.snake_case }} = client_update_{{ model.name.snake_case }}(crud_ctx, test_{{ model.name.snake_case }}_read)
+        self.assertTrue(isinstance(updated_test_{{ model.name.snake_case }}, {{ model.name.pascal_case }}))
+        updated_test_{{ model.name.snake_case }}.validate()
+        self.assertEqual(test_{{ model.name.snake_case }}_read, updated_test_{{ model.name.snake_case }})
+
+        # delete #
+
+        delete_return = client_delete_{{ model.name.snake_case }}(crud_ctx, created_{{ model.name.snake_case }}.id)
+        self.assertIsNone(delete_return)
+        self.assertRaises(NotFoundError, client_read_{{ model.name.snake_case }}, crud_ctx, created_{{ model.name.snake_case }}.id)
+
+        cursor:sqlite3.Cursor = crud_ctx['db']['cursor']
+        fetched_item = cursor.execute(f"SELECT * FROM {{ model.name.snake_case }} WHERE id=?", (created_{{ model.name.snake_case }}.id,)).fetchone()
+        self.assertIsNone(fetched_item)
+
+
+        multi_int_result = cursor.execute(f"SELECT value FROM {{ model.name.snake_case }}_multi_int WHERE {{ model.name.snake_case }}_id=? ORDER BY position", (created_{{ model.name.snake_case }}.id,))
+        self.assertEqual(len(multi_int_result.fetchall()), 0)
+
+        multi_float_result = cursor.execute(f"SELECT value FROM {{ model.name.snake_case }}_multi_float WHERE {{ model.name.snake_case }}_id=? ORDER BY position", (created_{{ model.name.snake_case }}.id,))
+        self.assertEqual(len(multi_float_result.fetchall()), 0)
+
+        multi_string_result = cursor.execute(f"SELECT value FROM {{ model.name.snake_case }}_multi_string WHERE {{ model.name.snake_case }}_id=? ORDER BY position", (created_{{ model.name.snake_case }}.id,))
+        self.assertEqual(len(multi_string_result.fetchall()), 0)
+
+        multi_enum_result = cursor.execute(f"SELECT value FROM {{ model.name.snake_case }}_multi_enum WHERE {{ model.name.snake_case }}_id=? ORDER BY position", (created_{{ model.name.snake_case }}.id,))
+        self.assertEqual(len(multi_enum_result.fetchall()), 0)
+
+        multi_datetime_result = cursor.execute(f"SELECT value FROM {{ model.name.snake_case }}_multi_datetime WHERE {{ model.name.snake_case }}_id=? ORDER BY position", (created_{{ model.name.snake_case }}.id,))
+        self.assertEqual(len(multi_datetime_result.fetchall()), 0)
+        
+    def test_{{ model.name.snake_case }}_pagination(self):
+
+        pagination_ctx = test_ctx_init()
+
+        # seed data #
+
+        init_response = client_list_{{ model.name.snake_case }}(pagination_ctx, offset=0, limit=1)
+        total_items = init_response['total']
+        
+        if total_items < 15:
+            seed_ctx = create_client_context()
+            while total_items < 15:
+
+                item = {{ model.name.pascal_case }}.random()
+                client_create_{{ model.name.snake_case }}(seed_ctx, item)
+                total_items += 1
+
+        # paginate #
+
+        pg_configs = [
+            {'page_size': 5, 'expected_pages': math.ceil(total_items / 5)},
+            {'page_size': 8, 'expected_pages': math.ceil(total_items / 8)},
+            {'page_size': 15, 'expected_pages': math.ceil(total_items / 15)},
+        ]
+
+        for pg_config in pg_configs:
+            page_size = pg_config['page_size']
+            expected_pages = pg_config['expected_pages']
+
+            offset = 0
+            item_ids = []
+            num_pages = 0
+            while True:
+                response = client_list_{{ model.name.snake_case }}(pagination_ctx, offset=offset, limit=page_size)
+                returned_items = 0
+                for item in response['items']:
+                    returned_items += 1
+                    item.validate()
+
+                    self.assertTrue(isinstance(item, {{ model.name.pascal_case }}))
+                    item_ids.append(item.id)
+
+                if returned_items > 0:
+                    num_pages += 1
+
+                if returned_items < page_size:
+                    break
+
+                self.assertTrue(returned_items <= page_size)
+
+                offset += page_size
+                
+            self.assertEqual(num_pages, expected_pages)
+            self.assertEqual(len(item_ids), total_items)
+            self.assertEqual(len(set(item_ids)), total_items)
+
+
+if __name__ == '__main__':
+    unittest.main()

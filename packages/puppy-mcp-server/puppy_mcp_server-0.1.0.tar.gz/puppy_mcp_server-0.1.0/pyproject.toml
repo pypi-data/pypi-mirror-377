@@ -1,0 +1,19 @@
+[project]
+name = "puppy-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.12.3",
+    "requests>=2.25.0",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License", # 关键！在PyPI分类中指明是MIT许可证
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+puppy-mcp-server = "puppy_mcp_server.main:main"

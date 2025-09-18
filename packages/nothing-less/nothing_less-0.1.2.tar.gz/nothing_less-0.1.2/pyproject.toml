@@ -1,0 +1,30 @@
+[project]
+name = "nothing-less"
+version = "0.1.2"
+description = "A TUI paging application with enhanced support for tabular data and real-time streaming"
+authors = [
+    {name = "Matt Pryor",email = "mapryor1991@yahoo.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "textual>=0.55.0"
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/mpryor/nothing-less"
+Issues = "https://github.com/mpryor/nothing-less/issues"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+nless = "nless.cli:main"
+
+[tool.poetry]
+packages = [
+    {include="nless"}
+]

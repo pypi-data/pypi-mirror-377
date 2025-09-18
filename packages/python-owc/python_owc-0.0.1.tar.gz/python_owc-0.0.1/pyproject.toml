@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "python_owc"
+version = "0.0.1"
+authors = [
+    { name = "Fabio Antonio Astore", email = "astore.a.fabio@gmail.com"}
+]
+description = "Asyncronous Python Offline Web Communication"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "Brotli==1.1.0",
+    "aiodns==3.5.0",
+    "aiohttp==3.12.15"
+]
+
+[project.urls]
+Homepage = "https://github.com"
+Issues = "https://github.com"
+
+
+[tool.hatch.build.targets.sdists]
+packages = ["owc"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["owc"]

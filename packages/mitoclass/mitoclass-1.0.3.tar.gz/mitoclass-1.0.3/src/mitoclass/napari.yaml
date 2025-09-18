@@ -1,0 +1,17 @@
+# src/mitoclass/napari.yaml
+
+schema_version: "0.2.0"
+name: "mitoclass"
+version: "0.0.1"
+display_name: "Mitoclass"
+package: "mitoclass"
+
+contributions:
+  commands:
+    - id: mitoclass.open_main_widget
+      title: open Mitoclass
+      python_name: mitoclass._widget:MitoclassWidget
+
+  widgets:
+    - command: mitoclass.open_main_widget
+      display_name: Mitoclass

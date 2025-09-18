@@ -1,0 +1,140 @@
+# Docker Compose configuration for CELN development
+
+# Define common environment variables using YAML anchors
+x-common-environment: &common-environment
+  # Sidecar Service Configuration
+  SIDECAR_HOST: 0.0.0.0
+  SIDECAR_PORT: 8001
+  SIDECAR_SERVICE_NAME: sidecar  # Docker service name for container networking
+  SIDECAR_DEBUG: true
+  
+  # Metadata Configuration
+  INCLUDE_METADATA: false
+  
+  # Git Server Configuration (supports: gitea, gitlab, github_enterprise)
+  GIT_SERVER: ${GIT_SERVER:-gitea}
+  GIT_SERVER_URL: ${GIT_SERVER_URL:-http://gitea:3000}
+  GIT_SERVER_ADMIN_TOKEN: ${GIT_SERVER_ADMIN_TOKEN:-NOT_SET}
+  
+  # GitHub Enterprise Configuration (only used when GIT_SERVER=github_enterprise)
+  # GIT_SERVER: github_enterprise
+  # GITHUB_ENTERPRISE_URL: 
+  # GITHUB_ENTERPRISE_ORG: 
+  # GITHUB_APP_ID: 
+  # GITHUB_APP_INSTALLATION_ID: 
+  # GITHUB_APP_PRIVATE_KEY_PATH: ${GITHUB_APP_PRIVATE_KEY_PATH:-/app/secrets/github-app-private-key.pem}
+  # GITHUB_AUTH_MODE: ${GITHUB_AUTH_MODE:-app}
+  # ALLOWED_DOMAINS: ${ALLOWED_DOMAINS:-}
+  # DEFAULT_REPO_PRIVATE: ${DEFAULT_REPO_PRIVATE:-true}
+  # REPO_TEMPLATE: ${REPO_TEMPLATE:-}
+    
+  # Logging Configuration
+  LOG_LEVEL: INFO
+  
+  # Git User Configuration
+  GIT_USER_NAME: ${GIT_USER_NAME:-dev user 12}
+  GIT_USER_EMAIL: ${GIT_USER_EMAIL:-dev12@test.org}
+  GIT_SSL_VERIFY: false
+  SINGLE_REPO_PER_USER: true
+  
+  # Optional GPG key ID
+  GPG_KEY_ID: ${GPG_KEY_ID:-}
+  
+  # Commit Message Configuration
+  COMMIT_MESSAGE_MODE: detailed
+  
+  # Operation Debouncing
+  COMMIT_DEBOUNCE_SECONDS: 0
+  PUSH_DEBOUNCE_SECONDS: 0
+  
+  # Auto-save Configuration
+  AUTO_SAVE_ENABLED: true
+  AUTO_SAVE_INTERVAL_MINUTES: 1
+    
+  # UI Button Control
+  ENABLE_COMMIT_BUTTON: false
+  ENABLE_PUSH_BUTTON: false
+  ENABLE_LOCK_BUTTON: false
+
+  # File Lifecycle Tracking
+  ENABLE_FILE_CREATION_TRACKING: false
+
+  # Misc Frontend Configuration
+  HEALTH_CHECK_INTERVAL_MS: 30000
+  HEALTH_CHECK_TIMEOUT_MS: 5000
+  API_REQUEST_TIMEOUT_MS: 30000
+  NOTIFICATION_AUTO_DISMISS_MS: 5000
+
+  # RTC Configuration
+  ENABLE_RTC_HANDLING: false
+
+  # Workspace Configuration
+  CREATE_WORK_SUBDIRECTORY: true
+  
+  # Git Directory Structure Configuration
+  # Separate git metadata from user workspace for security
+
+
+
+volumes:
+  shared_workspace:
+    driver: local
+
+networks:
+  default:
+    name: jupyterlab
+  gitea:
+    external: true
+    name: gitea_setup_gitea
+
+services:
+  jupyterlab:
+    build:
+      context: ..
+      dockerfile: docker/jupyterlab/Dockerfile.optimized
+    ports:
+      - "8888:8888"
+    volumes:
+      - ..:/src  # Keep for development (code changes)
+      - ./workspace/work:/home/jovyan/work:rw  # Mount only the work directory to hide git metadata from users
+    environment:
+      <<: *common-environment  # Include all common environment variables
+      # JupyterLab-specific environment variables
+      JUPYTER_TOKEN: test
+      GRANT_SUDO: yes
+      JUPYTERLAB_WORKSPACES_DIR: /home/jovyan
+      JUPYTER_ROOT_DIR: /home/jovyan  # Set JupyterLab to start in the user home directory
+      CHOWN_HOME: yes
+      CHOWN_HOME_OPTS: -R
+    user: root
+    depends_on:
+      sidecar:
+        condition: service_healthy
+
+  sidecar:
+    container_name: sidecar
+    build:
+      context: ..
+      dockerfile: docker/sidecar/Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../sidecar/src:/app/src  # Keep for development (code changes)
+      - ./workspace/work:/tmp/work:rw  # Mount work directory for user files
+      - ./workspace/.git-metadata:/tmp/.git-metadata:rw  # Mount git metadata directory (hidden from JupyterLab)
+      # Mount secrets directory for GitHub App private key
+      - ./secrets:/app/secrets:ro  # Read-only mount for security
+    environment:
+      <<: *common-environment  # Include all common environment variables
+      GIT_METADATA_DIRECTORY: /tmp/.git-metadata
+      WORK_TREE_DIRECTORY: /tmp/work
+      # No sidecar-specific variables currently needed
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - default
+      - gitea  # Connect to external Gitea network (only used for Gitea deployments) 

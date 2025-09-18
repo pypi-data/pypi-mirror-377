@@ -1,0 +1,173 @@
+/* Session Sync Overlay Styles */
+
+.session-sync-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000; /* Above everything in JupyterLab */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--jp-ui-font-family);
+}
+
+.session-sync-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.session-sync-modal {
+  position: relative;
+  background: var(--jp-layout-color0);
+  border: 1px solid var(--jp-border-color1);
+  border-radius: 8px;
+  padding: 32px;
+  min-width: 400px;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: sessionSyncFadeIn 0.3s ease-out;
+}
+
+.session-sync-content {
+  text-align: center;
+}
+
+/* Spinner Styles */
+.session-sync-spinner {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.session-sync-spinner-svg {
+  animation: sessionSyncRotate 1.2s linear infinite;
+}
+
+.session-sync-spinner-path {
+  animation: sessionSyncDash 1.5s ease-in-out infinite;
+  stroke: var(--jp-brand-color1, #2196f3);
+}
+
+/* Message Styles */
+.session-sync-message h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--jp-ui-font-color0);
+}
+
+.session-sync-message p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: var(--jp-ui-font-color1);
+  line-height: 1.4;
+}
+
+.session-sync-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.session-sync-details span {
+  font-size: 12px;
+  color: var(--jp-ui-font-color2);
+  text-align: left;
+  padding-left: 8px;
+}
+
+/* Progress Bar Styles */
+.session-sync-progress {
+  margin-top: 20px;
+}
+
+.session-sync-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--jp-border-color2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.session-sync-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, 
+    var(--jp-brand-color1, #2196f3) 0%, 
+    var(--jp-brand-color0, #1976d2) 100%
+  );
+  border-radius: 2px;
+  animation: sessionSyncProgress 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes sessionSyncFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes sessionSyncRotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sessionSyncDash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+@keyframes sessionSyncProgress {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Dark mode adjustments */
+[data-jp-theme-light="false"] .session-sync-modal {
+  background: var(--jp-layout-color1);
+  border-color: var(--jp-border-color2);
+}
+
+[data-jp-theme-light="false"] .session-sync-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .session-sync-modal {
+    margin: 20px;
+    min-width: auto;
+    width: calc(100% - 40px);
+    padding: 24px;
+  }
+} 

@@ -1,0 +1,103 @@
+$ kubectl logs ci-jupyterhub-polus-jupyterhub-lab-john-2emcauliffe-40nih-2egov--user-2dtest-2dserver-2dagain -c notebook
+Entered start.sh with args: start-notebook.py
+Running hooks in: /usr/local/bin/start-notebook.d as uid: 1000 gid: 100
+Done running hooks in: /usr/local/bin/start-notebook.d
+Running hooks in: /usr/local/bin/before-notebook.d as uid: 1000 gid: 100
+Sourcing shell script: /usr/local/bin/before-notebook.d/10activate-conda-env.sh
+Sourcing shell script: /usr/local/bin/before-notebook.d/20copy-jovyan-files.sh
+Done running hooks in: /usr/local/bin/before-notebook.d
+Executing the command: start-notebook.py
+2025-08-15 16:50:14,768 - git_lock_sign_jlx.services.sidecar_client - 30 - INFO - 🔧 Git Lock and Sign JupyterLab Extension logger initialized (level: INFO)
+2025-08-15 16:50:14,768 - git_lock_sign_jlx.handlers - 30 - INFO - 🔧 Git Lock and Sign JupyterLab Extension logger initialized (level: INFO)
+[W 2025-08-15 16:50:14.771 ServerApp] jhoauthrefresh | error adding extension (enabled: True): The module 'jhoauthrefresh' could not be found (No module named 'notebook.utils'). Are you sure the extension is installed?
+    Traceback (most recent call last):
+      File "/opt/conda/lib/python3.11/site-packages/jupyter_server/extension/manager.py", line 323, in add_extension
+        extpkg = ExtensionPackage(name=extension_name, enabled=enabled)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/opt/conda/lib/python3.11/site-packages/jupyter_server/extension/manager.py", line 187, in __init__
+        self._load_metadata()
+      File "/opt/conda/lib/python3.11/site-packages/jupyter_server/extension/manager.py", line 202, in _load_metadata
+        raise ExtensionModuleNotFound(msg) from None
+    jupyter_server.extension.utils.ExtensionModuleNotFound: The module 'jhoauthrefresh' could not be found (No module named 'notebook.utils'). Are you sure the extension is installed?
+[I 2025-08-15 16:50:16.263 ServerApp] Extension package jupyter_ai took 1.4904s to import
+[I 2025-08-15 16:50:16.405 ServerApp] Extension package jupyter_resource_usage took 0.1258s to import
+[W 2025-08-15 16:50:17.220 ServerApp] A `_jupyter_server_extension_points` function was not found in nbclassic. Instead, a `_jupyter_server_extension_paths` function was found and will be used for now. This function name will be deprecated in future releases of Jupyter Server.
+[I 2025-08-15 16:50:18.501 ServerApp] Extension package panel.io.jupyter_server_extension took 1.2784s to import
+[I 2025-08-15 16:50:18.858 ServerApp] jupyter_ai | extension was successfully linked.
+[I 2025-08-15 16:50:18.858 ServerApp] jupyter_archive | extension was successfully linked.
+[I 2025-08-15 16:50:18.858 ServerApp] jupyter_lsp | extension was successfully linked.
+[I 2025-08-15 16:50:18.858 ServerApp] jupyter_resource_usage | extension was successfully linked.
+[I 2025-08-15 16:50:18.862 ServerApp] jupyter_server_fileid | extension was successfully linked.
+[I 2025-08-15 16:50:18.865 ServerApp] jupyter_server_mathjax | extension was successfully linked.
+[I 2025-08-15 16:50:18.869 ServerApp] jupyter_server_terminals | extension was successfully linked.
+[I 2025-08-15 16:50:18.873 ServerApp] jupyter_server_ydoc | extension was successfully linked.
+[I 2025-08-15 16:50:18.874 JupyterHubSingleUser] Starting jupyterhub single-user server extension version 5.1.0
+[I 2025-08-15 16:50:18.874 JupyterHubSingleUser] Using default url from server extension lab: /lab
+[I 2025-08-15 16:50:18.877 ServerApp] jupyterhub | extension was successfully linked.
+[W 2025-08-15 16:50:18.879 LabApp] 'extra_template_paths' was found in both NotebookApp and ServerApp. This is likely a recent change. This config will only be set in NotebookApp. Please check if you should also config these traits in ServerApp for your purpose.
+[I 2025-08-15 16:50:18.882 ServerApp] jupyterlab | extension was successfully linked.
+[I 2025-08-15 16:50:18.882 ServerApp] jupyterlab_git | extension was successfully linked.
+[I 2025-08-15 16:50:18.882 ServerApp] jupyterlab_latex | extension was successfully linked.
+[I 2025-08-15 16:50:18.882 ServerApp] jupyterlab_myst | extension was successfully linked.
+[I 2025-08-15 16:50:18.883 ServerApp] jupyterlab_polus_render | extension was successfully linked.
+[I 2025-08-15 16:50:18.883 ServerApp] jupyterlab_templates | extension was successfully linked.
+[I 2025-08-15 16:50:18.883 ServerApp] jupyterlmod | extension was successfully linked.
+[W 2025-08-15 16:50:18.885 NotebookApp] 'extra_template_paths' was found in both NotebookApp and ServerApp. This is likely a recent change. This config will only be set in NotebookApp. Please check if you should also config these traits in ServerApp for your purpose.
+[I 2025-08-15 16:50:18.887 ServerApp] nbclassic | extension was successfully linked.
+[I 2025-08-15 16:50:18.887 ServerApp] nbdime | extension was successfully linked.
+[W 2025-08-15 16:50:19.008 AiExtension] Unable to load model provider `gemini`. Please install the `langchain_google_genai` package.
+[I 2025-08-15 16:50:19.008 AiExtension] Registered model provider `gpt4all`.
+[I 2025-08-15 16:50:19.008 AiExtension] Registered model provider `huggingface_hub`.
+[W 2025-08-15 16:50:19.009 AiExtension] Unable to load model provider `mistralai`. Please install the `langchain_mistralai` package.
+[W 2025-08-15 16:50:19.010 AiExtension] Unable to load model provider `nvidia-chat`. Please install the `langchain_nvidia_ai_endpoints` package.
+[I 2025-08-15 16:50:19.010 AiExtension] Registered model provider `ollama`.
+[W 2025-08-15 16:50:19.010 AiExtension] Unable to load model provider `openai`. Please install the `langchain_openai` package.
+[W 2025-08-15 16:50:19.010 AiExtension] Unable to load model provider `openai-chat`. Please install the `langchain_openai` package.
+[I 2025-08-15 16:50:19.011 AiExtension] Registered model provider `qianfan`.
+[W 2025-08-15 16:50:19.011 AiExtension] Unable to load model provider `sagemaker-endpoint`. Please install the `langchain_aws` package.
+[I 2025-08-15 16:50:19.011 AiExtension] Registered model provider `togetherai`.
+[E 2025-08-15 16:50:19.031 AiExtension] Unable to load embeddings model provider class from entry point `azure`: No module named 'langchain_openai'.
+[E 2025-08-15 16:50:19.032 AiExtension] Unable to load embeddings model provider class from entry point `bedrock`: No module named 'langchain_aws'.
+[E 2025-08-15 16:50:19.032 AiExtension] Unable to load embeddings model provider class from entry point `cohere`: No module named 'langchain_cohere'.
+[I 2025-08-15 16:50:19.032 AiExtension] Registered embeddings model provider `gpt4all`.
+[I 2025-08-15 16:50:19.033 AiExtension] Registered embeddings model provider `huggingface_hub`.
+[E 2025-08-15 16:50:19.033 AiExtension] Unable to load embeddings model provider class from entry point `mistralai`: No module named 'langchain_mistralai'.
+[I 2025-08-15 16:50:19.033 AiExtension] Registered embeddings model provider `ollama`.
+[E 2025-08-15 16:50:19.034 AiExtension] Unable to load embeddings model provider class from entry point `openai`: No module named 'langchain_openai'.
+[I 2025-08-15 16:50:19.034 AiExtension] Registered embeddings model provider `qianfan`.
+[I 2025-08-15 16:50:19.041 AiExtension] Registered providers.
+[I 2025-08-15 16:50:19.041 AiExtension] Registered jupyter_ai server extension
+[I 2025-08-15 16:50:19.064 AiExtension] Initialized Jupyter AI server extension in 125 ms.
+[I 2025-08-15 16:50:19.065 ServerApp] jupyter_ai | extension was successfully loaded.
+[I 2025-08-15 16:50:19.066 ServerApp] jupyter_archive | extension was successfully loaded.
+[I 2025-08-15 16:50:19.068 ServerApp] jupyter_lsp | extension was successfully loaded.
+[I 2025-08-15 16:50:19.069 ServerApp] jupyter_resource_usage | extension was successfully loaded.
+[I 2025-08-15 16:50:19.069 FileIdExtension] Configured File ID manager: ArbitraryFileIdManager
+[I 2025-08-15 16:50:19.069 FileIdExtension] ArbitraryFileIdManager : Configured root dir: /home/jovyan
+[I 2025-08-15 16:50:19.069 FileIdExtension] ArbitraryFileIdManager : Configured database path: /home/jovyan/.local/share/jupyter/file_id_manager.db
+[I 2025-08-15 16:50:19.070 FileIdExtension] ArbitraryFileIdManager : Successfully connected to database file.
+[I 2025-08-15 16:50:19.070 FileIdExtension] ArbitraryFileIdManager : Creating File ID tables and indices with journal_mode = DELETE
+[I 2025-08-15 16:50:19.081 FileIdExtension] Attached event listeners.
+[I 2025-08-15 16:50:19.081 ServerApp] jupyter_server_fileid | extension was successfully loaded.
+[I 2025-08-15 16:50:19.082 ServerApp] jupyter_server_mathjax | extension was successfully loaded.
+[I 2025-08-15 16:50:19.083 ServerApp] jupyter_server_terminals | extension was successfully loaded.
+/opt/conda/lib/python3.11/site-packages/jupyter_events/schema.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string. It has been type coerced, but in a future version of this library, it will fail to validate. Please update schema: https://schema.jupyter.org/jupyter_collaboration/session/v1
+  validate_schema(_schema)
+/opt/conda/lib/python3.11/site-packages/jupyter_events/schema.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string. It has been type coerced, but in a future version of this library, it will fail to validate. Please update schema: https://schema.jupyter.org/jupyter_collaboration/awareness/v1
+  validate_schema(_schema)
+/opt/conda/lib/python3.11/site-packages/jupyter_events/schema.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string. It has been type coerced, but in a future version of this library, it will fail to validate. Please update schema: https://schema.jupyter.org/jupyter_collaboration/fork/v1
+  validate_schema(_schema)
+[I 2025-08-15 16:50:19.089 ServerApp] jupyter_server_ydoc | extension was successfully loaded.
+[I 2025-08-15 16:50:19.229 JupyterHubSingleUser] Updating Hub with activity every 300 seconds
+[I 2025-08-15 16:50:19.229 ServerApp] jupyterhub | extension was successfully loaded.
+[I 2025-08-15 16:50:19.266 LabApp] JupyterLab extension loaded from /opt/conda/lib/python3.11/site-packages/jupyterlab
+[I 2025-08-15 16:50:19.266 LabApp] JupyterLab application directory is /opt/conda/share/jupyter/lab
+[I 2025-08-15 16:50:19.267 LabApp] Extension Manager is 'pypi'.
+[I 2025-08-15 16:50:19.455 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2025-08-15 16:50:19.463 ServerApp] jupyterlab_git | extension was successfully loaded.
+6:50:19.564 ServerApp] Skipped non-installed server(s): bash-language-server, dockerfile-language-server-nodejs, javascript-typescript-langserver, jedi-language-server, julia-language-server, pyright, python-language-server, r-languageserver, sql-6f34ae284fb1452481f9a09ff131ad77
+[I 2025-08-15 16:59:20.841 YDocExtension] Processed 5 Y patches in one minute
+[I 2025-08-15 16:59:20.841 YDocExtension] Connected Y users: 1
+[I 2025-08-15 16:59:32.374 ServerApp] Client disconnected. ID: 6f34ae284fb1452481f9a09ff131ad77
+[I 2025-08-15 16:59:34.345 ServerApp] Client connected. ID: 4a660b7f29a64d0a8b6c486c981e2b9c
+[I 2025-08-15 17:00:20.841 YDocExtension] Processed 5 Y patches in one minute

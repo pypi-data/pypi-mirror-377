@@ -1,0 +1,46 @@
+/**
+ * Styles for the Push button component.
+ */
+
+.git-lock-sign-button.push {
+  background-color: #28a745;
+  border: 1px solid #1e7e34;
+}
+
+.git-lock-sign-button.push:hover:not(:disabled) {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.git-lock-sign-button.push:active:not(:disabled) {
+  background-color: #1e7e34;
+  border-color: #1c7430;
+}
+
+.git-lock-sign-button.push.loading {
+  background-color: #6c757d;
+  border-color: #5a6268;
+  cursor: not-allowed;
+}
+
+.git-lock-sign-button.push:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Icon styles for push button */
+.git-lock-sign-button.push .jp-Icon.jp-GitPushIcon::before {
+  content: '⬆';
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Animation for loading state */
+.git-lock-sign-button.push.loading .jp-Icon.jp-CircularProgressIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,67 @@
+ARG BASE_CONTAINER={{ base }}
+FROM $BASE_CONTAINER
+
+LABEL hash={{ hash }}
+
+# Fix: https://github.com/hadolint/hadolint/wiki/DL4006
+# Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+{% for f in add_files %}ADD {{f.key}} {{f.value}}
+{% endfor %}
+
+{% set indent = joiner(' \\\n    ') %}ENV {% for v in env %}{{ indent() | safe }}{{ v.key }}={% if v.value %}"{{v.value | safe}}"{% endif %}{% endfor %}
+
+USER root
+
+RUN apt-fast update && \
+    apt-fast install -yq --no-install-recommends {% for package in apt %}{{ package.key }} {% endfor %} && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+USER $NB_UID
+
+WORKDIR /tmp
+RUN mamba install --yes \
+    {% for package in conda %}{{ package.key }}{% if package.value %}={{package.value}}{% endif %} {% endfor %} && \
+    pip install {% for package in pip %}{{ package.key }}{% if package.value %}=={{package.value}}{% endif %} {% endfor %} && \
+    jupyter server --generate-config && \
+    mamba clean --all -f -y && \
+    npm cache clean --force && \
+    jupyter lab clean && \
+    find ${CONDA_DIR} -follow -type f -name '*.a' -delete && \
+    find ${CONDA_DIR} -follow -type f -name '*.pyc' -delete && \
+    find ${CONDA_DIR} -follow -type f -name '*.js.map' -delete && \
+    fix-permissions "${CONDA_DIR}" 
+    # fix-permissions "${HOME}"
+
+# Installation scripts
+{% for s in scripts %}{{ s | dockerfileBlock('RUN') | safe }}{% endfor %}
+
+# Fix permissions on /etc/jupyter as root
+USER root
+RUN fix-permissions /etc/jupyter/
+
+
+# Activate Lmod and conda
+ENV PS1="\u $ "
+RUN touch ~/.hushlogin
+
+# Switch back to jovyan to avoid accidental container runs as root
+USER $NB_UID
+
+# Configure container startup
+EXPOSE 8888
+
+# HEALTHCHECK documentation: https://docs.docker.com/engine/reference/builder/#healthcheck
+# This healtcheck works well for `lab`, `notebook`, `nbclassic`, `server`, and `retro` jupyter commands
+# https://github.com/jupyter/docker-stacks/issues/915#issuecomment-1068528799
+HEALTHCHECK --interval=3s --timeout=1s --start-period=3s --retries=3 \
+    CMD /etc/jupyter/docker_healthcheck.py || exit 1
+
+USER root
+RUN rm -rf "${HOME}/.cache" "${HOME}/.yarn"
+USER $NB_UID
+
+# Configure container startup
+CMD ["start-notebook.py"]

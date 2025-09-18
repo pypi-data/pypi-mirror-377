@@ -1,0 +1,374 @@
+name: values
+env:
+  - XDG_CACHE_HOME: /home/$NB_USER/.cache/
+  - PS1: "\\u $ "
+apt:
+  # Docker Stacks base notebook
+    # - Add necessary fonts for matplotlib/seaborn
+    #   See https://github.com/jupyter/docker-stacks/pull/380 for details
+  - fonts-liberation
+    # - `pandoc` is used to convert notebooks to html files
+    #   it's not present in the aarch64 Ubuntu image, so we install it here
+  - pandoc
+    # - `run-one` - a wrapper script that runs no more
+    #   than one unique instance of some command with a unique set of arguments,
+    #   we use `run-one-constantly` to support the `RESTARTABLE` option
+  - run-one
+  # Docker Stacks minimal notebook
+  - curl
+  - git
+  - tzdata
+  - unzip
+    # git-over-ssh
+  - openssh-client
+    # `less` is needed to run help in R
+    # see: https://github.com/jupyter/docker-stacks/issues/1588
+  - less
+    # `nbconvert` dependencies
+    # https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex
+  - texlive-xetex
+  - texlive-fonts-recommended
+  - texlive-plain-generic
+    # Enable clipboard on Linux host systems
+  - xclip
+  # Other tools
+  - emacs
+  - inkscape
+  - libsm6
+  - libxext-dev
+  - libxrender1
+  - lmodern
+  - ffmpeg
+  - ssh
+  - procps
+  - libicu-dev
+  - rsync
+  - screen
+conda:
+  - jupyter_core
+  - notebook: 7.3.2
+  - nbclassic: 1.1.0
+  - jupyter_server: 2.15.0
+  - jupyterlab: 4.3.5 
+  - jupyterhub: 5.1.0
+  - jupyterlab-git: 0.50.1
+  - jupyterlab-latex: 4.1.4
+  - jupyterlab-myst: 2.4.2
+  - jupyter-archive: 3.4.0
+  - jupyter-ai: 2.22.0
+  - jupyter-resource-usage: 1.1.0
+  - jupyterlab-tour: 4.0.1
+  - jupyterlab-lsp: 5.1.0
+  - python-lsp-server: 1.11.0
+  - papermill: 2.6.0
+  - numexpr: 2.10.0
+  - matplotlib-base: 3.9.2
+  - scipy: 1.14.0
+  - feather-format: 0.4.1
+  - nbformat: 5.10.4
+  - sos-notebook: 0.24.4
+  - jupyterlab-sos: 0.10.4
+  - sos-papermill: 0.2.1
+  - sos-python: 0.20.2
+  - nbdime: 4.0.1
+  - ipywidgets: 8.1.5
+  - python-kubernetes: 29.0.0
+  - yarn
+  - nodejs: 18.20.5
+  - copier: 9.3.1
+  - jinja2-time: 0.2.0
+  - typing-extensions: 4.12.2
+  - jinja2: 3.1.5
+  - panel: 1.4.5
+  - texlab: 5.19.0
+  - chktex: 1.7.9
+  - stackview: 0.9.2
+  - configobj: 5.0.8
+  - pydantic: 2.8.2
+  - pyyaml: 6.0.2
+  - awscli: 2.17.44
+  - jupyterlab_templates: 0.5.2
+  - jupysql: 0.10.12
+  - jupyterlab-spreadsheet-editor: 0.7.2
+  - voila: 0.5.7
+pip:
+  - jupyterlab-polus-render: 1.0.1
+  - jhoauthrefresh: 0.3.0
+  - dock8r: 0.1.3
+  - imjoy-jupyterlab-extension: 0.2.6
+  - jupyter-collaboration: 3.1.0
+# Incompatible with collaborative extension 3.0
+#   - jupyterlab-collaborative-chat: 0.3.1
+scripts:
+  - jupyterlab-token-refresher: |
+      jupyter server extension enable jhoauthrefresh
+  - jupyterlab-lmod: |
+      rm -rf /tmp/jupyter-lmod && \
+      git clone https://github.com/cmd-ntrf/jupyter-lmod.git /tmp/jupyter-lmod && \
+      cd /tmp/jupyter-lmod && \
+      git switch jupyterlab4 && \
+      echo "enableImmutableInstalls: false" > .yarnrc.yml && \
+      echo "nodeLinker: node-modules" >> .yarnrc.yml && \
+      pip install .
+  - build-git-lock-sign-extension: |
+      set -e && \
+      cd /opt/app && \
+      echo "📂 Current directory: $(pwd)" && \
+      echo "📋 Directory contents:" && \
+      ls -la && \
+      echo "📦 Installing dependencies..." && \
+      jlpm install && \
+      echo "🔨 Building extension..." && \
+      jlpm build && \
+      echo "📋 Checking if lib directory exists..." && \
+      if [ -d "lib" ]; then \
+        echo "✅ lib directory found:" && \
+        ls -la lib/; \
+      else \
+        echo "❌ lib directory not found!"; \
+        exit 1; \
+      fi && \
+      echo "📋 Checking package.json..." && \
+      cat package.json | grep -A5 -B5 "jupyterlab" && \
+      echo "🔌 Installing extension in develop mode..." && \
+      pip install -e . && \
+      echo "📋 Listing installed extensions..." && \
+      jupyter labextension list
+addfiles:
+  - git-lock-sign-source:
+      destination: /opt/app/
+      permissions: 775
+      source: .
+  - mito-config:
+      destination: /home/jovyan/.mito/user.json
+      permissions: 775
+      source: |
+          {"user_email": "user@example.com", "mitosheet_telemetry": false, "mitosheet_pro": true"}
+  - start-notebook.sh: 
+      destination: /usr/local/bin/
+      permissions: 775
+      source: |
+          #!/bin/bash
+          # Shim to emit warning and call start-notebook.py
+          echo "WARNING: Use start-notebook.py instead"
+          
+          exec /usr/local/bin/start-notebook.py "$@"     
+  - start-notebook.py:
+      destination: /usr/local/bin/
+      permissions: 775
+      source: |
+          #!/usr/bin/env python
+          # Copyright (c) Jupyter Development Team.
+          # Distributed under the terms of the Modified BSD License.
+          import os
+          import shlex
+          import sys
+          
+          # If we are in a JupyterHub, we pass on to `start-singleuser.py` instead so it does the right thing
+          if "JUPYTERHUB_API_TOKEN" in os.environ:
+              print(
+                  "WARNING: using start-singleuser.py instead of start-notebook.py to start a server associated with JupyterHub."
+              )
+              command = ["/usr/local/bin/start-singleuser.py"] + sys.argv[1:]
+              os.execvp(command[0], command)
+          
+          
+          # Entrypoint is start.sh
+          command = []
+          
+          # If we want to survive restarts, launch the command using `run-one-constantly`
+          if os.environ.get("RESTARTABLE") == "yes":
+              command.append("run-one-constantly")
+          
+          # We always launch a jupyter subcommand from this script
+          command.append("jupyter")
+          
+          # Launch the configured subcommand.
+          # Note that this should be a single string, so we don't split it.
+          # We default to `lab`.
+          jupyter_command = os.environ.get("DOCKER_STACKS_JUPYTER_CMD", "lab")
+          command.append(jupyter_command)
+                    
+          # Disable RTC (Real-Time Collaboration) to avoid RTC: prefix issues
+          command.append("--YDocExtension.disable_rtc=True")
+          
+          # Append any optional NOTEBOOK_ARGS we were passed in.
+          # This is supposed to be multiple args passed on to the notebook command,
+          # so we split it correctly with shlex
+          if "NOTEBOOK_ARGS" in os.environ:
+              command += shlex.split(os.environ["NOTEBOOK_ARGS"])
+          
+          # Pass through any other args we were passed on the command line
+          command += sys.argv[1:]
+          
+          # Execute the command!
+          print("Executing: " + " ".join(command))
+          os.execvp(command[0], command)
+  - start-singleuser.sh: 
+      destination: /usr/local/bin/
+      permissions: 775
+      source: |
+          #!/bin/bash
+          # Shim to emit warning and call start-singleuser.py
+          echo "WARNING: Use start-singleuser.py instead"
+          
+          exec /usr/local/bin/start-singleuser.py "$@"
+  - start-singleuser.py:
+      destination: /usr/local/bin/
+      permissions: 775
+      source: |
+          #!/usr/bin/env python
+          # Copyright (c) Jupyter Development Team.
+          # Distributed under the terms of the Modified BSD License.
+          import os
+          import shlex
+          import sys
+          
+          # Entrypoint is start.sh
+          command = ["jupyterhub-singleuser"]
+          
+          # set default ip to 0.0.0.0
+          if "--ip=" not in os.environ.get("NOTEBOOK_ARGS", ""):
+              command.append("--ip=0.0.0.0")
+          
+          # Append any optional NOTEBOOK_ARGS we were passed in.
+          # This is supposed to be multiple args passed on to the notebook command,
+          # so we split it correctly with shlex
+          if "NOTEBOOK_ARGS" in os.environ:
+              command += shlex.split(os.environ["NOTEBOOK_ARGS"])
+          
+          # Pass any other args we have been passed through
+          command += sys.argv[1:]
+          
+          # Execute the command!
+          print("Executing: " + " ".join(command))
+          os.execvp(command[0], command)
+  - jupyter_server_config.py:
+      destination: /etc/jupyter/
+      permissions: 775
+      source: |
+          # Copyright (c) Jupyter Development Team.
+          # Distributed under the terms of the Modified BSD License.
+          # mypy: ignore-errors
+          import os
+          import stat
+          import subprocess
+          from pathlib import Path
+          
+          from jupyter_core.paths import jupyter_data_dir
+          
+          c = get_config()  # noqa: F821
+          c.ServerApp.ip = "0.0.0.0"
+          c.ServerApp.open_browser = False
+          
+          # Disable RTC (Real-Time Collaboration) to avoid RTC: prefix issues
+          c.YDocExtension.disable_rtc = True
+          
+          # Configure frontend to disable RTC handling as well
+          c.ServerApp.tornado_settings = {
+              'page_config_data': {
+                  'enable_rtc_handling': False
+              }
+          }
+          
+          # to output both image/svg+xml and application/pdf plot formats in the notebook file
+          c.InlineBackend.figure_formats = {"png", "jpeg", "svg", "pdf"}
+          
+          # https://github.com/jupyter/notebook/issues/3130
+          c.FileContentsManager.delete_to_trash = False
+          
+          # Generate a self-signed certificate
+          OPENSSL_CONFIG = """\
+          [req]
+          distinguished_name = req_distinguished_name
+          [req_distinguished_name]
+          """
+          if "GEN_CERT" in os.environ:
+              dir_name = Path(jupyter_data_dir())
+              dir_name.mkdir(parents=True, exist_ok=True)
+              pem_file = dir_name / "notebook.pem"
+          
+              # Generate an openssl.cnf file to set the distinguished name
+              cnf_file = Path(os.getenv("CONDA_DIR", "/usr/lib")) / "ssl/openssl.cnf"
+              if not cnf_file.exists():
+                  cnf_file.write_text(OPENSSL_CONFIG)
+          
+              # Generate a certificate if one doesn't exist on a disk
+              subprocess.check_call(
+                  [
+                      "openssl",
+                      "req",
+                      "-new",
+                      "-newkey=rsa:2048",
+                      "-days=365",
+                      "-nodes",
+                      "-x509",
+                      "-subj=/C=XX/ST=XX/L=XX/O=generated/CN=generated",
+                      f"-keyout={pem_file}",
+                      f"-out={pem_file}",
+                  ]
+              )
+              # Restrict access to the file
+              pem_file.chmod(stat.S_IRUSR | stat.S_IWUSR)
+              c.ServerApp.certfile = str(pem_file)
+          
+          # Change default umask for all subprocesses of the Server if set in the environment
+          if "NB_UMASK" in os.environ:
+              os.umask(int(os.environ["NB_UMASK"], 8))
+          
+          # The following part of the config is unique to Notebooks Hub
+          
+          # Simplify folder deletion
+          c.FileContentsManager.always_delete_dir = True
+          
+          # Configure JupyterHub Oauth Refresh service
+          c.JHOauthRefreshConfig.jupyterhub_token_env_var = 'JUPYTERHUB_API_TOKEN'
+          c.JHOauthRefreshConfig.oauth_token_env_var = 'LABSHARE_TOKEN'
+          c.JHOauthRefreshConfig.new_token_url = os.environ.get('TOKEN_SERVICE_URL')
+          c.JHOauthRefreshConfig.renew_period = 1000 * 60 * 1 # 1 minute
+          
+          # Enable git_lock_sign_jlx extension
+          c.ServerApp.jpserver_extensions = {'git_lock_sign_jlx': True}
+  - docker_healthcheck.py:
+      destination: /etc/jupyter/
+      permissions: 775
+      source: |
+          #!/usr/bin/env python3
+          # Copyright (c) Jupyter Development Team.
+          # Distributed under the terms of the Modified BSD License.
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          
+          import requests
+          
+          # Several operations below deliberately don't check for possible errors
+          # As this is a health check, it should succeed or raise an exception on error
+          
+          # Docker runs health checks using an exec
+          # It uses the default user configured when running the image: root for the case of a custom NB_USER or jovyan for the case of the default image user.
+          # We manually change HOME to make `jupyter --runtime-dir` report a correct path
+          # More information: <https://github.com/jupyter/docker-stacks/pull/2074#issuecomment-1879778409>
+          result = subprocess.run(
+              ["jupyter", "--runtime-dir"],
+              check=True,
+              capture_output=True,
+              text=True,
+              env=dict(os.environ) | {"HOME": "/home/" + os.environ["NB_USER"]},
+          )
+          runtime_dir = Path(result.stdout.rstrip())
+          
+          json_file = next(runtime_dir.glob("*server-*.json"))
+          
+          url = json.loads(json_file.read_bytes())["url"]
+          url = url + "api"
+          
+          proxies = {
+              "http": "",
+              "https": "",
+          }
+          
+          r = requests.get(url, proxies=proxies, verify=False)  # request without SSL verification
+          r.raise_for_status()
+          print(r.content)

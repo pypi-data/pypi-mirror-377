@@ -1,0 +1,73 @@
+## iOS性能监测工具开发方案
+
+### 概述
+
+基于pymobiledevice3库（最新版本）开发的iOS性能数据监测工具，通过命令行传入设备UDID和bundleId，定时采集进程的CPU、内存、FPS和GPU使用率，并将结果保存到CSV文件中。
+
+### 环境准备与依赖安装
+
+1. 安装Python 3.7+
+
+2. 安装项目依赖：
+   ```
+   pip install -r requirements.txt
+   ```
+
+3. 确保您的系统满足以下要求：
+   - macOS：安装Xcode命令行工具
+   - Linux：安装usbmuxd (Ubuntu通过`apt install usbmuxd`安装)
+   - Windows：安装iTunes或Apple驱动程序
+
+### 使用方法
+
+```commandline
+# 基本用法
+python main.py --udid <device_udid> --bundle-id <app_bundle_id>
+
+# 完整参数
+python main.py --udid <device_udid> --bundle-id <app_bundle_id> \
+    --interval 1 --output ./perf_data.csv --duration 300
+```
+
+### 功能说明
+
+该工具通过以下核心模块实现性能监测：
+
+1. **设备连接模块**：使用`DVTSecureSocketProxyService`连接iOS设备
+2. **进程监控模块**：使用`DiagnosticsService`获取进程PID
+3. **性能数据采集模块**：使用`ProcessesService`和`DeveloperService`采集性能指标
+4. **数据存储模块**：将数据保存到CSV文件
+5. **命令行接口模块**：使用click库实现参数解析
+
+### 输出CSV格式
+
+| timestamp | udid | bundle_id | pid | cpu_usage | memory_usage | fps | gpu_usage |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2023-10-01 12:00:01 | xxxx | com.example.app | 1234 | 45.2 | 120.5 | 59 | 32.1 |
+| 2023-10-01 12:00:02 | xxxx | com.example.app | 1234 | 43.1 | 121.3 | 60 | 31.5 |
+
+### 注意事项
+
+* iOS设备需要启用开发者模式并信任开发电脑
+* 某些性能指标可能需要应用在前台运行
+* GPU使用率采集可能需要特定设备支持
+* 工具会实时在控制台显示性能数据，并保存到CSV文件
+* 按Ctrl+C可以优雅退出监测过程
+
+### 异常处理
+
+工具内置了以下异常处理机制：
+- 设备断开连接自动重连
+- 应用崩溃或退出时的处理
+- 数据采集失败重试
+- 权限不足时的错误提示
+
+### 支持的平台
+
+该工具支持以下操作系统：
+- macOS
+- Linux
+- Windows
+
+基于pymobiledevice3库最新版本重构，兼容iOS 17及以上版本。
+

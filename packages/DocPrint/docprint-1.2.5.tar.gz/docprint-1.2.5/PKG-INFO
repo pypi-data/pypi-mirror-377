@@ -1,0 +1,179 @@
+Metadata-Version: 2.4
+Name: DocPrint
+Version: 1.2.5
+Summary: Runtime documentation generation tool for live markdown output
+Author-email: Jay Baleine <jay@banes-lab.com>
+License: Copyright 2025 Jay Baleine (https://github.com/Varietyz https://banes-lab.com)
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Project-URL: Homepage, https://github.com/Varietyz/DocPrint
+Project-URL: Repository, https://github.com/Varietyz/DocPrint
+Project-URL: Issues, https://github.com/Varietyz/DocPrint/issues
+Keywords: documentation,markdown,runtime,logging
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Documentation
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: System :: Logging
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: regex>=2025.9.1
+Requires-Dist: xxhash>=3.5.0
+Provides-Extra: performance
+Requires-Dist: ujson>=5.11.0; extra == "performance"
+Requires-Dist: orjson>=3.11.3; extra == "performance"
+Dynamic: license-file
+
+# DocPrint
+
+Runtime documentation generation tool that creates live markdown output with intelligent caching, content deduplication, and optional GitHub integration.
+
+## Installation
+
+```bash
+pip install docprint
+```
+
+**Performance dependencies (recommended):**
+```bash
+pip install docprint[performance]
+```
+
+## Quick Start
+
+```python
+from docprint import docPrint, docFlush, docPrintFile, enableGitCommits
+
+# Basic usage - writes to DOC.PRINT.md
+docPrint('text', 'Status', 'Application started')
+docPrint('table', 'Metrics', [{'cpu': '45%', 'memory': '2.1GB'}])
+
+# Custom output file
+docPrintFile("logs/app.md")
+docPrint('header', 'System Status', 'All services operational')
+
+# Force write cached content
+docFlush()
+```
+
+## GitHub Integration
+
+Automatically sync documentation changes to GitHub:
+
+```python
+import os
+
+# Enable auto-sync (requires personal access token)
+enableGitCommits(True, 
+                token=os.getenv('GITHUB_TOKEN'), 
+                repo="username/repository")
+
+# Custom sync interval (default: 1 minute)
+enableGitCommits(True, 
+                token=token, 
+                repo="user/repo", 
+                interval_minutes=5)
+```
+
+**Setup requirements:**
+- GitHub personal access token with repo permissions
+- Target repository must exist and be accessible
+- Respects API rate limits
+
+## File Management
+
+```python
+# Default output
+docPrint('text', 'Status', 'Running')  # → DOC.PRINT.md
+
+# Custom files
+docPrintFile("reports/daily.md")
+docPrint('text', 'Report', 'Daily metrics')  # → reports/daily.md
+
+# Reset to default
+docPrintFile("")  # → DOC.PRINT.md
+```
+
+Creates directories automatically. Thread-safe operations with atomic file writes.
+
+## Available Formatters
+
+**Basic content:** text, header, table, bullets, code_block
+
+**Structure:** horizontal_rule, blockquote, ordered_list, unordered_list, footnotes, divider
+
+**Layout:** flex_layout, table_layout, grid_layout
+
+**Visual:** badge, html_block, css_block, svg_animation
+
+**Rich content:** alert, collapsible, image, link_collection
+
+See [Formats.md](https://github.com/Varietyz/DocPrint/blob/main/Formats.md) for complete examples. 
+
+## Smart Features
+
+**Content deduplication:** Identical content automatically deduplicated
+
+**Header management:** Duplicate headers get counters (Status, Status (1), Status (2))
+
+**Content updates:** Same headers update existing sections in place
+
+**Auto-flush:** Every 30 seconds or 1000 calls
+
+## Performance
+
+- Hash-based content comparison (xxhash/MD5)
+- Memory-mapped files for large documents
+- Layout content normalization
+- Zero redundant I/O operations
+- Thread-safe concurrent access
+
+## Production Example
+
+```python
+import os
+from docprint import docPrint, docPrintFile, enableGitCommits
+
+# Application setup
+docPrintFile("logs/production.md")
+enableGitCommits(True, 
+                token=os.getenv('GITHUB_TOKEN'), 
+                repo="company/logs")
+
+# Runtime logging
+docPrint('header', 'Application Startup', f'Started at {datetime.now()}')
+
+def process_batch(data):
+    docPrint('text', 'Processing', f'Batch size: {len(data)}')
+    
+    if errors:
+        docPrint('alert', 'Errors', error_list, alert_type='error')
+    
+    # Dashboard layout
+    docPrint('flex_layout', 'System Status', [
+        {'type': 'text', 'header': 'CPU', 'content': f'{cpu}%'},
+        {'type': 'text', 'header': 'Memory', 'content': f'{mem}GB'}
+    ])
+```
+
+## Documentation
+
+- [Reference_Table.md](https://github.com/Varietyz/DocPrint/blob/main/Reference_Table.md) - Function signatures and parameters
+- [Formats.md](https://github.com/Varietyz/DocPrint/blob/main/Formats.md) - Complete formatter documentation with examples
+
+## Thread Safety
+
+All operations are thread-safe with RLock protection for cache operations and atomic file writes.

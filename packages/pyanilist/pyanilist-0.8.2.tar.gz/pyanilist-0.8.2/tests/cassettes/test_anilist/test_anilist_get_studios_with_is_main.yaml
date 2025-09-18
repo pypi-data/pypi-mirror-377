@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: '{"query":"query Media($mediaId: Int!, $sort: [StudioSort], $isMain: Boolean)
+      {\n  Media(id: $mediaId) {\n    studios(sort: $sort, isMain: $isMain) {\n      edges
+      {\n        isMain\n        node {\n          id\n          name\n          isAnimationStudio\n          siteUrl\n          favourites\n        }\n      }\n    }\n  }\n}\n","variables":{"mediaId":99426,"isMain":true}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '378'
+      content-type:
+      - application/json
+      host:
+      - graphql.anilist.co
+      referer:
+      - https://anilist.co
+      user-agent:
+      - pyanilist/0.7.2
+    method: POST
+    uri: https://graphql.anilist.co
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//NI4xC8IwFIT/y83BmEGFbAUFl+JQOhmHYKI+aBPJe3Up+e/SitsHx313
+        M4IXDzujjYFWYJkCZV4whmdk2OsM4tZTgpUyRYWUQ1xyCrDGKCQ/Rli0zfF86bsTFIibRKMXyqlb
+        ff8qk8S+DLB4ibzZOu20TzQQy+aenf6tO20MFB7+k6dCspwwh91+W+ut1lq/AAAA//8DAKcuGbq2
+        AAAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,Accept,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Content-Length,
+        Content-Range
+      Cache-Control:
+      - no-cache, private
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cf-Ray:
+      - 92d4877fde918ef1-BOM
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 08 Apr 2025 20:31:37 GMT
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=7Qkk7379KT3VQjZ7JVjWOQakTl5nc09TK46MKXutaGKF%2FSgmfqkhx7xi5l%2BsEN88VqwvgIs3eQpku36iZc5HfY0VSK1Do0AQDpnVZkIv57bi%2F8qWHuDBYnkPFNSEUGH%2FEVKDFg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - laravel_session=7GChU3nhc1oD7SRvuaRivhxdlhAQ7ZwfNiioE44v; HttpOnly; Path=/;
+        Max-Age=43200; Expires=Wed, 09 Apr 2025 08:31:37 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Limit:
+      - '90'
+      X-Ratelimit-Remaining:
+      - '85'
+      X-Xss-Protection:
+      - 1; mode=block
+      server-timing:
+      - cfL4;desc="?proto=TCP&rtt=40207&min_rtt=40029&rtt_var=15138&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2835&recv_bytes=1244&delivery_rate=72947&cwnd=250&unsent_bytes=0&cid=1aa668b95710e4d1&ts=596&x=0"
+    status:
+      code: 200
+      message: OK
+version: 1

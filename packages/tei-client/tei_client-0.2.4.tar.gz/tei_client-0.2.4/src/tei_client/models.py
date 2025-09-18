@@ -1,0 +1,108 @@
+from pydantic import BaseModel, Field
+from typing import Optional, Literal, Union, NamedTuple, Tuple
+from enum import Enum
+import re
+
+
+class ClassificationTuple(NamedTuple):
+	premise: str
+	hypothesis: str
+
+
+EmbeddingInput = Union[Union[str, list[str]], Union[list[int], list[list[int]]]]
+
+SingleClassificationInput = Union[str, Tuple[str, str], ClassificationTuple]
+ClassificationInput = Union[SingleClassificationInput, list[SingleClassificationInput]]
+
+
+class TruncationDirection(str, Enum):
+	Left = "Left"
+	Right = "Right"
+
+
+class ModelType(str, Enum):
+	Embedding = "embedding"
+	Classifier = "classifier"
+	Reranker = "reranker"
+
+
+class EmbeddingMetadata(BaseModel):
+	pooling: Literal["cls", "mean", "splade", "last_token"]
+
+
+class ClassifierMetadata(BaseModel):
+	id2label: dict[str, str]
+	label2id: dict[str, int]
+
+
+ModelMetadata = Union[EmbeddingMetadata, ClassifierMetadata]
+
+
+def get_model_metadata_prototype(model_type: ModelType) -> type[ModelMetadata]:
+	if model_type == ModelType.Embedding:
+		return EmbeddingMetadata
+	elif model_type == ModelType.Classifier:
+		return ClassifierMetadata
+	elif model_type == ModelType.Reranker:
+		return ClassifierMetadata
+
+
+class Info(BaseModel):
+	version: str
+	sha: Optional[str]
+	docker_label: Optional[str]
+	server_model_id: str = Field(..., alias="model_id")
+	server_model_sha: Optional[str] = Field(None, alias="model_sha")
+	server_model_dtype: str = Field(..., alias="model_dtype")
+	server_model_type: ModelType = Field(..., alias="model_type")
+	server_model_metadata: Optional[ModelMetadata] = Field(None, alias="model_metadata")
+	max_concurrent_requests: Optional[int]
+	max_input_length: Optional[int]
+	max_batch_tokens: Optional[int]
+	max_batch_requests: Optional[int]
+	max_client_batch_size: Optional[int]
+	tokenization_workers: Optional[int]
+
+
+class Token(BaseModel):
+	id: int
+	text: str
+	special: bool
+	start: Optional[int] = None
+	stop: Optional[int] = None
+
+
+class TokenizationResult(BaseModel):
+	tokens: list[Token]
+
+	def get_ids(self) -> list[int]:
+		return [token.id for token in self.tokens]
+
+
+class ClassificationScore(BaseModel):
+	score: float
+	label: str
+
+
+class ClassificationResult(BaseModel):
+	scores: list[ClassificationScore]
+
+
+class RerankScore(BaseModel):
+	score: float
+	index: int
+	text: Optional[str] = None
+
+
+class RerankResult(BaseModel):
+	ranks: list[RerankScore]
+
+
+def _parse_prompt_names(message: str) -> list[str]:
+	if message:
+		available_prompts = re.search(r"Available prompts:\s*\[([^\]]*)\]", message)
+		if available_prompts:
+			available_prompts = available_prompts.group(1).replace('"', "").split(",")
+			available_prompts = [p.strip() for p in available_prompts]
+			return available_prompts
+	return []

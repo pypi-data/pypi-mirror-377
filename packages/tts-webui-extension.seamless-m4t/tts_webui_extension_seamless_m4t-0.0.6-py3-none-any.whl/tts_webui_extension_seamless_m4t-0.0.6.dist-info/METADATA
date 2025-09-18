@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: tts_webui_extension.seamless_m4t
+Version: 0.0.6
+Summary: SeamlessM4T is a multilingual and multimodal translation model supporting text and speech
+Home-page: https://github.com/rsxdalv/tts_webui_extension.seamless_m4t
+Author: rsxdalv
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: transformers>=4.30.0
+Requires-Dist: torchaudio>=2.0.0
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+# Extension adapter for SeamlessM4T
+
+License - the source code within this repository is licensed under the MIT license.
+
+This extension provides a multilingual and multimodal translation model that supports text and speech translation across many languages.
+
+## Features
+
+- Text-to-Speech translation: Translate text from one language to speech in another language
+- Audio-to-Speech translation: Translate speech from one language to speech in another language
+- Support for over 100 languages for text input
+- Support for over 35 languages for speech output
+- High-quality speech synthesis
+
+## Usage
+
+### Text to Speech Translation
+1. Enter your text in the input field
+2. Select the source language of your text
+3. Select the target language for the speech output
+4. Click "Translate Text to Speech" to generate the translated speech
+
+### Audio to Speech Translation
+1. Upload an audio file containing speech
+2. Select the target language for the speech output
+3. Click "Translate Audio to Speech" to generate the translated speech
+
+This extension uses the [SeamlessM4Tv2Model](https://huggingface.co/facebook/seamless-m4t-v2-large) model from HuggingFace.

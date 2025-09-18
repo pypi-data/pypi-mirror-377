@@ -1,0 +1,1 @@
+from .lmvibe import load_plugin

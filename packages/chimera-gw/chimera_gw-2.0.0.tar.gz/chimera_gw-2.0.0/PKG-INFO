@@ -1,0 +1,139 @@
+Metadata-Version: 2.1
+Name: chimera-gw
+Version: 2.0.0
+Summary: Combined Hierarchical Inference Model for Electromagnetic and gRavitational-wave Analysis
+Home-page: https://github.com/CosmoStatGW/CHIMERA
+License: GPL-3.0-or-later
+Author: Nicola Borghi
+Author-email: nicola.borghi6@unibo.it
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: all
+Provides-Extra: docs
+Provides-Extra: mpi
+Provides-Extra: plots
+Requires-Dist: astropy (>=5.2)
+Requires-Dist: cython
+Requires-Dist: emcee
+Requires-Dist: equinox
+Requires-Dist: h5py (>=3.5)
+Requires-Dist: healpy (>=1.14)
+Requires-Dist: interpax
+Requires-Dist: jax (>=0.5)
+Requires-Dist: matplotlib (>=3.4) ; extra == "plots" or extra == "docs" or extra == "all"
+Requires-Dist: mpi4jax[no-build-isolation] ; extra == "mpi" or extra == "all"
+Requires-Dist: mpi4py (>=4.0) ; extra == "mpi" or extra == "all"
+Requires-Dist: myst-nb (>=0.17.0) ; extra == "docs"
+Requires-Dist: myst-parser (>=0.18.1) ; extra == "docs"
+Requires-Dist: nbsphinx (>=0.8.10) ; extra == "docs"
+Requires-Dist: numba (>=0.58)
+Requires-Dist: numpy (>=2.0)
+Requires-Dist: packaging
+Requires-Dist: plum-dispatch
+Requires-Dist: requests (>=2.31.0)
+Requires-Dist: schwimmbad (>=0.3.2) ; extra == "mpi" or extra == "all"
+Requires-Dist: scikit-learn (>=1.0)
+Requires-Dist: scipy (>=1.11)
+Requires-Dist: setuptools
+Requires-Dist: sphinx (>=5.3.0) ; extra == "docs"
+Requires-Dist: sphinx-book-theme (>=1.0) ; extra == "docs"
+Requires-Dist: sphinx-copybutton (>=0.5.1) ; extra == "docs"
+Requires-Dist: wheel
+Project-URL: Documentation, https://chimera-gw.readthedocs.io/latest/
+Project-URL: Repository, https://github.com/CosmoStatGW/CHIMERA
+Description-Content-Type: text/markdown
+
+# CHIMERA
+
+<img src="https://raw.githubusercontent.com/CosmoStatGW/CHIMERA/main/docs/_static/CHIMERA_logoNB2.svg" alt="CHIMERA" width=300px>
+
+
+**CHIMERA** is a hierarchical Bayesian pipeline for standard siren cosmology with gravitational wave data alone or in combination with galaxy catalogs.
+
+The latest version delivers 10-1000× speedup through JAX and GPU acceleration, enabling the analysis of thousands of events for next-generation gravitational wave observatories.
+
+[![GitHub](https://img.shields.io/badge/GitHub-CHIMERA-9e8ed7)](https://github.com/CosmoStatGW/CHIMERA/)
+[![arXiv](https://img.shields.io/badge/arXiv-2106.14894-5185C4)](https://arxiv.org/abs/2106.14894)
+[![arXiv](https://img.shields.io/badge/arXiv-2504.02034-45bbd5)](https://arxiv.org/abs/2504.02034)
+[![Read the Docs](https://readthedocs.org/projects/chimera-gw/badge/?version=latest)](https://chimera-gw.readthedocs.io/en/latest/?badge=latest)
+[![License](https://img.shields.io/badge/license-GPLv3-fb7e21)](https://github.com/CosmoStatGW/CHIMERA/blob/main/LICENSE)
+[![GitLab](https://img.shields.io/github/v/tag/CosmoStatGW/CHIMERA?label=latest-release&color=da644d)](https://github.com/CosmoStatGW/CHIMERA/releases)
+
+## Documentation
+
+The full documentation is hosted at [chimera-gw.readthedocs.io](https://chimera-gw.readthedocs.io)
+
+## Quick start installation
+
+The code can be quikly installed from [Pypi](https://pypi.org/project/chimera-gw/):
+
+    pip install chimera-gw
+
+For more flexibility, clone the source repository into your working folder and install it locally:
+
+    git clone https://github.com/CosmoStatGW/CHIMERA
+    cd CHIMERA/
+    pip install -e .
+
+To test the installation, run the following command:
+
+    python -c "import CHIMERA; print(CHIMERA.__version__)"
+
+These instructions install **CHIMERA** with a CPU-only version of JAX. For GPU support, first install JAX with a GPU backend following the [official installation guide](https://jax.readthedocs.io/en/latest/installation.html)), then proceed with the **CHIMERA** installation.
+
+For HPC systems with GPU nodes, see the [HPC and GPU installation guide](https://chimera-gw.readthedocs.io/en/latest/user_guide/hpc_gpu_installation.html).
+
+
+## Citation
+
+If you find this code useful in your research, please cite the following papers:
+
+- Borghi et al. 2024 ([ADS](https://ui.adsabs.harvard.edu/abs/2024ApJ...964..191B/abstract), [arXiv](https://arxiv.org/abs/2312.05302), [INSPIRE](https://inspirehep.net/literature/2734729))
+- Tagliazucchi et al. 2025 ([ADS](https://ui.adsabs.harvard.edu/abs/2025arXiv250402034T/abstract), [arXiv](https://arxiv.org/abs/2504.02034), [INSPIRE](https://inspirehep.net/literature/2907634)):
+
+
+
+BibTeX from INSPIRE:
+
+    @article{Borghi:2023opd,
+        author = "Borghi, Nicola and Mancarella, Michele and Moresco, Michele and Tagliazucchi, Matteo and Iacovelli, Francesco and Cimatti, Andrea and Maggiore, Michele",
+        title = "{Cosmology and Astrophysics with Standard Sirens and Galaxy Catalogs in View of Future Gravitational Wave Observations}",
+        eprint = "2312.05302",
+        archivePrefix = "arXiv",
+        primaryClass = "astro-ph.CO",
+        doi = "10.3847/1538-4357/ad20eb",
+        journal = "Astrophys. J.",
+        volume = "964",
+        number = "2",
+        pages = "191",
+        year = "2024"
+    }
+
+    @article{Tagliazucchi:2025ofb,
+        author = "Tagliazucchi, Matteo and Moresco, Michele and Borghi, Nicola and Fiebig, Manfred",
+        title = "{Accelerating the Standard Siren Method: Improved Constraints on Modified Gravitational Wave Propagation with Future Data}",
+        eprint = "2504.02034",
+        archivePrefix = "arXiv",
+        primaryClass = "astro-ph.CO",
+        month = "4",
+        year = "2025"
+    }
+
+
+## Contributions
+CHIMERA is actively maintained at the **University of Bologna** by: [Nicola Borghi (nicola.borghi6@unibo.it)](https://orcid.org/0000-0002-2889-8997), [Matteo Tagliazucchi (matteo.tagliazucchi2@unibo.it)](https://orcid.org/0009-0003-8886-3184), and
+[Michele Moresco (michele.moresco@unibo.it)](https://orcid.org/0000-0002-7616-7136).
+
+Michele Mancarella, Francesco Iacovelli and Michele Maggiore contributed to the development of the first version of the code.
+
+The development of CHIMERA has also been supported from the work of Master's thesis students at the University of Bologna (in reverse chronological order):
+
+- *Giulia Cuomo* (2025, [thesis](https://amslaurea.unibo.it/id/eprint/35185/)): incompleteness function and application to GWTC-3 data
+- *Manfred Fiebig* (2025, [thesis](https://amslaurea.unibo.it/id/eprint/34082/)): modified GW propagation function and forecasts for LVK-O5
+- *Niccolò Passaleva* (2024, [thesis](https://amslaurea.unibo.it/id/eprint/30896/)): mass function models and inference with nested sampling
+- *Matteo Schulz* (2024, [thesis](https://amslaurea.unibo.it/id/eprint/27607/)): mass function models and cosmological analysis
+

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cvdnet-pipeline"
+version = "0.1.0"
+description = "A pipeline for performing rapid calibration of 0D cardiovascular models using linear emulators."
+readme = "README.md"
+authors = [
+    { name = "Fay Frost", email = "fay.frost@nottingham.ac.uk" },
+    { name = "Levan Bokeria", email = "levan.bokeria@gmail.com" }
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+requires-python = ">=3.12"
+dependencies = [
+    "pandas",
+    "numpy",
+    "ModularCirc",
+    "pytest",
+    "giessen-data-analysis",
+    "seaborn",
+    "salib"
+]
+
+[project.scripts]
+cvdnet-pipe = "cvdnet_pipeline.run_pipeline:main"
+
+[project.optional-dependencies]
+notebooks = ["ipykernel"]
+dev = ["pre-commit", "black", "flake8", "isort"]
+
+[project.urls]
+"Homepage" = "https://github.com/alan-turing-institute/cvd-net-pipeline"
+"Source Code" = "https://github.com/alan-turing-institute/cvd-net-pipeline"
+"Bug Tracker" = "https://github.com/alan-turing-institute/cvd-net-pipeline/issues"

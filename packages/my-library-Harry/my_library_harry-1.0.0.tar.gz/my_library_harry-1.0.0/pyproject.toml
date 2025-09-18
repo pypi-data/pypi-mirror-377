@@ -1,0 +1,24 @@
+#现代打包设置
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-library-Harry"  # 库的名称（PyPI上必须唯一）
+version = "1.0.0"         # 版本号
+authors = [
+  { name="Harry", email="harry@agilex.ai" }
+]
+description = "A simple Python library for math operations"  # 简短描述
+readme = "README.md"      # 关联说明文档
+requires-python = ">=3.8" # 支持的Python版本
+classifiers = [           # 分类标签（帮助别人找到你的库）
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# 依赖项（如果你的库需要其他库支持）
+dependencies = [
+    # 例如："requests>=2.25.0"
+]

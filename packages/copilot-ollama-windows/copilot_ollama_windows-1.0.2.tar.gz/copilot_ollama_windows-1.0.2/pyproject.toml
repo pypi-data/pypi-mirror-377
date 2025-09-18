@@ -1,0 +1,59 @@
+[project]
+name = "copilot-ollama-windows"
+version = "1.0.2"
+description = "Windows support for copilot-ollama"
+authors = [{name = "Jordan Miller"}, { name = "Bas Steins" }]
+requires-python = ">=3.12"
+readme = "README.md"
+dependencies = [
+    "fastapi>=0.115.14,<0.117.0",
+    "httpx[http2]~=0.28.1",
+    "litellm[proxy]>=1.77.1",
+    "oai2ollama>=1.2.6",
+    "pydantic-settings~=2.10.1",
+    "uvicorn-hmr~=0.0.8.0",
+]
+
+[project.urls]
+repository = "https://github.com/jm6271/copilot-ollama-windows"
+
+[project.scripts]
+copilot-ollama-windows = "copilot_ollama_windows.start:run"
+
+[build-system]
+requires = ["uv_build~=0.7.19"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+packages = [
+    "copilot_ollama_windows"
+]
+
+[tool.m.aliases]
+dev = "uvicorn-hmr oai2ollama:app --port 11434"
+
+[tool.ruff]
+line-length = 320
+
+[tool.ruff.lint]
+extend-select = [
+    "F",    # flake8
+    "I",    # isort
+    "N",    # pep8-naming
+    "W",    # pycodestyle
+    "UP",   # pyupgrade
+    "TRY",  # tryceratops
+    "RUF",  # ruff
+    "FURB", # refurb
+    "C4",   # flake8-comprehensions
+    "ARG",  # flake8-unused-arguments
+    "PIE",  # flake8-pie
+    "PTH",  # flake8-use-pathlib
+    "RSE",  # flake8-raise
+    "SIM",  # flake8-simplify
+    "SLF",  # flake8-self
+]
+
+[dependency-groups]
+dev = ["ruff~=0.12.2"]

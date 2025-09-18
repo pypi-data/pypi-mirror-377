@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: deltric
+Version: 0.1.0
+Summary: A clustering algorithm implementation with sklearn-like API
+Author-email: Your Name <your@email.com>
+License: MIT
+Project-URL: Homepage, https://github.com/TomasJavurek/deltric
+Project-URL: Issues, https://github.com/TomasJavurek/deltric/issues
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: networkx
+Requires-Dist: umap-learn
+Requires-Dist: pandas
+Requires-Dist: statsmodels
+Dynamic: license-file
+
+dt = DelTriC(prune_param=1.497, merge_param=-0.773, dim_reduction='umap', back_proj=True, anomaly_sensitivity=0.9)
+labels = dt.fit_predict(X)

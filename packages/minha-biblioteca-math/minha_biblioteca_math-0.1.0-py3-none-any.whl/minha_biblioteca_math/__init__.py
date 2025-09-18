@@ -1,0 +1,1 @@
+from .funcoes_matematicas import *

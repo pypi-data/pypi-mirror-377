@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>HcoopMeetbot.plugin &#8212; hcoop-meetbot 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="HcoopMeetbot.test" href="../test/index.html" />
+    <link rel="prev" title="HcoopMeetbot.config" href="../config/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-HcoopMeetbot.plugin">
+<span id="hcoopmeetbot-plugin"></span><h1>HcoopMeetbot.plugin<a class="headerlink" href="#module-HcoopMeetbot.plugin" title="Link to this heading">¶</a></h1>
+<p>Implement the HcoopMeetbot plugin in terms of Limnoria functionality.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.handler">
+<span class="sig-prename descclassname"><span class="pre">HcoopMeetbot.plugin.</span></span><span class="sig-name descname"><span class="pre">handler</span></span><a class="headerlink" href="#HcoopMeetbot.plugin.handler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">HcoopMeetbot.plugin.</span></span><span class="sig-name descname"><span class="pre">HcoopMeetbot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">supybot.callbacks.Plugin</span></code></p>
+<p>Helps run IRC meetings.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.doPrivmsg">
+<span class="sig-name descname"><span class="pre">doPrivmsg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.doPrivmsg" title="Link to this definition">¶</a></dt>
+<dd><p>Capture all messages from supybot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.outFilter">
+<span class="sig-name descname"><span class="pre">outFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.outFilter" title="Link to this definition">¶</a></dt>
+<dd><p>Log outgoing messages from supybot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.meetversion">
+<span class="sig-name descname"><span class="pre">meetversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.meetversion" title="Link to this definition">¶</a></dt>
+<dd><p>Get the current plugin version.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.listmeetings">
+<span class="sig-name descname"><span class="pre">listmeetings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.listmeetings" title="Link to this definition">¶</a></dt>
+<dd><p>List all currently-active meetings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.savemeetings">
+<span class="sig-name descname"><span class="pre">savemeetings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.savemeetings" title="Link to this definition">¶</a></dt>
+<dd><p>Save all currently active meetings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.addchair">
+<span class="sig-name descname"><span class="pre">addchair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nick</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.addchair" title="Link to this definition">¶</a></dt>
+<dd><p>Add a nickname as a chair to the meeting in this channel: addchair &lt;nick&gt;.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.deletemeeting">
+<span class="sig-name descname"><span class="pre">deletemeeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.deletemeeting" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a meeting from the cache: deletemeeting &lt;save=true/false&gt;</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.recent">
+<span class="sig-name descname"><span class="pre">recent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.recent" title="Link to this definition">¶</a></dt>
+<dd><p>List recent meetings for admin purposes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.HcoopMeetbot.commands">
+<span class="sig-name descname"><span class="pre">commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HcoopMeetbot.plugin.HcoopMeetbot.commands" title="Link to this definition">¶</a></dt>
+<dd><p>List available commands.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="HcoopMeetbot.plugin.Class">
+<span class="sig-prename descclassname"><span class="pre">HcoopMeetbot.plugin.</span></span><span class="sig-name descname"><span class="pre">Class</span></span><a class="headerlink" href="#HcoopMeetbot.plugin.Class" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hcoop-meetbot</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=hcoop-meetbot&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tests/index.html">tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">HcoopMeetbot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hcoopmeetbotlogic/index.html">hcoopmeetbotlogic</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">HcoopMeetbot</a><ul>
+      <li>Previous: <a href="../config/index.html" title="previous chapter">HcoopMeetbot.config</a></li>
+      <li>Next: <a href="../test/index.html" title="next chapter">HcoopMeetbot.test</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/hcoop-meetbot" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

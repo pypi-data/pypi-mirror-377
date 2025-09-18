@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tests.hcoopmeetbotlogic.test_writer &#8212; hcoop-meetbot 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="tests.hcoopmeetbotlogic.testdata" href="../testdata/index.html" />
+    <link rel="prev" title="tests.hcoopmeetbotlogic.test_state" href="../test_state/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-tests.hcoopmeetbotlogic.test_writer">
+<span id="tests-hcoopmeetbotlogic-test-writer"></span><h1>tests.hcoopmeetbotlogic.test_writer<a class="headerlink" href="#module-tests.hcoopmeetbotlogic.test_writer" title="Link to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.EXPECTED_LOG">
+<span class="sig-prename descclassname"><span class="pre">tests.hcoopmeetbotlogic.test_writer.</span></span><span class="sig-name descname"><span class="pre">EXPECTED_LOG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.EXPECTED_LOG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.EXPECTED_MINUTES">
+<span class="sig-prename descclassname"><span class="pre">tests.hcoopmeetbotlogic.test_writer.</span></span><span class="sig-name descname"><span class="pre">EXPECTED_MINUTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.EXPECTED_MINUTES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TIMESTAMP">
+<span class="sig-prename descclassname"><span class="pre">tests.hcoopmeetbotlogic.test_writer.</span></span><span class="sig-name descname"><span class="pre">TIMESTAMP</span></span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TIMESTAMP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.hcoopmeetbotlogic.test_writer.</span></span><span class="sig-name descname"><span class="pre">TestLogMessage</span></span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.config">
+<span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.message">
+<span class="sig-name descname"><span class="pre">message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.message" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_simple_payload">
+<span class="sig-name descname"><span class="pre">test_simple_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_simple_payload" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_action_payload">
+<span class="sig-name descname"><span class="pre">test_action_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_action_payload" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_topic_payload">
+<span class="sig-name descname"><span class="pre">test_topic_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operand</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_topic_payload" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_command_payload">
+<span class="sig-name descname"><span class="pre">test_command_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operand</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_command_payload" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_highlights">
+<span class="sig-name descname"><span class="pre">test_highlights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_highlights" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_url">
+<span class="sig-name descname"><span class="pre">test_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_url" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_cross_site_scripting">
+<span class="sig-name descname"><span class="pre">test_cross_site_scripting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestLogMessage.test_cross_site_scripting" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestRendering">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.hcoopmeetbotlogic.test_writer.</span></span><span class="sig-name descname"><span class="pre">TestRendering</span></span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestRendering" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestRendering.test_html_rendering">
+<span class="sig-name descname"><span class="pre">test_html_rendering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">derive_locations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestRendering.test_html_rendering" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestAliasMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.hcoopmeetbotlogic.test_writer.</span></span><span class="sig-name descname"><span class="pre">TestAliasMatcher</span></span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestAliasMatcher" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.hcoopmeetbotlogic.test_writer.TestAliasMatcher.test_matches">
+<span class="sig-name descname"><span class="pre">test_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.hcoopmeetbotlogic.test_writer.TestAliasMatcher.test_matches" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">hcoop-meetbot</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=hcoop-meetbot&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../HcoopMeetbot/index.html">HcoopMeetbot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hcoopmeetbotlogic/index.html">hcoopmeetbotlogic</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">tests</a><ul>
+  <li><a href="../index.html">tests.hcoopmeetbotlogic</a><ul>
+      <li>Previous: <a href="../test_state/index.html" title="previous chapter">tests.hcoopmeetbotlogic.test_state</a></li>
+      <li>Next: <a href="../testdata/index.html" title="next chapter">tests.hcoopmeetbotlogic.testdata</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/hcoop-meetbot" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>hcoopmeetbotlogic.cli &#8212; hcoop-meetbot 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="hcoopmeetbotlogic.command" href="../command/index.html" />
+    <link rel="prev" title="hcoopmeetbotlogic" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-hcoopmeetbotlogic.cli">
+<span id="hcoopmeetbotlogic-cli"></span><h1>hcoopmeetbotlogic.cli<a class="headerlink" href="#module-hcoopmeetbotlogic.cli" title="Link to this heading">¶</a></h1>
+<p>CLI for the meetbot tool.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.cli.meetbot">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.cli.</span></span><span class="sig-name descname"><span class="pre">meetbot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.cli.meetbot" title="Link to this definition">¶</a></dt>
+<dd><p>Meetbot command line utilities.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.cli.regenerate">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.cli.</span></span><span class="sig-name descname"><span class="pre">regenerate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.cli.regenerate" title="Link to this definition">¶</a></dt>
+<dd><p>Regenerate formatted output based on a raw log file.</p>
+<p>This parses a raw meeting log and regenerates formatted output into
+the specified output directory.  By default, the output directory is
+the current working directory, but you can adjust that using the
+–output-dir switch.</p>
+<p>The formatted output will be generated based on the rules in the meetbot
+configuration file, which controls the output format, date format, time
+zone, etc.  Configuration for the file prefix is ignored and the new files
+will be generated using the exact same prefix as the raw log file itself.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hcoop-meetbot</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=hcoop-meetbot&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tests/index.html">tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../HcoopMeetbot/index.html">HcoopMeetbot</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">hcoopmeetbotlogic</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">hcoopmeetbotlogic</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">hcoopmeetbotlogic</a></li>
+      <li>Next: <a href="../command/index.html" title="next chapter">hcoopmeetbotlogic.command</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/hcoop-meetbot" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

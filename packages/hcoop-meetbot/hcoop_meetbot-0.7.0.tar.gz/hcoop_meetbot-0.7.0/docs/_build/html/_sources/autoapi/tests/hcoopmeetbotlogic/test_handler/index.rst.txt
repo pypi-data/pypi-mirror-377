@@ -1,0 +1,92 @@
+tests.hcoopmeetbotlogic.test_handler
+====================================
+
+.. py:module:: tests.hcoopmeetbotlogic.test_handler
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: context()
+
+.. py:class:: TestUtilities
+
+   .. py:method:: test_send_reply(logger, context)
+
+
+.. py:class:: TestConfig
+
+   .. py:method:: test_configure_valid(load_config, set_logger, set_config)
+
+
+.. py:class:: TestHandlers
+
+   .. py:method:: logger()
+
+
+   .. py:method:: test_irc_message_no_meeting(get_meeting, add_meeting, is_startmeeting, dispatch, context)
+
+
+   .. py:method:: test_irc_message_with_meeting(get_meeting, add_meeting, is_startmeeting, dispatch, context)
+
+
+   .. py:method:: test_irc_message_start_meeting(get_meeting, add_meeting, is_startmeeting, dispatch, context)
+
+
+   .. py:method:: test_outbound_message_no_meeting(get_meeting, context)
+
+
+   .. py:method:: test_outbound_message_with_meeting(get_meeting, context)
+
+
+.. py:class:: TestCommands
+
+   .. py:method:: logger()
+
+
+   .. py:method:: test_meetversion(send_reply, context)
+
+
+   .. py:method:: test_listmeetings_no_meetings(get_meetings, send_reply, context)
+
+
+   .. py:method:: test_listmeetings_with_meetings(get_meetings, send_reply, context)
+
+
+   .. py:method:: test_savemeetings_no_meetings(get_meetings, send_reply, context)
+
+
+   .. py:method:: test_savemeetings_with_meeting(get_meetings, write_meeting, config, send_reply, context)
+
+
+   .. py:method:: test_savemeetings_with_meetings(get_meetings, write_meeting, config, send_reply, context)
+
+
+   .. py:method:: test_addchair_not_found(get_meeting, send_reply, context)
+
+
+   .. py:method:: test_addchair_found(get_meeting, send_reply, context)
+
+
+   .. py:method:: test_deletemeeting_not_found(get_meeting, deactivate_meeting, write_meeting, send_reply, context)
+
+
+   .. py:method:: test_deletemeeting_found_no_save(get_meeting, deactivate_meeting, write_meeting, send_reply, context)
+
+
+   .. py:method:: test_deletemeeting_found_save(get_meeting, deactivate_meeting, write_meeting, config, send_reply, context)
+
+
+   .. py:method:: test_recent_no_meetings(get_meetings, send_reply, context)
+
+
+   .. py:method:: test_recent_with_meetings(get_meetings, send_reply, context)
+
+
+   .. py:method:: test_commands(list_commands, send_reply, context)
+
+

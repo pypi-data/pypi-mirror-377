@@ -1,0 +1,150 @@
+hcoopmeetbotlogic.interface
+===========================
+
+.. py:module:: hcoopmeetbotlogic.interface
+
+.. autoapi-nested-parse::
+
+   Object interface used by plugin to access code in the local package.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: Context
+
+   Context for a message or command, including callbacks that can be invoked.
+
+   .. attribute:: get_topic
+
+      Get the topic for the current context
+
+      :type: Callable[[], str]
+
+   .. attribute:: set_topic
+
+      Set a topic in the correct context
+
+      :type: Callable[[str], None]
+
+   .. attribute:: send_reply
+
+      Send a reply in the current context
+
+      :type: Callable[[str], None]
+
+   .. attribute:: send_message
+
+      Send a message to the server immediately
+
+      :type: Callable[[str], None]
+
+
+   .. py:attribute:: get_topic
+      :type:  collections.abc.Callable[[], str]
+
+
+   .. py:attribute:: set_topic
+      :type:  collections.abc.Callable[[str], None]
+
+
+   .. py:attribute:: send_reply
+      :type:  collections.abc.Callable[[str], None]
+
+
+   .. py:attribute:: send_message
+      :type:  collections.abc.Callable[[str], None]
+
+
+.. py:class:: Message
+
+   A message to be processed.
+
+   .. attribute:: id
+
+      Identifier for the message
+
+      :type: str
+
+   .. attribute:: timestamp
+
+      Time the message was received
+
+      :type: str
+
+   .. attribute:: nick
+
+      Nickname of the IRC user that sent the message
+
+      :type: str
+
+   .. attribute:: channel
+
+      Channel the message was sent to
+
+      :type: str
+
+   .. attribute:: network
+
+      Network the message was sent on
+
+      :type: str
+
+   .. attribute:: payload
+
+      Message payload
+
+      :type: str
+
+   .. attribute:: topic
+
+      Current topic of the channel
+
+      :type: Optional[str]
+
+   .. attribute:: channel_nicks
+
+      List of nicknames currently in the channel
+
+      :type: Optional[Iterable[str]]
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: timestamp
+      :type:  datetime.datetime
+
+
+   .. py:attribute:: nick
+      :type:  str
+
+
+   .. py:attribute:: channel
+      :type:  str
+
+
+   .. py:attribute:: network
+      :type:  str
+
+
+   .. py:attribute:: payload
+      :type:  str
+
+
+   .. py:attribute:: topic
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: channel_nicks
+      :type:  collections.abc.Iterable[str] | None
+      :value: None
+
+
+

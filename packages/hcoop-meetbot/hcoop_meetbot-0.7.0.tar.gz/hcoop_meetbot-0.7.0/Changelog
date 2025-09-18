@@ -1,0 +1,164 @@
+Version 0.7.0     17 Sep 2025
+
+	* Remove `__all__ = []` from __init__.py.
+	* Add a new 'suite -f' command to run faster subset of the suite.
+	* Upgrade to poetry-dynamic-versioning v1.9.1 for minor fixes.
+	* Version profiles_settings.xml to control PyCharm inspection profile.
+	* Migrate to Read the Docs integration via the new GitHub App.
+	* Adjust GHA build process to allow builds for stacked PRs.
+	* Add a new `run clean` target to clean up generated data.
+	* Move unit tests from `tests` into `src/tests/hcoopmeetbotlogic`.
+	* Replace black, isort, and pylint with the Ruff formatter and linter.
+	* Remove importlib-metadata dependency in favor of standard library.
+	* Fix bug with `meetversion` introduced in or around v0.6.2.
+	* Update all dependencies and outdated constraints.
+
+Version 0.6.15     27 Jan 2025
+
+	* Pull in latest version of run-script-framework.
+	* Upgrade to poetry-dynamic-versioning v1.5.2 for minor fixes.
+	* Add .python-version in preferred order to support pyenv.
+	* Use conftest.py to explicitly set the time zone for all unit tests.
+	* Add Sphinx configuration path to .readthedocs.yml.
+	* Ignore commands containing numbers or starting with channel (by @achow101).
+
+Version 0.6.14     08 Jan 2025
+
+	* Migrate to Poetry v2 and project-managed Poetry plugins.
+	* Move configuration into pyproject.toml for pytest, mypy & coverage.
+	* Upgrade to gha-shared-workflows@v8 for Poetry v2 support.
+	* Address some Genshi warnings exposed by Pytest warnings->errors config.
+	* Update all dependencies and outdated constraints.
+
+Version 0.6.13     02 Jan 2025
+
+	* Add GitHub security policy in SECURITY.md.
+	* Pull in latest version of run-script-framework.
+	* Update dependencies to address Dependabot warnings.
+	* Add a default .pytest.ini file based on new cookiecutter template.
+	* Change the default branch in GitHub from master to main.
+
+Version 0.6.12     31 Dec 2024
+
+	* Fix load_config() to accept file or directory (by @achow101).
+	* Upgrade to gha-shared-workflows@v7 with publish improvements.
+
+Version 0.6.11     15 Oct 2024
+
+	* Pull in latest updates from run-script-framework.
+	* Simplify GHA integration with coveralls.io.
+	* Update transitive dependencies to address Dependabot warnings.
+	* Add support for Python v3.13 and drop support for v3.9.
+	* Upgrade to Poetry v1.8.4 for official Python 3.13 support.
+	* Bump readthedocs build to python 3.10 and ubuntu-24.04.
+	* Add importlib-metadata to [tool.poetry.extras] in pyproject.toml.
+
+Version 0.6.10     26 Feb 2024
+
+	* Upgrade to Poetry v1.8.0 and make related adjustments.
+	* Disable Python keyring via poetry.toml.
+	* Update Poetry install instructions in DEVELOPER.md.
+	* Pull in latest version of run-script-framework.
+	* Upgrade to gha-shared-workflows@v4 with new Poetry setup.
+	* Add support for 'run outdated' and update dependencies.
+
+Version 0.6.9     17 Jan 2024
+
+	* Remove GitHub Actions workflow schedule, which broke release process.
+
+Version 0.6.8     17 Jan 2024
+
+	* Update jinja2 to address CVE-2024-22195 from Dependabot.
+
+Version 0.6.7     05 Nov 2023
+
+	* Update urllib3 to address Dependabot warnings.
+	* Upgrade to Poetry v1.7.0 for official Python 3.12 support.
+
+Version 0.6.6     11 Oct 2023
+
+	* Upgrade major dependencies.
+	* Upgrade build process to Poetry v1.6.1.
+	* Add support for Python v3.12 and drop support for v3.8.
+
+Version 0.6.5     unreleased
+
+	* Fix checktabs to be safe for file named '-'.
+	* Upgrade all dependencies to the latest major version.
+	* Drop support for Python 3.7; many dependencies are now doing the same.
+	* Pull Sphinx fields from metadata rather than parsing pyproject.toml.
+
+Version 0.6.4     30 Dec 2022
+
+	* Convert to latest readthedocs.io standard.
+	* Add NOTICE file to sdist, alongside existing LICENSE file.
+	* Automate the existing manual release process using GitHub Actions.
+	* Adjust GHA build to run MacOS and Windows tests only on latest Python.
+
+Version 0.6.3     24 Oct 2022
+
+	* Refactor the run script and pre-commit hooks to reduce duplication.
+	* Rework the GitHub Actions build process to pull out shared code.
+
+Version 0.6.2     05 Sep 2022
+
+	* Upgrade to Poetry v1.2.0 and make related build process changes.
+	* Upgrade to Pylint v2.15.0 and address warnings.
+	* Fix Pylint's configured class-attribute-naming-style to be snake_case.
+	* Adjust Black configuration to target Python 3.7, 3.8, 3.9, and 3.10.
+	* Add dependency caching to GitHub Actions workflow.
+	* Fix the GitHub Actions matrix build to properly target MacOS.
+
+Version 0.6.1     09 Jun 2022
+
+	* Modernize usage of attrs and cattrs.
+
+Version 0.6.0     05 Jun 2022
+
+	* Better handle nicks/aliases containing special characters.
+	* Add a suggestion at meeting start for users to identify themselves.
+	* Generate a raw meeting log in JSON format along with HTML logs.
+	* Implement a command-line tool "meetbot" and a "regenerate" utility.
+
+Version 0.5.2     13 May 2022
+
+	* Fix a bug when an IRC nick or alias includes regex special characters.
+
+Version 0.5.1     30 Apr 2022
+
+	* Adjust the pyproject.toml include directive to limit what goes into wheel.
+
+Version 0.5.0     05 Mar 2022
+
+	* Remove the Safety scanner from the pre-commit hooks and GitHub action.
+	* Provide deep links for actions in meeting minutes (closes: #14).
+	* Adjust rendering of attendees in minutes (closes: #15).
+
+Version 0.4.1     15 Nov 2021
+
+	* Adjust dependencies and build process to support Python 3.10.
+
+Version 0.4.0     14 Jul 2021
+
+	* Handle case where channel is not found.
+	* Add config option controlling whether to set channel topic.
+
+Version 0.3.1     17 Apr 2021
+
+	* Minor fixes to documentation at PyPI and readthedocs.io.
+
+Version 0.3.0     17 Apr 2021
+
+	* Enhance #link command so it can contain text other than a URL.
+
+Version 0.2.0     20 Mar 2021
+
+	* Add new #here command for use with attendance.
+
+Version 0.1.1     17 Mar 2021
+
+	* Fix test cases where actual version leaked into expected results.
+
+Version 0.1.0     17 Mar 2021
+
+	* Initial public release.

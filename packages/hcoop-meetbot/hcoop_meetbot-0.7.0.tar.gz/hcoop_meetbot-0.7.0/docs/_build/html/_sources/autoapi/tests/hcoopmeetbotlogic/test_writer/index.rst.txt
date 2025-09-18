@@ -1,0 +1,62 @@
+tests.hcoopmeetbotlogic.test_writer
+===================================
+
+.. py:module:: tests.hcoopmeetbotlogic.test_writer
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: EXPECTED_LOG
+   :value: ''
+
+
+.. py:data:: EXPECTED_MINUTES
+   :value: ''
+
+
+.. py:data:: TIMESTAMP
+
+.. py:class:: TestLogMessage
+
+   .. py:method:: config()
+
+
+   .. py:method:: message()
+
+
+   .. py:method:: test_simple_payload(config, message)
+
+
+   .. py:method:: test_action_payload(config, message)
+
+
+   .. py:method:: test_topic_payload(config, message, payload, operation, operand)
+
+
+   .. py:method:: test_command_payload(config, message, payload, operation, operand)
+
+
+   .. py:method:: test_highlights(config, message)
+
+
+   .. py:method:: test_url(config, message)
+
+
+   .. py:method:: test_cross_site_scripting(config, message, payload, expected)
+
+
+.. py:class:: TestRendering
+
+   .. py:method:: test_html_rendering(derive_locations)
+
+
+.. py:class:: TestAliasMatcher
+
+   .. py:method:: test_matches(identifier)
+
+

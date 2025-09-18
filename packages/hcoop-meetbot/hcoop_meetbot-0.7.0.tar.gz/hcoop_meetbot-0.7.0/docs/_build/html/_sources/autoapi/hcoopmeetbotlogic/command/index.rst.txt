@@ -1,0 +1,170 @@
+hcoopmeetbotlogic.command
+=========================
+
+.. py:module:: hcoopmeetbotlogic.command
+
+.. autoapi-nested-parse::
+
+   Implementation of meeting commands.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: CommandDispatcher
+
+   Identify and dispatch meeting commands.
+
+   This is maintained as a class rather than as a set of functions because having
+   a class makes certain operations easier - for example, the list_commands() method.
+
+
+   .. py:method:: list_commands() -> list[str]
+
+
+   .. py:method:: do_startmeeting(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Start a meeting
+
+
+
+   .. py:method:: do_endmeeting(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      End an active meeting and save to disk.
+
+
+
+   .. py:method:: do_save(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Save the meeting to disk in its current state.
+
+
+
+   .. py:method:: do_topic(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Set a new topic in the channel.
+
+
+
+   .. py:method:: do_chair(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Add a chair to the meeting.
+
+
+
+   .. py:method:: do_unchair(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Remove a chair from the meeting.
+
+
+
+   .. py:method:: do_here(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Document attendance and optionally associate a nick with an alias, for use with actions.
+
+
+
+   .. py:method:: do_nick(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Make the bot aware of a nick which hasn't said anything, for use with actions.
+
+
+
+   .. py:method:: do_undo(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Remove the most recent item from the minutes.
+
+
+
+   .. py:method:: do_meetingname(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Set the meeting name, which defaults to the channel name.
+
+
+
+   .. py:method:: do_motion(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Open a motion.
+
+
+
+   .. py:method:: do_vote(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Record a vote.
+
+
+
+   .. py:method:: do_close(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Close a motion.
+
+
+
+   .. py:method:: do_accepted(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Indicate that a motion has been accepted.
+
+
+
+   .. py:method:: do_failed(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Indicate that a motion has failed.
+
+
+
+   .. py:method:: do_inconclusive(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Indicate that a motion was inconclusive.
+
+
+
+   .. py:method:: do_action(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Add an action item to the minutes.
+
+
+
+   .. py:method:: do_info(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Add an informational item to the minutes.
+
+
+
+   .. py:method:: do_idea(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Add an idea item to the minutes.
+
+
+
+   .. py:method:: do_help(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Add a help item to the minutes.
+
+
+
+   .. py:method:: do_link(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, operation: str, operand: str, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+      Add a link to the minutes.
+
+
+
+.. py:function:: list_commands() -> list[str]
+
+   List available commands.
+
+
+.. py:function:: dispatch(meeting: hcoopmeetbotlogic.meeting.Meeting, context: hcoopmeetbotlogic.interface.Context, message: hcoopmeetbotlogic.meeting.TrackedMessage) -> None
+
+   Dispatch any command contained in the message to the dispatcher method with the matching name.
+
+
+.. py:function:: is_startmeeting(message: hcoopmeetbotlogic.interface.Message) -> bool
+
+   Whether the message contains a start-of-meeting indicator.
+
+

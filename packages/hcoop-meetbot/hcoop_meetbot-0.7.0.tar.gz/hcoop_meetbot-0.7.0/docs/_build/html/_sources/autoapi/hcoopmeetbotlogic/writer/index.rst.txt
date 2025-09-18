@@ -1,0 +1,36 @@
+hcoopmeetbotlogic.writer
+========================
+
+.. py:module:: hcoopmeetbotlogic.writer
+
+.. autoapi-nested-parse::
+
+   Writes meeting log and minutes to disk.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: write_raw_log(config: hcoopmeetbotlogic.config.Config, locations: hcoopmeetbotlogic.location.Locations, meeting: hcoopmeetbotlogic.meeting.Meeting) -> None
+
+   Write the raw meeting log to disk in JSON format.
+
+
+.. py:function:: write_formatted_log(config: hcoopmeetbotlogic.config.Config, locations: hcoopmeetbotlogic.location.Locations, meeting: hcoopmeetbotlogic.meeting.Meeting) -> None
+
+   Write the formatted meeting log to disk.
+
+
+.. py:function:: write_formatted_minutes(config: hcoopmeetbotlogic.config.Config, locations: hcoopmeetbotlogic.location.Locations, meeting: hcoopmeetbotlogic.meeting.Meeting) -> None
+
+   Write the formatted meeting minutes to disk.
+
+
+.. py:function:: write_meeting(config: hcoopmeetbotlogic.config.Config, meeting: hcoopmeetbotlogic.meeting.Meeting) -> hcoopmeetbotlogic.location.Locations
+
+   Write meeting files to disk, returning the file locations.
+
+

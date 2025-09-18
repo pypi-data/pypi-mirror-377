@@ -1,0 +1,190 @@
+hcoopmeetbotlogic.config
+========================
+
+.. py:module:: hcoopmeetbotlogic.config
+
+.. autoapi-nested-parse::
+
+   Plugin configuration and parsing.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: CONF_FILE
+   :value: 'HcoopMeetbot.conf'
+
+
+.. py:data:: CONF_SECTION
+   :value: 'HcoopMeetbot'
+
+
+.. py:data:: LOG_DIR_KEY
+   :value: 'logDir'
+
+
+.. py:data:: URL_PREFIX_KEY
+   :value: 'urlPrefix'
+
+
+.. py:data:: PATTERN_KEY
+   :value: 'pattern'
+
+
+.. py:data:: TIMEZONE_KEY
+   :value: 'timezone'
+
+
+.. py:data:: USE_CHANNEL_TOPIC_KEY
+   :value: 'useChannelTopic'
+
+
+.. py:data:: OUTPUT_FORMAT_KEY
+   :value: 'outputFormat'
+
+
+.. py:data:: LOG_DIR_DEFAULT
+   :value: ''
+
+
+.. py:data:: URL_PREFIX_DEFAULT
+   :value: '/'
+
+
+.. py:data:: PATTERN_DEFAULT
+   :value: '%Y/{name}.%Y%m%d.%H%M'
+
+
+.. py:data:: TIMEZONE_DEFAULT
+   :value: 'UTC'
+
+
+.. py:data:: USE_CHANNEL_TOPIC_DEFAULT
+   :value: False
+
+
+.. py:class:: OutputFormat
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Legal output formats.
+
+
+   .. py:attribute:: HTML
+      :value: 'HTML'
+
+
+
+.. py:data:: OUTPUT_FORMAT_DEFAULT
+
+.. py:class:: Config
+
+   Configuration for the plugin.
+
+   .. attribute:: conf_file
+
+      Path to the file where configuration was sourced from
+
+      :type: Optional[str]
+
+   .. attribute:: log_dir
+
+      Absolute path where meeting logs will be written
+
+      :type: str
+
+   .. attribute:: url_prefix
+
+      URL prefix to place on generated links to logfiles
+
+      :type: str
+
+   .. attribute:: pattern
+
+      Pattern for files generated in logFileDir
+
+      :type: str
+
+   .. attribute:: timezone
+
+      Timezone string, any value valid for pytz
+
+      :type: str
+
+   .. attribute:: use_channel_topic
+
+      Whether the bot should attempt to use the channel topic
+
+      :type: bool
+
+   .. attribute:: output_format
+
+      The output format to use
+
+      :type: OutputFormat
+
+
+   .. py:attribute:: conf_file
+      :type:  str | None
+
+
+   .. py:attribute:: log_dir
+      :type:  str
+      :value: ''
+
+
+
+   .. py:attribute:: url_prefix
+      :type:  str
+      :value: '/'
+
+
+
+   .. py:attribute:: pattern
+      :type:  str
+      :value: '%Y/{name}.%Y%m%d.%H%M'
+
+
+
+   .. py:attribute:: timezone
+      :type:  str
+      :value: 'UTC'
+
+
+
+   .. py:attribute:: use_channel_topic
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: output_format
+      :type:  OutputFormat
+
+
+.. py:function:: load_config(logger: logging.Logger | None, conf_path: str) -> Config
+
+   Load configuration from disk.
+
+   If conf_path is a directory, then HcoopMeetbot.conf will be loaded from
+   that directory.  If conf_path is a file, then that file will be loaded
+   instead.  If the entire file doesn't exist, defaults will be used for
+   all fields.
+
+   The configuration on disk may contain any or all of the configuration fields.
+   A default (fallback) value will be used for any field that does not exist.
+
+   :param logger: Python logger instance that should be used during processing
+   :type logger: Logger
+   :param conf_path: Limnoria bot config path to load configuration from, either a file or a directory
+   :type conf_path: str
+
+

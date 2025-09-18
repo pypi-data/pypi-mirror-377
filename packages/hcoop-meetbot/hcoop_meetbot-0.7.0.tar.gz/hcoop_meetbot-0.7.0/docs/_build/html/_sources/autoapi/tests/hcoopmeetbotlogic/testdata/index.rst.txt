@@ -1,0 +1,35 @@
+tests.hcoopmeetbotlogic.testdata
+================================
+
+.. py:module:: tests.hcoopmeetbotlogic.testdata
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: START_TIME
+
+.. py:function:: contents(path: str) -> str
+
+   Get contents of a file for comparison.
+
+
+.. py:function:: time(seconds: int) -> datetime.datetime
+
+   Generate a timestamp relative to START_TIME
+
+
+.. py:function:: message(identifier: int, nick: str, payload: str, seconds: int) -> hcoopmeetbotlogic.interface.Message
+
+   Generate a mocked message with some values
+
+
+.. py:function:: sample_meeting() -> hcoopmeetbotlogic.meeting.Meeting
+
+   Generate a semi-realistic meeting that can be used for unit tests
+
+

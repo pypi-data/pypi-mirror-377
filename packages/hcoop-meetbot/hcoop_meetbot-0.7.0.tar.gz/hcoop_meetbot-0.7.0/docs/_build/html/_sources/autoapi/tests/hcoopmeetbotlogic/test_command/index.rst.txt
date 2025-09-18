@@ -1,0 +1,214 @@
+tests.hcoopmeetbotlogic.test_command
+====================================
+
+.. py:module:: tests.hcoopmeetbotlogic.test_command
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: run_dispatch(payload, operation, operand, method)
+
+.. py:class:: TestFunctions
+
+   .. py:method:: test_list_commands()
+
+
+   .. py:method:: test_startmeeting(message, expected)
+
+
+   .. py:method:: test_dispatch_valid_link(dispatcher, protocol)
+
+
+   .. py:method:: test_dispatch_invalid_link(dispatcher, protocol)
+
+
+   .. py:method:: test_dispatch_valid_command(dispatcher)
+
+
+   .. py:method:: test_dispatch_invalid_command(_getattr, _hasattr)
+
+
+   .. py:method:: test_dispatch_non_commands(_getattr, _hasattr)
+
+
+   .. py:method:: test_dispatch_command_variations(dispatcher)
+
+
+.. py:class:: TestCommandDispatcher
+
+   .. py:method:: dispatcher()
+
+
+   .. py:method:: meeting()
+
+
+   .. py:method:: context()
+
+
+   .. py:method:: message()
+
+
+   .. py:method:: test_startmeeting_as_chair(config, formatdate, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_startmeeting_as_chair_topic_disabled(config, formatdate, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_startmeeting_as_chair_duplicated(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_startmeeting_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_endmeeting_as_chair(write_meeting, config, now, formatdate, deactivate_meeting, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_endmeeting_as_not_chair(write_meeting, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_save_as_chair(write_meeting, config, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_save_as_not_chair(write_meeting, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_topic_as_chair_empty(config, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_topic_as_chair_not_empty(config, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_topic_as_chair_topic_disabled(config, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_topic_as_not_chair(config, dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_chair_as_chair_empty(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_chair_as_chair_single(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_chair_as_chair_multiple(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_chair_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_unchair_as_chair_empty(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_unchair_as_chair_single(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_unchair_as_chair_multiple(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_unchair_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_here_no_alias(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_here_with_alias(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_nick_empty(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_nick_single(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_nick_multiple(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_undo_as_chair_no_events(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_undo_as_chair_with_events(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_undo_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_meetingname_as_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_meetingname_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_motion_as_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_motion_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_vote_in_favor(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_vote_against(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_vote_not_in_progress(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_not_in_progress(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_no_votes(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_accepted(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_accepted_unanimous(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_failed(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_close_inconclusive(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_accepted_as_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_accepted_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_failed_as_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_failed_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_inconclusive_as_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_inconclusive_as_not_chair(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_action(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_info(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_idea(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_help(dispatcher, meeting, context, message)
+
+
+   .. py:method:: test_link(dispatcher, meeting, context, message)
+
+

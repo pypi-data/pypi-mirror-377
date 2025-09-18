@@ -1,0 +1,75 @@
+hcoopmeetbotlogic.location
+==========================
+
+.. py:module:: hcoopmeetbotlogic.location
+
+.. autoapi-nested-parse::
+
+   Location logic.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: RAW_LOG_EXTENSION
+   :value: '.log.json'
+
+
+.. py:data:: HTML_LOG_EXTENSION
+   :value: '.log.html'
+
+
+.. py:data:: HTML_MINUTES_EXTENSION
+   :value: '.html'
+
+
+.. py:class:: Location
+
+   Path and URL for some persisted data.
+
+
+   .. py:attribute:: path
+      :type:  str
+
+
+   .. py:attribute:: url
+      :type:  str
+
+
+.. py:class:: Locations
+
+   Locations where meeting results were written.
+
+
+   .. py:attribute:: raw_log
+      :type:  Location
+
+
+   .. py:attribute:: formatted_log
+      :type:  Location
+
+
+   .. py:attribute:: formatted_minutes
+      :type:  Location
+
+
+.. py:function:: derive_prefix(raw_log_path: str) -> str
+
+   Derive the prefix associated with a raw log path, for use when regenerating output.
+
+
+.. py:function:: derive_locations(config: hcoopmeetbotlogic.config.Config, meeting: hcoopmeetbotlogic.meeting.Meeting, prefix: str | None = None, output_dir: str | None = None) -> Locations
+
+   Derive the locations where meeting files will be written.
+
+   Use prefix and output_dir to override the file prefix and output log directory
+   that would normally be generated based on configuration.
+
+

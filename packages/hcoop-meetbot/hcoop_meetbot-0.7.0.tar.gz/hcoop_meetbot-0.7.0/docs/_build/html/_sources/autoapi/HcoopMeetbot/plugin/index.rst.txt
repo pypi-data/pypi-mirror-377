@@ -1,0 +1,84 @@
+HcoopMeetbot.plugin
+===================
+
+.. py:module:: HcoopMeetbot.plugin
+
+.. autoapi-nested-parse::
+
+   Implement the HcoopMeetbot plugin in terms of Limnoria functionality.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: handler
+
+.. py:class:: HcoopMeetbot(irc)
+
+   Bases: :py:obj:`supybot.callbacks.Plugin`
+
+
+   Helps run IRC meetings.
+
+
+   .. py:method:: doPrivmsg(irc, msg)
+
+      Capture all messages from supybot.
+
+
+
+   .. py:method:: outFilter(irc, msg)
+
+      Log outgoing messages from supybot.
+
+
+
+   .. py:method:: meetversion(irc, msg, args)
+
+      Get the current plugin version.
+
+
+
+   .. py:method:: listmeetings(irc, msg, args)
+
+      List all currently-active meetings.
+
+
+
+   .. py:method:: savemeetings(irc, msg, args)
+
+      Save all currently active meetings
+
+
+
+   .. py:method:: addchair(irc, msg, args, channel, nick)
+
+      Add a nickname as a chair to the meeting in this channel: addchair <nick>.
+
+
+
+   .. py:method:: deletemeeting(irc, msg, args, channel, save)
+
+      Delete a meeting from the cache: deletemeeting <save=true/false>
+
+
+
+   .. py:method:: recent(irc, msg, args)
+
+      List recent meetings for admin purposes.
+
+
+
+   .. py:method:: commands(irc, msg, args)
+
+      List available commands.
+
+
+
+.. py:data:: Class
+

@@ -1,0 +1,114 @@
+hcoopmeetbotlogic.handler
+=========================
+
+.. py:module:: hcoopmeetbotlogic.handler
+
+.. autoapi-nested-parse::
+
+   IRC request and message handlers.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: configure(logger: logging.Logger, conf_path: str) -> None
+
+   Configure the plugin.
+
+   :param logger: Python logger instance that should be used during processing
+   :type logger: Logger
+   :param conf_path: Limnoria bot config path to load configuration from, either a file or a directory
+   :type conf_path: str
+
+
+.. py:function:: irc_message(context: hcoopmeetbotlogic.interface.Context, message: hcoopmeetbotlogic.interface.Message) -> None
+
+   Handle an IRC message from the bot.
+
+   :param context: Context for the message
+   :type context: Context
+   :param message: Message to handle
+   :type message: Message
+
+
+.. py:function:: outbound_message(context: hcoopmeetbotlogic.interface.Context, message: hcoopmeetbotlogic.interface.Message) -> None
+
+   Handle an outbound message from the bot.
+
+   :param context: Context for the message
+   :type context: Context
+   :param message: Message to handle
+   :type message: Message
+
+
+.. py:function:: meetversion(context: hcoopmeetbotlogic.interface.Context) -> None
+
+   Reply with a string describing the version of the plugin.
+
+
+.. py:function:: listmeetings(context: hcoopmeetbotlogic.interface.Context) -> None
+
+   List all currently-active meetings.
+
+   :param context: Context for a message or command
+   :type context: Context
+
+
+.. py:function:: savemeetings(context: hcoopmeetbotlogic.interface.Context) -> None
+
+   Save all currently active meetings.
+
+   :param context: Context for a message or command
+   :type context: Context
+
+
+.. py:function:: addchair(context: hcoopmeetbotlogic.interface.Context, channel: str, network: str, nick: str) -> None
+
+   Add a nickname as a chair to the meeting.
+
+   :param context: Context for a message or command
+   :type context: Context
+   :param channel: Channel to add the chair for
+   :type channel: str
+   :param network: Network to add the chair for
+   :type network: str
+   :param nick: Nickname to add as the chair
+   :type nick: str
+
+
+.. py:function:: deletemeeting(context: hcoopmeetbotlogic.interface.Context, channel: str, network: str, *, save: bool) -> None
+
+   Delete a meeting, moving it out of active state without actually completing it.
+
+   The meeting will not be maintained in the list of recent meetings, since it
+   isn't technically completed.
+
+   :param context: Context for a message or command
+   :type context: Context
+   :param channel: Channel to delete the meeting for
+   :type channel: str
+   :param network: Network to delete the meeting for
+   :type network: str
+   :param save: Whether to save the meeting before deactivating it
+   :type save: bool
+
+
+.. py:function:: recent(context: hcoopmeetbotlogic.interface.Context) -> None
+
+   List recent meetings for admin purposes.
+
+   :param context: Context for a message or command
+   :type context: Context
+
+
+.. py:function:: commands(context: hcoopmeetbotlogic.interface.Context) -> None
+
+   List available commands.
+
+   :param context: Context for a message or command
+   :type context: Context
+
+

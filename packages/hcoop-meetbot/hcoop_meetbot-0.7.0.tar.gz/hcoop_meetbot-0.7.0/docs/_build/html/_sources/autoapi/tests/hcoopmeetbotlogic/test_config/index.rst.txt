@@ -1,0 +1,77 @@
+tests.hcoopmeetbotlogic.test_config
+===================================
+
+.. py:module:: tests.hcoopmeetbotlogic.test_config
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: MISSING_DIR
+   :value: 'bogus'
+
+
+.. py:data:: VALID_DIR
+
+.. py:data:: OPTIONAL_DIR
+
+.. py:data:: NO_CHANNEL_DIR
+
+.. py:data:: NO_FILE_DIR
+
+.. py:data:: EMPTY_DIR
+
+.. py:data:: INVALID_DIR
+
+.. py:data:: BAD_BOOLEAN_DIR
+
+.. py:data:: BAD_FORMAT_DIR
+
+.. py:function:: context()
+
+.. py:class:: TestConfig
+
+   .. py:method:: test_constructor()
+
+
+.. py:class:: TestParsing
+
+   .. py:method:: test_valid_configuration_dir()
+
+
+   .. py:method:: test_valid_configuration_file()
+
+
+   .. py:method:: test_valid_configuration_with_optional()
+
+
+   .. py:method:: test_no_channel_configuration()
+
+
+   .. py:method:: test_empty_configuration()
+
+
+   .. py:method:: test_bad_boolean_configuration()
+
+
+   .. py:method:: test_bad_format_configuration()
+
+
+   .. py:method:: test_invalid_configuration()
+
+
+   .. py:method:: test_missing_configuration_dir()
+
+
+   .. py:method:: test_missing_configuration_file_default()
+
+
+   .. py:method:: test_missing_configuration_file_custom()
+
+

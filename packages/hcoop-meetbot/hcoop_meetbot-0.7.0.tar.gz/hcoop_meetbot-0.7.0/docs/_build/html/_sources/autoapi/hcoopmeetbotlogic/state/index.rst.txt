@@ -1,0 +1,56 @@
+hcoopmeetbotlogic.state
+=======================
+
+.. py:module:: hcoopmeetbotlogic.state
+
+.. autoapi-nested-parse::
+
+   Shared plugin state, maintained as singleton objects.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: set_logger(logger: logging.Logger) -> None
+
+   Set the shared logger instance.
+
+
+.. py:function:: logger() -> logging.Logger
+
+   Give the rest of the plugin access to a shared logger instance.
+
+
+.. py:function:: set_config(config: hcoopmeetbotlogic.config.Config) -> None
+
+   Set shared configuration.
+
+
+.. py:function:: config() -> hcoopmeetbotlogic.config.Config
+
+   Give the rest of the plugin access to shared configuration.
+
+
+.. py:function:: add_meeting(nick: str, channel: str, network: str) -> hcoopmeetbotlogic.meeting.Meeting
+
+   Add a new active meeting.
+
+
+.. py:function:: deactivate_meeting(meeting: hcoopmeetbotlogic.meeting.Meeting, *, retain: bool = True) -> None
+
+   Move a meeting out of the active list, optionally retaining it in the completed list.
+
+
+.. py:function:: get_meeting(channel: str, network: str) -> hcoopmeetbotlogic.meeting.Meeting | None
+
+   Get a meeting for the channel and network.
+
+
+.. py:function:: get_meetings(*, active: bool = True, completed: bool = True) -> list[hcoopmeetbotlogic.meeting.Meeting]
+
+   Return a list of tracked meetings, optionally filtering out active or completed meetings.
+
+

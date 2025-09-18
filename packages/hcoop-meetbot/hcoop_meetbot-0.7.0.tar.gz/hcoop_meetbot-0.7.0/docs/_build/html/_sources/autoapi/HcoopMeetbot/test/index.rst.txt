@@ -1,0 +1,103 @@
+HcoopMeetbot.test
+=================
+
+.. py:module:: HcoopMeetbot.test
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: ID
+   :value: 'id'
+
+
+.. py:data:: NICK
+   :value: 'test'
+
+
+.. py:data:: CHANNEL
+   :value: '#test'
+
+
+.. py:data:: NETWORK
+   :value: 'test'
+
+
+.. py:data:: PREFIX
+   :value: '@'
+
+
+.. py:data:: TIMESTAMP
+
+.. py:class:: HcoopMeetbotTestCase(methodName='runTest')
+
+   Bases: :py:obj:`supybot.test.ChannelPluginTestCase`
+
+
+   Subclass this to write a test case for a plugin.  See
+   plugins/Plugin/test.py for an example.
+
+
+   .. py:attribute:: plugins
+      :value: ('HcoopMeetbot',)
+
+
+
+   .. py:method:: test_context(privmsg, topic)
+
+      Test behavior of the Context object returned by the _context() function.
+
+
+
+   .. py:method:: test_meetversion(uuid4, now, irc_message, outbound_message, meetversion) -> None
+
+      Test the meetversion command
+
+
+
+   .. py:method:: test_listmeetings(uuid4, now, irc_message, outbound_message, listmeetings) -> None
+
+      Test the listmeetings command
+
+
+
+   .. py:method:: test_savemeetings(uuid4, now, irc_message, outbound_message, savemeetings) -> None
+
+      Test the savemeetings command
+
+
+
+   .. py:method:: test_addchair(uuid4, now, irc_message, outbound_message, addchair) -> None
+
+      Test the addchair command
+
+
+
+   .. py:method:: test_deletemeeting_save(uuid4, now, irc_message, outbound_message, deletemeeting) -> None
+
+      Test the deletemeeting command,.save=True
+
+
+
+   .. py:method:: test_deletemeeting_nosave(uuid4, now, irc_message, outbound_message, deletemeeting) -> None
+
+      Test the deletemeeting command,.save=False
+
+
+
+   .. py:method:: test_recent(uuid4, now, irc_message, outbound_message, recent) -> None
+
+      Test the recent command
+
+
+
+   .. py:method:: test_commands(uuid4, now, irc_message, outbound_message, commands) -> None
+
+      Test the commands command
+
+
+

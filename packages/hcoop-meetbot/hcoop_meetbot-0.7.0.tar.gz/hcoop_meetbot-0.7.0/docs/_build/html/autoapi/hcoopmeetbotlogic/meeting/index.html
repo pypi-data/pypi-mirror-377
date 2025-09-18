@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>hcoopmeetbotlogic.meeting &#8212; hcoop-meetbot 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="hcoopmeetbotlogic.release" href="../release/index.html" />
+    <link rel="prev" title="hcoopmeetbotlogic.location" href="../location/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-hcoopmeetbotlogic.meeting">
+<span id="hcoopmeetbotlogic-meeting"></span><h1>hcoopmeetbotlogic.meeting<a class="headerlink" href="#module-hcoopmeetbotlogic.meeting" title="Link to this heading">¶</a></h1>
+<p>Meeting state.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.meeting.</span></span><span class="sig-name descname"><span class="pre">EventType</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>Legal event types for TrackedEvent.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.START_MEETING">
+<span class="sig-name descname"><span class="pre">START_MEETING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'START_MEETING'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.START_MEETING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.END_MEETING">
+<span class="sig-name descname"><span class="pre">END_MEETING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'END_MEETING'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.END_MEETING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.ATTENDEE">
+<span class="sig-name descname"><span class="pre">ATTENDEE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ATTENDEE'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.ATTENDEE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.MEETING_NAME">
+<span class="sig-name descname"><span class="pre">MEETING_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MEETING_NAME'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.MEETING_NAME" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.TOPIC">
+<span class="sig-name descname"><span class="pre">TOPIC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TOPIC'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.TOPIC" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.ADD_CHAIR">
+<span class="sig-name descname"><span class="pre">ADD_CHAIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ADD_CHAIR'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.ADD_CHAIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.REMOVE_CHAIR">
+<span class="sig-name descname"><span class="pre">REMOVE_CHAIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REMOVE_CHAIR'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.REMOVE_CHAIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.TRACK_NICK">
+<span class="sig-name descname"><span class="pre">TRACK_NICK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TRACK_NICK'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.TRACK_NICK" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.UNDO">
+<span class="sig-name descname"><span class="pre">UNDO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UNDO'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.UNDO" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.SAVE_MEETING">
+<span class="sig-name descname"><span class="pre">SAVE_MEETING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SAVE_MEETING'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.SAVE_MEETING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.MOTION">
+<span class="sig-name descname"><span class="pre">MOTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MOTION'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.MOTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.VOTE">
+<span class="sig-name descname"><span class="pre">VOTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'VOTE'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.VOTE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.ACCEPTED">
+<span class="sig-name descname"><span class="pre">ACCEPTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ACCEPTED'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.ACCEPTED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.INCONCLUSIVE">
+<span class="sig-name descname"><span class="pre">INCONCLUSIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'INCONCLUSIVE'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.INCONCLUSIVE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'FAILED'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.FAILED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.ACTION">
+<span class="sig-name descname"><span class="pre">ACTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ACTION'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.ACTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.INFO">
+<span class="sig-name descname"><span class="pre">INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'INFO'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.INFO" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.IDEA">
+<span class="sig-name descname"><span class="pre">IDEA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'IDEA'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.IDEA" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.HELP">
+<span class="sig-name descname"><span class="pre">HELP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'HELP'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.HELP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.EventType.LINK">
+<span class="sig-name descname"><span class="pre">LINK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LINK'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.EventType.LINK" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.VotingAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.meeting.</span></span><span class="sig-name descname"><span class="pre">VotingAction</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.VotingAction" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>Voting actions</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.VotingAction.IN_FAVOR">
+<span class="sig-name descname"><span class="pre">IN_FAVOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'+1'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.VotingAction.IN_FAVOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.VotingAction.OPPOSED">
+<span class="sig-name descname"><span class="pre">OPPOSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-1'</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.VotingAction.OPPOSED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.meeting.</span></span><span class="sig-name descname"><span class="pre">TrackedMessage</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="Link to this definition">¶</a></dt>
+<dd><p>A message tracked as part of a meeting.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage.id" title="Link to this definition">¶</a></dt>
+<dd><p>Message identifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage.sender">
+<span class="sig-name descname"><span class="pre">sender</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage.sender" title="Link to this definition">¶</a></dt>
+<dd><p>IRC nick of the sender</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage.payload">
+<span class="sig-name descname"><span class="pre">payload</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage.payload" title="Link to this definition">¶</a></dt>
+<dd><p>Payload of the message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage.action">
+<span class="sig-name descname"><span class="pre">action</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage.action" title="Link to this definition">¶</a></dt>
+<dd><p>Whether this is an ACTION message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage.timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Message timestamp in UTC</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">sender</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">payload</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">action</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><span class="pre">datetime.datetime</span></a></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedMessage.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedMessage.display_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get the message display name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.meeting.</span></span><span class="sig-name descname"><span class="pre">TrackedEvent</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent" title="Link to this definition">¶</a></dt>
+<dd><p>An event tracked as part of a meeting, always tied to a specific message.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent.id" title="Link to this definition">¶</a></dt>
+<dd><p>The event identifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent.event_type">
+<span class="sig-name descname"><span class="pre">event_type</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent.event_type" title="Link to this definition">¶</a></dt>
+<dd><p>Type of the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hcoopmeetbotlogic.meeting.EventType" title="hcoopmeetbotlogic.meeting.EventType">EventType</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent.timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Event timestamp in UTC</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent.message">
+<span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent.message" title="Link to this definition">¶</a></dt>
+<dd><p>The message associated with the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="hcoopmeetbotlogic.meeting.TrackedMessage">TrackedMessage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent.operand">
+<span class="sig-name descname"><span class="pre">operand</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent.operand" title="Link to this definition">¶</a></dt>
+<dd><p>The operand (remainder of the payload after the command)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">event_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hcoopmeetbotlogic.meeting.EventType" title="hcoopmeetbotlogic.meeting.EventType"><span class="pre">EventType</span></a></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="hcoopmeetbotlogic.meeting.TrackedMessage"><span class="pre">TrackedMessage</span></a></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">operand</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><span class="pre">datetime.datetime</span></a></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.TrackedEvent.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.TrackedEvent.display_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get the event display name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.meeting.</span></span><span class="sig-name descname"><span class="pre">Meeting</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting" title="Link to this definition">¶</a></dt>
+<dd><p>A meeting on a particular IRC channel.</p>
+<p>The meeting can be serialized and deserialized to and from JSON.  This is the mechanism we use
+to persist the raw log to disk.  If you round trip the JSON (generate JSON and then use that
+JSON to create a new meeting), the resulting object contains data that is equivalent, but not
+exactly identical to, the original object.  Each tracked event has an associated message.  In
+the original object, the tracked event always refers to one of the message objects that is
+already in the messages list.  When you deserialize from JSON, the object in the message list
+will be different than the one on the tracked event, although they will be equivalent by value.
+So, if you deserialize from JSON, it’s best to treat the resulting object as a read-only copy.
+The copy won’t always work exactly like a meeting that was created at runtime based on actual
+IRC traffic.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.id" title="Link to this definition">¶</a></dt>
+<dd><p>Unique identifier for the meeting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.name" title="Link to this definition">¶</a></dt>
+<dd><p>The name of the meeting, which defaults to the channel name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.founder">
+<span class="sig-name descname"><span class="pre">founder</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.founder" title="Link to this definition">¶</a></dt>
+<dd><p>IRC nick of the meeting founder, always a member of chairs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.channel">
+<span class="sig-name descname"><span class="pre">channel</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.channel" title="Link to this definition">¶</a></dt>
+<dd><p>Channel the meeting is running on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.network">
+<span class="sig-name descname"><span class="pre">network</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.network" title="Link to this definition">¶</a></dt>
+<dd><p>Network associated with the channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.chair">
+<span class="sig-name descname"><span class="pre">chair</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.chair" title="Link to this definition">¶</a></dt>
+<dd><p>IRC nick of primary meeting chair, always a member of chairs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.chairs">
+<span class="sig-name descname"><span class="pre">chairs</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.chairs" title="Link to this definition">¶</a></dt>
+<dd><p>IRC nick of all meeting chairs, including the primary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.nicks">
+<span class="sig-name descname"><span class="pre">nicks</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.nicks" title="Link to this definition">¶</a></dt>
+<dd><p>IRC nick of anyone who contributed to the meeting or was explicitly called out</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.start_time">
+<span class="sig-name descname"><span class="pre">start_time</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.start_time" title="Link to this definition">¶</a></dt>
+<dd><p>Start time of the meeting in UTC</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.end_time">
+<span class="sig-name descname"><span class="pre">end_time</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.end_time" title="Link to this definition">¶</a></dt>
+<dd><p>End time of the meeting in UTC, possibly None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[datetime]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.original_topic">
+<span class="sig-name descname"><span class="pre">original_topic</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.original_topic" title="Link to this definition">¶</a></dt>
+<dd><p>The original topic assigned to the channel prior to starting the meeting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.current_topic">
+<span class="sig-name descname"><span class="pre">current_topic</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.current_topic" title="Link to this definition">¶</a></dt>
+<dd><p>The current topic, assigned by a chair</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.messages">
+<span class="sig-name descname"><span class="pre">messages</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.messages" title="Link to this definition">¶</a></dt>
+<dd><p>List of all messages tracked as part of the meeting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="hcoopmeetbotlogic.meeting.TrackedMessage">TrackedMessage</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.events">
+<span class="sig-name descname"><span class="pre">events</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.events" title="Link to this definition">¶</a></dt>
+<dd><p>List of all events tracked as part of the meeting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedEvent" title="hcoopmeetbotlogic.meeting.TrackedEvent">TrackedEvent</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.aliases">
+<span class="sig-name descname"><span class="pre">aliases</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.aliases" title="Link to this definition">¶</a></dt>
+<dd><p>Dictionary mapping attendee IRC nick to optional alias</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, Optional[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.vote_in_progress">
+<span class="sig-name descname"><span class="pre">vote_in_progress</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.vote_in_progress" title="Link to this definition">¶</a></dt>
+<dd><p>Whether voting is in progress</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.motion_index">
+<span class="sig-name descname"><span class="pre">motion_index</span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.motion_index" title="Link to this definition">¶</a></dt>
+<dd><p>Index into events for the current motion, when voting is in progress</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">founder</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">channel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">network</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id13" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id14" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">chair</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#id15" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">chairs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id16" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">nicks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id17" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">start_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><span class="pre">datetime.datetime</span></a></em><a class="headerlink" href="#id18" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">end_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><span class="pre">datetime.datetime</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id19" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.active">
+<span class="sig-name descname"><span class="pre">active</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.active" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">original_topic</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id20" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">current_topic</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id21" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">messages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="hcoopmeetbotlogic.meeting.TrackedMessage"><span class="pre">TrackedMessage</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id22" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedEvent" title="hcoopmeetbotlogic.meeting.TrackedEvent"><span class="pre">TrackedEvent</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id23" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">aliases</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id24" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">vote_in_progress</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id25" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">motion_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id26" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.meeting_key">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meeting_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.meeting_key" title="Link to this definition">¶</a></dt>
+<dd><p>Build the dict key for a network and channel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize a meeting to JSON.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hcoopmeetbotlogic.meeting.Meeting" title="hcoopmeetbotlogic.meeting.Meeting"><span class="pre">Meeting</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize a meeting from JSON.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.key">
+<span class="sig-name descname"><span class="pre">key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.display_name">
+<span class="sig-name descname"><span class="pre">display_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.display_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get the meeting display name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.add_chair">
+<span class="sig-name descname"><span class="pre">add_chair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.add_chair" title="Link to this definition">¶</a></dt>
+<dd><p>Add a chair to a meeting, potentially making it the primary chair.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.remove_chair">
+<span class="sig-name descname"><span class="pre">remove_chair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.remove_chair" title="Link to this definition">¶</a></dt>
+<dd><p>Remove a chair from a meeting, ignoring requests to remove the founder.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.is_chair">
+<span class="sig-name descname"><span class="pre">is_chair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.is_chair" title="Link to this definition">¶</a></dt>
+<dd><p>Whether a nickname is a chair for the meeting</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.track_attendee">
+<span class="sig-name descname"><span class="pre">track_attendee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.track_attendee" title="Link to this definition">¶</a></dt>
+<dd><p>Track an IRC nick as a meeting attendee, optionally assigning an alias.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.track_nick">
+<span class="sig-name descname"><span class="pre">track_nick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">messages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.track_nick" title="Link to this definition">¶</a></dt>
+<dd><p>Track an IRC nick, incrementing its count of messages as indicated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.track_message">
+<span class="sig-name descname"><span class="pre">track_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../interface/index.html#hcoopmeetbotlogic.interface.Message" title="hcoopmeetbotlogic.interface.Message"><span class="pre">hcoopmeetbotlogic.interface.Message</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="hcoopmeetbotlogic.meeting.TrackedMessage"><span class="pre">TrackedMessage</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.track_message" title="Link to this definition">¶</a></dt>
+<dd><p>Track a message associated with the meeting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.track_event">
+<span class="sig-name descname"><span class="pre">track_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#hcoopmeetbotlogic.meeting.EventType" title="hcoopmeetbotlogic.meeting.EventType"><span class="pre">EventType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedMessage" title="hcoopmeetbotlogic.meeting.TrackedMessage"><span class="pre">TrackedMessage</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">operand</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedEvent" title="hcoopmeetbotlogic.meeting.TrackedEvent"><span class="pre">TrackedEvent</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.track_event" title="Link to this definition">¶</a></dt>
+<dd><p>Track an event associated with a meeting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.meeting.Meeting.pop_event">
+<span class="sig-name descname"><span class="pre">pop_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hcoopmeetbotlogic.meeting.TrackedEvent" title="hcoopmeetbotlogic.meeting.TrackedEvent"><span class="pre">TrackedEvent</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.meeting.Meeting.pop_event" title="Link to this definition">¶</a></dt>
+<dd><p>Pop the last tracked event off the list of events, if possible, returning the event.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hcoop-meetbot</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=hcoop-meetbot&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tests/index.html">tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../HcoopMeetbot/index.html">HcoopMeetbot</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">hcoopmeetbotlogic</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">hcoopmeetbotlogic</a><ul>
+      <li>Previous: <a href="../location/index.html" title="previous chapter">hcoopmeetbotlogic.location</a></li>
+      <li>Next: <a href="../release/index.html" title="next chapter">hcoopmeetbotlogic.release</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/hcoop-meetbot" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

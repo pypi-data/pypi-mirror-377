@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>hcoopmeetbotlogic.state &#8212; hcoop-meetbot 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="hcoopmeetbotlogic.writer" href="../writer/index.html" />
+    <link rel="prev" title="hcoopmeetbotlogic.release" href="../release/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-hcoopmeetbotlogic.state">
+<span id="hcoopmeetbotlogic-state"></span><h1>hcoopmeetbotlogic.state<a class="headerlink" href="#module-hcoopmeetbotlogic.state" title="Link to this heading">¶</a></h1>
+<p>Shared plugin state, maintained as singleton objects.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.set_logger">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">set_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.13)"><span class="pre">logging.Logger</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.set_logger" title="Link to this definition">¶</a></dt>
+<dd><p>Set the shared logger instance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.logger">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.13)"><span class="pre">logging.Logger</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.logger" title="Link to this definition">¶</a></dt>
+<dd><p>Give the rest of the plugin access to a shared logger instance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.set_config">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">set_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/index.html#hcoopmeetbotlogic.config.Config" title="hcoopmeetbotlogic.config.Config"><span class="pre">hcoopmeetbotlogic.config.Config</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.set_config" title="Link to this definition">¶</a></dt>
+<dd><p>Set shared configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.config">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../config/index.html#hcoopmeetbotlogic.config.Config" title="hcoopmeetbotlogic.config.Config"><span class="pre">hcoopmeetbotlogic.config.Config</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.config" title="Link to this definition">¶</a></dt>
+<dd><p>Give the rest of the plugin access to shared configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.add_meeting">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">add_meeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../meeting/index.html#hcoopmeetbotlogic.meeting.Meeting" title="hcoopmeetbotlogic.meeting.Meeting"><span class="pre">hcoopmeetbotlogic.meeting.Meeting</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.add_meeting" title="Link to this definition">¶</a></dt>
+<dd><p>Add a new active meeting.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.deactivate_meeting">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">deactivate_meeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meeting</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../meeting/index.html#hcoopmeetbotlogic.meeting.Meeting" title="hcoopmeetbotlogic.meeting.Meeting"><span class="pre">hcoopmeetbotlogic.meeting.Meeting</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.deactivate_meeting" title="Link to this definition">¶</a></dt>
+<dd><p>Move a meeting out of the active list, optionally retaining it in the completed list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.get_meeting">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">get_meeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../meeting/index.html#hcoopmeetbotlogic.meeting.Meeting" title="hcoopmeetbotlogic.meeting.Meeting"><span class="pre">hcoopmeetbotlogic.meeting.Meeting</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.get_meeting" title="Link to this definition">¶</a></dt>
+<dd><p>Get a meeting for the channel and network.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hcoopmeetbotlogic.state.get_meetings">
+<span class="sig-prename descclassname"><span class="pre">hcoopmeetbotlogic.state.</span></span><span class="sig-name descname"><span class="pre">get_meetings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../meeting/index.html#hcoopmeetbotlogic.meeting.Meeting" title="hcoopmeetbotlogic.meeting.Meeting"><span class="pre">hcoopmeetbotlogic.meeting.Meeting</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#hcoopmeetbotlogic.state.get_meetings" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of tracked meetings, optionally filtering out active or completed meetings.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">hcoop-meetbot</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=hcoop-meetbot&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tests/index.html">tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../HcoopMeetbot/index.html">HcoopMeetbot</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">hcoopmeetbotlogic</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">hcoopmeetbotlogic</a><ul>
+      <li>Previous: <a href="../release/index.html" title="previous chapter">hcoopmeetbotlogic.release</a></li>
+      <li>Next: <a href="../writer/index.html" title="next chapter">hcoopmeetbotlogic.writer</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/hcoop-meetbot" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

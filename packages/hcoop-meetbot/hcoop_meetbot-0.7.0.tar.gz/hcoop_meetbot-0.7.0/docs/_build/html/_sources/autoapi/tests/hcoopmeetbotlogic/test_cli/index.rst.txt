@@ -1,0 +1,71 @@
+tests.hcoopmeetbotlogic.test_cli
+================================
+
+.. py:module:: tests.hcoopmeetbotlogic.test_cli
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: CONFIG_PATH
+   :value: ''
+
+
+.. py:data:: RAW_LOG_PREFIX
+   :value: '2022-06-04'
+
+
+.. py:data:: RAW_LOG
+   :value: ''
+
+
+.. py:data:: EXPECTED_LOG
+   :value: ''
+
+
+.. py:data:: EXPECTED_MINUTES
+   :value: ''
+
+
+.. py:function:: invoke(args: list[str]) -> click.testing.Result
+
+.. py:class:: TestCommon
+
+   .. py:method:: test_h()
+
+
+   .. py:method:: test_help()
+
+
+   .. py:method:: test_version_output(version)
+
+
+   .. py:method:: test_no_args()
+
+
+.. py:class:: TestRegenerate
+
+   .. py:method:: test_h()
+
+
+   .. py:method:: test_help()
+
+
+   .. py:method:: test_bad_config_path()
+
+
+   .. py:method:: test_bad_raw_log()
+
+
+   .. py:method:: test_bad_output_dir()
+
+
+   .. py:method:: test_regenerate(load_config, derive_locations)
+
+

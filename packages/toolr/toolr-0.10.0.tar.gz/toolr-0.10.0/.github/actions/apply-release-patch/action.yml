@@ -1,0 +1,23 @@
+name: Apply Release Patch
+description: Prepare a release of ToolR
+
+inputs:
+  release-patch-name:
+    required: true
+    description: 'Release patch to apply'
+
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Download Release Patch Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.release-patch-name }}
+
+    - name: Apply The Release Patch
+      shell: bash
+      run: |
+        git am --committer-date-is-author-date ${{ inputs.release-patch-name }}

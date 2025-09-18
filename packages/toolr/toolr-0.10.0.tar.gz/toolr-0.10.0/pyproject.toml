@@ -1,0 +1,285 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "toolr"
+version = "0.10.0"
+description = "In-project CLI tooling support"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Pedro Algarvio", email = "pedro@algarvio.me"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "docstring-parser>=0.16",
+    "msgspec>=0.19.0",
+    "rich-argparse>=1.7.0",
+]
+
+[project.scripts]
+toolr = "toolr.__main__:main"
+
+[project.urls]
+Repository = "https://github.com/s0undt3ch/ToolR"
+Documentation = "https://toolr.readthedocs.io"
+Issues = "https://github.com/s0undt3ch/ToolR/issues"
+Changelog = "https://github.com/s0undt3ch/ToolR/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch-vcs]
+# Use PEP 440 compatible versioning
+version-scheme = "pep440"
+
+[tool.maturin]
+features = ["python"]
+module-name = "toolr.utils._command"
+python-source = "python"
+bindings = "pyo3"
+strip = true
+# Require Cargo.lock is up to date
+locked = true
+
+[tool.cibuildwheel]
+# Skip problematic or irrelevant platforms
+# Only include skip patterns that match enabled builds
+# Removed: pp* (no PyPy builds enabled), *-i686 (no 32-bit builds), *-s390x (no s390x builds)
+skip = "*-win32 *-musllinux_i686"
+# Explicitly define supported Python versions
+build = "cp311-* cp312-* cp313-*"
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64", "aarch64"]
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+
+[tool.cibuildwheel.environment]
+MACOSX_DEPLOYMENT_TARGET = "11.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/"]
+python_files = "test_*.py"
+junit_family = "xunit2"
+addopts = [
+  "-ra",
+  "-s",
+  "--showlocals",
+  "--strict-config",
+  "--strict-markers",
+]
+
+[tool.uv]
+
+[tool.uv.sources]
+toolr = { workspace = true }
+3rd-party-pkg = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "tests/support/3rd-party-pkg",
+]
+
+[dependency-groups]
+dev = [
+    "3rd-party-pkg",
+    "attrs>=25.3.0",
+    "coverage>=7.8.0",
+    "pytest>=8.3.5",
+    "pytest-skip-markers>=1.5.2",
+    "pytest-subtests>=0.14.2",
+]
+docs = [
+    "markdown-include>=0.8.1",
+    "mkdocs>=1.6.1",
+    "mkdocs-awesome-nav>=3.1.2",
+    "mkdocs-material>=9.6.16",
+    "mkdocstrings[python]>=0.30.0",
+    "ruff>=0.12.9",
+]
+tools = [
+    "packaging>=25.0",
+]
+
+[tool.ruff]
+line-length = 120
+show-fixes = true
+target-version = "py311"
+respect-gitignore = true
+src = [
+  "src",
+  "python",
+  "tests",
+  "tools",
+]
+extend-exclude = [
+  ".nox/**",
+  "tests/**/files/*.py"
+]
+extend-include = [
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  # D* pydocstyle
+  "ANN",     # Don't complain about annotations
+  "ARG001",  # Unused function argument
+  "COM",     # flake8-commas - Black takes care of this
+  "D103",    # Missing docstring in public function
+  "D200",    # Reformat to one line
+  "D212",    # Remove whitespace after opening quotes
+  "ERA",     # eradicate
+  "FBT001",  # Boolean-typed positional argument in function definition
+  "FBT002",  # Boolean default positional argument in function definition
+  "FIX002",  # Line contains TODO, consider resolving the issue"
+  "PERF203", # `try`-`except` within a loop incurs performance overhead"
+  "PERF401", # Use a list comprehension to create a transformed list
+  "PERF402", # Use `list` or `list.copy` to create a copy of a list
+  "PLR2004", # Magic value used in comparison, consider replacing `2` with a constant variable"
+  "PTH",     # Stop complaining about switching to pathlib
+  "RET503",  # Missing explicit `return` at the end of function able to return non-`None` value
+  "RUF005",  # Consider iterable unpacking instead of concatenation
+  "SIM108",  # Use ternary operator `A = X if Y else Z` instead of `if`-`else`-block
+  "SIM110",  # Use `return any( ... etc ...)` instead of `for` loop
+  "TC003",   # Move standard library import `pathlib.Path` into a type-checking block
+  "TD002",   # Missing author in TODO; try: `# TODO(<author_name>): ...` or `# TODO @<author_name>: ...`"
+  "TD003",   # Missing issue link on the line following this TODO
+]
+
+[tool.ruff.lint.per-file-ignores]
+"python/**/*.py" = [
+  "D104",   # Missing docstring in public package
+  "D107",   # Missing docstring in `__init__`
+  "PT",     # flake8-pytest-style (PT) - Disabled in production code, only enforced in tests
+]
+"python/toolr/__main__.py" = [
+  "F401",   #  `tools` imported but unused
+  "PLC0415" # `import` should be at the top-level of a file
+]
+"python/toolr/_context.py" = [
+  "PYI041", # redundant-numeric-union
+]
+"python/toolr/utils/_command.pyi" = [
+  "A002",   # Function argument `input` is shadowing a Python builtin
+  "N818",   # Exception name `*` should be named with an Error suffix"
+]
+"tests/**/*.py" = [
+  "ANN",      # Ignore missing type annotations in tests
+  "ARG001",   # Unused function argument
+  "D",        # Don't complain about any docstrings in tests
+  "PLR2004",  # Magic value used in comparison, consider replacing <number> with a constant variable
+  "PT001",    # use @pytest.fixture() over @pytest.fixture
+  "PT023",    # use @pytest.mark.<blah>() over @pytest.mark.<blah>
+  "S101",     # Ignore the use of 'assert ...' in tests
+  "SIM117",   # Use a single `with` statement with multiple contexts instead of nested `with` statements
+  "SLF001",   # Private member accessed
+  "TC001",    # Move application import into a type-checking block
+  "TCH002",   # Move third-party import into a type-checking block
+  "BLE001",   # Do not catch blind exception: `Exception`
+]
+"tests/cli/**/*.py" = [
+  "RUF013",   # PEP 484 prohibits implicit `Optional`
+]
+"tests/utils/**/*.py" = [
+  "PLC0415", # `import` should be at the top-level of a file
+]
+"tests/support/coverage/*.py" = [
+  "INP001",   # File `...` is part of an implicit namespace package. Add an `__init__.py`."
+]
+"docs/**/files/*.py" = [
+  "BLE001",   # Do not catch blind exception: `Exception`
+  "D100",     # missing docstring in public module
+  "D101",     # Missing docstring in public class
+  "D417",     # Missing argument description in the docstring for `echo`: `ctx`
+  "EM102",    # Exception must not use an f-string literal, assign to variable first"
+  "INP001",   # File `xyz` is part of an implicit namespace package. Add an `__init__.py`.
+  "TRY003",   # Avoid specifying long messages outside the exception class
+]
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings.
+convention = "google"
+
+[tool.ruff.lint.isort]
+combine-as-imports = false
+force-single-line = true
+known-first-party = [
+  "toolr",
+]
+forced-separate = [
+  "tests"
+]
+required-imports = [
+  "from __future__ import annotations"
+]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.lint.pep8-naming]
+ignore-names = [
+  "__virtual__",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 40
+
+[tool.ruff.lint.pylint]
+max-branches = 40
+max-args = 10
+
+[tool.mypy]
+python_version = "3.11"
+disable_error_code = "import-untyped"
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+mypy_path = "python"
+exclude = [
+  "tests/.*/files/.*\\.py",
+  "^tests/([^/]*/)*files/.*",
+  "tests/support/3rd-party-pkg/.*"
+]
+
+[[tool.mypy.overrides]]
+module = [
+  "tests.*"
+]
+disallow_untyped_calls = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+
+[[tool.mypy.overrides]]
+module = [
+  "toolr.__main__"
+]
+disable_error_code = [
+  "unused-ignore"
+]
+
+[[tool.mypy.overrides]]
+module = [
+  "tests.cli.*",
+]
+disable_error_code = [
+  "assignment",
+]

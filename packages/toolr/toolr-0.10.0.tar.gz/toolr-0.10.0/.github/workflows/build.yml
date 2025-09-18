@@ -1,0 +1,68 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      display-name:
+        required: true
+        type: string
+        description: 'Display name for the build job'
+      release-tarball-name:
+        required: true
+        type: string
+        description: 'Release tarball name'
+      platform-matrix:
+        required: true
+        type: string
+        description: 'Platform matrix as JSON string'
+
+jobs:
+  build:
+    name: ${{ inputs.display-name }} (${{ matrix.python }}, ${{ matrix.platform.name }})
+    runs-on: ${{ matrix.platform.os }}
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJson(inputs.platform-matrix) }}
+        python:
+          - "cp311"
+          - "cp312"
+          - "cp313"
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Download Source Tarball Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.release-tarball-name }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        if: ${{ matrix.platform.emulation }}
+        with:
+          platforms: all
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.1.4
+        env:
+          CIBW_ARCHS_LINUX: all
+          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.platform.name }}
+        with:
+          package-dir: ${{ inputs.release-tarball-name }}
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: wheelhouse/*.whl
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheel-${{ matrix.python }}-${{ matrix.platform.name }}
+          path: wheelhouse/*.whl

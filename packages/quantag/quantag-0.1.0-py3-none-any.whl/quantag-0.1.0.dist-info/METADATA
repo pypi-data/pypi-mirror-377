@@ -1,0 +1,102 @@
+Metadata-Version: 2.4
+Name: quantag
+Version: 0.1.0
+Summary: Quantag Quantum Virtual Machine backend for Qiskit
+Author-email: Quantag IT Solutions GmbH <info@quantag-it.com>
+License: MIT License
+        
+        Copyright (c) 2025 QuanTag
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://quantum.quantag-it.com
+Project-URL: Source, https://github.com/quantag/quantag-python
+Keywords: quantum,qiskit,simulator,cudaq
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: qiskit>=1.0.0
+Requires-Dist: requests>=2.0.0
+Dynamic: license-file
+
+# QuantagVM
+
+QuantagVM is a custom quantum simulator backend for Qiskit, 
+developed as part of the Quantag Studio ecosystem.
+
+It provides a minimal QVM (Quantum Virtual Machine) interface 
+that can be used from Qiskit with one line of code. 
+Later versions will integrate with CUDA-Q, MPI clusters, 
+and the Quantag QBIN compiler.
+
+------------------------------------------------------------
+
+Installation
+------------
+
+    pip install quantag-vm
+
+------------------------------------------------------------
+
+Usage
+-----
+
+    from qiskit import QuantumCircuit, execute
+    from quantag.vm import QuantagVM
+
+    # Create a simple circuit
+    qc = QuantumCircuit(2)
+    qc.h(0)
+    qc.cx(0, 1)
+    qc.measure_all()
+
+    # Run it on QuantagVM
+    backend = QuantagVM()
+    result = execute(qc, backend, shots=100).result()
+
+    print(result.get_counts())
+
+------------------------------------------------------------
+
+Project structure
+-----------------
+
+    quantag-vm/
+        quantag/
+            vm/
+                backend.py
+                __init__.py
+                version.py
+        tests/
+            test_vm.py
+        pyproject.toml
+        README.md
+        LICENSE
+
+------------------------------------------------------------
+
+License
+-------
+
+This project is licensed under the MIT License.
+

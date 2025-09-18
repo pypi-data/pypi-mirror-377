@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alphaaidig-datacenter-client"
+version = "0.1.2"
+dependencies = [
+    "httpx",
+    "alphaaidig-datacenter-common==0.1.2"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

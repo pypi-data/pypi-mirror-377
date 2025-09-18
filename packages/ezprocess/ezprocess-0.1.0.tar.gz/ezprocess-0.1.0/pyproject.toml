@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ezprocess"
+version = "0.1.0"
+description = "Preprocess, tile, analyze and geospatial datasets for ML/DL training and evaluation."
+readme = "README.md"
+requires-python = ">=3.9"   
+license = {text = "MIT"}
+authors = [{ name = "Jeffrey Blay"}, { name = "Gazali Agboola"}]
+keywords = ["raster", "remote-sensing", "geospatial", "flood", "deep-learning", "machine-learning"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: GIS",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+# Install everything so imports always work
+dependencies = [
+  "numpy>=1.23",
+  "pandas>=1.5",
+  "rasterio>=1.3",
+  "matplotlib>=3.6",
+  "seaborn>=0.12",
+  "scikit-learn>=1.2",
+  "xgboost>=1.7",
+  "statsmodels>=0.14",
+  "shap>=0.43",
+  "tensorflow>=2.12",    # adjust if you target newer Python
+  "laspy>=2.5"
+]
+
+#update repositories before publish
+#[project.urls]
+Homepage = "https://github.com/Jeffreyblay/ezprocess_library"
+Issues   = "https://github.com/Jeffreyblay/ezprocess_library/issues"
+
+[tool.hatch.build]
+# Global excludes for all targets (sdist & wheel)
+exclude = [
+  "/.git", "/.github", "/.mypy_cache", "/.pytest_cache",
+  "/dist", "/build", "/*.egg-info",
+  "/.venv*", "/venv*", "/env*",
+  "/conda-recipes",
+  # if you keep data in repo, avoid bundling huge rasters
+  "**/*.tif", "**/*.tiff", "**/*.las", "**/*.laz"
+]
+
+[tool.hatch.build.targets.sdist]
+# Be explicit about what to include in the source tarball
+include = ["ezprocess/**", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["ezprocess"]

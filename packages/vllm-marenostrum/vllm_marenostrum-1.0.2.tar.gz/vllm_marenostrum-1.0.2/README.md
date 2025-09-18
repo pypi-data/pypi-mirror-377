@@ -1,0 +1,280 @@
+# vLLM MareNostrum Launcher
+
+**Super simple** vLLM server launcher for SLURM/HPC clusters with nested YAML config support.
+
+## Why This Exists
+
+Deploying vLLM on HPC clusters should be **one line**. This launcher:
+- ✅ **One config file** with clean vLLM/launcher separation
+- ✅ **One command** to launch anywhere
+- ✅ **Zero complexity** - transparent behavior
+- ✅ **SLURM ready** - handles GPU affinity automatically
+
+## Quick Start
+
+### 1. Install
+```bash
+git clone <this-repo>
+cd vllm-marenostrum
+pip install -e .
+```
+
+### 2. Create Config
+```yaml
+# config/my_model.yaml
+vllm:
+  model: "/path/to/your/model"
+  port: 8000
+  dtype: auto
+
+launcher:
+  cuda_devices: "0,1,2,3"
+  gpu_memory_utilization: 0.9
+```
+
+### 3. Launch
+```bash
+# Local launch
+vllm-marenostrum config/my_model.yaml
+
+# Wait for service to be ready (blocks until ready)
+vllm-marenostrum config/my_model.yaml --wait-for-ready
+
+# Launch in background (starts vLLM, waits for ready, then exits)
+vllm-marenostrum config/my_model.yaml --background
+
+# SLURM batch job (uses --background for pipelines)
+sbatch run_scripts/run_single.sh config/my_model.yaml
+
+# With overrides
+vllm-marenostrum config/my_model.yaml --cuda-devices 0,1 --port 8001
+```
+
+That's it! 🎉
+
+## Config Structure
+
+The nested config cleanly separates concerns:
+
+```yaml
+vllm:
+  # Pure vLLM parameters - passed directly to vllm serve
+  model: "/path/to/model"
+  port: 8000
+  dtype: auto
+  max_model_len: 4096
+  max_num_seqs: 256
+
+launcher:
+  # Deployment parameters - handled by launcher
+  cuda_devices: "0,1,2,3"           # Sets CUDA_VISIBLE_DEVICES (or "cpu" for CPU)
+  gpu_memory_utilization: 0.9       # Passed to vLLM
+  # CPU-only parameters (when cuda_devices: "cpu"):
+  cpu_kvcache_space: 64             # Memory (GB) for key-value cache on CPU
+  cpu_omp_threads_bind: "0-15"      # CPU cores to bind OpenMP threads to
+```
+
+**Why nested?** vLLM's `--config` flag only accepts pure vLLM parameters. The launcher creates a clean temporary config file with only the `vllm:` section.
+
+## Examples
+
+### Single GPU Model
+```yaml
+# config/small_model.yaml
+vllm:
+  model: "/models/llama-8b"
+  port: 8000
+
+launcher:
+  cuda_devices: "0"
+```
+
+### Multi-GPU with Custom Settings
+```yaml
+# config/large_model.yaml
+vllm:
+  model: "/models/mistral-72b"
+  port: 8001
+  dtype: bfloat16
+  max_model_len: 8192
+
+launcher:
+  cuda_devices: "0,1,2,3"
+  gpu_memory_utilization: 0.85
+```
+
+### CPU Embeddings (with CPU optimization)
+```yaml
+# config/embeddings.yaml
+vllm:
+  model: "/models/jina-embeddings"
+  task: embed
+  port: 8002
+
+launcher:
+  cuda_devices: "cpu"              # Run on CPU to free up GPUs
+  cpu_kvcache_space: 64            # Memory (GB) for key-value cache on CPU
+  cpu_omp_threads_bind: "0-15"     # CPU cores to bind OpenMP threads to
+```
+
+## SLURM Usage
+
+### Interactive Session
+```bash
+salloc -A $USER -t 01:00:00 -q $QUEUE -n 1 -c 80 --gres=gpu:4
+vllm-marenostrum config/my_model.yaml
+```
+
+### Batch Job (Simple)
+```bash
+sbatch -A $USER -t 01:00:00 -q $QUEUE run_scripts/run_single.sh config/my_model.yaml
+```
+
+### Batch Job (With Pipeline)
+Use the example pipeline script that starts vLLM then runs your app:
+```bash
+sbatch -A $USER -t 04:00:00 -q $QUEUE run_scripts/example_pipeline.sh config/my_model.yaml
+```
+
+Or create your own pipeline script:
+```bash
+#!/bin/bash
+#SBATCH --job-name=my_pipeline
+#SBATCH --gres=gpu:4
+
+# Load environment...
+vllm-marenostrum config/my_model.yaml --background
+
+# Now run your application
+python my_app.py
+python another_script.py
+```
+
+## Environment Setup (MareNostrum)
+
+```bash
+module purge && module load mkl intel python/3.12
+unset PYTHONPATH
+python -m venv venv_mn5
+source venv_mn5/bin/activate
+pip install -r requirements.txt
+```
+
+## Helper Scripts
+
+The repository includes useful helper scripts for common tasks:
+
+### Model Download (`helpers_scripts/hf_dl.sh`)
+Downloads Hugging Face models efficiently:
+
+```bash
+# Download a model (saves to ./huggingface_models/)
+bash helpers_scripts/hf_dl.sh mistralai/Mistral-Small-24B-Instruct-2501
+bash helpers_scripts/hf_dl.sh meta-llama/Llama-3.1-8B-Instruct
+
+# Models are saved to: ./huggingface_models/{model-name}/
+```
+
+**Setup Hugging Face authentication first:**
+```bash
+# Option 1: Environment variable
+export HUGGINGFACE_HUB_TOKEN=your_token
+
+# Option 2: CLI login
+huggingface-cli login
+```
+
+### SSH Tunnel (`helpers_scripts/bsc_ssh_tunnel.sh`)
+Create SSH tunnels to access vLLM servers remotely:
+
+```bash
+# Forward single port
+bash helpers_scripts/bsc_ssh_tunnel.sh mn5-acc-4 as05r1b08 8000
+
+# Forward multiple ports
+bash helpers_scripts/bsc_ssh_tunnel.sh mn5-acc-4 as05r1b08 8000,8001,8002
+
+# Forward port range
+bash helpers_scripts/bsc_ssh_tunnel.sh mn5-acc-4 as05r1b08 8000-8005
+```
+
+Then test locally:
+```bash
+# Test vLLM health
+curl http://localhost:8000/health
+
+# Test OpenAI API
+curl http://localhost:8000/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "/path/to/model",
+    "prompt": "Barcelona is a",
+    "max_tokens": 7
+  }'
+```
+
+## How It Works
+
+1. **Load config** → Split into `vllm` and `launcher` sections
+2. **Set devices** → `CUDA_VISIBLE_DEVICES` for GPU or `--device cpu` for CPU
+3. **CPU optimization** → Set `VLLM_CPU_KVCACHE_SPACE` and `VLLM_CPU_OMP_THREADS_BIND` env vars
+4. **Auto tensor-parallel** → Calculate from number of CUDA devices (GPU only)
+5. **Create clean config** → Temporary file with only `vllm` section
+6. **Launch vLLM** → `vllm serve --config clean_config.yaml`
+
+**That's it.** No magic, no complexity.
+
+## CLI Overrides
+
+Common parameters can be overridden:
+```bash
+vllm-marenostrum config.yaml --cuda-devices 0,1 --port 8001 --tensor-parallel-size 2
+```
+
+### Health Check & Background Options
+```bash
+# Wait for service to be ready (blocks until ready)
+vllm-marenostrum config.yaml --wait-for-ready
+
+# Launch in background (perfect for pipelines)
+vllm-marenostrum config.yaml --background
+
+# Custom timeout (default: 300 seconds)
+vllm-marenostrum config.yaml --background --timeout 600
+```
+
+### Pipeline Usage
+The `--background` flag is perfect for running applications after vLLM:
+
+```bash
+# Start vLLM, wait for ready, then continue with your app
+vllm-marenostrum config.yaml --background
+python your_pipeline.py  # This runs after vLLM is ready!
+```
+
+Any unknown arguments are passed directly to vLLM.
+
+## Migrating from Other Projects
+
+Just copy your configs to the nested structure:
+
+**Before:**
+```yaml
+model: "/path/to/model"
+port: 8000
+cuda_devices: "0,1,2,3"  # ❌ vLLM doesn't understand this
+```
+
+**After:**
+```yaml
+vllm:
+  model: "/path/to/model"
+  port: 8000
+
+launcher:
+  cuda_devices: "0,1,2,3"  # ✅ Handled by launcher
+```
+
+## License
+
+MIT

@@ -1,0 +1,16 @@
+graft src/rer
+graft docs
+include *.rst
+global-exclude *.pyc
+exclude .babelrc
+exclude .nvmrc
+exclude .coveragerc
+exclude .isort.cfg
+exclude .codespellignore
+include *.GPL
+include *.js
+include *.json
+include *.lock
+include *.txt
+include *.yml
+prune src/rer/ufficiostampa/browser/static/dist/dev

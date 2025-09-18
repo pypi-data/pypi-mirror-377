@@ -1,0 +1,77 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    >
+
+  <plone:service
+      method="GET"
+      factory=".crud.SubscriptionsGet"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.AccessChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions"
+      />
+
+  <!--
+  <browser:page
+      name="subscriptions-csv"
+      class=".csv_endpoint.DownloadView"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      />
+-->
+
+  <plone:service
+      method="GET"
+      factory=".csv_endpoint.SubscriptionsCSVGet"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions-csv"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".csv_endpoint.SubscriptionsCSVPost"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions-csv"
+      />
+  <plone:service
+      method="POST"
+      factory=".crud.SubscriptionAdd"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions"
+      />
+  <plone:service
+      method="PATCH"
+      factory=".crud.SubscriptionUpdate"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions"
+      />
+
+  <plone:service
+      method="DELETE"
+      factory=".crud.SubscriptionDelete"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions"
+      />
+
+  <plone:service
+      method="GET"
+      factory=".crud.SubscriptionsClear"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      permission="rer.ufficiostampa.ManageChannels"
+      layer="rer.ufficiostampa.interfaces.IRerUfficiostampaLayer"
+      name="@subscriptions-clear"
+      />
+</configure>

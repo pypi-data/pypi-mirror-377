@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>460</width>
+    <height>140</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>460</width>
+    <height>140</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Fusion NxM (Inner)</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayoutRoot">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <item row="0" column="0" colspan="4">
+    <widget class="QLabel" name="Description">
+     <property name="text">
+      <string>Select a column key for each table; the merge (inner) is auto.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelKeyA">
+     <property name="text">
+      <string>Column keys</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="cb_key1_a"/>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QLabel" name="footer">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QComboBox" name="cb_key1_b"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

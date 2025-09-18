@@ -1,0 +1,76 @@
+__all__ = [
+    "DAQ6510",
+]
+
+import asyncio
+from typing import Any
+from typing import Dict
+from typing import Optional
+
+from egse.log import logger
+from egse.scpi import AsyncSCPIInterface
+from egse.settings import Settings
+
+settings = Settings.load("Keithley DAQ6510")
+
+DAQ_DEV_PORT = settings.get("PORT")
+DAQ_DEV_NAME = "DAQ6510"
+DAQ_DEV_ID_VALIDATION = "DAQ6510"
+
+
+class DAQ6510(AsyncSCPIInterface):
+    """Keithley DAQ6510 specific implementation."""
+
+    def __init__(self, hostname: str, port: int = DAQ_DEV_PORT, settings: Optional[Dict[str, Any]] = None):
+        """Initialize a Keithley DAQ6510 interface.
+
+        Args:
+            hostname: Hostname or IP address
+            port: TCP port (default 5025 for SCPI)
+            settings: Additional device settings
+        """
+        super().__init__(
+            device_name=DAQ_DEV_NAME,
+            hostname=hostname,
+            port=port,
+            settings=settings,
+            id_validation=DAQ_DEV_ID_VALIDATION,  # String that must appear in IDN? response
+        )
+
+        self._measurement_lock = asyncio.Lock()
+
+    async def get_measurement(self, channel: str) -> float:
+        """Get a measurement from a specific channel.
+
+        Args:
+            channel: Channel to measure (e.g., "101")
+
+        Returns:
+            The measured value as a float
+        """
+        async with self._measurement_lock:
+            cmd = "INIT:IMM"
+            logger.info(f"Sending {cmd}...")
+            await self.write(cmd)
+            cmd = "*WAI"
+            logger.info(f"Sending {cmd}...")
+            await self.write(cmd)
+
+            if channel == "101":
+                start_index = end_index = 1
+            elif channel == "102":
+                start_index = end_index = 2
+            else:
+                return float("nan")
+
+            response = (
+                (await self.trans(f'TRAC:DATA? {start_index}, {end_index}, "test1", CHAN, TST, READ')).decode().strip()
+            )
+
+            logger.info(f"{response = }")
+
+            ch, tst, val = response.split(",")
+
+            logger.info(f"Channel: {ch} Time: {tst} Value: {float(val):.4f}")
+
+            return float(val)

@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProfileBoard - Django Performance Dashboard</title>
+
+    <!-- Simple CSS Charts -->
+
+    <!-- Bootstrap for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 300px;
+        }
+        
+        .simple-chart {
+            height: 200px;
+            position: relative;
+            padding: 10px;
+            overflow: hidden;
+        }
+        
+        .chart-line {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            right: 20px;
+            height: 140px;
+            border: 1px solid #e0e0e0;
+            background: #f9f9f9;
+        }
+        
+        .chart-labels {
+            position: absolute;
+            font-size: 10px;
+            color: #666;
+        }
+        
+        .y-labels {
+            left: 5px;
+            bottom: 30px;
+            height: 140px;
+        }
+        
+        .x-labels {
+            bottom: 10px;
+            left: 40px;
+            right: 20px;
+            height: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .chart-line svg {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        
+
+        
+        .chart-line polyline {
+            fill: none;
+            stroke-width: 2;
+            vector-effect: non-scaling-stroke;
+        }
+        
+        .chart-point {
+            fill: #667eea;
+            stroke: #764ba2;
+            stroke-width: 1;
+            cursor: pointer;
+            r: 3;
+        }
+        
+        .chart-point:hover {
+            fill: #764ba2;
+            r: 5;
+        }
+
+        .request-table {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-success { background-color: #28a745; }
+        .status-error { background-color: #dc3545; }
+        .status-warning { background-color: #ffc107; }
+
+        #connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .connected { background-color: #28a745; color: white; }
+        .disconnected { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div id="connection-status" class="disconnected">Connecting...</div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="my-4">ProfileBoard Dashboard</h1>
+
+                <!-- Controls -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary" onclick="toggleProfiler()">
+                                <span id="profiler-status">Toggle Profiler</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="exportData()">
+                                Export Data
+                            </button>
+                            <button type="button" class="btn btn-outline-info" onclick="toggleTimezone()" id="timezone-toggle">
+                                UTC
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <select class="form-select" id="time-range" onchange="updateTimeRange()">
+                                <option value="1m">Last 1 Minute</option>
+                                <option value="5m">Last 5 Minutes</option>
+                                <option value="30m">Last 30 Minutes</option>
+                                <option value="1h" selected>Last Hour</option>
+                                <option value="3h">Last 3 Hours</option>
+                                <option value="6h">Last 6 Hours</option>
+                                <option value="24h">Last 24 Hours</option>
+                                <option value="7d">Last 7 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-value" id="total-requests">-</div>
+                            <div class="metric-label">Total Requests</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-value" id="avg-response-time">-</div>
+                            <div class="metric-label">Avg Response Time</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-value" id="error-rate">-</div>
+                            <div class="metric-label">Error Rate</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-value" id="avg-db-queries">-</div>
+                            <div class="metric-label">Avg DB Queries</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h5>Response Time Over Time</h5>
+                            <div id="response-time-chart" class="simple-chart"></div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h5>Request Volume</h5>
+                            <div id="request-volume-chart" class="simple-chart"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h5>Database Performance</h5>
+                            <div id="db-performance-chart" class="simple-chart"></div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h5>Memory Usage</h5>
+                            <div id="memory-usage-chart" class="simple-chart"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Requests Table -->
+                <div class="request-table">
+                    <h5>Recent Requests</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="requests-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                    <th>Method</th>
+                                    <th>URL</th>
+                                    <th>View</th>
+                                    <th>Duration</th>
+                                    <th>DB Queries</th>
+                                    <th>Memory</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requests-tbody">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Details Modal -->
+    <div class="modal fade" id="requestDetailsModal" tabindex="-1" aria-labelledby="requestDetailsModalLabel">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestDetailsModalLabel">Request Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="request-details-body">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dashboard JavaScript implementation
+        class ProfileDashboard {
+            constructor() {
+                this.websocket = null;
+                this.charts = {};
+                this.isProfilerEnabled = false;
+                this.isUTC = true;
+                this.initCharts();
+                this.initWebSocket();
+            }
+
+            initWebSocket() {
+                if (!{{ websocket_url|yesno:"true,false" }}) {
+                    document.getElementById('connection-status').textContent = 'Static Mode';
+                    document.getElementById('connection-status').className = 'connected';
+                    this.loadInitialData();
+                    return;
+                }
+                
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const wsUrl = `${protocol}//${window.location.host}/ws/profileboard/`;
+
+                this.websocket = new WebSocket(wsUrl);
+
+                this.websocket.onopen = () => {
+                    console.log('WebSocket connected');
+                    document.getElementById('connection-status').textContent = 'Connected';
+                    document.getElementById('connection-status').className = 'connected';
+                };
+
+                this.websocket.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (error) {
+                        console.error('Error parsing WebSocket message:', error, event.data);
+                    }
+                };
+
+                this.websocket.onclose = () => {
+                    console.log('WebSocket disconnected');
+                    document.getElementById('connection-status').textContent = 'Disconnected';
+                    document.getElementById('connection-status').className = 'disconnected';
+
+                    // Reconnect after 5 seconds
+                    setTimeout(() => this.initWebSocket(), 5000);
+                };
+
+                this.websocket.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    document.getElementById('connection-status').textContent = 'Connection Error';
+                    document.getElementById('connection-status').className = 'disconnected';
+                };
+            }
+            
+            loadInitialData() {
+                // Load initial data from context
+                const stats = JSON.parse('{{ dashboard_stats|safe }}');
+                this.updateDashboard({ stats: stats, recent_requests: stats.recent_requests });
+                
+                // Set profiler status based on PROFILEBOARD_ENABLED setting
+                this.isProfilerEnabled = {{ profiler_enabled|yesno:"true,false" }};
+                this.updateProfilerButton();
+                
+                // Set time range from URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const timeRange = urlParams.get('time_range') || '1h';
+                document.getElementById('time-range').value = timeRange;
+                
+                // Refresh every 30 seconds
+                setInterval(() => {
+                    window.location.reload();
+                }, 30000);
+            }
+
+            handleWebSocketMessage(data) {
+                try {
+                    switch (data.type) {
+                        case 'initial_data':
+                            this.updateDashboard(data);
+                            break;
+                        case 'profile_update':
+                            if (data.data) {
+                                this.addNewRequest(data.data);
+                            }
+                            break;
+                        case 'request_history':
+                            if (data.requests) {
+                                this.updateDashboard({ stats: data.stats || {}, recent_requests: data.requests });
+                            }
+                            break;
+                        case 'request_details':
+                            if (data.details) {
+                                this.displayRequestDetails(data.details);
+                            }
+                            break;
+                        case 'profiler_toggled':
+                            this.isProfilerEnabled = data.enabled;
+                            this.updateProfilerButton();
+                            break;
+                        case 'error':
+                            console.error('WebSocket error:', data.message);
+                            break;
+                        default:
+                            console.warn('Unknown message type:', data.type);
+                    }
+                } catch (error) {
+                    console.error('Error handling WebSocket message:', error, data);
+                }
+            }
+
+            initCharts() {
+                // Simple CSS-based charts
+                this.charts = {
+                    responseTime: document.getElementById('response-time-chart'),
+                    requestVolume: document.getElementById('request-volume-chart'),
+                    dbPerformance: document.getElementById('db-performance-chart'),
+                    memoryUsage: document.getElementById('memory-usage-chart')
+                };
+            }
+
+            updateDashboard(data) {
+                // Update metrics
+                const stats = data.stats;
+                document.getElementById('total-requests').textContent = stats.total_requests || 0;
+                document.getElementById('avg-response-time').textContent =
+                    stats.avg_duration ? `${stats.avg_duration.toFixed(3)}s` : '-';
+                document.getElementById('error-rate').textContent =
+                    stats.error_count ? `${((stats.error_count / stats.total_requests) * 100).toFixed(1)}%` : '0%';
+                document.getElementById('avg-db-queries').textContent =
+                    stats.avg_db_queries ? stats.avg_db_queries.toFixed(1) : '-';
+
+                // Update requests table
+                this.updateRequestsTable(data.recent_requests);
+
+                // Update charts with historical data
+                this.updateChartsWithData(data.recent_requests);
+            }
+
+            updateChartsWithData(requests) {
+                if (!requests || !Array.isArray(requests) || !this.charts.responseTime) {
+                    this.showEmptyCharts();
+                    return;
+                }
+
+                // Response time line chart
+                const recentRequests = requests;
+                if (recentRequests.length === 0) {
+                    this.showEmptyCharts();
+                    return;
+                }
+                
+                const durations = recentRequests.map(r => r.duration || 0).filter(d => d > 0);
+                if (durations.length === 0) {
+                    this.showEmptyCharts();
+                    return;
+                }
+                
+                const maxDuration = Math.max(...durations);
+                const points = this.mapDataToTimeRange(recentRequests, 'duration', maxDuration);
+                this.currentChartType = 'response';
+                
+                this.charts.responseTime.innerHTML = `
+                    <div class="y-labels chart-labels">
+                        <div style="position: absolute; top: 0;">${maxDuration.toFixed(2)}s</div>
+                        <div style="position: absolute; top: 50%; transform: translateY(-50%);">${(maxDuration/2).toFixed(2)}s</div>
+                        <div style="position: absolute; bottom: 0;">0s</div>
+                    </div>
+                    <div class="chart-line" data-requests='${JSON.stringify(recentRequests)}' data-max='${maxDuration}' onmousemove="window.dashboard.showChartTooltip(event, 'response')" onmouseleave="window.dashboard.hideTooltip()">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="${this.addPadding(points)}" stroke="#667eea"/>
+                        </svg>
+                    </div>
+                    <div class="x-labels chart-labels">
+                        ${this.generateTimeLabels()}
+                    </div>
+                `;
+                // Request volume line chart - count requests per time bucket
+                const now = new Date();
+                const rangeMs = this.getTimeRangeMs();
+                const startTime = now.getTime() - rangeMs;
+                const bucketCount = 20;
+                const bucketSize = rangeMs / bucketCount;
+                const volumeBuckets = [];
+                const volumeData = [];
+                
+                for (let i = 0; i <= bucketCount; i++) {
+                    const bucketTime = startTime + (i * bucketSize);
+                    const x = (i / bucketCount) * 100;
+                    
+                    const count = requests.filter(req => {
+                        const reqTime = new Date(req.timestamp).getTime();
+                        return reqTime >= bucketTime && reqTime < bucketTime + bucketSize;
+                    }).length;
+                    
+                    volumeData.push({ count, hasData: count > 0 });
+                }
+                
+                const maxCount = Math.max(...volumeData.map(d => d.count));
+                
+                volumeData.forEach((data, i) => {
+                    const x = (i / bucketCount) * 100;
+                    if (data.hasData) {
+                        const y = maxCount > 0 ? Math.max(5, 100 - (data.count / maxCount) * 100) : 50;
+                        volumeBuckets.push(`${x},${y}`);
+                    }
+                });
+                
+                if (volumeBuckets.length > 0) {
+                    const volumePoints = volumeBuckets.join(' ');
+                    this.currentVolumeData = volumeData;
+                
+                    this.charts.requestVolume.innerHTML = `
+                        <div class="y-labels chart-labels">
+                            <div style="position: absolute; top: 0;">${maxCount}</div>
+                            <div style="position: absolute; top: 50%; transform: translateY(-50%);">${Math.round(maxCount/2)}</div>
+                            <div style="position: absolute; bottom: 0;">0</div>
+                        </div>
+                        <div class="chart-line" data-requests='${JSON.stringify(volumeData)}' data-max='${maxCount}' onmousemove="window.dashboard.showChartTooltip(event, 'volume')" onmouseleave="window.dashboard.hideTooltip()">
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="${this.addPadding(volumePoints)}" stroke="#764ba2"/>
+                            </svg>
+                        </div>
+                        <div class="x-labels chart-labels">
+                            ${this.generateTimeLabels()}
+                        </div>
+                    `;
+                // DB Performance line chart
+                const queryCounts = recentRequests.map(r => r.db_queries_count || 0);
+                const maxQueries = Math.max(...queryCounts);
+                const dbPoints = this.mapDataToTimeRange(recentRequests, 'db_queries_count', maxQueries);
+                this.currentChartType = 'db';
+                
+                this.charts.dbPerformance.innerHTML = `
+                    <div class="y-labels chart-labels">
+                        <div style="position: absolute; top: 0;">${maxQueries}</div>
+                        <div style="position: absolute; top: 50%; transform: translateY(-50%);">${Math.round(maxQueries/2)}</div>
+                        <div style="position: absolute; bottom: 0;">0</div>
+                    </div>
+                    <div class="chart-line" data-requests='${JSON.stringify(recentRequests)}' data-max='${maxQueries}' onmousemove="window.dashboard.showChartTooltip(event, 'db')" onmouseleave="window.dashboard.hideTooltip()">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline points="${this.addPadding(dbPoints)}" stroke="#28a745"/>
+                        </svg>
+                    </div>
+                    <div class="x-labels chart-labels">
+                        ${this.generateTimeLabels()}
+                    </div>
+                `;
+                // Memory Usage line chart
+                const memoryRequests = requests.filter(r => r.memory_usage && r.memory_usage > 0);
+                if (memoryRequests.length > 0) {
+                    const memoryValues = memoryRequests.map(r => r.memory_usage || 0);
+                    const maxMemory = Math.max(...memoryValues);
+                    const memoryPoints = this.mapDataToTimeRange(memoryRequests, 'memory_usage', maxMemory);
+                    this.currentChartType = 'memory';
+                    
+                    this.charts.memoryUsage.innerHTML = `
+                        <div class="y-labels chart-labels">
+                            <div style="position: absolute; top: 0;">${maxMemory.toFixed(1)}MB</div>
+                            <div style="position: absolute; top: 50%; transform: translateY(-50%);">${(maxMemory/2).toFixed(1)}MB</div>
+                            <div style="position: absolute; bottom: 0;">0MB</div>
+                        </div>
+                        <div class="chart-line" data-requests='${JSON.stringify(memoryRequests)}' data-max='${maxMemory}' onmousemove="window.dashboard.showChartTooltip(event, 'memory')" onmouseleave="window.dashboard.hideTooltip()">
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="${this.addPadding(memoryPoints)}" stroke="#ffc107"/>
+                            </svg>
+                        </div>
+                        <div class="x-labels chart-labels">
+                            ${this.generateTimeLabels()}
+                        </div>
+                    `;
+
+                } else {
+                    this.charts.memoryUsage.innerHTML = '<p class="text-muted text-center mt-5">No memory data available</p>';
+                }
+            } else {
+                // Handle case where volume chart data is empty
+                this.charts.requestVolume.innerHTML = '<p class="text-muted text-center mt-5">No request data available</p>';
+            }
+            
+
+            }
+
+            showEmptyCharts() {
+                const emptyMessage = '<p class="text-muted text-center mt-5">No data available for selected time range</p>';
+                this.charts.responseTime.innerHTML = emptyMessage;
+                this.charts.requestVolume.innerHTML = emptyMessage;
+                this.charts.dbPerformance.innerHTML = emptyMessage;
+                this.charts.memoryUsage.innerHTML = emptyMessage;
+            }
+
+            updateRequestsTable(requests) {
+                const tbody = document.getElementById('requests-tbody');
+                tbody.innerHTML = '';
+
+                requests.forEach(request => {
+                    const row = document.createElement('tr');
+
+                    const statusClass = request.is_error ? 'status-error' :
+                                       request.duration > 1 ? 'status-warning' : 'status-success';
+
+                    row.innerHTML = `
+                        <td class="timestamp-cell" data-timestamp="${request.timestamp}">${this.formatTimestamp(request.timestamp)}</td>
+                        <td><span class="status-indicator ${statusClass}"></span>${request.status_code}</td>
+                        <td><span class="badge bg-secondary">${request.method}</span></td>
+                        <td class="text-truncate" style="max-width: 200px;" title="${request.url}">${request.url}</td>
+                        <td>${request.view_name}</td>
+                        <td>${request.duration.toFixed(3)}s</td>
+                        <td>${request.db_queries_count}</td>
+                        <td>${request.memory_usage ? `${request.memory_usage.toFixed(1)}MB` : '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="window.dashboard.showRequestDetails('${request.id}')">
+                                Details
+                            </button>
+                        </td>
+                    `;
+
+                    tbody.appendChild(row);
+                });
+            }
+
+            addNewRequest(requestData) {
+                // For simple CSS charts, we'll just trigger a refresh of recent data
+                // In a real implementation, you'd update the chart data structures
+                console.log('New request received:', requestData);
+
+                // Add to requests table (prepend to top)
+                const tbody = document.getElementById('requests-tbody');
+                if (tbody.children.length > 0) {
+                    const newRow = document.createElement('tr');
+
+                    const statusClass = requestData.is_error ? 'status-error' :
+                                       requestData.duration > 1 ? 'status-warning' : 'status-success';
+
+                    newRow.innerHTML = `
+                        <td class="timestamp-cell" data-timestamp="${requestData.timestamp}">${this.formatTimestamp(requestData.timestamp)}</td>
+                        <td><span class="status-indicator ${statusClass}"></span>${requestData.status_code}</td>
+                        <td><span class="badge bg-secondary">${requestData.method}</span></td>
+                        <td class="text-truncate" style="max-width: 200px;" title="${requestData.url}">${requestData.url}</td>
+                        <td>${requestData.view_name}</td>
+                        <td>${requestData.duration.toFixed(3)}s</td>
+                        <td>${requestData.db_queries_count}</td>
+                        <td>${requestData.memory_usage ? `${requestData.memory_usage.toFixed(1)}MB` : '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="window.dashboard.showRequestDetails('${requestData.profile_id}')">
+                                Details
+                            </button>
+                        </td>
+                    `;
+
+                    tbody.insertBefore(newRow, tbody.firstChild);
+
+                    // Remove last row if more than 50 rows
+                    if (tbody.children.length > 50) {
+                        tbody.removeChild(tbody.lastChild);
+                    }
+                }
+            }
+
+            showRequestDetails(requestId) {
+                if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
+                    this.websocket.send(JSON.stringify({
+                        type: 'request_details',
+                        request_id: requestId
+                    }));
+                }
+            }
+
+            displayRequestDetails(details) {
+                const modalBody = document.getElementById('request-details-body');
+
+                let queriesHtml = '';
+                if (details.database_queries && details.database_queries.length > 0) {
+                    queriesHtml = `
+                        <h6>Database Queries (${details.database_queries.length})</h6>
+                        <div class="accordion" id="queriesAccordion">
+                    `;
+
+                    details.database_queries.forEach((query, index) => {
+                        queriesHtml += `
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading${index}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+                                        <strong>${query.duration.toFixed(3)}s</strong>&nbsp;&nbsp;${query.sql.substring(0, 60)}...
+                                    </button>
+                                </h2>
+                                <div id="collapse${index}" class="accordion-collapse collapse" data-bs-parent="#queriesAccordion">
+                                    <div class="accordion-body">
+                                        <strong>SQL:</strong>
+                                        <pre><code>${query.sql}</code></pre>
+                                        <strong>Duration:</strong> ${query.duration.toFixed(3)}s<br>
+                                        <strong>Parameters:</strong>
+                                        <pre><code>${JSON.stringify(query.params, null, 2)}</code></pre>
+                                        ${query.stack_trace ? `<strong>Stack Trace:</strong><pre><code>${query.stack_trace}</code></pre>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    queriesHtml += '</div>';
+                }
+
+                modalBody.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Request Information</h6>
+                            <table class="table table-sm">
+                                <tr><td><strong>URL:</strong></td><td>${details.url}</td></tr>
+                                <tr><td><strong>Method:</strong></td><td>${details.method}</td></tr>
+                                <tr><td><strong>View:</strong></td><td>${details.view_name}</td></tr>
+                                <tr><td><strong>Status:</strong></td><td>${details.status_code}</td></tr>
+                                <tr><td><strong>Duration:</strong></td><td>${details.duration.toFixed(3)}s</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Performance Metrics</h6>
+                            <table class="table table-sm">
+                                <tr><td><strong>Memory Usage:</strong></td><td>${details.memory_usage ? `${details.memory_usage.toFixed(1)}MB` : 'N/A'}</td></tr>
+                                <tr><td><strong>DB Queries:</strong></td><td>${details.database_queries ? details.database_queries.length : 0}</td></tr>
+                                <tr><td><strong>API Calls:</strong></td><td>${details.api_calls ? details.api_calls.length : 0}</td></tr>
+                                <tr><td><strong>Timestamp:</strong></td><td>${new Date(details.timestamp).toLocaleString()}</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    ${queriesHtml}
+                `;
+
+                new bootstrap.Modal(document.getElementById('requestDetailsModal')).show();
+            }
+
+            toggleProfiler() {
+                if (!this.websocket) {
+                    // In static mode, show current status and instructions
+                    const enabled = {{ profiler_enabled|yesno:"true,false" }};
+                    const status = enabled ? 'ENABLED' : 'DISABLED';
+                    alert(`Profiler is currently ${status}.\n\nTo toggle:\n1. Set PROFILEBOARD_ENABLED = ${!enabled} in settings.py\n2. Restart Django server`);
+                    return;
+                }
+                this.websocket.send(JSON.stringify({
+                    type: 'toggle_profiler',
+                    enabled: !this.isProfilerEnabled
+                }));
+            }
+
+            updateProfilerButton() {
+                const button = document.getElementById('profiler-status');
+                button.textContent = this.isProfilerEnabled ? 'Disable Profiler' : 'Enable Profiler';
+                button.parentElement.className = this.isProfilerEnabled ?
+                    'btn btn-success' : 'btn btn-outline-primary';
+            }
+
+            exportData() {
+                const timeRange = document.getElementById('time-range').value;
+                window.open(`/__monitor__/export/?time_range=${timeRange}&format=csv`);
+            }
+
+            generateTimeLabels() {
+                const timeRange = document.getElementById('time-range').value;
+                const now = new Date();
+                const labels = [];
+                
+                if (timeRange === '1m') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (60 - i * 15) * 1000);
+                        labels.push(`<span>${time.getSeconds()}s</span>`);
+                    }
+                } else if (timeRange === '5m') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (5 - i) * 60 * 1000);
+                        labels.push(`<span>${time.getHours().toString().padStart(2,'0')}:${time.getMinutes().toString().padStart(2,'0')}</span>`);
+                    }
+                } else if (timeRange === '30m') {
+                    for (let i = 0; i <= 5; i++) {
+                        const time = new Date(now.getTime() - (30 - i * 6) * 60 * 1000);
+                        labels.push(`<span>${time.getHours().toString().padStart(2,'0')}:${time.getMinutes().toString().padStart(2,'0')}</span>`);
+                    }
+                } else if (timeRange === '1h') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (60 - i * 15) * 60 * 1000);
+                        labels.push(`<span>${time.getHours().toString().padStart(2,'0')}:${time.getMinutes().toString().padStart(2,'0')}</span>`);
+                    }
+                } else if (timeRange === '3h') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (3 - i * 0.75) * 60 * 60 * 1000);
+                        labels.push(`<span>${time.getHours().toString().padStart(2,'0')}:${time.getMinutes().toString().padStart(2,'0')}</span>`);
+                    }
+                } else if (timeRange === '6h') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (6 - i * 1.5) * 60 * 60 * 1000);
+                        labels.push(`<span>${time.getHours().toString().padStart(2,'0')}:${time.getMinutes().toString().padStart(2,'0')}</span>`);
+                    }
+                } else if (timeRange === '24h') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (24 - i * 6) * 60 * 60 * 1000);
+                        const isToday = time.toDateString() === now.toDateString();
+                        const label = isToday ? `${time.getHours().toString().padStart(2,'0')}:00` : `${time.getDate()}/${time.getMonth()+1} ${time.getHours().toString().padStart(2,'0')}:00`;
+                        labels.push(`<span>${label}</span>`);
+                    }
+                } else if (timeRange === '7d') {
+                    for (let i = 0; i <= 4; i++) {
+                        const time = new Date(now.getTime() - (7 - i * 1.75) * 24 * 60 * 60 * 1000);
+                        labels.push(`<span>${(time.getMonth() + 1).toString().padStart(2,'0')}/${time.getDate().toString().padStart(2,'0')}</span>`);
+                    }
+                }
+                
+                return labels.join('');
+            }
+
+            getTimeRangeMs() {
+                const timeRange = document.getElementById('time-range').value;
+                if (timeRange === '1m') return 60 * 1000;
+                else if (timeRange === '5m') return 5 * 60 * 1000;
+                else if (timeRange === '30m') return 30 * 60 * 1000;
+                else if (timeRange === '1h') return 60 * 60 * 1000;
+                else if (timeRange === '3h') return 3 * 60 * 60 * 1000;
+                else if (timeRange === '6h') return 6 * 60 * 60 * 1000;
+                else if (timeRange === '24h') return 24 * 60 * 60 * 1000;
+                else if (timeRange === '7d') return 7 * 24 * 60 * 60 * 1000;
+            }
+
+            mapDataToTimeRange(requests, field, maxValue) {
+                const now = new Date();
+                const rangeMs = this.getTimeRangeMs();
+                const startTime = now.getTime() - rangeMs;
+                
+                const buckets = [];
+                const bucketData = [];
+                const bucketCount = 20;
+                const bucketSize = rangeMs / bucketCount;
+                
+                for (let i = 0; i <= bucketCount; i++) {
+                    const bucketTime = startTime + (i * bucketSize);
+                    const x = (i / bucketCount) * 100;
+                    
+                    const bucketRequests = requests.filter(req => {
+                        const reqTime = new Date(req.timestamp).getTime();
+                        return reqTime >= bucketTime && reqTime < bucketTime + bucketSize;
+                    });
+                    
+                    if (bucketRequests.length > 0) {
+                        const avgValue = bucketRequests.reduce((sum, req) => sum + (req[field] || 0), 0) / bucketRequests.length;
+                        const y = maxValue > 0 ? Math.max(5, 100 - (avgValue / maxValue) * 100) : 50;
+                        buckets.push(`${x},${y}`);
+                        bucketData.push({ x, y, value: avgValue, hasData: true });
+                    }
+                }
+                
+                // Store bucket data for tooltips with chart type
+                if (!this.chartBucketData) this.chartBucketData = {};
+                this.chartBucketData[field] = bucketData;
+                return buckets.join(' ');
+            }
+
+
+
+            addPadding(points) {
+                if (!points) return '';
+                return points.split(' ').map(point => {
+                    const [x, y] = point.split(',').map(Number);
+                    const paddedX = 10 + (x * 0.8);
+                    const paddedY = 10 + (y * 0.8);
+                    return `${paddedX},${paddedY}`;
+                }).join(' ');
+            }
+
+
+
+            showChartTooltip(event, type) {
+                const rect = event.currentTarget.getBoundingClientRect();
+                // Get mouse X position as a percentage within the .chart-line div
+                const cursorXPercent = ((event.clientX - rect.left) / rect.width) * 100;
+
+                const logicalX = (cursorXPercent - 10) / 0.8;
+
+                let tooltip = document.getElementById('chart-tooltip');
+                if (!tooltip) {
+                    tooltip = document.createElement('div');
+                    tooltip.id = 'chart-tooltip';
+                    tooltip.className = 'tooltip';
+                    document.body.appendChild(tooltip);
+                }
+
+                let content = 'No data';
+
+                // If cursor is outside the logical chart area, hide tooltip.
+                if (logicalX < 0 || logicalX > 100) {
+                    this.hideTooltip();
+                    return;
+                }
+
+                if (type === 'volume') {
+                    // Volume data is a dense array of 21 buckets.
+                    // We can calculate the index directly.
+                    const bucketIndex = Math.min(Math.max(Math.round(logicalX / 5), 0), 20); // logicalX is 0-100, 20 buckets, so each is 5 units wide.
+                    if (this.currentVolumeData && this.currentVolumeData[bucketIndex]) {
+                        const data = this.currentVolumeData[bucketIndex];
+                        if (data.hasData) {
+                            content = `${data.count} requests`;
+                        }
+                    }
+                } else {
+                    // Other charts have sparse data (only buckets with requests are stored).
+                    const fieldMap = { 'response': 'duration', 'db': 'db_queries_count', 'memory': 'memory_usage' };
+                    const field = fieldMap[type];
+                    if (this.chartBucketData && this.chartBucketData[field]) {
+                        const bucketsWithData = this.chartBucketData[field];
+
+                        if (bucketsWithData.length > 0) {
+                            // Find the data point (bucket) with the x-coordinate closest to the cursor's logical x.
+                            const closestBucket = bucketsWithData.reduce((prev, curr) => {
+                                return (Math.abs(curr.x - logicalX) < Math.abs(prev.x - logicalX) ? curr : prev);
+                            });
+
+                            // Only show the tooltip if the cursor is "close enough" to that data point.
+                            // A bucket is 5 units wide on the logical scale, so half of that is 2.5.
+                            if (closestBucket && Math.abs(closestBucket.x - logicalX) < 2.5) {
+                                const val = closestBucket.value;
+                                if (type === 'response') {
+                                    content = `${val.toFixed(3)}s`;
+                                } else if (type === 'db') {
+                                    content = `${Math.round(val)} queries`;
+                                } else if (type === 'memory') {
+                                    content = `${val.toFixed(1)}MB`;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tooltip.textContent = content;
+                tooltip.style.left = event.pageX + 10 + 'px';
+                tooltip.style.top = event.pageY - 30 + 'px';
+                tooltip.style.display = 'block';
+            }
+
+            hideTooltip() {
+                const tooltip = document.getElementById('chart-tooltip');
+                if (tooltip) {
+                    tooltip.style.display = 'none';
+                }
+            }
+
+
+
+            formatTimestamp(timestamp) {
+                const date = new Date(timestamp);
+                if (this.isUTC) {
+                    return date.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+                } else {
+                    return date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST';
+                }
+            }
+
+            toggleTimezone() {
+                this.isUTC = !this.isUTC;
+                const button = document.getElementById('timezone-toggle');
+                button.textContent = this.isUTC ? 'UTC' : 'IST';
+                
+                // Update all timestamp cells
+                document.querySelectorAll('.timestamp-cell').forEach(cell => {
+                    const timestamp = cell.dataset.timestamp;
+                    if (timestamp) {
+                        cell.textContent = this.formatTimestamp(timestamp);
+                    }
+                });
+            }
+
+            updateTimeRange() {
+                const timeRange = document.getElementById('time-range').value;
+                if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
+                    window.location.href = `?time_range=${timeRange}`;
+                    return;
+                }
+                this.websocket.send(JSON.stringify({
+                    type: 'request_history',
+                    params: { time_range: timeRange }
+                }));
+            }
+        }
+
+        // Initialize dashboard after page loads
+        window.addEventListener('load', () => {
+            const dashboard = new ProfileDashboard();
+            window.dashboard = dashboard;
+        });
+
+        // Global functions for button clicks
+        function toggleProfiler() { window.dashboard?.toggleProfiler(); }
+        function exportData() { window.dashboard?.exportData(); }
+        function updateTimeRange() { window.dashboard?.updateTimeRange(); }
+        function toggleTimezone() { window.dashboard?.toggleTimezone(); }
+    </script>
+</body>
+</html>

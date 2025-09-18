@@ -1,0 +1,18 @@
+[project]
+name = "minha-biblioteca-math"
+version = "0.1.0"
+description = "Uma biblioteca com funções matemáticas criada no curso"
+authors = [{ name = "Marcelo Kamei", email = "marcelokamei78@gmail.com"}]
+license= {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

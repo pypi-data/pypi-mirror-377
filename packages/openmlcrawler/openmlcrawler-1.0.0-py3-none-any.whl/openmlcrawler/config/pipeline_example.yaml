@@ -1,0 +1,68 @@
+# Example pipeline configuration
+# This file demonstrates how to configure data processing pipelines
+
+datasets:
+  # Weather data pipeline
+  - name: weather_delhi
+    type: connector
+    connector: weather
+    params:
+      location: "Delhi"
+      days: 7
+    output:
+      format: csv
+      path: "datasets/weather_delhi.csv"
+    cache: true
+
+  # COVID data pipeline
+  - name: covid_global
+    type: crawl
+    source: "https://datahub.io/core/covid-19/countries.csv"
+    data_type: csv
+    cleaning:
+      remove_duplicates: true
+      handle_missing:
+        strategy: fill_mean
+        columns: ["Confirmed", "Deaths", "Recovered"]
+      detect_types: true
+    ml_prep:
+      target_column: "Confirmed"
+      test_size: 0.2
+      normalize: true
+    output:
+      format: json
+      path: "datasets/covid_clean.json"
+    cache: true
+
+  # News data pipeline
+  - name: tech_news
+    type: connector
+    connector: news
+    params:
+      source: "hackernews"
+      limit: 100
+    cleaning:
+      text_cleaning:
+        lowercase: true
+        remove_stopwords: true
+        remove_punct: true
+    nlp:
+      language_detection: true
+      sentiment_analysis: true
+    output:
+      format: parquet
+      path: "datasets/tech_news.parquet"
+
+# Global settings
+settings:
+  cache_dir: "~/.openmlcrawler/cache"
+  log_level: "INFO"
+  max_retries: 3
+  timeout: 30
+  user_agent: "openmlcrawler/0.1.0"
+
+# Rate limiting
+rate_limits:
+  default: 10  # requests per minute
+  weather_api: 60
+  news_api: 30

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smtp_tool"
+version = "0.2.0"
+description = "Simple SMTP email sending utility"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+  { name = "LazyKitty", email = "wenzhao5105@163.com" }
+]
+keywords = ["smtp", "email" ]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Communications :: Email",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://pypi.org/project/smtp_tool/"
+Repository = "https://github.com/lazylemoncat/smtp_tool"
+
+[tool.setuptools]
+packages = ["smtp_tool"]

@@ -1,0 +1,230 @@
+Metadata-Version: 2.4
+Name: polyprime
+Version: 0.1.0
+Summary: A multi-paradigm programming language that compiles to Python, JavaScript, and more
+Home-page: https://github.com/MichaelCrowe11/polyprime
+Author: Michael Benjamin Crowe
+Author-email: michael@crowelogic.com
+Project-URL: Bug Reports, https://github.com/MichaelCrowe11/polyprime/issues
+Project-URL: Source, https://github.com/MichaelCrowe11/polyprime
+Keywords: programming-language compiler polyglot code-generator multi-paradigm
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Compilers
+Classifier: Topic :: Software Development :: Code Generators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# PolyPrime 🎯
+
+[![PyPI](https://img.shields.io/pypi/v/polyprime.svg)](https://pypi.org/project/polyprime/)
+[![Python](https://img.shields.io/pypi/pyversions/polyprime.svg)](https://pypi.org/project/polyprime/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**PolyPrime** is a multi-paradigm programming language that compiles to multiple target languages including Python, JavaScript, and more. Write once, deploy everywhere.
+
+## ✨ Features
+
+- 🎯 **Multi-Target Compilation**: Compile to Python, JavaScript, with more targets coming
+- 🚀 **Simple Syntax**: Clean, easy-to-learn syntax inspired by modern languages
+- 🔧 **Extensible**: Easy to add new compilation targets
+- 📦 **Lightweight**: Minimal dependencies, fast compilation
+- 🎨 **Modern**: Designed for today's polyglot development environment
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+pip install polyprime
+```
+
+### Your First Program
+
+Create a file `hello.pp`:
+
+```javascript
+function main() {
+    let message = "Hello, PolyPrime!";
+    print(message);
+    return 0;
+}
+```
+
+Compile and run:
+
+```bash
+# Compile to Python
+polyprime compile hello.pp --target python
+
+# Compile to JavaScript
+polyprime compile hello.pp --target javascript
+
+# Run directly
+polyprime run hello.pp
+```
+
+## 📝 Language Syntax
+
+### Variables
+
+```javascript
+let x = 42;           // Mutable variable
+const pi = 3.14159;   // Immutable constant
+```
+
+### Functions
+
+```javascript
+function add(a, b) {
+    return a + b;
+}
+
+function greet(name) {
+    print("Hello, " + name);
+}
+```
+
+### Control Flow
+
+```javascript
+if (x > 0) {
+    print("Positive");
+} else {
+    print("Non-positive");
+}
+
+for (i = 0; i < 10; i++) {
+    print(i);
+}
+
+while (condition) {
+    // loop body
+}
+```
+
+## 🎯 Compilation Targets
+
+| Target | Status | Extension |
+|--------|--------|-----------|
+| Python | ✅ Ready | `.py` |
+| JavaScript | ✅ Ready | `.js` |
+| TypeScript | 🚧 Coming Soon | `.ts` |
+| Rust | 🚧 Planned | `.rs` |
+| Go | 🚧 Planned | `.go` |
+
+## 🛠️ CLI Usage
+
+```bash
+# Initialize a new project
+polyprime init myproject
+
+# Compile a file
+polyprime compile source.pp --target python
+
+# Run a program
+polyprime run source.pp
+
+# Show version
+polyprime --version
+
+# Get help
+polyprime --help
+```
+
+## 📦 API Usage
+
+```python
+from polyprime import Compiler
+
+# Create compiler instance
+compiler = Compiler()
+
+# Compile source code
+source = """
+function main() {
+    let x = 42;
+    return x;
+}
+"""
+
+# Compile to Python
+python_code = compiler.compile(source, target="python")
+print(python_code)
+
+# Compile to JavaScript
+js_code = compiler.compile(source, target="javascript")
+print(js_code)
+```
+
+## 🎯 Use Cases
+
+- **Educational**: Learn programming concepts that translate across languages
+- **Prototyping**: Quickly prototype in one language, deploy in another
+- **Migration**: Gradually migrate codebases between languages
+- **Polyglot Teams**: Let team members work in a unified syntax
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📚 Documentation
+
+For more detailed documentation, visit our [GitHub repository](https://github.com/MichaelCrowe11/polyprime).
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Michael Benjamin Crowe**
+- Email: michael@crowelogic.com
+- GitHub: [@MichaelCrowe11](https://github.com/MichaelCrowe11)
+
+## 🙏 Acknowledgments
+
+- Inspired by modern programming language design
+- Built with Python for maximum portability
+- Designed for the polyglot programming era
+
+---
+
+**Ready to write once and deploy everywhere?** Install PolyPrime today!
+
+```bash
+pip install polyprime
+```

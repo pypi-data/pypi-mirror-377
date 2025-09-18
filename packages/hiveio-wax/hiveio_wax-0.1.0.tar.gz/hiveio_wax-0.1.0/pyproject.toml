@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "hiveio-wax"
+version = "0.1.0"
+description = "Prosta biblioteka przykład (Poetry)"
+authors = ["kmochocki <kmochocki@syncad.com>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://gitlab.syncad.com/hive/wax"
+keywords = ["example", "hello"]
+packages = [
+    { include = "wax", from = "." }
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"

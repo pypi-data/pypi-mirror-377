@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: widetrax
+Version: 1.1.1
+Summary: Computes the Power Spectrum density (PSD) from SWOT data
+Author-email: Amine Ouhechou <amine.ouhechou@univ-grenoble-alpes.fr>, Julien Le Sommer <julien.lesommer@univ-grenoble-alpes.fr>
+License: Apache-2.0
+Keywords: PSD,SWOT,Vorticity,Strain
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cartopy
+Requires-Dist: matplotlib
+Requires-Dist: netCDF4
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: xarray
+Requires-Dist: datetime
+Requires-Dist: jax
+Requires-Dist: jaxparrow
+Requires-Dist: s3fs
+Requires-Dist: natsort
+Requires-Dist: pandas
+Requires-Dist: opencv-python
+Requires-Dist: opencv-contrib-python
+Dynamic: license-file
+
+[![Documentation Status](https://readthedocs.org/projects/widetrax/badge/?version=latest)](https://widetrax.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Version](https://img.shields.io/pypi/v/widetrax)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/widetrax)
+
+# 🌊 WideTrax: Your Tool for Wide-Swath Altimetry Ocean Data
+## Description
+
+**WideTrax** is a powerful package designed to process and analyze wide-swath altimetry ocean data effortlessly. 
+
+### ✨ Key Features  
+1️⃣ **Compute PSD (Power Spectral Density):**  
+   WideTrax calculates the **Power Spectral Density (PSD)** of **Sea Surface Height (SSH)** for both phases and orbits of the **SWOT mission** in any region of the world.  
+
+2️⃣ **User-Friendly Data Handling:**  
+   - 📂 Easily read SWOT data in **NetCDF** and **Zcollections** formats.  
+   - 🧹 Clean and handle **NaN values** effectively.  
+   - 🔄 Perform **interpolation** to prepare data for advanced analysis.
+
+3️⃣ **Other Calculations:**  
+   - 🌀 Compute **vorticity** and **strain** along the track.  
+
+### 🌐 Flexibility  
+WideTrax allows you to manipulate **SWOT data** both locally 🖥️ and from an **S3 endpoint** ☁️.
+
+See the full [documentation](https://widetrax.readthedocs.io/en/latest/)!

@@ -1,0 +1,96 @@
+{
+  "id": "mobile-app",
+  "name": "Mobile Application",
+  "description": "Template for cross-platform mobile applications with React Native or Flutter",
+  "version": "1.0.0",
+  "project_type": "mobile-app",
+  "technology_stack": [
+    "react-native",
+    "flutter",
+    "typescript",
+    "dart",
+    "expo",
+    "firebase",
+    "native-modules"
+  ],
+  "default_tags": [
+    "mobile",
+    "cross-platform",
+    "ui-ux",
+    "performance",
+    "testing",
+    "deployment",
+    "security"
+  ],
+  "required_instructions": [
+    "mobile_project_structure",
+    "navigation_setup",
+    "state_management",
+    "platform_specific_code",
+    "testing_setup"
+  ],
+  "optional_instructions": [
+    "push_notifications",
+    "offline_storage",
+    "analytics_integration",
+    "crash_reporting",
+    "app_store_optimization"
+  ],
+  "parameters": {
+    "framework": {
+      "type": "string",
+      "default": "react-native",
+      "description": "Mobile development framework",
+      "required": true,
+      "options": ["react-native", "flutter", "ionic", "xamarin"]
+    },
+    "state_management": {
+      "type": "string",
+      "default": "redux",
+      "description": "State management solution",
+      "required": false,
+      "options": ["redux", "mobx", "context", "bloc", "provider"]
+    },
+    "backend_service": {
+      "type": "string",
+      "default": "firebase",
+      "description": "Backend as a service",
+      "required": false,
+      "options": ["firebase", "aws-amplify", "supabase", "custom-api"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "android",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "file_exists",
+      "value": "ios",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "dependency_exists",
+      "value": "react-native",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "file_exists",
+      "value": "pubspec.yaml",
+      "operator": "exists",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "mobile",
+    "complexity": "intermediate",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["mobile", "cross-platform", "native"]
+  }
+}

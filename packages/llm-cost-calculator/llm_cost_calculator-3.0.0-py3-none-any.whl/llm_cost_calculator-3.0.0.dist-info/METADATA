@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: llm-cost-calculator
+Version: 3.0.0
+Summary: Cost tracking for OpenAI, Gemini, and Claude APIs with session management
+Home-page: https://github.com/yourusername/llm-cost-calculator
+Author: kartikeyy
+Author-email: bhalsekartikey07@gmail.com
+Project-URL: Bug Reports, https://github.com/yourusername/llm-cost-calculator/issues
+Project-URL: Source, https://github.com/yourusername/llm-cost-calculator
+Project-URL: Documentation, https://github.com/yourusername/llm-cost-calculator/docs
+Keywords: llm cost calculator openai gemini claude anthropic pricing tokens ai video generation
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: System :: Monitoring
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: accurate
+Requires-Dist: tiktoken>=0.5.0; extra == "accurate"
+Requires-Dist: google-generativeai>=0.3.0; extra == "accurate"
+Requires-Dist: anthropic>=0.3.0; extra == "accurate"
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=4.0.0; extra == "dev"
+Provides-Extra: all
+Requires-Dist: tiktoken>=0.5.0; extra == "all"
+Requires-Dist: google-generativeai>=0.3.0; extra == "all"
+Requires-Dist: anthropic>=0.3.0; extra == "all"
+Requires-Dist: pytest>=6.0.0; extra == "all"
+Requires-Dist: pytest-cov>=2.0.0; extra == "all"
+Requires-Dist: black>=22.0.0; extra == "all"
+Requires-Dist: flake8>=4.0.0; extra == "all"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-python
+Dynamic: summary
+
+LLM Cost Calculator - Automatic cost tracking for OpenAI, Gemini, and Claude APIs

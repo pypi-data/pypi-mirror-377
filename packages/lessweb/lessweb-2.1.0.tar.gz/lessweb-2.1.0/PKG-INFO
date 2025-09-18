@@ -1,0 +1,121 @@
+Metadata-Version: 2.4
+Name: lessweb
+Version: 2.1.0
+Summary: A pythonic web framework
+Author-email: qorzj <goodhorsezxj@gmail.com>
+License: Copyright lessweb contributors.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+        
+            http://www.apache.org/licenses/LICENSE-2.0
+        
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+Keywords: lessweb,web,web.py,aiohttp
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: aiohttp
+Requires-Dist: aiojobs
+Requires-Dist: toml
+Requires-Dist: orjson
+Requires-Dist: typing_inspect
+Requires-Dist: pydantic
+Requires-Dist: python-dotenv
+Provides-Extra: test
+Requires-Dist: flake8; extra == "test"
+Requires-Dist: mypy; extra == "test"
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-mock; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+Requires-Dist: pytest-aiohttp; extra == "test"
+Requires-Dist: types-toml; extra == "test"
+Dynamic: license-file
+
+# lessweb
+
+Lessweb is a ready-to-use, production-grade Python web framework with the following goals:
+
+* Ready-to-use: Easily parse configuration files, set up logging with ease, and dynamically override configuration items using environ variables.
+* Production-grade: Built on the aiohttp ecosystem and boast powerful IOC capabilities.
+* Pythonic: Support for the latest python version and the latest python syntax.
+
+## Install lessweb
+
+To install the latest lessweb for Python≥3.10, please run:
+
+```shell
+pip install lessweb
+```
+
+## Dependencies
+
+- [aiohttp](https://github.com/aio-libs/aiohttp)
+- [orjson](https://github.com/ijl/orjson)
+- [pydantic](https://github.com/pydantic/pydantic)
+- [python-dotenv](https://github.com/theskumar/python-dotenv)
+
+## A Simple Example
+
+Save the code below in file `main.py`:
+
+```python
+from typing import Annotated
+
+from lessweb import Bridge
+from lessweb.annotation import Get
+
+
+async def hello(*, who: str = 'world') -> Annotated[dict, Get('/')]:
+    return {'message': f'Hello, {who}!'}
+
+
+def main():
+    bridge = Bridge()
+    bridge.scan(hello)
+    bridge.run_app()
+
+
+if __name__ == '__main__':
+    main()
+```
+
+Start the application with the command below, it listens on `http://localhost:8080` by default.
+
+```shell
+python main.py
+```
+
+### Check it
+
+Open your browser at `http://localhost:8080`
+
+You will see the JSON response as:
+
+```json
+{"message":"Hello, world!"}
+```
+
+Open your browser at `http://127.0.0.1:8000?who=John`
+
+You will see the JSON response as:
+
+```json
+{"message":"Hello, John!"}
+```
+
+## License
+
+Lessweb is offered under the Apache 2 license.
+
+## Source code
+
+The latest developer version is available in a GitHub repository: https://github.com/lessweb/lessweb
+

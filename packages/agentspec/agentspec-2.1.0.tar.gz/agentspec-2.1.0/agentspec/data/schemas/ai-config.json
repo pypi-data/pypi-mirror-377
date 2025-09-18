@@ -1,0 +1,254 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentSpec AI Configuration Schema",
+  "description": "Configuration schema for AI-specific features and capabilities in AgentSpec",
+  "type": "object",
+  "properties": {
+    "ai_assistance": {
+      "type": "object",
+      "description": "AI assistance configuration based on research best practices",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable AI assistance features"
+        },
+        "collaboration_mode": {
+          "type": "string",
+          "enum": ["architect", "peer_programmer", "assistant"],
+          "default": "peer_programmer",
+          "description": "AI collaboration mode based on human-in-the-loop principles"
+        },
+        "context_management": {
+          "type": "object",
+          "properties": {
+            "rich_scratchpad_enabled": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable rich scratchpad for context management"
+            },
+            "scratchpad_path": {
+              "type": "string",
+              "default": ".agentspec/scratchpad.md",
+              "description": "Path to rich scratchpad file"
+            },
+            "context_window_size": {
+              "type": "integer",
+              "default": 8192,
+              "description": "Maximum context window size for AI interactions"
+            }
+          }
+        },
+        "validation_framework": {
+          "type": "object",
+          "properties": {
+            "continuous_validation": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable continuous validation loop"
+            },
+            "validation_levels": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["automated_testing", "manual_inspection", "application_interaction"]
+              },
+              "default": ["automated_testing", "manual_inspection"],
+              "description": "Validation methods to use"
+            },
+            "zero_tolerance_policy": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enforce zero-tolerance for errors policy"
+            }
+          }
+        }
+      }
+    },
+    "prompt_engineering": {
+      "type": "object",
+      "description": "Prompt engineering configuration",
+      "properties": {
+        "default_technique": {
+          "type": "string",
+          "enum": ["direct", "chain_of_thought", "decomposition", "persona_based", "skeleton_priming"],
+          "default": "chain_of_thought",
+          "description": "Default prompting technique"
+        },
+        "complexity_handling": {
+          "type": "string",
+          "enum": ["incremental", "monolithic"],
+          "default": "incremental",
+          "description": "Approach to handling complex tasks"
+        },
+        "prompt_library_path": {
+          "type": "string",
+          "default": ".agentspec/prompts/",
+          "description": "Path to reusable prompt library"
+        }
+      }
+    },
+    "security_guardrails": {
+      "type": "object",
+      "description": "Security guardrails configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable security guardrails"
+        },
+        "implementation_level": {
+          "type": "string",
+          "enum": ["basic", "intermediate", "enterprise", "mission_critical"],
+          "default": "intermediate",
+          "description": "Security implementation level"
+        },
+        "guardrail_layers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["validation", "regulatory_compliance", "alignment", "hallucination", "appropriateness"]
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              },
+              "priority": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": ["type"]
+          }
+        },
+        "compliance_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["gdpr", "hipaa", "sox", "pci_dss", "iso27001"]
+          },
+          "description": "Regulatory compliance requirements"
+        }
+      }
+    },
+    "domain_specific": {
+      "type": "object",
+      "description": "Domain-specific AI configurations",
+      "properties": {
+        "devops": {
+          "type": "object",
+          "properties": {
+            "ai_enhanced_ci_cd": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable AI-enhanced CI/CD features"
+            },
+            "intelligent_monitoring": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable intelligent monitoring and observability"
+            },
+            "vulnerability_scanning": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable proactive vulnerability management"
+            }
+          }
+        },
+        "frontend": {
+          "type": "object",
+          "properties": {
+            "design_to_code": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable design-to-code conversion"
+            },
+            "accessibility_audits": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable automated accessibility audits"
+            },
+            "performance_optimization": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable AI-driven performance optimization"
+            }
+          }
+        },
+        "backend": {
+          "type": "object",
+          "properties": {
+            "ai_driven_tdd": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable AI-driven Test-Driven Development"
+            },
+            "architectural_assistance": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable AI architectural brainstorming"
+            },
+            "api_generation": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable API and data model generation"
+            }
+          }
+        }
+      }
+    },
+    "organizational": {
+      "type": "object",
+      "description": "Organizational adoption settings",
+      "properties": {
+        "adoption_strategy": {
+          "type": "string",
+          "enum": ["crawl_walk_run", "big_bang", "gradual"],
+          "default": "crawl_walk_run",
+          "description": "AI adoption strategy"
+        },
+        "developer_training": {
+          "type": "object",
+          "properties": {
+            "security_upskilling": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable security upskilling programs"
+            },
+            "prompt_engineering_training": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable prompt engineering training"
+            },
+            "mentorship_program": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable structured mentorship for junior developers"
+            }
+          }
+        },
+        "quality_policies": {
+          "type": "object",
+          "properties": {
+            "never_commit_unknown_code": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enforce policy: never commit code you don't understand"
+            },
+            "avoid_vibe_coding": {
+              "type": "boolean",
+              "default": true,
+              "description": "Discourage vibe coding for production systems"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["ai_assistance", "security_guardrails"],
+  "additionalProperties": false
+}

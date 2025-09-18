@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aara"
+version = "0.0.5"
+description = "ArXiv Reader App"
+authors = [
+  {name="Jayke Nguyen"},
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp>=3.12.15",
+    "beautifulsoup4>=4.13.5",
+    "textual>=6.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/jsnguyen/aara"
+
+[project.scripts]
+aara = "aara.aara:main"

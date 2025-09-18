@@ -1,0 +1,12 @@
+include README.md
+include LICENSE
+include pyproject.toml
+include requirements.txt
+include PUBLISHING.md
+
+recursive-include tests *
+
+global-exclude *.py[cod]
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .git*

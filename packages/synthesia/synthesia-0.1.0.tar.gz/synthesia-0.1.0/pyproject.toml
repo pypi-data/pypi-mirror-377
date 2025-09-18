@@ -1,0 +1,19 @@
+[project]
+name = "synthesia"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "dlt[bigquery]>=1.15.0",
+    "google-cloud-bigquery-storage>=2.32.0",
+    "pandas>=2.3.1",
+    "pyarrow>=21.0.0",
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+synthesia = "synthesia.main:app"
+
+[build-system]
+requires = ["uv_build>=0.8.18,<0.9.0"]
+build-backend = "uv_build"

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="1">
+    <record id="DadesIllimitades" model="product.attribute.value">
+      <field name="name">Dades il·limitades</field>
+      <field name="attribute_id" ref="somconnexio.Data"/>
+      <field name="catalog_name">1000000</field>
+    </record>
+    <record id="SwitchboardApplication" model="product.attribute.value">
+      <field name="name">Aplicacio</field>
+      <field name="attribute_id" ref="Switchboard"/>
+    </record>
+    <record id="SwitchboardDesktop" model="product.attribute.value">
+      <field name="name">Desktop</field>
+      <field name="attribute_id" ref="Switchboard"/>
+    </record>
+    <record id="DeviceWired" model="product.attribute.value">
+      <field name="name">Wired phone</field>
+      <field name="attribute_id" ref="Device"/>
+    </record>
+    <record id="DeviceWireless" model="product.attribute.value">
+      <field name="name">Wireless phone</field>
+      <field name="attribute_id" ref="Device"/>
+    </record>
+    <record id="DeviceSIM" model="product.attribute.value">
+      <field name="name">Phone with SIM</field>
+      <field name="attribute_id" ref="Device"/>
+    </record>
+    <record id="Landline900" model="product.attribute.value">
+      <field name="name">900</field>
+      <field name="attribute_id" ref="LandlineNumbering"/>
+    </record>
+  </data>
+</odoo>

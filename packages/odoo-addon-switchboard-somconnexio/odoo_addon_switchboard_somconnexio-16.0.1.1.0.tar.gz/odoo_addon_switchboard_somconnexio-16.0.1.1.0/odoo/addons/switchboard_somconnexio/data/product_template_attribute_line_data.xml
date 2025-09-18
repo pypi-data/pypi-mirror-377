@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<odoo>
+  <data noupdate="1">
+    <!-- Main sb product template -->
+    <record id="Switchboard_product_template_Min_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_product_template"/>
+      <field name="attribute_id" ref="somconnexio.Min"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.TrucadesIllimitades'),ref('somconnexio.500Min')])]"/>
+    </record>
+    <record id="Switchboard_product_template_IsCompanyExclusive_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_product_template"/>
+      <field name="attribute_id" ref="somconnexio.SalesCategory"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.CompanyExclusive')])]"/>
+    </record>
+    <record id="Switchboard_product_template_Switchboard_switchboard_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_product_template"/>
+      <field name="attribute_id" ref="Switchboard"/>
+      <field name="value_ids" eval="[(6, 0, [ref('SwitchboardApplication'),ref('SwitchboardDesktop')])]"/>
+    </record>
+    <record id="Switchboard_product_template_MinBA_switchboard_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_product_template"/>
+      <field name="attribute_id" ref="somconnexio.MinBA"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.Inclos')])]"/>
+    </record>
+    <!-- Mobile sb product template -->
+    <record id="Switchboard_mobile_product_template_Data_switchboard_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_mobile_product_template"/>
+      <field name="attribute_id" ref="somconnexio.Data"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.SenseDades'),ref('somconnexio.10GB'),ref('somconnexio.20GB'),ref('DadesIllimitades')])]"/>
+    </record>
+    <record id="Switchboard_mobile_product_template_IsCompanyExclusive_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_mobile_product_template"/>
+      <field name="attribute_id" ref="somconnexio.SalesCategory"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.CompanyExclusive')])]"/>
+    </record>
+    <!-- Integration sb product template -->
+    <record id="Switchboard_integration_product_template_IsCompanyExclusive_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_integration_product_template"/>
+      <field name="attribute_id" ref="somconnexio.SalesCategory"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.CompanyExclusive')])]"/>
+    </record>
+    <!-- Calls sb product template -->
+    <record id="Switchboard_calls_product_template_LandlineNumbering_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_call_product_template"/>
+      <field name="attribute_id" ref="LandlineNumbering"/>
+      <field name="value_ids" eval="[(6, 0, [ref('Landline900')])]"/>
+    </record>
+    <record id="Switchboard_calls_product_template_IsCompanyExclusive_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_call_product_template"/>
+      <field name="attribute_id" ref="somconnexio.SalesCategory"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.CompanyExclusive')])]"/>
+    </record>
+    <!-- Device sb product template -->
+    <record id="Switchboard_device_product_template_Device_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_device_product_template"/>
+      <field name="attribute_id" ref="Device"/>
+      <field name="value_ids" eval="[(6, 0, [ref('DeviceWired'),ref('DeviceWireless'),ref('DeviceSIM')])]"/>
+    </record>
+    <record id="Switchboard_device_product_template_IsCompanyExclusive_attribute_line" model="product.template.attribute.line">
+      <field name="product_tmpl_id" ref="Switchboard_device_product_template"/>
+      <field name="attribute_id" ref="somconnexio.SalesCategory"/>
+      <field name="value_ids" eval="[(6, 0, [ref('somconnexio.CompanyExclusive')])]"/>
+    </record>
+  </data>
+</odoo>

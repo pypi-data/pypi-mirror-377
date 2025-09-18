@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <record id="switchboard_category" model="product.category">
+      <field name="name">Switchboard Service</field>
+    </record>
+    <record id="switchboard_additional_service" model="product.category">
+      <field name="parent_id" ref="switchboard_category"/>
+      <field name="name">Switchboard Additional Service</field>
+    </record>
+    <record id="switchboard_add_mobile" model="product.category">
+      <field name="parent_id" ref="switchboard_additional_service"/>
+      <field name="name">Switchboard Additional Mobile Service</field>
+    </record>
+    <record id="switchboard_add_integration" model="product.category">
+      <field name="parent_id" ref="switchboard_additional_service"/>
+      <field name="name">Switchboard Additional Integration Service</field>
+    </record>
+    <record id="switchboard_add_call" model="product.category">
+      <field name="parent_id" ref="switchboard_additional_service"/>
+      <field name="name">Switchboard Additional Call Service</field>
+    </record>
+    <record id="switchboard_add_device" model="product.category">
+      <field name="parent_id" ref="switchboard_additional_service"/>
+      <field name="name">Switchboard Additional Device Service</field>
+    </record>
+  </data>
+</odoo>

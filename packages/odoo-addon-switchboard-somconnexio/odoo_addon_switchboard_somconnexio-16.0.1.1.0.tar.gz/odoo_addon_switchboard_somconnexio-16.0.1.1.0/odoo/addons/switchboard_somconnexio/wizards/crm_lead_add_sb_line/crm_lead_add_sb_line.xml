@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agent form view (for pop-up) -->
+    <record id="view_agent_sb_form" model="ir.ui.view">
+        <field name="name">agent.sb.form</field>
+        <field name="model">agent.sb</field>
+        <field name="arch" type="xml">
+            <form string="Agent Configuration">
+                <sheet>
+                    <group string="💳 Billing Information">
+                        <field name="partner_id" invisible="1"/>
+                        <field name="bank_id" options="{'no_create': True}"/>
+                    </group>
+                    <group string="👥 Agent Information">
+                        <field name="agent_name"/>
+                        <field name="agent_email"/>
+                        <field name="extension"/>
+                    </group>
+                    <group string="📱 Mobile Product Details" attrs="{'invisible': [('mobile_product_id', '=', False)]}">
+                        <field name="phone_number"
+                            attrs="{'required': [('mobile_product_id', '!=', False)]}"/>
+                        <field name="provision_type"
+                            attrs="{'required': [('mobile_product_id', '!=', False)]}"/>
+                        <field name="icc"/>
+                        <field name="previous_owner_first_name"
+                            attrs="{'invisible': [('provision_type', '!=', 'portability')]}" />
+                        <field name="previous_owner_name"
+                            attrs="{'invisible': [('provision_type', '!=', 'portability')]}" />
+                        <field name="previous_owner_vat_number"
+                            attrs="{'invisible': [('provision_type', '!=', 'portability')]}" />
+                    </group>
+
+                    <!-- Main Product -->
+                    <group string="🎧 Main Product" class="oe_group_box">
+                        <group>
+                            <field name="product_id"
+                                   options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <!-- Additional Products -->
+                    <group string="➕ Additional Products" class="oe_group_box">
+                        <field name="mobile_product_id"
+                                options="{'no_create': True}"/>
+                        <field name="integration_product_id"
+                                options="{'no_create': True}"/>
+                        <field name="device_product_id"
+                                options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button type="object" name="action_save_agent" string="Save &amp; Return"/>
+                        <button type="object" name="action_go_back" string="Go back"/>
+                        <button type="object" name="action_remove_agent" string="Remove"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Landline form view (for pop-up) -->
+    <record id="view_landline_sb_form" model="ir.ui.view">
+        <field name="name">landline.sb.form</field>
+        <field name="model">landline.sb</field>
+        <field name="arch" type="xml">
+            <form string="Landline Configuration">
+                <sheet>
+                    <group string="💳 Billing Information">
+                        <field name="partner_id" invisible="1"/>
+                        <field name="bank_id" options="{'no_create': True}"/>
+                    </group>
+                    <group string="📞 Landline Information">
+                        <field name="phone_number"/>
+                        <field name="product_id"
+                                options="{'no_create': True}"/>
+                        <field name="provision_type"/>
+                        <field name="previous_owner_first_name"
+                            attrs="{'invisible': [('provision_type', '!=', 'portability')]}" />
+                        <field name="previous_owner_name"
+                            attrs="{'invisible': [('provision_type', '!=', 'portability')]}" />
+                        <field name="previous_owner_vat_number"
+                            attrs="{'invisible': [('provision_type', '!=', 'portability')]}" />
+                    </group>
+                    <group string="➕ Additional Products" class="oe_group_box">
+                        <field name="call_product_id"
+                                options="{'no_create': True}"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button type="object" name="action_save_landline" string="Save &amp; Return"/>
+                    <button type="object" name="action_go_back" string="Go back"/>
+                    <button type="object" name="action_remove_landline" string="Remove"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions for agent pop-ups -->
+    <record id="action_agent_sb_form" model="ir.actions.act_window">
+        <field name="name">Add Agent</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">agent.sb</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_agent_sb_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_landline_sb_form" model="ir.actions.act_window">
+        <field name="name">Add Landline</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">landline.sb</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_landline_sb_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Main wizard form view -->
+    <record id="view_crm_lead_add_sb_line_wizard_form" model="ir.ui.view">
+        <field name="name">crm.lead.add.sb.line.wizard.form</field>
+        <field name="model">crm.lead.add.sb.line.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Switchboard Virtual Constructor">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Instructions:</strong>
+                        <p>Use this constructor to add agents and landlines to the switchboard lead.</p>
+                        <p>Each agent can have a main SB product and additional products.</p>
+                        <p>SB mobiles and landlines may require portability data</p>
+                    </div>
+                    <field name="lead_id" invisible="1"/>
+                    <notebook>
+                        <!-- Agents Tab -->
+                        <page string="👥 Agents" name="agents">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0">
+                                                <i class="fa fa-users"/> Agent List
+                                            </h5>
+                                            <button name="action_new_agent" type="object"
+                                                    string="Add Agent"
+                                                    class="btn btn-primary btn-sm"
+                                                    icon="fa-plus"/>
+                                        </div>
+                                        <div class="card-body">
+                                            <field name="agent_line_ids"
+                                                   readonly="1">
+                                                <tree string="SB Agents" create="false" edit="false" delete="true">
+                                                    <field name="agent_name"/>
+                                                    <field name="agent_email"/>
+                                                    <field name="extension"/>
+                                                    <field name="product_id"/>
+                                                    <button name="action_edit_agent" type="object" string="Edit"
+                                                            icon="fa-edit" class="btn-link"/>
+                                                </tree>
+                                            </field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Landlines Tab -->
+                        <page string="📞 Landlines" name="landlines">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0">
+                                                <i class="fa fa-phone"/> Landline List
+                                            </h5>
+                                            <button name="action_new_landline" type="object"
+                                                    string="Add Landline"
+                                                    class="btn btn-primary btn-sm"
+                                                    icon="fa-plus"/>
+                                        </div>
+                                        <div class="card-body">
+                                            <field name="landline_line_ids"
+                                                   readonly="1">
+                                                <tree string="SB Landlines" create="false" edit="false" delete="true">
+                                                    <field name="phone_number"/>
+                                                    <field name="product_id"/>
+                                                    <field name="provision_type"/>
+                                                    <button name="action_edit_landline" type="object" string="Edit"
+                                                            icon="fa-edit" class="btn-link"/>
+                                                </tree>
+                                            </field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button type="object" name="button_add" string="Add" class="btn-primary" />
+                    <button type="object" name="button_cancel" string="Cancel" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_crm_lead_add_sb_line_wizard" model="ir.actions.act_window">
+        <field name="name">Switchboard Virtual Constructor</field>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="res_model">crm.lead.add.sb.line.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_view_types">form</field>
+    </record>
+
+    <!-- Context menu for CRM Lead -->
+    <record id="view_crm_lead_form_inherit_switchboard" model="ir.ui.view">
+      <field name="name">crm.lead.form.inherit.switchboard</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="somconnexio.crm_case_form_view_pack"/>
+      <field name="arch" type="xml">
+        <xpath expr="//button" position="before">
+          <!--field name="has_switchboard_lead_lines" invisible="1"/-->
+          <button name="%(action_crm_lead_add_sb_line_wizard)d"
+                  string="Build SB CRM Lead"
+                  type="action"
+                  attrs="{'invisible': [('stage_id', '!=', %(crm.stage_lead1)d)]}"
+                  help="Add agents and landlines to virtual switchboard"/>
+        </xpath>
+      </field>
+    </record>
+</odoo>

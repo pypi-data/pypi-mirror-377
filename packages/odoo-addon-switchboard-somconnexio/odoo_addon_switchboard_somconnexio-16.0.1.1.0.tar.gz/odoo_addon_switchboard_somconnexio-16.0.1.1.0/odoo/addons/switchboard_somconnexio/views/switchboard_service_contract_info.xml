@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="switchboard_service_contract_info_form_view" model="ir.ui.view">
+    <field name="name">switchboard.service.contract.info.form</field>
+    <field name="model">switchboard.service.contract.info</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <div class="oe_title">
+            <h1>Switchboard information</h1>
+          </div>
+          <group>
+            <group string="Agent data" class="col-md-6">
+              <field name="agent_name"/>
+              <field name="agent_email"/>
+              <field name="extension"/>
+              <group string="Mobile data">
+                <field name="phone_number"/>
+                <field name="icc"/>
+              </group>
+            </group>
+            <group string="Landline data" class="col-md-6">
+              <field name="phone_number"/>
+              <field name="phone_number_2" attrs="{'invisible': [('phone_number_2', '=', False)]}" />
+              <field name="SIP_channel_name"/>
+              <field name="SIP_channel_password"/>
+              <field name="MAC_CPE_SIP"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+</odoo>

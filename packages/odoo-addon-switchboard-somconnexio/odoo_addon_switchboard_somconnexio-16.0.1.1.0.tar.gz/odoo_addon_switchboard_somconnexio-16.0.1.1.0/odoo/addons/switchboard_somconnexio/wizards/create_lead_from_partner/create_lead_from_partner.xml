@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+  <record id="view_form_partner_create_lead_wizard_switchboard" model="ir.ui.view">
+    <field name="name">Partner Lead Create Wizard Switchboard</field>
+    <field name="model">partner.create.lead.wizard</field>
+    <field name="inherit_id" ref="somconnexio.view_form_partner_create_lead_wizard"/>
+    <field name="arch" type="xml">
+      <group name="service type info" position="inside">
+        <field name="landline" string="CV landline" attrs="{'invisible': [('product_categ_id','!=', %(switchboard_somconnexio.switchboard_category)d)]}"/>
+      </group>
+    </field>
+  </record>
+</odoo>

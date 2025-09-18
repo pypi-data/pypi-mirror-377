@@ -1,0 +1,20 @@
+[project]
+name = "libreria-hola-marco"
+version = "0.1.1"
+description = "Librería con la que Marco te saluda"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.uv.workspace]
+members = [
+    ".",
+]
+
+[tool.uv.sources]
+libreria-hola-marco = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "libreria-hola-marco",
+]

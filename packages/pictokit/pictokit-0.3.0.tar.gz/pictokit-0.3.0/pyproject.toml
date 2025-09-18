@@ -1,0 +1,75 @@
+[tool.poetry]
+name = "pictokit"
+version = "0.3.0"
+description = "Uma lib python que oferece uma serie de ferramentas para o processamento de imagem"
+authors = ["Fabio Oliveira <fabio.oliveira1403@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.urls]
+repository = "https://github.com/fabrik5k/pictokit"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+#[project.scripts]
+#pictokit = "pictokit.cli:main_cli"
+
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+python-dotenv = "^1.1.1"
+numpy = "^2.0"
+matplotlib = "^3.8"
+opencv-python = "^4.9"
+pandas = ">=2.3.2"
+beartype = "^0.21.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+ruff = "^0.9.6"
+taskipy = "^1.14.1"
+sqlfluff = "^3.4.1"
+poetry = "^2.1.3"
+
+[tool.ruff.lint]
+preview = true
+select = [
+    'E',   # pycodestyle
+    'W',   # pycodestyle
+    'F',   # Pyflakes
+    'UP',  # pyupgrade
+    'I',   # isort
+    'B',   # flake8-bugbear
+    'SIM', # flake8-simplify
+    'PL',  # Pylint
+    'PT'   # flake8-pytest-style
+]
+ignore = [
+	'E701',
+  'PLR0917',  # too-many-positional (PLR0917)
+  'PLR0913',  # too-many-arguments (PLR0913)
+]
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "hubtemplate"
+addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+format = 'ruff check . --fix && ruff format .'
+run = "env $(grep -v '^#' .env | xargs) pictokit"
+pre_test = 'task lint'
+test = "env $(grep -v '^#' .env | xargs) pytest -qvv -x --cov=./src/pictokit"
+post_test = 'coverage html'
+htmlcov = 'python -m http.server -d htmlcov 8010'
+publish_test = "rm -rf build/ dist/ ; poetry publish --build -r testpypi -n"
+publish = "rm -rf dist ; poetry publish --build -n"

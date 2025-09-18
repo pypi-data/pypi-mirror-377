@@ -1,0 +1,167 @@
+Metadata-Version: 2.4
+Name: access-guard
+Version: 0.1.2
+Summary: Runtime final guard for methods/properties across projects
+Author-email: Your Name <you@example.com>
+License: MIT
+Keywords: final,metaclass,python,inheritance,safety
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: build>=1.0.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Dynamic: license-file
+
+Access Guard
+============
+
+一個極輕量的 runtime 防護工具，提供 `@final` 裝飾器與 `Access` metaclass，
+阻止被標註為 final 的方法 / property 在子類中被覆寫，並防止類別建立後的動態覆寫。
+
+特點
+-----
+- 支援普通方法、`@staticmethod`、`@classmethod`、`@property` (含 getter/setter/deleter)。
+- 不依賴第三方套件，僅使用標準函式庫。
+- 在類別建立階段即檢查，違規直接拋出 `RuntimeError`。
+- 防止猴子補丁：類別建立後再次指派 final 成員也會被阻擋。
+
+安裝
+----
+
+```bash
+uv add access-guard
+```
+
+快速示例 (@final)
+--------
+```python
+from access_guard import Access, final
+
+class Base(metaclass=Access):
+	@final
+	def stable(self):
+		return "v1"
+
+	@property
+	@final
+	def value(self):
+		return 42
+
+class Child(Base):
+	pass
+
+Child().stable()  # OK
+
+# 下列行為任一種將觸發 RuntimeError：
+# class Bad(Base):
+#     def stable(self):  # 覆寫 final 方法
+#         return "v2"
+
+# Bad.stable = lambda self: "hack"   # 類別建立後動態覆寫
+```
+
+行為細節
+--------
+1. `@final` 會在實際函式物件上標記特殊屬性；對 property 會同時標記其 accessor。  
+2. `Access` metaclass 在 `__new__` 中收集所有基類的 final 名稱並檢查是否違規覆寫。  
+3. 類別建立後再次透過賦值覆寫 final 名稱會在 `__setattr__` 被拒絕。  
+4. 目前不阻擋魔術方法 (如 `__init__`)，若要啟用可修改 `final.py` 中 `_collect_final_names_from_bases` 的條件。  
+
+限制 / 注意事項
+----------------
+- 僅在 class 定義與動態賦值層級防護；不處理 instance 屬性。  
+- 不追蹤別名引用 (你仍可複製函式物件再指派為其他名稱)。  
+- 與多重繼承共用時，若多個基類定義不同成員名稱，照常運作；如果名稱衝突且某基類標為 final，子類不可覆寫。  
+
+測試
+----
+安裝開發相依後執行：
+
+```bash
+uv sync --extra dev
+uv run pytest -q
+```
+
+版本策略
+--------
+採語義化版本。初期階段 (<1.0.0) 可能進行破壞式調整。
+
+授權
+----
+MIT License，詳見 `LICENSE`。
+
+`final_class`
+-------------
+一次將類別內目前所有「非魔術」成員標記為 final：
+
+```python
+from access_guard import Access, final_class
+
+@final_class
+class Service(metaclass=Access):
+	def create(self):
+		return "created"
+
+	def delete(self):
+		return "deleted"
+
+class Child(Service):
+	pass  # OK
+
+# 以下會失敗：
+# class Bad(Service):
+#     def create(self):  # RuntimeError
+#         return "x"
+```
+
+注意：後續在類別建立後動態新增新成員不會自動成為 final；建議在定義完成時使用。
+
+參數使用：
+
+```python
+from access_guard import Access, final_class
+
+# 排除某些方法不鎖定
+@final_class(exclude={"debug", "open"})
+class Service(metaclass=Access):
+	def create(self): ...  # final
+	def debug(self): ...   # not final
+	def open(self): ...    # not final
+
+# 鎖定包含魔術方法
+@final_class(include_magic=True)
+class Model(metaclass=Access):
+	def __repr__(self):
+		return "Model()"  # final
+	def run(self):
+		return 1           # final
+
+# 同時使用
+@final_class(exclude=["__repr__"], include_magic=True)
+class Partial(metaclass=Access):
+	def __repr__(self):  # not final
+		return "P()"
+	def calc(self):      # final
+		return 42
+```
+
+參數說明：
+- `exclude`: iterable[str]，列出不標記 final 的名稱。  
+- `include_magic`: True 時，會連 `__repr__` 這類魔術方法一起標記（但仍排除內建底層 `__dict__`, `__weakref__`）。  
+
+未來規劃
+--------
+- `final_class` 更進階選項（例如排除特定名稱清單）。  
+- 增加型別註解與 mypy plugin (靜態檢查)。  
+- CI 自動化與發佈工作流程。  
+

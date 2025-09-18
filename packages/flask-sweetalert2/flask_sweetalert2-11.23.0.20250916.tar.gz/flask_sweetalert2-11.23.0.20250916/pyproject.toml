@@ -1,0 +1,27 @@
+[project]
+name = "flask_sweetalert2"
+authors = [{ name = "lix", email = "xuzenglin@gmail.com" }]
+description = "a package to use sweetalert2 in flask"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["sweetalert2"]
+license-files = ["LICENSE.txt"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+]
+dependencies = ["flask", "flask_topassets"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "flask_sweetalert2.__version__" }
+
+[project.urls]
+"Homepage" = "https://github.com/lixxu/flask_sweetalert2"
+"Bug Tracker" = "https://github.com/lixxu/flask_sweetalert2/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

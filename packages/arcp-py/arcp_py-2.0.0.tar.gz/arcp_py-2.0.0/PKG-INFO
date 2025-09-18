@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: arcp-py
+Version: 2.0.0
+Summary: ARCP (Agent Registry & Control Protocol) is a sophisticated agent orchestration protocol that provides centralized service discovery, registration, and control for distributed agent systems.
+Home-page: https://github.com/0x00K1/ARCP
+License: Apache-2.0
+Keywords: ai,agents,registry,control,protocol,microservice,fastapi
+Author: Muhannad
+Author-email: 01muhannad.a@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: FastAPI
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Provides-Extra: all
+Provides-Extra: dev
+Requires-Dist: PyJWT (>=2.10.1,<3.0.0)
+Requires-Dist: deprecated (>=1.2.0,<2.0.0)
+Requires-Dist: fastapi (>=0.115.0,<1.0.0)
+Requires-Dist: httpx (>=0.25.2,<1.0.0) ; extra == "dev" or extra == "all"
+Requires-Dist: importlib-metadata (>=1.7.0,<7.0.0)
+Requires-Dist: openai (>=1.3.0,<2.0.0)
+Requires-Dist: opentelemetry-api (>=1.21.0,<2.0.0)
+Requires-Dist: opentelemetry-exporter-jaeger-thrift (>=1.21.0,<2.0.0)
+Requires-Dist: opentelemetry-exporter-otlp-proto-grpc (>=1.21.0,<2.0.0)
+Requires-Dist: opentelemetry-instrumentation (>=0.42b0,<1.0.0)
+Requires-Dist: opentelemetry-instrumentation-fastapi (>=0.42b0,<1.0.0)
+Requires-Dist: opentelemetry-instrumentation-httpx (>=0.42b0,<1.0.0)
+Requires-Dist: opentelemetry-instrumentation-redis (>=0.42b0,<1.0.0)
+Requires-Dist: opentelemetry-sdk (>=1.21.0,<2.0.0)
+Requires-Dist: opentelemetry-semantic-conventions (>=0.42b0,<1.0.0)
+Requires-Dist: prometheus-client (>=0.19.0,<1.0.0)
+Requires-Dist: psutil (>=7.0.0,<8.0.0)
+Requires-Dist: pydantic (>=2.5.0,<3.0.0)
+Requires-Dist: python-dotenv (>=1.0.0,<2.0.0)
+Requires-Dist: redis (>=5.0.1,<7.0.0)
+Requires-Dist: thrift (>=0.13.0,<1.0.0)
+Requires-Dist: uvicorn[standard] (>=0.24.0,<1.0.0)
+Requires-Dist: websockets (>=11.0.3,<16.0.0)
+Requires-Dist: wrapt (>=1.10.0,<2.0.0)
+Project-URL: Documentation, https://arcp.0x001.tech/docs
+Project-URL: Repository, https://github.com/0x00K1/ARCP
+Description-Content-Type: text/markdown
+
+# ARCP - Agent Registry & Control Protocol
+
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Security](https://img.shields.io/badge/security+-brightgreen.svg)](#security)
+[![PyPI version](https://badge.fury.io/py/arcp-py.svg)](https://badge.fury.io/py/arcp-py)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+
+**ARCP** (Agent Registry & Control Protocol) is a sophisticated agent orchestration protocol that provides centralized service discovery, registration, and control for distributed agent systems.
+
+## Documentation
+
+https://arcp.0x001.tech/docs
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0

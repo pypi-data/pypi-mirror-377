@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lightdash-mcp-server"
+version = "1.0.8"  # Increment version
+description = "MCP server bridge for Lightdash analytics platform"
+license = {text = "MIT"}
+authors = [
+    {name = "Bratrax", email = "bratrax@example.com"}
+]
+maintainers = [
+    {name = "Bratrax", email = "bratrax@example.com"}
+]
+dependencies = [
+    "mcp>=1.0.0",
+    "httpx>=0.25.0"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[project.scripts]
+lightdash-mcp-server = "src.main:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/lightdash-mcp-server"

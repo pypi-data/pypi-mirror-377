@@ -1,0 +1,124 @@
+Metadata-Version: 2.4
+Name: tokenlog
+Version: 0.0.3
+Summary: Simplest token log system for your LLM, embedding model calls.
+Author-email: vkehfdl1 <vkehfdl1@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Jeffrey (Dongkyu) Kim
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/vkehfdl1/tokenlog
+Keywords: LLM,logging,log,embedding,OpenAI,Huggingface,Token
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: jinja2>=3.1.6
+Requires-Dist: tiktoken>=0.11.0
+Requires-Dist: transformers>=4.56.1
+Dynamic: license-file
+
+# tokenlog
+
+Simplest token log system for your LLM, embedding model calls.
+
+## Installation
+Get on pypi.
+
+```bash
+pip install tokenlog
+```
+
+## How to use
+
+Start with initializing the logger.
+Each logger with the same name is singleton.
+
+```python
+import tokenlog
+
+t_logger = tokenlog.getLogger('session_1', 'gpt-3.5-turbo') # write logger name and model name that you are using
+q1 = t_logger.query('This is the query that you used in LLM') # log the query
+
+t_logger.answer('This is an answer from LLM', q1) # log the answer
+
+t_logger.get_token_usage() # get total token usage from all queries
+
+t_logger.get_history() # get history of token usage
+
+t_logger.clear() # clear all histories
+```
+
+### Batch logging
+
+You can log multiple queries and answers at once.
+
+```python
+import tokenlog
+
+t_logger = tokenlog.getLogger('session_2', 'gpt-3.5-turbo') # write logger name and model name that you are using
+query_ids = t_logger.query_batch(['This is the query that you used in LLM', 'This is the second query'])
+t_logger.query(['This is the first answer', 'This is the second answer'], query_ids)
+```
+
+### Chat Support
+
+We also support chat format logging.
+You can use the OpenAI type chat format.
+
+```python
+import tokenlog
+
+t_logger = tokenlog.getLogger('session_3', 'gpt-5')
+chat1 = t_logger.query([
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+])
+t_logger.chat([
+    {"role": "assistant", "content": "The 2020 World Series was played at Globe Life Field in Arlington, Texas."}
+], chat1)
+
+```
+
+
+## Support Models
+
+We support all **OpenAI** models with tiktoken and **Huggingface** models that support `AutoTokenizer`.
+
+
+## Use Case
+
+This library used in [AutoRAG](https://github.com/Marker-Inc-Korea/AutoRAG) project.
+
+
+## To-do
+
+- [ ] Add Handlers for exporting logs
+- [ ] Support more models

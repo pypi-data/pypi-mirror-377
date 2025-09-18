@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: pynvl-lib
+Version: 1.0.5
+Summary: Helper functions for data engineering and analytics workflows in Python, inspired by PL/SQL.
+Author: Shane Wilson
+License: MIT
+Project-URL: Homepage, https://github.com/betterinfotech/pynvl_project
+Project-URL: Source, https://github.com/betterinfotech/pynvl_project
+Project-URL: Issues, https://github.com/betterinfotech/pynvl_project/issues
+Project-URL: Changelog, https://github.com/betterinfotech/pynvl_project/releases
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: ruff>=0.5; extra == "dev"
+Requires-Dist: mkdocs>=1.6; extra == "dev"
+Requires-Dist: mkdocs-material>=9.5; extra == "dev"
+
+# pynvl
+
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/betterinfotech/pynvl_project/blob/main/LICENSE)
+[![Tests](https://img.shields.io/badge/tests-pytest-blue)](https://github.com/betterinfotech/pynvl_project/actions)
+[![PyPI](https://img.shields.io/pypi/v/pynvl-lib.svg)](https://pypi.org/project/pynvl-lib/)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-success)](https://betterinfotech.github.io/pynvl_project/)
+
+**General purpose data utilities, inspired by PL/SQL.**
+
+---
+
+## 🔹 Installation
+
+```python
+pip install pynvl-lib
+```
+---
+
+## 🔹 Quick Examples
+
+```python
+from pynvl import nvl, decode, sign
+
+print(nvl(None, 5))     # 5
+print(sign(-7))         # -1
+print(decode("A", "A", "Alpha", "B", "Beta", default="Unknown")) # 'Alpha'
+```
+---
+## 🔹 Full documentation: [Docs site](https://betterinfotech.github.io/pynvl_project/)

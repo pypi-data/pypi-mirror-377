@@ -1,0 +1,35 @@
+[project]
+name = "pynvl-lib"                # must exactly match your token scope
+version = "1.0.5"                  # bump so TestPyPI accepts it
+description = "Helper functions for data engineering and analytics workflows in Python, inspired by PL/SQL."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Shane Wilson" }]
+dependencies = []
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[project.urls]
+Homepage   = "https://github.com/betterinfotech/pynvl_project"
+Source     = "https://github.com/betterinfotech/pynvl_project"
+Issues     = "https://github.com/betterinfotech/pynvl_project/issues"
+Changelog  = "https://github.com/betterinfotech/pynvl_project/releases"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5", "mkdocs>=1.6", "mkdocs-material>=9.5"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+license-files = []            # <-- disable adding License-File metadata
+
+[tool.setuptools.packages.find]
+where = ["src"]

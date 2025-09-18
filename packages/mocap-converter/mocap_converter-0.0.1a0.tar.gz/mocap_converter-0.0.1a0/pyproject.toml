@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mocap-converter"
+dynamic = ["version"]
+description = "Motion capture conversion utilities."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["mocap", "bvh", "motion-capture", "kinect"]
+authors = [
+  { name = "yukihiroK", email = "57009247+yukihiroK@users.noreply.github.com" },
+]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "numpy>=1.23.5",
+  "scipy>=1.15.3",
+]
+
+[project.urls]
+Source = "https://github.com/yukihiroK/mocap-converter"
+Issues = "https://github.com/yukihiroK/mocap-converter/issues"
+
+[tool.hatch.version]
+source = "vcs"
+
+[dependency-groups]
+dev = [
+  "basedpyright>=1.31.1",
+  "pytest>=8.3.5",
+  "ruff>=0.9.10",
+  "scipy-stubs>=1.15.3",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mocap_converter"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src/mocap_converter",
+  "/README.md",
+  "/LICENSE",
+  "/pyproject.toml",
+]

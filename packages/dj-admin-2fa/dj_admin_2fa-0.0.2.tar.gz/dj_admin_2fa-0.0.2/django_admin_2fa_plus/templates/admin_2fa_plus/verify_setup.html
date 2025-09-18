@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Verify Your Two-Factor Authentication Setup</h1>
+
+  <p>Enter the verification code from your authenticator app.</p>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div>
+      <label for="id_token">Verification Code</label>
+      {{ form.token }}
+    </div>
+
+    <button type="submit">Verify</button>
+  </form>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li class="message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

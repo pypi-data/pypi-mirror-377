@@ -1,0 +1,51 @@
+name: python-tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# OIDC needs this
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10']
+        node-version: [18]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
+
+      - name: Test with pytest
+        run: |
+          pytest tests/ --cov=coord2region/ --cov-report=xml --verbose -s
+
+      # Upload to Codecov (skip forked PRs so we don't crash on missing OIDC/secrets)
+      - name: Upload coverage to Codecov
+        if: success() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false)
+        uses: codecov/codecov-action@v5
+        with:
+          use_oidc: true                  # OIDC auth
+          token: ${{ secrets.CODECOV_TOKEN }}  # optional; ignored when OIDC is used
+          files: coverage.xml
+          fail_ci_if_error: true

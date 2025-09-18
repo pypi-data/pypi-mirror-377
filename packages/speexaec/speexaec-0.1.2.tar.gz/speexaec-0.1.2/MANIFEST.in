@@ -1,0 +1,13 @@
+include README.md
+include LICENSE
+include pyproject.toml
+include setup.py
+include tools/build_speexdsp.sh
+recursive-include src/speexaec *.pyx *.pxd *.h
+recursive-include examples *.py
+recursive-include tests *.py
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.so
+global-exclude __pycache__
+global-exclude .git*

@@ -1,0 +1,103 @@
+Metadata-Version: 2.3
+Name: phlash
+Version: 1.0.6
+Summary: Bayesian inference of population size history from recombining sequence data.
+Author: Jonathan Terhorst
+Author-email: Jonathan Terhorst <jonth@umich.edu>
+License: MIT
+Requires-Dist: blackjax>=1.1.0,<2.0.0
+Requires-Dist: intervaltree>=3.1.0,<4.0.0
+Requires-Dist: jax>=0.4.25,<0.6.0
+Requires-Dist: loguru>=0.7.2,<1.0.0
+Requires-Dist: matplotlib>=3.8.2,<4.0.0
+Requires-Dist: msprime>=1.3.2
+Requires-Dist: numpy>1.25
+Requires-Dist: optax>=0.1.9,<1.0.0
+Requires-Dist: plotly>=6
+Requires-Dist: scipy>=1.12.0,<2.0.0
+Requires-Dist: stdpopsim>=0.2.0,<1.0.0
+Requires-Dist: tqdm>=4.66.1,<5.0.0
+Requires-Dist: tskit>=0.5.8
+Requires-Dist: demes>=0.2.3,<1.0.0
+Requires-Dist: jax-dataclasses>=1.6.0,<2.0.0
+Requires-Dist: tszip>=0.2.3,<1.0.0
+Requires-Dist: jaxtyping>=0.2.25,<1.0.0
+Requires-Dist: pulp>=2.8.0
+Requires-Dist: pysam>=0.22.1
+Requires-Dist: scienceplots>=2.1.1
+Requires-Dist: numcodecs<0.16
+Requires-Dist: jax[cuda12]>=0.4.25,<0.6.0 ; extra == 'gpu'
+Requires-Dist: cuda-python>=12.3,<13 ; extra == 'gpu'
+Requires-Dist: nvidia-cuda-nvrtc-cu12>=12.3 ; extra == 'gpu'
+Requires-Python: >=3.12, <4.0
+Project-URL: Bug Reports, https://github.com/jthlab/phlash/issues
+Project-URL: Homepage, https://github.com/jthlab/phlash
+Project-URL: Source, https://github.com/jthlab/phlash/
+Provides-Extra: gpu
+Description-Content-Type: text/markdown
+
+phlash is a program for sampling from the posterior distribution of population size
+history given whole genome sequence data. You can think of it as a Bayesian version
+of Li & Durbin's popular [PSMC](https://github.com/lh3/psmc) program, with a more
+modern interface and GPU acceleration built in.
+
+## Requirements
+
+- Python 3.10 or greater.
+
+Optional but _highly recommended_:
+
+- An NVIDIA GPU. Any relatively recent model should work. phlash has been tested on:
+    - RTX 4090
+    - A40
+    - A100
+    - V100
+
+## Installation
+
+phlash can be installed from PyPI using pip:
+
+```
+$ pip install phlash
+```
+
+If your machine contains an Nvidia GPU, you should be sure to install the `gpu` variant in order to enable it:
+
+```
+$ pip install 'phlash[gpu]'
+```
+
+I recommend installing phlash into a separate virtual environment: before running the above, do
+
+```
+$ python3 -mvenv /path/to/phlash  # replace with desired path
+$ source /path/to/phlash/bin/activate
+$ pip3 install -U pip setuptools  # recent version of pip and setuptools are required
+```
+## Running the program
+See [notebooks/example.md](notebooks/example.md) for example code and usage instructions.
+
+## Troubleshooting / FAQ
+
+I (Jonathan) am happy to assist you with using phlash, as much as my time allows.
+
+- If you encounter a **bug** (program crash or other unexpected behavior) please
+[file an issue](https://github.com/jthlab/phlash/issues/new) describing the bug.
+- If you need help with anything else (installation, running the program, data
+formatting, interpreting the output, etc.) please
+[open a discussion](https://github.com/jthlab/phlash/discussions/new?category=q-a).
+
+## Making Changes & Contributing
+
+Contributions (in the form of Github pull requests) to improve the project are always welcome!
+
+This project uses `pre-commit`_, please make sure to install it before making any
+changes::
+
+    pip install pre-commit
+    cd phlash
+    pre-commit install
+
+It is a good idea to update the hooks to the latest version::
+
+    pre-commit autoupdate

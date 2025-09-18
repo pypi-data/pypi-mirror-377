@@ -1,0 +1,30 @@
+[project]
+name = "tcg-research-desk"
+version = "0.1.6"
+description = "Tools to analyze and build dashboards for trading card game tournaments"
+authors = [
+    {name = "ArcKayNine"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=2.3.1",
+    "numpy>=1.26.4",
+    "holoviews>=1.21.0",
+    "panel>=1.8.0",
+    "param>=2.2.1",
+    "scipy>=1.13.1",
+    "scikit-learn>=1.5.1",
+]
+
+include = [
+    "src/tcg-research-desk/resources/*.png",
+]
+
+[tool.poetry]
+packages = [{include = "tcg_research_desk", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

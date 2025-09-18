@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: computer-talk
+Version: 0.1.9
+Summary: A Python package for computer communication and interaction
+Home-page: https://github.com/jordan/computer-talk
+Author: Jordan
+Author-email: Jordan <jp@humanturk.com>
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai<2.0.0,>=1.107.3
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.800; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Computer Talk
+
+A Python package for computer communication and interaction.
+
+## Features
+
+- Easy-to-use API for computer communication
+- Cross-platform compatibility
+- Extensible architecture
+- Command-line interface
+
+## Installation
+
+### From PyPI (when published)
+
+```bash
+pip install computer-talk
+```
+
+### From source
+
+```bash
+git clone https://github.com/jordan/computer-talk.git
+cd computer-talk
+pip install -e .
+```
+
+## Quick Start
+
+```python
+from computer_talk import ComputerTalk
+
+# Create a new instance
+talk = ComputerTalk()
+
+# Start communication
+talk.start()
+
+# Send a message
+response = talk.send_message("Hello, computer!")
+
+# Stop communication
+talk.stop()
+```
+
+## Command Line Usage
+
+computer-talk --interactive (to get started)

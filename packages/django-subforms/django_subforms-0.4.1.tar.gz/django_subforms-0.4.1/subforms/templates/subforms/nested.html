@@ -1,0 +1,8 @@
+<div class="nested-form">
+  {% for subwidget in widget.subwidgets %}
+    <label class="nested-form-label">{{ subwidget.label }}:</label>
+    {% with widget=subwidget %}
+      {% include subwidget.template_name %}<br>
+    {% endwith %}
+  {% endfor %}
+</div>

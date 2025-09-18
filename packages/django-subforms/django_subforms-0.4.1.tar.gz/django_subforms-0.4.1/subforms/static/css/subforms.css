@@ -1,0 +1,59 @@
+.related-widget-wrapper {
+    float: none!important;
+    overflow: hidden;
+}
+
+.dynamic-array .dynamic-array-item {
+    margin-left: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.dynamic-array .remove-array-item {
+    height: 15px;
+    display: inline-block;
+    align-items: center;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.dynamic-array .add-array-item {
+    cursor: pointer;
+}
+
+.dynamic-array > ul {
+    margin: 0;
+}
+
+.nested-form {
+    display: inline-table;
+    margin-bottom: 6px;
+}
+
+.nested-form > input {
+    margin: 4px 0 4px 0!important;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nested-form > div.related-widget-wrapper {
+    display: inline-table;
+}
+
+.nested-form > label.nested-form-label {
+    line-height: normal;
+    padding: 0;
+    margin: 2px 0 2px 0!important;
+    width: 25%;
+    max-width: 100px;
+    min-width: 100px;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
+}
+
+@media (max-width: 1024px) {
+    .nested-form > label.nested-form-label {
+        min-height: 35px;
+    }
+}

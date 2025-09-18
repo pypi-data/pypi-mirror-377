@@ -1,0 +1,127 @@
+herostools.actor.prometheus
+===========================
+
+.. py:module:: herostools.actor.prometheus
+
+.. autoapi-nested-parse::
+
+   # Prometheus Actor
+
+   Use a prometheus push-gateway as target for prometheus scrape target.
+
+       docker pull prom/pushgateway
+       docker run -p 9091:9091 prom/pushgateway
+
+   A PrometheusActor aggregates data from labsurveillance
+   and pushes on Timeout to a prometheus push gateway.
+   Thereby observables are exposed as metrics
+
+    * {observable}_time {return_value.time}
+    * {observable}_value {return_value.value}
+      if unit is not 'None' a label {unit='{{return_value.unit}}'} is attached
+    * {observable}_raw_value {return_value.raw_value}
+      if unit is not 'None' a label {unit='{{return_value.raw_unit}}'} is attached
+
+   A predefined set of labels is attached to the metrics.
+   Observable names are cleaned to match metric names [a-z0-9_]
+    trailing _ and repetitions _ are removed.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   herostools.actor.prometheus.no_metric
+   herostools.actor.prometheus.minify_metric
+   herostools.actor.prometheus.allowed_types
+   herostools.actor.prometheus.loop
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   herostools.actor.prometheus.PrometheusActor
+
+
+Module Contents
+---------------
+
+.. py:data:: no_metric
+
+.. py:data:: minify_metric
+
+.. py:data:: allowed_types
+
+.. py:class:: PrometheusActor(*args, metrics_path='http://localhost:9091/metrics', labels=dict(job='labsuv'), **kwargs)
+
+   Bases: :py:obj:`heros.DatasourceObserver`
+
+
+   A class that can observe and handle the data emitted by one or more datasource HEROs.
+   In particular, this class provides an efficient way to listen to the data emitted by all datasource HEROs in
+   the realm. By not instantiating the HEROs themselves but just subscribing to the topics for the datasource, this
+   reduces the pressure on the backing zenoh network. If, however, only the data of a few HEROs should be observed,
+   it might make more sense to just instantiate the according RemoteHEROs and connect a callback to their `observable_data`
+   signal.
+
+   :param object_selector: selector to specify which objects to observe. This becomes part of a zenoh selector and thus
+   :param can be anything that makes sense in the selector. Defaults to * to observe all HEROs in the realm.:
+
+
+   .. py:attribute:: metrics_path
+      :value: ''
+
+
+
+   .. py:attribute:: labels
+
+
+   .. py:attribute:: path
+      :value: ''
+
+
+
+   .. py:attribute:: cache
+
+
+   .. py:attribute:: _session
+      :value: None
+
+
+
+   .. py:method:: _ensure_session()
+
+
+   .. py:method:: _metric_name(key)
+
+      create a clean name for a metric without special characters matching [a-z0-9_].
+
+
+
+   .. py:method:: _unit_name(unit)
+
+      cleans units to not contain special characters
+
+
+
+   .. py:method:: update(source_name, data)
+
+      convert a labsuv data dictionary to values
+
+
+
+   .. py:method:: clear()
+
+
+   .. py:method:: push()
+
+      push current buffer to pushgateway.
+
+
+
+.. py:data:: loop
+

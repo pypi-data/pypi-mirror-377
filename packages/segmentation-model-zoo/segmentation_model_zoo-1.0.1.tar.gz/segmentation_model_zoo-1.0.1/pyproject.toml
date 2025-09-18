@@ -1,0 +1,47 @@
+[project]
+name = "segmentation-model-zoo"
+version = "1.0.1"
+requires-python = ">=3.10"
+description = "segmentation-model-zoo"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "jiang yan", email = "1900812927@qq.com"},
+]
+classifiers = [
+]
+keywords = [
+    'deep learning',
+    'image segmentation',
+    'semantic segmentation',
+    'medical image analysis',
+    'medical image segmentation',
+]
+dependencies = [
+    # "torch>=1.6.0a",
+    # "numpy",
+    # "timm",
+    # "einops",
+    # "mmengine",
+]
+
+[project.urls]
+homepage = "https://gitee.com/Eason596/segmentation-model-zoo"
+repository = "https://gitee.com/Eason596/segmentation-model-zoo"
+
+[project.scripts]
+
+
+[project.optional-dependencies]
+dev = [
+
+]
+
+[build-system]
+requires = ["setuptools>=67.8.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.codespell]
+skip = '.git,*.pdf,*.svg'
+#
+# ignore-words-list = ''

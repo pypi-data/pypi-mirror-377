@@ -1,0 +1,87 @@
+Metadata-Version: 2.4
+Name: scm203lab367101691
+Version: 0.1.0
+Summary: Find the greatest common divisor and find integers x,y such that ax + by = gcd(a,b).
+Home-page: https://github.com/yourusername/scm203lab367101691
+Author: Khing
+Author-email: anchitha2005@gmail.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+`scm203lab367101691` is a lightweight Python package that provides simple utility functions
+for **the greatest common divisor** and **extended euclidean algorithm**.
+It is designed mainly for learning purposes and as an example of Python packaging.
+
+---
+
+## Features
+- **gcd(a,b)**: This function returns the greatest common divisor of a and b using the Euclidean algorithm.
+- **extended_gcd(a,b)**: This function returns the coefficients x and y such that ax + by = gcd(a, b).
+
+---
+
+## Installation
+
+You can install the package directly from PyPI:
+
+```bash
+pip install scm203lab367101691
+```
+
+## Example1 (`gcd(a,b)`)
+-Input
+
+```bash
+import scm203lab367101691 as scm
+a = 234
+b = 42
+d=scm.gcd(a,b)
+print(f"The gcd of 234 and 42 is {d}")
+
+```
+-Output
+```
+234 = 5*42 + 24
+42 = 1*24 + 18
+24 = 1*18 + 6
+18 = 3*6
+The gcd of 234 and 42 is 6
+```
+
+## Example2 (`extended_gcd(a,b)`)
+-Input
+```bash
+import scm203lab367101691 as scm
+a = 7920
+b = 4536
+print(scm.extended_gcd(a,b))
+```
+-Output
+```
+72 = 72*1 + 1080*0
+72 = 1080*-1 + 1152*1
+72 = 1152*3 + 3384*-1
+72 = 3384*-4 + 4536*3
+72 = 4536*7 + 7920*-4
+72 = 1080*-1 + 1152*1
+72 = 1152*3 + 3384*-1
+72 = 3384*-4 + 4536*3
+72 = 1080*-1 + 1152*1
+72 = 1152*3 + 3384*-1
+72 = 1080*-1 + 1152*1
+72 = 1080*-1 + 1152*1
+72 = 1080*-1 + 1152*1
+72 = 1152*3 + 3384*-1
+72 = 3384*-4 + 4536*3
+72 = 3384*-4 + 4536*3
+72 = 4536*7 + 7920*-4
+72 = 7920*-4 + 4536*7
+(72, -4, 7)  #gcd(a,b) = 72,x = -4,y = 7
+```

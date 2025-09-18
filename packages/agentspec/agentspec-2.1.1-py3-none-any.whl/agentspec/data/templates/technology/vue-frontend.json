@@ -1,0 +1,84 @@
+{
+  "id": "vue-frontend",
+  "name": "Vue.js Web Application",
+  "description": "Template for Vue.js web applications with TypeScript and modern tooling",
+  "version": "1.0.0",
+  "project_type": "web-app",
+  "technology_stack": [
+    "vue",
+    "typescript",
+    "javascript",
+    "vite",
+    "pinia"
+  ],
+  "default_tags": [
+    "vue",
+    "typescript",
+    "composition-api",
+    "routing"
+  ],
+  "required_instructions": [
+    "vue_project_setup",
+    "composition_api_usage",
+    "vue_router_configuration"
+  ],
+  "optional_instructions": [
+    "pinia_state_management",
+    "vue_testing_utils",
+    "nuxt_configuration"
+  ],
+  "inheritance": {
+    "parent": "web-application",
+    "override_mode": "merge"
+  },
+  "parameters": {
+    "vue_version": {
+      "type": "string",
+      "default": "3",
+      "description": "Vue.js version to use",
+      "required": false,
+      "options": ["2", "3"]
+    },
+    "composition_api": {
+      "type": "boolean",
+      "default": true,
+      "description": "Use Composition API",
+      "required": false
+    },
+    "state_management": {
+      "type": "string",
+      "default": "pinia",
+      "description": "State management solution",
+      "required": false,
+      "options": ["pinia", "vuex", "none"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "dependency_exists",
+      "value": "vue",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "file_exists",
+      "value": "src/App.vue",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "technology_detected",
+      "value": "vue",
+      "operator": "equals",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "frontend",
+    "complexity": "intermediate",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["frontend", "spa", "vue", "typescript"]
+  }
+}

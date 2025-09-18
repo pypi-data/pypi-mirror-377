@@ -1,0 +1,92 @@
+{
+  "id": "nodejs-api",
+  "name": "Node.js REST API",
+  "description": "Template for Node.js REST API applications with Express, TypeScript, and modern best practices",
+  "version": "1.0.0",
+  "project_type": "api",
+  "technology_stack": [
+    "node.js",
+    "express",
+    "typescript",
+    "javascript",
+    "mongodb",
+    "postgresql",
+    "redis",
+    "jwt"
+  ],
+  "default_tags": [
+    "backend",
+    "api",
+    "nodejs",
+    "express",
+    "typescript",
+    "database",
+    "testing",
+    "security"
+  ],
+  "required_instructions": [
+    "nodejs_project_structure",
+    "express_setup",
+    "typescript_configuration",
+    "database_integration",
+    "authentication_middleware"
+  ],
+  "optional_instructions": [
+    "rate_limiting",
+    "cors_configuration",
+    "swagger_documentation",
+    "logging_middleware",
+    "error_handling"
+  ],
+  "parameters": {
+    "database": {
+      "type": "string",
+      "default": "mongodb",
+      "description": "Database system to use",
+      "required": false,
+      "options": ["mongodb", "postgresql", "mysql", "sqlite"]
+    },
+    "orm": {
+      "type": "string",
+      "default": "mongoose",
+      "description": "ORM/ODM to use",
+      "required": false,
+      "options": ["mongoose", "prisma", "typeorm", "sequelize"]
+    },
+    "authentication": {
+      "type": "string",
+      "default": "jwt",
+      "description": "Authentication strategy",
+      "required": false,
+      "options": ["jwt", "passport", "oauth2", "session"]
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "package.json",
+      "operator": "exists",
+      "weight": 0.8
+    },
+    {
+      "type": "dependency_exists",
+      "value": "express",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "technology_detected",
+      "value": "node.js",
+      "operator": "equals",
+      "weight": 0.9
+    }
+  ],
+  "metadata": {
+    "category": "backend",
+    "complexity": "intermediate",
+    "author": "AgentSpec Team",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["backend", "api", "nodejs", "express"]
+  }
+}

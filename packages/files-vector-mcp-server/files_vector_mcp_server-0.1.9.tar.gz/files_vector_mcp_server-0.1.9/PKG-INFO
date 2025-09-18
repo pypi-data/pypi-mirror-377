@@ -1,0 +1,300 @@
+Metadata-Version: 2.4
+Name: files-vector-mcp-server
+Version: 0.1.9
+Summary: A FastMCP server for file vectorization and similarity search
+Author-email: Your Name <your.email@example.com>
+License: Apache License
+        Version 2.0, January 2004
+        http://www.apache.org/licenses/
+        
+        TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+        1. Definitions.
+        
+           "License" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
+        
+           "Licensor" shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.
+        
+           "Legal Entity" shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
+        
+           "You" (or "Your") shall mean an individual or Legal Entity exercising permissions granted by this License.
+        
+           "Source" form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
+        
+           "Object" form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
+        
+           "Work" shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).
+        
+           "Derivative Works" shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.
+        
+           "Contribution" shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as "Not a Contribution."
+        
+           "Contributor" shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
+        
+        2. Grant of Copyright License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
+        
+        3. Grant of Patent License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
+        
+        4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+        
+           (a) You must give any other recipients of the Work or Derivative Works a copy of this License; and
+        
+           (b) You must cause any modified files to carry prominent notices stating that You changed the files; and
+        
+           (c) You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and
+        
+           (d) If the Work includes a "NOTICE" text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License.
+        
+           You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+        
+        5. Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
+        
+        6. Trademarks. This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
+        
+        7. Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
+        
+        8. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
+        
+        9. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.
+        
+        END OF TERMS AND CONDITIONS
+        
+        APPENDIX: How to apply the Apache License to your work.
+        
+        To apply the Apache License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information. (Don't include the brackets!)  The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives.
+        
+        Copyright [yyyy] [name of copyright owner]
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+        
+            http://www.apache.org/licenses/LICENSE-2.0
+        
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+Project-URL: Homepage, https://github.com/928871247/files-vector-mcp-server
+Project-URL: Bug Tracker, https://github.com/928871247/files-vector-mcp-server/issues
+Keywords: mcp,vector-search,embeddings
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastmcp>=0.5.0
+Requires-Dist: psycopg2-binary>=2.9.6
+Requires-Dist: openai>=1.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: python-docx>=0.8.11
+Requires-Dist: PyPDF2>=3.0.1
+Requires-Dist: python-pptx>=0.6.23
+Requires-Dist: requests>=2.31.0
+Requires-Dist: watchdog>=6.0.0
+Dynamic: license-file
+
+# files-vector-mcp-server
+**注：本项目完全由 [coze](https://coze.cn) 生成，想法是希望通过小智 AI 等智能体结合 Obsidian 等 Markdown 笔记，实现简单的语音记录和查询，部分功能尚未测试，使用前请务必备份自己的笔记！！！**
+
+一个基于FastMCP协议的文件向量化服务，支持自动目录监控、多格式文件处理和高效向量搜索，帮助你构建个人或团队知识库。
+
+## 🌟 核心功能
+
+- 📂 **自动目录监控**：实时监测指定目录的文件变化，自动处理新增/修改文件
+- 📄 **多格式支持**：处理Markdown、PDF、DOCX、PPTX、图片等多种文件类型
+- 🧩 **智能分块**：长文本自动分割为语义连贯的块，保留文件路径上下文
+- 🔍 **向量搜索**：基于pgvector的高效相似性搜索，支持块级内容定位
+- 🛠️ **实用工具**：提供搜索、文件读取、Markdown创建等工具，支持工作流自动化
+
+## 🚀 工作原理
+
+### 处理流程
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│  文件监控   │───>│ 内容提取与分块 │───>│ 文本向量化  │───>│ 向量存储与索引│
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+        │                                     │                    │
+        │                                     │                    │
+        ▼                                     ▼                    ▼
+┌─────────────┐                     ┌─────────────┐           ┌─────────────┐
+│ 检测文件变化 │                     │生成嵌入向量  │           │ 高效相似性搜索│
+└─────────────┘                     └─────────────┘           └─────────────┘
+```
+
+### 核心原理
+
+1. **文件监控**：使用`watchdog`库监控目录变化，触发文件处理流程
+2. **内容提取**：针对不同文件类型使用相应库提取文本（如python-docx处理DOCX）
+3. **智能分块**：
+  - 按标题、段落等自然分隔符优先分割
+  - 保留完整文件路径和块编号元数据
+  - 支持重叠分块，避免语义断裂
+4. **向量化**：调用OpenAI Embeddings API生成文本向量
+5. **存储索引**：使用PostgreSQL+pgvector存储向量并创建IVFFlat索引
+6. **向量搜索**：通过余弦相似度计算找到最相关的文件块
+
+## 📦 安装与配置
+
+### 前置要求
+
+- Python 3.8+
+- PostgreSQL 14+ （需安装pgvector扩展）
+- OpenAI API密钥（用于向量化）
+
+### 安装方式
+
+#### 使用pip
+
+```bash
+pip install files-vector-mcp-server
+```
+
+#### 使用uvx（推荐）
+
+```bash
+uvx files-vector-mcp-server
+```
+
+### 环境配置
+
+创建`.env`文件，配置以下环境变量：
+
+```ini
+# OpenAI配置
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_API_URL=https://api.openai.com/v1
+EMBEDDING_MODEL=text-embedding-ada-002
+EMBEDDING_DIM=1024
+
+# 数据库配置
+DB_CONNECTION_STRING=postgres://user:password@localhost:5432/vector_db
+
+# 监控目录配置（JSON格式）
+WATCH_TOPICS={"docs": ["./docs"], "notes": ["./notes"]}
+
+# 分块配置
+CHUNK_SIZE=4000
+CHUNK_OVERLAP=200
+
+# 可选：MinerU API配置（高级OCR和文档处理）
+MINERU_API_KEY=your_mineru_api_key
+MINERU_API_URL=https://mineru.net/api/v4
+```
+
+## 💻 使用指南
+
+### 启动服务
+
+```bash
+files-vector-mcp-server
+```
+
+### 核心工具使用
+
+#### 1. 搜索文件内容
+
+```bash
+# 基础搜索（返回摘要）
+search "Docker安装步骤"
+
+# 搜索并返回完整内容
+search "Docker安装步骤" return_content=true top_k=3
+```
+
+**返回结果示例**：
+
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "chunk_id": 42,
+      "file_path": "/docs/install/docker.md",
+      "chunk_num": 2,
+      "total_chunks": 5,
+      "similarity": 0.89,
+      "content_preview": "## Docker安装步骤\n\n1. 更新apt包索引...",
+      "content": "文件路径: /docs/install/docker.md\n块 2/5\n\n## Docker安装步骤\n\n1. 更新apt包索引...",
+      "last_modified": "2025-09-18T10:30:00Z"
+    }
+  ]
+}
+```
+
+#### 2. 读取完整文件
+
+```bash
+read_file "/docs/install/docker.md" max_chars=10000
+```
+
+#### 3. 创建Markdown文件
+
+```bash
+create_markdown "/notes/new_note.md" "# 新笔记\n\n这是通过API创建的笔记内容，将自动进行向量化处理。"
+```
+
+## ⚙️ 配置参数详解
+
+| 参数名 | 描述  | 默认值                       |
+| --- | --- |---------------------------|
+| `WATCH_TOPICS` | 监控主题与目录映射（JSON） | `{"默认": ["./watch_dir"]}` |
+| `CHUNK_SIZE` | 分块大小（字符） | 4000                      |
+| `CHUNK_OVERLAP` | 块重叠字符数 | 200                       |
+| `EMBEDDING_MODEL` | 嵌入模型名称 | text-embedding-ada-002    |
+| `EMBEDDING_DIM` | 嵌入向量维度 | 1024                      |
+| `BATCH_SIZE` | 批处理大小 | 5                         |
+| `RETRY_ATTEMPTS` | API调用重试次数 | 3                         |
+| `RETRY_DELAY` | 重试延迟（秒） | 5                         |
+
+## 📋 使用场景
+
+### 1. 个人知识库
+
+- **自动索引**：监控笔记目录，新笔记自动加入知识库
+- **快速检索**：通过关键词快速找到相关笔记片段
+- **上下文保留**：搜索结果包含完整文件路径和块位置
+
+### 2. 团队文档管理
+
+- **统一检索**：跨文档类型搜索团队所有文档
+- **版本追踪**：文件修改自动更新向量，保持内容最新
+- **知识共享**：通过API集成到内部系统，实现知识共享
+
+### 3. 内容创作辅助
+
+- **素材收集**：快速查找引用资料和灵感
+- **自动笔记**：使用`create_markdown`工具自动化笔记创建
+- **内容优化**：通过搜索相似内容，优化写作表达
+
+## ❓ 常见问题
+
+### Q: 如何处理大型PDF文件？
+
+A: 系统会自动分块处理，默认每块4000字符，可通过`CHUNK_SIZE`调整。对于扫描PDF，建议配置MinerU API启用OCR。
+
+### Q: 服务启动失败提示"pgvector未安装"？
+
+A: 需要在PostgreSQL中安装pgvector扩展：
+
+```sql
+CREATE EXTENSION vector;
+```
+
+### Q: 如何提高搜索准确性？
+
+A: 可尝试：
+
+- 减小`CHUNK_SIZE`，提高块粒度
+- 使用更具体的搜索关键词
+- 调整`top_k`参数获取更多结果
+
+## 📄 许可证
+
+本项目基于Apache License 2.0开源许可证 - 详见[LICENSE](LICENSE)文件
+
+## 🤝 贡献与反馈
+
+- 项目地址：[GitHub](https://github.com/928871247/files-vector-mcp-server)
+- 问题反馈：[Issue Tracker](https://github.com/928871247/files-vector-mcp-server/issues)
+- 功能建议：欢迎提交PR或Issue

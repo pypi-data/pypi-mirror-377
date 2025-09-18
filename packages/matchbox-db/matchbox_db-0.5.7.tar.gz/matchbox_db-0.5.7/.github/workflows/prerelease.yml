@@ -1,0 +1,71 @@
+name: Prerelease
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-development-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Log in to GitHub packages Docker registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with: 
+          python-version: "3.11"
+
+      - name: Extract development version
+        run: echo "MB_VERSION=$(uv run --frozen python -m setuptools_scm)" >> $GITHUB_ENV
+
+      - name: Extract tag metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ env.MB_VERSION }}
+            type=raw,value=development
+
+      - name: Build and push development Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/matchbox/server/Dockerfile
+          push: true
+          build-args: |
+            MB_VERSION=${{ env.MB_VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Create development prerelease
+        uses: ncipollo/release-action@v1
+        with:
+          tag: development
+          name: Development
+          prerelease: true
+          body: |
+            This is a development build, usually from the latest main branch. 
+            
+            May be unstable.
+            
+            **Version:** ${{ env.MB_VERSION }}
+            **Commit:** ${{ github.sha }}
+          allowUpdates: true

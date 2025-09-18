@@ -1,0 +1,24 @@
+# 包含许可证文件
+include LICENSE
+
+# 包含README文件
+include README.md
+
+# 包含requirements文件
+include requirements.txt
+
+# 包含pyproject.toml文件
+include pyproject.toml
+
+# 包含所有Python文件
+recursive-include mypackage *.py
+
+# 排除测试文件
+recursive-exclude tests *.py
+
+# 排除__pycache__目录
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+# 排除.git目录
+recursive-exclude .git *

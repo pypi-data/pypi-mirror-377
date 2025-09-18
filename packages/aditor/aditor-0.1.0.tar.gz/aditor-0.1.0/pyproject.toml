@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aditor"
+dynamic = ["version"]
+description = "一个示例Python包"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "您的名字", email = "your.email@example.com"}  # 请修改为您的信息
+]
+maintainers = [
+    {name = "您的名字", email = "your.email@example.com"}  # 请修改为您的信息
+]
+keywords = ["python", "package", "example"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.7"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mypy",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/aditor"
+Repository = "https://github.com/yourusername/aditor"
+Issues = "https://github.com/yourusername/aditor/issues"
+
+[project.scripts]
+aditor = "aditor.cli:main"
+
+[tool.setuptools]
+packages = ["aditor"]
+
+[tool.setuptools.package-data]
+aditor = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: search_algorithms_pack
+Version: 0.1
+Summary: A package containing various search algorithms implementations.
+Author: ARpit Kumar
+Author-email: Arpit Kumar <arpitkuamr172004@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Arpit Kumar
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy...
+        
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sort_algorithms_pack
+Dynamic: author
+Dynamic: license-file
+
+
+A Python package implementing three classic searching algorithms with a simple and intuitive interface:
+  1>Binary Search:- To use it one has to import BinarySearch class where by using the search method  one can search for target value.
+
+                search(arr,target,sorted = False)
+            
+            Where:
+                
+                arr: the list to search in
+                target: the value to search for
+                sorted: set to True if the list is already sorted, else False
+
+  2>Linear Search:-To use it one has to import LinearSearch class where by using the search method  one can search for target value.
+
+                  search(arr,target)
+        Where:
+                
+                arr: the list to search in
+                target: the value to search for
+
+  3>Jump Search:-To use it one has to import JumpSearch class where by using the search method  one can search for target value.
+
+                search(arr,target,sorted = False)
+  
+        Where:
+                
+                arr: the list to search in
+                target: the value to search for
+                sorted: set to True if the list is already sorted, else False
+
+  It's 0.1 version of the package and you can expect many further updates.
+ To install the package, run the following command in your terminal or command prompt:
+      
+      Command:    pip install search_algorithms_pack

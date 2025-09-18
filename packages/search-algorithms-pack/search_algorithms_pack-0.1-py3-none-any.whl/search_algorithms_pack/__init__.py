@@ -1,0 +1,2 @@
+import search_algorithms_pack
+from search_algorithms_pack import BinarySearch, JumpSearch, LinearSearch

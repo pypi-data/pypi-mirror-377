@@ -1,0 +1,34 @@
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "viperlog"
+version = "0.2.62"
+description = "ViperLog core logging package"
+readme = "README.md"
+requires-python = ">=3.12"
+#license = { text = "MIT" }
+license = "MIT"
+
+[tool.setuptools.dynamic]
+version = {attr = "viperlog.__version__"}
+
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.optional-dependencies]
+core = ["viperlog"]
+# Refered to in the errormessages are:
+# console, http
+# the 0.2.62 constant is replaced by the CI/CD pipeline
+console = ["viperlog-console-plugin==0.2.62"]
+http = ["viperlog-http-plugin==0.2.62"]
+all = ["viperlog-console-plugin==0.2.62", "viperlog-http-plugin==0.2.62"]
+

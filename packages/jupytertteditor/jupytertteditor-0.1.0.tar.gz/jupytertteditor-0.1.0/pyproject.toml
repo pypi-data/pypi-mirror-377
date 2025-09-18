@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jupytertteditor"
+version = "0.1.0"
+authors = [
+  { name="Jacob Hutchens", email="jacob.hutchens.118@gmail.com" },
+]
+description = "A tool for creating and editing Truth Tables with JuPyter Functionality"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[project.urls]
+"Homepage" = "https://github.com/JacobHutchens/JuPyter-TT-Editor"

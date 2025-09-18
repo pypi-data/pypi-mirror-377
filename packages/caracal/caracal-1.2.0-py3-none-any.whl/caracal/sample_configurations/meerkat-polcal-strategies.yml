@@ -1,0 +1,138 @@
+schema_version: 1.2.0
+
+general:
+  prefix: mypipelinerun
+
+getdata:
+  dataid: ['']
+  extension: ms
+
+obsconf:
+  refant: '0'
+  xcal:
+    - 'J0521+1638'
+
+
+transform:
+  enable: true
+  field: calibrators
+  label_out: cal
+  split_field:
+    enable: true
+    col: data
+
+prep:
+  enable: true
+  label_in: cal
+  field: calibrators
+
+flag:
+  enable: true
+  field: calibrators 
+  label_in: cal
+  flag_rfi:
+    enable: true
+    flagger: aoflagger
+  flag_autocorr:
+    enable: true
+  flag_shadow:
+    enable: true
+  report: true
+
+crosscal:
+  enable: true
+  label_in: cal
+  apply_cal:
+    applyto:
+      - gcal
+      - bpcal
+      - xcal
+  report: true
+
+inspect:
+  label_in: cal
+  label_plot: 1gc
+  dirname: crosscal
+  enable: true
+  
+# regardless the polcal strategy, the set_model_leakage section is necessary if the input MS has been splitted after crosscal (MODEL COL. MUST BE FILLED) otherwise you can remove it and save time
+#
+# first polcal strategy is when you have a good unpolarized calibrator and a known polarized calibrator for the cross-hand phase and delay. The available models are those from NRAO (default) and Taylor&Legodi 2024. You can also upload a model.
+polcal:
+  enable: true
+  label_in: cal
+  label_cal: 1pcal
+  otfcal:
+    enable: true
+    label_cal: 1gc
+  extendflags: True
+  feed_angle_rotation: '-90'
+  uvrange: '>150'
+  reuse_existing_tables: false
+  pol_calib: xcal
+  leakage_calib: fcal
+  set_model_pol: true
+  gain_solint: '60s'
+  time_solint: 'inf'
+  plotgains: true
+  apply_pcal: true
+  applyto:
+    - gcal
+    - bpcal
+    - xcal
+
+#second polcal strategy is when you don't have a good unpolarized calibrator but you still have a known polarized calibrator. See the description in the schema file.
+polcal__2:
+  enable: true
+  label_in: cal
+  label_cal: 2pcal
+  otfcal:
+    enable: true
+    label_cal: 1gc
+  extendflags: True
+  feed_angle_rotation: '-90'
+  uvrange: '>150'
+  reuse_existing_tables: false
+  pol_calib: xcal
+  leakage_calib: xcal
+  set_model_pol:
+    enable: true
+  gain_solint: '60s'
+  time_solint: 'inf'
+  plotgains: true
+  apply_pcal: true
+  applyto:
+    - gcal
+    - bpcal
+    - xcal
+
+# third polcal strategy is when you only have an unknown polarized calibrator. You will derive it's polarization properties thanks to the parallactic angle coverage (at least 3 scans are needed)
+polcal__3:
+  enable: true
+  label_in: cal
+  label_cal: 3pcal
+  otfcal:
+    enable: true
+    label_cal: 1gc
+  extendflags: True
+  feed_angle_rotation: '-90'
+  uvrange: '>150'
+  reuse_existing_tables: false
+  pol_calib: xcal
+  leakage_calib: xcal
+  set_model_pol:
+    enable: false
+  gain_solint: 'int'
+  time_solint: 'inf'
+  plotgains: true
+  apply_pcal: true
+  applyto:
+    - gcal
+    - bpcal
+    - xcal
+
+inspect:
+  label_in: cal
+  label_plot: 1pcal
+  dirname: polcal
+  enable: true

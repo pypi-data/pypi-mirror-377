@@ -1,0 +1,324 @@
+type: map
+mapping:
+  inspect:
+    type: map
+    desc: Diagnostic plots for data
+    mapping:
+      enable:
+        type: bool
+        desc: Execute the inspect worker (i.e. diagnostic plotting of the first-pass cross-calibrated data).
+        required: true
+        example: 'False'
+      label_in:
+        desc: Label of the input dataset
+        type: str
+        required: false
+        example: ''
+      field:
+        desc: Fields that should be inspected. It can be set to 'target', 'calibrators' (i.e., all calibrators) or any comma-separated combination of 'fcal','bpcal','gcal', as defined in the obsconf worker. N$
+        type: str
+        required: False
+        example: 'calibrators'
+      label_plot: 
+        type: str
+        desc: Label for output products (plots etc.) for this step.
+        required: false
+        example: ''
+      dirname:
+        type: str
+        desc: Subdirectory (under diagnostic plots) where the plots are to go.
+        required: false
+        example: ''
+      shadems:
+        type: map
+        desc: Direct list of shadems plots.
+        mapping:
+          enable:
+            type: bool
+            desc: Execute series of "extended" shadems plots.
+            required: false
+            example: "True"
+          default_column:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'CORRECTED_DATA'
+          plots_by_field:
+            seq:
+              - type: any
+            required: false
+            desc: Sequence of shadems plot specifications, made per each field
+            example: ''
+          plots_by_corr:
+            seq:
+              - type: any
+            required: false
+            desc: Sequence of shadems plot specifications, made per each correlation
+            example: ''
+          plots:
+            seq:
+              - type: any
+            required: false
+            desc: Sequence of freeform shadems plot specifications
+            example: ''
+          # freeform_plots:
+          #   seq:
+          #     - type: any
+          #   required: false
+          #   desc: Sequence of freeform shadems plot specifications
+          #   example: ''
+          ignore_errors:
+            type: bool
+            desc: Don't halt the pipeline for shadems plotting errors.
+            required: false
+            example: "True"
+      standard_plotter:
+        type: str
+        desc: Application to use for making "standard" plots. Use "none" to disable.
+        enum: [plotms, shadems, ragavi_vis, none, None]
+        example: ragavi_vis
+        required: false
+      correlation: 
+        type: str
+        desc: Label(s) specifying the correlations. Use the special values 'diag' and 'all' to select only diagonal (paralell hand) or all correlations.
+        required: false
+        example: 'diag'
+      num_cores:
+        type: int
+        required: false
+        example: '8'
+        desc: number of CPUs to use
+      mem_limit:
+        type: str
+        required: false
+        example: '8GB'
+        desc: Amount of memory (RAM) to use
+      uvrange: 
+        type: str
+        required: false
+        desc: Set the U-V range for data selection, e.g. '>50'.
+        example: '' 
+
+      real_imag:
+        type: map
+        desc: Plot real vs imaginary parts of data.
+        mapping:
+          enable:
+            type: bool 
+            desc: Executed the real v/s imaginary data plotting.
+            required: false
+            example: 'False'
+          col: 
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime: 
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan: 
+            type: str
+            desc: Number of channels to average for plotting.       
+            required: false
+            example: '10'
+
+      amp_phase:
+        type: map
+        desc: Plot Amplitude vs Phase for  data.
+        mapping:
+          enable:
+            type: bool
+            desc: Executes the plotting of amplitude v/s phase for data.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+
+      amp_uvwave:
+        type: map
+        desc: Plot data amplitude v/s  uvwave.
+        mapping:
+          enable:
+            type: bool
+            desc: Executes plotting data amplitude as a function of uvwave.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+
+      amp_ant:
+        type: map
+        desc: Plot data amplitde v/s antenna.
+        mapping:
+          enable:
+            type: bool
+            desc: Executes plotting data amplitude v/s antennas.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+
+      phase_uvwave:
+        type: map
+        desc: Plot data phase v/s uvwave.
+        mapping:
+          enable:
+            type: bool
+            desc: Executes plotting data phase v/s uvwave.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+
+      amp_scan:
+        type: map
+        desc: Plot data amplitude v/s scan number.
+        mapping:
+          enable:
+            type: bool
+            desc: Executes plotting data amplitude v/s scan number.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+
+      amp_chan:
+        type: map
+        desc: Plot Amplitude vs Channel data.    
+        mapping:
+          enable:
+            type: bool
+            desc: Executes the plotting of amplitude v/s phase for data.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:    
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+
+      phase_chan:
+        type: map
+        desc: Plot Phase vs Chan.    
+        mapping:
+          enable:
+            type: bool
+            desc: Executes the plotting of amplitude v/s phase for data.
+            required: false
+            example: 'False'
+          col:
+            type: str
+            desc: Data column to plot.
+            required: false
+            example: 'corrected'
+          avgtime:    
+            type: str
+            desc: Time to average for plotting, in seconds.
+            required: false
+            example: '10'
+          avgchan:
+            type: str
+            desc: Number of channels to average for plotting.
+            required: false
+            example: '10'
+      report:
+        type: bool
+        required: false
+        desc: (Re)generate a full HTML report at the end of this worker.
+        example: 'False'
+      cabs:
+        desc: 'Specifies non-default image versions and/or tags for Stimela cabs. Running with scissors: use with extreme caution.'
+        required: false
+        seq:
+          - type: map
+            mapping:
+              name:
+                type: str
+                required: true
+                example: 'cabname'
+              version:
+                type: str
+                required: false
+                example: ''
+              tag:
+                type: str
+                required: false
+                example: ''
+        example: ''

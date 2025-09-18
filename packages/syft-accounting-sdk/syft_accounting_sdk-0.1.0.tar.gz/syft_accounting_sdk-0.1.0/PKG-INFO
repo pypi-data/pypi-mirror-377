@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: syft-accounting-sdk
+Version: 0.1.0
+Summary: Python SDK for Syft Accounting Service
+Project-URL: Homepage, https://github.com/OpenMined/accounting-sdk
+Project-URL: Repository, https://github.com/OpenMined/accounting-sdk
+Project-URL: Documentation, https://github.com/OpenMined/accounting-sdk
+Project-URL: Bug Tracker, https://github.com/OpenMined/accounting-sdk/issues
+Author-email: OpenMined <shubham@openmined.org>
+Maintainer-email: OpenMined <shubham@openmined.org>
+License: MIT
+Requires-Python: >=3.9
+Requires-Dist: click==8.1.3
+Requires-Dist: colorama==0.4.6
+Requires-Dist: pydantic[email]==2.11.4
+Requires-Dist: python-dotenv==1.1.0
+Requires-Dist: requests==2.32.3
+Provides-Extra: cli
+Requires-Dist: click==8.1.3; extra == 'cli'
+Requires-Dist: colorama==0.4.6; extra == 'cli'
+Requires-Dist: python-dotenv==1.1.0; extra == 'cli'
+Provides-Extra: dev
+Requires-Dist: jupyter==1.1.1; extra == 'dev'
+Requires-Dist: python-dotenv==1.1.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Accounting Service Python SDK
+
+## Installation
+
+You can install directly from GitHub:
+
+```sh
+pip install git+ssh://git@github.com/OpenMined/accounting-sdk.git
+```
+
+If you prefer `uv`:
+
+```sh
+uv pip install git+ssh://git@github.com/OpenMined/accounting-sdk.git
+```
+
+## Examples
+
+Check out the `./notebooks/` directory for examples on using the SDK.

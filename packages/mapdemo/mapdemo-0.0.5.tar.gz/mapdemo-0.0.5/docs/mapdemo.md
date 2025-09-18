@@ -1,0 +1,4 @@
+
+# mapdemo module
+
+::: mapdemo.mapdemo

@@ -1,0 +1,99 @@
+# Project
+# -------
+
+[project]
+name = "django-subatomic"
+description = "Fine-grained database transaction control for Django."
+version = "0.1.0"
+
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+readme = "README.md"
+
+requires-python = ">=3.12"
+dependencies = [
+    "attrs",
+    "django",
+]
+
+authors = [
+  {name = "Charlie Denton", email = "charlie@meshy.co.uk"},
+]
+maintainers = [
+  {name = "Charlie Denton", email = "charlie@meshy.co.uk"},
+  {name = "Lily Acorn", email = "lily.acorn@kraken.tech"},
+  {name = "Samuel Searles-Bryant", email = "sam@samueljsb.co.uk"},
+]
+
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+]
+
+[project.urls]
+# See https://daniel.feldroy.com/posts/2023-08-pypi-project-urls-cheatsheet for
+# additional URLs that can be included here.
+repository = "https://github.com/kraken-tech/django-subatomic"
+changelog = "https://github.com/kraken-tech/django-subatomic/blob/main/CHANGELOG.md"
+
+# Packaging
+# ---------
+
+[build-system]
+requires = ["setuptools>=67.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"django_subatomic" = ["py.typed"]
+
+# Development
+# -----------
+
+[tool.uv]
+default-groups = []
+
+[dependency-groups]
+dev = [
+    {include-group = "mypy"},
+    {include-group = "test_runners"},
+    {include-group = "python_tests"},
+]
+mypy = [
+    {include-group = "python_tests"},
+    "django-stubs[compatible-mypy]",
+    "mypy",
+]
+test_runners = [
+    # Test matrix management
+    "tox",
+    "tox-uv",
+
+    # Pre-commit checks
+    "pre-commit",
+]
+python_tests = [
+    # Python test suite
+    "environs[django]",
+    "psycopg[binary]",
+    "pytest",
+    "pytest-django",
+]
+
+# Mypy
+# ----
+
+[tool.mypy]
+files = "."
+exclude = "build/"
+
+# Use strict defaults
+strict = true
+warn_unreachable = true
+warn_no_return = true

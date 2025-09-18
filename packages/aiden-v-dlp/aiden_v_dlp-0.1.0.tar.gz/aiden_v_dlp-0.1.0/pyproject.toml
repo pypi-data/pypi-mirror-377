@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aiden-v-dlp"
+version = "0.1.0"
+description = "Aiden Video Downloader: a friendly wrapper around yt-dlp"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name="Your Name", email="you@example.com"}]
+dependencies = ["yt-dlp>=2024.3.10"]  # keep this loose-ish
+
+[project.scripts]
+aiden-v-dlp = "aiden_v_dlp.cli:main"

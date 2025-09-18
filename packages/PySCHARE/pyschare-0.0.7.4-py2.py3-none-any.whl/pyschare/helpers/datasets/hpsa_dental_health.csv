@@ -1,0 +1,75 @@
+﻿Variable,Description
+source_id,primary identifier for a health professional shortage area (hpsa) as a complete unit in the source data system.
+source_name,the name of the health professional shortage area (hpsa). this data element comes directly from the source system in the most recent data refresh. for further information about hpsa refer to the http://www.hrsa.gov/shortage/ website.
+status_code,one character identifier that designates the current status of the hpsa designation. for further information about health professional shortage areas (hpsa) refer to the http://www.hrsa.gov/shortage/ website.
+status_description,textual description of the current status of the health professional shortage area (hpsa) designation.
+type_code,geography or facility type code characterizing the health professional shortage area (hpsa).
+type_desc,textual description of the health professional shortage area (hpsa) type.
+address,standardized version of the street address of a health professional shortage area (hpsa) facility.
+city,standardized version of the city name in which a health professional shortage areas (hpsa) facility is located.
+state_abbr,u.s. postal service (usps) code for the state in which the health professional shortage area (hpsa) entity is located.
+postal_code,"health professional shortage area (hpsa) u.s. postal service (usps) zoning improvement plan (zip) code. in the context of hpsa data, this field only applies to facilities."
+degree_of_shortage,degree of practitioner shortage for the health professional shortage area (hpsa) based on population to provider ratio.
+designation_date,date on which the health professional shortage area (hpsa) was originally designated as a shortage area.
+designation_last_update_date,date on which the health professional shortage area (hpsa) information was last updated in the source system.
+designation_pop,"number of persons which have been identified by the hrsa, bureau of health workforce (bhw), division of policy and shortage designation (dpsd) as being affected by the health professional shortage area (hpsa)."
+estimated_underserved_pop,estimated underserved population served by the full-time equivalent (fte) health care practitioners within a health professional shortage area (hpsa).
+estimated_served_pop,estimated total population served by the full-time equivalent (fte) health care practitioners within a health professional shortage area (hpsa).
+formal_ratio,"ratio of the health professional shortage area (hpsa) designation population to hpsa provider full-time equivalents displayed in ratio format (for example, 3500:1), where the population and the designation share the same discipline class (for example, primary care, dental care, and mental health)."
+total_fte_clinicians,number of practitioners providing ambulatory patient care in the health professional shortage area (hpsa) expressed as full-time equivalents.
+metropolitan_indicator_code,"single character indicating whether a health professional shortage area (hpsa) is considered to be in a metropolitan, non-metropolitan, or frontier area."
+metropolitan_indicator_desc,"description indicating whether a health professional shortage area (hpsa) is either metropolitan, non-metropolitan, or frontier in nature."
+provider_ratio_goal,"health professional shortage area (hpsa) provider ratio goal that is the target population per provider (physician) for the hpsa in a discipline class. federal regulations stipulate that, in order to be considered as having a shortage of providers, an area must have a population-to-provider ratio of a certain threshold. for primary medical care, the population to provider ratio must be at least 3,500 to 1 (3,000 to 1 if there are unusually high needs in the community). for dental, the ratio must be at least 5,000 to 1 (4,000 to 1 in high-need communities). for mental health, the area must have a population to psychiatrist ratio of 30,000 to 1 (20,000 to 1 in high-need communities). for further information about health professional shortage areas (hpsa) refer to the http://www.hrsa.gov/shortage/ website."
+percent_pop_below_poverty,percent of the population in the health professional shortage area (hpsa) living below the u.s. federal poverty level (usfpl).
+hpsa_score,"health professional shortage area (hpsa) score developed by the national health service corps (nhsc) in determining priorities for assignment of clinicians. the scores range from 0 to 26 where the higher the score, the greater the priority."
+hpsa_shortage,number of full-time equivalent (fte) practitioners needed in the health professional shortage area (hpsa) so that it will achieve the population to practitioner target ratio. the target ratio is determined by the type (discipline) of the hpsa.
+discipline_class_num,single character code used by the hrsa data warehouse (hdw) to indicate the discipline class identification number (id) values associated with health related discipline classes.
+discipline_class_desc,"health professional shortage area (hpsa) discipline class description. hpsa disciplines may be listed as primary care, dental health, or mental health."
+component_source_id,"identification number linking a health professional shortage area (hpsa) component to its ""parent"" hpsa."
+component_source_name,name assigned to the health professional shortage area (hpsa) component as identified in the most recent data refresh.
+component_status_code,one-character code that indicates the designation status for the component part of the health professional shortage areas (hpsa).
+component_status_desc,health professional shortage area (hpsa) component status description which is the english-language expansion of the hpsa component status code. this text description identifies the current status of the hpsa component and is subject to change during the life span of the hpsa.
+component_type_code,geography or facility type code which characterizes the health professional shortage area (hpsa) component.
+component_type_desc,health professional shortage area (hpsa) component type description which identifies in words the type of the hpsa for the component.
+component_state_abbr,u.s. postal service (usps) two alphabetic character code for a u.s. state or u.s. territory that is associated with the county or county equivalent in which the health professional shortage area (hpsa) component is located.
+component_postal_code,u.s. postal service zone improvement plan (zip) associated with a health professional shortage area (hpsa) component.
+component_designation_date,date when the hpsa was designated as a shortage area as represented in the most recent data refresh from the source data. for further information about health professional shortage areas (hpsa) refer to the http://www.hrsa.gov/shortage/ website.
+component_designation_date_string,date when the health professional shortage area (hpsa) was designated as a shortage area as represented in the most recent data-refresh from the source data and stored as a text string.
+component_designation_last_update_date,"date when the hpsa component was last updated, as represented in the most recent hpsa source data refresh. for further information about health professional shortage areas (hpsa) refer to the http://www.hrsa.gov/shortage/ website."
+geography_id,"health professional shortage area (hpsa) geography code which identifies the specific geographic area (county, minor civil division (mcd), or census tract) associated with the hpsa."
+countyfips,"numeric character string assigned by the national institute of standards and technology to the counties and/or county equivalents for the states, the district of columbia, and u.s. territories."
+county_name,"name of the county or county equivalent in which the associated address is located, displayed as a text string."
+statecountyfips,concatenation (combination) of the federal information processing standard (fips) state and county codes.
+state_fips,"state federal information processing standard (fips) code identifying the two numeric character string assigned by the national institute of standards and technology (nist) to states, the district of columbia, and u.s. territories."
+state_abbr_2,u.s. postal service (usps) two alphabetic character code for a u.s. state or u.s. territory associated with a location where an entity is situated.
+state_name,state or territory name.
+primary_state_name,"formal, official u.s. state or u.s. territory name associated with the location or address for the entity (record). with respect to a health professional shortage area (hpsa) or a medically underserved area/population (mua/p), the physical land area associated with the entity may cross state boundaries, which means a hpsa or mua/p may consist of components or parts from one or more states. therefore, the primary state for one of these areas is the state associated with the parent or primary record. also, the primary state is used for aggregating counts and sums at the state level."
+primary_state_fips,"state federal information processing standard (fips) code identifying the two numeric character string assigned by the national institute of standards and technology (nist) to states, the district of columbia, and u.s. territories."
+primary_hhs_region_name,"formal name for the u.s. department of health and human services (dhhs) region associated with the location or address for the entity. with respect to a health professional shortage area (hpsa) or a medically underserved area/population (mua/p), the physical land area associated with the entity may cross state boundaries, which means a hpsa or mua/p may consist of components or parts from one or more states. therefore, the primary state for one of these areas is the state associated with the parent or primary record. also, the primary state is used for aggregating counts and sums at the state level."
+us_mexico_border_county,"indication of whether a county or a part of a county is listed in u.s. counties that the u.s. - mexico border health commission has defined as comprising the border health initiative zone. for counties in the contiguous u.s., this data element may differ from the value of the u.s. - mexico border 100 kilometer indicator due to the fact that three counties in arizona fall partially within the defined 100-kilometer boundary area, but are not listed in the list of counties that the u.s. - mexico border health commission identified as comprising the zone of interest."
+us_mexico_border_100km,"indication of whether any portion of the geographic entity cited is within 100 kilometers of the u.s. - mexico border. the hrsa data warehouse generates this value by performing a geoprocessing analysis against the 100 kilometer u.s. - mexico border region as defined by the hrsa office of rural health policy, border health program."
+data_warehouse_record_create_date,date on which the data was processed by the hrsa data warehouse.
+data_warehouse_record_create_date_text,date on which the data was processed by the hrsa data warehouse.
+hpsa_name,"title case format, user friendly name which is generated by decoding the health professional shortage area (hpsa) name which came directly from the source system."
+hpsa_component_name,"name of the health professional shortage area (hpsa) component, as identified in the source data system. for area hpsas, a component may be a county, census tract, or minor civil division (mcd)."
+break_in_designation,indication of whether the health professional shortage area (hpsa) or medically underserved area/population (mua/p) has been continuously designated since the original designation date.
+geocoding_primary_x,primary longitude in decimal degrees (x coordinate) of an entity based on its address.
+geocoding_primary_y,primary latitude in decimal degrees (y coordinate) of an entity based on its address.
+hpsa_pop_type_code,code of the population type in a designated health professional shortage area (hpsa).
+hpsa_pop_type_desc,population type description which characterizes the health professional shortage area (hpsa).
+hpsa_resident_civilian_pop,population type description for the health professional shortage area (hpsa).
+common_city_name_with_state_abbr,city name in which the entity is physically located.
+common_postal_code,postal code associated with an entity address. for the purposes of the hrsa data warehouse this value is a five character u.s. postal service (usps) zone improvement plan (zip) code.
+common_county_name,hrsa data warehouse (hdw) concatenation of the complete county name and the state abbreviation.
+common_statecounty_fips,combination of the state and county federal information processing standard (fips) codes.
+common_state_abbr,u.s. postal service (usps) two alphabetic character code for a u.s. state or u.s. territory associated with a location where an entity is situated.
+common_state_name,state or territory name.
+common_state_fips,"state federal information processing standard (fips) code identifying the two numeric character string assigned by the national institute of standards and technology (nist) to states, the district of columbia, and u.s. territories."
+common_region_name,formal name for the u.s. department of health and human services (hhs) region associated with the entity location or address.
+hpsa_withdrawn_date,date on which the designation status was changed from designated to withdrawn.
+hpsa_withdrawn_date_string,date on which the designation status was changed from designated to withdrawn.
+provider_type,type of mental health providers used in the full-time equivalent (fte) calculations for the specified health professional shortage area (hpsa) designation.
+rural_status_code,status code indicating rural status of an entity (such as a facility or a geographic area).
+rural_status_desc,rural status description for the entity (such as a facility or a geographic area).
+hpsa_designation_pop_type_desc,this attribute represents health professional shortage area (hpsa) designation population type description.
+bhcmis_orgid,"organization source identification number from the hrsa, bureau of primary health care (bphc) health center management information system (bhcmis)."

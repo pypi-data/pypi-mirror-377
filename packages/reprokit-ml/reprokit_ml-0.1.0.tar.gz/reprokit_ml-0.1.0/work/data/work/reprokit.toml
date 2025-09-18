@@ -1,0 +1,9 @@
+[data]
+paths = ["data1", "data2"]
+
+[hash]
+exclude = ["**/.ipynb_checkpoints/**", "*.tmp", "**/__pycache__/**"]
+algorithm = "xxh3+sha256-merkle"
+sample_bytes = 1048576
+workers = 8
+cache_path = ".repro/hash-cache.sqlite"

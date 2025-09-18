@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: reprokit-ml
+Version: 0.1.0
+Summary: One-command determinism + manifest for ML projects.
+Project-URL: Homepage, https://github.com/abdulvahapmutlu/reprokit-ml
+Project-URL: Issues, https://github.com/abdulvahapmutlu/reprokit-ml/issues
+Author: Abdulvahap Mutlu
+License: MIT
+License-File: LICENSE
+Keywords: determinism,hashing,manifest,mlops,reproducibility
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Requires-Dist: pathspec>=0.12
+Requires-Dist: platformdirs>=4.2
+Requires-Dist: psutil>=5.9
+Requires-Dist: pydantic>=2.7
+Requires-Dist: rich>=13.7
+Requires-Dist: structlog>=24.1
+Requires-Dist: tomli>=2.0; python_version < '3.11'
+Requires-Dist: typer[all]>=0.12
+Requires-Dist: xxhash>=3.4
+Description-Content-Type: text/markdown
+
+# ReproKit-ML
+
+**One-command determinism + manifest for ML projects.**
+
+```bash
+pip install reprokit-ml
+reprokit init --data ./data
+reprokit seed --seed 42
+reprokit env-freeze
+reprokit hash-data ./data --exclude "**/.ipynb_checkpoints/**"
+reprokit manifest --config conf/train.yaml
+```
+
+- Deterministic seeds for **Torch/TF/JAX** (opt-in per framework)
+- Environment freeze (pip/conda/poetry/uv) + **system/GPU** snapshot
+- **Merkle data hash** with fast sampled hashing + cache
+- Single **manifest.json** that binds code commit + env + data + seeds + config
+
+> Scope is intentionally narrow: one-command determinism + manifest. Use MLflow/W&B for tracking, DVC for dataset versioning/remotes.

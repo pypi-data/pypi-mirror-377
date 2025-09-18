@@ -1,0 +1,56 @@
+{
+  "run_id": "20250917T114555Z",
+  "code": {
+    "commit": null,
+    "branch": null,
+    "remote": null,
+    "dirty": false
+  },
+  "environment": {
+    "python": "3.12.6",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "machine": "AMD64",
+    "cpu_count": 12,
+    "ram_total_mb": 16222,
+    "gpus": [
+      "NVIDIA GeForce GTX 1650 Ti, 565.90, 4096 MiB"
+    ],
+    "artifacts": {
+      "requirements.lock": "repro\\environment\\requirements.lock",
+      "environment.yml": "repro\\environment\\environment.yml"
+    }
+  },
+  "data": {
+    "paths": [
+      ".\\data"
+    ],
+    "algorithm": "xxh3+sha256-merkle",
+    "merkle_root": "25ca48afbbbf0422a65030efadde8a34057ecbca458a0f91c72c3485220b14ba",
+    "total_files": 1,
+    "sample_bytes": 1048576,
+    "excluded": [
+      "**/.ipynb_checkpoints/**"
+    ]
+  },
+  "determinism": {
+    "seed": 42,
+    "PYTHONHASHSEED": "42",
+    "numpy": true,
+    "torch": false,
+    "tensorflow": false,
+    "jax": false
+  },
+  "config": {
+    "files": [
+      "reprokit.toml"
+    ],
+    "hashes": [
+      "sha256:a3198b3802686bde3950616681848255174f1e002b89844e35caa55a69ab9145"
+    ]
+  },
+  "runtime": {
+    "hostname": "DESKTOP-87OJHHC",
+    "container": false,
+    "ts": 1758109556.000277
+  }
+}

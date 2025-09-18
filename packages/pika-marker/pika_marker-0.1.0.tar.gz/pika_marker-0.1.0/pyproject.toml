@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pika-marker"
+version = "0.1.0"
+description = "Python tool to write PIKA marker files"
+readme = "Readme.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "Sebastian Döbel", email = "sebastian.doebel@tu-dresden.de"}
+]
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://gitlab.hrz.tu-chemnitz.de/pika/pika-marker"
+
+[project.scripts]
+append-pika-marker = "pika_marker.main:main"

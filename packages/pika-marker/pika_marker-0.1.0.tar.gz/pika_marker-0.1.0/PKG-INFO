@@ -1,0 +1,70 @@
+Metadata-Version: 2.4
+Name: pika-marker
+Version: 0.1.0
+Summary: Python tool to write PIKA marker files
+Author-email: Sebastian Döbel <sebastian.doebel@tu-dresden.de>
+License-Expression: BSD-3-Clause
+Project-URL: Homepage, https://gitlab.hrz.tu-chemnitz.de/pika/pika-marker
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# PIKA Marker Python
+Python package to write PIKA marker files with timestamps.
+
+
+# Installation
+
+```
+pip install -e .
+```
+
+## Usage 
+
+In your Python code you can use the static function `appendPikaMarker` or create a `PikaMarker` object
+to write into a marker file
+
+```
+from pika_marker import PikaMarker, appendPikaMarker
+
+appendPikaMarker(
+    "marker_file.csv",
+    "my_marker",
+    additional="additional info",
+    icon="🔥",
+    timestamp=None
+)
+
+
+marker = PikaMarker("marker_file.csv")
+marker.appendMarker(
+    "marker 2",
+    additional="first marker from object",
+    icon="🔥"
+)
+marker.close()
+```
+
+It also provides a CLI tool `append-pika-marker`
+
+```
+append-pika-marker --help             
+usage: append-pika-marker [-h] [-a ADDITIONAL] [-i ICON] [-t TIMESTAMP] file name
+
+Append a PIKA marker to a marker file.
+
+positional arguments:
+  file                  Path to the marker file
+  name                  Name of the marker
+
+options:
+  -h, --help            show this help message and exit
+  -a, --additional ADDITIONAL
+                        Additional text
+  -i, --icon ICON       Icon or emoji
+  -t, --timestamp TIMESTAMP
+                        Unix timestamp (defaults to current time)
+```

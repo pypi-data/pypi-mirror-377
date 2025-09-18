@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+
+name = "imgDedup"
+dynamic = ["version"]
+description = "图像去重工具包."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "prettytable", "imagehash", "Pillow", "tqdm", "numpy", "loguru"
+]
+
+
+[tool.setuptools.dynamic]
+version = { attr = "imgDedup.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["imgDedup", "imgDedup.*"]
+
+[project.scripts]
+# 命令 = "包名.模块:函数"
+imgDedup = "imgDedup.scripts.dedupCli:dedupImgCli"

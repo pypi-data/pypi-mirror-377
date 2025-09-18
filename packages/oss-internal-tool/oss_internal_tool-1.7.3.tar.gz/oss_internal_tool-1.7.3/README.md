@@ -1,0 +1,428 @@
+# ALI OSS Upload/Download Package
+
+阿里云 OSS 文件上传下载工具包，支持同步和异步操作，提供文件上传、批量上传、目录上传、大文件分片上传以及文件下载功能。
+
+## 功能特点
+
+- 支持单个文件上传和下载
+- 支持批量文件上传和下载
+- 支持目录上传
+- 支持大文件分片上传和下载
+- 支持同步和异步操作
+- 提供上传/下载进度显示
+- 完善的错误处理机制
+- 支持内网和外网访问
+
+## 安装
+
+```bash
+pip install oss-internal
+```
+
+## 使用方法
+
+### 1. 文件上传
+
+#### 单个文件上传
+```python
+from oss_internal import upload_file_to_oss
+
+# 同步上传
+oss_key, bucket_name = upload_file_to_oss(
+    file_path="path/to/local/file.txt",
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket",
+    default_prefix="your/prefix"  # 可选
+)
+
+# 异步上传
+from oss_internal import aupload_file_to_oss
+import asyncio
+
+async def upload():
+    oss_key, bucket_name = await aupload_file_to_oss(
+        file_path="path/to/local/file.txt",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket"
+    )
+
+asyncio.run(upload())
+```
+
+#### 批量文件上传
+```python
+from oss_internal import batch_upload_file_to_oss
+
+# 同步批量上传
+file_paths = [
+    "path/to/file1.txt",
+    "path/to/file2.txt",
+    "path/to/file3.txt"
+]
+
+oss_keys, bucket_name = batch_upload_file_to_oss(
+    file_paths=file_paths,
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket"
+)
+
+# 异步批量上传
+from oss_internal import abatch_upload_file_to_oss
+
+async def batch_upload():
+    oss_keys, bucket_name = await abatch_upload_file_to_oss(
+        file_paths=file_paths,
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket"
+    )
+
+asyncio.run(batch_upload())
+```
+
+#### 目录上传
+```python
+from oss_internal import upload_directory_to_oss
+
+# 同步目录上传
+oss_keys, bucket_name = upload_directory_to_oss(
+    directory_path="path/to/directory",
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket"
+)
+
+# 异步目录上传
+from oss_internal import aupload_directory_to_oss
+
+async def upload_dir():
+    oss_keys, bucket_name = await aupload_directory_to_oss(
+        directory_path="path/to/directory",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket"
+    )
+
+asyncio.run(upload_dir())
+```
+
+#### 大文件分片上传
+```python
+from oss_internal import upload_large_file_to_oss
+
+# 同步大文件分片上传
+oss_key = upload_large_file_to_oss(
+    file_path="path/to/large_file.mp4",
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket",
+    part_size=10 * 1024 * 1024,  # 10MB分片
+    progress_callback=show_upload_progress
+)
+
+# 异步大文件分片上传
+from oss_internal import aupload_large_file_to_oss
+
+async def upload_large_file():
+    oss_key = await aupload_large_file_to_oss(
+        file_path="path/to/large_file.mp4",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket",
+        part_size=10 * 1024 * 1024
+    )
+
+asyncio.run(upload_large_file())
+```
+
+### 2. 文件下载
+
+#### 单个文件下载
+```python
+from oss_internal import download_single_file_from_oss
+
+try:
+    file_path = download_single_file_from_oss(
+        oss_key="path/to/oss/file.txt",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket",
+        temp_dir="/path/to/save"  # 可选，指定下载目录
+    )
+    print(f"文件下载成功: {file_path}")
+except FileNotFoundError as e:
+    print(f"文件不存在: {e}")
+except Exception as e:
+    print(f"下载失败: {e}")
+```
+
+#### 批量文件下载
+```python
+from oss_internal import download_batch_files_from_oss
+
+try:
+    results = download_batch_files_from_oss(
+        oss_keys=[
+            "path/to/file1.txt",
+            "path/to/file2.txt",
+            "path/to/file3.txt"
+        ],
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket",
+        temp_dir="/path/to/save"  # 可选，指定下载目录
+    )
+    
+    # 处理每个文件的下载结果
+    for result in results:
+        if result["success"]:
+            print(f"文件 {result['oss_key']} 下载成功: {result['file_path']}")
+        else:
+            print(f"文件 {result['oss_key']} 下载失败: {result['error']}")
+            
+except Exception as e:
+    print(f"批量下载失败: {e}")
+```
+
+#### 大文件分片下载
+```python
+from oss_internal import download_large_file_from_oss
+
+try:
+    file_path = download_large_file_from_oss(
+        oss_key="path/to/large_file.mp4",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket",
+        temp_dir="/path/to/save",
+        part_size=10 * 1024 * 1024,  # 10MB分片
+        progress_callback=show_download_progress
+    )
+    print(f"大文件下载成功: {file_path}")
+except FileNotFoundError as e:
+    print(f"文件不存在: {e}")
+except Exception as e:
+    print(f"下载失败: {e}")
+```
+
+### 3. 进度显示
+
+```python
+from oss_internal import show_upload_progress, show_download_progress
+
+# 上传时显示进度
+upload_file_to_oss(
+    file_path="path/to/file.txt",
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket",
+    progress_callback=show_upload_progress
+)
+
+# 下载时显示进度
+download_single_file_from_oss(
+    oss_key="path/to/oss/file.txt",
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket",
+    progress_callback=show_download_progress
+)
+
+# 异步进度显示
+from oss_internal import show_upload_progress_async, show_download_progress_async
+
+async def upload_with_progress():
+    await aupload_file_to_oss(
+        file_path="path/to/file.txt",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket",
+        progress_callback=show_upload_progress_async
+    )
+```
+
+### 4. 签名URL生成
+
+```python
+from oss_internal import generate_signed_url, generate_signed_url_async
+
+# 同步生成签名URL
+signed_url = generate_signed_url(
+    oss_key="path/to/file.txt",
+    ali_access_key_id="your_key",
+    ali_access_secret="your_secret",
+    oss_origin="oss-cn-hangzhou",
+    bucket_name="your-bucket",
+    expire_seconds=3600  # 1小时有效期
+)
+
+# 异步生成签名URL
+async def get_signed_url():
+    signed_url = await generate_signed_url_async(
+        oss_key="path/to/file.txt",
+        ali_access_key_id="your_key",
+        ali_access_secret="your_secret",
+        oss_origin="oss-cn-hangzhou",
+        bucket_name="your-bucket",
+        expire_seconds=3600
+    )
+    return signed_url
+
+# 验证签名URL
+from oss_internal import verify_signed_url_async
+
+async def verify_url():
+    is_valid = await verify_signed_url_async(signed_url)
+    print(f"URL是否有效: {is_valid}")
+```
+
+## 参数说明
+
+### 通用参数
+- `ali_access_key_id`: 阿里云 AccessKey ID
+- `ali_access_secret`: 阿里云 AccessKey Secret
+- `oss_origin`: OSS 服务的地域节点，例如 'oss-cn-hangzhou'
+- `bucket_name`: OSS Bucket 的名称
+- `internal`: 是否使用内网访问，默认为 True
+- `progress_callback`: 进度回调函数，默认为 None
+
+### 上传特有参数
+- `file_path`: 本地文件路径
+- `default_prefix`: 默认的 OSS 对象前缀路径
+- `prefix`: 自定义的 OSS 对象前缀路径
+- `oss_key`: OSS 对象键
+- `part_size`: 分片大小（大文件上传时使用）
+
+### 下载特有参数
+- `oss_key`: OSS 文件 key
+- `temp_dir`: 临时目录路径，如果不指定则使用系统临时目录
+- `part_size`: 分片大小（大文件下载时使用）
+- `read_chunk_size`: 读取块大小（大文件下载时使用）
+
+### 签名URL参数
+- `expire_seconds`: 签名URL的有效期（秒）
+
+## 错误处理
+
+包中定义了以下自定义异常：
+- `FileNotFoundError`: 文件不存在时抛出
+- `FileNotEnoughError`: 批量下载时部分文件下载成功时抛出
+- `EmptyDirectoryError`: 目录为空时抛出
+- `NotADirectoryError`: 指定路径不是目录时抛出
+- `ValueError`: 参数错误时抛出
+
+## 性能优化
+
+### 大文件处理
+- 支持分片上传和下载，提高大文件传输效率
+- 可自定义分片大小，根据网络环境调整
+- 多线程并发处理，充分利用带宽
+
+### 异步操作
+- 支持异步上传和下载，不阻塞主线程
+- 可与其他异步代码无缝集成
+- 提供异步进度回调
+
+### 进度监控
+- 实时显示传输进度
+- 支持自定义进度回调函数
+- 显示传输速度和预计剩余时间
+
+## 最佳实践
+
+1. **大文件处理**：
+   - 文件大小超过100MB时建议使用分片上传/下载
+   - 根据网络环境调整分片大小
+   - 使用进度回调监控传输状态
+
+2. **批量操作**：
+   - 批量上传时注意内存使用
+   - 使用异步操作提高效率
+   - 正确处理部分失败的情况
+
+3. **错误处理**：
+   - 始终使用try-catch包装操作
+   - 根据具体异常类型进行不同处理
+   - 记录详细的错误信息
+
+4. **网络优化**：
+   - 使用内网endpoint提高传输速度
+   - 合理设置超时时间
+   - 监控网络状态
+
+## 依赖要求
+
+- Python >= 3.11
+- aiohappyeyeballs
+- aiohttp
+- aiosignal
+- aliyun-python-sdk-core
+- aliyun-python-sdk-kms
+- asyncio-oss
+- attrs
+- certifi
+- cffi
+- charset-normalizer
+- crcmod
+- cryptography
+- frozenlist
+- idna
+- jmespath
+- multidict
+- oss2
+- propcache
+- pycparser
+- pycryptodome
+- requests
+- six
+- tqdm
+- urllib3
+- yarl
+
+## 许可证
+
+MIT License
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 更新日志
+
+### v1.7.1
+- 更新README.md
+
+### v1.7.0
+- 支持大文件分片上传
+
+### v1.6.1
+- 更新README.md
+
+### v1.6.0
+- 支持大文件分片下载
+
+### v1.5.0
+- 支持同步和异步操作
+
+### v1.4.0
+- 初始版本发布
+- 支持基本的文件上传下载功能
+- 支持进度显示
+- 支持签名URL生成

@@ -1,0 +1,9 @@
+default_install_hook_types:
+  - post-checkout
+  - post-merge
+  - post-rewrite
+repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 5ab6bd930e86ba0e929eedcee2be458f6b8e4936
+    hooks:
+      - id: uv-sync

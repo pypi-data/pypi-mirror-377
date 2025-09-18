@@ -1,0 +1,113 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataguild-snowflake-connector"
+version = "1.0.0"
+description = "DataGuild Snowflake Connector - Enterprise-grade metadata ingestion"
+authors = [
+    {name = "DataGuild Engineering Team", email = "engineering@dataguild.com"}
+]
+maintainers = [
+    {name = "DataGuild Engineering Team", email = "engineering@dataguild.com"}
+]
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: System :: Archiving :: Backup"
+]
+keywords = ["snowflake", "metadata", "data-catalog", "lineage", "dataguild", "etl", "data-engineering"]
+dependencies = [
+    "pydantic>=1.10.0,<2.0.0",
+    "snowflake-connector-python>=3.0.0",
+    "sqlparse>=0.4.0",
+    "PyYAML>=6.0",
+    "click>=8.0.0",
+    "typing-extensions>=4.0.0",
+    "sqlalchemy>=1.4.0",
+    "pandas>=1.3.0",
+    "structlog>=22.0.0",
+    "psutil>=5.8.0",
+    "snowflake-sqlalchemy>=1.4.0",
+    "prometheus-client>=0.15.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "flake8>=5.0.0",
+    "mypy>=0.991",
+    "isort>=5.10.0"
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/dataguild/snowflake-connector"
+Documentation = "https://dataguild-snowflake.readthedocs.io"
+Repository = "https://github.com/dataguild/snowflake-connector"
+Issues = "https://github.com/dataguild/snowflake-connector/issues"
+Changelog = "https://github.com/dataguild/snowflake-connector/blob/main/CHANGELOG.md"
+
+[project.scripts]
+dataguild-snowflake = "dataguild.cli:main"
+
+[project.entry-points."dataguild.sources"]
+snowflake = "dataguild.ingestion.source.snowflake.snowflake_v2:SnowflakeV2Source"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+readme = {file = "README.md", content-type = "text/markdown"}
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["dataguild"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

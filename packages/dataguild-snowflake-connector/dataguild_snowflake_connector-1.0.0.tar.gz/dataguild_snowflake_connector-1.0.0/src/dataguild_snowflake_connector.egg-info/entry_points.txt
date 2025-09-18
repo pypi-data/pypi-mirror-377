@@ -1,0 +1,5 @@
+[console_scripts]
+dataguild-snowflake = dataguild.cli:main
+
+[dataguild.sources]
+snowflake = dataguild.ingestion.source.snowflake.snowflake_v2:SnowflakeV2Source

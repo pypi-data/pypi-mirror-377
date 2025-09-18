@@ -1,0 +1,37 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+include pytest.ini
+
+# Include configuration files
+recursive-include dataguild/config *.yml *.yaml *.conf
+
+# Include example files
+recursive-include examples *.py
+
+# Include test data
+recursive-include tests *.py *.json *.yaml *.yml
+
+# Exclude development files
+exclude .gitignore
+exclude .github/
+exclude .vscode/
+exclude .idea/
+exclude *.egg-info/
+exclude build/
+exclude dist/
+exclude __pycache__/
+exclude *.pyc
+exclude *.pyo
+exclude .pytest_cache/
+exclude .coverage
+exclude htmlcov/
+exclude .tox/
+exclude .mypy_cache/
+exclude .ruff_cache/
+
+# Exclude data dumps and temporary files
+exclude complete_lineage_dump/
+exclude detailed_metadata_dump/
+exclude TEST_RESULTS_SUMMARY.md

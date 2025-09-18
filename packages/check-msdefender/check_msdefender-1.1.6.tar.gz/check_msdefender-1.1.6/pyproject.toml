@@ -1,0 +1,117 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "check-msdefender"
+version = "1.1.6"
+authors = [
+    { name = "ldvchosal", email = "ldvchosal@github.com" },
+]
+description = "A Nagios plugin for monitoring Microsoft Defender API endpoints"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Systems Administration",
+]
+keywords = [
+    "nagios",
+    "monitoring",
+    "microsoft",
+    "graph",
+    "api",
+    "azure",
+]
+dependencies = [
+    "nagiosplugin>=1.4.0",
+    "azure-identity>=1.12.0",
+    "click>=8.0,<9.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/lduchosal/check_msdefender"
+"Bug Reports" = "https://github.com/lduchosal/check_msdefender/issues"
+Source = "https://github.com/lduchosal/check_msdefender"
+Documentation = "https://github.com/lduchosal/check_msdefender/blob/main/README.md"
+
+[project.scripts]
+check_msdefender = "check_msdefender.cli:main"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "pytest-asyncio>=1.0",
+    "black>=21.0",
+    "flake8>=3.8",
+    "mypy>=0.800",
+    "twine>=6.2.0",
+    "pdm>=2.0.0",
+    "ruff>=0.13.0",
+]
+
+[tool.pdm.scripts]
+format = "ruff format"
+typecheck = "mypy check_msdefender/"
+lint = "flake8 check_msdefender/"
+build = "python -m build"
+publish = "python -m twine upload dist/* --verbose"
+test = "pytest -v tests/"
+install = "pdm install"
+clihelp = "check_msdefender --help"
+climachines = "check_msdefender machines"
+
+[tool.pdm.scripts.cli]
+composite = [
+    "clihelp",
+    "climachines",
+]
+
+[tool.pdm.scripts.all]
+composite = [
+    "install",
+    "format",
+    "build",
+    "test",
+    "cli",
+]
+
+[tool.setuptools.package-data]
+"*" = [
+    "*.ini",
+]
+
+[tool.black]
+line-length = 100
+target-version = [
+    "py39",
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v"

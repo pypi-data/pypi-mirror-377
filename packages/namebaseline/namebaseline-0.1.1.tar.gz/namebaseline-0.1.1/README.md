@@ -1,0 +1,106 @@
+# pynamebaseline
+
+Python library to analyze names and calculate statistics against a baseline
+
+## Usage
+
+Install namebaseline.
+
+```bash
+pip install namebaseline
+```
+
+Create your baseline and suspicious lists (one string per line)
+
+If the baseline file is `baseline.csv` and the suspicious file is `sus.csv`, then you can run the following:
+
+```python
+from namebaseline import str_cumdf, chi2_gof_test
+
+# Each file is a list of names, 1 per line
+# givenname,surname,...
+baseline = pd.read_csv("baseline.csv") 
+sus = pd.read_csv("sus.csv")
+
+# Create Cumulative Distribution Functions
+baseline_cumdf = str_cumdf(baseline['givenname'])
+sus_cumdf = str_cumdf(sus['givenname'])
+
+# Run Chi-Squared Goodness-of-Fit Test
+result = namebaseline.chi2_gof_test(baseline_cumdf, sus_cumdf)
+
+if result.follows_baseline:
+    print("sus follows baseline")
+else:
+    print("sus does not follow baseline")
+```
+
+To save the baseline cumulative distribution function to use again later:
+
+```python
+write_cdf("baseline.json", baseline_cumdf)
+```
+
+To load the baseline cumulative distribution function:
+
+```python
+baseline_cumdf = read_cdf("baseline.json")
+```
+
+// TODO: Add more details about transformations
+
+## Chi-Square Goodness-of-Fit Test
+
+https://www.itl.nist.gov/div898/handbook/eda/section3/eda35f.htm
+
+Does the sample come from a population with a specific distribution?
+
+Chi-square goodness-of-fit test is applied to binned (classified) data. We create convert all names to floating point values from 0...1, and assign an equal score to each name (1).  Conceptually, we are making all names plottable on a x/y grid, with the x position equal to the name value, and the y position equal to the score for that name.
+
+We then create a histogram of all names, summing up the values for each bin. I create 1000 equally-sized bins for this: (0...0.001], (0.001...0.002], ...
+
+This creates our binned counts.
+
+// TODO: Add example image
+
+We can create a probability distribution function by dividing each bin by the total number of names.
+
+// TODO: Add example image
+
+If we plot the baseline and the sample using this distribution, differences are not easily visible.  However, if we create a cumulative distribution function from the probability distribution function, the differences are much easier to see.
+
+A cumulative distribution function is created by summing all previous scores as we scan the values from left to right.
+
+By graphing the baseline and sample CDFs together, we can easily see the differences.
+
+// TODO: Add example image
+
+We use the Chi-Square Goodness-of-Fit test to statistically determine whether our sample follows or does not follow our baseline distribution.
+
+The Chi-Square test uses the following null (H_0) and alternate (H_a) hypotheses:
+
+H_0: The data follows the baseline distribution
+H_a: The data does not follow the baseline distribution
+
+The test statistic (x^2) is calculated from the baseline CDF and sample bins.
+
+N is the total samples size.
+O_i is the count of samples in bin i.
+E_i is the expected counts in bin i based on the baseline.
+
+x^2 = sum[i=1...k](O_i-E_i)^2 / E_i
+
+E_i = N*(CDF_baseline(i) - CDF_baseline(i-1))
+
+alpha: significance level = 0.05 (95% confidence)
+
+Critical Region:
+k: non-empty cells (1000)
+c: estimated distribution function parameters (0) + 1
+
+The test statistic follows an (approximately) X^2 distribution with (k-c) degrees of freedom)
+
+Reject if X^2 > X^2_(1-a,k-c)
+The critical value is calculated using `scipy.stats.chi2.ppf(q, df)`
+where q = 1-a, df = the degrees of freedom
+

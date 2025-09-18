@@ -1,0 +1,29 @@
+# MANIFEST.in for snowflake-connector-helper
+# Internal package for Team of Noah A from SignifyHealth
+
+include README.md
+include LICENSE
+include requirements.txt
+include env.example
+
+# Include package files
+recursive-include snowflake_connector *.py
+
+# Include examples
+include examples/team_usage_example.py
+include examples/basic_usage.py
+include examples/connection_pooling_example.py
+
+# Include tests
+recursive-include tests *.py
+
+# Exclude development and build files
+exclude test_*.py
+exclude *.pyc
+exclude .env
+exclude .DS_Store
+global-exclude __pycache__
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude .git*
+global-exclude .DS_Store

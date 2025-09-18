@@ -1,0 +1,249 @@
+# Snowflake Connector - SignifyHealth
+
+**Internal Package for Team of Noah A from SignifyHealth**
+
+A secure, enterprise-grade Python library for connecting to Snowflake data warehouse with PKCS#8 encrypted key authentication, connection pooling, and pandas integration.
+
+## 🏢 Internal Use Only
+
+This package is exclusively for the **Team of Noah A from SignifyHealth**. It provides secure, standardized access to Snowflake using company-approved PKCS#8 encrypted private keys.
+
+## Features
+
+- 🔐 **PKCS#8 Encrypted Key Authentication** (company standard)
+- 🏊‍♂️ **Connection Pooling** for high-performance applications
+- 🐼 **Native Pandas Integration** for data analysis
+- 🛡️ **Enterprise Security** with encrypted keys and secure logging
+- ⚡ **Optimized Query Execution** with chunking for large datasets
+- 🔧 **Flexible Configuration** supporting team naming conventions
+
+## Installation
+
+```bash
+# Install from PyPI (team access only)
+pip install snowflake-connector-helper
+```
+
+## Quick Start
+
+### 1. Set Up Your Environment
+
+Create a `.env` file with your Snowflake credentials:
+
+```bash
+# Snowflake Connection
+SNOWFLAKE_ACCOUNT=SIGNIFYHEALTH-DW_PROD_TEST
+SNOWFLAKE_USER=your_username
+SNOWFLAKE_ROLE=your_role
+SNOWFLAKE_WAREHOUSE=COMPUTE_XSMALL
+SNOWFLAKE_DATABASE=your_database
+SNOWFLAKE_SCHEMA=your_schema
+
+# PKCS#8 Private Key (team standard)
+SF_PRIVATE_KEY_PEP8=/path/to/your/private_key.cert
+SF_PASSPHRASE_FILE=/path/to/your/passphrase.txt
+```
+
+### 2. Basic Usage
+
+```python
+from snowflake_connector import SnowflakeConnector
+
+# Simple connection (auto-loads from environment)
+connector = SnowflakeConnector()
+
+# Execute queries with pandas
+with connector as conn:
+    # Query to DataFrame
+    df = conn.execute_query_to_dataframe("""
+        SELECT customer_id, order_date, amount 
+        FROM sales_data 
+        WHERE order_date >= '2024-01-01'
+        LIMIT 1000
+    """)
+    
+    print(f"Retrieved {len(df)} rows")
+    print(df.head())
+    
+    # Execute non-query operations
+    conn.execute_query("CREATE TABLE temp_analysis AS SELECT * FROM staging_data")
+```
+
+### 3. Connection Pooling (Recommended)
+
+```python
+from snowflake_connector import SnowflakeConfig, SnowflakeConnector
+
+# Enable connection pooling for better performance
+config = SnowflakeConfig.from_env()
+config.use_connection_pool = True
+config.pool_max_connections = 10
+
+connector = SnowflakeConnector(config)
+
+# Use for multiple queries efficiently
+with connector as conn:
+    # Multiple queries reuse pooled connections
+    customers = conn.execute_query_to_dataframe("SELECT * FROM customers")
+    orders = conn.execute_query_to_dataframe("SELECT * FROM orders")
+    products = conn.execute_query_to_dataframe("SELECT * FROM products")
+```
+
+## Configuration
+
+### Environment Variables
+
+The connector supports our team's naming conventions:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `SNOWFLAKE_ACCOUNT` | Snowflake account identifier | `SIGNIFYHEALTH-DW_PROD_TEST` |
+| `SNOWFLAKE_USER` | Your Snowflake username | `SVC_DS_OFFSHORE_PROD_TEST` |
+| `SF_PRIVATE_KEY_PEP8` | Path to PKCS#8 private key | `/path/to/key.cert` |
+| `SF_PASSPHRASE_FILE` | Path to passphrase file | `/path/to/passphrase.txt` |
+| `SNOWFLAKE_WAREHOUSE` | Compute warehouse | `COMPUTE_XSMALL` |
+| `SNOWFLAKE_DATABASE` | Database name | `AI_TEST` |
+| `SNOWFLAKE_SCHEMA` | Schema name | `member_refusal_analysis` |
+| `SNOWFLAKE_ROLE` | Snowflake role | `SVC_DS_OFFSHORE_PROD_TEST_ROLE` |
+
+### Direct Configuration
+
+```python
+from snowflake_connector import SnowflakeConfig, SnowflakeConnector
+
+config = SnowflakeConfig(
+    account="SIGNIFYHEALTH-DW_PROD_TEST",
+    user="your_username",
+    private_key_path="/path/to/your/private_key.cert",
+    private_key_passphrase="your_passphrase",
+    warehouse="COMPUTE_XSMALL",
+    database="AI_TEST",
+    schema="member_refusal_analysis",
+    role="your_role"
+)
+
+connector = SnowflakeConnector(config)
+```
+
+## PKCS#8 Key Setup
+
+Your PKCS#8 private key should already be provided by the team. If you need to set up a new key:
+
+1. **Generate PKCS#8 Key:**
+```bash
+openssl genpkey -algorithm RSA -pkcs8 -aes256 -out private_key.p8
+chmod 600 private_key.p8
+```
+
+2. **Extract Public Key:**
+```bash
+openssl rsa -in private_key.p8 -pubout -outform DER | openssl base64 -A
+```
+
+3. **Upload to Snowflake:**
+```sql
+ALTER USER your_username SET RSA_PUBLIC_KEY='<base64_public_key>';
+```
+
+## Common Use Cases
+
+### Data Analysis Pipeline
+
+```python
+from snowflake_connector import SnowflakeConnector
+import pandas as pd
+
+def analyze_customer_data():
+    with SnowflakeConnector() as conn:
+        # Extract data
+        customers = conn.execute_query_to_dataframe("""
+            SELECT customer_id, segment, acquisition_date, lifetime_value
+            FROM customer_analytics 
+            WHERE acquisition_date >= '2024-01-01'
+        """)
+        
+        # Analyze
+        segment_analysis = customers.groupby('segment').agg({
+            'lifetime_value': ['mean', 'sum', 'count']
+        })
+        
+        return segment_analysis
+
+results = analyze_customer_data()
+print(results)
+```
+
+### Batch Data Processing
+
+```python
+def process_large_dataset():
+    config = SnowflakeConfig.from_env()
+    config.use_connection_pool = True
+    
+    with SnowflakeConnector(config) as conn:
+        # Process in chunks
+        query = "SELECT * FROM large_table WHERE date_column >= %s"
+        
+        for chunk in conn.execute_query_chunked(query, ['2024-01-01'], chunk_size=10000):
+            # Process each chunk
+            processed_data = chunk.apply(lambda x: x * 1.1)  # Example processing
+            
+            # Save results
+            conn.upload_dataframe(
+                processed_data, 
+                'processed_results',
+                if_exists='append'
+            )
+```
+
+## API Reference
+
+### SnowflakeConnector
+
+- `execute_query(sql, params=None)` - Execute SQL query
+- `execute_query_to_dataframe(sql, params=None)` - Query to pandas DataFrame  
+- `execute_query_chunked(sql, params=None, chunk_size=10000)` - Chunked query execution
+- `upload_dataframe(df, table_name, if_exists='replace')` - Upload DataFrame to Snowflake
+- `test_connection()` - Test connection status
+- `get_pool_stats()` - Connection pool statistics
+
+### SnowflakeConfig
+
+Configuration class supporting:
+- Environment variable loading (`from_env()`)
+- PKCS#8 key validation
+- Connection pooling settings
+- Team naming conventions
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"PKCS#8 private key file not found"**
+   - Check your `SF_PRIVATE_KEY_PEP8` path
+   - Ensure file permissions are 600
+
+2. **"Password is empty"**
+   - Your public key needs to be uploaded to Snowflake
+   - Contact team lead for assistance
+
+3. **Connection timeout**
+   - Check VPN connection
+   - Verify Snowflake account access
+
+### Getting Help
+
+For issues or questions:
+1. Check the team knowledge base
+2. Contact Team of Noah A lead
+3. Review Snowflake access permissions
+
+## License
+
+Internal use only - Team of Noah A from SignifyHealth. See LICENSE file for details.
+
+---
+
+**Internal Package Version:** 1.0.0  
+**Team:** Team of Noah A - SignifyHealth  
+**Last Updated:** 2025-09-17

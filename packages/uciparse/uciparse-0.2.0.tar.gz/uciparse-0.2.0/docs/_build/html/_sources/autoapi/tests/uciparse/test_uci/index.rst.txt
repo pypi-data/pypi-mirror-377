@@ -1,0 +1,170 @@
+tests.uciparse.test_uci
+=======================
+
+.. py:module:: tests.uciparse.test_uci
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: FIXTURE_DIR
+
+.. py:function:: load(path: pathlib.Path) -> dict[str, list[str]]
+
+.. py:function:: original() -> dict[str, list[str]]
+
+.. py:function:: normalized() -> dict[str, list[str]]
+
+.. py:function:: invalid() -> dict[str, list[str]]
+
+.. py:function:: real() -> dict[str, list[str]]
+
+.. py:class:: TestUtil
+
+   Unit tests utility functions.
+
+
+   .. py:method:: test_contains_single()
+
+
+.. py:class:: TestUciPackageLine
+
+   Unit tests for UciPackageLine.
+
+
+   .. py:method:: test_init()
+
+
+   .. py:method:: test_normalized()
+
+
+.. py:class:: TestUciConfigLine
+
+   Unit tests for UciConfigLine.
+
+
+   .. py:method:: test_init()
+
+
+   .. py:method:: test_normalized()
+
+
+.. py:class:: TestUciOptionLine
+
+   Unit tests for UciOptionLine.
+
+
+   .. py:method:: test_init()
+
+
+   .. py:method:: test_normalized()
+
+
+.. py:class:: TestUciListLine
+
+   Unit tests for UciListLine.
+
+
+   .. py:method:: test_init()
+
+
+   .. py:method:: test_normalized()
+
+
+.. py:class:: TestUciCommentLine
+
+   Unit tests for UciCommentLine.
+
+
+   .. py:method:: test_init()
+
+
+   .. py:method:: test_normalized()
+
+
+.. py:class:: TestUciFile
+
+   Unit tests for UciFile.
+
+
+   .. py:method:: test_init()
+
+
+   .. py:method:: test_normalized()
+
+
+   .. py:method:: test_from_file(normalized, path)
+
+
+   .. py:method:: test_from_text(normalized)
+
+
+   .. py:method:: test_no_quotes(original, normalized)
+
+
+   .. py:method:: test_single_quotes(original, normalized)
+
+
+   .. py:method:: test_double_quotes(original, normalized)
+
+
+   .. py:method:: test_no_config_name(original, normalized)
+
+
+   .. py:method:: test_comments(original, normalized)
+
+
+   .. py:method:: test_package_only(original, normalized)
+
+
+   .. py:method:: test_config_only(original, normalized)
+
+
+   .. py:method:: test_option_only(original, normalized)
+
+
+   .. py:method:: test_list_only(original, normalized)
+
+
+   .. py:method:: test_option_empty_value(original, normalized)
+
+
+   .. py:method:: test_list_empty_value(original, normalized)
+
+
+   .. py:method:: test_unknown_line(invalid)
+
+
+   .. py:method:: test_invalid_package_empty(invalid)
+
+
+   .. py:method:: test_invalid_config_empty(invalid)
+
+
+   .. py:method:: test_invalid_option_empty(invalid)
+
+
+   .. py:method:: test_invalid_list_empty(invalid)
+
+
+   .. py:method:: test_invalid_package_quotes(invalid)
+
+
+   .. py:method:: test_invalid_config_quotes(invalid)
+
+
+   .. py:method:: test_invalid_option_quotes(invalid)
+
+
+   .. py:method:: test_invalid_list_quotes(invalid)
+
+
+   .. py:method:: test_real(real)
+
+

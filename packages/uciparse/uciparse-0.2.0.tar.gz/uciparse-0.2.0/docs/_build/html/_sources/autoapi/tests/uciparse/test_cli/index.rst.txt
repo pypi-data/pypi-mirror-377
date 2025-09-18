@@ -1,0 +1,57 @@
+tests.uciparse.test_cli
+=======================
+
+.. py:module:: tests.uciparse.test_cli
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: TestUciParse
+
+   Unit tests for the uciparse script.
+
+
+   .. py:method:: test_h()
+
+
+   .. py:method:: test_help()
+
+
+   .. py:method:: test_no_file()
+
+
+   .. py:method:: test_stdin(ucifile, writelines, stdin)
+
+
+   .. py:method:: test_file(ucifile, writelines)
+
+
+   .. py:method:: test_error(ucifile, write)
+
+
+.. py:class:: TestUciDiff
+
+   Unit tests for the ucidiff script.
+
+
+   .. py:method:: test_h()
+
+
+   .. py:method:: test_help()
+
+
+   .. py:method:: test_no_file()
+
+
+   .. py:method:: test_one_file()
+
+
+   .. py:method:: test_file(ucifile, writelines, unified_diff)
+
+
+   .. py:method:: test_error(ucifile, write)
+
+

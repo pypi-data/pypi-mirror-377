@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>uciparse.uci &#8212; uciparse 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="uciparse.cli" href="../cli/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-uciparse.uci">
+<span id="uciparse-uci"></span><h1>uciparse.uci<a class="headerlink" href="#module-uciparse.uci" title="Link to this heading">¶</a></h1>
+<p>Implements code to parse and emit the OpenWRT <a class="reference external" href="https://openwrt.org/docs/guide-user/base-system/uci">UCI</a> configuration format.</p>
+<section id="normalizing-a-file">
+<h2>Normalizing a File<a class="headerlink" href="#normalizing-a-file" title="Link to this heading">¶</a></h2>
+<p>When normalizing a file, the goal is to standardize indenting, comment
+placement, and quoting, without changing the semantics of the file. We do this
+by reading in the file per the spec, and then emitting the same configuration
+in a standard way.</p>
+<p>We always emit identifiers unquoted.  We always emit values quoted, using a single
+quote unless the value contains a single quote, in which case we’ll use double
+quotes.  We always indent 4 spaces.  We always put a blank line before a config
+section.  We always put a single space between fields on a single line and two
+spaces before a comment.  None of this is configurable.</p>
+<p>The one thing we can’t handle well is a standalone comment.  Since the file
+format is line-oriented, we don’t really have any context for comments.  The
+best we can do is infer that a comment is supposed to be indented at the same
+level as an option or list if there was any whitespace before the leading <code class="docutils literal notranslate"><span class="pre">#</span></code>
+character when we found the comment.</p>
+</section>
+<section id="parser-design">
+<h2>Parser Design<a class="headerlink" href="#parser-design" title="Link to this heading">¶</a></h2>
+<p>These regular expressions tell us what sort of line we’re dealing with:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Empty line:</strong> <code class="docutils literal notranslate"><span class="pre">(^\s*$)</span></code></p></li>
+<li><p><strong>Comment-only line:</strong> <code class="docutils literal notranslate"><span class="pre">(^\s*#.*$)</span></code></p></li>
+<li><p><strong>Package line:</strong> <code class="docutils literal notranslate"><span class="pre">(^\s*)(package)(\s+)(.*?)(\s*$)</span></code></p></li>
+<li><p><strong>Config line:</strong> <code class="docutils literal notranslate"><span class="pre">(^\s*)(config)(\s+)(.*?)(\s*$)</span></code></p></li>
+<li><p><strong>Option line:</strong> <code class="docutils literal notranslate"><span class="pre">(^\s*)(option)(\s+)(.*?)(\s*$)</span></code></p></li>
+<li><p><strong>List line:</strong> <code class="docutils literal notranslate"><span class="pre">(^\s*)(list)(\s+)(.*?)(\s*$)</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Any line that does not match one of these regular expressions is an invalid
+line per the specification.</p>
+<p>We can simplify these regular expressions into a single check:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">(^\s*$)|((^\s*)(#)(.*$))|((^\s*)(package|config|option|list)(\s+)(.*?)(\s*$))</span></code></p>
+</div></blockquote>
+<p>With this regular expression, if group #4 is <cite>#</cite>, then we have a comment,
+with the comment text in group #5 and leading whitespace in group #3.  Otherwise,
+group #8 gives us the type of the line (<code class="docutils literal notranslate"><span class="pre">package</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code>, <code class="docutils literal notranslate"><span class="pre">option</span></code>
+or <code class="docutils literal notranslate"><span class="pre">list</span></code>) and group #10 gives us the remainder of the line after the type.</p>
+<p>Next, we need to parse the data on each line according to the individual rules
+for the type of line.  The UCI restrictions on identifiers are enforced,
+including that empty identifiers are not legal.  We also enforce quoting rules,
+including that quotes must match.</p>
+<p>The spec is silent about embedded and escaped quotes within option values.
+I’ve chosen to assume that a double-quoted string may contain single quotes and
+vice-versa (like in Python or Perl) but that escaped quotes are not allowed.</p>
+<p>We do not validate boolean values.  The spec supports a specific list, but you
+can’t really identify from looking at the file whether an option is supposed to
+be a boolean or just a string.</p>
+<p>Regardless, if the first regular expression matches a line, and the second
+regular expression does not, then the line isn’t valid and we can’t process it.
+If we can’t process any line, we’ll bomb out and refuse to process the file
+at all.</p>
+<p>For a package line, we can use this regular expression:</p>
+<p><code class="docutils literal notranslate"><span class="pre">(^)((([\&quot;'])([a-zA-Z0-9_-]+)(?:\4))|([a-zA-Z0-9_-]+))((\s*)(#.*))?($)</span></code></p>
+<p>If the field is quoted, this yields the package name in group #5.  If the field
+is not quoted, this yields the package name in group #6.  The comment, if it
+exists, will be in group #9.</p>
+<p>For a config line, we can use this regular expression:</p>
+<p><code class="docutils literal notranslate"><span class="pre">(^)((([\&quot;'])([a-zA-Z0-9_-]+)(?:\4))|([a-zA-Z0-9_-]+))((\s+)((([\&quot;'])([a-zA-Z0-9_-]+)(?:\11))|([a-zA-Z0-9_-]+)))?((\s*)(#.*))?($)</span></code></p>
+<p>If the first field is quoted, this yields the section type in group #5.  If the
+first field is not quoted, this yields the section type in group #6.  If the
+second field exists and is quoted, this yields the the section name in group
+#12.  If second field is not quoted, this yields the section name in group #9.
+The trailing comment, if it exists, will be in group #16, with leading
+whitespace stripped.</p>
+<p>The list and option lines are slightly different, since the value is required
+and is not an identifier:</p>
+<p><code class="docutils literal notranslate"><span class="pre">(^)((([\&quot;'])([a-zA-Z0-9_-]+)(?:\4))|([a-zA-Z0-9_-]+))(\s+)((([\&quot;'])([^\\\10]*)(?:\10))|([^'\&quot;\s#]+))((\s*)(#.*))?($)</span></code></p>
+<p>If first field is quoted, this yields the list or option name in group #5.  If
+the first field is not quoted, this yields the list or option name in group #6.
+If second field is quoted, this yields the value in group #11.  If second field
+is not quoted, this yields the value in group #8.  The trailing comment, if it
+exists, will be in group #15, with trailing whitespace stripped.  The regular
+expression is careful to allow only embedded quotes of a different type, as
+discussed above.</p>
+</section>
+<section id="uci-syntax-specification">
+<h2>UCI Syntax Specification<a class="headerlink" href="#uci-syntax-specification" title="Link to this heading">¶</a></h2>
+<p><em>Note:</em> This section was taken from the OpenWRT <a class="reference external" href="https://openwrt.org/docs/guide-user/base-system/uci">UCI</a> documentation.</p>
+<p>The UCI configuration files usually consist of one or more config statements,
+so called sections with one or more option statements defining the actual
+values.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">#</span></code> begins comments in the usual way. Specifically, if a line contains a
+<code class="docutils literal notranslate"><span class="pre">#</span></code> outside of a string literal, it and all characters after it in the line
+are considered a comment and ignored.</p>
+<p>Below is an example of a simple configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="s1">&#39;example&#39;</span>
+
+<span class="n">config</span> <span class="s1">&#39;example&#39;</span> <span class="s1">&#39;test&#39;</span>
+        <span class="n">option</span>   <span class="s1">&#39;string&#39;</span>      <span class="s1">&#39;some value&#39;</span>
+        <span class="n">option</span>   <span class="s1">&#39;boolean&#39;</span>     <span class="s1">&#39;1&#39;</span>
+        <span class="nb">list</span>     <span class="s1">&#39;collection&#39;</span>  <span class="s1">&#39;first item&#39;</span>
+        <span class="nb">list</span>     <span class="s1">&#39;collection&#39;</span>  <span class="s1">&#39;second item&#39;</span>
+</pre></div>
+</div>
+<p>The config <code class="docutils literal notranslate"><span class="pre">'example'</span> <span class="pre">'test'</span></code> statement defines the start of a section with
+the type <code class="docutils literal notranslate"><span class="pre">example</span></code> and the name <code class="docutils literal notranslate"><span class="pre">test</span></code>. There can also be so called anonymous
+sections with only a type, but no name identifier. The type is important for
+the processing programs to decide how to treat the enclosed options.</p>
+<p>The option <code class="docutils literal notranslate"><span class="pre">'string'</span> <span class="pre">'some</span> <span class="pre">value'</span></code> and option <code class="docutils literal notranslate"><span class="pre">'boolean'</span> <span class="pre">'1'</span></code> lines define simple
+values within the section. Note that there are no syntactical differences
+between text and boolean options. Per convention, boolean options may have one
+of the values <cite>0`</cite>, <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> or <code class="docutils literal notranslate"><span class="pre">disabled</span></code> to specify a false value
+or <code class="docutils literal notranslate"><span class="pre">1</span></code> , <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">enabled</span></code> to specify a true value.  In the
+lines starting with a <cite>list</cite> keyword an option with multiple values is defined.
+All <cite>list</cite> statements that share the same name, <cite>collection</cite> in our example, will
+be combined into a single list of values with the same order as in the
+configuration file.  The indentation of the <cite>option</cite> and <cite>list</cite> statements is a
+convention to improve the readability of the configuration file but it’s not
+syntactically required.</p>
+<p>Usually you do not need to enclose identifiers or values in quotes. Quotes are
+only required if the enclosed value contains spaces or tabs. Also it’s legal to
+use double- instead of single-quotes when typing configuration options.</p>
+<p>All of the examples below are valid UCI syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">option</span>  <span class="n">example</span>   <span class="n">value</span>
+<span class="n">option</span>  <span class="n">example</span>  <span class="s2">&quot;value&quot;</span>
+<span class="n">option</span> <span class="s1">&#39;example&#39;</span>  <span class="n">value</span>
+<span class="n">option</span> <span class="s1">&#39;example&#39;</span> <span class="s2">&quot;value&quot;</span>
+<span class="n">option</span> <span class="s2">&quot;example&quot;</span> <span class="s1">&#39;value&#39;</span>
+</pre></div>
+</div>
+<p>In contrast, the following examples are not valid UCI syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># missing quotes around the value</span>
+<span class="n">option</span>  <span class="n">example</span>   <span class="n">v_a</span> <span class="n">l</span> <span class="n">u</span><span class="o">-</span><span class="n">e</span>
+<span class="c1"># unbalanced quotes</span>
+<span class="n">option</span> <span class="s1">&#39;example&quot; &quot;value&#39;</span>
+</pre></div>
+</div>
+<p>It is important to know that UCI identifiers and config file names may contain
+only the characters <cite>a-zA-Z</cite>, <cite>0-9</cite> and <cite>_</cite>. E.g. no hyphens (<code class="docutils literal notranslate"><span class="pre">-</span></code>) are allowed.
+Option values may contain any character (as long they are properly quoted).</p>
+<p><em>(Editorial note: the statement above about identifiers is not accurate.  For
+instance, the ``/etc/config/wireless`` file uses configuration that looks like
+``config wifi-device ‘radio0’``, which clearly doesn’t meet the spec.  We
+accept identifiers that include a dash, regardless of what the spec says.)</em></p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="uciparse.uci.UciParseError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciParseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciParseError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>Exception raised when a UCI file can’t be parsed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciParseError.message">
+<span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#uciparse.uci.UciParseError.message" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciLine</span></span><a class="headerlink" href="#uciparse.uci.UciLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>A line in a UCI config file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciLine.normalized">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciLine.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the line in normalized form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciPackageLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciPackageLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciPackageLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#uciparse.uci.UciLine" title="uciparse.uci.UciLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UciLine</span></code></a></p>
+<p>A package line in a UCI config file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciPackageLine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#uciparse.uci.UciPackageLine.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciPackageLine.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#uciparse.uci.UciPackageLine.comment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciPackageLine.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciPackageLine.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the line in normalized form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciConfigLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciConfigLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciConfigLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#uciparse.uci.UciLine" title="uciparse.uci.UciLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UciLine</span></code></a></p>
+<p>A config line in a UCI config file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciConfigLine.section">
+<span class="sig-name descname"><span class="pre">section</span></span><a class="headerlink" href="#uciparse.uci.UciConfigLine.section" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciConfigLine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#uciparse.uci.UciConfigLine.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciConfigLine.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#uciparse.uci.UciConfigLine.comment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciConfigLine.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciConfigLine.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the line in normalized form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciOptionLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciOptionLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciOptionLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#uciparse.uci.UciLine" title="uciparse.uci.UciLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UciLine</span></code></a></p>
+<p>An option line in a UCI config file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciOptionLine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#uciparse.uci.UciOptionLine.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciOptionLine.value">
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#uciparse.uci.UciOptionLine.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciOptionLine.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#uciparse.uci.UciOptionLine.comment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciOptionLine.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciOptionLine.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the line in normalized form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciListLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciListLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciListLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#uciparse.uci.UciLine" title="uciparse.uci.UciLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UciLine</span></code></a></p>
+<p>A list line in a UCI config file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciListLine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#uciparse.uci.UciListLine.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciListLine.value">
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#uciparse.uci.UciListLine.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciListLine.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#uciparse.uci.UciListLine.comment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciListLine.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciListLine.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the line in normalized form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciCommentLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciCommentLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciCommentLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#uciparse.uci.UciLine" title="uciparse.uci.UciLine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UciLine</span></code></a></p>
+<p>A comment line in a UCI config file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciCommentLine.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#uciparse.uci.UciCommentLine.comment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciCommentLine.indented">
+<span class="sig-name descname"><span class="pre">indented</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#uciparse.uci.UciCommentLine.indented" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciCommentLine.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciCommentLine.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the line in normalized form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">uciparse.uci.</span></span><span class="sig-name descname"><span class="pre">UciFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#uciparse.uci.UciLine" title="uciparse.uci.UciLine"><span class="pre">UciLine</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uciparse.uci.UciFile" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile.lines">
+<span class="sig-name descname"><span class="pre">lines</span></span><a class="headerlink" href="#uciparse.uci.UciFile.lines" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uciparse.uci.UciFile.normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of normalized lines comprising the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile.from_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uciparse.uci.UciFile" title="uciparse.uci.UciFile"><span class="pre">UciFile</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciFile.from_file" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a UciFile from a file on disk.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile.from_fp">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TextIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uciparse.uci.UciFile" title="uciparse.uci.UciFile"><span class="pre">UciFile</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciFile.from_fp" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a UciFile from the contents of a file pointer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile.from_text">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uciparse.uci.UciFile" title="uciparse.uci.UciFile"><span class="pre">UciFile</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciFile.from_text" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uciparse.uci.UciFile.from_lines">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.13)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uciparse.uci.UciFile" title="uciparse.uci.UciFile"><span class="pre">UciFile</span></a></span></span><a class="headerlink" href="#uciparse.uci.UciFile.from_lines" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a UciFile from a list of lines.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">uciparse</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=uci-parse&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tests/index.html">tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">uciparse</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">uciparse</a><ul>
+      <li>Previous: <a href="../cli/index.html" title="previous chapter">uciparse.cli</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/uci-parse" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

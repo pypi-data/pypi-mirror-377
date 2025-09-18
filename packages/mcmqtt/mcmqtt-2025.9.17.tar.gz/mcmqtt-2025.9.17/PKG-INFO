@@ -1,0 +1,2078 @@
+Metadata-Version: 2.4
+Name: mcmqtt
+Version: 2025.9.17
+Summary: FastMCP MQTT Server - Enabling MQTT integration for MCP clients
+Project-URL: Homepage, https://git.supported.systems/MCP/mcmqtt
+Project-URL: Repository, https://git.supported.systems/MCP/mcmqtt.git
+Project-URL: Issues, https://git.supported.systems/MCP/mcmqtt/issues
+Project-URL: Documentation, https://git.supported.systems/MCP/mcmqtt/src/branch/main/README.md
+Author-email: Ryan Malloy <ryan@malloys.us>
+License: MIT
+License-File: LICENSE
+Requires-Python: >=3.11
+Requires-Dist: amqtt>=0.11.2
+Requires-Dist: asyncio-mqtt>=0.16.0
+Requires-Dist: fastmcp>=0.1.0
+Requires-Dist: paho-mqtt>=2.1.0
+Requires-Dist: pydantic>=2.10.0
+Requires-Dist: pytest-cov>=7.0.0
+Requires-Dist: rich>=13.9.0
+Requires-Dist: structlog>=24.4.0
+Requires-Dist: typer>=0.15.0
+Requires-Dist: uvloop>=0.21.0
+Provides-Extra: dev
+Requires-Dist: black>=24.10.0; extra == 'dev'
+Requires-Dist: mypy>=1.13.0; extra == 'dev'
+Requires-Dist: pre-commit>=4.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.24.0; extra == 'dev'
+Requires-Dist: pytest-cov>=6.0.0; extra == 'dev'
+Requires-Dist: pytest>=8.3.0; extra == 'dev'
+Requires-Dist: ruff>=0.8.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# 🚀 mcmqtt - FastMCP MQTT Server
+
+**The most powerful FastMCP MQTT integration server on the planet** 🌍
+
+[![Version](https://img.shields.io/badge/version-2025.09.17-blue.svg)](https://pypi.org/project/mcmqtt/)
+[![Python](https://img.shields.io/badge/python-3.11+-green.svg)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-70%20passing-brightgreen.svg)](#testing)
+[![Coverage](https://img.shields.io/badge/coverage-96%25+-brightgreen.svg)](#coverage)
+
+> **Enabling MQTT integration for MCP clients with embedded broker support and fractal agent orchestration**
+
+## ✨ Key Features
+
+- 🔥 **FastMCP Integration**: Native Model Context Protocol server with MQTT tools
+- ⚡ **Embedded MQTT Brokers**: Spawn brokers on-demand with zero configuration
+- 🏗️ **Modular Architecture**: Clean, testable, maintainable codebase
+- 🧪 **Comprehensive Testing**: 70+ tests with 96%+ coverage on core modules
+- 🌐 **Cross-Platform**: Designed for Linux, macOS, and Windows (TODO: Test on additional platforms)
+- 🔧 **CLI & Programmatic**: Use via command line or integrate into your code
+- 📡 **Real-time Coordination**: Perfect for agent swarms and distributed systems
+
+## 🚀 Quick Start
+
+### Installation
+
+**Recommended: Use `uvx` for instant execution** (no installation needed):
+
+```bash
+# Run directly with uvx (recommended)
+uvx mcmqtt --help
+
+# Start STDIO server for MCP clients
+uvx mcmqtt
+
+# HTTP mode for web integration  
+uvx mcmqtt --transport http --port 8080
+```
+
+**If you insist on traditional installation**:
+
+```bash
+# Install with uv
+uv add mcmqtt
+
+# Or use pip
+pip install mcmqtt
+```
+
+### Instant MQTT Magic
+
+```bash
+# Start FastMCP MQTT server (default STDIO mode) - Just works!
+uvx mcmqtt
+
+# HTTP mode for web integration
+uvx mcmqtt --transport http --port 8080
+
+# Connect to existing broker (optional)
+uvx mcmqtt --mqtt-host mqtt.example.com --mqtt-port 1883
+```
+
+### MCP Integration
+
+Add to your Claude Code MCP configuration:
+
+```bash
+# Add mcmqtt as an MCP server (zero configuration!)
+claude mcp add task-buzz -- uvx mcmqtt
+
+# Test the connection
+claude mcp test task-buzz
+```
+
+## ⚙️ Configuration Options
+
+**Primary Interface: MCP Tools** - mcmqtt is designed for MCP clients to manage connections and brokers dynamically via tool calls.
+
+### Optional CLI & Environment Configuration
+
+For startup configuration (when MCP clients need default connectivity):
+
+**CLI Options:**
+```bash
+uvx mcmqtt --transport stdio          # Default: STDIO mode for MCP
+uvx mcmqtt --transport http           # HTTP mode for web integration
+uvx mcmqtt --mqtt-host broker.local   # Connect to existing broker
+uvx mcmqtt --auto-connect             # Auto-connect on startup
+```
+
+**Environment Variables:**
+```bash
+export MQTT_BROKER_HOST="mqtt.example.com"
+export MQTT_BROKER_PORT="1883"
+export MQTT_CLIENT_ID="mcmqtt-server"
+export MQTT_USERNAME="user"
+export MQTT_PASSWORD="pass"
+uvx mcmqtt  # Uses environment config
+```
+
+**MCP clients control everything else** - broker spawning, connections, subscriptions, and message handling via tool calls.
+
+## 🛠️ Core Features
+
+### 🏃‍♂️ FastMCP MQTT Tools
+
+- `mqtt_connect` - Connect to MQTT brokers
+- `mqtt_publish` - Publish messages with QoS support  
+- `mqtt_subscribe` - Subscribe to topics with wildcards
+- `mqtt_get_messages` - Retrieve received messages
+- `mqtt_status` - Get connection and statistics
+- `mqtt_spawn_broker` - Create embedded brokers instantly
+- `mqtt_list_brokers` - Manage multiple brokers
+
+### 🔧 Embedded Broker Management
+
+**MCP clients can spawn MQTT brokers on-demand using the `mqtt_spawn_broker` tool:**
+
+```bash
+# MCP Tool Call Example
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "agent-coordination-broker",
+    "port": 1883,
+    "host": "127.0.0.1",
+    "max_connections": 100,
+    "websocket_port": 9001
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "broker_id": "agent-coordination-broker-1726567890",
+  "host": "127.0.0.1",
+  "port": 1883,
+  "websocket_port": 9001,
+  "status": "running",
+  "mqtt_url": "mqtt://127.0.0.1:1883",
+  "websocket_url": "ws://127.0.0.1:9001"
+}
+```
+
+**Instant broker spawning** - no Docker, no setup, just call the tool and get a running MQTT broker!
+
+### 📡 MQTT Client Integration
+
+**Connect to any MQTT broker using MCP tools:**
+
+```bash
+# Connect to broker
+{
+  "tool": "mqtt_connect",
+  "arguments": {
+    "broker_host": "mqtt.example.com",
+    "broker_port": 1883,
+    "client_id": "my-agent",
+    "username": "user",
+    "password": "pass"
+  }
+}
+
+# Publish messages 
+{
+  "tool": "mqtt_publish",
+  "arguments": {
+    "topic": "sensors/temperature",
+    "payload": "23.5",
+    "qos": 1,
+    "retain": false
+  }
+}
+
+# Subscribe to topics
+{
+  "tool": "mqtt_subscribe",
+  "arguments": {
+    "topic": "sensors/+",
+    "qos": 1
+  }
+}
+
+# Get messages
+{
+  "tool": "mqtt_get_messages",
+  "arguments": {
+    "topic": "sensors/temperature",
+    "limit": 10
+  }
+}
+```
+
+**Zero coding required** - just call MCP tools and coordinate with any MQTT infrastructure!
+
+## 🏗️ Architecture Excellence
+
+This isn't your typical monolithic MQTT library. mcmqtt features a **clean modular architecture**:
+
+```
+mcmqtt/
+├── cli/           # Command-line interface & argument parsing
+├── config/        # Environment & configuration management  
+├── logging/       # Structured logging setup
+├── server/        # STDIO & HTTP server runners
+├── mqtt/          # Core MQTT client functionality
+├── mcp/           # FastMCP server integration
+├── broker/        # Embedded broker management
+└── middleware/    # Broker middleware & orchestration
+```
+
+### 🧪 Testing Excellence
+
+- **70+ comprehensive tests** covering all modules
+- **96%+ code coverage** on refactored components
+- **Robust mocking** for reliable CI/CD
+- **Edge case coverage** for production reliability
+
+## 🌟 Real-World Use Cases
+
+### 🤖 AI Agent Orchestration & Swarm Coordination
+
+**Fractal Agent Architecture**: Build sophisticated agent swarms where parent agents delegate tasks to specialized subagents via MQTT messaging.
+
+```bash
+# 1. Setup mcmqtt as MCP server for agent coordination
+claude mcp add task-buzz -- uvx mcmqtt
+
+# 2. Now parent Claude Code agents can coordinate with subagents
+```
+
+**Example: Multi-Agent Code Analysis Workflow**
+
+```bash
+# Parent Agent (you) delegates analysis tasks via MQTT:
+
+# 1. Spawn embedded broker for coordination
+mqtt_spawn_broker --name "code-analysis" --port 1883
+
+# 2. Create specialized subagents for different domains  
+claude -p "You are a security-analysis-agent. Subscribe to 'tasks/security' topic and analyze code for vulnerabilities. Use mqtt_subscribe and mqtt_publish tools."
+
+claude -p "You are a performance-agent. Subscribe to 'tasks/performance' and optimize code. Report results to 'results/performance'."
+
+claude -p "You are a test-agent. Subscribe to 'tasks/testing' and write comprehensive tests. Publish coverage to 'results/testing'."
+
+# 3. Parent agent coordinates the workflow
+mqtt_publish --topic "tasks/security" --payload '{"file": "auth.py", "priority": "high"}'
+mqtt_publish --topic "tasks/performance" --payload '{"file": "database.py", "focus": "query_optimization"}'  
+mqtt_publish --topic "tasks/testing" --payload '{"file": "api.py", "coverage_target": "95%"}'
+
+# 4. Monitor results from all agents
+mqtt_subscribe --topic "results/+" --callback aggregate_analysis_report
+```
+
+**Advanced Fractal Patterns:**
+- **Recursive Task Delegation**: Subagents can spawn their own sub-subagents for complex domains
+- **Dynamic Load Balancing**: Monitor agent workload via heartbeat topics, redistribute tasks automatically
+- **Cross-Agent Learning**: Agents share insights via `knowledge/domain` topics
+- **Fault Tolerance**: Dead agent detection via missed heartbeats, automatic task redistribution
+
+**Use Cases:**
+- **Large Codebase Analysis**: Break down monolith analysis across specialized agents (security, performance, testing, documentation)
+- **Multi-Language Projects**: Deploy language-specific agents (Python-agent, JavaScript-agent, Rust-agent) 
+- **Distributed Code Review**: Parallel analysis of pull requests with different focuses
+- **CI/CD Integration**: Agents monitor git hooks, trigger builds, run tests, deploy services
+
+### 📊 Real-Time IoT & Sensor Data Processing
+
+**Zero-Config IoT Integration**: Perfect for collecting, processing, and routing sensor data without complex infrastructure.
+
+```bash
+# Example: Temperature monitoring system
+# 1. Start mcmqtt server
+uvx mcmqtt
+
+# 2. Use MCP tools to:
+#    - Subscribe to sensors/+/temperature 
+#    - Publish alerts to alerts/high-temp
+#    - Forward to analytics/warehouse
+```
+
+**Use Cases:**
+- **Smart building automation**: Collect data from thermostats, motion sensors, lighting systems
+- **Industrial monitoring**: Equipment health, production metrics, safety alerts
+- **Environmental tracking**: Weather stations, air quality monitors, noise levels
+- **Agricultural IoT**: Soil moisture, crop monitoring, automated irrigation
+
+### 🔄 Microservice Event Streaming
+
+**Service Mesh Communication**: Replace complex message queues with simple MQTT patterns for microservice coordination.
+
+```bash
+# Start dedicated MQTT server for service mesh
+uvx mcmqtt --transport http --port 8080
+
+# Services communicate via MQTT topics:
+# - orders/created, orders/fulfilled
+# - payments/processed, payments/failed  
+# - inventory/updated, inventory/low-stock
+```
+
+**Use Cases:**
+- **Event sourcing**: Capture all state changes as MQTT events for audit trails
+- **Saga patterns**: Coordinate complex business transactions across multiple services
+- **Cache invalidation**: Notify services when shared data changes
+- **Health monitoring**: Services publish heartbeats and status updates
+
+### 🎮 Real-Time Gaming & Live Applications
+
+**Low-Latency Messaging**: Build multiplayer games, live chat, and real-time collaboration tools.
+
+```bash
+# Game server coordination
+claude mcp add game-events -- uvx mcmqtt --transport http
+```
+
+**Use Cases:**
+- **Multiplayer game state**: Player positions, actions, world updates
+- **Live chat systems**: Message broadcasting, user presence, typing indicators
+- **Collaborative editing**: Document changes, cursor positions, user selections
+- **Live streaming**: Chat messages, viewer counts, donations, moderation events
+
+### 🏭 DevOps & Infrastructure Automation
+
+**Deployment Orchestration**: Coordinate deployments, monitoring, and incident response across infrastructure.
+
+```bash
+# Infrastructure coordination
+uvx mcmqtt --mqtt-host production-mqtt.company.com
+```
+
+**Use Cases:**
+- **CI/CD pipelines**: Build status, deployment triggers, rollback coordination
+- **Container orchestration**: Service discovery, load balancer updates, scaling events
+- **Monitoring alerts**: Error spikes, performance degradation, security incidents
+- **Backup coordination**: Database snapshots, file synchronization, disaster recovery
+
+### 🛍️ E-commerce & Business Process Automation
+
+**Order Processing Workflows**: Handle complex business processes with event-driven patterns.
+
+**Use Cases:**
+- **Order fulfillment**: Inventory checks → payment processing → shipping → delivery notifications
+- **Customer journey**: Cart abandonment → email campaigns → purchase → support follow-up
+- **Supply chain**: Supplier updates → inventory management → demand forecasting
+- **Fraud detection**: Transaction monitoring → risk scoring → manual review triggers
+
+### 📱 Mobile & Edge Computing
+
+**Offline-First Applications**: Handle intermittent connectivity and edge computing scenarios.
+
+**Use Cases:**
+- **Mobile app synchronization**: User data, settings, offline queue processing
+- **Edge device coordination**: Factory floor devices, retail kiosks, field equipment
+- **Bandwidth optimization**: Intelligent data batching, compression, prioritization
+- **Mesh networking**: Device-to-device communication, local data processing
+
+### 🧠 Multi-Model AI Orchestration & MCP Server Coordination
+
+**The Ultimate AI Party**: Coordinate different AI models, MCP servers, and specialized tools through MQTT messaging for complex multi-step workflows.
+
+```bash
+# Setup the coordination hub
+claude mcp add task-buzz -- uvx mcmqtt
+
+# Add your MCP server friends to the party
+claude mcp add web-search -- uvx mcp-server-fetch
+claude mcp add code-search -- uvx searchmcp  
+claude mcp add file-ops -- uvx mcp-server-filesystem
+claude mcp add db-query -- uvx mcp-server-sqlite
+claude mcp add memory-store -- uvx mcp-server-memory
+claude mcp add brave-search -- uvx mcp-server-brave-search
+```
+
+**Example: Multi-Model Research & Analysis Pipeline**
+
+```bash
+# 1. Coordinator agent orchestrates the entire workflow
+mqtt_publish --topic "workflow/start" --payload '{
+  "task": "analyze_ai_trends_2024",
+  "models_needed": ["web_search", "code_analysis", "data_processing", "report_generation"]
+}'
+
+# 2. Web Search Agent (Claude + Brave Search MCP)
+claude -p "You are web-search-agent. Subscribe to 'tasks/web_search'. Use brave-search tools to find latest AI trends. Publish findings to 'data/web_results'."
+
+# 3. Code Analysis Agent (Claude + Code Search MCP) 
+claude -p "You are code-agent. Subscribe to 'tasks/code_analysis'. Use searchmcp to find relevant code examples. Publish to 'data/code_results'."
+
+# 4. Data Processing Agent (Claude + SQLite MCP)
+claude -p "You are data-agent. Subscribe to 'data/+' topics. Use sqlite tools to store and analyze collected data. Publish insights to 'insights/processed'."
+
+# 5. Report Generation Agent (Claude + File System MCP)
+claude -p "You are report-agent. Subscribe to 'insights/+'. Use filesystem tools to generate comprehensive reports. Publish completion to 'workflow/complete'."
+
+# Coordinator orchestrates the flow
+mqtt_publish --topic "tasks/web_search" --payload '{"query": "AI trends 2024", "sources": 10}'
+mqtt_publish --topic "tasks/code_analysis" --payload '{"focus": "LLM implementation patterns"}'
+
+# Monitor progress across all agents
+mqtt_subscribe --topic "workflow/+" --callback track_pipeline_progress
+```
+
+**Advanced Multi-Model Patterns:**
+
+**🔄 Model Chaining & Handoffs:**
+```bash
+# GPT-4 for initial analysis → Claude for code review → Local model for privacy-sensitive data
+mqtt_publish --topic "models/gpt4/analyze" --payload '{"data": "public_dataset.json"}'
+# GPT-4 publishes to models/claude/review → Claude publishes to models/local/sensitive
+```
+
+**🎭 Specialized Model Routing:**
+```bash
+# Route different task types to optimal models
+mqtt_publish --topic "routing/classify" --payload '{"task": "legal_document_analysis"}'
+# Router sends to models/legal_llm/ vs models/code_llm/ vs models/creative_llm/
+```
+
+**🧪 A/B Testing & Model Comparison:**
+```bash
+# Send same prompt to multiple models for comparison
+mqtt_publish --topic "models/compare" --payload '{
+  "prompt": "Explain quantum computing",
+  "models": ["gpt4", "claude", "gemini", "local-llama"],
+  "evaluation_criteria": ["accuracy", "clarity", "depth"]
+}'
+```
+
+**🔗 MCP Server Coordination Examples:**
+
+**Database + Web + Memory Pipeline:**
+```bash
+# 1. Brave Search finds information → SQLite stores → Memory recalls context
+mqtt_publish --topic "research/start" --payload '{"topic": "sustainable_energy"}'
+
+# Web agent searches and stores
+brave_search → mqtt_publish("data/raw") → sqlite_store → mqtt_publish("data/indexed")
+
+# Memory agent builds context
+memory_store → mqtt_publish("context/ready") → next_agents_process
+```
+
+**File System + Code Search + Web Integration:**
+```bash
+# 1. File system agent monitors project changes
+filesystem_watch → mqtt_publish("code/changed") 
+
+# 2. Code search agent analyzes patterns  
+searchmcp_analyze → mqtt_publish("patterns/found")
+
+# 3. Web agent researches best practices
+web_fetch → mqtt_publish("best_practices/updated")
+
+# 4. Integration agent updates documentation
+filesystem_write_docs → mqtt_publish("docs/updated")
+```
+
+**Real-World Multi-Model Use Cases:**
+- **Research Pipeline**: Web search → document analysis → data extraction → report generation
+- **Code Intelligence**: Repository analysis → pattern detection → documentation generation → test creation  
+- **Content Creation**: Research → outline → writing → fact-checking → editing → publishing
+- **Decision Support**: Data gathering → analysis → modeling → recommendation → validation
+- **Quality Assurance**: Multi-model review → consensus building → error detection → improvement suggestions
+
+**🎪 The MCP Server Party Benefits:**
+- **Specialized Expertise**: Each MCP server brings unique capabilities (web search, file ops, databases, memory)
+- **Fault Tolerance**: If one model/server fails, workflow continues with others
+- **Cost Optimization**: Route expensive tasks to premium models, routine tasks to efficient models
+- **Privacy Layers**: Sensitive data stays with local models, public data uses cloud models
+- **Scalability**: Add new models and MCP servers without changing existing workflows
+
+## ⚡ MCP Server Superpowers: Background Automation via MQTT
+
+**Transform any MCP server into an event-driven powerhouse!** Instead of just responding to direct calls, existing MCP servers can gain "superpowers" through MQTT coordination:
+
+### 🔄 Background Processing Examples
+
+**Google Drive Batch Downloader:**
+```bash
+# MCP Client publishes download queue
+{
+  "topic": "gdrive/download-queue",
+  "payload": {
+    "files": ["doc1.pdf", "spreadsheet.xlsx", "presentation.pptx"],
+    "destination": "/local/backup/",
+    "batch_id": "backup-2025-09-17"
+  }
+}
+
+# Google Drive MCP server subscribes and processes in background
+# Publishes progress updates via MQTT
+{
+  "topic": "gdrive/download-progress",
+  "payload": {
+    "batch_id": "backup-2025-09-17",
+    "completed": 2,
+    "total": 3,
+    "current_file": "presentation.pptx",
+    "status": "downloading"
+  }
+}
+```
+
+**Database Backup Orchestration:**
+```bash
+# Scheduler publishes backup trigger
+{
+  "topic": "database/backup-trigger",
+  "payload": {
+    "databases": ["users", "orders", "analytics"],
+    "backup_type": "incremental",
+    "schedule_id": "daily-backup"
+  }
+}
+
+# Multiple database MCP servers coordinate the backup
+# PostgreSQL MCP server handles users & orders
+# MongoDB MCP server handles analytics
+# S3 MCP server handles upload coordination
+```
+
+**Code Repository Analysis Pipeline:**
+```bash
+# Git webhook triggers analysis
+{
+  "topic": "code/analysis-request",
+  "payload": {
+    "repo": "github.com/user/project",
+    "commit": "abc123",
+    "analysis_types": ["security", "performance", "documentation"]
+  }
+}
+
+# Specialized MCP servers process in parallel:
+# - Security scanner MCP server
+# - Performance analyzer MCP server  
+# - Documentation generator MCP server
+# Each publishes results to "code/analysis-results/{type}"
+```
+
+### 🎯 Event-Driven MCP Patterns
+
+**1. Subscription-Based Processing**
+- MCP servers subscribe to relevant MQTT topics
+- Process tasks asynchronously in background
+- Publish results/progress for other services
+
+**2. Workflow Orchestration**
+- Chain multiple MCP servers via MQTT topics
+- Each server triggers the next step in the pipeline
+- Build complex automation without tight coupling
+
+**3. Real-Time Coordination**
+- Multiple MCP servers collaborate on single tasks
+- Share progress updates via MQTT
+- Coordinate resource usage and scheduling
+
+**4. Event Sourcing & Audit**
+- All MCP server actions published as MQTT events
+- Build comprehensive audit trails
+- Enable replay and debugging capabilities
+
+### 💡 Existing MCP Servers + MQTT = Superpowers
+
+**Transform these common MCP servers:**
+
+| Original MCP Server | + MQTT Superpowers |
+|-------------------|--------------------|
+| File System MCP | → Background file sync, automated cleanup, distributed backup |
+| Database MCP | → Scheduled migrations, replication monitoring, auto-scaling |
+| GitHub MCP | → PR auto-review, CI/CD coordination, issue triaging |
+| Slack MCP | → Smart notifications, automated responses, team coordination |
+| Email MCP | → Automated campaigns, template processing, delivery tracking |
+| AWS MCP | → Infrastructure orchestration, cost optimization, auto-scaling |
+
+### 🤝 Agent "Gathering" Patterns
+
+**Multiple MCP clients can access the same MCP server resources via MQTT coordination:**
+
+**Example: File Processing Queue**
+```bash
+# File server MCP publishes available files
+{
+  "topic": "files/processing-queue",
+  "payload": {
+    "file_id": "document_123.pdf",
+    "size": "2.5MB",
+    "type": "pdf",
+    "priority": "high"
+  }
+}
+
+# Multiple agents "gather" and claim work:
+# - PDF analysis agent subscribes to files/processing-queue
+# - OCR agent subscribes to files/processing-queue  
+# - Translation agent subscribes to files/processing-queue
+# First agent to respond gets the work item
+```
+
+**Distributed Resource Sharing:**
+- **Database connections**: Multiple agents share database MCP server via MQTT coordination
+- **File system access**: Agents coordinate file operations through filesystem MCP + MQTT
+- **API rate limits**: Share expensive API calls across many agents via API MCP + MQTT
+- **Computing resources**: Distribute heavy tasks across multiple MCP servers
+
+**Long-Running Task Coordination:**
+```bash
+# Agent publishes long-running task request
+{
+  "topic": "tasks/video-processing",
+  "payload": {
+    "video_url": "https://example.com/video.mp4",
+    "operations": ["transcode", "thumbnail", "metadata"],
+    "callback_topic": "results/video-123"
+  }
+}
+
+# Video processing MCP server handles the work
+# Other agents subscribe to "results/video-123" for completion
+```
+
+**Key Benefits:**
+- **Resource Multiplexing**: Many MCP clients share expensive MCP server resources
+- **Distributed Processing**: Long-running tasks don't block individual agents
+- **Event-Driven Coordination**: Agents "gather" around shared resources via MQTT
+- **Scalable Architecture**: Add more agents without changing MCP server code
+- **Fault Tolerance**: If one agent fails, others continue processing
+- **Real-Time Updates**: Live progress tracking across all participants
+
+## 🌍 Access the Entire MQTT Ecosystem
+
+**Your MCP crew now has access to MILLIONS of MQTT-enabled devices and services worldwide!**
+
+### 🏭 Industrial & Enterprise Systems
+
+**Factory Automation:**
+```bash
+# Monitor production line via industrial MQTT broker
+{
+  "tool": "mqtt_subscribe",
+  "arguments": {
+    "topic": "factory/line-1/+",
+    "qos": 2
+  }
+}
+
+# Control robotic assembly via MCP
+{
+  "tool": "mqtt_publish", 
+  "arguments": {
+    "topic": "factory/robot-arm/commands",
+    "payload": {
+      "action": "pick_and_place",
+      "coordinates": [100, 200, 50],
+      "speed": "medium"
+    }
+  }
+}
+```
+
+**Enterprise Message Brokers:**
+- **AWS IoT Core**: Connect to millions of IoT devices via AWS MQTT
+- **Azure IoT Hub**: Integrate with Microsoft's IoT ecosystem
+- **Google Cloud IoT**: Access Google's device management platform
+- **HiveMQ**: Enterprise-grade MQTT broker integration
+- **Eclipse Mosquitto**: Open-source MQTT broker networks
+
+### 🏠 Smart Home & Consumer IoT
+
+**Home Automation:**
+```bash
+# Control smart lights via Home Assistant MQTT
+{
+  "topic": "homeassistant/light/living_room/set",
+  "payload": {
+    "state": "ON",
+    "brightness": 180,
+    "color": {"r": 255, "g": 200, "b": 100}
+  }
+}
+
+# Monitor energy usage
+{
+  "topic": "energy/+/consumption", 
+  "payload": "subscribe"
+}
+```
+
+**Consumer Devices:**
+- **Philips Hue**: Smart lighting control
+- **Tesla vehicles**: Vehicle data and control (via third-party bridges)
+- **Security cameras**: Motion detection, alerts
+- **Smart thermostats**: Climate control automation
+- **Garage doors, locks, sensors**: Complete home integration
+
+### 📱 Mobile & Web Applications
+
+**Real-Time Apps:**
+```bash
+# Chat application integration
+{
+  "topic": "chat/room-123/messages",
+  "payload": {
+    "user": "AI_Assistant",
+    "message": "Analysis complete. Found 3 security issues.",
+    "timestamp": "2025-09-17T10:30:00Z"
+  }
+}
+
+# Live gaming coordination  
+{
+  "topic": "game/lobby-456/player-actions",
+  "payload": {
+    "player_id": "ai_coach",
+    "action": "strategy_suggestion",
+    "data": "Focus defenses on northwest quadrant"
+  }
+}
+```
+
+### 🚗 Transportation & Logistics
+
+**Fleet Management:**
+```bash
+# Track delivery vehicles
+{
+  "topic": "fleet/vehicle-789/location",
+  "payload": "subscribe"
+}
+
+# Optimize routing based on real-time data
+{
+  "topic": "logistics/route-optimization",
+  "payload": {
+    "vehicle_id": "truck-123",
+    "new_route": ["depot", "customer-A", "customer-C", "customer-B"],
+    "estimated_time": "2.5 hours"
+  }
+}
+```
+
+### 🏥 Healthcare & Medical Devices
+
+**Patient Monitoring:**
+```bash
+# Monitor vital signs from medical IoT devices
+{
+  "topic": "hospital/room-204/vitals/+",
+  "payload": "subscribe"
+}
+
+# Alert coordination
+{
+  "topic": "alerts/critical/room-204", 
+  "payload": {
+    "alert_type": "heart_rate_anomaly",
+    "value": 140,
+    "timestamp": "2025-09-17T14:22:15Z",
+    "severity": "high"
+  }
+}
+```
+
+### 🌾 Agriculture & Environmental
+
+**Smart Farming:**
+```bash
+# Soil moisture sensors
+{
+  "topic": "farm/field-A/sensors/soil_moisture",
+  "payload": "subscribe"
+}
+
+# Automated irrigation control
+{
+  "topic": "farm/irrigation/zone-3/control",
+  "payload": {
+    "action": "start_watering",
+    "duration_minutes": 15,
+    "flow_rate": "medium"
+  }
+}
+```
+
+### 🏢 Building Management Systems
+
+**Smart Buildings:**
+```bash
+# HVAC control via BACnet-to-MQTT bridges
+{
+  "topic": "building/floor-5/hvac/set_temperature",
+  "payload": {
+    "zone": "conference_room_A",
+    "temperature": 21.5,
+    "mode": "cooling"
+  }
+}
+
+# Energy optimization
+{
+  "topic": "building/power/consumption/+",
+  "payload": "subscribe"
+}
+```
+
+### 🔗 Protocol Bridges & Integrations
+
+**Your MCP crew can reach ANY protocol via MQTT bridges:**
+- **Modbus-to-MQTT**: Industrial equipment control
+- **BACnet-to-MQTT**: Building automation systems  
+- **Zigbee-to-MQTT**: Smart home device networks
+- **LoRaWAN-to-MQTT**: Long-range IoT sensors
+- **OPC-UA-to-MQTT**: Industrial automation standards
+- **CoAP-to-MQTT**: Lightweight IoT device communication
+- **WebSocket-to-MQTT**: Browser-based real-time apps
+
+### 🎯 The Power Multiplier Effect
+
+**Before mcmqtt**: Your MCP servers could only talk to each other
+**After mcmqtt**: Your MCP crew can coordinate with:
+- 🏭 **Billions of IoT devices** across industries
+- 🏢 **Enterprise systems** and message brokers  
+- 📱 **Mobile applications** and web services
+- 🏠 **Consumer smart devices** and home automation
+- 🚗 **Vehicles, drones, and transportation systems**
+- 🏥 **Medical devices and healthcare systems**
+- 🌾 **Agricultural sensors and environmental monitoring**
+
+**Result**: Your AI agents become **universal coordinators** in the physical and digital world!
+
+## 🚀 Ad-Hoc Broker: Instant Infrastructure Magic
+
+**The coolest feature: spawn MQTT brokers instantly for any scenario!** No Docker, no setup, no configuration files - just call a tool and get a running broker.
+
+### 🎯 Unique Ad-Hoc Broker Use Cases
+
+**1. Ephemeral Agent Swarms**
+```bash
+# Create private broker for temporary agent collaboration
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "code-review-swarm-20250917",
+    "port": 0,  # Auto-assign port
+    "max_connections": 50
+  }
+}
+
+# Response: broker running at mqtt://127.0.0.1:34521
+# Agents coordinate code review, then broker auto-destroys when done
+```
+
+**2. Isolated Testing Environments**  
+```bash
+# Each test suite gets its own broker
+{
+  "tool": "mqtt_spawn_broker", 
+  "arguments": {
+    "name": "test-isolation-${TEST_ID}",
+    "port": 0,
+    "auth_required": true,
+    "username": "test_user",
+    "password": "temp_pass_123"
+  }
+}
+
+# Perfect for parallel test execution without interference
+```
+
+**3. Dynamic Gaming Sessions**
+```bash
+# Spawn broker per game lobby
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "game-lobby-${LOBBY_ID}",
+    "websocket_port": 0,  # WebSocket for browser clients
+    "max_connections": 20
+  }
+}
+
+# Players join via WebSocket, real-time game coordination
+# Broker dies when game ends - zero cleanup needed
+```
+
+**4. Secure Demo Environments** 
+```bash
+# Customer demo with isolated broker
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "customer-demo-acme-corp",
+    "auth_required": true,
+    "username": "demo_user",
+    "password": "demo_2025_secure",
+    "max_connections": 10
+  }
+}
+
+# Customer gets clean, isolated environment
+# No risk of seeing other customer data
+```
+
+**5. Development Hot-Swapping**
+```bash
+# Developer working on feature X
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "dev-feature-x-john",
+    "port": 1888,  # Fixed port for easy connection
+    "max_connections": 5
+  }
+}
+
+# Private development broker for experimentation
+# Switch between dev/staging/prod brokers instantly
+```
+
+**6. Conference/Event Coordination**
+```bash
+# Spawn broker for conference session
+{
+  "tool": "mqtt_spawn_broker", 
+  "arguments": {
+    "name": "pycon-2025-session-123",
+    "websocket_port": 9001,
+    "max_connections": 500
+  }
+}
+
+# Live audience interaction, Q&A, polls
+# Broker exists only for session duration
+```
+
+**7. CI/CD Pipeline Isolation**
+```bash
+# Each build gets private message bus
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "build-${BUILD_ID}-${COMMIT_HASH}",
+    "port": 0,
+    "max_connections": 20
+  }
+}
+
+# Build agents coordinate via private broker
+# Test results, deployment status, artifact sharing
+# Auto-cleanup when build completes
+```
+
+**8. Emergency Response Coordination**
+```bash
+# Crisis situation needs instant coordination
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "emergency-response-${INCIDENT_ID}",
+    "auth_required": true,
+    "username": "emergency",
+    "password": "secure_incident_comms",
+    "max_connections": 100
+  }
+}
+
+# First responders, emergency services coordinate instantly
+# Secure, isolated communication channel
+```
+
+**9. Scientific Experiment Coordination**
+```bash
+# Research experiment needs data coordination
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "experiment-${STUDY_ID}",
+    "port": 0,
+    "max_connections": 200
+  }
+}
+
+# Sensors, data collectors, analysis agents coordinate
+# Experiment-specific broker with clean data isolation
+```
+
+**10. Pop-Up Retail/Event Networks**
+```bash
+# Temporary retail location needs instant IoT network
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "popup-store-downtown-${DATE}",
+    "websocket_port": 8883,
+    "max_connections": 100
+  }
+}
+
+# POS systems, inventory scanners, customer devices
+# Instant retail network without IT infrastructure
+```
+
+### 🔥 Why Ad-Hoc Brokers Are Revolutionary
+
+**Traditional MQTT Setup:**
+1. Install broker software ⏱️ 
+2. Configure authentication 🔧
+3. Set up networking 🌐
+4. Manage certificates 🔐
+5. Monitor & maintain 📊
+6. Manual cleanup 🗑️
+
+**mcmqtt Ad-Hoc Brokers:**
+1. Call `mqtt_spawn_broker` tool ⚡
+2. **Done!** 🎉
+
+**Unique Advantages:**
+- **Zero Infrastructure**: No servers, containers, or cloud accounts needed
+- **Instant Isolation**: Each use case gets its own private message bus
+- **Auto-Cleanup**: Brokers disappear when no longer needed
+- **Development Speed**: Start messaging in seconds, not hours
+- **Cost Efficiency**: No persistent infrastructure costs
+- **Security**: Isolated networks with optional authentication
+- **Portability**: Works anywhere mcmqtt runs (uvx everywhere!)
+- **Scalability**: Spin up dozens of brokers for different purposes
+
+### 🎪 The "Message Bus Vending Machine" Effect
+
+Think of mcmqtt as a **message bus vending machine**:
+- Need coordination? Insert tool call, get broker
+- Temporary project? Get disposable message bus  
+- Isolated testing? Get clean communication channel
+- Secure demo? Get authenticated broker instance
+
+**No long-term commitments, no infrastructure overhead, just instant messaging infrastructure whenever you need it!**
+
+## 🔒 Production-Ready: Caddy + mcmqtt = Instant Secure Infrastructure
+
+**Combine mcmqtt with Caddy for automatic HTTPS, reverse proxy, and production-grade security!**
+
+### 🚀 Auto-HTTPS MQTT Brokers
+
+**The Ultimate Combo:**
+```bash
+# 1. Spawn mcmqtt broker with WebSocket support
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "production-api-broker",
+    "websocket_port": 8083,
+    "auth_required": true,
+    "username": "api_client",
+    "password": "secure_2025_prod"
+  }
+}
+
+# 2. Caddy auto-configures HTTPS proxy (via docker labels)
+# Result: wss://mqtt-api.yourdomain.com with auto-renewed Let's Encrypt certs!
+```
+
+**Caddyfile Configuration:**
+```caddyfile
+# Automatic HTTPS for MQTT WebSocket endpoints
+mqtt-{subdomain}.yourdomain.com {
+    reverse_proxy /mqtt/* localhost:8083
+    
+    # Auto-generated Let's Encrypt certificates
+    tls {
+        on_demand
+    }
+    
+    # WebSocket upgrade support
+    @websocket {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    reverse_proxy @websocket localhost:8083
+}
+```
+
+### 🏗️ Enterprise Deployment Patterns
+
+**1. Multi-Tenant SaaS Platform**
+```bash
+# Customer onboarding triggers secure broker
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "customer-${TENANT_ID}",
+    "websocket_port": 0,  # Auto-assign
+    "auth_required": true,
+    "max_connections": 1000
+  }
+}
+
+# Caddy automatically creates: wss://customer-123.mqtt.yourapp.com
+# Instant secure messaging for new customer with auto-HTTPS
+```
+
+**2. API Gateway with MQTT Backend**
+```bash
+# API endpoint needs real-time coordination
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "api-coordination-${API_VERSION}",
+    "websocket_port": 8084,
+    "max_connections": 5000
+  }
+}
+
+# Caddy routes: api.yourapp.com/realtime/* -> secure MQTT broker
+# Zero infrastructure setup, production-ready in seconds
+```
+
+**3. Microservice Event Bus**
+```bash
+# Deploy new microservice cluster
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "events-${DEPLOYMENT_ID}",
+    "port": 1883,        # Standard MQTT
+    "websocket_port": 8883,  # Secure WebSocket
+    "auth_required": true
+  }
+}
+
+# Caddy provides:
+# - MQTT over TLS: mqtts://events.internal.yourapp.com:8883
+# - WebSocket Secure: wss://events.yourapp.com/ws
+# - Automatic certificate management
+```
+
+**4. IoT Device Fleet Management**
+```bash
+# New device fleet deployment
+{
+  "tool": "mqtt_spawn_broker", 
+  "arguments": {
+    "name": "iot-fleet-${REGION}-${DEPLOYMENT}",
+    "port": 8883,
+    "websocket_port": 9001,
+    "auth_required": true,
+    "max_connections": 10000
+  }
+}
+
+# Caddy creates: iot-fleet-us-west.yourapp.com
+# Devices get automatic HTTPS, load balancing, DDoS protection
+```
+
+### 🔧 Docker Compose Integration with caddy-docker-proxy
+
+**Using [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy)** for automatic HTTPS and container discovery.
+
+> **caddy-docker-proxy** automatically generates Caddyfile configurations from Docker container labels, eliminating manual reverse proxy setup. Perfect for dynamic broker spawning!
+
+**Complete Production Stack:**
+```yaml
+# docker-compose.yml
+version: "3.8"
+
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # Enable Docker provider for automatic container discovery
+      CADDY_INGRESS_NETWORKS: caddy
+      # Vultr API token for DNS challenge (wildcard certificates)
+      VULTR_API_TOKEN: ${VULTR_API_TOKEN}
+    networks:
+      - caddy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    labels:
+      # Global TLS configuration for wildcard certificates
+      caddy.tls.dns: vultr
+
+  mcmqtt:
+    image: python:3.11-slim
+    # http-streamable automatically configures caddy labels
+    command: uvx mcmqtt --transport http-streamable --port 3000 --hostname mqtt-control.${DOMAIN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - caddy
+    restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN}
+      - CADDY_NETWORK=caddy
+    # Labels automatically added by --transport http-streamable
+    # No manual caddy labels needed!
+    depends_on:
+      - caddy
+
+  # Optional: Web dashboard for broker management
+  mqtt-dashboard:
+    image: nginx:alpine
+    volumes:
+      - ./dashboard:/usr/share/nginx/html:ro
+    networks:
+      - caddy
+    labels:
+      caddy: mqtt-dashboard.yourdomain.com
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.tls.dns: vultr
+
+networks:
+  caddy:
+    external: false
+    name: caddy
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+    external: true
+```
+
+**Environment Configuration (.env):**
+```bash
+# .env file
+COMPOSE_PROJECT_NAME=mcmqtt-production
+
+# Vultr DNS challenge for wildcard certificates
+VULTR_API_TOKEN=your_vultr_api_key_here
+
+# Domain configuration
+DOMAIN=yourdomain.com
+MQTT_SUBDOMAIN=mqtt
+
+# Optional: Basic auth for admin interfaces
+ADMIN_USER=admin
+ADMIN_PASSWORD_HASH=$2a$14$hash_your_password_here
+```
+
+**Setup Instructions:**
+```bash
+# 1. Create external volumes for Caddy data persistence
+docker volume create caddy_data
+docker volume create caddy_config
+
+# 2. Configure environment variables
+cp .env.example .env
+# Edit .env with your domain and Vultr token
+
+# 3. Deploy the stack
+docker compose up -d
+
+# 4. Verify Caddy is running
+docker compose logs caddy
+
+# 5. Test mcmqtt control interface
+curl https://mqtt-control.yourdomain.com/health
+```
+
+**How Dynamic Broker Spawning Works:**
+```bash
+# 1. User calls mqtt_spawn_broker tool
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "customer-acme-prod",
+    "websocket_port": 9001,
+    "public_hostname": "acme.mqtt.yourdomain.com",
+    "auth_required": true,
+    "max_connections": 1000
+  }
+}
+
+# 2. mcmqtt spawns Docker container with automatic caddy labels:
+docker run -d \
+  --name mqtt-broker-customer-acme-prod \
+  --network caddy \
+  --label "caddy=acme.mqtt.yourdomain.com" \
+  --label "caddy.reverse_proxy={{upstreams 1883}}" \
+  --label "caddy.handle_path=/ws" \
+  --label "caddy.handle_path.reverse_proxy={{upstreams 9001}}" \
+  --label "caddy.tls.dns=vultr" \
+  python:3.11-slim uvx amqtt
+
+# 3. caddy-docker-proxy automatically detects the new container
+# 4. Generates Caddyfile configuration instantly:
+#    acme.mqtt.yourdomain.com {
+#        reverse_proxy mqtt-broker-customer-acme-prod:1883
+#        handle_path /ws {
+#            reverse_proxy mqtt-broker-customer-acme-prod:9001
+#        }
+#        tls {
+#            dns vultr
+#        }
+#    }
+
+# 5. Result: https://acme.mqtt.yourdomain.com is LIVE with valid certificate!
+```
+
+**Production Deployment Example:**
+```bash
+# Clone and deploy the complete stack
+git clone https://github.com/your-org/mcmqtt-production-stack
+cd mcmqtt-production-stack
+
+# Configure your domain and Vultr DNS
+cp .env.example .env
+# Edit .env with your domain and Vultr API token
+
+# Deploy production stack
+make deploy
+
+# Test the deployment
+make test-deployment
+
+# Spawn your first public broker
+curl -X POST https://mqtt-control.yourdomain.com/api/brokers \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "my-first-broker",
+    "public_hostname": "test.mqtt.yourdomain.com",
+    "websocket_port": 9001,
+    "auth_required": true
+  }'
+
+# Result: https://test.mqtt.yourdomain.com is immediately accessible!
+```
+
+### ⚡ Auto-Labeling with `--transport http-streamable`
+
+**Zero configuration Caddy integration!**
+
+```bash
+# Traditional: Manual caddy labels
+uvx mcmqtt --transport http --port 3000
+# Requires manual caddy labels in docker-compose.yml
+
+# Auto-magic: Automatic caddy labels  
+uvx mcmqtt --transport http-streamable --hostname mqtt-control.yourdomain.com
+# Automatically adds all necessary caddy-docker-proxy labels!
+```
+
+**What `--transport http-streamable` Does:**
+
+1. **Detects caddy-docker-proxy environment**
+2. **Automatically adds container labels:**
+   ```docker
+   --label "caddy=${HOSTNAME}"
+   --label "caddy.reverse_proxy={{upstreams ${PORT}}}"
+   --label "caddy.tls.dns=vultr"  # If VULTR_API_TOKEN detected
+   --label "caddy.handle_path=/ws"     # For WebSocket support
+   ```
+3. **Configures FastMCP server for streaming responses**
+4. **Enables real-time broker status updates via SSE**
+
+**Environment-Based Auto-Configuration:**
+```bash
+# mcmqtt detects these environment variables:
+CADDY_NETWORK=caddy           # Join caddy network automatically
+VULTR_API_TOKEN=xxx      # Enable DNS challenge for wildcard certs
+DOMAIN=yourdomain.com         # Use as base domain for spawned brokers
+SSL_EMAIL=admin@yourdomain.com # Let's Encrypt certificate email
+
+# Result: Zero manual configuration needed!
+```
+
+**Simplified Docker Compose:**
+```yaml
+services:
+  mcmqtt:
+    image: python:3.11-slim
+    command: uvx mcmqtt --transport http-streamable --hostname mqtt-control.${DOMAIN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - caddy
+    environment:
+      - DOMAIN=${DOMAIN}
+      - CADDY_NETWORK=caddy
+      - VULTR_API_TOKEN=${VULTR_API_TOKEN}
+    # No manual labels needed - all automatic!
+```
+
+**Benefits of http-streamable mode:**
+- 🏷️ **Auto-labeling**: Caddy labels added automatically
+- 📡 **Real-time updates**: Server-Sent Events for broker status
+- 🔄 **Live monitoring**: Streaming broker health and metrics
+- 🎯 **Zero config**: Environment-based auto-configuration
+- 🚀 **Production ready**: Optimized for long-running deployments
+
+### 🐳 Docker Socket Magic = Instant Infrastructure
+
+**How mcmqtt + caddy-docker-proxy Works:**
+
+1. **mcmqtt has Docker socket access** (`/var/run/docker.sock` mapped)
+2. **Spawn broker = Spawn Docker container** with caddy labels
+3. **caddy-docker-proxy detects new container** instantly
+4. **Automatic Caddyfile update** with HTTPS routing
+5. **Wildcard certificate covers any subdomain** pattern
+
+**Implementation Flow:**
+```bash
+# User calls mqtt_spawn_broker tool
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "customer-acme",
+    "websocket_port": 9001,
+    "public_hostname": "acme.mqtt.yourapp.com"
+  }
+}
+
+# mcmqtt executes (behind the scenes):
+docker run -d \
+  --name mqtt-broker-customer-acme \
+  --network caddy \
+  -p 1883 -p 9001 \
+  --label "caddy=acme.mqtt.yourapp.com" \
+  --label "caddy.reverse_proxy={{upstreams 1883}}" \
+  --label "caddy.handle_path=/ws" \
+  --label "caddy.handle_path.reverse_proxy={{upstreams 9001}}" \
+  --label "caddy.tls.dns=vultr" \
+  python:3.11-slim uvx amqtt
+
+# caddy-docker-proxy immediately detects container
+# Auto-generates Caddyfile entry:
+# acme.mqtt.yourapp.com {
+#     reverse_proxy mqtt-broker-customer-acme:1883
+#     handle_path /ws {
+#         reverse_proxy mqtt-broker-customer-acme:9001
+#     }
+#     tls {
+#         dns vultr
+#     }
+# }
+
+# RESULT: https://acme.mqtt.yourapp.com is LIVE!
+```
+
+**Zero Configuration Infrastructure:**
+- ✅ **No manual Caddyfile editing**
+- ✅ **No certificate management**
+- ✅ **No DNS configuration** (wildcard covers all)
+- ✅ **No load balancer setup**
+- ✅ **No container orchestration**
+- ✅ **No SSL/TLS configuration**
+
+**Just call tool → Get production HTTPS endpoint!**
+
+### 🌍 Public Internet Access = Global Coordination
+
+**caddy-docker-proxy makes brokers PUBLICLY accessible:**
+
+```bash
+# Before: Local-only broker
+localhost:1883  # Only accessible from same machine
+
+# After: Public HTTPS endpoint  
+https://customer-acme.mqtt.yourapp.com  # Accessible from ANYWHERE!
+wss://customer-acme.mqtt.yourapp.com/ws # WebSocket from browsers
+```
+
+**Global Accessibility Examples:**
+```bash
+# Mobile apps connect from anywhere
+{
+  "broker_url": "wss://mobile-sync.mqtt.yourapp.com/ws",
+  "auth": {"username": "mobile_app", "password": "secure_token"}
+}
+
+# IoT devices in different countries
+{
+  "broker_url": "mqtts://iot-fleet.mqtt.yourapp.com:8883",
+  "client_id": "device_12345_tokyo",
+  "clean_session": true
+}
+
+# Third-party integrations
+{
+  "webhook_endpoint": "https://webhooks.mqtt.yourapp.com/stripe",
+  "mqtt_publish": "payments/stripe/events"
+}
+
+# Remote agent coordination
+{
+  "coordinator": "wss://agents.mqtt.yourapp.com/ws",
+  "agent_id": "data_processor_eu_west",
+  "capabilities": ["pdf_analysis", "ocr", "translation"]
+}
+```
+
+**Production Security Features:**
+- 🔒 **Automatic HTTPS/TLS encryption** via Let's Encrypt
+- 🛡️ **DDoS protection** via Vultr/Caddy
+- 🔑 **Authentication** built into MQTT broker
+- 🌐 **Global CDN** if using Vultr
+- 📊 **Request logging & monitoring** via Caddy
+- ⚡ **Rate limiting** and traffic shaping
+- 🔄 **Automatic failover** with health checks
+
+**Use Cases Unlocked:**
+- **Global IoT fleets** with secure public endpoints
+- **Mobile app synchronization** via WebSocket
+- **Third-party webhook integration** with MQTT publishing
+- **Remote agent coordination** across different cloud providers
+- **Public API backends** with real-time MQTT coordination
+- **Multi-region deployment** with geographic routing
+
+**The Revolutionary Part**: Transform any `mqtt_spawn_broker` call into a **globally accessible, production-ready MQTT endpoint** with enterprise-grade security - all with zero manual infrastructure setup!
+
+### 🌐 External Agent Integration = Unlimited Possibilities
+
+**Outside agents can now join your coordination network with valid certificates!**
+
+**Before mcmqtt + Caddy:**
+```bash
+# Local agents only - no external connectivity
+claude-agent-1 ←→ local MQTT ←→ claude-agent-2
+                     ↕
+                (isolated)
+```
+
+**After mcmqtt + Caddy:**
+```bash
+# Global agent network with secure internet connectivity
+claude-agent-1 ←→ wss://coord.mqtt.yourapp.com ←→ claude-agent-2
+                           ↕
+mobile-app ←→ external-api ←→ iot-devices ←→ remote-agents
+                           ↕
+           third-party-services ←→ webhook-integrations
+```
+
+**External Agent Connection Examples:**
+
+**1. Remote AI Agents (Different Servers/Providers):**
+```bash
+# Agent running on AWS connects to your broker
+{
+  "connection": {
+    "url": "wss://ai-coordination.mqtt.yourapp.com/ws",
+    "client_id": "aws-analysis-agent-east-1",
+    "username": "external_agent",
+    "password": "secure_api_key_2025"
+  },
+  "capabilities": ["data_analysis", "ml_inference", "report_generation"]
+}
+
+# Agent running on Google Cloud joins the same network
+{
+  "connection": {
+    "url": "wss://ai-coordination.mqtt.yourapp.com/ws", 
+    "client_id": "gcp-processing-agent-europe",
+    "username": "external_agent",
+    "password": "secure_api_key_2025"
+  },
+  "capabilities": ["image_processing", "ocr", "translation"]
+}
+```
+
+**2. Mobile Apps & Web Clients:**
+```javascript
+// JavaScript web client connects with valid certificate
+const mqtt = new Paho.MQTT.Client("ai-coordination.mqtt.yourapp.com", 443, "web-client-" + Date.now());
+
+mqtt.connect({
+  useSSL: true,  // Automatic certificate validation
+  userName: "web_client",
+  password: "secure_web_token",
+  onSuccess: () => {
+    // Subscribe to agent coordination topics
+    mqtt.subscribe("agents/+/status");
+    mqtt.subscribe("tasks/web/+");
+  }
+});
+```
+
+**3. Third-Party Service Integration:**
+```bash
+# Zapier/IFTTT webhook connects to your agent network
+POST https://webhook-bridge.mqtt.yourapp.com/zapier
+{
+  "trigger": "new_email",
+  "data": {
+    "subject": "Customer Support Request", 
+    "sender": "customer@example.com",
+    "content": "Need help with billing"
+  },
+  "mqtt_topic": "support/requests/incoming"
+}
+
+# Your agents receive the event and coordinate response
+```
+
+**4. IoT Device Fleet (Global):**
+```python
+# IoT device in factory connects from anywhere
+import paho.mqtt.client as mqtt
+
+client = mqtt.Client("factory_sensor_tokyo_001")
+client.username_pw_set("iot_device", "factory_secure_2025")
+
+# Valid certificate, no certificate warnings!
+client.tls_set()  # Automatic certificate validation
+client.connect("iot-fleet.mqtt.yourapp.com", 8883, 60)
+
+# Publish sensor data to global coordination network
+client.publish("sensors/tokyo/temperature", "23.5")
+```
+
+**5. Multi-Organization Coordination:**
+```bash
+# Partner company agents join your coordination network
+{
+  "partner_agent": {
+    "url": "wss://partner-coordination.mqtt.yourapp.com/ws",
+    "client_id": "partner_company_agent_001",
+    "auth": "partner_api_key_secure",
+    "permissions": ["read_public_topics", "publish_partner_results"]
+  }
+}
+
+# Secure multi-tenant coordination with proper isolation
+```
+
+**Key Benefits for External Connectivity:**
+
+🌍 **Global Reach**: Agents anywhere on internet can join coordination  
+🔒 **Valid Certificates**: No certificate warnings or security bypasses  
+⚡ **Instant Deployment**: Spawn broker → Get internet-routable URL  
+🔑 **Secure Authentication**: Built-in MQTT auth prevents unauthorized access  
+🚀 **Zero Infrastructure**: No VPN, firewall rules, or DNS management  
+📱 **Browser Compatible**: WebSocket support for web/mobile clients  
+🔄 **Auto-Scaling**: Spawn more brokers as coordination needs grow  
+🛡️ **Production Ready**: DDoS protection, rate limiting, monitoring included
+
+**The Game Changer**: Turn any local agent coordination into a **globally accessible, secure coordination platform** that external agents, mobile apps, IoT devices, and third-party services can securely join - all with a single tool call!
+
+### 🚀 Like ngrok, but for MQTT Coordination (and Better!)
+
+**ngrok vs mcmqtt + Caddy Comparison:**
+
+| Feature | ngrok | mcmqtt + Caddy |
+|---------|-------|----------------|
+| **Purpose** | Expose local HTTP servers | Spawn + expose MQTT brokers |
+| **URL Format** | `random-id.ngrok.io` | `your-domain.mqtt.yourapp.com` |
+| **Certificate** | ngrok managed | Your own domain wildcard |
+| **Persistence** | Tunnels die when process stops | Production infrastructure |
+| **Scaling** | One tunnel per process | Unlimited brokers per domain |
+| **Cost** | $$$ for custom domains | Free with your domain |
+| **Protocol Support** | HTTP/HTTPS primarily | MQTT, WebSocket, HTTP |
+| **Authentication** | Basic HTTP auth | MQTT auth + Caddy auth |
+| **Production Ready** | Development tool | Enterprise infrastructure |
+
+**What mcmqtt + Caddy Does Better:**
+
+```bash
+# ngrok style: Temporary tunnel to existing service
+ngrok http 3000  # → https://abc123.ngrok.io (random URL, dies when stopped)
+
+# mcmqtt style: Spawn service WITH permanent public endpoint
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "customer-demo",
+    "public_hostname": "demo.mqtt.yourapp.com"  # Your domain, permanent
+  }
+}
+# → wss://demo.mqtt.yourapp.com/ws (YOUR domain, persists)
+```
+
+**The mcmqtt Advantage:**
+
+🏗️ **Infrastructure Creation**: Spawns the service AND the public endpoint  
+🌐 **Your Domain**: Use your branded domain, not random subdomains  
+💎 **Permanent**: URLs persist, perfect for production use  
+🔄 **Multi-Protocol**: MQTT, WebSocket, HTTP all supported  
+📈 **Unlimited Scale**: Spawn hundreds of brokers on same domain  
+🔒 **Enterprise Security**: Your certificates, your control  
+💰 **Cost Effective**: No per-tunnel fees, just your domain costs  
+🎯 **Purpose Built**: Designed specifically for agent coordination
+
+**Real-World Comparison:**
+
+**Development with ngrok:**
+```bash
+# Start local MQTT broker
+mosquitto -p 1883
+
+# Expose via ngrok (HTTP only, need wrapper)
+ngrok http 1883  # Doesn't actually work for MQTT!
+
+# Or use ngrok TCP tunnel
+ngrok tcp 1883   # → tcp://0.tcp.ngrok.io:12345 (ugly, temporary)
+```
+
+**Production with mcmqtt + Caddy:**
+```bash
+# Spawn broker with public endpoint in one call
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "production-api",
+    "public_hostname": "api.mqtt.yourapp.com",
+    "websocket_port": 9001,
+    "auth_required": true
+  }
+}
+
+# Result: 
+# - MQTT: mqtts://api.mqtt.yourapp.com:8883
+# - WebSocket: wss://api.mqtt.yourapp.com/ws
+# - Both with valid certificates, permanent URLs
+```
+
+**The "Instant Global Infrastructure" Revolution:**
+- **ngrok**: "Make my local thing temporarily accessible"
+- **mcmqtt + Caddy**: "Create production infrastructure that happens to be local"
+
+This isn't just exposing existing services - it's **spawning infrastructure with global access built-in!**
+
+**Advanced Caddyfile with Wildcard DNS:**
+```caddyfile
+# Global options for wildcard certificate management
+{
+    # Vultr DNS challenge for wildcard certs
+    acme_dns vultr {env.VULTR_API_TOKEN}
+}
+
+# Wildcard certificate covers all subdomains
+*.mqtt.yourdomain.com {
+    # Extract broker ID from hostname
+    @broker_route {
+        host_regexp broker (.+)\.mqtt\.yourdomain\.com$
+    }
+    
+    # Dynamic routing based on broker registry
+    handle @broker_route {
+        # Query mcmqtt API for broker port mapping
+        reverse_proxy {
+            to localhost:3000
+            header_up X-Broker-ID {re.broker.1}
+            header_up X-Original-Host {host}
+        }
+    }
+    
+    # WebSocket upgrade support for all brokers
+    @websocket {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    
+    handle @websocket {
+        # mcmqtt resolves broker ID to actual port
+        reverse_proxy localhost:3000 {
+            header_up X-Websocket-Broker {re.broker.1}
+        }
+    }
+    
+    # Default route to mcmqtt control API
+    handle {
+        reverse_proxy localhost:3000
+    }
+    
+    # Automatic certificate for *.mqtt.yourdomain.com
+    tls {
+        dns vultr {env.VULTR_API_TOKEN}
+        wildcard
+    }
+}
+
+# Management interface
+mqtt-admin.yourdomain.com {
+    reverse_proxy localhost:3000
+    
+    # Optional: Basic auth for admin interface
+    basicauth {
+        admin $2a$14$hashed_password_here
+    }
+}
+```
+
+### 🌐 Dynamic Hostname Routing Examples
+
+**Wildcard Certificate Magic:**
+```bash
+# Spawn broker with custom subdomain
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "customer-acme-prod",
+    "websocket_port": 8090,
+    "auth_required": true
+  }
+}
+
+# Caddy automatically routes:
+# wss://customer-acme-prod.mqtt.yourdomain.com -> localhost:8090
+# Certificate: *.mqtt.yourdomain.com (already issued!)
+```
+
+**Real-World Examples:**
+```bash
+# Multi-tenant routing with single wildcard cert
+tenant-123.mqtt.yourapp.com     -> Broker for tenant 123
+api-v2.mqtt.yourapp.com         -> API version 2 coordination
+game-lobby-456.mqtt.yourapp.com -> Gaming session broker
+dev-feature-x.mqtt.yourapp.com  -> Development environment
+test-suite-789.mqtt.yourapp.com -> Isolated testing broker
+
+# ALL covered by single *.mqtt.yourapp.com certificate!
+```
+
+**Advanced DNS Patterns:**
+```bash
+# Environment-based routing
+staging.mqtt.yourapp.com    -> Staging brokers
+prod.mqtt.yourapp.com       -> Production brokers
+dev.mqtt.yourapp.com        -> Development brokers
+
+# Geographic routing  
+us-east.mqtt.yourapp.com    -> US East brokers
+eu-west.mqtt.yourapp.com    -> EU West brokers
+asia.mqtt.yourapp.com       -> Asia Pacific brokers
+
+# Service-specific routing
+auth.mqtt.yourapp.com       -> Authentication service broker
+payments.mqtt.yourapp.com   -> Payment processing broker
+analytics.mqtt.yourapp.com  -> Analytics coordination broker
+```
+
+### 🌟 Auto-Scaling MQTT Infrastructure
+
+**Dynamic Broker Provisioning with Hostname Assignment:**
+```bash
+# Load balancer detects high traffic
+# Automatically spawns additional brokers
+{
+  "tool": "mqtt_spawn_broker",
+  "arguments": {
+    "name": "autoscale-broker-${TIMESTAMP}",
+    "websocket_port": 0,
+    "max_connections": 2000
+  }
+}
+
+# Caddy automatically:
+# 1. Issues Let's Encrypt certificate
+# 2. Adds broker to load balancer pool
+# 3. Routes traffic across all brokers
+# 4. Monitors health and removes failed brokers
+```
+
+### 🔐 Security Features
+
+**Production Security Stack:**
+- **Auto-HTTPS**: Let's Encrypt certificates via Caddy
+- **Authentication**: Built-in MQTT auth with configurable credentials
+- **Network Isolation**: Docker networks with controlled access
+- **Rate Limiting**: Caddy rate limiting and DDoS protection
+- **Health Monitoring**: Automatic broker health checks
+- **Log Aggregation**: Centralized logging via Caddy
+
+### 📊 Monitoring & Observability
+
+**Real-Time Infrastructure Monitoring:**
+```bash
+# Monitor all spawned brokers
+{
+  "tool": "mqtt_list_brokers",
+  "arguments": {
+    "running_only": true
+  }
+}
+
+# Caddy metrics endpoint provides:
+# - Certificate expiration monitoring
+# - Request/response metrics
+# - WebSocket connection stats
+# - Automatic alerting on failures
+```
+
+### 🎯 The Infrastructure-as-Code Revolution
+
+**Before: Traditional Setup**
+1. Provision servers 🖥️
+2. Install MQTT broker 📦
+3. Configure networking 🌐
+4. Set up SSL certificates 🔐
+5. Configure load balancer ⚖️
+6. Set up monitoring 📊
+7. Manage updates & patches 🔄
+
+**After: mcmqtt + Caddy**
+1. Call `mqtt_spawn_broker` tool ⚡
+2. **Production infrastructure running with auto-HTTPS!** 🎉
+
+**Result**: **Enterprise-grade MQTT infrastructure in under 30 seconds** with automatic security, scaling, and certificate management!
+
+## 🔍 Common AI Model Challenges mcmqtt Solves
+
+### "How can I coordinate multiple AI agents working on the same task?"
+**Solution**: Use mcmqtt's MQTT messaging to orchestrate agent workflows. Parent agents publish tasks to topic channels, specialized agents subscribe and process their domain, then publish results back for aggregation.
+
+### "I need to distribute work across multiple language models efficiently"
+**Solution**: mcmqtt enables model routing and load balancing. Send tasks to `models/{model_name}/queue` topics and let each model process at their optimal rate. Monitor via `models/{model_name}/status` for health and performance.
+
+### "How do I build event-driven AI workflows that react to real-time data?"
+**Solution**: Use mcmqtt's pub/sub pattern. Data sources publish to `events/{category}` topics, AI agents subscribe to relevant categories and process in real-time. Perfect for IoT sensors, user actions, system events.
+
+### "I want to chain different AI models for complex multi-step processing"
+**Solution**: Create processing pipelines where each model publishes to the next stage's input topic. Example: `raw_data` → `model_a/process` → `model_b/refine` → `model_c/finalize` → `results/complete`.
+
+### "How can I make my AI system fault-tolerant and handle model failures?"
+**Solution**: mcmqtt's message persistence and multiple subscriber patterns mean if one model instance fails, others can pick up the work. Use `dead_letter` topics for failed processing and retry logic.
+
+### "I need to coordinate AI agents across different machines and networks"
+**Solution**: mcmqtt works over network connections. Deploy agents on different servers, all connecting to the same MQTT broker for seamless distributed coordination.
+
+### "How do I implement real-time collaboration between AI models?"
+**Solution**: Use mcmqtt's instant messaging for models to share context, ask questions, and coordinate decisions. Models can publish to `collaboration/{session_id}` topics for real-time interaction.
+
+### "I want to build an AI system that learns from multiple agents' experiences"
+**Solution**: Agents publish their learning insights to `knowledge/{domain}` topics. Other agents subscribe and incorporate shared knowledge, creating a collective intelligence system.
+
+### "How can I monitor and debug complex AI agent interactions?"
+**Solution**: mcmqtt provides built-in message history, subscription tracking, and status monitoring. All agent communications are logged and can be analyzed for debugging and optimization.
+
+### "I need to integrate AI models with existing enterprise systems and APIs"
+**Solution**: mcmqtt bridges AI and enterprise systems via MQTT. Legacy systems publish events, AI models process and respond, results integrate back into business workflows seamlessly.
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+```bash
+export MQTT_BROKER_HOST=localhost
+export MQTT_BROKER_PORT=1883
+export MQTT_CLIENT_ID=my-client
+export MQTT_USERNAME=user
+export MQTT_PASSWORD=secret
+export MQTT_USE_TLS=true
+```
+
+### Command Line Options
+
+```bash
+mcmqtt --help
+
+Options:
+  --transport [stdio|http]     Server transport mode
+  --mqtt-host TEXT            MQTT broker hostname
+  --mqtt-port INTEGER         MQTT broker port  
+  --mqtt-client-id TEXT       MQTT client identifier
+  --auto-broker              Spawn embedded broker
+  --log-level [DEBUG|INFO|WARNING|ERROR]
+  --log-file PATH             Log to file
+```
+
+## 🚦 Development
+
+### Requirements
+
+- Python 3.11+
+- UV package manager (recommended)
+- FastMCP framework
+- Paho MQTT client
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://git.supported.systems/MCP/mcmqtt.git
+cd mcmqtt
+
+# Install dependencies
+uv sync
+
+# Run tests
+uv run pytest
+
+# Build package
+uv build
+```
+
+### Testing
+
+```bash
+# Run all tests
+uv run pytest tests/
+
+# Run with coverage
+uv run pytest --cov=src/mcmqtt --cov-report=html
+
+# Test specific modules
+uv run pytest tests/unit/test_cli_comprehensive.py -v
+```
+
+## 📈 Performance
+
+- **Lightweight**: Minimal memory footprint
+- **Fast**: Async/await throughout for maximum throughput  
+- **Scalable**: Handle thousands of concurrent connections
+- **Reliable**: Comprehensive error handling and retry logic
+
+## 🤝 Contributing
+
+We love contributions! This project follows the "campground rule" - leave it better than you found it.
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Ensure all tests pass
+5. Submit a pull request
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+## 🙏 Credits
+
+Created with ❤️ by [Ryan Malloy](mailto:ryan@malloys.us) and Claude (Anthropic)
+
+Built on the shoulders of giants:
+- [FastMCP](https://github.com/jlowin/fastmcp) - Modern MCP framework
+- [Paho MQTT](https://github.com/eclipse/paho.mqtt.python) - Reliable MQTT client
+- [AMQTT](https://github.com/Yakifo/amqtt) - Pure Python MQTT broker
+
+---
+
+**Ready to revolutionize your MQTT integration?** Install mcmqtt today! 🚀
+
+```bash
+uvx mcmqtt --transport stdio --auto-broker
+```
+
+---
+
+**Built with ❤️ for the AI developer community**  
+*Powered by FastMCP • Distributed via uvx • Coordinated through MQTT*

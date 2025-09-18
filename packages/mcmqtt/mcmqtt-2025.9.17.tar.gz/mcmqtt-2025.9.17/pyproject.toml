@@ -1,0 +1,90 @@
+[project]
+name = "mcmqtt"
+version = "2025.09.17"
+description = "FastMCP MQTT Server - Enabling MQTT integration for MCP clients"
+authors = [
+    {name = "Ryan Malloy", email = "ryan@malloys.us"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+
+dependencies = [
+    "fastmcp>=0.1.0",
+    "paho-mqtt>=2.1.0",
+    "pydantic>=2.10.0",
+    "asyncio-mqtt>=0.16.0",
+    "uvloop>=0.21.0",
+    "typer>=0.15.0",
+    "rich>=13.9.0",
+    "structlog>=24.4.0",
+    "amqtt>=0.11.2",
+    "pytest-cov>=7.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "black>=24.10.0",
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.0",
+]
+
+[project.scripts]
+mcmqtt = "mcmqtt.main:main"
+
+[project.urls]
+Homepage = "https://git.supported.systems/MCP/mcmqtt"
+Repository = "https://git.supported.systems/MCP/mcmqtt.git"
+Issues = "https://git.supported.systems/MCP/mcmqtt/issues"
+Documentation = "https://git.supported.systems/MCP/mcmqtt/src/branch/main/README.md"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcmqtt"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "W", "I", "N", "UP", "YTT", "S", "BLE", "FBT", "B", "A", "COM", "DTZ", "T10", "EM", "EXE", "FA", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "AIR", "PERF", "FURB", "LOG", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --cov=mcmqtt --cov-report=term-missing --cov-report=html"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["src/mcmqtt"]
+omit = ["tests/*", "*/test_*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+]

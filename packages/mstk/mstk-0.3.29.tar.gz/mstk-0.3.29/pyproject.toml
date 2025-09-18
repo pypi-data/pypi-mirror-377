@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mstk"
+version = "0.3.29"
+authors = [{ name = "Zheng Gong", email = "z.gong@outlook.com" }]
+description = "Molecular simulation toolkit"
+readme = "README.md"
+license-files = ["LICENSE" ]
+classifiers = [
+    "Operating System :: OS Independent"
+]
+urls = { "Homepage" = "https://github.com/z-gong/mstk" }
+
+[project.scripts]
+mstk = "mstk.cli:main"
+
+[tool.setuptools.package-data]
+mstk = ["data/forcefield/*"]

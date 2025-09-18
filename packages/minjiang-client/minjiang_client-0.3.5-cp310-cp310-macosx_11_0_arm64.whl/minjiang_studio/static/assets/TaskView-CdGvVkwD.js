@@ -1,0 +1,1 @@
+import{H as o,A as r,e as t,f as n,i as c}from"./index-J5_wuFzQ.js";const s={};function a(_,i){const e=r("router-view");return n(),t("div",null,[c(e)])}const l=o(s,[["render",a]]);export{l as default};

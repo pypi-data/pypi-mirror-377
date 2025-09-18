@@ -1,0 +1,1 @@
+import{C as t}from"./CommingSoon-D4lnxNbH.js";import{d as o,b as s,e as a,f as n,i as c,w as r,h as i,t as m,k as _}from"./index-J5_wuFzQ.js";const d={class:"mt-52"},l={class:"text-center"},x=o({__name:"LogViewer",setup(p){const{t:e}=s();return(f,u)=>(n(),a("div",d,[c(t,null,{default:r(()=>[i("div",l,m(_(e)("common.developing")),1)]),_:1})]))}});export{x as default};

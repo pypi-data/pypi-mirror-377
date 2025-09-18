@@ -1,0 +1,1 @@
+import{H as n,e as s,f as t,i as c,bt as r,V as a}from"./index-J5_wuFzQ.js";const _={},m={class:"flex justify-center mt-10 flex-col mx-auto w-52 items-center"};function i(e,l){const o=a;return t(),s("div",m,[c(o,{src:"/comming-soon.png",class:"w-52 h-52 mb-5"}),r(e.$slots,"default")])}const p=n(_,[["render",i]]);export{p as C};

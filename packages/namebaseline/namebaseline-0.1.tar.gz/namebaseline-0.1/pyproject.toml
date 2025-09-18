@@ -1,0 +1,144 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "namebaseline"
+description = "Python library to analyze names and calculate statistics against a baseline"
+dependencies = ["pandas", "numpy", "scipy"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["version", "readme"]
+requires-python = ">= 3.13"
+
+[project.optional-dependencies]
+dev = ["pytest", "notebook", "matplotlib", "ipympl", "build", "tox", "pandas-stubs", "scipy-stubs", "twine"]
+
+[project.scripts]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "namebaseline.__VERSION__"}
+readme = {file = "README.md", content-type = "text/markdown"}
+
+[tool.tox]
+env_list = [
+    "lint",
+    "type",
+    "audit",
+    "coverage",
+    "3.13",
+    "cyclonedx",
+    "build",
+]
+requires = [
+    "tox>=4.28.0"
+]
+# NOTE: Update base_python whenever a new version of Python is released
+base_python = "py313"
+
+[tool.tox.env_run_base]
+description = "run unit tests under {base_python}"
+deps = ["pytest", "pytest-cov", "pytest-datadir"]
+commands = [
+    ["pytest", "tests/", { replace = "posargs", extend = true} ]
+]
+
+[tool.tox.env.lint]
+description = "run linters"
+skip_install = false
+deps = ["pylint", "pytest"]
+commands = [
+    ["pip", "install", ".[dev]"],
+    ["pylint", "src", { replace = "posargs", extend = true} ],
+    ["pylint", "tests", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env.type]
+description = "run type check on code base"
+deps = [
+    "mypy>=1.17.0",
+    "types-cachetools>=6.1.0.20250717",
+    "types-chardet>=5.0.4.6",
+    "types-requests",
+    "types-pyYAML",
+    "pytest",
+]
+commands = [
+    ["pip", "install", ".[dev]"],
+    ["mypy", "src/namebaseline", "tests", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env.coverage]
+description = "create test coverage report"
+deps = [
+    "pytest",
+    "pytest-cov",
+    "pytest-datadir"
+]
+commands = [
+    ["pytest", "--cov=namebaseline", "--cov-report=html", "tests/", { replace = "posargs", extend = true} ]
+]
+
+[tool.tox.env.audit]
+description = "audit dependencies"
+deps = [
+    "pip-audit>=2.9.0"
+]
+commands = [
+    ["pip-audit", "-v", { replace = "posargs", extend = true} ]
+]
+
+[tool.tox.env."3.13"]
+description = "run unit tests under python 3.13"
+deps = ["pytest", "pytest-cov", "pytest-datadir"]
+commands = [
+    ["pytest", "tests/", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env."3.12"]
+description = "run unit tests under python 3.12"
+deps = ["pytest", "pytest-cov", "pytest-datadir"]
+commands = [
+    ["pytest", "tests/", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env."3.11"]
+description = "run unit tests under python 3.11"
+deps = ["pytest", "pytest-cov", "pytest-datadir"]
+commands = [
+    ["pytest", "tests/", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env."3.10"]
+description = "run unit tests under python 3.10"
+deps = ["pytest", "pytest-cov", "pytest-datadir"]
+commands = [
+    ["pytest", "tests/", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env.cyclonedx]
+description = "Build CycloneDX SBOM"
+deps = ["cyclonedx-bom"]
+commands = [
+    ["cyclonedx-py", "environment", "--of", "json", "-o", "bom.json", { replace = "posargs", extend = true} ],
+]
+
+[tool.tox.env.build]
+description = "build the release"
+deps = ["build"]
+commands = [
+    ["python3", "-m", "build", { replace = "posargs", extend = true} ],
+]

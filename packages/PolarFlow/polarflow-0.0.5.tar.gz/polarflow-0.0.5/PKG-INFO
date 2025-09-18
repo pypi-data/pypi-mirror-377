@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: PolarFlow
+Version: 0.0.5
+Summary: BIT ININ 课题组自用服务器 GPU 资源调度及管理工具
+Author-email: CharlesHsu <charles040318@gmail.com>
+License: MIT
+Requires-Python: <3.13,>=3.12
+Requires-Dist: colorama>=0.4.6
+Requires-Dist: cryptography>=45.0.7
+Requires-Dist: flask-login>=0.6.3
+Requires-Dist: flask-sqlalchemy>=3.1.1
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: nvidia-ml-py>=13.580.82
+Requires-Dist: pamela>=1.2.0
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: requests>=2.32.5
+Requires-Dist: toml>=0.10.2
+Requires-Dist: typer>=0.17.4
+Requires-Dist: types-requests>=2.32.4.20250809
+Requires-Dist: types-toml>=0.10.8.20240310
+Provides-Extra: dev
+Requires-Dist: mypy>=1.10; extra == 'dev'
+Requires-Dist: pytest-asyncio>=1.1.0; extra == 'dev'
+Requires-Dist: pytest-cov>=6.2.1; extra == 'dev'
+Requires-Dist: pytest-xdist>=3.8.0; extra == 'dev'
+Requires-Dist: pytest>=8; extra == 'dev'
+Requires-Dist: ruff>=0.5; extra == 'dev'
+Requires-Dist: xdoctest>=1.2.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# BIT ININ 课题组 自用 GPU 资源管理器

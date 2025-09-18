@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: hv-anndata
+Version: 0.0.3a2
+Summary: Anndata interface for holoviews.
+Author-email: "Philipp A." <flying-sheep@web.de>
+License-Expression: BSD-3-Clause
+License-File: LICENSE
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.11
+Requires-Dist: anndata
+Requires-Dist: bokeh
+Requires-Dist: datashader
+Requires-Dist: holoviews>=1.21.0rc0
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: panel
+Requires-Dist: panel-material-ui>=0.4.0rc1
+Requires-Dist: param
+Description-Content-Type: text/markdown
+
+# hv-anndata
+
+Holoviz Anndata Interface
+
+## Hacking
+
+In order to run the notebooks, install the `hv-anndata` kernel:
+
+```bash
+hatch run docs:install-kernel
+hatch env find docs  # if you need the path for e.g. VS Code
+```
+
+- Tests: `hatch test`
+- Docs: `hatch docs:build`
+- Lints: `pre-commit run --all-files` (use `pre-commit install` and `nbstripout --install` to install Git hooks)

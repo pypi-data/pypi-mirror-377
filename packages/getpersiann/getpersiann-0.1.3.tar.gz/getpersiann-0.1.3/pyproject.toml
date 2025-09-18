@@ -1,0 +1,31 @@
+[project]
+name = "getpersiann"
+version = "0.1.3"
+description = "Download and process Persiann data"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Tomás Calvi", email = "tcalvi@ina.gob.ar" },
+    { name = "Juan Bianchi", email = "jbianchi@ina.gob.ar" }
+]
+dependencies = [
+    "requests",
+    "rasterio",
+    "fiona",
+    "wheel",
+    "setuptools>=67"
+]
+
+# requires gdal, install with:
+# sudo apt install python3-gdal libgdal-dev
+# also, gdal bindings need to be installed manually:
+# pip install --no-cache-dir --force-reinstall 'GDAL[numpy]==3.8.4'
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+persiann-process = "getpersiann.process:main"
+persiann-download = "getpersiann.get_data:main"

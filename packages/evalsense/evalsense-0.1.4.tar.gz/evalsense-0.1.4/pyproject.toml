@@ -1,0 +1,111 @@
+[project]
+name = "evalsense"
+version = "0.1.4"
+description = "Tools for evaluating large language models."
+readme = "README.md"
+authors = [
+    { name = "Adam Dejl", email = "adam.dejl18@imperial.ac.uk" }
+]
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+license = "MIT"
+license-files = ["LICENCE"]
+keywords = [
+    "LLMs",
+    "Large Language Models",
+    "LLM Evaluation",
+    "LLM Benchmarking",
+    "Artificial Intelligence",
+    "Machine Learning",
+]
+dependencies = [
+    "datasets>=3.2.0",
+    "evaluate>=0.4.3",
+    "inspect-ai>=0.3.87",
+    "matplotlib>=3.10.0",
+    "numpy<2.0.0",
+    "openai>=1.65.3",
+    "pandas>=2.2.3",
+    "platformdirs>=4.3.6",
+    "polars>=1.22.0",
+    "pydantic>=2.10.6",
+    "pyyaml>=6.0.2",
+    "rouge-score>=0.1.2",
+    "scipy>=1.15.3",
+    "seaborn>=0.13.2",
+    "tenacity>=9.0.0",
+    "tqdm>=4.67.1",
+    "typer>=0.15.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/nhsengland/evalsense"
+Issues = "https://github.com/nhsengland/evalsense/issues"
+
+[project.optional-dependencies]
+interactive = [
+    "ipywidgets>=8.1.5",
+    "jupyterlab>=4.3.5",
+    "gradio>=5.44.1",
+]
+transformers = [
+    "bert-score>=0.3.13",
+    "transformers>=4.50.0",
+    "torch>=2.6",
+]
+vllm = [
+    "vllm>=0.8.2",
+]
+local = ["evalsense[transformers,vllm]"]
+all = ["evalsense[interactive,transformers,vllm]"]
+
+[project.scripts]
+evalsense = "evalsense.cli.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.3",
+    "mkdocstrings[python]>=0.28.0",
+    "pip-audit>=2.9.0",
+    "pre-commit>=4.1.0",
+    "pre-commit-hooks>=5.0.0",
+    "pyright>=1.1.399",
+    "ruff>=0.11.4",
+]
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+    "evalsense"
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = [
+    "evalsense"
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.uv]
+# Needed for vLLM
+override-dependencies = ["nvidia-nccl-cu12==2.26.5"]
+no-build-isolation-package = ["flash-attn"]
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true

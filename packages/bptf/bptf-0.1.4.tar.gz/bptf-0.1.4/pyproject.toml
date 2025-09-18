@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bptf"
+authors = [
+  { name="offish", email="overutilization@gmail.com" },
+]
+description = "Create and manage Backpack.tf listings (API v2) using Python 3"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["tf2", "backpack-tf", "utils", "sku"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["tf2-utils", "requests", "websockets"]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/offish/backpack-tf"
+"Bug Tracker" = "https://github.com/offish/backpack-tf/issues"
+
+[tool.setuptools_scm]

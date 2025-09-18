@@ -1,0 +1,41 @@
+name: northflank-example
+prefect-version: 3.1.1
+
+push:
+  - prefect_aws.deployments.steps.push_to_s3:
+      requires: prefect-aws>=0.5.12
+      bucket: simo-prefect
+      folder: prefect-nf
+      credentials: "{{ prefect.blocks.aws-credentials.aws-s3 }}"
+
+pull:
+  - prefect_aws.deployments.steps.pull_from_s3:
+      id: pull_from_s3
+      requires: prefect-aws>=0.5.12
+      bucket: simo-prefect
+      folder: prefect-nf
+      credentials: "{{ prefect.blocks.aws-credentials.aws-s3 }}"
+  - prefect.deployments.steps.set_working_directory:
+      directory: "{{ pull_from_s3.directory }}"
+
+deployments:
+  - name: example-deploy
+    description: "Example deployment using Northflank worker"
+    entrypoint: example_flow.py:hello_northflank_flow
+    parameters:
+      name: "Northflank Cloud"
+    work_pool:
+      name: gg
+      work_queue_name: default
+      job_variables:
+        credentials: "{{ prefect.blocks.northflank.local }}"
+        project_id: "prefect"
+        cleanup_job: false
+        billing_deployment_plan: "nf-compute-200"
+        deployment_internal_id: "nutritious-coil"
+        deployment_internal_branch: "main"
+        deployment_internal_build_id: "wonderful-wax-2774"
+        settings_active_deadline_seconds: 1800
+        settings_backoff_limit: 3
+        runtime_environment:
+          PYTHONPATH: "/opt/prefect"

@@ -1,0 +1,162 @@
+Metadata-Version: 2.4
+Name: agentplug
+Version: 0.1.4
+Summary: AgentHub - The App Store for AI Agents
+Project-URL: Homepage, https://github.com/agenthub/agenthub
+Project-URL: Documentation, https://docs.agenthub.dev
+Project-URL: Repository, https://github.com/agenthub/agenthub
+Project-URL: Issues, https://github.com/agenthub/agenthub/issues
+Project-URL: Changelog, https://github.com/agenthub/agenthub/blob/main/CHANGELOG.md
+Author-email: William <william@agenthub.dev>
+Maintainer-email: William <william@agenthub.dev>
+License: MIT License
+        
+        Copyright (c) 2025 Agent Hub
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: agent-framework,agent-management,agent-marketplace,agents,ai,artificial-intelligence,automation,llm,machine-learning,mcp,model-context-protocol,tools
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Systems Administration
+Classifier: Typing :: Typed
+Requires-Python: >=3.11
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: aisuite>=0.1.0
+Requires-Dist: anthropic>=0.45.0
+Requires-Dist: asyncio-throttle>=1.0.0
+Requires-Dist: beautifulsoup4>=4.12.0
+Requires-Dist: click>=8.1.7
+Requires-Dist: cryptography>=42.0.0
+Requires-Dist: ddgs>=9.5.0
+Requires-Dist: docstring-parser>=0.16
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: markdown>=3.5.0
+Requires-Dist: mcp[cli]>=1.13.1
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: openai>=1.50.0
+Requires-Dist: openpyxl>=3.1.0
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: pydantic>=2.11.0
+Requires-Dist: pypdf>=4.0.0
+Requires-Dist: python-docx>=1.1.0
+Requires-Dist: python-pptx>=0.6.0
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: requests>=2.31.0
+Requires-Dist: rich>=13.7.1
+Requires-Dist: uv>=0.5.0
+Provides-Extra: code
+Requires-Dist: docker>=7.0.0; extra == 'code'
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == 'dev'
+Requires-Dist: coverage>=7.9.0; extra == 'dev'
+Requires-Dist: mypy>=1.8.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.6.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.23.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest-mock>=3.14.0; extra == 'dev'
+Requires-Dist: pytest>=8.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.2.0; extra == 'dev'
+Requires-Dist: safety>=3.0.0; extra == 'dev'
+Requires-Dist: types-pyyaml>=6.0.12; extra == 'dev'
+Provides-Extra: full
+Requires-Dist: agenthub[code,dev,rag]; extra == 'full'
+Provides-Extra: rag
+Requires-Dist: chromadb>=1.0.0; extra == 'rag'
+Requires-Dist: faiss-cpu>=1.11.0; extra == 'rag'
+Requires-Dist: llama-index>=0.12.0; extra == 'rag'
+Requires-Dist: sentence-transformers>=5.0.0; extra == 'rag'
+Description-Content-Type: text/markdown
+
+# ⚠️ DEPRECATED
+
+<div align="center">
+
+**This package has been deprecated and is no longer maintained.**
+
+</div>
+
+## 🚨 Important Notice
+
+This package (`agentplug`) has been **deprecated** and is no longer actively maintained.
+
+## 🔄 Migration Required
+
+**Please migrate to the new package:**
+
+```bash
+# Uninstall the old package
+pip uninstall agentplug
+
+# Install the new package
+pip install agenthub-sdk
+```
+
+## 📦 New Package: agenthub-sdk
+
+The functionality has been moved to **`agenthub-sdk`** with improved features and better maintenance.
+
+### Quick Start with agenthub-sdk:
+
+```python
+# New import (instead of 'import agentplug as ah')
+import agenthub as ah
+
+# Same functionality, better maintained
+coding_agent = ah.load_agent("agentplug/coding-agent")
+code = coding_agent.generate_code("neural network class")
+```
+
+### CLI Commands:
+
+```bash
+# Install the new package
+pip install agenthub-sdk
+
+# Use the same commands
+agenthub list
+agenthub info agentplug/scientific-paper-analyzer
+agenthub exec agentplug/scientific-paper-analyzer analyze_paper "research.pdf"
+```
+
+## 🔗 Links
+
+- **New Package**: https://pypi.org/project/agenthub-sdk/
+- **Documentation**: https://docs.agenthub.dev
+- **GitHub**: https://github.com/agentplug/agenthub
+
+## ❓ Support
+
+If you have questions about the migration, please:
+
+- Open an issue at: https://github.com/agentplug/agenthub/issues
+- Contact: agenthub@agentplug.net
+
+---
+
+**Thank you for using AgentHub! We apologize for any inconvenience during this transition.**

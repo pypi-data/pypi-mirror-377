@@ -1,0 +1,17 @@
+httpx
+aiosqlite
+packaging
+
+[:python_version < "3.12"]
+typing_extensions>=4.4.0
+
+[dev]
+simple-repository[test]
+
+[test]
+pytest
+pytest_asyncio
+pytest_httpx
+
+[test:python_version < "3.8"]
+mock~=5.0.2

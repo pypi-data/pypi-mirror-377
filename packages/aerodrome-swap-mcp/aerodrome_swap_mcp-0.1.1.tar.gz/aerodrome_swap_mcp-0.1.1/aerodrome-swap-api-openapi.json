@@ -1,0 +1,877 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Aerodrome Swap API API",
+    "description": "Access real-time DEX prices, pool analytics, and execute swaps on Aerodrome’s Base deployment through a unified API interface.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "marketplace@quicknode.com",
+      "url": "https://support.quicknode.com/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{quicknode_endpoint}",
+      "description": "Your QuickNode endpoint",
+      "variables": {
+        "quicknode_endpoint": {
+          "default": "your-endpoint.quiknode.pro",
+          "description": "Your QuickNode endpoint URL"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "REST API",
+      "description": "endpoints for the add-on"
+    }
+  ],
+  "paths": {
+    "/addon/1051/v1/pools/detailed": {
+      "get": {
+        "summary": "Get detailed pool information with TVL, APR, volume, fees, and voting rewards",
+        "description": "Get detailed pool information with TVL, APR, volume, fees, and voting rewards",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "tvl"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "AERO"
+          },
+          {
+            "name": "min_tvl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "100000"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/pools": {
+      "get": {
+        "summary": "Get a list of Aerodrome pools.",
+        "description": "Get a list of Aerodrome pools.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "10"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/quote": {
+      "get": {
+        "summary": "Get quotes for Aerodrome",
+        "description": "Get quotes for Aerodrome",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "quotetarget",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "base"
+          },
+          {
+            "name": "from_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"
+          },
+          {
+            "name": "to_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/swap/build": {
+      "post": {
+        "summary": "Simulates transaction (customer needs to approve on their end) ",
+        "description": "Simulates transaction (customer needs to approve on their end) ",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "from_token": "0x940181a94A35A4569E4529A3CDfB74e38FD98631",
+                "to_token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                "amount": 1.0,
+                "wallet_address": "0x1539f7fbe3c26f5611dd4a449236180990f3e80f",
+                "slippage": 0.01
+              }
+            }
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/tokens/batch": {
+      "get": {
+        "summary": "Get information for multiple tokens in a single request. Useful for efficiently fetching data for token lists.",
+        "description": "Get information for multiple tokens in a single request. Useful for efficiently fetching data for token lists.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          },
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA"
+          },
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x4200000000000000000000000000000000000006"
+          },
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x26f3901aC8a79c50fb0d8289C74f0d09AdC42E29"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/tokens": {
+      "get": {
+        "summary": "Get all tokens. This endpoint returns token metadata. For prices, use the /prices endpoint.",
+        "description": "Get all tokens. This endpoint returns token metadata. For prices, use the /prices endpoint.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "10"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2"
+          },
+          {
+            "name": "listed_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "true"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/pools/{address}": {
+      "get": {
+        "summary": "Get detailed information about a specific pool by address.",
+        "description": "Get detailed information about a specific pool by address.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter"
+          },
+          {
+            "name": "token0",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "base"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/pools/search": {
+      "get": {
+        "summary": "Search for pools by token pair and other criteria.",
+        "description": "Search for pools by token pair and other criteria.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "token0",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA"
+          },
+          {
+            "name": "token1",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "3"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/prices/{address}": {
+      "get": {
+        "summary": "Get price for a specific token.",
+        "description": "Get price for a specific token.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/tokens/search": {
+      "get": {
+        "summary": "Search for tokens by symbol or address. This is useful for token selection in UI components.",
+        "description": "Search for tokens by symbol or address. This is useful for token selection in UI components.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "usdc"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/prices": {
+      "get": {
+        "summary": "Get current token prices. This endpoint is optimized for high-frequency price queries with intelligent caching.Using query string parameters, you can get by symbols (ex symbols=AERO,USDC) or get by addresses (ex addresses=0x123,0x456)",
+        "description": "Get current token prices. This endpoint is optimized for high-frequency price queries with intelligent caching.Using query string parameters, you can get by symbols (ex symbols=AERO,USDC) or get by addresses (ex addresses=0x123,0x456)",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "50"
+          },
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "AERO,USDC"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/tokens/{address}": {
+      "get": {
+        "summary": "Get detailed information about a specific token. For current price, use GET /prices/{address}.",
+        "description": "Get detailed information about a specific token. For current price, use GET /prices/{address}.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    },
+    "/addon/1051/v1/transaction/{tx_hash}": {
+      "get": {
+        "summary": "Get transaction after swap.",
+        "description": "Get transaction after swap.",
+        "externalDocs": {
+          "url": "https://superswaps-api.com/docs"
+        },
+        "parameters": [
+          {
+            "name": "tx_hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter"
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "aero"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "tags": [
+          "REST API"
+        ]
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Support Documentation",
+    "url": "https://support.quicknode.com/"
+  }
+}

@@ -1,0 +1,39 @@
+import os
+from typing import Optional
+from functools import lru_cache
+from cognee.root_dir import get_absolute_path, ensure_absolute_path
+from cognee.modules.observability.observers import Observer
+from pydantic_settings import BaseSettings, SettingsConfigDict
+import pydantic
+
+
+class BaseConfig(BaseSettings):
+    data_root_directory: str = get_absolute_path(".data_storage")
+    system_root_directory: str = get_absolute_path(".cognee_system")
+    monitoring_tool: object = Observer.LANGFUSE
+
+    @pydantic.model_validator(mode="after")
+    def validate_paths(self):
+        # Require absolute paths for root directories
+        self.data_root_directory = ensure_absolute_path(self.data_root_directory)
+        self.system_root_directory = ensure_absolute_path(self.system_root_directory)
+        return self
+
+    langfuse_public_key: Optional[str] = os.getenv("LANGFUSE_PUBLIC_KEY")
+    langfuse_secret_key: Optional[str] = os.getenv("LANGFUSE_SECRET_KEY")
+    langfuse_host: Optional[str] = os.getenv("LANGFUSE_HOST")
+    default_user_email: Optional[str] = os.getenv("DEFAULT_USER_EMAIL")
+    default_user_password: Optional[str] = os.getenv("DEFAULT_USER_PASSWORD")
+    model_config = SettingsConfigDict(env_file=".env", extra="allow")
+
+    def to_dict(self) -> dict:
+        return {
+            "data_root_directory": self.data_root_directory,
+            "system_root_directory": self.system_root_directory,
+            "monitoring_tool": self.monitoring_tool,
+        }
+
+
+@lru_cache
+def get_base_config():
+    return BaseConfig()

@@ -1,0 +1,150 @@
+Metadata-Version: 2.4
+Name: smart-covdefaults
+Version: 0.1.0
+Summary: A better version of asottile's covdefaults.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: coverage>=7.10.6
+Dynamic: license-file
+
+# smart-covdefaults
+
+A better version of asottile's [covdefaults](https://github.com/asottile/covdefaults).
+
+---
+
+<!-- TOC -->
+* [smart-covdefaults](#smart-covdefaults)
+  * [Install](#install)
+  * [Use](#use)
+  * [Defaults](#defaults)
+  * [Conditional pragmas](#conditional-pragmas)
+    * [Version-dependent pragmas](#version-dependent-pragmas)
+    * [Platform-dependent pragmas](#platform-dependent-pragmas)
+    * [Custom condition pragmas](#custom-condition-pragmas)
+  * [Developer](#developer)
+  * [License](#license)
+<!-- TOC -->
+
+---
+
+## Install
+
+```shell
+pip install smart-covdefaults
+```
+
+## Use
+
+Enabling the plugin:
+
+```ini
+# .coveragerc
+[run]
+plugins = smart_covdefaults
+```
+
+## Defaults
+
+It provides following defaults:
+
+```ini
+[report]
+show_missing = True
+skip_covered = True
+exclude_lines =
+    \# pragma: no cover\b
+
+    ^\s*raise AssertionError\b
+    ^\s*raise NotImplementedError\b
+    ^\s*return NotImplemented\b
+    ^\s*raise$
+    
+    ^\s*if (False|TYPE_CHECKING):
+    : \.\.\.(\s*#.*)?$
+    ^ +\.\.\.$
+    -> ['"]?NoReturn['"]?:
+    
+    if __name__ == ['"]__main__['"]:$
+```
+
+## Conditional pragmas
+
+Smart-covdefaults offers a handful of conditional pragmas to work with.
+
+### Version-dependent pragmas
+
+```py
+# pragma: <=major.minor cover
+# pragma: <major.minor cover
+# pragma: >=major.minor cover
+# pragma: >major.minor cover
+# pragma: !=major.minor cover
+# pragma: ==major.minor cover
+```
+
+Above are listed all possible version-dependent pragmas, that you can use. 
+Lines will be excluded from coverage based on what python version tests are running on.
+
+For example, if you have Python 3.11, then something like `# pragma: >=3.12 cover` will be
+excluded, but something like `# pragma: >=3.10 cover` will not.
+
+### Platform-dependent pragmas
+
+```py
+# pragma: TAG cover
+# pragma: TAG no cover
+```
+
+Using these pragmas you can control coverage on different platforms. 
+
+Available tags are:
+- `nt`
+- `posix`
+- `cygwin`
+- `darwin`
+- `linux`
+- `msys`
+- `win32`
+- `cpython`
+- `pypy`
+
+### Custom condition pragmas
+
+It is also possible to add `exclude_lines` patterns that will be opted in or out
+depending on some custom condition. These are specified under 
+`[smart_covdefaults] exclude_conditional` configuration option:
+
+```ini
+# .coveragerc
+[smart_covdefaults]
+exclude_conditional =
+    $if .*?HAS_PY_311.*?:^
+        py < "3.11"
+    
+    $if .*?HAS_PY_312.*?:^
+        py < "3.12"
+```
+
+This configuration means that `$if .*?HAS_PY_311.*?:^` will be included as a pattern if
+`py < "3.11"` gives `True`. The condition is just a Python expression, that runs with
+these globals:
+
+- `os` - the `os` module
+- `sys` - the `sys` module
+- `py` - current python version. Could be compared to strings (`"3.12"`) or floats (`3.12`)
+
+`exclude_conditional` expects pairs of lines. In each pair, the first line is a pattern,
+the second is a condition. There can be as many blank lines anywhere as you wish. The
+indentation also does not matter, since `.coveragerc` parser dedents everything.
+
+## Developer
+
+Project is being developed by [@Tapeline](https://github.com/Tapeline).
+
+Original version developed by [@asottile](https://github.com/asottile)
+
+## License
+
+This work is licensed under Apache 2.0 license.

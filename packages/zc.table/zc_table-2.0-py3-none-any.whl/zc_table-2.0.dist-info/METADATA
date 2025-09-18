@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: zc.table
+Version: 2.0
+Summary: Zope table implementation
+Home-page: https://github.com/zopefoundation/zc.table/
+Author: Zope Foundation and Contributors
+Author-email: zope-dev@zope.dev
+License: ZPL-2.1
+Keywords: zope zope3
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Programming Language :: Python
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Framework :: Zope :: 3
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+License-File: LICENSE.txt
+Requires-Dist: setuptools
+Requires-Dist: zc.resourcelibrary>=0.6
+Requires-Dist: zope.browserpage>=3.10
+Requires-Dist: zope.formlib>=4
+Requires-Dist: zope.cachedescriptors
+Requires-Dist: zope.component
+Requires-Dist: zope.formlib
+Requires-Dist: zope.i18n
+Requires-Dist: zope.interface
+Requires-Dist: zope.schema
+Provides-Extra: test
+Requires-Dist: zope.testing; extra == "test"
+Requires-Dist: zope.testrunner>=6.4; extra == "test"
+Requires-Dist: zope.publisher; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+This is a Zope 3 extension that helps with the construction of (HTML) tables.
+Features include dynamic HTML table generation, batching and sorting.
+
+
+CHANGES
+=======
+
+2.0 (2025-09-18)
+----------------
+
+- Replace ``pkg_resources`` namespace with PEP 420 native namespace.
+
+- Add support for Python 3.12, 3.13.
+
+- Drop support for Python 3.7, 3.8.
+
+
+1.0 (2023-02-17)
+----------------
+
+- Drop support for Python 2.7, 3.5, 3.6.
+
+- Add support for Python 3.5, 3.7, 3.8, 3.9, 3.10, 3.11.
+
+
+0.10.0 (2020-02-06)
+-------------------
+
+- Make Python 3 compatible
+
+
+0.9.0 (2012-11-21)
+------------------
+
+- Using Python's ``doctest`` module instead of deprecated
+  ``zope.testing.doctest``.
+
+- Removed dependency on ``zope.app.testing`` and ``zope.app.form``.
+
+- Add test extra, move ``zope.testing`` to it.
+
+
+0.8.1 (2010-05-25)
+------------------
+
+- Replaced html entities with unicode entities since they are xthml valid.
+
+
+0.8.0 (2009-07-23)
+------------------
+
+- Updated tests to latest packages.
+
+
+0.7.0 (2008-05-20)
+------------------
+
+- Fixed HTML-encoding of cell contents for ``GetterColumn``.
+
+- Add ``href`` attributes (for MSIE) and fix up JavaScript on Next/Prev links
+  for batching.
+
+- Update packaging.
+
+0.6 (2006-09-22)
+----------------
+
+Initial release on Cheeseshop.

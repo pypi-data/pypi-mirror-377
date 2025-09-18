@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Wombat: Image Processing Pipeline",
+    "artifact_name": "Image Processing Pipeline",
+    "benchmark": "image-pipeline",
+    "workers": 16,
+    "num_images": 100,
+    "image_size": [
+      128,
+      128
+    ],
+    "num_layers": 15,
+    "runs": 1
+  },
+  {
+    "name": "concurrent.futures: Image Processing Pipeline",
+    "artifact_name": "Image Processing Pipeline",
+    "benchmark": "image-pipeline-cf",
+    "workers": 16,
+    "num_images": 100,
+    "image_size": [
+      128,
+      128
+    ],
+    "num_layers": 15,
+    "runs": 1
+  }
+]

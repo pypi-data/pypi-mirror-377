@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-filtering-ui"
+version = "0.0.8"
+license = "GPL-3.0"
+authors = [
+  { name = "The Shadowserver Foundation" },
+  { name = "Michael Mulich", email = "michael@mulich.com" },
+]
+description = "Allows users to filter Django models"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Framework :: Django",
+  "Framework :: Django :: 4",
+  "Framework :: Django :: 5",
+]
+dependencies = ["django-filtering>=0.0.7"]
+
+[project.optional-dependencies]
+tests = ["pytest", "pytest-django", "ipdb", "model_bakery"]
+
+[project.urls]
+Homepage = "https://github.com/The-Shadowserver-Foundation/django-filtering-ui"
+Issues = "https://github.com/The-Shadowserver-Foundation/django-filtering-ui/issues"
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["src/django_filtering_ui/static/django-filtering-ui"]
+exclude = [".*/*"]
+
+[tool.hatch.build.targets.wheel]
+artifacts = [
+  "src/django_filtering_ui/static/django-filtering-ui",
+  "src/django_filtering_ui/templates/django_filtering_ui",
+]
+only-packages = true
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+addopts = "-vv --pdbcls=IPython.terminal.debugger:TerminalPdb"

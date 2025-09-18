@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: aquamarine;
+        }
+
+        header,
+        article {
+            margin-left: calc(50% - 350px);
+            width: 700px;
+            background-color: white;
+            color: black;
+            border: 2px black solid;
+            padding: 10px;
+        }
+
+        article {
+            margin-top: 20px;
+        }
+
+        div.date {
+            text-align: right;
+            font-size: small;
+            font-weight: bold;
+        }
+    </style>
+    <title>@{{ name }}</title>
+</head>
+
+<body>
+    <header>
+        <h1><a href="/@{{ name }}">@{{ name }}</a></h1>
+    </header>
+    <article>{{ content }}</article>
+</body>
+
+</html>

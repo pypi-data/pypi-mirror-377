@@ -1,0 +1,72 @@
+name: Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  run-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          enable-cache: true
+          cache-dependency-glob: |
+            pyproject.toml
+            uv.lock
+
+      - name: Install dependencies
+        run: |
+          uv sync --group dev
+
+      - name: Run tests
+        run: uv run make test
+
+      - name: Run linting
+        if: always()
+        run: uv run make lint
+
+      - name: Generate coverage report
+        if: always()
+        run: |
+          uv run make test-coverage | tee coverage.txt
+          # Extract the total coverage percentage
+          COVERAGE=$(grep -oP 'TOTAL.*\d+%' coverage.txt | grep -oP '\d+%' | grep -oP '\d+')
+          if [ "$COVERAGE" -lt 74 ]; then
+            echo "Test coverage ($COVERAGE%) is below the required threshold of 74%"
+            echo "coverage_failed=true" >> $GITHUB_OUTPUT
+          else
+            echo "coverage_failed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.txt
+
+      - name: Output full coverage report to GitHub summary
+        if: always()
+        run: |
+          {
+            echo "## Code Coverage Report";
+            echo "";
+            echo '```';
+            cat coverage.txt;
+            echo '```';
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if coverage is below threshold
+        if: always() && steps.generate-coverage.outputs.coverage_failed == 'true'
+        run: exit 1

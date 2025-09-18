@@ -1,0 +1,118 @@
+Metadata-Version: 2.4
+Name: git_lock_sign_jlx
+Version: 0.1.0
+Summary: A JupyterLab extension.
+Project-URL: Homepage, https://github.com/liuji1031/git_lock_sign_jlx
+Project-URL: Bug Tracker, https://github.com/liuji1031/git_lock_sign_jlx/issues
+Project-URL: Repository, https://github.com/liuji1031/git_lock_sign_jlx.git
+Author-email: Ji Liu <ji.liu@axleinfo.com>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2025, Ji Liu
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+License-File: LICENSE
+Keywords: jupyter,jupyterlab,jupyterlab-extension
+Classifier: Framework :: Jupyter
+Classifier: Framework :: Jupyter :: JupyterLab
+Classifier: Framework :: Jupyter :: JupyterLab :: 4
+Classifier: Framework :: Jupyter :: JupyterLab :: Extensions
+Classifier: Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: jupyter-server>=2.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: requests>=2.25.0
+Requires-Dist: tornado>=6.0.0
+Description-Content-Type: text/markdown
+
+# git_lock_sign_jlx
+
+
+A JupyterLab extension to automatically commit and push changes to a remote repository.
+
+## Features
+
+### Auto-commit
+
+Cell execution is detected and the notebook is automatically committed.
+
+### Auto-push
+
+The auto-push is triggered when the user saves the notebook or after a certain amount of time.
+
+## Documentation
+
+See [docs/ENVIRONMENT_SETUP.md](docs/ENVIRONMENT_SETUP.md) for the environment setup.
+
+See [docs/API_REFERENCE.md](docs/API_REFERENCE.md) for the API reference for the sidecar service.
+
+See [docs/AUTHENTICATION_CONFIGURATION.md](docs/AUTHENTICATION_CONFIGURATION.md) for git authentication configuration.
+
+See [docs/DOCKER_BUILD_GUIDE.md](docs/DOCKER_BUILD_GUIDE.md) for quick Docker setup.
+
+See [docs/SYNC_VALIDATION_IMPLEMENTATION.md](docs/SYNC_VALIDATION_IMPLEMENTATION.md) for sync validation implementation details.
+
+See [docs/GIT_WORKTREE_ARCHITECTURE.md](docs/GIT_WORKTREE_ARCHITECTURE.md) for the git worktree architecture overview.
+
+See [docs/PROGRAM_WORKFLOW.md](docs/PROGRAM_WORKFLOW.md) for the program workflow.
+
+## Installation
+
+1. Create and activate conda environment
+```bash
+conda create -n jlx --override-channels --strict-channel-priority -c conda-forge -c nodefaults jupyterlab=4 nodejs=18 git copier=7 jinja2-time
+conda activate jlx
+```
+
+2. Install dependencies
+```bash
+jlpm install
+```
+
+3. Build extension
+```bash
+jlpm build
+```
+
+4. Install the extension
+```bash
+jupyter labextension develop --overwrite ./
+```
+
+5. Confirm installation
+```bash
+jupyter labextension list
+```

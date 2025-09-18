@@ -1,0 +1,43 @@
+# mypackage = scm203lab367112755
+
+`scm203lab367112755` This is an example of Python packaging that combines important Number Theory algorithms into an easy-to-use format: **Euclidean Algorithm**, **Extended Euclidean Algorithm**, and **Sieve of Eratosthenes**.It is designed mainly for learning purposes and as an example of Python packaging.
+
+---
+
+## Features
+- **Euclidean Algorithm**: 
+Purpose: Compute the greatest common divisor (GCD) of two integers $a$ and $b$.
+Idea: Uses repeated division with remiander.
+\[
+\gcd(a, b) = \gcd(b, \; a \bmod b)
+\]
+Complexity: $O(\log(\min(a,b)))$.
+- **Extended Euclidean Algorithm**: 
+Purpose: find greatest integer $x$ and $y$ such that
+\[
+ax+by = gcd(a, b)
+\]
+Application: Solving Diophantine equations modular inverse.
+Complexity: $O(\log(\min(a,b)))$.
+- **Sieve of Eratosthenes**: 
+Purpose: Generates all prime numbers up to $n$.
+Idea: Iteratively marks multiples of primes as composite.
+Complexity: $O(n\log(\log(n)))$.
+---
+## Installation
+You can install the package directly from PyPI:
+```bash
+pip install scm203lab367112755
+```
+### Example 1 **Euclidean Algorithm**
+```bash
+gcd(234, 42)
+```
+### Example 2 **Extended Euclidean Algorithm**
+```bash
+extended_gcd_steps(7920, 4536)
+```
+### Example 3 **Sieve of Eratosthenes**
+```bash
+sieve_steps(49)
+```

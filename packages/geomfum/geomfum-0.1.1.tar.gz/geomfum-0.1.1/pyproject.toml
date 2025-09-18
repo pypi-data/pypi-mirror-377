@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    { name = "Giulio Viganò", email = "g.vigano36@campus.unimib.it" },
+    { name = "Giorgio Longari", email = "giorgio.longari@unimib.it" },
+    { name = "Luís F. Pereira", email = "luisfpereira@ucsb.edu" },
+    { name = "Nina Miolane", email = "ninamiolane@ucsb.edu" },
+    { name = "Simone Melzi", email = "simone.melzi@unimib.it" }
+]
+name = "geomfum"
+dynamic = ["version"]
+readme = "README.rst"
+description = "Geometry processing with functional maps."
+license = { file = "LICENSE.md" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">= 3.9"
+dependencies = [
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "meshio",
+    "pyfmaps",
+    "torch",
+    "geomstats",
+]
+
+[project.optional-dependencies]
+lapl = ["robust-laplacian", "libigl"]
+metric = ["networkx", "potpourri3d"]
+sampling = ["pymeshlab"]
+rematching = []
+sinkhorn = ["POT"]
+opt = ["geomfum[lapl,metric,sampling,rematching,sinkhorn]"]
+fun = []
+test-scripts = ["nbformat", "nbconvert", "ipykernel", "ipython", "pyvista", "plotly"]
+test = [
+    "pytest",
+    "geomfum[opt,test-scripts,plotting-all]",
+]
+plotly = ["plotly", "nbformat"]
+pyvista = ["pyvista", "trame"]
+polyscope = ["polyscope"]
+plotting-all = ["geomfum[plotly,pyvista,polyscope]"]
+
+[project.urls]
+repository = "http://github.com/3diglab/geomfum"
+
+[tool.setuptools.dynamic]
+version = { attr = "geomfum.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["geomfum", "geomfum.*"]
+
+[tool.pytest.ini_options]
+markers = [
+    "smoke: simple and basic numerical tests.",
+    "random: tests that use randomized data.",
+    "validation: not smoke, neither random.",
+    "ignore: deselect tests.",
+    "vec: vectorization tests.",
+    "shape: array shape tests.",
+    "type: checks output types.",
+    "mathprop: mathematical properties tests.",
+    "slow: for slow tests.",
+    "redundant: redundant test.",
+    "rematching: requires PyRMT.",
+]
+
+[tool.ruff]
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+extend-select = ["I", "D"]
+ignore = ["E731"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = ["F401"]
+"tests/*" = ["D"]

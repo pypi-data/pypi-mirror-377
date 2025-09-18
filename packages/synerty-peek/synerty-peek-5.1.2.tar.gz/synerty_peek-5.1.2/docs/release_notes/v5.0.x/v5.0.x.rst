@@ -1,0 +1,321 @@
+.. _release_notes_v5.0.x:
+
+====================
+v5.0.x Release Notes
+====================
+
+Platform Changes
+----------------
+
+RPM-Based Packaging and Deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Peek v5.0.x introduces a complete shift to RPM-based packaging, eliminating the need for compilation tools on target servers. This major deployment change provides:
+
+- **Pre-compiled packages**: All Peek components are now distributed as RPM packages
+- **No compilation required**: Target servers no longer need compilers, development tools, or build environments
+- **Consistent deployments**: Identical binary packages across all environments eliminate build-time variations
+- **Faster installations**: No compilation time means significantly faster deployment and updates
+- **Reduced dependencies**: Minimal runtime dependencies compared to previous compilation-based approach
+
+And most importantly, the Peek Platform is now significantly simpler for clients to deploy without https://attuneops.io if they choose. The division is pretty cleanly, AttuneOps deploys data, configuration and infrastructure customisations, and the Peek RPMs deploy the product.
+
+We've added support for Amazon Linux 2023 in the new packages.
+
+New Filesystem Layout
+~~~~~~~~~~~~~~~~~~~~~
+
+Peek v5.0.x standardizes on a new filesystem organization under the ``/peek`` directory structure:
+
+- **Configuration**: ``/peek/etc/peek-{logic,office,...}/config.json`` - Centralized configuration management
+- **Variable data**: ``/peek/var`` - Application data and databases
+- **Logs**: ``/peek/log`` - All Peek logging output
+- **Binaries**: ``/peek/usr`` - Executable files and libraries  
+- **Runtime data**: ``/peek/run`` - Process IDs and runtime state
+- **Temporary files**: ``/peek/tmp`` - Temporary working files
+
+This structure provides better organization, cleaner separation of concerns, and simplified backup/maintenance procedures.
+
+Task Queue Modernization
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Peek v5.0.x deprecates external task queue dependencies and implements a modern, integrated solution:
+
+- **Deprecated components**:
+  - Python Celery worker framework
+  - Redis package dependency
+  - RabbitMQ pacakge dependency
+  - erlag package, required by rabbitmq
+
+- **New implementation**:
+  - Custom Peek worker management system
+  - Valkey for high-performance queue operations
+  - Integrated monitoring and management
+  - Reduced operational complexity
+  - Better performance and reliability
+
+This change eliminates multiple external dependencies, simplified peek code, improves reliability and improves performance by approximatly 10%.
+
+Changing from Redis to Valkey, which is 100% compatible and is as simple as dnf remove redis, dnf install valkey provided approxmatly 20% performance increase.
+
+Major Plugin Changes
+--------------------
+
+Task Processing Updates
+~~~~~~~~~~~~~~~~~~~~~~
+
+All plugins utilizing background task processing have been updated to work with the new Valkey-based task queue system. This affects:
+
+- Data import/export operations
+- Background calculations and analysis
+- Scheduled maintenance tasks
+- Inter-service communication
+
+Configuration Management
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Plugin configuration has been centralized under the new ``/peek/etc`` structure:
+
+- Simplified configuration file locations
+- Consistent configuration format across all plugins
+- Enhanced configuration validation and error reporting
+- Streamlined configuration backup and restore procedures
+- Removed `-service` from directory names
+
+Layer Management Enhancements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Diagram-related plugins benefit from the new hierarchical layer management system:
+
+- Enhanced layer visibility controls
+- Improved layer inheritance and property management
+- Better performance for complex layer hierarchies
+- Streamlined layer administration interfaces
+
+This feature allows utilities to configure layers in groups so that a user can turn on and off multiple layers at a  time.
+
+For example, having a "Roads" parent layer could have multiple road type layers under it, allows users to hide all rows.
+
+Support Platforms
+-----------------
+
+The following platforms are supported:
+
+- **RHEL**:
+  - RHEL 8.8 or higher
+  - RHEL 9.5 or higher
+  - Amazon Linux 2023 (NEW in v5.0.0)
+
+- **Browsers**:
+  - Google Chrome version 78 or above
+  - Microsoft Edge version 79 or above
+
+- **iOS**
+  - iOS 17, 18
+
+Deployment
+----------
+
+Peek v5.0.x introduces significant deployment improvements through RPM packaging:
+
+**New RPM-Based Deployment**:
+- Install via standard RPM package managers (yum/dnf)
+- No compilation or build tools required on target systems
+- Automated dependency resolution through RPM metadata
+- Standard Linux service management integration
+- Simplified upgrade procedures through package management
+
+**Filesystem Changes**:
+- All Peek components deployed under ``/peek/`` directory structure
+- Configuration centralized in ``/peek/etc/peek-logic/config.json``
+- Standardized logging, data, and runtime directories
+- Improved backup and maintenance procedures
+
+**Service Management**:
+- Integration with systemd service management
+- Automated service startup and monitoring
+- Enhanced logging and diagnostic capabilities
+
+Migration Steps
+---------------
+
+**Migration from v4.1.x to v5.0.x**:
+
+1. **Backup existing installation**:
+   - Export all configuration settings
+   - Backup database and data files
+   - Document current filesystem locations
+
+2. **Install v5.0.x RPM packages**:
+   - Remove compilation tools and dependencies
+   - Install new RPM packages via package manager
+   - Verify new ``/peek/`` directory structure
+
+3. **Migrate configuration**:
+   - Convert existing configuration to new ``/peek/etc/peek-logic/config.json`` format
+   - Update file paths to new directory structure
+   - Verify all configuration parameters
+
+4. **Update service management**:
+   - Remove old service scripts
+   - Enable new systemd services
+   - Verify service startup and operation
+
+5. **Validate deployment**:
+   - Test all functionality with migrated data
+   - Verify task queue operation with Valkey
+   - Confirm layer management features
+
+Alternativly, Get the matching AttuneOps `synerty-peek` automation project, and use that to backup your existing data and build new Peek v5.0.0 nodes.
+
+Please also see v4.1.x notes for steps relevant to your release:
+:ref:`release_notes_v4.1.x`
+
+User Acceptance Test Results
+----------------------------
+
+Peek v5.0.x User Acceptance Test results can be found at:
+:ref:`release_notes_v5.0.x_uat`
+
+v5.0.0 Changes
+--------------
+
+Major New Features
+``````````````````
+
+Pre-Compiled Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Introduces pre-compiled dependency packages for Python, PostgreSQL, and TimescaleDB, eliminating 
+on-node compilation requirements and ensuring consistent versioning across Peek deployments.
+
+*Epics: peek&90*
+
+Layer Hierarchy and Management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adds comprehensive layer management capabilities including:
+
+- Hierarchical layer structure with property inheritance
+- Editor-specific visibility and editability controls  
+- Global layer visibility toggles for ADMS/GeoJSON layers
+- Reset to default layer state functionality
+- Enhanced layer grouping in diagram viewer
+
+*Epics: peek&91*
+
+Custom Task Queue Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Replaced external task queue dependencies (Celery, RabbitMQ, Redis) with custom Peek task queue 
+implementation using Valkey for improved performance and reduced complexity.
+
+*Epics: peek&92*
+
+Bug Fixes
+`````````
+
+Diagram Display
+~~~~~~~~~~~~~~~
+- [peek/peek#2929] Fixed layer display issues - negative order layers now show correctly with proper visibility/selectability inheritance
+- [peek/peek#2928] Resolved GeoJSON layer display problems in North West World coordinate set
+- [peek/peek#2937] Fixed diagram text style scale factor to accept decimal values
+
+PDF Export
+~~~~~~~~~~
+- [peek/peek#2920] Fixed PDF export failures by registering PdfExportTupleAction tuple type
+- [peek/peek#2921] Resolved PDF export errors when rendering ellipses with null lineWidth
+- [peek/peek#2900] Fixed page size selection issues for non-A4 formats
+
+Database and Authentication
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- [peek/peek#2950] Modified constraint to allow multiple DocDB properties with same title
+- [peek/peek#2955] Fixed LDAP authentication by enforcing lowercase usernames
+- [peek/peek#2930] Resolved database connection leak in Valkey Worker Task
+
+Improvements
+````````````
+- [peek/peek#2897] Added configuration options for controlling GeoJSON layer editability
+- [peek/peek#2885] Enhanced navigation between multiple identical symbols at same location
+- [peek/peek#2965] Restored classic navigation layout in Field Switching while maintaining swipe functionality
+- [peek/peek#2967] Added pagination support across all admin tables
+
+Tasks
+`````
+- [peek/peek#2913] Enhanced diagram toolbox button styling
+- [peek/peek#2914] Added iTerm2 node connection script
+- [peek/peek#2926] Standardized development workspace setup script naming
+- [peek/peek#2933] Added Xymon monitoring and HAProxy configurations
+- [peek/peek#2908] Created v5.0.x branches and GitLab Docker containers
+
+v5.0.1 Changes
+--------------
+
+Bug Fixes
+`````````
+- [peek/peek#2973] Fixed highlighting persistence issue in operation list where highlights would incorrectly remain after new app deployment until tab navigation occurred
+- [peek/peek#2974] Fixed authentication redirect issue where users were sent to login screen after successful authentication on newly built servers
+
+Tasks
+`````
+- [peek/peek#2975] Released version v5.0.1 of AttuneOps.io Automation platform
+
+Notes
+`````
+This release focuses on resolving authentication and UI highlighting issues to improve the user experience. No new features or improvements were added in this version.
+
+v5.0.2 Changes
+--------------
+
+This is a maintenance release with no new features, improvements, bug fixes or tasks to report.
+
+v5.0.3 Changes
+--------------
+
+Bug Fixes
+`````````
+- [peek/peek#2956] Fixed issue where events would not display when toggling Live mode in Event Viewer
+
+Improvements
+````````````
+- [peek/peek#2971] Enhanced peek aliases for improved usability with keystroke-optimized command shortcuts. Aliases are designed to minimize keystrokes with intentional underscore endings (e.g., ``p_stop_``) allowing users to either press enter directly or use tab completion. Comprehensive command categories include log viewing, service management, configuration editing, directory navigation, and system monitoring commands.
+
+Tasks
+`````
+- [peek/peek#2976] Added MongoDB 5.0.3 packages to Peek platform
+- [peek/peek#2964] Fixed build_only scripts to terminate properly when not actively watching web-app or doc files based on config.json settings
+
+v5.0.4 Changes
+--------------
+
+New Features
+````````````
+
+OpenStreetMap Data Processing Support
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Added support for processing OpenStreetMap PBF files through the new ``peek-osmium`` package. This enables:
+
+- Extraction of geographic regions using bounding boxes
+- Conversion of OpenStreetMap PBF files to GeoJSON format
+- Advanced filtering and processing of OpenStreetMap data
+
+Issues: peek/peek#2977
+
+IP Address Access Control
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Added IP address restriction capabilities for enhanced security:
+
+- Configurable IP address whitelist for EDNAR Web-App access
+- Access control settings for EDNAR diagram resources
+- Management through Peek Admin settings interface
+
+Issues: peek/peek#2978 peek/peek#2982
+
+Bug Fixes
+`````````
+- [peek#2935] Fixed GeoJSON loader analysis stage completion issue by correcting Python late binding behavior in file change detection
+- [peek/peek#2743] Resolved Component Classes table display issue in Equipment Loader - data now shows immediately without requiring Reset
+- [peek/peek#2983] Added proper canvas editability validation in API with appropriate exception handling for non-editable canvases
+
+Tasks
+`````
+- [peek/peek#2972] Made texlive package optional in PDF Exporter - skia module now only required when PDF export functionality is used
+- [peek/peek#2979] Converted server configuration defaults file to asset for post-build modification via repackage script
+- [peek/peek#2984] Resolved AttuneOps.io Automation v5.0.4 release deployment issue

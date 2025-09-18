@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ircpowermeter"
+version = "0.2.0"
+description = "ImmersionRC RF Power Meter v2 (USB CDC) interface"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name="Jonas Estberger", email="jonas.estberger@lumenradio.com"}]
+dependencies = ["pyserial>=3.5"]
+keywords = ["RF", "power-meter", "ImmersionRC", "dBm", "USB", "CDC-ACM"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+]
+
+[project.urls]
+Homepage = "https://github.com/youruser/immersionrc-rfpm"
+Issues = "https://github.com/youruser/immersionrc-rfpm/issues"
+
+[project.scripts]
+irc-rfpm = "ircpowermeter.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["ircpowermeter"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2.1", "twine>=5.1.1", "wheel"]

@@ -1,0 +1,18 @@
+[project]
+name = "minha-biblioteca-xpto"
+version = "0.1.0"
+description = "Uma biblioteca de exemplo criada no curso UFCD-10794"
+authors = [{ name = "Nome", email = "nome@email.com" }]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

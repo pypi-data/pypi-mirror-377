@@ -1,0 +1,102 @@
+{
+  "id": "data-science-application",
+  "name": "Data Science Platform",
+  "description": "Template for data science and ML platforms with experiment tracking, model deployment, and AI workflows",
+  "version": "1.0.0",
+  "project_type": "data-pipeline",
+  "technology_stack": [
+    "ai-assistant",
+    "prompt-engineering",
+    "code-generation"
+  ],
+  "default_tags": [
+    "ai-assisted",
+    "prompt-engineering",
+    "quality",
+    "systematic"
+  ],
+  "required_instructions": [
+    "clarity_context_constraints",
+    "chain_of_thought_prompting",
+    "decomposition_prompting",
+    "continuous_validation_loop"
+  ],
+  "optional_instructions": [
+    "persona_based_prompting",
+    "skeleton_template_priming",
+    "iterative_refinement"
+  ],
+  "excluded_instructions": [
+    "avoid_vibe_coding"
+  ],
+  "parameters": {
+    "prompting_technique": {
+      "type": "string",
+      "default": "chain_of_thought",
+      "description": "Primary prompting technique to use",
+      "required": true,
+      "options": ["direct", "chain_of_thought", "decomposition", "persona_based", "skeleton_priming"]
+    },
+    "complexity_level": {
+      "type": "string",
+      "default": "intermediate",
+      "description": "Complexity level of the task",
+      "required": true,
+      "options": ["simple", "intermediate", "complex", "enterprise"]
+    },
+    "domain_expertise": {
+      "type": "string",
+      "default": "general",
+      "description": "Domain expertise required",
+      "required": false,
+      "options": ["general", "frontend", "backend", "devops", "security", "data-science"]
+    },
+    "validation_level": {
+      "type": "string",
+      "default": "standard",
+      "description": "Level of validation required",
+      "required": true,
+      "options": ["basic", "standard", "rigorous", "mission_critical"]
+    }
+  },
+  "prompt_templates": {
+    "clarity_context_constraints": {
+      "template": "Create a {language} {component_type} that {specific_action}, optimized for {performance_requirement}. Requirements: {constraints}. Context: {framework_details}.",
+      "example": "Create a Python function that checks if a number is prime, optimized for numbers up to 10,000. Requirements: Handle edge cases, return boolean. Context: Using standard library only."
+    },
+    "chain_of_thought": {
+      "template": "Explain the logic for {task_description} step-by-step. Consider {considerations}. Then, provide the {language} code implementation.",
+      "example": "Explain the logic for implementing a secure password reset flow step-by-step. Consider token generation, expiration, and validation. Then, provide the Node.js code implementation."
+    },
+    "persona_based": {
+      "template": "Act as a {expert_role}. {task_description}. Focus on {expertise_areas}.",
+      "example": "Act as a senior cybersecurity engineer. Review the following code snippet for potential security vulnerabilities and provide secure alternatives. Focus on input validation and authentication."
+    },
+    "decomposition": {
+      "template": "Break down {complex_task} into steps: 1. {step1}, 2. {step2}, 3. {step3}. Implement each step separately.",
+      "example": "Break down creating a user authentication system into steps: 1. User registration with validation, 2. Login with JWT tokens, 3. Password reset functionality. Implement each step separately."
+    }
+  },
+  "conditions": [
+    {
+      "type": "file_exists",
+      "value": "requirements.txt",
+      "operator": "exists",
+      "weight": 0.9
+    },
+    {
+      "type": "technology_detected",
+      "value": "ai-assistant",
+      "operator": "equals",
+      "weight": 0.8
+    }
+  ],
+  "metadata": {
+    "category": "ai-assisted",
+    "complexity": "intermediate",
+    "author": "Research Integration",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "tags": ["prompt-engineering", "systematic", "quality"]
+  }
+}

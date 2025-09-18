@@ -1,0 +1,21 @@
+[project]
+name = "mp_reader"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cattrs>=25.1.1",
+    "numpy>=2.3.3",
+    "typer>=0.16.1",
+]
+
+
+[project.scripts]
+mp_reader = "mp_reader.__main__:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+]

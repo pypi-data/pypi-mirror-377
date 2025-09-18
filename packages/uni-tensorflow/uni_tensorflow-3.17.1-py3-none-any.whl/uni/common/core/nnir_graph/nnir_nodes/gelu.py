@@ -1,0 +1,38 @@
+# -------------------------------------------------------------------------------
+# (c) Copyright 2024 Sony Semiconductor Israel, Ltd. All rights reserved.
+#
+#      This software, in source or object form (the "Software"), is the
+#      property of Sony Semiconductor Israel Ltd. (the "Company") and/or its
+#      licensors, which have all right, title and interest therein, You
+#      may use the Software only in accordance with the terms of written
+#      license agreement between you and the Company (the "License").
+#      Except as expressly stated in the License, the Company grants no
+#      licenses by implication, estoppel, or otherwise. If you are not
+#      aware of or do not agree to the License terms, you may not use,
+#      copy or modify the Software. You may use the source code of the
+#      Software only for your internal purposes and may not distribute the
+#      source code of the Software, any part thereof, or any derivative work
+#      thereof, to any third party, except pursuant to the Company's prior
+#      written consent.
+#      The Software is the confidential information of the Company.
+# -------------------------------------------------------------------------------
+"""
+Created on 11/5/24
+
+@author: lotanw
+"""
+
+from uni.common.core.nnir_graph.nnir_nodes.nnir_node import NnirNode
+
+
+class Gelu(NnirNode):
+    NUM_INPUTS = 1
+    NUM_OUTPUTS = 1
+
+    def __init__(self, name, approximate: bool = False, **kwargs):
+        super().__init__(name, **kwargs)
+        self.approximate = approximate
+
+    def export_uni_model(self):
+        from uni_model import UniLayerGelu
+        return UniLayerGelu(self.name, approximate=self.approximate, out_dtypes=self.get_uni_model_out_dtypes())

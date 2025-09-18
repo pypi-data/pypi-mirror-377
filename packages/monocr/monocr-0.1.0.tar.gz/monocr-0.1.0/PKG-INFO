@@ -1,0 +1,67 @@
+Metadata-Version: 2.3
+Name: monocr
+Version: 0.1.0
+Summary: Optical Character Recognition for Mon text
+Keywords: mon,ocr,text-recognition
+Author: janakhpon
+Author-email: janakhpon <jnovaxer@gmail.com>
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: torch>=2.0.0
+Requires-Dist: torchvision>=0.15.0
+Requires-Dist: pillow>=9.0.0
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: click>=8.0.0
+Requires-Python: >=3.11
+Project-URL: Repository, https://github.com/janakhpon/monocr
+Description-Content-Type: text/markdown
+
+# Mon OCR
+
+Optical Character Recognition for Mon (mnw) text.
+
+## Installation
+
+```bash
+pip install monocr | uv add monocr
+```
+
+## Quick Start
+
+```python
+from monocr import read_text, read_folder
+
+# Read text from a single image
+text = read_text("image.png")
+print(text)
+
+# Read all images in a folder
+results = read_folder("images/")
+for filename, text in results.items():
+    print(f"{filename}: {text}")
+```
+
+## Command Line
+
+```bash
+# Read single image
+monocr read image.png
+
+# Process folder
+monocr batch images/ --output results.json
+```
+
+## License
+
+MIT License

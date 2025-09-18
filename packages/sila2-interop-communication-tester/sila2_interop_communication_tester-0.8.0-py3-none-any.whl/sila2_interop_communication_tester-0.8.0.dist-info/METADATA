@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: sila2-interop-communication-tester
+Version: 0.8.0
+Author-email: Niklas Mertsch <niklas.mertsch@wega-it.com>
+License: MIT License
+Requires-Python: >=3.9
+Requires-Dist: grpcio==1.66.2
+Requires-Dist: lxml
+Requires-Dist: protobuf==5.27.2
+Requires-Dist: pytest
+Requires-Dist: pytest-timeout
+Requires-Dist: pytest-html
+Requires-Dist: xmlschema
+Provides-Extra: dev
+Requires-Dist: grpcio-tools==1.66.2; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: pyproject-flake8; extra == "dev"
+Requires-Dist: mypy==1.11.2; extra == "dev"
+Requires-Dist: grpc-stubs==1.53.0.5; extra == "dev"
+Requires-Dist: lxml-stubs==0.5.1; extra == "dev"
+Requires-Dist: mypy-protobuf==3.6.0; extra == "dev"

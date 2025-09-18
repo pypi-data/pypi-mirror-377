@@ -1,0 +1,24 @@
+Metadata-Version: 2.4
+Name: sudorouter
+Version: 0.0.1
+Summary: The official Python library for the SudoRouter
+Author: SudoRouter
+Project-URL: Homepage, https://sudorouter.ai
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Requires-Dist: httpx<1,>=0.27.0
+Requires-Dist: urllib3
+Requires-Dist: pyOpenSSL>=25.0.0
+Requires-Dist: cryptography>=45.0.0
+
+# SudoRouter TEE Python API library
+
+The SudoRouter TEE Python library provides convenient access to the SudoRouter TEE REST API from any Python 3.8+
+application. The library includes type definitions for all request params and response fields, and offers both
+synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
+
+# Installation
+
+```shell
+pip install sudorouter
+```

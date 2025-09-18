@@ -1,0 +1,112 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ia-agent-dotnet"
+version = "0.10.0"
+authors = [
+    {name = "Paulo Andrade", email = "paulo_866@hotmail.com"},
+]
+description = "IA Agent para Generación de Pruebas Unitarias .NET - Sistema multi-agente inteligente"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Quality Assurance",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+keywords = [
+    "ai", "agent", "dotnet", "testing", "unit-tests", 
+    "langchain", "openai", "deepseek", "gemini", 
+    "automation", "code-generation"
+]
+dependencies = [
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.5",
+    "langchain-community>=0.0.10",
+    "langchain-google-genai>=1.0.0",
+    "langchain-anthropic>=0.1.0",
+    "pyautogen>=0.2.0",
+    "openai>=1.3.0",
+    "anthropic>=0.7.0",
+    "google-generativeai>=0.3.0",
+    "chromadb>=0.4.0",
+    "faiss-cpu>=1.7.4",
+    "sentence-transformers>=2.2.2",
+    "numpy>=1.24.0",
+    "click>=8.0.0",
+    "rich>=13.0.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "pyyaml>=6.0",
+    "loguru>=0.7.0",
+    "structlog>=23.2.0",
+    "psutil>=5.9.0",
+    "python-dotenv>=1.0.0",
+    "tqdm>=4.65.0",
+    "requests>=2.31.0",
+    "aiohttp>=3.8.0",
+    "asyncio>=3.4.3",
+    "typing-extensions>=4.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+docs = [
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Lopand-Solutions/ia-agent-to-unit-test-api-rest"
+Repository = "https://github.com/Lopand-Solutions/ia-agent-to-unit-test-api-rest"
+Documentation = "https://github.com/Lopand-Solutions/ia-agent-to-unit-test-api-rest/blob/develop/docs/USER_GUIDE.md"
+"Bug Tracker" = "https://github.com/Lopand-Solutions/ia-agent-to-unit-test-api-rest/issues"
+
+[project.scripts]
+ia-agent = "cli.main:main"
+ia-agent-config = "cli.config_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml", "*.json", "*.md", "*.txt"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

@@ -1,0 +1,51 @@
+[project]
+name = "python-ai-ragbot"
+version = "0.1.1"
+description = "AI RAG bot utilities for OpenAI + LangChain with FAISS"
+authors = [
+    { name = "Kushal Soni", email = "kushalsoni.dev@gmail.com" },
+]
+dependencies = [
+    "openai>=1.107.3",
+    "langchain>=0.3.27",
+    "faiss-cpu>=1.11.0.post1",
+    "pypdf>=6.0.0",
+    "python-docx>=1.2.0",
+    "beautifulsoup4>=4.13.5",
+    "requests>=2.32.5",
+    "langchain-community>=0.3.21",
+    "langchain-openai>=0.3.33",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+keywords = [
+    "RAG",
+    "LangChain",
+    "OpenAI",
+    "vector search",
+    "chatbot",
+    "LLM",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+package-dir = "src"

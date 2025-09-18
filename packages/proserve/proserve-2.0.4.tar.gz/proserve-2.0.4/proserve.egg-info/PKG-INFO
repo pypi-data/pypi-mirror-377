@@ -1,0 +1,235 @@
+Metadata-Version: 2.4
+Name: proserve
+Version: 2.0.4
+Summary: Professional Service Framework - Revolutionary modular microservice framework with zero-config API
+Home-page: https://github.com/tom-sapletta-com/proserve
+Author: Tom Sapletta
+Author-email: info@softreck.dev
+License: Apache-2.0
+Project-URL: Documentation, https://github.com/tom-sapletta-com/proserve
+Project-URL: Source, https://github.com/tom-sapletta-com/proserve
+Project-URL: Tracker, https://github.com/tom-sapletta-com/proserve/issues
+Project-URL: Servos, https://pypi.org/project/servos/
+Keywords: microservices,manifest,service-framework,docker,kubernetes,isolation,micropython,arduino,rp2040,deployment,migration,monitoring,asyncio,aiohttp
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Topic :: System :: Systems Administration
+Classifier: Framework :: AsyncIO
+Classifier: Framework :: aiohttp
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: aiohttp-cors>=0.7.0
+Requires-Dist: structlog>=25.0.0
+Requires-Dist: rich>=14.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: astor>=0.8.1
+Requires-Dist: setuptools>=60.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Requires-Dist: wmlog>=1.0.0
+Provides-Extra: docker
+Requires-Dist: docker>=6.0.0; extra == "docker"
+Provides-Extra: kubernetes
+Requires-Dist: kubernetes>=25.0.0; extra == "kubernetes"
+Provides-Extra: monitoring
+Requires-Dist: prometheus-client>=0.15.0; extra == "monitoring"
+Requires-Dist: grafana-api>=1.0.3; extra == "monitoring"
+Provides-Extra: micropython
+Requires-Dist: adafruit-circuitpython-bundle; extra == "micropython"
+Requires-Dist: esptool>=4.4; extra == "micropython"
+Provides-Extra: arduino
+Requires-Dist: platformio>=6.1.0; extra == "arduino"
+Requires-Dist: arduino-cli>=0.30.0; extra == "arduino"
+Provides-Extra: rp2040
+Requires-Dist: picotool>=1.1.0; extra == "rp2040"
+Requires-Dist: rp2040-tools>=0.1.0; extra == "rp2040"
+Provides-Extra: testing
+Requires-Dist: pytest>=7.0.0; extra == "testing"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "testing"
+Requires-Dist: pytest-cov>=4.0.0; extra == "testing"
+Requires-Dist: requests>=2.28.0; extra == "testing"
+Provides-Extra: development
+Requires-Dist: black>=22.0.0; extra == "development"
+Requires-Dist: flake8>=5.0.0; extra == "development"
+Requires-Dist: mypy>=0.991; extra == "development"
+Provides-Extra: all
+Requires-Dist: docker>=6.0.0; extra == "all"
+Requires-Dist: kubernetes>=25.0.0; extra == "all"
+Requires-Dist: prometheus-client>=0.15.0; extra == "all"
+Requires-Dist: adafruit-circuitpython-bundle; extra == "all"
+Requires-Dist: esptool>=4.4; extra == "all"
+Requires-Dist: platformio>=6.1.0; extra == "all"
+Requires-Dist: pytest>=7.0.0; extra == "all"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "all"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🚀 ProServe - Modern Microservices Framework
+
+**Build production-ready microservices with minimal code - Python decorators or YAML manifests!**
+
+🎯 **98% Less Boilerplate • 5-Minute Start • Production Ready**
+
+ProServe is a revolutionary microservices framework that combines the simplicity of Flask with the power of modern architecture. Create APIs, static sites, real-time chat, and more with just a few lines of code.
+
+> 🚀 **Fully Modular Architecture**: All components are now modular, testable, and follow SOLID principles  
+> 🧪 **Comprehensive E2E Testing**: 8+ test suites covering real-world scenarios, security, performance, and integrations
+
+## ⚡ Quick Start (3 Lines of Code!)
+
+```python
+# app.py
+from proserve import Service
+
+app = Service("my-api")
+
+@app.endpoint("/", method="GET")
+async def hello(request):
+    return {"message": "Hello World! 🚀"}
+
+if __name__ == "__main__":
+    app.run(port=8080)
+```
+
+```bash
+python app.py
+# Open: http://localhost:8080
+```
+
+**That's it!** You have a production-ready API running.
+
+> 🎓 **New to microservices?** Check out our [Junior Quick Start Guide](./docs/JUNIOR_QUICK_START.md) - "ProServe in 5 minutes"
+
+
+## 🏗️ Manifest-Driven Development
+
+**Note:** Manifests are **not** outdated. They are a core feature of ProServe, providing a declarative way to define microservices using YAML. The newer decorator-based approach complements manifests, offering flexibility for developers who prefer coding over configuration. Both approaches are fully supported and production-ready.
+
+With tools like [SELLM](https://github.com/tom-sapletta-com/sellm), you can even generate manifests using AI from simple text descriptions, making it incredibly easy to create complex services without manual configuration.
+
+### Example 1: Basic Manifest
+
+```yaml
+# manifest.yml
+name: my-service
+port: 8080
+
+endpoints:
+  - path: /api/status
+    method: GET
+    response:
+      status: "ok"
+      version: "1.0.0"
+  
+  - path: /api/hello/{name}
+    method: GET
+    response:
+      message: "Hello {{name}}!"
+
+static:
+  enabled: true
+  path: ./public
+```
+
+```bash
+proserve run
+# Automatically creates API from manifest.yml
+# Open: http://localhost:8080/api/status
+# Try: http://localhost:8080/api/hello/World
+```
+
+### Example 2: Advanced Manifest with WebSocket
+
+```yaml
+# advanced_manifest.yml
+name: chat-service
+port: 8081
+
+endpoints:
+  - path: /api/chat/info
+    method: GET
+    response:
+      status: "Chat Service Running"
+      users: 0
+
+websockets:
+  - path: /ws/chat
+    handler: chat_handler
+    on_connect:
+      message: "User connected"
+    on_disconnect:
+      message: "User disconnected"
+
+static:
+  enabled: true
+  path: ./chat_ui
+```
+
+```bash
+proserve run advanced_manifest.yml
+# Starts a chat service with WebSocket support
+# Open: http://localhost:8081/api/chat/info
+# Connect WebSocket: ws://localhost:8081/ws/chat
+```
+
+## 📖 Documentation
+
+All detailed documentation is available in the [docs](./docs/) folder:
+
+- [Architecture Guide](./docs/ARCHITECTURE.md) - Understand the modular design of ProServe
+- [API Documentation](./docs/API_DOCUMENTATION.md) - Complete API reference
+- [Quick Start Guide](./docs/QUICK_START.md) - Get started in minutes
+- [Junior Quick Start](./docs/JUNIOR_QUICK_START.md) - Beginner-friendly guide
+- [Deployment Checklist](./docs/DEPLOYMENT_CHECKLIST.md) - Prepare for production
+- [E2E Testing Guide](./docs/E2E_TESTING.md) - Comprehensive testing suite
+- [Ecosystem Overview](./docs/ECOSYSTEM.md) - Integration with other tools
+- [Modular Architecture](./docs/MODULAR_ARCHITECTURE.md) - Design principles
+- [Future Roadmap](./docs/FUTURE_ROADMAP.md) - Upcoming features
+- [Release Notes v2.0.0](./docs/RELEASE_NOTES_v2.0.0.md) - Latest updates
+- [YAML Driven Showcase](./docs/YAML_DRIVEN_SHOWCASE.md) - Manifest examples
+
+### Python Packages
+
+Explore the ecosystem of Python packages related to ProServe:
+
+- [ProServe](https://pypi.org/project/proserve/) - Core microservices framework
+- [Servos](https://pypi.org/project/servos/) - Environment isolation and orchestration
+- [wmlog](https://pypi.org/project/wmlog/) - Centralized structured logging
+- [SELLM](https://pypi.org/project/sellm/) - AI-powered manifest generator
+- [EDPMT](https://pypi.org/project/edpmt/) - Hardware control framework for IoT
+
+## 💡 Why ProServe?
+
+- **Zero-Config APIs**: Build REST endpoints in 3 lines of code
+- **Manifest-Driven**: Define services in YAML, like docker-compose
+- **Multi-Environment**: Run anywhere - local, Docker, Kubernetes, embedded
+- **Full-Stack**: HTTP, WebSocket, background tasks, static hosting
+- **Production-Ready**: Logging, monitoring, security built-in
+
+Start building microservices today with ProServe!

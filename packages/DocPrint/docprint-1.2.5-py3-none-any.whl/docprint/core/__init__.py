@@ -1,0 +1,1 @@
+from .docprint_func import docPrint, docFlush, docPrintFile, enableGitCommits

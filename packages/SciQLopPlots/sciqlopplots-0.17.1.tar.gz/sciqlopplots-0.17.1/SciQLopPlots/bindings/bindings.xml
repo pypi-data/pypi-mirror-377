@@ -1,0 +1,638 @@
+<?xml version="1.0"?>
+<typesystem package="SciQLopPlotsBindings">
+    <system-include file-name="memory"/>
+    <rejection class="std" function-name="^[a-z_]+$"/>
+    <system-include file-name="memory"/>
+    <system-include file-name="shared_ptr.h"/>
+    <load-typesystem name="typesystem_core.xml" generate="no" />
+    <load-typesystem name="typesystem_gui.xml" generate="no" />
+    <load-typesystem name="typesystem_widgets.xml" generate="no" />
+    <primitive-type name="std::string"/>
+    <primitive-type name="std::size_t"/>
+    <primitive-type name="long"/>
+    <rejection class="SciQLop*" function-name="plot" />
+    <enum-type name="GraphType"/>
+    <enum-type name="PlotType"/>
+    <enum-type name="AxisType"/>
+    <enum-type name="GraphMarkerShape"/>
+    <enum-type name="GraphLineStyle"/>
+    <enum-type name="ColorGradient"/>
+    <enum-type name="ProductsModelNodeType"/>
+    <enum-type name="ParameterType"/>
+    <enum-type name="Coordinates"/>
+    <enum-type name="LineTermination"/>
+
+    <smart-pointer-type name="QPointer" type="handle" getter="data" null-check-method="isNull" instantiations="SciQLopPlotInterface=SciQLopPlotInterfacePtr"/>
+
+    <inject-code class="native" position="beginning" file="snippets.cpp" snippet="CheckIsBuffer"/>
+    <primitive-type name="PyBuffer" target-lang-api-name="PyObject" allow-thread="yes">
+        <conversion-rule>
+            <target-to-native>
+                <add-conversion type="Py_None">
+                    SBK_UNUSED(%in)
+                    %out = %OUTTYPE();
+                </add-conversion>
+                <add-conversion type="PyObject" check="PyObject_CheckBuffer(%in)">
+                    %out = %OUTTYPE(%in);
+                </add-conversion>
+            </target-to-native>
+            <native-to-target>
+                auto obj = %in.py_object();
+                if(obj == nullptr)
+                {
+                    Py_RETURN_NONE;
+                }
+                Py_INCREF(obj);
+                return obj;
+            </native-to-target>
+        </conversion-rule>
+    </primitive-type>
+    <primitive-type name="GetDataPyCallable" target-lang-api-name="PyObject"  allow-thread="yes">
+        <conversion-rule>
+            <target-to-native>
+                <add-conversion type="Py_None">
+                    SBK_UNUSED(%in)
+                    %out = %OUTTYPE();
+                </add-conversion>
+                <add-conversion type="PyObject" check="PyCallable_Check(%in)">
+                    %out = %OUTTYPE(%in);
+                </add-conversion>
+            </target-to-native>
+            <native-to-target>
+                auto obj = %in.py_object();
+                if(obj == nullptr)
+                {
+                    Py_RETURN_NONE;
+                }
+                Py_INCREF(obj);
+                return obj;
+            </native-to-target>
+        </conversion-rule>
+    </primitive-type>
+
+    <value-type name="SciQLopPlotRange">
+        <extra-includes>
+          <include file-name="datetime.h" location="global"/>
+        </extra-includes>
+        <add-function signature="datetime_start" >
+            <inject-code class="target" position="end">
+                if (!PyDateTimeAPI)
+                    PyDateTime_IMPORT;
+                PyObject *floatObj = PyFloat_FromDouble(%CPPSELF->start());
+                PyObject *timeTuple = Py_BuildValue("(O)", floatObj);
+                return PyDateTime_FromTimestamp(timeTuple);
+            </inject-code>
+        </add-function>
+        <add-function signature="datetime_stop" >
+            <inject-code class="target" position="end">
+                if (!PyDateTimeAPI)
+                    PyDateTime_IMPORT;
+                PyObject *floatObj = PyFloat_FromDouble(%CPPSELF->stop());
+                PyObject *timeTuple = Py_BuildValue("(O)", floatObj);
+                return PyDateTime_FromTimestamp(timeTuple);
+            </inject-code>
+        </add-function>
+        <add-function signature="__len__" >
+            <inject-code class="target" position="end">
+                return PyLong_AsSsize_t(PyLong_FromLong(2));
+            </inject-code>
+        </add-function>
+        <add-function signature="__getitem__" >
+            <inject-code class="target" position="beginning">
+                return PyFloat_FromDouble((*%CPPSELF)[_i]);
+            </inject-code>
+        </add-function>
+        <add-function signature="__setitem__" >
+            <inject-code class="target" position="beginning">
+                if(PyFloat_Check(_value))
+                {
+                    (*%CPPSELF)[_i] = PyFloat_AS_DOUBLE(_value);
+                    return 0;
+                }
+                else
+                {
+                    PyErr_SetString(PyExc_TypeError, "The value must be a float");
+                    return -1;
+                }
+            </inject-code>
+        </add-function>
+        <add-function signature="__reduce__" return-type="str">
+            <inject-code class="target" position="beginning">
+                <insert-template name="reduce_code">
+                  <replace from="%REDUCE_FORMAT" to="dd"/>
+                  <replace from="%REDUCE_ARGS" to="%CPPSELF.start(), %CPPSELF.stop()"/>
+                </insert-template>
+            </inject-code>
+        </add-function>
+    </value-type>
+
+    <object-type name="SciQLopGraphComponentInterface" parent-management="yes"/>
+    <object-type name="SQPQCPAbstractPlottableWrapper" parent-management="yes"/>
+    <object-type name="SciQLopPlottableInterface" parent-management="yes"/>
+    <object-type name="SciQLopGraphInterface" parent-management="yes" allow-thread="yes"/>
+    <object-type name="SciQLopColorMapInterface" parent-management="yes" allow-thread="yes"/>
+    <object-type name="SciQLopPlotInterface" parent-management="yes">
+        <modify-function signature="line(const PyBuffer&amp;,const PyBuffer&amp;,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QVariantMap)">
+            <modify-argument index="3">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="scatter(const PyBuffer&amp;,const PyBuffer&amp;,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QVariantMap)">
+            <modify-argument index="3">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="parametric_curve(const PyBuffer&amp;,const PyBuffer&amp;,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QVariantMap)">
+            <modify-argument index="3">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="parametric_curve(const QList&lt;PyBuffer&gt;&amp;,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="colormap(const PyBuffer&amp;,const PyBuffer&amp;,const PyBuffer&amp;,QString,bool,bool,QVariantMap)">
+            <modify-argument index="4">
+                <rename to="name"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="y_log_scale"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="z_log_scale"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="line(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QObject*,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="scatter(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QObject*,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="parametric_curve(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,QObject*,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="colormap(GetDataPyCallable,QString,bool,bool,QObject*,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="name"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="y_log_scale"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="z_log_scale"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="SciQLopPlotAxisInterface" parent-management="yes"/>
+    <object-type name="SciQLopPlotAxis" parent-management="yes"/>
+
+    <object-type name="SciQLopPlot" parent-management="yes">
+    </object-type>
+
+    <object-type name="SciQLopTimeSeriesPlot" parent-management="yes"/>
+    <object-type name="SciQLopNDProjectionPlot" parent-management="yes"/>
+
+    <object-type name="SciQLopLineGraph" parent-management="yes">
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="SciQLopCurve" parent-management="yes">
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="SciQLopColorMap" parent-management="yes">
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+
+    <object-type name="SciQLopFunctionGraph" parent-management="no"/>
+
+    <object-type name="SciQLopLineGraphFunction" parent-management="yes">
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="SciQLopCurveFunction" parent-management="yes">
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="SciQLopColorMapFunction" parent-management="yes">
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+
+    <object-type name="SciQLopItemInterface" parent-management="yes"/>
+    <object-type name="SciQLopMovableItemInterface" parent-management="yes"/>
+    <object-type name="SciQLopLineItemInterface" parent-management="yes"/>
+    <object-type name="SciQLopBoundingRectItemInterface" parent-management="yes"/>
+    <object-type name="SciQLopPolygonItemInterface" parent-management="yes"/>
+    <object-type name="SciQLopRangeItemInterface" parent-management="yes"/>
+
+    <object-type name="SciQLopVerticalSpan" parent-management="yes"/>
+    <object-type name="SciQLopPixmapItem" parent-management="yes"/>
+    <object-type name="SciQLopStraightLine" parent-management="yes"/>
+    <object-type name="SciQLopVerticalLine" parent-management="yes"/>
+    <object-type name="SciQLopHorizontalLine" parent-management="yes"/>
+    <object-type name="SciQLopEllipseItem" parent-management="yes"/>
+    <object-type name="SciQLopTextItem" parent-management="yes"/>
+    <object-type name="SciQLopCurvedLineItem" parent-management="yes"/>
+
+    <object-type name="SciQLopPlotCollectionInterface" parent-management="no">
+        <modify-function signature="line(const PyBuffer&amp;,const PyBuffer&amp;,QStringList,QList&lt;QColor&gt;,PlotType,int,QVariantMap)">
+            <modify-argument index="3">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="scatter(const PyBuffer&amp;,const PyBuffer&amp;,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,PlotType,int,QVariantMap)">
+            <modify-argument index="3">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="8">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="parametric_curve(const PyBuffer&amp;,const PyBuffer&amp;,QStringList,QList&lt;QColor&gt;,PlotType,int,QVariantMap)">
+            <modify-argument index="3">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="projection(const QList&lt;PyBuffer&gt;&amp;,QStringList,QList&lt;QColor&gt;,int,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="colormap(const PyBuffer&amp;,const PyBuffer&amp;,const PyBuffer&amp;,QString,bool,bool,PlotType,int,QVariantMap)">
+            <modify-argument index="4">
+                <rename to="name"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="y_log_scale"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="z_log_scale"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="8">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="9">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="line(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,PlotType,QObject*,int,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="scatter(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,GraphMarkerShape,PlotType,QObject*,int,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="marker"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="8">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="parametric_curve(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,PlotType,QObject*,int,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="colormap(GetDataPyCallable,QString,bool,bool,PlotType,QObject*,int,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="name"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="y_log_scale"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="z_log_scale"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="plot_type"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="7">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="8">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="projection(GetDataPyCallable,QStringList,QList&lt;QColor&gt;,QObject*,int,QVariantMap)">
+            <modify-argument index="2">
+                <rename to="labels"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="colors"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="sync_with"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="index"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="metaData"/>
+            </modify-argument>
+        </modify-function>
+    </object-type>
+
+    <object-type name="SciQLopPlotPanelInterface" parent-management="yes"/>
+
+    <object-type name="SciQLopMultiPlotPanel" parent-management="yes">
+        <modify-function signature="SciQLopMultiPlotPanel(QWidget*,bool,bool,Qt::Orientation)">
+            <modify-argument index="2">
+                <rename to="synchronize_x"/>
+            </modify-argument>
+            <modify-argument index="3">
+                <rename to="synchronize_time"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="orientation"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="add_panel(SciQLopPlotPanelInterface*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+        <modify-function signature="insert_panel(int, SciQLopPlotPanelInterface*)">
+          <modify-argument index="2">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+        <modify-function signature="add_plot(SciQLopPlotInterface*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+        <modify-function signature="insert_plot(int, SciQLopPlotInterface*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+        <modify-function signature="addWidget(QWidget*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+        <modify-function signature="register_behavior(SciQLopPlotCollectionBehavior*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+        <property name="name" type="QString" get="objectName" set="setObjectName" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="MultiPlotsVerticalSpan" parent-management="yes">
+        <modify-function signature="MultiPlotsVerticalSpan(SciQLopMultiPlotPanel*,SciQLopPlotRange,QColor,bool,bool,QString)">
+            <modify-argument index="3">
+                <rename to="color"/>
+            </modify-argument>
+            <modify-argument index="4">
+                <rename to="read_only"/>
+            </modify-argument>
+            <modify-argument index="5">
+                <rename to="visible"/>
+            </modify-argument>
+            <modify-argument index="6">
+                <rename to="tool_tip"/>
+            </modify-argument>
+        </modify-function>
+        <modify-function signature="range()" rename="_range"/>
+        <property name="range" type="SciQLopPlotRange" get="range" set="set_range" generate-getsetdef="yes"/>
+        <property name="color" type="QColor" get="get_color" set="set_color" generate-getsetdef="yes"/>
+        <property name="visible" type="bool" get="is_visible" set="set_visible" generate-getsetdef="yes"/>
+        <property name="selected" type="bool" get="is_selected" set="set_selected" generate-getsetdef="yes"/>
+        <property name="tooltip" type="QString" get="get_tool_tip" set="set_tool_tip" generate-getsetdef="yes"/>
+        <property name="read_only" type="bool" get="is_read_only" set="set_read_only" generate-getsetdef="yes"/>
+    </object-type>
+    <object-type name="SciQLopMultiPlotObject" parent-management="yes">
+    </object-type>
+    <object-type name="SciQLopPlotCollectionBehavior" parent-management="yes">
+    </object-type>
+    <object-type name="XAxisSynchronizer" parent-management="yes">
+    </object-type>
+    <object-type name="VPlotsAlign" parent-management="yes">
+    </object-type>
+    <object-type name="DataProviderInterface" parent-management="yes">
+    </object-type>
+    <object-type name="DataProviderWorker" parent-management="yes">
+        <modify-function signature="set_data_provider(DataProviderInterface*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+    </object-type>
+    <object-type name="PlotDragNDropCallback" parent-management="yes"/>
+    <object-type name="SciQLopPlotLegend" parent-management="yes"/>
+    <object-type name="SciQLopPlotLegendInterface" parent-management="yes"/>
+
+    <object-type name="InspectorBase" parent-management="yes"/>
+    <object-type name="Inspectors" parent-management="yes"/>
+    <object-type name="PlotsModelNode" parent-management="yes"/>
+    <object-type name="PlotsModel" parent-management="yes"/>
+    <object-type name="PlotsTreeView" parent-management="yes"/>
+    <object-type name="InspectorView" parent-management="yes"/>
+    <object-type name="PropertyDelegateBase" parent-management="yes"/>
+    <object-type name="PropertiesPanel" parent-management="yes"/>
+
+    <object-type name="ProductsView" parent-management="yes"/>
+    <object-type name="ProductsModel" parent-management="yes">
+        <modify-function signature="add_node(QStringList, ProductsModelNode*)">
+          <modify-argument index="2">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+    </object-type>
+    <object-type name="ProductsModelNode" parent-management="yes">
+        <modify-function signature="add_child(ProductsModelNode*)">
+          <modify-argument index="1">
+            <parent index="this" action="add"/>
+          </modify-argument>
+        </modify-function>
+    </object-type>
+
+    <object-type name="Icons" parent-management="yes"/>
+</typesystem>
+
+
+

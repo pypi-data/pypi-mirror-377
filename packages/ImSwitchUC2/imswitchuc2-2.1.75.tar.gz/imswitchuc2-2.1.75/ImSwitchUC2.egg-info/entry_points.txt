@@ -1,0 +1,5 @@
+[console_scripts]
+imswitch = imswitch.__main__:main
+
+[jupyter_client.kernel_provisioners]
+imswitch-provisioner = imswitch.imcontrol.model.jupyter_connection:ExistingProvisioner

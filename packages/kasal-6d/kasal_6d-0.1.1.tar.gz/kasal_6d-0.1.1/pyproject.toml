@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kasal-6d"
+version = "0.1.1"
+description = "kasal is a project designed for determining the symmetry axis orientation and the rotation center of rotationally symmetric objects."
+authors = [
+    { name = "Yulin Wang", email = "yulinwang@seu.edu.cn" },
+    { name = "Mengting Hu", email = "220240361@seu.edu.cn" }
+]
+maintainers = [
+    { name = "Yulin Wang", email = "yulinwang@seu.edu.cn" },
+    { name = "Mengting Hu", email = "220240361@seu.edu.cn" }
+]
+license = "Apache-2.0"
+readme = "README.md"
+dependencies = [
+    "imageio",
+    "pypng",
+    "pytz",
+    "open3d",
+    "tqdm",
+    "chardet",
+    "trimesh",
+    "pywin32; platform_system == 'Windows'",
+    "fpsample==0.3.1",
+    "polyscope==2.3.0",
+    "numpy==1.25.2",
+    "opencv-python==4.5.5.64",
+    "opencv-contrib-python==4.5.5.64",
+    "pymeshlab==2023.12.post1",
+    "scipy==1.10.1"
+]
+
+[project.urls]  
+Homepage = "https://github.com/WangYuLin-SEU/KASAL"
+
+[tool.setuptools]
+packages = [
+    "kasal",
+    "kasal.app",
+    "kasal.bop_toolkit_lib",
+    "kasal.config",
+    "kasal.datasets",
+    "kasal.geometry",
+    "kasal.keyaxis",
+    "kasal.symmetry_lab",
+    "kasal.utils"
+]
+include-package-data = true  
+
+[tool.setuptools.package-data]
+"kasal.datasets" = ["*.ply", "*.png", "*.ico"]
+"kasal.datasets.shape_meshes" = ["*.ply", "*.stl", "*.step", "*.json"]
+"kasal.datasets.texture_meshes" = ["*.ply", "*.obj", "*.png", "*.mtl"]

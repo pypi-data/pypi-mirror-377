@@ -1,0 +1,7 @@
+include README.md
+recursive-include kasal/datasets *.ply *.ico *.png
+recursive-include kasal/datasets/shape_meshes *
+recursive-include kasal/datasets/texture_meshes *
+
+graft kasal/datasets
+include MANIFEST.in

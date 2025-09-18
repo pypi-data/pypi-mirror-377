@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autosnake"                   # اسم الحزمة (يجب أن يكون فريدًا على PyPI)
+version = "0.1.3"
+description = "Automatic Snake Game using Turtle and BFS"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+  { name="Your_Name", email="Your_Email@example.com" }
+]
+license = { text="MIT" }
+dependencies = []                     # لا يوجد مكتبات خارجية (كلها built-in)
+
+[project.scripts]
+autosnake = "autosnake.game:main"     # يجعل اللعبة تشتغل من الطرفية بكتابة autosnake

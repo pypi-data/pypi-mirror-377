@@ -1,0 +1,67 @@
+[build-system]
+requires = [
+    "setuptools",
+]
+
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    {name = "Rocky Bernstein",	email = "rocky@gnu.org"},
+]
+
+name = "pyficache"
+description = "Cache and colorize lines and file information which are generally Python program or Python Bytecode"
+dependencies = [
+    "xdis >= 6.0.0, < 6.2.0",
+    "term-background >= 1.0.2",
+]
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+keywords = ["Python debugger", "Python bytecode"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.0",
+    "Programming Language :: Python :: 3.1",
+    "Programming Language :: Python :: 3.2",
+    "Programming Language :: Python :: 3.3",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "flake8",
+    "pre-commit",
+    "pytest",
+]
+
+[project.urls]
+Homepage = "https://pypi.org/project/pyficache/"
+Downloads = "https://github.com/rocky/python-filecache/releases"
+
+[tool.setuptools.dynamic]
+version = {attr = "pyficache.version.__version__"}
+
+[tool.pyright]
+include = ["pyficache"]
+# exclude = []
+ignore = ["dist", "docs", "tmp", ".cache"]
+# defineConstant = { DEBUG = true }
+# stubPath = "src/stubs"

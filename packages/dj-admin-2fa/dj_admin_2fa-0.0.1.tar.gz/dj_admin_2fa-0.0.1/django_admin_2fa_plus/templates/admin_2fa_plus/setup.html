@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <h1>Set up Two-Factor Authentication</h1>
+
+    <div>
+        <p>Scan the QR code below with your authenticator app to set up two-factor authentication.</p>
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code"/>
+
+        <p>Your secret key (save this in a safe place): <code>{{ secret }}</code></p>
+
+    </div>
+
+    <a href="{% url 'admin-2fa-verify-setup' %}" class="button default">Done</a>
+{% endblock %}

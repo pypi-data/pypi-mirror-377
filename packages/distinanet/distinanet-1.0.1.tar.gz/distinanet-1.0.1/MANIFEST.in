@@ -1,0 +1,14 @@
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+include *.sh
+recursive-include distinanet *.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.pth
+recursive-exclude * *.png
+recursive-exclude * *.jpg
+recursive-exclude * *.mp4
+recursive-exclude runs *
+recursive-exclude kitti_dataset *

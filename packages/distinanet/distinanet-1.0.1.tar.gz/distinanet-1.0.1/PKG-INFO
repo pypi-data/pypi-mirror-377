@@ -1,0 +1,608 @@
+Metadata-Version: 2.4
+Name: distinanet
+Version: 1.0.1
+Summary: DistinaNet: RetinaNet with Distance Estimation for simultaneous object detection and distance estimation
+Project-URL: Homepage, https://github.com/jonher16/distinanet
+Project-URL: Repository, https://github.com/jonher16/distinanet
+Project-URL: Documentation, https://distinanet.readthedocs.io
+Project-URL: Bug Reports, https://github.com/jonher16/distinanet/issues
+Author-email: Jon Hernandez Aranda <jonher16@kaist.ac.kr>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Keywords: computer vision,deep learning,distance estimation,object detection,pytorch,retinanet
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: numpy<2.0.0,>=1.20.0
+Requires-Dist: opencv-python<4.10.0,>=4.5.0
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: pillow>=8.0.0
+Requires-Dist: scikit-image>=0.19.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: six>=1.16.0
+Requires-Dist: tensorboard>=2.8.0
+Requires-Dist: torch>=1.13.0
+Requires-Dist: torchvision>=0.14.0
+Requires-Dist: tqdm>=4.60.0
+Description-Content-Type: text/markdown
+
+# DistinaNet: Combining Object Detection with Distance Estimation
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.12+-red.svg)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/jonher16/distinanet/blob/main/LICENSE)
+
+![Sample KITTI dataset image](https://raw.githubusercontent.com/jonher16/distinanet/main/sample_img.png)
+
+DistinaNet extends RetinaNet with an additional **distance estimation head** that predicts the distance to detected objects. This enables simultaneous object detection and distance estimation in a single forward pass.
+
+## 🚀 Key Features
+
+- **Multi-task learning**: Object detection + distance estimation
+- **Multiple distance head architectures**: Base, Deep, Bottleneck, CBAM, Dynamic Branching
+- **Flexible loss functions**: Huber, L1, L2, Smooth L1, LogCosh
+- **Research-oriented**: Easy to modify and extend
+- **KITTI dataset support**: Built-in tools for KITTI dataset preparation
+- **Unified CLI interface**: Single entry point for all operations
+
+## 📋 Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)  
+- [Project Structure](#project-structure)
+- [Dataset Preparation](#dataset-preparation)
+- [Training](#training)
+- [Evaluation](#evaluation)
+- [Inference](#inference)
+- [Video Processing](#video-processing)
+- [Model Architecture](#model-architecture)
+- [Development](#development)
+- [Citation](#citation)
+
+## 💻 Installation
+
+### 🔥 Quick Start (Recommended)
+
+**Step 1: Install PyTorch with CUDA support**
+```bash
+# Visit https://pytorch.org/get-started/locally/ and select your configuration
+# Example for CUDA 11.7:
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+
+# Example for CUDA 12.1:
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# For CPU-only:
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
+
+**Step 2: Install DistinaNet**
+```bash
+pip install distinanet
+```
+
+### 📦 Installation Options
+
+#### Option 1: PyPI Installation (Stable)
+```bash
+# Install PyTorch first (see Step 1 above)
+pip install distinanet
+
+#### Option 2: Development Installation
+```bash
+# Clone and install in development mode
+git clone https://github.com/jonher16/distinanet.git
+cd distinanet
+
+# Install PyTorch first (see Step 1 above)
+# Then install DistinaNet
+pip install -e .
+```
+
+#### Option 3: Conda Environment (Recommended for Research)
+```bash
+# Create environment with CUDA support
+conda create -n distinanet python=3.9
+conda activate distinanet
+
+# Install PyTorch with CUDA (example for CUDA 11.7)
+conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+
+# Install DistinaNet
+pip install distinanet
+```
+
+### ✅ Tested With
+
+**Environment**
+- Python **3.9.23**
+- CUDA **11.7**
+- GPU: **NVIDIA GeForce RTX 3050 OEM (8GB VRAM)**
+- Driver Version: **575.64.03**
+
+**Core Dependencies**
+- `torch==1.13.1+cu117`
+- `torchvision==0.14.1+cu117`
+- `torchaudio==0.13.1+cu117`
+- `numpy==1.26.4`
+- `opencv-python==4.9.0.80`
+
+**Additional Dependencies**
+- `scikit-image==0.24.0`
+- `matplotlib==3.9.4`
+- `pandas==2.3.2`
+- `tensorboard==2.20.0`
+- `tqdm==4.67.1`
+- `six==1.17.0`
+- `openpyxl==3.1.5`
+
+**Package Managers**
+- `conda 24.9.2`
+- `pip 25.2`
+
+> 💡 **Note:** The project is compatible with newer versions, but the above were the exact versions used for testing and development.
+
+### Verify Installation
+
+```bash
+# Check if DistinaNet is installed correctly
+distinanet --help
+
+# Check PyTorch and CUDA
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}')"
+
+# Test DistinaNet import
+python -c "import distinanet; print('✅ DistinaNet installed successfully!')"
+```
+
+### Troubleshooting
+
+**🚨 CUDA Installation Issues:**
+
+If you encounter CUDA-related problems:
+
+1. **Install PyTorch with CUDA first:**
+   ```bash
+   # Check your CUDA version
+   nvidia-smi
+   
+   # Install matching PyTorch version from https://pytorch.org/
+   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+   
+   # Then install DistinaNet
+   pip install distinanet
+   ```
+
+2. **Verify CUDA compatibility:**
+   ```bash
+   python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'CUDA version: {torch.version.cuda}')"
+   ```
+
+**🔧 Dependency Conflicts:**
+
+For development setups with specific requirements:
+```bash
+# Use flexible requirements (recommended for development)
+pip install -r requirements.txt
+pip install -e .
+```
+
+**📦 NumPy Compatibility Issues:**
+
+If you see "Numpy is not available" errors:
+```bash
+# Use NumPy 1.x (stable with PyTorch)
+pip install "numpy>=1.20.0,<2.0.0"
+pip install "opencv-python>=4.5.0,<4.10.0"
+```
+
+**🐍 Environment Isolation:**
+
+For clean installations:
+```bash
+# Create isolated environment
+conda create -n distinanet python=3.9
+conda activate distinanet
+
+# Install PyTorch first, then DistinaNet
+conda install pytorch torchvision pytorch-cuda=11.7 -c pytorch -c nvidia
+pip install distinanet
+```
+
+**💡 Pro Tips:**
+- Always install PyTorch **before** DistinaNet for proper CUDA detection
+- Use `conda` for CUDA environments when possible  
+- Check [PyTorch compatibility matrix](https://pytorch.org/get-started/locally/) for your system
+- For headless servers, consider `opencv-python-headless` instead of `opencv-python`
+
+## 🚀 Quick Start
+
+DistinaNet provides a unified command-line interface for all operations through the `distinanet` command:
+
+```bash
+# Train a model
+distinanet train --csv_train data/train.csv --csv_classes data/classes.csv --csv_val data/val.csv
+
+# Evaluate a model
+distinanet evaluate --model_path checkpoints/model.pt --csv_annotations_path data/val.csv --csv_classes data/classes.csv
+
+# Run inference on an image
+distinanet inference --model checkpoints/model.pt --csv_classes data/classes.csv --csv_val data/val.csv
+
+# Process a video
+distinanet video --model_path checkpoints/model.pt --video_path input.mp4 --output_path output/
+```
+
+### Help and Usage
+```bash
+# General help
+distinanet --help
+
+# Mode-specific help
+distinanet train --help
+distinanet evaluate --help
+distinanet inference --help
+distinanet video --help
+```
+
+### Alternative: Create Your Own Shell Scripts
+
+For convenience, you can create shell scripts with your preferred parameters. Create these files and make them executable with `chmod +x scriptname.sh`:
+
+**Create `train.sh`:**
+```bash
+#!/bin/bash
+export CUDA_VISIBLE_DEVICES=0
+distinanet train \
+    --optimizer adam \
+    --epochs 10 \
+    --batch_size 16 \
+    --distance_loss_type huber \
+    --distance_head_type base \
+    --csv_train kitti_dataset/annotations/train_objects.csv \
+    --csv_classes kitti_dataset/classes.csv \
+    --csv_val kitti_dataset/annotations/validation_objects.csv \
+    --depth 18 \
+    --num_gpus 1
+```
+
+**Create `test.sh`:**
+```bash
+#!/bin/bash
+export CUDA_VISIBLE_DEVICES=0
+distinanet evaluate \
+    --csv_annotations_path kitti_dataset/annotations/test_objects.csv \
+    --model_path runs/2025-09-17_15-05-20/checkpoints/epoch_0.pt \
+    --images_path kitti_dataset/testing/image_2 \
+    --class_list_path kitti_dataset/classes.csv \
+    --save_path runs/2025-09-17_15-05-20/validation_results
+```
+
+**Create `inference.sh`:**
+```bash
+#!/bin/bash
+export CUDA_VISIBLE_DEVICES=0
+distinanet inference \
+    --csv_classes kitti_dataset/classes.csv \
+    --csv_val kitti_dataset/annotations/test_objects.csv \
+    --model runs/2025-09-17_15-05-20/checkpoints/epoch_0.pt
+```
+
+**Create `video.sh`:**
+```bash
+#!/bin/bash
+export CUDA_VISIBLE_DEVICES=0
+distinanet video \
+    --model_path runs/2025-09-17_15-05-20/checkpoints/epoch_0.pt \
+    --video_path kitti_dataset/test.mp4 \
+    --output_path runs/2025-09-17_15-05-20/video
+```
+
+**Make scripts executable:**
+```bash
+chmod +x train.sh test.sh inference.sh video.sh
+```
+
+## 📁 Project Structure
+
+```
+distinanet/
+├── pyproject.toml            # 📦 Modern Python packaging configuration
+├── requirements.txt          # 📋 Dependencies (for legacy installs)
+├── README.md                  
+├── LICENSE
+├── distinanet/               # 📦 Core package
+│   ├── __init__.py
+│   ├── cli.py                # 🚀 Main CLI entry point
+│   └── config.py             # ⚙️ Configuration management
+│
+│   ├── scripts/              # 📜 Executable scripts
+│   │   ├── __init__.py
+│   │   ├── train.py          # Training script
+│   │   ├── test.py           # Evaluation script
+│   │   ├── inference.py      # Inference script
+│   │   └── video.py          # Video processing script
+│   ├── model/                # 🧠 Model definitions
+│   │   ├── model.py          # Main DistinaNet model
+│   │   └── ...
+│   ├── data/                 # 📊 Data handling
+│   │   ├── datasets.py       # Dataset classes
+│   │   ├── dataloader.py     # Data loading utilities
+│   │   ├── transforms.py     # Data transformations
+│   │   └── ...
+│   ├── engine/               # 🔧 Training engine
+│   │   ├── trainer.py        # Training logic
+│   │   └── ...
+│   ├── utils/                # 🛠️ Utilities
+│   │   ├── logging_utils.py  # Logging configuration
+│   │   └── ...
+│   └── evaluation/           # 📈 Evaluation metrics
+├── kitti_dataset/            # 📊 KITTI dataset tools
+│   ├── download_kitti.sh
+│   ├── generate_annotations.sh
+│   └── ...
+└── runs/                     # 📁 Training outputs and logs
+```
+
+### Installation Commands
+
+After installing the package with `pip install .` or `pip install distinanet`, you can use:
+
+```bash
+# Direct CLI commands (recommended)
+distinanet train --help
+distinanet evaluate --help
+distinanet inference --help
+distinanet video --help
+
+# Create your own shell scripts (optional)
+# See "Alternative: Create Your Own Shell Scripts" section above
+```
+
+## 📊 Dataset Preparation
+
+### KITTI Dataset
+
+1. **Download KITTI dataset**
+```bash
+cd kitti_dataset
+chmod +x download_kitti.sh
+./download_kitti.sh
+```
+
+2. **Generate annotations**
+```bash
+chmod +x generate_annotations.sh
+./generate_annotations.sh
+```
+
+This creates `train_objects.csv`, `validation_objects.csv`, and `test_objects.csv` files (used for training the model).
+
+### Custom Dataset Format
+
+#### Annotations CSV Format
+```
+path/to/image.jpg,x1,y1,x2,y2,class_name,distance
+```
+
+**Example:**
+```
+/data/imgs/img_001.jpg,837,346,981,456,cow,12.5
+/data/imgs/img_002.jpg,215,312,279,391,cat,6.8
+/data/imgs/img_002.jpg,22,5,89,84,bird,23.1
+/data/imgs/img_003.jpg,,,,,,  # Negative example (no objects)
+```
+
+#### Classes CSV Format
+```
+class_name,id
+```
+
+**Example:**
+```
+cow,0
+cat,1
+bird,2
+```
+
+## 🏃‍♂️ Training
+
+### Using CLI
+
+```bash
+distinanet train \\
+    --csv_train kitti_dataset/annotations/train_objects.csv \\
+    --csv_classes kitti_dataset/classes.csv \\
+    --csv_val kitti_dataset/annotations/validation_objects.csv \\
+    --epochs 100 \\
+    --batch_size 16 \\
+    --depth 18 \\
+    --distance_head_type base \\
+    --distance_loss_type huber \\
+    --optimizer adam
+```
+
+### Using Your Shell Script
+
+```bash
+# Create and use your train.sh script (see "Create Your Own Shell Scripts" section)
+chmod +x train.sh
+./train.sh
+```
+
+### Training Parameters
+
+| Parameter | Options | Default | Description |
+|-----------|---------|---------|-------------|
+| `--depth` | 18, 34, 50, 101, 152 | 50 | ResNet backbone depth |
+| `--distance_head_type` | base, deep, bottleneck, cbam, dynamicbranching | base | Distance head architecture |
+| `--distance_loss_type` | huber, l1, l2, smoothl1, logcosh | huber | Distance loss function |
+| `--optimizer` | adam, sgd, rmsprop, adagrad, nadam | adam | Optimization algorithm |
+| `--batch_size` | int | 1 | Training batch size |
+| `--epochs` | int | 100 | Number of training epochs |
+| `--lr` | float | 1e-5 | Learning rate |
+
+## 📈 Evaluation
+
+### Using CLI
+
+```bash
+distinanet evaluate \\
+    --model_path runs/latest/checkpoints/model.pt \\
+    --csv_annotations_path kitti_dataset/annotations/test_objects.csv \\
+    --class_list_path kitti_dataset/classes.csv \\
+    --images_path kitti_dataset/testing/image_2
+```
+
+### Using Your Shell Script
+
+```bash
+# Create and use your test.sh script (see "Create Your Own Shell Scripts" section)
+chmod +x test.sh
+./test.sh
+```
+
+**Metrics:**
+- **mAP**: Mean Average Precision for object detection
+- **MAE**: Mean Absolute Error for distance estimation
+- **IoU**: Intersection over Union thresholds
+
+## 🔍 Inference
+
+### Single Image Inference
+
+```bash
+distinanet inference \\
+    --model runs/latest/checkpoints/model.pt \\
+    --csv_classes kitti_dataset/classes.csv \\
+    --csv_val kitti_dataset/annotations/test_objects.csv
+```
+
+### Using Your Shell Script
+
+```bash
+# Create and use your inference.sh script (see "Create Your Own Shell Scripts" section)
+chmod +x inference.sh
+./inference.sh
+```
+
+The inference script will:
+- Load the trained model
+- Process images from the validation set
+- Display results with bounding boxes and distance predictions
+- Save annotated images (optional)
+
+## 🎥 Video Processing
+
+### Process Video Files
+
+```bash
+distinanet video \\
+    --model_path runs/latest/checkpoints/model.pt \\
+    --video_path input_video.mp4 \\
+    --output_path output_directory/
+```
+
+### Using Your Shell Script
+
+```bash
+# Create and use your video.sh script (see "Create Your Own Shell Scripts" section)
+chmod +x video.sh
+./video.sh
+```
+
+Features:
+- Real-time object detection and distance estimation
+- Annotated output video generation
+- Support for various video formats
+- Configurable confidence thresholds
+
+## 🏗️ Model Architecture
+
+DistinaNet consists of:
+
+1. **ResNet Backbone**: Feature extraction (ResNet-18/34/50/101/152)
+2. **Feature Pyramid Network (FPN)**: Multi-scale feature fusion
+3. **Classification Head**: Object class prediction
+4. **Regression Head**: Bounding box regression  
+5. **Distance Head**: Distance estimation (5 different architectures available)
+
+### Distance Head Architectures
+
+- **Base**: Simple convolutional layers
+- **Deep**: Deeper convolutional network
+- **Bottleneck**: Efficient bottleneck design
+- **CBAM**: Convolutional Block Attention Module
+- **Dynamic Branching**: Adaptive feature selection
+
+## 🔧 Development
+
+### Adding New Distance Heads
+
+1. Implement your distance head in `distinanet/model/model.py`
+2. Add it to the model factory in `distinanet/model/model_factory.py`
+3. Update configuration options in `config.py`
+
+### Running Tests
+
+```bash
+# Test the installation
+python -c \"import distinanet; print('DistinaNet imported successfully')\"
+
+# Test training (1 epoch)
+python cli.py train --epochs 1 --csv_train small_dataset.csv --csv_classes classes.csv
+```
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes in the appropriate module
+4. Test your changes
+5. Commit (`git commit -m 'Add amazing feature'`)
+6. Push (`git push origin feature/amazing-feature`)
+7. Create a Pull Request
+
+## 📝 Citation
+
+If you use DistinaNet in your research, please cite:
+
+```bibtex
+@inproceedings{distinanet2025,
+  author    = {Jon Hernandez Aranda and Patrick Dominique Vibild and Daeyoung Kim},
+  title     = {Distance-Aware Single-Stage Detectors: Combining Detection with Object-Specific Distance Estimation},
+  booktitle = {Proceedings of the 2025 16th International Conference on Information and Communication Technology Convergence (ICTC)},
+  year      = {2025}
+}
+```
+
+## 🙏 Acknowledgements
+
+- Base implementation from [pytorch-retinanet](https://github.com/yhenon/pytorch-retinanet)
+- Significant code borrowed from [keras-retinanet](https://github.com/fizyr/keras-retinanet)
+- NMS module from [pytorch-faster-rcnn](https://github.com/ruotianluo/pytorch-faster-rcnn)
+- Original RetinaNet paper: [Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002)
+
+## 📄 License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [Issues](https://github.com/jonher16/distinanet/issues) page
+2. Create a new issue with detailed information
+3. Provide code examples and error messages when applicable

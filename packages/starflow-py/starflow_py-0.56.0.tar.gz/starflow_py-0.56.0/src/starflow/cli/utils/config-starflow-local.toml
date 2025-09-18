@@ -1,0 +1,26 @@
+# Configuration file for running starflow platform locally
+
+[path]
+STARFLOW_LOCAL_RUNNING_PATH = ""
+
+[kind]
+STARFLOW_KIND_CLUSTER_NAME = "starflow-cluster"
+
+[github]
+STARFLOW_GITHUB_WORKFLOWS_REPOSITORY = ""
+STARFLOW_DEFAULT_PIECES_REPOSITORY_TOKEN = ""
+STARFLOW_GITHUB_ACCESS_TOKEN_WORKFLOWS = ""
+STARFLOW_GITHUB_WORKFLOWS_SSH_PRIVATE_KEY = ""
+STARFLOW_GITHUB_WORKFLOWS_SSH_PUBLIC_KEY = ""
+
+[starflow_db]
+STARFLOW_CREATE_DATABASE = true # Changing to false will use the existing database defined by below variables
+STARFLOW_DB_HOST = "postgres"
+STARFLOW_DB_PORT = "postgres"
+STARFLOW_DB_USER = "postgres"
+STARFLOW_DB_PASSWORD = "postgres"
+STARFLOW_DB_NAME = "postgres"
+STARFLOW_CREATE_DEFAULT_USER = true
+
+[dev]
+STARFLOW_LOCAL_STARFLOW_PACKAGE=""

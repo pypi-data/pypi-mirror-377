@@ -1,0 +1,24 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Build and publish package
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_STACUTILS_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_STACUTILS_PASSWORD }}
+        run: |
+          uv build
+          uv tool install twine
+          uv tool run twine upload dist/*

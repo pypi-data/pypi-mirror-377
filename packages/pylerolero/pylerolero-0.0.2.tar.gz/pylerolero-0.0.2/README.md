@@ -1,0 +1,215 @@
+<div align="center">
+  <img src="https://i.imgur.com/WGkwXi9.png" width="400"/>
+  <h1>Gerador de Lero-Lero em Python</h1>
+  <p>Este é um pacote Python para gerar frases e textos completos no estilo "lero-lero" corporativo em português do Brasil. Ideal para dar uma leve descontraída em apresentações, relatórios e e-mails que precisam soar complexos e estratégicos.</p>
+  
+  ![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)
+  ![License](https://img.shields.io/badge/license-MIT-green)
+</div>
+
+# Instalação
+
+Você pode instalar o pacote diretamente do PyPI:
+
+```bash
+pip install pylerolero
+```
+
+# Importação
+
+Para importar o pacote no seu código e ter acesso às funções basta realizar um import seguindo o formato padrão, sem segredos:
+
+```Python
+from pylerolero import generate_phrase, generate_paragraph, generate_text
+```
+
+## Conhecendo as Funções
+O pacote oferece três funções principais para a geração de frases, parágrafos e textos, onde cada uma dessas funções possui um parâmetro para definição de uma semente, permitindo a geração consistente sempre que necessário:
+
+### Frase:
+```Python
+"""
+    Gerando uma frase a partir de uma semente.
+
+    Args:
+        seed (any, opcional): Valor que será utilizado como semente nas funções de
+            randomização durante a geração da frase. (Padrão: None).
+
+    Returns:
+        string: A frase gerada pela concatenação de um elemento de cada
+            lista de segmento.
+"""
+def generate_phrase(seed=None):
+```
+
+### Parágrafo:
+```Python
+"""
+    Gerando um parágrafo de um tamanho específico a partir de uma semente.
+
+    Args:
+        density (int, opcional): Densidade do parágrafo em quantidade de frases.
+          (Padrão: 3).
+        seed (any, opcional): Valor que será utilizado como semente nas funções de randomização durante a geração do parágrafo.
+          (Padrão: None).
+
+    Returns:
+        string: O parágrafo gerado pela concatenação das frases geradas.
+"""
+def generate_paragraph(density=3, seed=None):
+```
+
+### Texto:
+```Python
+"""
+    Gerando um texto de um tamanho específico a partir de uma semente.
+
+    Args:
+        size (int, opcional): Tamanho do texto em quantidade de parágrafos.
+            (Padrão: 3).
+        density (int, opcional): Tamanho dos parágrafos que compõe o texto.
+            (Padrão: 3).
+        seed (any, opcional): Valor que será utilizado como semente nas funções de
+            randomização durante a geração do texto. (Padrão: None).
+
+    Returns:
+        string: O texto gerado pela concatenação dos parágrafos gerados.
+"""
+def generate_text(size=3, density=3, seed=None):
+```
+
+## Gerando Frases:
+Você pode gerar frases de forma aleatória ou de forma controlada, utilizando uma semente como parâmetro opcional através da função `generate_phrase(seed=None)`. Quando omitido o parâmetro da semente, uma semente aleatória será gerada através de um `random.randint(0,99999)`.
+
+```Python
+from pylerolero import generate_phrase
+
+# Exemplo de uso:
+if __name__ == "__main__":
+    
+  # Gerando uma frase sem semente:
+  print("\n----------\n[FRASE 1]:", generate_phrase())
+
+  # Gerando uma frase com semente:
+  print("\n----------\n[FRASE 2]:", generate_phrase(seed="Luke, eu sou seu pai!"))
+```
+
+Resultados:
+
+```Text
+----------
+[FRASE 1]: Pensando mais a longo prazo, a consulta aos diversos militantes obstaculiza a apreciação da importância das condições inegavelmente apropriadas.
+
+----------
+[FRASE 2]: Podemos já vislumbrar o modo pelo qual o desafiador cenário globalizado exige a precisão e a definição do orçamento setorial.
+```
+
+As frases são geradas a partir de quatro listas de segmentos, onde um elemento de cada lista é concatenado ao outro seguindo o seguinte padrão:
+
+```Text
+"seg1 seg2 seg3 seg4"
+```
+
+Para que as frases geradas sejam minimamente coesas, as listas de segmentos estão organizadas da seguinte forma semântica:
+
+```Text
+SEGMENTO 1 DA FRASE:
+  O [seg1] serve como um adjunto adverbial de início de frase ou conectivo.
+  Ele estabelece a ligação lógica da frase com o que a precede, indicando uma
+  relação de oposição ("No entanto"), tempo ("Pensando mais a longo prazo"),
+  causa/consequência ("Por conseguinte") ou simplesmente introduzindo o
+  assunto ("Caros amigos,").
+
+SEGMENTO 2 DA FRASE:
+  O [seg2] é o sujeito da oração. Geralmente, ele é composto por um
+  substantivo ou uma expressão substantivada (como "a execução dos pontos do
+  programa") que realiza a ação expressa pelo verbo. É o "quem" ou "o que"
+  da frase.
+
+SEGMENTO 3 DA FRASE:
+  O [seg3] é o verbo da oração, acompanhado, na maioria dos casos, de um
+  complemento verbal (como "nos obriga à análise"). Ele expressa a ação,
+  estado ou fenômeno realizado pelo sujeito. É o coração da frase, que
+  indica o que está acontecendo.
+
+SEGMENTO 4 DA FRASE:
+  O [seg4] funciona como o complemento do complemento verbal (adjunto
+  adverbial ou complemento nominal) do seg3. Ele complementa o sentido do
+  verbo e da expressão anterior, detalhando a ação, a análise,
+  a formulação, etc. Geralmente, é introduzido por uma preposição
+  (como "das condições", "do sistema") e especifica sobre o que a ação
+  do verbo se refere.
+```
+
+## Gerando Parágrafos:
+
+Você pode gerar parágrafos de forma aleatória ou de forma controlada, utilizando uma semente como parâmetro opcional através da função `generate_paragraph(density=3, seed=None)`. Adicionalmente, você pode definir o tamanho do seu parágrafo através do parâmetro de densidade (o padrão é 3). Quando omitido o parâmetro da semente, uma semente aleatória será gerada através de um `random.randint(0,99999)`.
+
+```Python
+from pylerolero import generate_paragraph
+
+# Exemplo de uso:
+if __name__ == "__main__":
+
+  # Gerando um parágrafo de densidade 3 sem semente:
+  print("\n----------\n[PARÁGRAFO 1]:", generate_paragraph(density=3))
+  
+  # Gerando um parágrafo de densidade 3 com semente:
+  print("\n----------\n[PARÁGRAFO 2]:", generate_paragraph(density=3, seed="Luke, eu sou seu pai!"))
+```
+
+Resultados:
+
+```Text
+----------
+[PARÁGRAFO 1]: Assim mesmo, o consenso sobre a necessidade de qualificação afeta positivamente a correta previsão das formas de ação. As experiências acumuladas demonstram que a mobilidade dos capitais internacionais deve passar por modificações independentemente das condições inegavelmente apropriadas. A certificação de metodologias que nos auxiliam a lidar com o julgamento imparcial das eventualidades estimula a padronização de alternativas às soluções ortodoxas.
+
+----------
+[PARÁGRAFO 2]: Não obstante, a revolução dos costumes não pode mais se dissociar dos relacionamentos verticais entre as hierarquias. Pensando mais a longo prazo, a determinação clara de objetivos acarreta um processo de reformulação e modernização das condições financeiras e administrativas exigidas. Todas estas questões, devidamente ponderadas, levantam dúvidas sobre se o novo modelo estrutural aqui preconizado apresenta tendências no sentido de aprovar a manutenção das posturas dos órgãos dirigentes com relação às suas atribuições.
+```
+
+## Gerando Textos:
+
+Você pode gerar textos de forma aleatória ou de forma controlada, utilizando uma semente como parâmetro opcional através da função `generate_text(size=3, density=3, seed=None)`. Adicionalmente, você pode definir o tamanho do seu texto através do parâmetro de tamanho (o padrão é 3). Pode também definir a densidade dos parágrafos que compõe o texto através do parâmetro de densidade (o padrão é 3). Quando omitido o parâmetro da semente, uma semente aleatória será gerada através de um `random.randint(0,99999)`.
+
+```Python
+from pylerolero import generate_text
+
+# Exemplo de uso:
+if __name__ == "__main__":
+
+  # Gerando um texto de tamanho 3 sem semente:
+  print("\n----------\n[TEXTO 1]:", generate_text(size=3))
+  
+  # Gerando um texto de tamanho 3 com semente:
+  print("\n----------\n[TEXTO 2]:", generate_text(size=3, seed="Luke, eu sou seu pai!"))
+```
+
+Resultados:
+
+```Text
+----------
+[TEXTO 1]: Por outro lado, o acompanhamento das preferências de consumo acarreta um processo de reformulação e modernização das novas proposições. O incentivo ao avanço tecnológico, assim como a determinação clara de objetivos pode nos levar a considerar a reestruturação do processo de comunicação como um todo. Por conseguinte, o início da atividade geral de formação de atitudes possibilita uma melhor visão global das formas de ação.
+
+A certificação de metodologias que nos auxiliam a lidar com a expansão dos mercados mundiais estende o alcance e a importância das diversas correntes de pensamento. O cuidado em identificar pontos críticos no aumento do diálogo entre os diferentes setores produtivos assume importantes posições no estabelecimento dos relacionamentos verticais entre as hierarquias. O incentivo ao avanço tecnológico, assim como a percepção das dificuldades acarreta um processo de reformulação e modernização dos paradigmas corporativos.
+
+No entanto, não podemos esquecer que a mobilidade dos capitais internacionais causa impacto indireto na reavaliação das posturas dos órgãos dirigentes com relação às suas atribuições. Evidentemente, a consolidação das estruturas acarreta um processo de reformulação e modernização das direções preferenciais no sentido do progresso. No mundo atual, a complexidade dos estudos efetuados faz parte de um processo de gerenciamento do remanejamento dos quadros funcionais.
+
+----------
+[TEXTO 2]: É importante questionar o quanto o acompanhamento das preferências de consumo desafia a capacidade de equalização de todos os recursos funcionais envolvidos. No mundo atual, o desafiador cenário globalizado aponta para a melhoria das condições financeiras e administrativas exigidas. Por conseguinte, a consolidação das estruturas apresenta tendências no sentido de aprovar a manutenção do investimento em reciclagem técnica.
+
+Percebemos, cada vez mais, que a consulta aos diversos militantes possibilita uma melhor visão global dos paradigmas corporativos. Por outro lado, a estrutura atual da organização prepara-nos para enfrentar situações atípicas decorrentes das novas proposições. Nunca é demais lembrar o peso e o significado destes problemas, uma vez que a estrutura atual da organização faz parte de um processo de gerenciamento dos índices pretendidos.
+
+O que temos que ter sempre em mente é que a consolidação das estruturas ainda não demonstrou convincentemente que vai participar na mudança do fluxo de informações. Por conseguinte, o desafiador cenário globalizado cumpre um papel essencial na formulação de todos os recursos funcionais envolvidos. Não obstante, o aumento do diálogo entre os diferentes setores produtivos talvez venha a ressaltar a relatividade das posturas dos órgãos dirigentes com relação às suas atribuições.
+```
+
+# Contribuições
+
+Contribuições são sempre bem-vindas! Se você tiver mais palavras ou frases para adicionar, sinta-se à vontade para abrir uma pull request.
+
+- Faça um Fork do projeto.
+- Crie uma nova branch `git checkout -b feature/sua-feature`;
+- Adicione suas alterações `git add .`;
+- Faça um Commit `git commit -m 'Adiciona nova feature'`;
+- Envie para o GitHub `git push origin feature/sua-feature`;
+- Abra um Pull Request.

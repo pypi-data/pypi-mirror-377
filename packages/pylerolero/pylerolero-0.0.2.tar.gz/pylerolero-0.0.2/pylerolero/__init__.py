@@ -1,0 +1,1 @@
+from .pylerolero import generate_phrase, generate_paragraph, generate_text

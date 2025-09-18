@@ -1,0 +1,43 @@
+name: PyPI
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+
+jobs:
+  publish_to_pypi:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/oslex/
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Create virtual environment
+        run: uv venv .venv
+
+      - name: Install build tools
+        run: . .venv/bin/activate && uv pip install build twine
+
+      - name: Build the package
+        run: . .venv/bin/activate && python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

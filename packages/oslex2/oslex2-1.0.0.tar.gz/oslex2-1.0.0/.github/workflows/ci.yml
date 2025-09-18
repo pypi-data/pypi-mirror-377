@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "oslex2/**"
+      - "tests/**"
+  pull_request:
+    branches: ["**"]
+    paths:
+      - "oslex2/**"
+      - "tests/**"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install uv
+      - name: Create virtual environment
+        run: uv venv .venv
+      - name: Install dependencies
+        run: . .venv/bin/activate && uv pip install -r requirements.txt || uv pip install pytest
+      - name: Run tests
+        run: . .venv/bin/activate && uv run pytest
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install uv
+      - name: Create virtual environment
+        run: uv venv .venv
+      - name: Install build tools
+        run: . .venv/bin/activate && uv pip install build
+      - name: Build package
+        run: . .venv/bin/activate && python -m build
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

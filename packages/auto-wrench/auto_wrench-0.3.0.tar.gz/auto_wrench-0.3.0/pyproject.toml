@@ -1,0 +1,131 @@
+[project]
+name = "auto-wrench"
+version = "0.3.0"
+description = "Automated registration package for urban sensor endpoints into metadata catalogs"
+authors = [
+    { name = "Jeffrey Limnardy", email = "jeffreylimnardy@yahoo.com" },
+]
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pydantic>=2.10.4,<3.0.0",
+    "requests>=2.32.3,<3.0.0",
+    "ckanapi>=4.8,<5.0",
+    "python-dotenv>=1.0.1",
+    "geojson>=3.2.0",
+    "pyyaml>=6.0.0",
+    "xxhash>=3.5.0",
+    "apscheduler>=3.11.0",
+    "openai>=1.76.0",
+    "matplotlib>=3.10.1",
+    "psutil>=6.1.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.optional-dependencies]
+teleclass = [
+    "sentence-transformers>=3.3.1",
+    "networkx>=3.4.2",
+    "numpy>=2.2.1",
+    "ollama>=0.4.5",
+    "yake>=0.4.8",
+    "rank_bm25>=0.2.2",
+]
+sensorthings = [
+    "paho-mqtt>=2.1.0",
+]
+kinetic = [
+    "flair>=0.15.1",
+    "keybert>=0.9.0",
+    "networkx>=3.4.2",
+    "python-louvain>=0.16",
+]
+
+[dependency-groups]
+test = [
+    "pytest>=8.3.0",
+    "pytest-mock",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.25.3",
+]
+lint = [
+    "ruff<1.0.0,>=0.5.0",
+    "codespell>=2.2.0,<3.0.0",
+    "mypy>=1.15.0",
+]
+dev = [
+    "gprof2dot>=2025.4.14",
+    "ipykernel>=6.29.5",
+    "memray>=1.17.2",
+    "mkdocs-material>=9.6.11",
+    "mkdocstrings[python]>=0.29.1",
+    "pymdown-extensions>=10.14.3",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.uv.sources.wrench]
+path = "./wrench"
+editable = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "D",
+]
+ignore = [
+    "D203",
+    "D212",
+    "D100",
+    "D101",
+    "D104",
+    "D102",
+    "D105",
+    "D107",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D",
+]
+
+[tool.codespell]
+skip = ".git,*.pdf,*.svg,*.yaml,*.ipynb,poetry.lock,*.min.js,*.css,*.json,_dist,build,*.pyc,.venv,*.txt"
+ignore-words-list = "wrench"
+check-filenames = true
+check-hidden = true
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=wrench --cov-report=term-missing"
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py",
+]
+
+[tool.coverage.run]
+source = [
+    "wrench",
+]
+
+[tool.mypy]
+disable_error_code = [
+    "import-untyped",
+]

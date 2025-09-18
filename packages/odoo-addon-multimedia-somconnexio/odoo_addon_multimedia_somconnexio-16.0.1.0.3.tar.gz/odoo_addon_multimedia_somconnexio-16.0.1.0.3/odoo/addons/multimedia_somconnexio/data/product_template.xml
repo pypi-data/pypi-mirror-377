@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+  <data noupdate="1">
+    <record id="streaming_product_template" model="product.template">
+      <field name="name">Streaming</field>
+      <field name="categ_id" ref="streaming_service"/>
+      <field name="external_provisioning_required">False</field>
+    </record>
+  </data>
+</odoo>

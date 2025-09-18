@@ -1,0 +1,175 @@
+Metadata-Version: 2.4
+Name: any-agent-wrapper
+Version: 0.2.0
+Summary: Universal framework for containerizing AI agents from any framework (Google ADK, AWS Strands, LangChain) into standardized Docker containers with A2A protocol support
+Project-URL: Homepage, https://github.com/Open-Agent-Tools/any-agent
+Project-URL: Repository, https://github.com/Open-Agent-Tools/any-agent
+Project-URL: Documentation, https://github.com/Open-Agent-Tools/any-agent#readme
+Project-URL: Bug Tracker, https://github.com/Open-Agent-Tools/any-agent/issues
+Project-URL: Changelog, https://github.com/Open-Agent-Tools/any-agent/releases
+Project-URL: Source Code, https://github.com/Open-Agent-Tools/any-agent
+Author: Wes Etheredge
+Maintainer: Wes Etheredge
+License: Apache-2.0
+License-File: LICENSE
+Keywords: a2a,agent,agent-framework,ai,api,automation,aws-strands,containerization,docker,fastapi,framework,google-adk,langchain,llm,llm-framework,microservices,protocol,rest-api
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: Framework :: FastAPI
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Topic :: System :: Systems Administration
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Requires-Dist: a2a-sdk>=0.1.0
+Requires-Dist: aiofiles>=23.0.0
+Requires-Dist: anthropic>=0.64.0
+Requires-Dist: basic-open-agent-tools>=0.10.4
+Requires-Dist: click>=8.0.0
+Requires-Dist: docker>=6.0.0
+Requires-Dist: fastapi>=0.104.1
+Requires-Dist: fastmcp>=2.12.3
+Requires-Dist: google-adk[a2a]>=1.13.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: jsonschema>=4.25.1
+Requires-Dist: psutil>=5.9.6
+Requires-Dist: pydantic>=2.5.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: pyyaml>=6.0.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: strands-agents-tools>=0.0.1
+Requires-Dist: strands-agents>=1.6.0
+Requires-Dist: uvicorn>=0.24.0
+Requires-Dist: watchdog>=3.0.0
+Provides-Extra: all-frameworks
+Requires-Dist: a2a-sdk>=0.1.0; extra == 'all-frameworks'
+Requires-Dist: anthropic; extra == 'all-frameworks'
+Requires-Dist: google-adk[a2a]; extra == 'all-frameworks'
+Requires-Dist: langchain-community>=0.0.20; extra == 'all-frameworks'
+Requires-Dist: langchain-openai; extra == 'all-frameworks'
+Requires-Dist: langchain>=0.1.0; extra == 'all-frameworks'
+Requires-Dist: langgraph>=0.2.0; extra == 'all-frameworks'
+Requires-Dist: strands-agents; extra == 'all-frameworks'
+Requires-Dist: strands-agents-tools; extra == 'all-frameworks'
+Provides-Extra: aws-strands
+Requires-Dist: a2a-sdk>=0.1.0; extra == 'aws-strands'
+Requires-Dist: anthropic; extra == 'aws-strands'
+Requires-Dist: strands-agents; extra == 'aws-strands'
+Requires-Dist: strands-agents-tools; extra == 'aws-strands'
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest-cov>=6.2.1; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.1.0; extra == 'dev'
+Provides-Extra: google-adk
+Requires-Dist: a2a-sdk>=0.1.0; extra == 'google-adk'
+Requires-Dist: google-adk[a2a]; extra == 'google-adk'
+Provides-Extra: langchain
+Requires-Dist: a2a-sdk>=0.1.0; extra == 'langchain'
+Requires-Dist: langchain-community>=0.0.20; extra == 'langchain'
+Requires-Dist: langchain>=0.1.0; extra == 'langchain'
+Provides-Extra: langgraph
+Requires-Dist: a2a-sdk>=0.1.0; extra == 'langgraph'
+Requires-Dist: langchain-openai; extra == 'langgraph'
+Requires-Dist: langchain>=0.3.0; extra == 'langgraph'
+Requires-Dist: langgraph>=0.2.0; extra == 'langgraph'
+Description-Content-Type: text/markdown
+
+# Any Agent - Universal AI Agent Containerization Framework
+
+A Python framework for automatically containerizing AI agents from any framework into standardized, protocol-compliant Docker containers.
+
+## Overview
+
+Take any local AI agent and automatically wrap it in a Docker container with consistent APIs. Supports A2A protocol, OpenAI-compatible endpoints, and provides a React web UI.
+
+![any-agent-UI.png](https://raw.githubusercontent.com/Open-Agent-Tools/any-agent/main/docs/any-agent-UI.png)
+
+## Supported Frameworks
+
+- **Google ADK** ✅ Fully functional
+- **AWS Strands** ✅ Fully functional
+- **LangChain** 🔄 Detection ready
+- **CrewAI** 🔄 Detection ready
+
+## Installation
+
+```bash
+pip install any-agent-wrapper
+```
+
+## Quick Start
+
+```bash
+# Auto-detect and containerize any agent
+any-agent ./my_agent/
+
+# With specific framework (uses framework default port)
+any-agent ./my_agent/ --framework adk
+
+# With custom port override
+any-agent ./my_agent/ --framework aws-strands --port 8080
+
+# Registry deployment
+any-agent ./agent/ --push registry.com/my-agent:v1.0
+```
+
+## Key Features
+
+- **Automatic Framework Detection** - Works with Google ADK, AWS Strands, LangChain, CrewAI
+- **Standardized APIs** - A2A protocol, health checks, agent discovery
+- **Docker Containerization** - Optimized containers with consistent interfaces
+- **React Web UI** - TypeScript + Material-UI interface for all agents
+- **Multi-Protocol Support** - A2A, OpenAI-compatible endpoints
+
+## API Endpoints
+
+All agents expose:
+- `GET /health` - Health check
+- `GET /.well-known/agent-card.json` - Agent metadata
+- `POST /message:send` - A2A protocol messaging
+- `GET /` - React web interface
+
+## Requirements
+
+- Python 3.8+
+- Docker
+- Framework-specific dependencies as needed
+
+## Documentation
+
+### 📖 User Documentation
+- **[User Guide](docs/user_guide.md)** - Complete usage guide with CLI reference and examples
+- **[Changelog](docs/changelog.md)** - Release history and version notes
+
+### 🔧 Developer Documentation
+- **[Developer Guide](docs/developer_guide.md)** - Development setup, architecture, and contribution guide
+- **[Product Requirements](PRD/README.md)** - Complete product definition and technical specifications
+
+### 📋 Quick Navigation
+- **New User?** → [User Guide](docs/user_guide.md)
+- **Developer?** → [Developer Guide](docs/developer_guide.md)
+- **Product Overview?** → [Product Requirements](PRD/README.md)
+
+## Status
+
+**Version**: 0.2.0 (Fully Functional)
+**PyPI**: `pip install any-agent-wrapper`
+**Test Coverage**: 381 tests passing
+**Architecture**: Consolidated with <5% code duplication
+
+Full A2A protocol compliance, comprehensive testing, and deployments across multiple frameworks.

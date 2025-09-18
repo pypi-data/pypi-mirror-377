@@ -1,0 +1,1873 @@
+smartapp.interface
+==================
+
+.. py:module:: smartapp.interface
+
+.. autoapi-nested-parse::
+
+   Classes that are part of the SmartApp interface.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: AUTHORIZATION_HEADER
+   :value: 'authorization'
+
+
+.. py:data:: CORRELATION_ID_HEADER
+   :value: 'x-st-correlation'
+
+
+.. py:data:: DATE_HEADER
+   :value: 'date'
+
+
+.. py:class:: LifecyclePhase
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Lifecycle phases.
+
+
+   .. py:attribute:: CONFIRMATION
+      :value: 'CONFIRMATION'
+
+
+
+   .. py:attribute:: CONFIGURATION
+      :value: 'CONFIGURATION'
+
+
+
+   .. py:attribute:: INSTALL
+      :value: 'INSTALL'
+
+
+
+   .. py:attribute:: UPDATE
+      :value: 'UPDATE'
+
+
+
+   .. py:attribute:: UNINSTALL
+      :value: 'UNINSTALL'
+
+
+
+   .. py:attribute:: OAUTH_CALLBACK
+      :value: 'OAUTH_CALLBACK'
+
+
+
+   .. py:attribute:: EVENT
+      :value: 'EVENT'
+
+
+
+.. py:class:: ConfigValueType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Types of config values.
+
+
+   .. py:attribute:: DEVICE
+      :value: 'DEVICE'
+
+
+
+   .. py:attribute:: STRING
+      :value: 'STRING'
+
+
+
+.. py:class:: ConfigPhase
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Sub-phases within the CONFIGURATION phase.
+
+
+   .. py:attribute:: INITIALIZE
+      :value: 'INITIALIZE'
+
+
+
+   .. py:attribute:: PAGE
+      :value: 'PAGE'
+
+
+
+.. py:class:: ConfigSettingType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Types of config settings.
+
+
+   .. py:attribute:: DEVICE
+      :value: 'DEVICE'
+
+
+
+   .. py:attribute:: TEXT
+      :value: 'TEXT'
+
+
+
+   .. py:attribute:: BOOLEAN
+      :value: 'BOOLEAN'
+
+
+
+   .. py:attribute:: ENUM
+      :value: 'ENUM'
+
+
+
+   .. py:attribute:: LINK
+      :value: 'LINK'
+
+
+
+   .. py:attribute:: PAGE
+      :value: 'PAGE'
+
+
+
+   .. py:attribute:: IMAGE
+      :value: 'IMAGE'
+
+
+
+   .. py:attribute:: ICON
+      :value: 'ICON'
+
+
+
+   .. py:attribute:: TIME
+      :value: 'TIME'
+
+
+
+   .. py:attribute:: PARAGRAPH
+      :value: 'PARAGRAPH'
+
+
+
+   .. py:attribute:: EMAIL
+      :value: 'EMAIL'
+
+
+
+   .. py:attribute:: DECIMAL
+      :value: 'DECIMAL'
+
+
+
+   .. py:attribute:: NUMBER
+      :value: 'NUMBER'
+
+
+
+   .. py:attribute:: PHONE
+      :value: 'PHONE'
+
+
+
+   .. py:attribute:: OAUTH
+      :value: 'OAUTH'
+
+
+
+.. py:class:: EventType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Supported event types.
+
+
+   .. py:attribute:: DEVICE_COMMANDS_EVENT
+      :value: 'DEVICE_COMMANDS_EVENT'
+
+
+
+   .. py:attribute:: DEVICE_EVENT
+      :value: 'DEVICE_EVENT'
+
+
+
+   .. py:attribute:: DEVICE_HEALTH_EVENT
+      :value: 'DEVICE_HEALTH_EVENT'
+
+
+
+   .. py:attribute:: DEVICE_LIFECYCLE_EVENT
+      :value: 'DEVICE_LIFECYCLE_EVENT'
+
+
+
+   .. py:attribute:: HUB_HEALTH_EVENT
+      :value: 'HUB_HEALTH_EVENT'
+
+
+
+   .. py:attribute:: INSTALLED_APP_LIFECYCLE_EVENT
+      :value: 'INSTALLED_APP_LIFECYCLE_EVENT'
+
+
+
+   .. py:attribute:: MODE_EVENT
+      :value: 'MODE_EVENT'
+
+
+
+   .. py:attribute:: SCENE_LIFECYCLE_EVENT
+      :value: 'SCENE_LIFECYCLE_EVENT'
+
+
+
+   .. py:attribute:: SECURITY_ARM_STATE_EVENT
+      :value: 'SECURITY_ARM_STATE_EVENT'
+
+
+
+   .. py:attribute:: TIMER_EVENT
+      :value: 'TIMER_EVENT'
+
+
+
+   .. py:attribute:: WEATHER_EVENT
+      :value: 'WEATHER_EVENT'
+
+
+
+.. py:class:: SubscriptionType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Supported subscription types.
+
+
+   .. py:attribute:: DEVICE
+      :value: 'DEVICE'
+
+
+
+   .. py:attribute:: CAPABILITY
+      :value: 'CAPABILITY'
+
+
+
+   .. py:attribute:: MODE
+      :value: 'MODE'
+
+
+
+   .. py:attribute:: DEVICE_LIFECYCLE
+      :value: 'DEVICE_LIFECYCLE'
+
+
+
+   .. py:attribute:: DEVICE_HEALTH
+      :value: 'DEVICE_HEALTH'
+
+
+
+   .. py:attribute:: SECURITY_ARM_STATE
+      :value: 'SECURITY_ARM_STATE'
+
+
+
+   .. py:attribute:: HUB_HEALTH
+      :value: 'HUB_HEALTH'
+
+
+
+   .. py:attribute:: SCENE_LIFECYCLE
+      :value: 'SCENE_LIFECYCLE'
+
+
+
+.. py:class:: BooleanValue
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   String boolean values.
+
+
+   .. py:attribute:: TRUE
+      :value: 'true'
+
+
+
+   .. py:attribute:: FALSE
+      :value: 'false'
+
+
+
+.. py:class:: AbstractRequest
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Abstract parent class for all types of lifecycle requests.
+
+
+   .. py:attribute:: lifecycle
+      :type:  LifecyclePhase
+
+
+   .. py:attribute:: execution_id
+      :type:  str
+
+
+   .. py:attribute:: locale
+      :type:  str
+
+
+   .. py:attribute:: version
+      :type:  str
+
+
+.. py:class:: AbstractSetting
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Abstract parent class for all types of config settings.
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: description
+      :type:  str
+
+
+   .. py:attribute:: required
+      :type:  bool | None
+      :value: False
+
+
+
+.. py:class:: DeviceSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A DEVICE setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: multiple
+      :type:  bool
+
+
+   .. py:attribute:: capabilities
+      :type:  list[str]
+
+
+   .. py:attribute:: permissions
+      :type:  list[str]
+
+
+.. py:class:: TextSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A TEXT setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: default_value
+      :type:  str
+
+
+.. py:class:: BooleanSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A BOOLEAN setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: default_value
+      :type:  BooleanValue
+
+
+.. py:class:: EnumOption
+
+   An option within an ENUM setting
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+.. py:class:: EnumOptionGroup
+
+   A group of options within an ENUM setting
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: options
+      :type:  list[EnumOption]
+
+
+.. py:class:: EnumSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   An ENUM setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: multiple
+      :type:  bool
+
+
+   .. py:attribute:: options
+      :type:  list[EnumOption] | None
+      :value: None
+
+
+
+   .. py:attribute:: grouped_options
+      :type:  list[EnumOptionGroup] | None
+      :value: None
+
+
+
+.. py:class:: LinkSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A LINK setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: url
+      :type:  str
+
+
+   .. py:attribute:: image
+      :type:  str
+
+
+.. py:class:: PageSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A PAGE setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: page
+      :type:  str
+
+
+   .. py:attribute:: image
+      :type:  str
+
+
+.. py:class:: ImageSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   An IMAGE setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: image
+      :type:  str
+
+
+.. py:class:: IconSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   An ICON setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: image
+      :type:  str
+
+
+.. py:class:: TimeSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A TIME setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+.. py:class:: ParagraphSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A PARAGRAPH setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: default_value
+      :type:  str
+
+
+.. py:class:: EmailSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   An EMAIL setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+.. py:class:: DecimalSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A DECIMAL setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+.. py:class:: NumberSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A NUMBER setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+.. py:class:: PhoneSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   A PHONE setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+.. py:class:: OauthSetting
+
+   Bases: :py:obj:`AbstractSetting`
+
+
+   An OAUTH setting.
+
+
+   .. py:attribute:: type
+      :type:  ConfigSettingType
+
+
+   .. py:attribute:: browser
+      :type:  bool
+
+
+   .. py:attribute:: url_template
+      :type:  str
+
+
+.. py:data:: ConfigSetting
+
+.. py:class:: DeviceValue
+
+   .. py:attribute:: device_id
+      :type:  str
+
+
+   .. py:attribute:: component_id
+      :type:  str
+
+
+.. py:class:: DeviceConfigValue
+
+   DEVICE configuration value.
+
+
+   .. py:attribute:: device_config
+      :type:  DeviceValue
+
+
+   .. py:attribute:: value_type
+      :type:  ConfigValueType
+
+
+.. py:class:: StringValue
+
+   .. py:attribute:: value
+      :type:  str
+
+
+.. py:class:: StringConfigValue
+
+   STRING configuration value.
+
+
+   .. py:attribute:: string_config
+      :type:  StringValue
+
+
+   .. py:attribute:: value_type
+      :type:  ConfigValueType
+
+
+.. py:data:: ConfigValue
+
+.. py:class:: InstalledApp
+
+   Installed application.
+
+
+   .. py:attribute:: installed_app_id
+      :type:  str
+
+
+   .. py:attribute:: location_id
+      :type:  str
+
+
+   .. py:attribute:: config
+      :type:  dict[str, list[ConfigValue]]
+
+
+   .. py:attribute:: permissions
+      :type:  list[str]
+
+
+   .. py:method:: as_devices(key: str) -> list[DeviceValue]
+
+      Return a list of devices for a named configuration value.
+
+
+
+   .. py:method:: as_str(key: str) -> str
+
+      Return a named configuration value, interpreted as a string
+
+
+
+   .. py:method:: as_bool(key: str) -> bool
+
+      Return a named configuration value, interpreted as a boolean
+
+
+
+   .. py:method:: as_int(key: str) -> int
+
+      Return a named configuration value, interpreted as an integer
+
+
+
+   .. py:method:: as_float(key: str) -> float
+
+      Return a named configuration value, interpreted as a float
+
+
+
+.. py:class:: Event
+
+   Holds the triggered event, one of several different attributes depending on event type.
+
+
+   .. py:attribute:: event_time
+      :type:  arrow.Arrow | None
+      :value: None
+
+
+
+   .. py:attribute:: event_type
+      :type:  EventType
+
+
+   .. py:attribute:: device_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: device_lifecycle_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: device_health_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: device_commands_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: mode_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: timer_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: scene_lifecycle_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: security_arm_state_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: hub_health_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: installed_app_lifecycle_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: weather_event
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: weather_data
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:attribute:: air_quality_data
+      :type:  dict[str, Any] | None
+      :value: None
+
+
+
+   .. py:method:: for_type(event_type: EventType) -> dict[str, Any] | None
+
+      Return the attribute associated with an event type.
+
+
+
+.. py:class:: ConfirmationData
+
+   Confirmation data.
+
+
+   .. py:attribute:: app_id
+      :type:  str
+
+
+   .. py:attribute:: confirmation_url
+      :type:  str
+
+
+.. py:class:: ConfigInit
+
+   Initialization data.
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: description
+      :type:  str
+
+
+   .. py:attribute:: permissions
+      :type:  list[str]
+
+
+   .. py:attribute:: first_page_id
+      :type:  str
+
+
+.. py:class:: ConfigRequestData
+
+   Configuration data provided on the request.
+
+
+   .. py:attribute:: installed_app_id
+      :type:  str
+
+
+   .. py:attribute:: phase
+      :type:  ConfigPhase
+
+
+   .. py:attribute:: page_id
+      :type:  str
+
+
+   .. py:attribute:: previous_page_id
+      :type:  str
+
+
+   .. py:attribute:: config
+      :type:  dict[str, list[ConfigValue]]
+
+
+.. py:class:: ConfigInitData
+
+   Configuration data provided in an INITIALIZATION response.
+
+
+   .. py:attribute:: initialize
+      :type:  ConfigInit
+
+
+.. py:class:: ConfigSection
+
+   A section within a configuration page.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: settings
+      :type:  list[ConfigSetting]
+
+
+.. py:class:: ConfigPage
+
+   A page of configuration data for the CONFIGURATION phase.
+
+
+   .. py:attribute:: page_id
+      :type:  str
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: previous_page_id
+      :type:  str | None
+
+
+   .. py:attribute:: next_page_id
+      :type:  str | None
+
+
+   .. py:attribute:: complete
+      :type:  bool
+
+
+   .. py:attribute:: sections
+      :type:  list[ConfigSection]
+
+
+.. py:class:: ConfigPageData
+
+   Configuration data provided in an PAGE response.
+
+
+   .. py:attribute:: page
+      :type:  ConfigPage
+
+
+.. py:class:: InstallData
+
+   Install data.
+
+
+   .. py:attribute:: auth_token
+      :type:  str
+
+
+   .. py:attribute:: refresh_token
+      :type:  str
+
+
+   .. py:attribute:: installed_app
+      :type:  InstalledApp
+
+
+   .. py:method:: token() -> str
+
+      Return the auth token associated with this request.
+
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+   .. py:method:: as_devices(key: str) -> list[DeviceValue]
+
+      Return a list of devices for a named configuration value.
+
+
+
+   .. py:method:: as_str(key: str) -> str
+
+      Return a named configuration value, interpreted as a string
+
+
+
+   .. py:method:: as_bool(key: str) -> bool
+
+      Return a named configuration value, interpreted as a boolean
+
+
+
+   .. py:method:: as_int(key: str) -> int
+
+      Return a named configuration value, interpreted as an integer
+
+
+
+   .. py:method:: as_float(key: str) -> float
+
+      Return a named configuration value, interpreted as a float
+
+
+
+.. py:class:: UpdateData
+
+   Update data.
+
+
+   .. py:attribute:: auth_token
+      :type:  str
+
+
+   .. py:attribute:: refresh_token
+      :type:  str
+
+
+   .. py:attribute:: installed_app
+      :type:  InstalledApp
+
+
+   .. py:attribute:: previous_config
+      :type:  dict[str, list[ConfigValue]] | None
+      :value: None
+
+
+
+   .. py:attribute:: previous_permissions
+      :type:  list[str]
+
+
+   .. py:method:: token() -> str
+
+      Return the auth token associated with this request.
+
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+   .. py:method:: as_devices(key: str) -> list[DeviceValue]
+
+      Return a list of devices for a named configuration value.
+
+
+
+   .. py:method:: as_str(key: str) -> str
+
+      Return a named configuration value, interpreted as a string
+
+
+
+   .. py:method:: as_bool(key: str) -> bool
+
+      Return a named configuration value, interpreted as a boolean
+
+
+
+   .. py:method:: as_int(key: str) -> int
+
+      Return a named configuration value, interpreted as an integer
+
+
+
+   .. py:method:: as_float(key: str) -> float
+
+      Return a named configuration value, interpreted as a float
+
+
+
+.. py:class:: UninstallData
+
+   Install data.
+
+
+   .. py:attribute:: installed_app
+      :type:  InstalledApp
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+.. py:class:: OauthCallbackData
+
+   .. py:attribute:: installed_app_id
+      :type:  str
+
+
+   .. py:attribute:: url_path
+      :type:  str
+
+
+.. py:class:: EventData
+
+   Event data.
+
+
+   .. py:attribute:: auth_token
+      :type:  str
+
+
+   .. py:attribute:: installed_app
+      :type:  InstalledApp
+
+
+   .. py:attribute:: events
+      :type:  list[Event]
+
+
+   .. py:method:: token() -> str
+
+      Return the auth token associated with this request.
+
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+   .. py:method:: for_type(event_type: EventType) -> list[dict[str, Any]]
+
+      Get all events for a particular event type, possibly empty.
+
+
+
+   .. py:method:: filter(event_type: EventType, predicate: collections.abc.Callable[[dict[str, Any]], bool] | None = None) -> list[dict[str, Any]]
+
+      Apply a filter to a set of events with a particular event type.
+
+
+
+.. py:class:: ConfirmationRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for CONFIRMATION phase
+
+
+   .. py:attribute:: app_id
+      :type:  str
+
+
+   .. py:attribute:: confirmation_data
+      :type:  ConfirmationData
+
+
+   .. py:attribute:: settings
+      :type:  dict[str, Any]
+
+
+.. py:class:: ConfirmationResponse
+
+   Response for CONFIRMATION phase
+
+
+   .. py:attribute:: target_url
+      :type:  str
+
+
+.. py:class:: ConfigurationRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for CONFIGURATION phase
+
+
+   .. py:attribute:: configuration_data
+      :type:  ConfigRequestData
+
+
+   .. py:attribute:: settings
+      :type:  dict[str, Any]
+
+
+.. py:class:: ConfigurationInitResponse
+
+   Response for CONFIGURATION/INITIALIZE phase
+
+
+   .. py:attribute:: configuration_data
+      :type:  ConfigInitData
+
+
+.. py:class:: ConfigurationPageResponse
+
+   Response for CONFIGURATION/PAGE phase
+
+
+   .. py:attribute:: configuration_data
+      :type:  ConfigPageData
+
+
+.. py:class:: InstallRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for INSTALL phase
+
+
+   .. py:attribute:: install_data
+      :type:  InstallData
+
+
+   .. py:attribute:: settings
+      :type:  dict[str, Any]
+
+
+   .. py:method:: token() -> str
+
+      Return the auth token associated with this request.
+
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+   .. py:method:: as_devices(key: str) -> list[DeviceValue]
+
+      Return a list of devices for a named configuration value.
+
+
+
+   .. py:method:: as_str(key: str) -> str
+
+      Return a named configuration value, interpreted as a string
+
+
+
+   .. py:method:: as_bool(key: str) -> bool
+
+      Return a named configuration value, interpreted as a boolean
+
+
+
+   .. py:method:: as_int(key: str) -> int
+
+      Return a named configuration value, interpreted as an integer
+
+
+
+   .. py:method:: as_float(key: str) -> float
+
+      Return a named configuration value, interpreted as a float
+
+
+
+.. py:class:: InstallResponse
+
+   Response for INSTALL phase
+
+
+   .. py:attribute:: install_data
+      :type:  dict[str, Any]
+
+
+.. py:class:: UpdateRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for UPDATE phase
+
+
+   .. py:attribute:: update_data
+      :type:  UpdateData
+
+
+   .. py:attribute:: settings
+      :type:  dict[str, Any]
+
+
+   .. py:method:: token() -> str
+
+      Return the auth token associated with this request.
+
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+   .. py:method:: as_devices(key: str) -> list[DeviceValue]
+
+      Return a list of devices for a named configuration value.
+
+
+
+   .. py:method:: as_str(key: str) -> str
+
+      Return a named configuration value, interpreted as a string
+
+
+
+   .. py:method:: as_bool(key: str) -> bool
+
+      Return a named configuration value, interpreted as a boolean
+
+
+
+   .. py:method:: as_int(key: str) -> int
+
+      Return a named configuration value, interpreted as an integer
+
+
+
+   .. py:method:: as_float(key: str) -> float
+
+      Return a named configuration value, interpreted as a float
+
+
+
+.. py:class:: UpdateResponse
+
+   Response for UPDATE phase
+
+
+   .. py:attribute:: update_data
+      :type:  dict[str, Any]
+
+
+.. py:class:: UninstallRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for UNINSTALL phase
+
+
+   .. py:attribute:: uninstall_data
+      :type:  UninstallData
+
+
+   .. py:attribute:: settings
+      :type:  dict[str, Any]
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+.. py:class:: UninstallResponse
+
+   Response for UNINSTALL phase
+
+
+   .. py:attribute:: uninstall_data
+      :type:  dict[str, Any]
+
+
+.. py:class:: OauthCallbackRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for OAUTH_CALLBACK phase
+
+
+   .. py:attribute:: o_auth_callback_data
+      :type:  OauthCallbackData
+
+
+.. py:class:: OauthCallbackResponse
+
+   Response for OAUTH_CALLBACK phase
+
+
+   .. py:attribute:: o_auth_callback_data
+      :type:  dict[str, Any]
+
+
+.. py:class:: EventRequest
+
+   Bases: :py:obj:`AbstractRequest`
+
+
+   Request for EVENT phase
+
+
+   .. py:attribute:: event_data
+      :type:  EventData
+
+
+   .. py:attribute:: settings
+      :type:  dict[str, Any]
+
+
+   .. py:method:: token() -> str
+
+      Return the auth token associated with this request.
+
+
+
+   .. py:method:: app_id() -> str
+
+      Return the installed application id associated with this request.
+
+
+
+   .. py:method:: location_id() -> str
+
+      Return the installed location id associated with this request.
+
+
+
+.. py:class:: EventResponse
+
+   Response for EVENT phase
+
+
+   .. py:attribute:: event_data
+      :type:  dict[str, Any]
+
+
+.. py:data:: LifecycleRequest
+
+.. py:data:: LifecycleResponse
+
+.. py:data:: REQUEST_BY_PHASE
+
+.. py:data:: CONFIG_VALUE_BY_TYPE
+
+.. py:data:: CONFIG_SETTING_BY_TYPE
+
+.. py:exception:: SmartAppError
+
+   Bases: :py:obj:`Exception`
+
+
+   An error tied to the SmartApp implementation.
+
+
+   .. py:attribute:: message
+      :type:  str
+
+
+   .. py:attribute:: correlation_id
+      :type:  str | None
+      :value: None
+
+
+
+.. py:exception:: InternalError
+
+   Bases: :py:obj:`SmartAppError`
+
+
+   An internal error was encountered processing a lifecycle event.
+
+
+.. py:exception:: BadRequestError
+
+   Bases: :py:obj:`SmartAppError`
+
+
+   A lifecycle event was invalid.
+
+
+.. py:exception:: SignatureError
+
+   Bases: :py:obj:`SmartAppError`
+
+
+   The request signature on a lifecycle event was invalid.
+
+
+.. py:class:: SmartAppDispatcherConfig
+
+   Configuration for the SmartAppDispatcher.
+
+   Any production SmartApp should always check signatures.  We support disabling that feature
+   to make local testing easier during development.
+
+   BEWARE: setting `log_json` to `True` will potentially place secrets (such as authorization
+   keys) in your logs.  This is intended for use during development and debugging only.
+
+   .. attribute:: check_signatures
+
+      Whether to check the digital signature on lifecycle requests
+
+      :type: bool
+
+   .. attribute:: clock_skew_sec
+
+      Amount of clock skew allowed when verifying digital signatures, or None to allow any skew
+
+      :type: int
+
+   .. attribute:: keyserver_url
+
+      The SmartThings keyserver URL, where we retrieve keys for signature checks
+
+      :type: str
+
+   .. attribute:: log_json
+
+      Whether to log JSON data at DEBUG level when processing requests
+
+      :type: bool
+
+
+   .. py:attribute:: check_signatures
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: clock_skew_sec
+      :type:  int | None
+      :value: 300
+
+
+
+   .. py:attribute:: keyserver_url
+      :type:  str
+      :value: 'https://key.smartthings.com'
+
+
+
+   .. py:attribute:: log_json
+      :type:  bool
+      :value: False
+
+
+
+.. py:class:: SmartAppEventHandler
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Application event handler for SmartApp lifecycle events.
+
+   Inherit from this class to implement your own application-specific event handler.
+   The application-specific event handler is always called first, before any default
+   event handler logic in the dispatcher itself.
+
+   The correlation id is an optional value that you can associate with your log messages.
+   It may aid in debugging if you need to contact SmartThings for support.
+
+   Some lifecycle events do not require you to implement any custom event handler logic:
+
+   - CONFIRMATION: normally no callback needed, since the dispatcher logs the app id and confirmation URL
+   - CONFIGURATION: normally no callback needed, since the dispatcher has the information it needs to respond
+   - INSTALL/UPDATE: set up or replace subscriptions and schedules and persist required data, if any
+   - UNINSTALL: remove persisted data, if any
+   - OAUTH_CALLBACK: coordinate with your oauth provider as needed
+   - EVENT: handle SmartThings events or scheduled triggers
+
+   The EventRequest object that you receive for the EVENT callback includes an
+   authorization token and also the entire configuration bundle for the installed
+   application.  So, if your SmartApp is built around event handling and scheduled
+   actions triggered by SmartThings, your handler can probably be stateless.  There is
+   probably is not any need to persist any of the data returned in the INSTALL or UPDATE
+   lifecycle events into your own data store.
+
+   Note that SmartAppHandler is a synchronous and single-threaded interface.  The
+   assumption is that if you need high-volume asynchronous or multi-threaded processing,
+   you will implement that at the tier above this where the actual POST requests are
+   accepted from remote callers.
+
+
+   .. py:method:: handle_confirmation(correlation_id: str | None, request: ConfirmationRequest) -> None
+      :abstractmethod:
+
+
+      Handle a CONFIRMATION lifecycle request
+
+
+
+   .. py:method:: handle_configuration(correlation_id: str | None, request: ConfigurationRequest) -> None
+      :abstractmethod:
+
+
+      Handle a CONFIGURATION lifecycle request.
+
+
+
+   .. py:method:: handle_install(correlation_id: str | None, request: InstallRequest) -> None
+      :abstractmethod:
+
+
+      Handle an INSTALL lifecycle request.
+
+
+
+   .. py:method:: handle_update(correlation_id: str | None, request: UpdateRequest) -> None
+      :abstractmethod:
+
+
+      Handle an UPDATE lifecycle request.
+
+
+
+   .. py:method:: handle_uninstall(correlation_id: str | None, request: UninstallRequest) -> None
+      :abstractmethod:
+
+
+      Handle an UNINSTALL lifecycle request.
+
+
+
+   .. py:method:: handle_oauth_callback(correlation_id: str | None, request: OauthCallbackRequest) -> None
+      :abstractmethod:
+
+
+      Handle an OAUTH_CALLBACK lifecycle request.
+
+
+
+   .. py:method:: handle_event(correlation_id: str | None, request: EventRequest) -> None
+      :abstractmethod:
+
+
+      Handle an EVENT lifecycle request.
+
+
+
+.. py:class:: SmartAppConfigPage
+
+   A page of configuration for the SmartApp.
+
+
+   .. py:attribute:: page_name
+      :type:  str
+
+
+   .. py:attribute:: sections
+      :type:  list[ConfigSection]
+
+
+.. py:class:: SmartAppDefinition
+
+   The definition of the SmartApp.
+
+   All of this data would normally be static for any given version of your application.
+   If you wish, you can maintain the definition in YAML or JSON in your source tree
+   and parse it with `smartapp.converter.CONVERTER`.
+
+   Keep in mind that the JSON or YAML format on disk will be consistent with the SmartThings
+   lifecycle API, so it will use camel case attribute names (like `configPages`) rather than
+   the Python attribute names you see in source code (like `config_pages`).
+
+   .. attribute:: id
+
+      Identifier for this SmartApp
+
+      :type: str
+
+   .. attribute:: name
+
+      Name of the SmartApp
+
+      :type: str
+
+   .. attribute:: description
+
+      Description of the SmartApp
+
+      :type: str
+
+   .. attribute:: permissions
+
+      Permissions that the SmartApp requires
+
+      :type: List[str]
+
+   .. attribute:: config_pages
+
+      Configuration pages that the SmartApp will offer users
+
+      :type: List[SmartAppConfigPage]
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: description
+      :type:  str
+
+
+   .. py:attribute:: target_url
+      :type:  str
+
+
+   .. py:attribute:: permissions
+      :type:  list[str]
+
+
+   .. py:attribute:: config_pages
+      :type:  list[SmartAppConfigPage] | None
+
+
+.. py:class:: SmartAppConfigManager
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Configuration manager, used by the dispatcher to respond to CONFIGURATION events.
+
+   The dispatcher has a default configuration manager.  However, you can implement your
+   own if that default behavior does not meet your needs.  For instance, a static config
+   definition is adequate for lots of SmartApps, but it doesn't work for some types of
+   complex configuration, where the responses need to be generated dynamically.  In that
+   case, you can implement your own configuration manager with that specialized behavior.
+
+   This abstract class also includes several convenience methods to make it easier to
+   build responses.
+
+
+   .. py:method:: handle_initialize(_request: ConfigurationRequest, definition: SmartAppDefinition) -> ConfigurationInitResponse
+
+      Handle a CONFIGURATION INITIALIZE lifecycle request.
+
+
+
+   .. py:method:: handle_page(request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse
+      :abstractmethod:
+
+
+      Handle a CONFIGURATION PAGE lifecycle request.
+
+
+
+   .. py:method:: build_init_response(id: str, name: str, description: str, permissions: list[str], first_page_id: int) -> ConfigurationInitResponse
+
+      Build a ConfigurationInitResponse.
+
+
+
+   .. py:method:: build_page_response(page_id: int, name: str, previous_page_id: int | None, next_page_id: int | None, complete: bool, sections: list[ConfigSection]) -> ConfigurationPageResponse
+
+      Build a ConfigurationPageResponse.
+
+
+
+.. py:class:: SmartAppRequestContext
+
+   The context for a SmartApp lifecycle request.
+
+   .. attribute:: headers
+
+      The request headers
+
+      :type: Mapping[str, str]
+
+   .. attribute:: body
+
+      The body of the request as string
+
+      :type: str
+
+
+   .. py:attribute:: headers
+      :type:  collections.abc.Mapping[str, str]
+
+
+   .. py:attribute:: body
+      :type:  str
+      :value: ''
+
+
+
+   .. py:attribute:: normalized
+      :type:  collections.abc.Mapping[str, str]
+
+
+   .. py:attribute:: correlation_id
+      :type:  str
+
+
+   .. py:attribute:: signature
+      :type:  str
+
+
+   .. py:attribute:: date
+      :type:  str
+
+
+   .. py:method:: header(name: str) -> str | None
+
+      Return the named header case-insensitively, or None if not found.
+
+
+

@@ -1,0 +1,150 @@
+Version 0.8.0     17 Sep 2025
+
+	* Remove `__all__ = []` from __init__.py.
+	* Add a new 'suite -f' command to run faster subset of the suite.
+	* Upgrade to poetry-dynamic-versioning v1.9.1 for minor fixes.
+	* Add Sphinx configuration path to .readthedocs.yml.
+	* Version profiles_settings.xml to control PyCharm inspection profile.
+	* Migrate to Read the Docs integration via the new GitHub App.
+	* Adjust GHA build process to allow builds for stacked PRs.
+	* Add a new `run clean` target to clean up generated data.
+	* Move unit tests from `tests` into `src/tests/smartapp`.
+	* Update the MyPy configuration so we're using latest rules.
+	* Replace black, isort, and pylint with the Ruff formatter and linter.
+	* Address Ruff linter warnings and modernize the code to 2025 standards.
+	* Remove importlib-metadata dependency in favor of standard library.
+	* Update all dependencies and outdated constraints.
+
+Version 0.7.1     14 Jan 2025
+
+	* Pull in latest version of run-script-framework.
+	* Upgrade to poetry-dynamic-versioning v1.5.2 for minor fixes.
+	* Add .python-version in preferred order to support pyenv.
+	* Adjust pyproject.toml comments to fix pip build at readthedocs.
+	* Add notes in documentation that I no longer use SmartThings.
+	* Add Sphinx configuration path to .readthedocs.yml.
+
+Version 0.7.0     08 Jan 2025
+
+	* Migrate to Poetry v2 and project-managed Poetry plugins.
+	* Move configuration into pyproject.toml for pytest, mypy & coverage.
+	* Upgrade to gha-shared-workflows@v8 for Poetry v2 support.
+	* Migrate from pendulum to arrow for dates (interface change).
+	* Fix bug in serializing BooleanSetting to and from YAML.
+	* Update all dependencies and outdated constraints.
+
+Version 0.6.9     02 Jan 2025
+
+	* Add GitHub security policy in SECURITY.md.
+	* Pull in latest version of run-script-framework.
+	* Update dependencies to address Dependabot warnings.
+	* Upgrade to gha-shared-workflows@v7 with publish improvements.
+	* Add a default .pytest.ini file based on new cookiecutter template.
+	* Change the default branch in GitHub from master to main.
+
+Version 0.6.8     15 Oct 2024
+
+	* Pull in latest updates from run-script-framework.
+	* Simplify GHA integration with coveralls.io.
+	* Update transitive dependencies to address Dependabot warnings.
+	* Add support for Python v3.13 and drop support for v3.9.
+	* Upgrade to Poetry v1.8.4 for official Python 3.13 support.
+	* Bump readthedocs build to python 3.10 and ubuntu-24.04.
+
+Version 0.6.7     26 Feb 2024
+
+	* Upgrade to Poetry v1.8.0 and make related adjustments.
+	* Disable Python keyring via poetry.toml.
+	* Update Poetry install instructions in DEVELOPER.md.
+	* Pull in latest version of run-script-framework.
+	* Upgrade to gha-shared-workflows@v4 with new Poetry setup.
+	* Add support for 'run outdated' and update dependencies.
+	* Remove mistaken dependency on Poetry itself.
+
+Version 0.6.6     17 Jan 2024
+
+	* Remove GitHub Actions workflow schedule, which broke release process.
+
+Version 0.6.5     17 Jan 2024
+
+	* Update jinja2 to address CVE-2024-22195 from Dependabot.
+	* Update dependencies and fix new MyPy warnings.
+
+Version 0.6.4     05 Nov 2023
+
+	* Update urllib3 to address Dependabot warnings.
+	* Upgrade to Poetry v1.7.0 for official Python 3.12 support.
+
+Version 0.6.3     15 Oct 2023
+
+	* Upgrade major dependencies.
+	* Upgrade build process to Poetry v1.6.1.
+	* Add support for Python 3.12.
+	* Use pendulum 3.0.0b1 for Python 3.12 only.
+
+Version 0.6.2     07 Jun 2023
+
+	* Upgrade to Poetry v1.5.1 and make related changes.
+
+Version 0.6.1     06 Jun 2023
+
+	* Fix checktabs to be safe for file named '-'.
+	* Update requests dependency for CVE-2023-32681.
+
+Version 0.6.0     09 Apr 2023
+
+	* Add new SubscriptionType enumeration.
+	* Rewrite request-related tests to use the responses framework.
+
+Version 0.5.4     26 Feb 2023
+
+	* Upgrade all dependencies to the latest major version.
+	* Pull Sphinx fields from metadata rather than parsing pyproject.toml.
+
+Version 0.5.3     30 Dec 2022
+
+	* Convert to latest readthedocs.io standard.
+	* Add NOTICE file to sdist, alongside existing LICENSE file.
+	* Automate the existing manual release process using GitHub Actions.
+	* Adjust GHA build to run MacOS and Windows tests only on latest Python.
+
+Version 0.5.2     24 Oct 2022
+
+	* Refactor the run script and pre-commit hooks to reduce duplication.
+	* Rework the GitHub Actions build process to pull out shared code.
+
+Version 0.5.1     05 Sep 2022
+
+	* Upgrade to Poetry v1.2.0 and make related build process changes.
+	* Upgrade to Pylint v2.15.0 and address warnings.
+	* Fix Pylint's configured class-attribute-naming-style to be snake_case.
+	* Add dependency caching to GitHub Actions workflow.
+	* Fix the GitHub Actions matrix build to properly target Windows and MacOS.
+	* Update various dependencies for the developer environment.
+
+Version 0.5.0     24 Jun 2022
+
+	* Refactor out a SmartAppConfigManager that can be overridden.
+
+Version 0.4.1     19 Jun 2022
+
+	* Updates to published documentation.
+
+Version 0.4.0     18 Jun 2022
+
+	* Add for_type() and filter() on event.
+	* Add token()/app_id()/location_id() on requests.
+	* Add convenience methods for config on requests.
+
+Version 0.3.0     18 Jun 2022
+
+	* Add convenience methods for config on updated app.
+
+Version 0.2.0     17 Jun 2022
+	
+	* Add convenience methods for config on installed app.
+
+Version 0.1.0     17 Jun 2022
+
+	* Initial public release
+

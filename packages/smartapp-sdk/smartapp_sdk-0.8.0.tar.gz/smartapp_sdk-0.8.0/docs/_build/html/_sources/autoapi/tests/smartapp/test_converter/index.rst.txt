@@ -1,0 +1,181 @@
+tests.smartapp.test_converter
+=============================
+
+.. py:module:: tests.smartapp.test_converter
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: FIXTURE_DIR
+
+.. py:data:: REQUEST_DIR
+
+.. py:data:: RESPONSE_DIR
+
+.. py:data:: SETTINGS_DIR
+
+.. py:data:: NOW
+
+.. py:function:: requests()
+
+.. py:function:: responses()
+
+.. py:function:: settings()
+
+.. py:function:: validate_json_roundtrip(json, expected, cls)
+
+   Validate a JSON round trip.
+
+
+.. py:function:: validate_yaml_roundtrip(yaml, expected, cls)
+
+   Validate a YAML round trip.
+
+
+.. py:class:: TestDatetime
+
+   .. py:method:: test_serialize_datetime(datetime, expected)
+
+
+   .. py:method:: test_deserialize_datetime(now, datetime, expected)
+
+
+   .. py:method:: test_deserialize_datetime_invalid(datetime)
+
+
+.. py:class:: TestConvertSettings
+
+   .. py:method:: test_boolean(settings)
+
+
+   .. py:method:: test_decimal(settings)
+
+
+   .. py:method:: test_device(settings)
+
+
+   .. py:method:: test_email(settings)
+
+
+   .. py:method:: test_enum(settings)
+
+
+   .. py:method:: test_enum_group(settings)
+
+
+   .. py:method:: test_icon(settings)
+
+
+   .. py:method:: test_image(settings)
+
+
+   .. py:method:: test_link(settings)
+
+
+   .. py:method:: test_number(settings)
+
+
+   .. py:method:: test_oauth(settings)
+
+
+   .. py:method:: test_page(settings)
+
+
+   .. py:method:: test_paragraph(settings)
+
+
+   .. py:method:: test_phone(settings)
+
+
+   .. py:method:: test_text(settings)
+
+
+   .. py:method:: test_time(settings)
+
+
+.. py:class:: TestStringSecrets
+
+   .. py:method:: test_secrets(requests, source)
+
+
+.. py:class:: TestConvertResponses
+
+   .. py:method:: test_confirmation(responses)
+
+
+   .. py:method:: test_configuration_initialize(responses)
+
+
+   .. py:method:: test_configuration_page_only(responses)
+
+
+   .. py:method:: test_configuration_page_1of2(responses)
+
+
+   .. py:method:: test_install(responses)
+
+
+   .. py:method:: test_update(responses)
+
+
+   .. py:method:: test_uninstall(responses)
+
+
+   .. py:method:: test_oauth_callback(responses)
+
+
+   .. py:method:: test_event(responses)
+
+
+.. py:class:: TestConvertRequests
+
+   .. py:method:: test_invalid_json()
+
+
+   .. py:method:: test_mismatch_json()
+
+
+   .. py:method:: test_confirmation(requests)
+
+
+   .. py:method:: test_configuration_initialize(requests)
+
+
+   .. py:method:: test_configuration_page(requests)
+
+
+   .. py:method:: test_install(requests)
+
+
+   .. py:method:: test_update(requests)
+
+
+   .. py:method:: test_uninstall(requests)
+
+
+   .. py:method:: test_oauth_callback(requests)
+
+
+   .. py:method:: test_event_device(requests)
+
+
+   .. py:method:: test_event_timer(requests)
+
+
+.. py:class:: TestConvertSmartAppDispatcherConfig
+
+   .. py:method:: test_config()
+
+
+.. py:class:: TestConvertSmartAppDefinition
+
+   .. py:method:: test_definition()
+
+

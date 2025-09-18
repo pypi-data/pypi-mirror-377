@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: smartapp-sdk
+Version: 0.8.0
+Summary: Framework to build a webhook-based SmartThings SmartApp
+License-Expression: Apache-2.0
+License-File: LICENSE
+License-File: NOTICE
+Author: Kenneth J. Pronovici
+Author-email: pronovic@ieee.org
+Requires-Python: >=3.10,<4
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Home Automation
+Classifier: Topic :: Software Development :: Libraries
+Provides-Extra: docs
+Requires-Dist: PyYAML (>=6.0.1,<7.0.0)
+Requires-Dist: arrow (>=1.3.0,<2.0.0)
+Requires-Dist: attrs (>=24.2.0)
+Requires-Dist: cattrs (>=24.1.2)
+Requires-Dist: pycryptodomex (>=3.19.0,<4.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: sphinx (>=8.1.3,<9.0.0) ; extra == "docs"
+Requires-Dist: sphinx-autoapi (>=3.3.3,<4.0.0) ; extra == "docs"
+Requires-Dist: tenacity (>=9.0.0,<10.0.0)
+Project-URL: Homepage, https://pypi.org/project/smartapp-sdk/
+Project-URL: Repository, https://github.com/pronovic/smartapp-sdk
+Description-Content-Type: text/markdown
+
+# SmartApp SDK
+
+[![pypi](https://img.shields.io/pypi/v/smartapp-sdk.svg)](https://pypi.org/project/smartapp-sdk/)
+[![license](https://img.shields.io/pypi/l/smartapp-sdk.svg)](https://github.com/pronovic/smartapp-sdk/blob/main/LICENSE)
+[![wheel](https://img.shields.io/pypi/wheel/smartapp-sdk.svg)](https://pypi.org/project/smartapp-sdk/)
+[![python](https://img.shields.io/pypi/pyversions/smartapp-sdk.svg)](https://pypi.org/project/smartapp-sdk/)
+[![Test Suite](https://github.com/pronovic/smartapp-sdk/workflows/Test%20Suite/badge.svg)](https://github.com/pronovic/smartapp-sdk/actions?query=workflow%3A%22Test+Suite%22)
+[![docs](https://readthedocs.org/projects/smartapp-sdk/badge/?version=stable&style=flat)](https://smartapp-sdk.readthedocs.io/en/stable/)
+[![coverage](https://coveralls.io/repos/github/pronovic/smartapp-sdk/badge.svg?branch=main)](https://coveralls.io/github/pronovic/smartapp-sdk?branch=main)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+
+_Note: As of January 2025, I have migrated my home automation infrastructure from SmartThings to Home Assistant, so I no longer actively use this software. I will continue to maintain the library, keeping dependencies up-to-date and supporting new Python versions, etc.  Time permitting, I will also continue to accept GitHub issues for bug fixes and enhancement requests.  If you submit an issue, please keep in mind that I no longer have a SmartThings environment to test with, so I will expect you to coordinate with me on testing before I release any changes._
+
+---
+
+smartapp-sdk is a Python library to build a [webhook-based SmartApp](https://developer-preview.smartthings.com/docs/connected-services/smartapp-basics/) for the [SmartThings platform](https://www.smartthings.com/).
+
+The SDK is intended to be easy to use no matter how you choose to structure your code, whether that's a traditional Python webapp (such as FastAPI on Uvicorn) or a serverless application (such as AWS Lambda).
+
+The SDK handles all the mechanics of the [webhook lifecycle interface](https://developer-preview.smartthings.com/docs/connected-services/lifecycles/) on your behalf.  You just implement a single endpoint to accept the SmartApp webhook requests, and a single callback class where you define specialized behavior for the webhook events.  A clean [attrs](https://www.attrs.org/en/stable/) object interface is exposed for use by your callback.
+
+SDK documentation is found at [smartapp-sdk.readthedocs.io](https://smartapp-sdk.readthedocs.io/en/stable/).  Look there for installation instructions, the class model documentation, and example code.
+

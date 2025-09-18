@@ -1,0 +1,216 @@
+tests.smartapp.test_signature
+=============================
+
+.. py:module:: tests.smartapp.test_signature
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: METHOD
+   :value: 'POST'
+
+
+.. py:data:: HOST
+   :value: 'example.com'
+
+
+.. py:data:: PATH
+   :value: '/foo?param=value&pet=dog'
+
+
+.. py:data:: REQUEST_TARGET
+   :value: 'post /foo?param=value&pet=dog'
+
+
+.. py:data:: DATE_STR
+   :value: 'Thu, 05 Jan 2014 21:31:40 GMT'
+
+
+.. py:data:: DATE_OBJ
+
+.. py:data:: BODY
+   :value: '{"hello": "world"}'
+
+
+.. py:data:: CONTENT_TYPE
+   :value: 'application/json'
+
+
+.. py:data:: CONTENT_LENGTH
+   :value: ''
+
+
+.. py:data:: DIGEST
+   :value: 'SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE='
+
+
+.. py:data:: CORRELATION
+   :value: 'XXX'
+
+
+.. py:data:: KEY_ID
+   :value: 'Test'
+
+
+.. py:data:: ALGORITHM
+   :value: 'rsa-sha256'
+
+
+.. py:data:: CLOCK_SKEW
+   :value: 300
+
+
+.. py:data:: KEYSERVER_URL
+   :value: 'https://key.smartthings.com'
+
+
+.. py:data:: KEY_DOWNLOAD_URL
+   :value: 'https://key.smartthings.com/Test'
+
+
+.. py:data:: SMARTAPP_URL
+   :value: 'https://example.com/foo?param=value&pet=dog'
+
+
+.. py:data:: PUBLIC_SIGNING_KEY
+   :value: ''
+
+
+.. py:data:: WRONG_SIGNING_KEY
+   :value: ''
+
+
+.. py:data:: DEFAULT_AUTHORIZATION
+   :value: ''
+
+
+.. py:data:: DEFAULT_SIGNATURE
+   :value: ''
+
+
+.. py:data:: DEFAULT_SIGNING_STRING
+   :value: ''
+
+
+.. py:data:: DEFAULT_ORIGINAL_HEADERS
+
+.. py:data:: DEFAULT_SIGNING_HEADERS
+   :value: 'Date'
+
+
+.. py:data:: DEFAULT_SIGNING_ATTRIBUTES
+
+.. py:data:: ALL_HEADERS_AUTHORIZATION
+   :value: ''
+
+
+.. py:data:: ALL_HEADERS_SIGNATURE
+   :value: ''
+
+
+.. py:data:: ALL_HEADERS_ORIGINAL_HEADERS
+
+.. py:data:: ALL_HEADERS_SIGNING_HEADERS
+   :value: '(request-target) host date content-type digest content-length'
+
+
+.. py:data:: ALL_HEADERS_SIGNING_ATTRIBUTES
+
+.. py:data:: ALL_HEADERS_SIGNING_STRING
+   :value: ''
+
+
+.. py:data:: TIMEOUT_MATCHER
+
+.. py:function:: build_config(clock_skew_sec: int | None = CLOCK_SKEW) -> smartapp.interface.SmartAppDispatcherConfig
+
+   Build configuration to test with.
+
+
+.. py:function:: build_definition(target_url: str = SMARTAPP_URL) -> smartapp.interface.SmartAppDefinition
+
+   Build a SmartApp definition to test with.
+
+
+.. py:function:: build_context(headers: dict[str, str]) -> smartapp.interface.SmartAppRequestContext
+
+   Build a request context to test with.
+
+
+.. py:class:: TestSignatureVerifier
+
+   .. py:method:: test_default_signature_attributes()
+
+
+   .. py:method:: test_all_headers_signature_attributes()
+
+
+   .. py:method:: test_header()
+
+
+   .. py:method:: test_verify_date_valid(now, date)
+
+
+   .. py:method:: test_verify_date_invalid(now, date)
+
+
+   .. py:method:: test_verify_date_no_skew(now, date)
+
+
+   .. py:method:: test_default_verify_valid(now, retrieve)
+
+
+   .. py:method:: test_all_headers_verify_valid(now, retrieve)
+
+
+   .. py:method:: test_default_verify_key_download_failure(now, retrieve)
+
+
+   .. py:method:: test_all_headers_verify_download_failure(now, retrieve)
+
+
+   .. py:method:: test_default_verify_invalid_key(now, retrieve)
+
+
+   .. py:method:: test_all_headers_verify_invalid_key(now, retrieve)
+
+
+   .. py:method:: test_default_verify_wrong_key(now, retrieve)
+
+
+   .. py:method:: test_all_headers_verify_wrong_key(now, retrieve)
+
+
+   .. py:method:: test_default_verify_mismatch(now, retrieve)
+
+
+   .. py:method:: test_all_headers_verify_mismatch(now, retrieve)
+
+
+   .. py:method:: test_authorization_bad()
+
+
+   .. py:method:: test_authorization_missing_attribute(attribute)
+
+
+   .. py:method:: test_authorization_invalid_algorithm()
+
+
+.. py:class:: TestRetrievePublicKey
+
+   .. py:method:: test_retrieve_public_key_succeeds()
+
+
+   .. py:method:: test_retrieve_public_key_fails()
+
+
+   .. py:method:: test_retrieve_public_key_retry()
+
+

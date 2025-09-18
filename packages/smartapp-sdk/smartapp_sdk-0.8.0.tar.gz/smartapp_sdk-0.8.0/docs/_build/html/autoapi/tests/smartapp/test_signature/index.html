@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tests.smartapp.test_signature &#8212; smartapp-sdk 0.8.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="tests.smartapp.testutil" href="../testutil/index.html" />
+    <link rel="prev" title="tests.smartapp.test_interface" href="../test_interface/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-tests.smartapp.test_signature">
+<span id="tests-smartapp-test-signature"></span><h1>tests.smartapp.test_signature<a class="headerlink" href="#module-tests.smartapp.test_signature" title="Link to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.METHOD">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">METHOD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'POST'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.METHOD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.HOST">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">HOST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'example.com'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.HOST" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.PATH">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">PATH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/foo?param=value&amp;pet=dog'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.PATH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.REQUEST_TARGET">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">REQUEST_TARGET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'post</span> <span class="pre">/foo?param=value&amp;pet=dog'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.REQUEST_TARGET" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DATE_STR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DATE_STR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Thu,</span> <span class="pre">05</span> <span class="pre">Jan</span> <span class="pre">2014</span> <span class="pre">21:31:40</span> <span class="pre">GMT'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.DATE_STR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DATE_OBJ">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DATE_OBJ</span></span><a class="headerlink" href="#tests.smartapp.test_signature.DATE_OBJ" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.BODY">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">BODY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'{&quot;hello&quot;:</span> <span class="pre">&quot;world&quot;}'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.BODY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.CONTENT_TYPE">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">CONTENT_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'application/json'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.CONTENT_TYPE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.CONTENT_LENGTH">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">CONTENT_LENGTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.CONTENT_LENGTH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DIGEST">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DIGEST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE='</span></em><a class="headerlink" href="#tests.smartapp.test_signature.DIGEST" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.CORRELATION">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">CORRELATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'XXX'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.CORRELATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.KEY_ID">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">KEY_ID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Test'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.KEY_ID" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALGORITHM">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALGORITHM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'rsa-sha256'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.ALGORITHM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.CLOCK_SKEW">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">CLOCK_SKEW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">300</span></em><a class="headerlink" href="#tests.smartapp.test_signature.CLOCK_SKEW" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.KEYSERVER_URL">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">KEYSERVER_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://key.smartthings.com'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.KEYSERVER_URL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.KEY_DOWNLOAD_URL">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">KEY_DOWNLOAD_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://key.smartthings.com/Test'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.KEY_DOWNLOAD_URL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.SMARTAPP_URL">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">SMARTAPP_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://example.com/foo?param=value&amp;pet=dog'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.SMARTAPP_URL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.PUBLIC_SIGNING_KEY">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">PUBLIC_SIGNING_KEY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.PUBLIC_SIGNING_KEY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.WRONG_SIGNING_KEY">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">WRONG_SIGNING_KEY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.WRONG_SIGNING_KEY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DEFAULT_AUTHORIZATION">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_AUTHORIZATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.DEFAULT_AUTHORIZATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DEFAULT_SIGNATURE">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SIGNATURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.DEFAULT_SIGNATURE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DEFAULT_SIGNING_STRING">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SIGNING_STRING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.DEFAULT_SIGNING_STRING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DEFAULT_ORIGINAL_HEADERS">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_ORIGINAL_HEADERS</span></span><a class="headerlink" href="#tests.smartapp.test_signature.DEFAULT_ORIGINAL_HEADERS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DEFAULT_SIGNING_HEADERS">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SIGNING_HEADERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Date'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.DEFAULT_SIGNING_HEADERS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.DEFAULT_SIGNING_ATTRIBUTES">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SIGNING_ATTRIBUTES</span></span><a class="headerlink" href="#tests.smartapp.test_signature.DEFAULT_SIGNING_ATTRIBUTES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALL_HEADERS_AUTHORIZATION">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALL_HEADERS_AUTHORIZATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.ALL_HEADERS_AUTHORIZATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALL_HEADERS_SIGNATURE">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALL_HEADERS_SIGNATURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.ALL_HEADERS_SIGNATURE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALL_HEADERS_ORIGINAL_HEADERS">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALL_HEADERS_ORIGINAL_HEADERS</span></span><a class="headerlink" href="#tests.smartapp.test_signature.ALL_HEADERS_ORIGINAL_HEADERS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALL_HEADERS_SIGNING_HEADERS">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALL_HEADERS_SIGNING_HEADERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'(request-target)</span> <span class="pre">host</span> <span class="pre">date</span> <span class="pre">content-type</span> <span class="pre">digest</span> <span class="pre">content-length'</span></em><a class="headerlink" href="#tests.smartapp.test_signature.ALL_HEADERS_SIGNING_HEADERS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALL_HEADERS_SIGNING_ATTRIBUTES">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALL_HEADERS_SIGNING_ATTRIBUTES</span></span><a class="headerlink" href="#tests.smartapp.test_signature.ALL_HEADERS_SIGNING_ATTRIBUTES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.ALL_HEADERS_SIGNING_STRING">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">ALL_HEADERS_SIGNING_STRING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tests.smartapp.test_signature.ALL_HEADERS_SIGNING_STRING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TIMEOUT_MATCHER">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">TIMEOUT_MATCHER</span></span><a class="headerlink" href="#tests.smartapp.test_signature.TIMEOUT_MATCHER" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.build_config">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">build_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clock_skew_sec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CLOCK_SKEW</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppDispatcherConfig" title="smartapp.interface.SmartAppDispatcherConfig"><span class="pre">smartapp.interface.SmartAppDispatcherConfig</span></a></span></span><a class="headerlink" href="#tests.smartapp.test_signature.build_config" title="Link to this definition">¶</a></dt>
+<dd><p>Build configuration to test with.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.build_definition">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">build_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">SMARTAPP_URL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppDefinition" title="smartapp.interface.SmartAppDefinition"><span class="pre">smartapp.interface.SmartAppDefinition</span></a></span></span><a class="headerlink" href="#tests.smartapp.test_signature.build_definition" title="Link to this definition">¶</a></dt>
+<dd><p>Build a SmartApp definition to test with.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.build_context">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">build_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppRequestContext" title="smartapp.interface.SmartAppRequestContext"><span class="pre">smartapp.interface.SmartAppRequestContext</span></a></span></span><a class="headerlink" href="#tests.smartapp.test_signature.build_context" title="Link to this definition">¶</a></dt>
+<dd><p>Build a request context to test with.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">TestSignatureVerifier</span></span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_default_signature_attributes">
+<span class="sig-name descname"><span class="pre">test_default_signature_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_default_signature_attributes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_signature_attributes">
+<span class="sig-name descname"><span class="pre">test_all_headers_signature_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_signature_attributes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_header">
+<span class="sig-name descname"><span class="pre">test_header</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_header" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_verify_date_valid">
+<span class="sig-name descname"><span class="pre">test_verify_date_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_verify_date_valid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_verify_date_invalid">
+<span class="sig-name descname"><span class="pre">test_verify_date_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_verify_date_invalid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_verify_date_no_skew">
+<span class="sig-name descname"><span class="pre">test_verify_date_no_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_verify_date_no_skew" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_valid">
+<span class="sig-name descname"><span class="pre">test_default_verify_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_valid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_valid">
+<span class="sig-name descname"><span class="pre">test_all_headers_verify_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_valid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_key_download_failure">
+<span class="sig-name descname"><span class="pre">test_default_verify_key_download_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_key_download_failure" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_download_failure">
+<span class="sig-name descname"><span class="pre">test_all_headers_verify_download_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_download_failure" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_invalid_key">
+<span class="sig-name descname"><span class="pre">test_default_verify_invalid_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_invalid_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_invalid_key">
+<span class="sig-name descname"><span class="pre">test_all_headers_verify_invalid_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_invalid_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_wrong_key">
+<span class="sig-name descname"><span class="pre">test_default_verify_wrong_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_wrong_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_wrong_key">
+<span class="sig-name descname"><span class="pre">test_all_headers_verify_wrong_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_wrong_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_mismatch">
+<span class="sig-name descname"><span class="pre">test_default_verify_mismatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_default_verify_mismatch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_mismatch">
+<span class="sig-name descname"><span class="pre">test_all_headers_verify_mismatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_all_headers_verify_mismatch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_authorization_bad">
+<span class="sig-name descname"><span class="pre">test_authorization_bad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_authorization_bad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_authorization_missing_attribute">
+<span class="sig-name descname"><span class="pre">test_authorization_missing_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_authorization_missing_attribute" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestSignatureVerifier.test_authorization_invalid_algorithm">
+<span class="sig-name descname"><span class="pre">test_authorization_invalid_algorithm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestSignatureVerifier.test_authorization_invalid_algorithm" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestRetrievePublicKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_signature.</span></span><span class="sig-name descname"><span class="pre">TestRetrievePublicKey</span></span><a class="headerlink" href="#tests.smartapp.test_signature.TestRetrievePublicKey" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestRetrievePublicKey.test_retrieve_public_key_succeeds">
+<span class="sig-name descname"><span class="pre">test_retrieve_public_key_succeeds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestRetrievePublicKey.test_retrieve_public_key_succeeds" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestRetrievePublicKey.test_retrieve_public_key_fails">
+<span class="sig-name descname"><span class="pre">test_retrieve_public_key_fails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestRetrievePublicKey.test_retrieve_public_key_fails" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_signature.TestRetrievePublicKey.test_retrieve_public_key_retry">
+<span class="sig-name descname"><span class="pre">test_retrieve_public_key_retry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_signature.TestRetrievePublicKey.test_retrieve_public_key_retry" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">smartapp-sdk</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=smartapp-sdk&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">tests</a><ul>
+  <li><a href="../index.html">tests.smartapp</a><ul>
+      <li>Previous: <a href="../test_interface/index.html" title="previous chapter">tests.smartapp.test_interface</a></li>
+      <li>Next: <a href="../testutil/index.html" title="next chapter">tests.smartapp.testutil</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/smartapp-sdk" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

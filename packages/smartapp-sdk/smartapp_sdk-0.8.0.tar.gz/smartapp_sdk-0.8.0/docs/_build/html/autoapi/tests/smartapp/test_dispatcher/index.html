@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tests.smartapp.test_dispatcher &#8212; smartapp-sdk 0.8.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="tests.smartapp.test_interface" href="../test_interface/index.html" />
+    <link rel="prev" title="tests.smartapp.test_converter" href="../test_converter/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-tests.smartapp.test_dispatcher">
+<span id="tests-smartapp-test-dispatcher"></span><h1>tests.smartapp.test_dispatcher<a class="headerlink" href="#module-tests.smartapp.test_dispatcher" title="Link to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.FIXTURE_DIR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">FIXTURE_DIR</span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.FIXTURE_DIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.REQUEST_DIR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">REQUEST_DIR</span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.REQUEST_DIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.CLOCK_SKEW_SEC">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">CLOCK_SKEW_SEC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">555</span></em><a class="headerlink" href="#tests.smartapp.test_dispatcher.CLOCK_SKEW_SEC" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.CORRELATION">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">CORRELATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'AAAA'</span></em><a class="headerlink" href="#tests.smartapp.test_dispatcher.CORRELATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.HEADERS">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">HEADERS</span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.HEADERS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.requests">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">requests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.requests" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.definition">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">definition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.definition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.event_handler">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">event_handler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppEventHandler" title="smartapp.interface.SmartAppEventHandler"><span class="pre">smartapp.interface.SmartAppEventHandler</span></a></span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.event_handler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.dispatcher">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">dispatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppDefinition" title="smartapp.interface.SmartAppDefinition"><span class="pre">smartapp.interface.SmartAppDefinition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppEventHandler" title="smartapp.interface.SmartAppEventHandler"><span class="pre">smartapp.interface.SmartAppEventHandler</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../smartapp/dispatcher/index.html#smartapp.dispatcher.SmartAppDispatcher" title="smartapp.dispatcher.SmartAppDispatcher"><span class="pre">smartapp.dispatcher.SmartAppDispatcher</span></a></span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.dispatcher" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.dispatcher_with_check">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">dispatcher_with_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppDefinition" title="smartapp.interface.SmartAppDefinition"><span class="pre">smartapp.interface.SmartAppDefinition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../smartapp/interface/index.html#smartapp.interface.SmartAppEventHandler" title="smartapp.interface.SmartAppEventHandler"><span class="pre">smartapp.interface.SmartAppEventHandler</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../../smartapp/dispatcher/index.html#smartapp.dispatcher.SmartAppDispatcher" title="smartapp.dispatcher.SmartAppDispatcher"><span class="pre">smartapp.dispatcher.SmartAppDispatcher</span></a></span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.dispatcher_with_check" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_dispatcher.</span></span><span class="sig-name descname"><span class="pre">TestSmartAppDispatcher</span></span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_invalid_json">
+<span class="sig-name descname"><span class="pre">test_invalid_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_invalid_json" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_wrong_json">
+<span class="sig-name descname"><span class="pre">test_wrong_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_wrong_json" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_handler_internal_error">
+<span class="sig-name descname"><span class="pre">test_handler_internal_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_handler_internal_error" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_disabled_signature">
+<span class="sig-name descname"><span class="pre">test_disabled_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature_verifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_disabled_signature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_enabled_signature">
+<span class="sig-name descname"><span class="pre">test_enabled_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature_verifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher_with_check</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_enabled_signature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_bad_signature">
+<span class="sig-name descname"><span class="pre">test_bad_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature_verifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher_with_check</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_bad_signature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_confirmation">
+<span class="sig-name descname"><span class="pre">test_confirmation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_confirmation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_install">
+<span class="sig-name descname"><span class="pre">test_install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_install" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_update">
+<span class="sig-name descname"><span class="pre">test_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_update" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_uninstall">
+<span class="sig-name descname"><span class="pre">test_uninstall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_uninstall" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_oauth_callback">
+<span class="sig-name descname"><span class="pre">test_oauth_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_oauth_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_event">
+<span class="sig-name descname"><span class="pre">test_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_configuration_initialize">
+<span class="sig-name descname"><span class="pre">test_configuration_initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_configuration_initialize" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_configuration_page_1of2">
+<span class="sig-name descname"><span class="pre">test_configuration_page_1of2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_configuration_page_1of2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_configuration_page_2of2">
+<span class="sig-name descname"><span class="pre">test_configuration_page_2of2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_dispatcher.TestSmartAppDispatcher.test_configuration_page_2of2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">smartapp-sdk</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=smartapp-sdk&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">tests</a><ul>
+  <li><a href="../index.html">tests.smartapp</a><ul>
+      <li>Previous: <a href="../test_converter/index.html" title="previous chapter">tests.smartapp.test_converter</a></li>
+      <li>Next: <a href="../test_interface/index.html" title="next chapter">tests.smartapp.test_interface</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/smartapp-sdk" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,102 @@
+smartapp.converter
+==================
+
+.. py:module:: smartapp.converter
+
+.. autoapi-nested-parse::
+
+   Converter to serialize and deserialize lifecycle objects to various formats.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: DATETIME_ZONE
+   :value: 'UTC'
+
+
+.. py:data:: DATETIME_SEC_EPOCH
+   :value: '1970-01-01T00:00:00Z'
+
+
+.. py:data:: DATETIME_SEC_LEN
+   :value: 20
+
+
+.. py:data:: DATETIME_SEC_FORMAT
+   :value: 'YYYY-MM-DD[T]HH:mm:ss[Z]'
+
+
+.. py:data:: DATETIME_MS_EPOCH
+   :value: '1970-01-01T00:00:00.000Z'
+
+
+.. py:data:: DATETIME_MS_LEN
+   :value: 24
+
+
+.. py:data:: DATETIME_MS_FORMAT
+   :value: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'
+
+
+.. py:data:: T
+
+.. py:function:: serialize_datetime(datetime: arrow.Arrow) -> str
+
+   Serialize an Arrow datetime to a string.
+
+
+.. py:function:: deserialize_datetime(datetime: str) -> arrow.Arrow
+
+   Deserialize a string into an Arrow datetime.
+
+
+.. py:class:: StandardConverter
+
+   Bases: :py:obj:`cattrs.GenConverter`
+
+
+   Standard cattrs converter supporting both JSON and YAML and using camelCase for fields.
+
+
+   .. py:method:: to_json(obj: Any) -> str
+
+      Serialize an object to JSON.
+
+
+
+   .. py:method:: from_json(data: str, cls: type[T]) -> T
+
+      Deserialize an object from JSON.
+
+
+
+   .. py:method:: to_yaml(obj: Any) -> str
+
+      Serialize an object to YAML.
+
+
+
+   .. py:method:: from_yaml(data: str, cls: type[T]) -> T
+
+      Deserialize an object from YAML.
+
+
+
+.. py:class:: SmartAppConverter
+
+   Bases: :py:obj:`StandardConverter`
+
+
+   Cattrs converter to serialize/deserialize SmartApp-related classes, supporting both JSON and YAML.
+
+
+.. py:data:: CONVERTER
+

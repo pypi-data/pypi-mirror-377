@@ -1,0 +1,136 @@
+smartapp.signature
+==================
+
+.. py:module:: smartapp.signature
+
+.. autoapi-nested-parse::
+
+   Verify HTTP signatures on SmartApp lifecycle event requests.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: retrieve_public_key(key_server_url: str, key_id: str) -> str
+
+   Retrieve a public key, caching the result.
+
+
+.. py:data:: DATE_FORMAT
+   :value: 'DD MMM YYYY HH:mm:ss ZZZ'
+
+
+.. py:class:: SignatureVerifier
+
+   Signature verifier for Joyent HTTP signatures.
+
+
+   .. py:attribute:: context
+      :type:  smartapp.interface.SmartAppRequestContext
+
+
+   .. py:attribute:: config
+      :type:  smartapp.interface.SmartAppDispatcherConfig
+
+
+   .. py:attribute:: definition
+      :type:  smartapp.interface.SmartAppDefinition
+
+
+   .. py:attribute:: correlation_id
+      :type:  str | None
+
+
+   .. py:attribute:: body
+      :type:  str
+
+
+   .. py:attribute:: content_length
+      :type:  int
+
+
+   .. py:attribute:: method
+      :type:  str
+
+
+   .. py:attribute:: path
+      :type:  str
+
+
+   .. py:attribute:: request_target
+      :type:  str
+
+
+   .. py:attribute:: date
+      :type:  arrow.Arrow
+
+
+   .. py:attribute:: authorization
+      :type:  str
+
+
+   .. py:attribute:: signing_attributes
+      :type:  collections.abc.Mapping[str, str]
+
+
+   .. py:attribute:: signing_headers
+      :type:  str
+
+
+   .. py:attribute:: key_id
+      :type:  str
+
+
+   .. py:attribute:: keyserver_url
+      :type:  str
+
+
+   .. py:attribute:: algorithm
+      :type:  str
+
+
+   .. py:attribute:: signature
+      :type:  str
+
+
+   .. py:attribute:: signing_string
+      :type:  str
+
+
+   .. py:method:: header(name: str) -> str
+
+      Return the named header case-insensitively, raising SignatureError if it is not found or is empty
+
+
+
+   .. py:method:: retrieve_public_key() -> str
+
+      Retrieve the configured public key.
+
+
+
+   .. py:method:: verify_date() -> None
+
+      Verify the date, ensuring that it is current per skew configuration.
+
+
+
+   .. py:method:: verify_signature() -> None
+
+      Verify the RSA-SHA256 signature of the signing string.
+
+
+
+   .. py:method:: verify() -> None
+
+      Verify the request date and the signature of the signing string.
+
+
+

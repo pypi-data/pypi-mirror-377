@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>smartapp.dispatcher &#8212; smartapp-sdk 0.8.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="smartapp.interface" href="../interface/index.html" />
+    <link rel="prev" title="smartapp.converter" href="../converter/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-smartapp.dispatcher">
+<span id="smartapp-dispatcher"></span><h1>smartapp.dispatcher<a class="headerlink" href="#module-smartapp.dispatcher" title="Link to this heading">¶</a></h1>
+<p>Manage the requests and responses that are part of the SmartApp lifecycle.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="smartapp.dispatcher.StaticConfigManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">smartapp.dispatcher.</span></span><span class="sig-name descname"><span class="pre">StaticConfigManager</span></span><a class="headerlink" href="#smartapp.dispatcher.StaticConfigManager" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppConfigManager" title="smartapp.interface.SmartAppConfigManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smartapp.interface.SmartAppConfigManager</span></code></a></p>
+<p>Configuration manager that operates on static data.</p>
+<p>This is the configuration manager used by default in the dispatcher.  It operates on
+a static set of config pages.  This sort of static definition is adequate for lots of
+SmartApps, but it doesn’t work for some types of complex configuration, where the responses
+need to be generated dynamically.  In that case, you can implement your own configuration
+manager with that specialized behavior.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="smartapp.dispatcher.StaticConfigManager.handle_page">
+<span class="sig-name descname"><span class="pre">handle_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../interface/index.html#smartapp.interface.ConfigurationRequest" title="smartapp.interface.ConfigurationRequest"><span class="pre">smartapp.interface.ConfigurationRequest</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppDefinition" title="smartapp.interface.SmartAppDefinition"><span class="pre">smartapp.interface.SmartAppDefinition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../interface/index.html#smartapp.interface.ConfigurationPageResponse" title="smartapp.interface.ConfigurationPageResponse"><span class="pre">smartapp.interface.ConfigurationPageResponse</span></a></span></span><a class="headerlink" href="#smartapp.dispatcher.StaticConfigManager.handle_page" title="Link to this definition">¶</a></dt>
+<dd><p>Handle a CONFIGURATION PAGE lifecycle request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="smartapp.dispatcher.SmartAppDispatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">smartapp.dispatcher.</span></span><span class="sig-name descname"><span class="pre">SmartAppDispatcher</span></span><a class="headerlink" href="#smartapp.dispatcher.SmartAppDispatcher" title="Link to this definition">¶</a></dt>
+<dd><p>Dispatcher to manage the requests and responses that are part of the SmartApp lifecycle.</p>
+<p>You must provide both a definition and an event handler, but in some cases the handler
+methods will probably be no-ops without any custom logic.  For more information, see
+<cite>SmartAppEventHandler</cite>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="smartapp.dispatcher.SmartAppDispatcher.definition">
+<span class="sig-name descname"><span class="pre">definition</span></span><a class="headerlink" href="#smartapp.dispatcher.SmartAppDispatcher.definition" title="Link to this definition">¶</a></dt>
+<dd><p>The static definition for the SmartApp</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppDefinition" title="smartapp.interface.SmartAppDefinition">SmartAppDefinition</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="smartapp.dispatcher.SmartAppDispatcher.event_handler">
+<span class="sig-name descname"><span class="pre">event_handler</span></span><a class="headerlink" href="#smartapp.dispatcher.SmartAppDispatcher.event_handler" title="Link to this definition">¶</a></dt>
+<dd><p>Application event handler for SmartApp lifecycle events</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppEventHandler" title="smartapp.interface.SmartAppEventHandler">SmartAppEventHandler</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppDefinition" title="smartapp.interface.SmartAppDefinition"><span class="pre">smartapp.interface.SmartAppDefinition</span></a></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">event_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppEventHandler" title="smartapp.interface.SmartAppEventHandler"><span class="pre">smartapp.interface.SmartAppEventHandler</span></a></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="smartapp.dispatcher.SmartAppDispatcher.config">
+<span class="sig-name descname"><span class="pre">config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppDispatcherConfig" title="smartapp.interface.SmartAppDispatcherConfig"><span class="pre">smartapp.interface.SmartAppDispatcherConfig</span></a></em><a class="headerlink" href="#smartapp.dispatcher.SmartAppDispatcher.config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="smartapp.dispatcher.SmartAppDispatcher.manager">
+<span class="sig-name descname"><span class="pre">manager</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppConfigManager" title="smartapp.interface.SmartAppConfigManager"><span class="pre">smartapp.interface.SmartAppConfigManager</span></a></em><a class="headerlink" href="#smartapp.dispatcher.SmartAppDispatcher.manager" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="smartapp.dispatcher.SmartAppDispatcher.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppRequestContext" title="smartapp.interface.SmartAppRequestContext"><span class="pre">smartapp.interface.SmartAppRequestContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#smartapp.dispatcher.SmartAppDispatcher.dispatch" title="Link to this definition">¶</a></dt>
+<dd><p>Dispatch a request, responding to SmartThings and invoking callbacks as needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppRequestContext" title="smartapp.interface.SmartAppRequestContext"><em>SmartAppRequestContext</em></a>) – The request context</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response JSON payload that to be returned to the POST caller</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../interface/index.html#smartapp.interface.SmartAppError" title="smartapp.interface.SmartAppError"><strong>SmartAppError</strong></a> – If processing fails</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">smartapp-sdk</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=smartapp-sdk&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">smartapp</a><ul>
+      <li>Previous: <a href="../converter/index.html" title="previous chapter">smartapp.converter</a></li>
+      <li>Next: <a href="../interface/index.html" title="next chapter">smartapp.interface</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/smartapp-sdk" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

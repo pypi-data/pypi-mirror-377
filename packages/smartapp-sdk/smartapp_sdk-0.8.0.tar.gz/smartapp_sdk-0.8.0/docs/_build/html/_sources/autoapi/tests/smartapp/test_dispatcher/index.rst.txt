@@ -1,0 +1,86 @@
+tests.smartapp.test_dispatcher
+==============================
+
+.. py:module:: tests.smartapp.test_dispatcher
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: FIXTURE_DIR
+
+.. py:data:: REQUEST_DIR
+
+.. py:data:: CLOCK_SKEW_SEC
+   :value: 555
+
+
+.. py:data:: CORRELATION
+   :value: 'AAAA'
+
+
+.. py:data:: HEADERS
+
+.. py:function:: requests()
+
+.. py:function:: definition()
+
+.. py:function:: event_handler() -> smartapp.interface.SmartAppEventHandler
+
+.. py:function:: dispatcher(definition: smartapp.interface.SmartAppDefinition, event_handler: smartapp.interface.SmartAppEventHandler) -> smartapp.dispatcher.SmartAppDispatcher
+
+.. py:function:: dispatcher_with_check(definition: smartapp.interface.SmartAppDefinition, event_handler: smartapp.interface.SmartAppEventHandler) -> smartapp.dispatcher.SmartAppDispatcher
+
+.. py:class:: TestSmartAppDispatcher
+
+   .. py:method:: test_invalid_json(dispatcher)
+
+
+   .. py:method:: test_wrong_json(dispatcher)
+
+
+   .. py:method:: test_handler_internal_error(requests, dispatcher)
+
+
+   .. py:method:: test_disabled_signature(signature_verifier, requests, dispatcher)
+
+
+   .. py:method:: test_enabled_signature(signature_verifier, requests, dispatcher_with_check)
+
+
+   .. py:method:: test_bad_signature(signature_verifier, requests, dispatcher_with_check)
+
+
+   .. py:method:: test_confirmation(requests, dispatcher)
+
+
+   .. py:method:: test_install(requests, dispatcher)
+
+
+   .. py:method:: test_update(requests, dispatcher)
+
+
+   .. py:method:: test_uninstall(requests, dispatcher)
+
+
+   .. py:method:: test_oauth_callback(requests, dispatcher)
+
+
+   .. py:method:: test_event(requests, dispatcher)
+
+
+   .. py:method:: test_configuration_initialize(dispatcher)
+
+
+   .. py:method:: test_configuration_page_1of2(dispatcher)
+
+
+   .. py:method:: test_configuration_page_2of2(dispatcher)
+
+

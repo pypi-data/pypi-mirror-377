@@ -1,0 +1,87 @@
+smartapp.dispatcher
+===================
+
+.. py:module:: smartapp.dispatcher
+
+.. autoapi-nested-parse::
+
+   Manage the requests and responses that are part of the SmartApp lifecycle.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: StaticConfigManager
+
+   Bases: :py:obj:`smartapp.interface.SmartAppConfigManager`
+
+
+   Configuration manager that operates on static data.
+
+   This is the configuration manager used by default in the dispatcher.  It operates on
+   a static set of config pages.  This sort of static definition is adequate for lots of
+   SmartApps, but it doesn't work for some types of complex configuration, where the responses
+   need to be generated dynamically.  In that case, you can implement your own configuration
+   manager with that specialized behavior.
+
+
+   .. py:method:: handle_page(_request: smartapp.interface.ConfigurationRequest, definition: smartapp.interface.SmartAppDefinition, page_id: int) -> smartapp.interface.ConfigurationPageResponse
+
+      Handle a CONFIGURATION PAGE lifecycle request.
+
+
+
+.. py:class:: SmartAppDispatcher
+
+   Dispatcher to manage the requests and responses that are part of the SmartApp lifecycle.
+
+   You must provide both a definition and an event handler, but in some cases the handler
+   methods will probably be no-ops without any custom logic.  For more information, see
+   `SmartAppEventHandler`.
+
+   .. attribute:: definition
+
+      The static definition for the SmartApp
+
+      :type: SmartAppDefinition
+
+   .. attribute:: event_handler
+
+      Application event handler for SmartApp lifecycle events
+
+      :type: SmartAppEventHandler
+
+
+   .. py:attribute:: definition
+      :type:  smartapp.interface.SmartAppDefinition
+
+
+   .. py:attribute:: event_handler
+      :type:  smartapp.interface.SmartAppEventHandler
+
+
+   .. py:attribute:: config
+      :type:  smartapp.interface.SmartAppDispatcherConfig
+
+
+   .. py:attribute:: manager
+      :type:  smartapp.interface.SmartAppConfigManager
+
+
+   .. py:method:: dispatch(context: smartapp.interface.SmartAppRequestContext) -> str
+
+      Dispatch a request, responding to SmartThings and invoking callbacks as needed.
+
+      :param context: The request context
+      :type context: SmartAppRequestContext
+
+      :returns: Response JSON payload that to be returned to the POST caller
+      :rtype: str
+
+      :raises SmartAppError: If processing fails
+
+
+

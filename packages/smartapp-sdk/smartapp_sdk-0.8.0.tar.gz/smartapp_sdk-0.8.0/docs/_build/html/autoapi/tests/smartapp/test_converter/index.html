@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tests.smartapp.test_converter &#8212; smartapp-sdk 0.8.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="tests.smartapp.test_dispatcher" href="../test_dispatcher/index.html" />
+    <link rel="prev" title="tests.smartapp" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-tests.smartapp.test_converter">
+<span id="tests-smartapp-test-converter"></span><h1>tests.smartapp.test_converter<a class="headerlink" href="#module-tests.smartapp.test_converter" title="Link to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.FIXTURE_DIR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">FIXTURE_DIR</span></span><a class="headerlink" href="#tests.smartapp.test_converter.FIXTURE_DIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.REQUEST_DIR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">REQUEST_DIR</span></span><a class="headerlink" href="#tests.smartapp.test_converter.REQUEST_DIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.RESPONSE_DIR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">RESPONSE_DIR</span></span><a class="headerlink" href="#tests.smartapp.test_converter.RESPONSE_DIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.SETTINGS_DIR">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">SETTINGS_DIR</span></span><a class="headerlink" href="#tests.smartapp.test_converter.SETTINGS_DIR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.NOW">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">NOW</span></span><a class="headerlink" href="#tests.smartapp.test_converter.NOW" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.requests">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">requests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.requests" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.responses">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">responses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.responses" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.settings">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.settings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.validate_json_roundtrip">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">validate_json_roundtrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.validate_json_roundtrip" title="Link to this definition">¶</a></dt>
+<dd><p>Validate a JSON round trip.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.validate_yaml_roundtrip">
+<span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">validate_yaml_roundtrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.validate_yaml_roundtrip" title="Link to this definition">¶</a></dt>
+<dd><p>Validate a YAML round trip.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestDatetime">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestDatetime</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestDatetime" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestDatetime.test_serialize_datetime">
+<span class="sig-name descname"><span class="pre">test_serialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestDatetime.test_serialize_datetime" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestDatetime.test_deserialize_datetime">
+<span class="sig-name descname"><span class="pre">test_deserialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestDatetime.test_deserialize_datetime" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestDatetime.test_deserialize_datetime_invalid">
+<span class="sig-name descname"><span class="pre">test_deserialize_datetime_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestDatetime.test_deserialize_datetime_invalid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestConvertSettings</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_boolean">
+<span class="sig-name descname"><span class="pre">test_boolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_boolean" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_decimal">
+<span class="sig-name descname"><span class="pre">test_decimal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_decimal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_device">
+<span class="sig-name descname"><span class="pre">test_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_device" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_email">
+<span class="sig-name descname"><span class="pre">test_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_enum">
+<span class="sig-name descname"><span class="pre">test_enum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_enum" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_enum_group">
+<span class="sig-name descname"><span class="pre">test_enum_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_enum_group" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_icon">
+<span class="sig-name descname"><span class="pre">test_icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_icon" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_image">
+<span class="sig-name descname"><span class="pre">test_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_image" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_link">
+<span class="sig-name descname"><span class="pre">test_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_link" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_number">
+<span class="sig-name descname"><span class="pre">test_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_number" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_oauth">
+<span class="sig-name descname"><span class="pre">test_oauth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_oauth" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_page">
+<span class="sig-name descname"><span class="pre">test_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_page" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_paragraph">
+<span class="sig-name descname"><span class="pre">test_paragraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_paragraph" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_phone">
+<span class="sig-name descname"><span class="pre">test_phone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_phone" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_text">
+<span class="sig-name descname"><span class="pre">test_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_text" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSettings.test_time">
+<span class="sig-name descname"><span class="pre">test_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSettings.test_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestStringSecrets">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestStringSecrets</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestStringSecrets" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestStringSecrets.test_secrets">
+<span class="sig-name descname"><span class="pre">test_secrets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestStringSecrets.test_secrets" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestConvertResponses</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_confirmation">
+<span class="sig-name descname"><span class="pre">test_confirmation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_confirmation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_configuration_initialize">
+<span class="sig-name descname"><span class="pre">test_configuration_initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_configuration_initialize" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_configuration_page_only">
+<span class="sig-name descname"><span class="pre">test_configuration_page_only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_configuration_page_only" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_configuration_page_1of2">
+<span class="sig-name descname"><span class="pre">test_configuration_page_1of2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_configuration_page_1of2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_install">
+<span class="sig-name descname"><span class="pre">test_install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_install" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_update">
+<span class="sig-name descname"><span class="pre">test_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_update" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_uninstall">
+<span class="sig-name descname"><span class="pre">test_uninstall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_uninstall" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_oauth_callback">
+<span class="sig-name descname"><span class="pre">test_oauth_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_oauth_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertResponses.test_event">
+<span class="sig-name descname"><span class="pre">test_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">responses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertResponses.test_event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestConvertRequests</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_invalid_json">
+<span class="sig-name descname"><span class="pre">test_invalid_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_invalid_json" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_mismatch_json">
+<span class="sig-name descname"><span class="pre">test_mismatch_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_mismatch_json" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_confirmation">
+<span class="sig-name descname"><span class="pre">test_confirmation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_confirmation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_configuration_initialize">
+<span class="sig-name descname"><span class="pre">test_configuration_initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_configuration_initialize" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_configuration_page">
+<span class="sig-name descname"><span class="pre">test_configuration_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_configuration_page" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_install">
+<span class="sig-name descname"><span class="pre">test_install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_install" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_update">
+<span class="sig-name descname"><span class="pre">test_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_update" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_uninstall">
+<span class="sig-name descname"><span class="pre">test_uninstall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_uninstall" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_oauth_callback">
+<span class="sig-name descname"><span class="pre">test_oauth_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_oauth_callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_event_device">
+<span class="sig-name descname"><span class="pre">test_event_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_event_device" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertRequests.test_event_timer">
+<span class="sig-name descname"><span class="pre">test_event_timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertRequests.test_event_timer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSmartAppDispatcherConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestConvertSmartAppDispatcherConfig</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSmartAppDispatcherConfig" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSmartAppDispatcherConfig.test_config">
+<span class="sig-name descname"><span class="pre">test_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSmartAppDispatcherConfig.test_config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSmartAppDefinition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.smartapp.test_converter.</span></span><span class="sig-name descname"><span class="pre">TestConvertSmartAppDefinition</span></span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSmartAppDefinition" title="Link to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.smartapp.test_converter.TestConvertSmartAppDefinition.test_definition">
+<span class="sig-name descname"><span class="pre">test_definition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.smartapp.test_converter.TestConvertSmartAppDefinition.test_definition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">smartapp-sdk</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=smartapp-sdk&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">tests</a><ul>
+  <li><a href="../index.html">tests.smartapp</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">tests.smartapp</a></li>
+      <li>Next: <a href="../test_dispatcher/index.html" title="next chapter">tests.smartapp.test_dispatcher</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/smartapp-sdk" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

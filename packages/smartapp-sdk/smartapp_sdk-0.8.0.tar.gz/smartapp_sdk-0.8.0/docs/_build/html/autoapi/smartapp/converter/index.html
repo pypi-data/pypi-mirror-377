@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>smartapp.converter &#8212; smartapp-sdk 0.8.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="smartapp.dispatcher" href="../dispatcher/index.html" />
+    <link rel="prev" title="smartapp" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-smartapp.converter">
+<span id="smartapp-converter"></span><h1>smartapp.converter<a class="headerlink" href="#module-smartapp.converter" title="Link to this heading">¶</a></h1>
+<p>Converter to serialize and deserialize lifecycle objects to various formats.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_ZONE">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_ZONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UTC'</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_ZONE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_SEC_EPOCH">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_SEC_EPOCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1970-01-01T00:00:00Z'</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_SEC_EPOCH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_SEC_LEN">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_SEC_LEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_SEC_LEN" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_SEC_FORMAT">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_SEC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'YYYY-MM-DD[T]HH:mm:ss[Z]'</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_SEC_FORMAT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_MS_EPOCH">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_MS_EPOCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1970-01-01T00:00:00.000Z'</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_MS_EPOCH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_MS_LEN">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_MS_LEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_MS_LEN" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.DATETIME_MS_FORMAT">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">DATETIME_MS_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'</span></em><a class="headerlink" href="#smartapp.converter.DATETIME_MS_FORMAT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.T">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#smartapp.converter.T" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="smartapp.converter.serialize_datetime">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">serialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">arrow.Arrow</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#smartapp.converter.serialize_datetime" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize an Arrow datetime to a string.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="smartapp.converter.deserialize_datetime">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">deserialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">arrow.Arrow</span></span></span><a class="headerlink" href="#smartapp.converter.deserialize_datetime" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize a string into an Arrow datetime.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="smartapp.converter.StandardConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">StandardConverter</span></span><a class="headerlink" href="#smartapp.converter.StandardConverter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">cattrs.GenConverter</span></code></p>
+<p>Standard cattrs converter supporting both JSON and YAML and using camelCase for fields.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="smartapp.converter.StandardConverter.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#smartapp.converter.StandardConverter.to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize an object to JSON.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="smartapp.converter.StandardConverter.from_json">
+<span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><span class="pre">type</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#smartapp.converter.StandardConverter.from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize an object from JSON.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="smartapp.converter.StandardConverter.to_yaml">
+<span class="sig-name descname"><span class="pre">to_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#smartapp.converter.StandardConverter.to_yaml" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize an object to YAML.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="smartapp.converter.StandardConverter.from_yaml">
+<span class="sig-name descname"><span class="pre">from_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><span class="pre">type</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#smartapp.converter.StandardConverter.from_yaml" title="Link to this definition">¶</a></dt>
+<dd><p>Deserialize an object from YAML.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="smartapp.converter.SmartAppConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">SmartAppConverter</span></span><a class="headerlink" href="#smartapp.converter.SmartAppConverter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#smartapp.converter.StandardConverter" title="smartapp.converter.StandardConverter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardConverter</span></code></a></p>
+<p>Cattrs converter to serialize/deserialize SmartApp-related classes, supporting both JSON and YAML.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="smartapp.converter.CONVERTER">
+<span class="sig-prename descclassname"><span class="pre">smartapp.converter.</span></span><span class="sig-name descname"><span class="pre">CONVERTER</span></span><a class="headerlink" href="#smartapp.converter.CONVERTER" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">smartapp-sdk</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=smartapp-sdk&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">smartapp</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">smartapp</a></li>
+      <li>Next: <a href="../dispatcher/index.html" title="next chapter">smartapp.dispatcher</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/smartapp-sdk" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

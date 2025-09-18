@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  charon:
+    image: registry.gitlab.com/haondt/cicd/registry/charon:latest
+    volumes:
+      - ./credentials.json:/config/credentials.json
+      - ./charon.yml:/config/charon.yml
+    container_name: charon

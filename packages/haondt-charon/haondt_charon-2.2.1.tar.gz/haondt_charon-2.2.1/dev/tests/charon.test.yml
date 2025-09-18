@@ -1,0 +1,62 @@
+jobs:
+  test_1:
+    source:
+      type: local
+      path: first_file.txt
+    repository:
+      password: 4B711364F821F0DF6C1FA7F4FDDF3435B9B715B1BF5C698B0D4B65A5143CB6F9
+      backend:
+        type: local
+        path: repo_1
+    schedule:
+      after: 0s
+  test_2:
+    source:
+      type: local
+      path: input_directory/
+    repository:
+      password: something
+      backend:
+        type: local
+        path: repo_2
+    schedule:
+      after: 0s
+  test_3:
+    source:
+      type: sqlite
+      db_path: test3.db
+    repository:
+      password: 4B711364F821F0DF6C1FA7F4FDDF3435B9B715B1BF5C698B0D4B65A5143CB6F9
+      backend:
+        type: local
+        path: repo_3
+    schedule:
+      after: 0s
+  test_4:
+    source:
+      type: local
+      path: file.txt
+    repository:
+      password: abcdefghijkl
+      max_snapshots: 3
+      backend:
+        type: local
+        path: repo_4
+    schedule:
+      after: 0s
+  test_5:
+    source:
+      type: local
+      paths:
+        - dir1/dir2
+        - dir1/dir3/dir4
+        - dir1/dir3/file1.txt
+        - dir2/file2.txt
+        - dir3
+    repository:
+      password: something
+      backend:
+        type: local
+        path: repo_5
+    schedule:
+      after: 0s

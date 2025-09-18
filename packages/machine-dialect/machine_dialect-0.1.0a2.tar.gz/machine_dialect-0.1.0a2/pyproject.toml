@@ -1,0 +1,161 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel", "setuptools-rust==1.12.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "machine-dialect"
+version = "0.1.0a2"
+description = "Machine Dialect™ - Natural language programming in Markdown"
+readme = "README.md"
+requires-python = ">=3.10,<=13"
+authors = [
+    {name = "Lajara AI, LLC"},
+]
+keywords = ["programming-language", "natural-language", "markdown", "compiler"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Compilers",
+    "Topic :: Software Development :: Interpreters",
+]
+dependencies = [
+    "rfc3986==2.0.0",
+    "click==8.2.1",
+    "lark==1.2.2",
+    "openai==1.99.9",
+    "machine-dialect-vm==0.1.0a2",  # Rust VM (update version as needed)
+]
+
+[project.scripts]
+md = "machine_dialect.__main__:main"
+machine-dialect = "machine_dialect.__main__:main"
+
+[project.urls]
+"Homepage" = "https://github.com/kennylajara/machine-dialect"
+"Bug Tracker" = "https://github.com/kennylajara/machine-dialect/issues"
+
+[tool.setuptools.packages.find]
+include = ["machine_dialect*"]
+
+[dependency-groups]
+dev = [
+    "build==1.3.0",
+    "twine==6.2.0",
+    "mypy==1.17.1",
+    "pre-commit==4.2.0",
+    "pytest==8.4.1",
+    "pytest-cov==6.3.0",
+    "pyupgrade==3.20.0",
+    "ruff==0.12.7",
+    "maturin==1.9.4",
+    "setuptools-rust==1.12.0",
+    "patchelf==0.17.2.4; sys_platform == 'linux'",  # patchelf is Linux-only
+    "taskipy==1.14.1",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "C4", "RUF"]
+ignore = ["UP046"]  # PEP 695 syntax not fully supported by MyPy in pre-commit yet
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+explicit_package_bases = true
+
+# Ignore import errors for libraries without type stubs
+[[tool.mypy.overrides]]
+module = ["rfc3986", "rfc3986.*", "click", "click.*"]
+ignore_missing_imports = true
+
+# Ignore misc errors in test files (mostly for pytest decorators)
+[[tool.mypy.overrides]]
+module = [
+    "machine_dialect.*.tests.*",
+    "machine_dialect.acceptance.*",
+    "machine_dialect.__main__",
+    "tests.*"
+]
+disable_error_code = ["misc"]
+
+[tool.pytest.ini_options]
+testpaths = ["machine_dialect", "machine_dialect_vm", "tests"]
+pythonpath = []
+xfail_strict = true
+addopts = [
+    "--cov=machine_dialect",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-branch",
+]
+
+[tool.coverage.run]
+source = ["machine_dialect"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "**/tests/*",
+    "**/test_*.py",
+    "machine_dialect/*/tests/*",
+    "machine_dialect/**/tests/*",
+    "*/__main__.py",
+    "*/benchmarks/*",
+    "**/benchmarks/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+show_missing = true
+skip_covered = false
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.taskipy.tasks]
+# Testing commands
+test = "python -m pytest"
+test-verbose = "python -m pytest -v"
+test-watch = "python -m pytest-watch"
+
+# Coverage commands
+"cov:report" = "python -m pytest --cov=machine_dialect --cov-report=term-missing:skip-covered --cov-report=html --cov-report=xml -q && echo '\n📊 Coverage report generated in htmlcov/index.html'"
+"cov:html" = "python -m pytest --cov=machine_dialect --cov-report=html -q && python -m webbrowser htmlcov/index.html"
+"cov:low" = "python -m pytest --cov=machine_dialect --cov-report= -q 2>/dev/null && coverage report --omit='*/tests/*,**/tests/*,*/test_*.py,**/test_*.py,*/__main__.py,*/benchmarks/*,**/benchmarks/*' --sort=cover | grep -E '^machine_dialect' | grep -v '/tests/' | head -20"
+
+# Type checking
+typecheck = "mypy machine_dialect --strict"
+mypy = "mypy machine_dialect --strict"
+
+# Linting and formatting
+lint = "ruff check machine_dialect"
+format = "ruff format machine_dialect"
+check = "pre-commit run --all-files"
+
+# Development
+repl = "python -m machine_dialect"
+build = "python -m build"
+clean = "rm -rf build dist *.egg-info htmlcov .coverage coverage.xml .pytest_cache"

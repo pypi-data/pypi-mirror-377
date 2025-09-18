@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: tts_webui_extension.demucs
+Version: 0.0.4
+Summary: Demucs is a music source separation model that can separate drums, bass, vocals, and other instruments
+Home-page: https://github.com/rsxdalv/tts_webui_extension.demucs
+Author: rsxdalv
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: demucs
+Requires-Dist: torchaudio>=2.0.0
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+# Extension adapter for Demucs
+
+License - the source code within this repository is licensed under the MIT license.
+
+This extension provides a music source separation model that can separate drums, bass, vocals, and other instruments from audio tracks.
+
+## Features
+
+- Separate audio tracks into four components:
+  - Drums
+  - Bass
+  - Vocals
+  - Other instruments
+- High-quality separation using the HT-Demucs model
+- Simple and intuitive interface
+
+## Usage
+
+1. Upload an audio file (MP3, WAV, etc.)
+2. Click "Separate" to process the audio
+3. Download or listen to the separated components
+
+## About Demucs
+
+Demucs (Deep Extractor for Music Sources) is a state-of-the-art music source separation model developed by Facebook Research. It uses a hybrid architecture combining U-Net and Transformer components to effectively separate music into its constituent parts.
+
+For more information, visit the [official Demucs repository](https://github.com/facebookresearch/demucs).

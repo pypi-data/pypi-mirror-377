@@ -1,0 +1,60 @@
+[archiving]
+# Path to directory where dumps of expired events are saved
+# default "old-events"
+old_events_dir = "old-events"
+
+[authentication]
+# Path to the file containing user accounts and secrets for the Zino API
+# default "secrets"
+file = "secrets"
+
+[persistence]
+# Path to where the persistent Zino state should be saved
+# default "zino-state.json"
+file = "zino-state.json"
+
+# How often the persistent Zino state should be saved, in minutes
+# default 5 min
+period = 5
+
+[polling]
+# Path to a pollfile, the list of routers to monitor and related configuration
+# default "polldevs.cf"
+file = "polldevs.cf"
+
+# How often the pollfile is checked for changes, in minutes
+# default 1 min
+period = 1
+
+[snmp]
+# Zino supports two SNMP back-ends: "netsnmp" and "pysnmp".  The default is "netsnmp" (which requires the Net-SNMP C
+# library to be installed on your system).  "pysnmp" selects the pure Python library PySNMP, which is less performant.
+backend = "netsnmp"
+
+[event]
+# Whether to create portstate events for newly discovered interfaces that are operationally down
+make_events_for_new_interfaces = false
+
+# Logging configuration is optional, but if specified, it will override the
+# default logging config of Zino.  This is a TOML representation of the default
+# logging configuration dictionary, whose full documentation is available at
+# https://docs.python.org/3/library/logging.config.html#logging-config-dictschema
+#
+#[logging]
+#version = 1
+#disable_existing_loggers = false
+#
+#[logging.loggers.root]
+#level = "INFO"
+#handlers = ["console"]
+#
+#[logging.loggers.apscheduler]
+#level = "WARNING"
+#
+#[logging.formatters.standard]
+#format = "%(asctime)s - %(levelname)s - %(name)s (%(threadName)s) - %(message)s"
+#
+#[logging.handlers.console]
+#class = "logging.StreamHandler"
+#formatter = "standard"
+#stream = "ext://sys.stderr"

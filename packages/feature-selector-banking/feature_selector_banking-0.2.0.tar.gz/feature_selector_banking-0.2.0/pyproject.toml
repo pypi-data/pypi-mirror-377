@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "feature-selector-banking"
+version = "0.2.0"  # or use dynamic = ["version"] with setuptools_scm
+description = "Selecting features using best metrics "
+readme = "README.md"
+authors = [
+    {name = "Amir", email = "zakirovskiy116@gmail.com"},
+]
+license = {text = "MIT"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.8"
+dependencies = [
+    # e.g., "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+]
+
+[project.urls]
+Homepage = "https://github.com/LinearSpace07/feature-selector"
+Repository = "https://github.com/LinearSpace07/feature-selector"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

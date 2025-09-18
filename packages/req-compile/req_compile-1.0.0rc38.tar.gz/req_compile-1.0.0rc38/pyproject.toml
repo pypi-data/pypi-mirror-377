@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+namespace_packages = false
+
+[tool.pylint.main]
+max-line-length = 120
+disable = [
+    "fixme",  # Developers should be allowed to leave TODO comments as long as they're tracked by another issue
+]
+
+[tool.pylint."messages control"]
+disable = [
+    "R",
+    "missing-docstring",
+    "too-few-public-methods",
+    "too-many-arguments",
+    "raise-missing-from",
+    "consider-using-f-string",
+    "useless-import-alias",  # Conflict with ruff check.
+]
+
+[tool.isort]
+profile = "black"

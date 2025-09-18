@@ -1,0 +1,34 @@
+[project]
+name = "gitfind"
+version = "0.1.1"
+description = "A Python package to find and analyze GitHub repository statistics"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    { name = "Naman Katare", email = "katare272004@gmail.com" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "requests>=2.25.0",
+    "colorama>=0.4.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/27Naman2004/gitfind"
+Documentation = "https://github.com/27Naman2004/gitfind#readme"
+Repository = "https://github.com/27Naman2004/gitfind"
+Issues = "https://github.com/27Naman2004/gitfind/issues"
+
+[project.scripts]
+gitfind = "gitfind.cli:main"

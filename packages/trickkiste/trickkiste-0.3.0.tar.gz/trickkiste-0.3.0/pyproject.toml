@@ -1,0 +1,107 @@
+[project]
+name = "trickkiste"
+version = "0.3.0"
+description = "Random useful stuff"
+authors = [{name = "Frans Fürst", email = "frans.fuerst+om-office@protonmail.com"}]
+readme = "Readme.md"
+requires-python =  ">=3.10.4,<4"
+dependencies = [
+    "python-dateutil>=2.9.0.post0",
+]
+
+[project.scripts]
+suppress = 'trickkiste.std_suppress:main'
+
+[project.urls]
+#"Home Page" = "https://example.com"
+Repository = "https://projects.om-office.de/frans/trickkiste.git"
+
+# see https://docs.astral.sh/uv/concepts/projects/dependencies/
+[dependency-groups]
+dev = [
+    # those are actual dependencies but a package requiring rich/textual features
+    # from trickkiste should list them explicitly. This is to avoid unneeded
+    # dependencies being pulled into projects without fine grained feature based
+    # dependency management
+    "rich>=13",
+    "textual>=0.46",
+
+    # and here come the actual dev-dependencies
+    "types-python-dateutil>=2.9",
+    "ruff>=0.12.10",
+    "mypy>=1.17.1",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.1,<9",
+    "types-pyyaml>=6.0.12.20250822",
+    "yamllint>=1.37.1",
+    #pytest-cov = "*"
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+markers = [
+    "unit: Unit tests (deselect with '-m \"not unit\"')",
+    "system: Tests involving an attached device (deselect with '-m \"not system\"')",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict=true
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+exclude = '^(\\.venv)'
+mypy_path="typeshed"
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+# see https://docs.astral.sh/ruff/linter/
+# https://github.com/astral-sh/ruff-pre-commit
+select = [
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",    # isort
+    "ALL",
+]
+ignore = [
+    # These should be fixed eventually
+    "FBT001",   # Boolean-typed positional argument in function definition
+    "FBT002",   # Boolean default positional argument in function definition
+    "PLR0913",  # Too many arguments in function definition
+    "ERA001",   # commented out code
+    "E501",     # line too long
+    "PLR2004",  # Magic value used in comparison, consider replacing `127` with a constant variable
+
+    # These are ignored on purpose
+    "COM812",   # missing-trailing-comma
+    "D205",     # 1 blank line required between summary line and description
+    "D212",     # Multi-line docstring summary should start at the first line
+    "D213",     # Multi-line docstring
+    "D400",     # First line should end with a period
+    "D401",     # First line of docstring should be in imperative mood: "Adds generator created from @player_definition_fn to new track definition"
+    "D415",     # First line should end with a period, question mark, or exclamation point
+    "EM102",    # Exception must not use an f-string literal, assign to variable first
+    "EXE001",   # Shebang is present but file is not executable
+    "S101",     # Use of `assert` detected
+    "SIM117",   # Use single `with`
+    "TRY003",   # Avoid specifying long messages outside the exception class
+]
+exclude = [
+    "typeshed/*",
+    "build/*",
+    ".venv/",
+]
+

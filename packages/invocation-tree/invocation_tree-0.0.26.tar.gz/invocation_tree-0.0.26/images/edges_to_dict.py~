@@ -1,0 +1,9 @@
+
+def edges_to_dict(edges):
+    edges = {}
+    for n1, n2 in edges:
+        nodes = edges.setdefault(n1,[])
+        nodes.append(n2)
+        nodes = edges.setdefault(n2,[])
+        nodes.append(n1)
+    return edges

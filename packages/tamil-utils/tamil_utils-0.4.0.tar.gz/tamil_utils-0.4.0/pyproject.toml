@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tamil-utils"
+version = "0.4.0"
+description = "Tiny Tamil text utilities: normalize, tokenize, stopwords, graphemes, n-grams, syllables, Tamil collation; dataset preprocessor; optional spaCy tokenizer hook."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Arulnidhi Karunanidhi" }]
+keywords = ["tamil", "indic", "nlp", "unicode", "rag", "spacy", "tokenization"]
+dependencies = ["regex>=2023.0"]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Text Processing :: Linguistic",
+  "Intended Audience :: Developers",
+  "Typing :: Typed"
+]
+
+[project.urls]
+Homepage = "https://github.com/arulnidhii/tamil-utils"
+Documentation = "https://arulnidhii.github.io/tamil-utils/"
+Source = "https://github.com/arulnidhii/tamil-utils"
+Issues = "https://github.com/arulnidhii/tamil-utils/issues"
+
+[project.scripts]
+tamil-utils = "tamil_utils.cli:main"
+
+[project.optional-dependencies]
+spacy = ["spacy>=3.6,<4"]
+hf = ["datasets>=2.16.0"]
+dev = ["pytest>=7", "pytest-benchmark>=4", "mkdocs>=1.5", "mkdocs-material>=9"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

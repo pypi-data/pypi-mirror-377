@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+[project]
+name = "pysilu"
+version = "0.1.6"
+description = "A simple AI programming language"
+readme = "README.md"
+authors = [{ name = "askender", email = "askender43@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "llvmlite>=0.36.0",
+ "mlir>=0.0.1",
+ "pycparser>=2.21",
+ "z3-solver>=4.12.0",
+ "loguru>=0.7.2",
+]
+
+[project.scripts]
+silu = "silu.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["silu*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = ["pytest>=7.0.1", "pytest-cov>=4.0.0"]

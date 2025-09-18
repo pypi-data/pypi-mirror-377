@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "duckflow"
+version = "0.1.2"
+description = "🦆 Have your ducks in a row, and watch them go. A playful pipeline framework for chaining AI and logic tasks."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "Mark Conde", email = "markkristofferconde@gmail.com" }
+]
+requires-python = ">=3.9"
+
+dependencies = [
+  "openai>=1.0.0",
+  "requests>=2.28.0",
+  "python-dotenv>=1.0.0"
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.scripts]
+duckflow = "duckflow.core.runner:main"
+
+[project.urls]
+Homepage = "https://github.com/markconde/duckflow"
+Source = "https://github.com/markconde/duckflow"
+Issues = "https://github.com/markconde/duckflow/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["duckflow*"]

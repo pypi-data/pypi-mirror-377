@@ -1,0 +1,10 @@
+include README.md
+include LICENSE
+include CONTRIBUTING.md
+include requirements.txt
+include longdllm/data/*.txt
+include longdllm/data/*.csv
+recursive-include examples *.py
+recursive-include tests *.py
+global-exclude __pycache__
+global-exclude *.py[co]

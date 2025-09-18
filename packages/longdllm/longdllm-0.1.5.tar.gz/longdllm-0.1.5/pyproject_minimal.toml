@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "longdllm"
+version = "0.1.0"
+description = "Plug-and-play long context adaptation for diffusion language models"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Albert Ge", email = "lbertge@gmail.com"}
+]
+maintainers = [
+    {name = "Albert Ge", email = "lbertge@gmail.com"}
+]
+keywords = ["transformer", "long-context", "rope", "diffusion", "language-model", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers", 
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9", 
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8"
+# Minimal dependencies - assume user has core ML stack installed
+dependencies = [
+    "torch>=2.0.0",
+    "transformers>=4.40.0",
+]
+
+[project.optional-dependencies]
+# Full dependencies for fresh installations
+full = [
+    "torch>=2.0.0",
+    "transformers>=4.40.0", 
+    "datasets>=2.0.0",
+    "accelerate",
+    "numpy",
+    "einops",
+    "tqdm",
+    "flash-attn>=2.0.0",
+]
+# Development dependencies
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0", 
+    "black>=22.0",
+    "isort>=5.0",
+    "flake8>=4.0",
+    "mypy>=0.950",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/lbertge/longdllm"
+"Bug Reports" = "https://github.com/lbertge/longdllm/issues"
+"Source" = "https://github.com/lbertge/longdllm"
+"Documentation" = "https://github.com/lbertge/longdllm#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["longdllm*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+longdllm = ["data/*.txt", "data/*.csv"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

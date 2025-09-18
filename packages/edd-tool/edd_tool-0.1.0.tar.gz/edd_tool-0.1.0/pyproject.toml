@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edd-tool"
+version = "0.1.0"
+description = "EDD deployment and plugin management tool"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Ewan Barr", email = "ebarr@mpifr-bonn.mpg.de" }
+]
+requires-python = ">=3.9"
+dependencies = [
+  "ansible-core>=2.14,<2.20",
+]
+
+[project.scripts]
+edd-tool = "edd_tool.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

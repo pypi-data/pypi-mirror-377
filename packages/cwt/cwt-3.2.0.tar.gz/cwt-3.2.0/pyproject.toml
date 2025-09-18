@@ -1,0 +1,52 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "cwt"
+version = "3.2.0"
+description = "A Python implementation of CWT/COSE."
+authors = ["Ajitomi Daisuke <dajiaji@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/dajiaji/python-cwt"
+
+include = [
+  "CHANGES.rst",
+  "docs",
+  "poetry.lock",
+  "samples",
+  "tests",
+  "tox.ini",
+]
+
+exclude = [
+  "docs/_build",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9.2,<4.0"
+cbor2 = "^5.4.2"
+cryptography = ">=42.0.1,<47"
+pyhpke = ">=0.5.3,<1.0.0"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3"
+pytest-cov = ">=6,<8"
+tox = "^4.23.2"
+pre-commit = "^4.0.1"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">=7.1,<8.0.0"
+sphinx-rtd-theme = ">=3.0.2,<4.0.0"
+sphinx-autodoc-typehints = ">=2.3.0,<3.0.0"
+docutils = ">=0.21.2,<1.0.0"
+
+[tool.mypy]
+ignore_missing_imports = true

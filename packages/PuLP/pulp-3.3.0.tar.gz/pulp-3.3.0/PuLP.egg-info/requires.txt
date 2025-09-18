@@ -1,0 +1,36 @@
+
+[copt]
+coptpy
+
+[cplex]
+
+[cplex:sys_platform != "darwin" or python_full_version < "3.12"]
+cplex
+
+[gurobi]
+gurobipy
+
+[highs]
+highspy
+
+[mosek]
+mosek
+
+[open_py]
+cylp
+highspy
+pyscipopt
+
+[public_py]
+gurobipy
+coptpy
+xpress
+
+[public_py:sys_platform != "darwin" or python_full_version < "3.12"]
+cplex
+
+[scip]
+pyscipopt
+
+[xpress]
+xpress

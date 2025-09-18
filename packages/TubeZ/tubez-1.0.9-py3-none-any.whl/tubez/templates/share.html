@@ -1,0 +1,44 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-qr-code-scan"></i> Connect From Another Device</h2>
+
+{% if lan_access_allowed %}
+<div class="card bg-dark-subtle border-secondary">
+    <div class="card-body text-center">
+        <h5 class="card-title">Scan the QR code with your phone or tablet</h5>
+        <p class="text-muted">Ensure your other device is connected to the same Wi-Fi network.</p>
+        
+        <div class="my-4">
+            <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid bg-light p-2 rounded" style="max-width: 300px;">
+        </div>
+        
+        <p>Or manually enter this address in your device's browser:</p>
+        <div class="input-group justify-content-center">
+            <input type="text" class="form-control text-center bg-dark" value="{{ server_url }}" readonly style="max-width: 350px;">
+        </div>
+    </div>
+</div>
+{% else %}
+    {% if reason == "restart_required" %}
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-arrow-clockwise"></i> Server Restart Required</h4>
+        <p>You have enabled Local Network Access, but the server must be restarted for this change to take effect.</p>
+        <hr>
+        <p class="mb-0">Please stop and restart the <code>tubez</code> command in your terminal.</p>
+    </div>
+    {% elif reason == "disabled" %}
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Local Network Access is Disabled</h4>
+        <p>To connect from other devices on your network, you must first enable this feature in the settings.</p>
+        <hr>
+        <p class="mb-0">
+            This is a security measure to prevent unauthorized access on untrusted networks.
+            <a href="{{ url_for('settings') }}" class="btn btn-primary ms-3">Go to Settings</a>
+        </p>
+    </div>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

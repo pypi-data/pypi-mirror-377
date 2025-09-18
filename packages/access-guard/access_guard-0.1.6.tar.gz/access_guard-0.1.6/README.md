@@ -1,0 +1,178 @@
+Access Guard
+============
+
+A super lightweight runtime guard that provides a `@final` decorator, `final_class`, and an `Access` metaclass. It prevents methods/properties (optionally magic methods) marked as final from being overridden in subclasses, and blocks dynamic overriding after a class is created.
+
+Features
+--------
+- Supports regular methods, `@staticmethod`, `@classmethod`, and `@property` (including getter / setter / deleter).
+- Optionally lock magic methods: `@final_class(include_magic=True)`.
+- No third-party dependencies; standard library only, zero runtime external deps.
+- Validates at class creation time; violations raise `RuntimeError` (fail fast).
+- Prevents monkey patching: reassigning a final member after class creation is blocked.
+- PEP 561: ships `py.typed`, friendly to type checkers.
+- O(member count) lightweight scan; no added overhead on runtime calls.
+
+Installation
+------------
+
+Supports Python 3.10+.
+
+Using uv:
+```bash
+uv add access-guard
+```
+
+Or using pip:
+```bash
+pip install access-guard
+```
+
+Quick Examples
+--------------
+`final`
+
+```python
+from access_guard import Access, final
+
+class Base(metaclass=Access):
+    @final
+    def stable(self):
+        return "v1"
+
+    @property
+    @final
+    def value(self):
+        return 42
+
+class Child(Base):
+    pass
+
+Child().stable()  # OK
+
+# Any of the following will raise RuntimeError:
+# class Bad(Base):
+#     def stable(self):  # overriding a final method
+#         return "v2"
+
+# Bad.stable = lambda self: "hack"   # dynamic override after class creation
+```
+
+`final_class`
+
+Mark all currently defined non-magic members in the class as final in one go:
+
+```python
+from access_guard import Access, final_class
+
+@final_class
+class Service(metaclass=Access):
+    def create(self):
+        return "created"
+
+    def delete(self):
+        return "deleted"
+
+class Child(Service):
+    pass  # OK
+
+# The following will fail:
+# class Bad(Service):
+#     def create(self):  # RuntimeError
+#         return "x"
+```
+
+Note: Members added dynamically after the class is created will not be final automatically; it’s recommended to use `@final` on those members individually when you define them.
+
+Parameters
+----------
+
+```python
+from access_guard import Access, final_class
+
+# Exclude some methods from being locked
+@final_class(exclude={"debug", "open"})
+class Service(metaclass=Access):
+    def create(self): ...  # final
+    def debug(self): ...   # not final
+    def open(self): ...    # not final
+
+# Lock including magic methods
+@final_class(include_magic=True)
+class Model(metaclass=Access):
+    def __repr__(self):
+        return "Model()"   # final
+    def run(self):
+        return 1           # final
+
+# Use both together
+@final_class(exclude=["__repr__"], include_magic=True)
+class Partial(metaclass=Access):
+    def __repr__(self):    # not final
+        return "P()"
+    def calc(self):        # final
+        return 42
+```
+
+Parameter details:
+- `exclude`: iterable[str]. Names that should NOT be marked final; can be list / set / tuple.
+- `include_magic`: when True, magic methods like `__repr__` are also marked (builtin low-level `__dict__` and `__weakref__` are always ignored).
+
+Behavior Details
+----------------
+1. `@final` marks a special attribute on the actual function/property/descriptor object; for properties it also marks their accessors.  
+2. `final_class` collects all members in the class at decoration time and marks them; `exclude` and `include_magic` control the scope.  
+3. `Access` metaclass in `__new__`:
+   - Collects all final names from base classes (including magic);
+   - Checks whether the subclass overrides them;
+   - Merges and records them to the subclass.  
+4. Reassigning a final name after class creation is rejected in `__setattr__`.  
+5. If a base class uses `final_class(include_magic=True)`, its magic methods are locked and propagated to all subclasses.  
+
+Limitations / Notes
+-------------------
+- Protection only applies at class definition and dynamic assignment levels; instance attributes are not handled.  
+- Alias references are not tracked (you can still copy a function object and assign it under another name).  
+- With multiple inheritance: if different base classes define different member names, everything works as usual; if there’s a name conflict where one base marks it final, the subclass cannot override it.  
+- Does not attempt to intercept complex descriptor dynamics beyond `types.FunctionType` (e.g., some dynamic `__getattr__` patterns).  
+- Does not attempt to block low-level metaclass-level direct `__dict__` manipulation (deliberate attack scenarios).  
+
+Tests
+-----
+After installing dev dependencies:
+
+```bash
+uv sync --extra dev
+uv run pytest -q
+```
+
+Or using pip:
+```bash
+pip install -e .[dev]
+pytest -q
+```
+
+Versioning
+----------
+Semantic Versioning. In the early phase (<1.0.0), breaking changes may occur.  
+Current version: 0.1.3.
+
+Roadmap (potential)
+-------------------
+- Add an opt-in mode for locking instance-level resources.
+- Integrate with type checkers (mypy/pyright) via plugin (static early warnings).
+- Provide a CLI quick scan (list which names are locked).
+- Track override intent: allow explicit opt-out via `@allow_override` (in design).
+
+License
+-------
+MIT License. See `LICENSE`.
+
+Feedback / Contribution
+-----------------------
+Issues and PRs are welcome:
+- Describe your use case and expected behavior
+- Provide a minimal reproducible example
+- Specify Python version and package version
+
+For performance topics, please include a simple benchmark (timeit or pyperf).

@@ -1,0 +1,33 @@
+[project]
+name = "cdef-dst-conversion"
+version = "0.1.0"
+authors = [
+  { name="Tobias Kragholm", email="your.email@example.com" },
+]
+description = "A tool for exploring and converting SAS7BDAT files to Parquet."
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "polars",
+    "pyreadstat",
+]
+
+[project.scripts]
+dst-convert = "dst_conversion_package.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+python_version = "3.12"
+files = "dst_conversion_package"
+ignore_missing_imports = true
+warn_unreachable = true
+no_implicit_optional = true
+check_untyped_defs = true

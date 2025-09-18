@@ -1,0 +1,13 @@
+{
+    "_id": "dummy_npystore",
+    "classname": "herostools.actor.ArrayArchiver",
+    "arguments": {
+        "object_selector": "camera_dummy",
+        "max_retries": 1,
+        "event_name": "new_data",
+        "default_metadata": {
+            "file_path": "/home/suthep/images"
+        },
+        "save_template": "{{ file_path }}/testimg-{{ run_identifier }}-{{ frame }}.npy"
+        }
+}

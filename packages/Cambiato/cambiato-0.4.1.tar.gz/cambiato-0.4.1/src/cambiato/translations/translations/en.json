@@ -1,0 +1,110 @@
+{
+    "database": {
+        "order_status": {
+            "1": {"name": "To do", "description": "An order that has yet not been started."},
+            "2": {"name": "Assigned", "description": "An order that is assigned to a technician, but it is yet not started."},
+            "3": {"name": "In Progress", "description": "An order that is in progress."},
+            "4": {"name": "On Hold", "description": "An order that is on hold and should not be worked on."},
+            "5": {"name": "Completed by Technician", "description": "An order that has been completed by a technician."},
+            "6": {"name": "Completed", "description": "An order that has been fully completed."}
+        },
+        "order_type": {
+            "1": {"name": "Device Change", "description": "A device change on a facility."},
+            "2": {"name": "Enable Device", "description": "Enable a new device on a facility."},
+            "3": {"name": "Disable Device", "description": "Disable a device on a facility."},
+            "4": {"name": "Communication Point Change", "description": "Change a communication point."},
+            "5": {"name": "Manual Reading", "description": "The technician needs to perform a manual reading of a device."},
+            "6": {"name": "Device Alarm", "description": "The technician needs to investigate an alarm from a device."}
+        },
+        "role": {
+            "1": {"name": "Technician", "description": "A technician carries out orders in the field"},
+            "2": {"name": "Coordinator", "description": "A coordinator manages orders and assigns them to technicians."}
+        },
+        "utility": {
+            "1": {"name": "Electricity", "description": "The electricity utility."},
+            "2": {"name": "District Heating", "description": "The district heating utility."},
+            "3": {"name": "District Cooling", "description": "The district cooling utility."},
+            "4": {"name": "Water", "description": "The water utility."},
+            "5": {"name": "Gas", "description": "The gas utility."}
+        }
+    },
+    "order" : {
+        "page_title": "Order"
+    },
+    "components" : {
+        "buttons": {
+            "create_order_button" : {"label": "Create order"}
+        },
+        "dataframes": {
+            "edit_orders" : {
+                "c_order_id": "Order ID",
+                "c_assigned_to_displayname": "Assigned to Technician",
+                "c_scheduled_start_at" : "Scheduled Start At",
+                "c_scheduled_end_at" : "Scheduled End At",
+                "c_order_status_name" : "Order Status",
+                "c_order_type_name" : "Order Type",
+                "c_facility_ean" : "Facility",
+                "c_address" : "Address",
+                "c_ext_id" : "External ID",
+                "c_description" : "Description",
+                "c_created_by" : "Created By",
+                "c_created_at" : "Created At",
+                "c_updated_by" : "Updated By",
+                "c_updated_at" : "Updated At",
+                "validation_messages": {
+                    "duplicate_scheduled_start_time": "Duplicate scheduled start time \"{start_time}\" for technician \"{technician}\" for order ID : {order_ids} !",
+                    "scheduled_end_time_le_start_time": "The scheduled end time is <= start time for order ID : {order_ids} !"
+                }
+            }
+        },
+        "forms": {
+            "create_order_form" : {
+                "title": "Create Order",
+                "department_id": "Department",
+                "order_type_id_label": "Order Type",
+                "order_type_id_placeholder": "Order Type",
+                "order_status_id_label": "Order Status",
+                "order_status_id_placeholder": "Order Status",
+                "ext_id_label": "External ID",
+                "ext_id_placeholder": "External ID",
+                "facility_id_label": "Facility ID",
+                "facility_id_placeholder": "Facility ID",
+                "location_id_label": "Location ID",
+                "location_id_placeholder": "Location ID",
+                "checklist_id_label": "Checklist",
+                "checklist_id_placeholder": "Checklist",
+                "technician_id_label": "Technician",
+                "technician_id_placeholder": "Assign to Technician",
+                "description_label": "Description",
+                "description_placeholder": "Further details about the order to the technician.",
+                "scheduled_date": "Scheduled Day",
+                "scheduled_start_at": "Scheduled Start Time",
+                "scheduled_end_at": "Scheduled End Time",
+                "submit_button_label": "Create",
+                "success_message": "Successfully created order with order_id: {order_id}",
+                "error_message": "Unexpected error when saving order to database!",
+                "validation_messages": {
+                    "start_time_no_end_time": "Start time must be specified if end time is!",
+                    "end_time_no_start_time": "End time must be specified if start time is!",
+                    "start_time_geq_end_time": "start time ({start_time}) must be < end time ({end_time})!"
+                }
+            }
+        }
+    },
+    "views" : {
+        "orders" : {
+            "edit_orders_view" : {
+                "save_changes_button_label": "Save Changes",
+                "schedule_entire_day_toggle_label" : "Schedule entire day",
+                "schedule_entire_day_toggle_help" : "Schedule an order for the entire day.",
+                "update_orders_success_message": "Successfully updated orders!"
+            }
+        }
+    },
+    "controllers" : {
+        "order" : {
+            "page_title": "Order",
+            "select_utility_info_message": "Please select a utility above!"
+        }
+    }
+}

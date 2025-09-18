@@ -1,0 +1,128 @@
+Metadata-Version: 2.4
+Name: unicodec
+Version: 0.1.2
+Summary: Library for decoding bytes content into unicode
+Author-email: Gregory Petukhov <lorien@lorien.name>
+License-Expression: MIT
+Project-URL: homepage, http://github.com/lorien/unicodec
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.0
+Classifier: Programming Language :: Python :: 3.1
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=2.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: six
+Requires-Dist: typing-extensions; python_version <= "2.7"
+Dynamic: license-file
+
+# Unicodec Package Documentation
+
+[![Test Status](https://github.com/lorien/unicodec/actions/workflows/test.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/test.yml)
+[![Code Quality](https://github.com/lorien/unicodec/actions/workflows/check.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/test.yml)
+[![Type Check](https://github.com/lorien/unicodec/actions/workflows/mypy.yml/badge.svg)](https://github.com/lorien/unicodec/actions/workflows/mypy.yml)
+[![Test Coverage Status](https://coveralls.io/repos/github/lorien/unicodec/badge.svg)](https://coveralls.io/github/lorien/unicodec)
+
+This package provides functions for:
+
+- decoding bytes content of HTML document into Unicode text
+- detecting encoding of bytes content of HTML document
+- normalization of encoding's name to canonical form, according to WHATWG HTML standard
+
+Feel free to give feedback in Telegram groups: [@grablab](https://t.me/grablab) and [@grablab\_ru](https://t.me/grablab_ru).
+
+## Installation
+
+`pip install -U unicodec`
+
+## Usage Example #1
+
+Download web document with urllib and convert its content to Unicode.
+
+```python
+from urllib.request import urlopen
+
+from unicodec import decode_content, detect_content_encoding
+
+res = urlopen("http://lib.ru")
+rawdata = res.read()
+data = decode_content(rawdata, content_type_header=res.headers["content-type"])
+print(data[:70])
+print(detect_content_encoding(rawdata, res.headers["content-type"]))
+```
+
+Output:
+```
+<html><head><title>Lib.Ru: Библиотека Максима Мошкова</title></head><b
+koi8-r
+```
+
+## Usage Example #2
+
+Download web document with urllib3 and convert its content to Unicode.
+
+```python
+from urllib3 import PoolManager
+
+from unicodec import decode_content, detect_content_encoding
+
+res = PoolManager().urlopen("GET", "http://lib.ru")
+rawdata = res.data
+data = decode_content(rawdata, content_type_header=res.headers["content-type"])
+print(data[:70])
+print(detect_content_encoding(rawdata, res.headers["content-type"]))
+```
+
+Output:
+```
+<html><head><title>Lib.Ru: Библиотека Максима Мошкова</title></head><b
+koi8-r
+```
+
+## Usage Example #3
+
+Convert names of encodings to canonical form (according to WHATWG HTML standard).
+
+```python
+from unicodec.normalization import normalize_encoding_name
+
+for name in ["iso8859-1", "utf8", "cp1251"]:
+    print("{} -> {}".format(name, normalize_encoding_name(name)))
+```
+
+Output:
+
+```
+iso8859-1 -> windows-1252
+utf8 -> utf-8
+cp1251 -> windows-1251
+```
+
+## References
+
+- https://docs.python.org/3/library/html.html
+- https://docs.python.org/3/library/html.entities.html
+- https://html.spec.whatwg.org/multipage/parsing.html
+- https://encoding.spec.whatwg.org/#names-and-labels
+- https://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html

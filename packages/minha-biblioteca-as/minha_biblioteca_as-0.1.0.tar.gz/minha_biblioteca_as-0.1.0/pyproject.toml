@@ -1,0 +1,18 @@
+[project]
+name = "minha-biblioteca-as"
+version = "0.1.0"
+description = "Uma biblioteca de exemplo criada no curso"
+authors = [{ name = "Nome", email ="nome@email.com"}]
+license= {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[toll.pytest.ini_options]
+pythonpath =["src"]

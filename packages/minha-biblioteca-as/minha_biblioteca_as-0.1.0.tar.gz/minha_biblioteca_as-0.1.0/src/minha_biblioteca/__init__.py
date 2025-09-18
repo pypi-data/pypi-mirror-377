@@ -1,0 +1,1 @@
+from .exemplo import cumprimentar

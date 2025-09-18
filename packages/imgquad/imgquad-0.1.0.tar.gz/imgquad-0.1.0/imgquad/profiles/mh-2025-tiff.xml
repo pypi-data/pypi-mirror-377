@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<profile>
+
+<!-- Middeleeuwse Handschriften, 2025 specs (TIFF)-->
+
+<!-- File extensions that will be processed (case insensitive) -->
+<extension>tif</extension>
+<extension>tiff</extension>
+
+<!-- Namespace definitions (used in summaryProperty paths)-->
+<ns uri="adobe:ns:meta/" prefix="x"/>
+<ns uri="http://www.w3.org/1999/02/22-rdf-syntax-ns#" prefix="rdf"/>
+<ns uri="http://ns.adobe.com/photoshop/1.0/" prefix="photoshop"/>
+
+<!-- Properties that are written to summary file -->
+<summaryProperty>properties/image/format</summaryProperty>
+<summaryProperty>properties/image/icc_profile_name</summaryProperty>
+<summaryProperty>properties/image/tiff/XResolution</summaryProperty>
+<summaryProperty>properties/image/tiff/YResolution</summaryProperty>
+<summaryProperty>properties/image/tiff/ResolutionUnit</summaryProperty>
+<summaryProperty>properties/image/tiff/ImageWidth</summaryProperty>
+<summaryProperty>properties/image/tiff/ImageLength</summaryProperty>
+<summaryProperty>properties/image/tiff/BitsPerSample</summaryProperty>
+<summaryProperty>properties/image/tiff/Copyright</summaryProperty>
+<summaryProperty>properties/image/exif/ColorSpace</summaryProperty>
+<summaryProperty>properties/image/exif/Compression</summaryProperty>
+<summaryProperty>properties/image/exif/Software</summaryProperty>
+<summaryProperty>properties/image/exif/DateTimeOriginal</summaryProperty>
+<summaryProperty>properties/image/exif/Model</summaryProperty>
+<summaryProperty>properties/image/exif/Make</summaryProperty>
+<summaryProperty>properties/image/exif/ShutterSpeedValue</summaryProperty>
+<summaryProperty>properties/image/exif/ApertureValue</summaryProperty>
+<summaryProperty>properties/image/exif/ISOSpeedRatings</summaryProperty>
+<!-- Below properties can be encoded as either sub-elements or attibutes of
+an rdf:Description element, so they are duplicated here to cover both cases -->
+<summaryProperty>properties/image/x:xmpmeta/rdf:RDF/rdf:Description/photoshop:Headline</summaryProperty>
+<summaryProperty>properties/image/x:xmpmeta/rdf:RDF/rdf:Description/photoshop:Credit</summaryProperty>
+<summaryProperty>properties/image/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Headline</summaryProperty>
+<summaryProperty>properties/image/x:xmpmeta/rdf:RDF/rdf:Description/@photoshop:Credit</summaryProperty>
+
+<!-- Schematron schema definitions
+
+Each "schema"
+element links a search pattern to a corresponding schema
+
+- Value for "type" is either "fileName or "parentDirName"
+- Value for "match" is either "is", "startswith", "endswith" or "contains"
+-->
+
+<schema>mh-2025-tiff-600.sch</schema>
+
+</profile>
+
+

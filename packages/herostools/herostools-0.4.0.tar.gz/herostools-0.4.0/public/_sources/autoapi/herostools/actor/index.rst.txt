@@ -1,0 +1,206 @@
+herostools.actor
+================
+
+.. py:module:: herostools.actor
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/herostools/actor/data_archiver/index
+   /autoapi/herostools/actor/prometheus/index
+   /autoapi/herostools/actor/statemachine/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   herostools.actor.ArrayArchiver
+   herostools.actor.JsonArchiver
+   herostools.actor.HERODatasourceStateMachine
+
+
+Package Contents
+----------------
+
+.. py:class:: ArrayArchiver(save_template: str, split_data_array: bool = False, *args, **kwargs)
+
+   Bases: :py:obj:`HERODataArchiver`
+
+
+   This HERODataArchiver assumes the data to be numpy-like arrays and saves them as npy files.
+
+   :param object_selector: Zenoh object selector for the devices to subscribe to. In the simplest case this is the
+                           name of the target HERO
+   :param event_name: Name of the event.
+   :param save_template: The template from which the file name is generated.
+                         `Jinja2 <https://jinja.palletsprojects.com/en/stable/>`_ is used to generate a filename from the
+                         template using the given meta data given as a dictionary. Meta data can be supplied either by
+                         :code:`default_metadata` or obtained from the payload. For an example see the json example below.
+   :param split_data_array: If True and the payload is an array, the observer will split the array into individual
+                            frames and save them as separate files. The key :code:`_split_index` can be used in :code:`save_template`
+                            to specify the subframe index in the filename.
+   :param default_metadata: A dictionary containing the default metadata to be used when generating the filename.
+   :param max_retries: In case storing the data failed, retry storing until :code:`max_retries`.
+
+   .. rubric:: Example
+
+   The class can be started with BOSS using a json string as in the following example::
+
+       {
+         "_id": "my-camera-capturer",
+         "classname": "herostools.actor.ArrayArchiver",
+         "arguments": {
+           "object_selector": "my-camera",
+           "event_name": "acquisition_data",
+           "default_metadata": {
+             "file_path": "/mnt/mystorage/images"
+           },
+           "save_template": "{{ file_path }}/testimg-{{ '%04d' % ( frame / 2 ) |round(0, 'floor') }}-{{ frame % 2 }}.npy"
+         }
+       }
+
+   The templates generates file paths like the following::
+
+       /mnt/mystorage/images/testimg-0000-0.npy
+       /mnt/mystorage/images/testimg-0000-1.npy
+       /mnt/mystorage/images/testimg-0001-0.npy
+
+   assuming that :code:`frame` is a running iterator provided by the payload metadata (i.e. a key in the metadata dictionary).
+
+
+   .. py:attribute:: name_template
+
+
+   .. py:attribute:: split_data_array
+      :value: False
+
+
+
+   .. py:method:: _store(source_name: str, payload: numpy.typing.NDArray[Any], metadata: dict) -> None
+
+      Save data to a numpy array.
+      The filename is generated from the jinja template using the metadata.
+
+      :param source_name: Name of the event source (the HERO).
+      :param payload: The actual data as a numpy array.
+      :param metadata: The received metadata combined with the default metadata.
+
+
+
+.. py:class:: JsonArchiver(save_template: str, merge_metadata: bool = False, *args, **kwargs)
+
+   Bases: :py:obj:`HERODataArchiver`
+
+
+   This HERODataArchiver assumes the data to be a dictionary and saves it as a json file.
+
+   :param object_selector: Zenoh object selector for the devices to subscribe to. In the simplest case this is the
+                           name of the target HERO
+   :param event_name: Name of the event.
+   :param save_template: The template from which the file name is generated.
+                         `Jinja2 <https://jinja.palletsprojects.com/en/stable/>`_ is used to generate a filename from the
+                         template using the given meta data given as a dictionary. Meta data can be supplied either by
+                         :code:`default_metadata` or obtained from the payload. For an example see the json example below.
+   :param merge_metadata: If True,  merge the accompanying metadata to the data itself under the key :code:`metadata`..
+   :param default_metadata: A dictionary containing the default metadata to be used when generating the filename.
+
+
+   .. py:attribute:: name_template
+
+
+   .. py:attribute:: merge_metadata
+      :value: False
+
+
+
+   .. py:method:: _store(source_name: str, payload: dict, metadata: dict) -> None
+
+      Save data to a json file.
+      The filename is generated from the jinja template using the metadata.
+
+      :param source_name: Name of the event source (the HERO).
+      :param payload: The actual data.
+      :param metadata: The received metadata combined with the default metadata.
+
+
+
+.. py:class:: HERODatasourceStateMachine(loop, *args, http_port: int = 9090, bind_address: str = 'localhost', metrics_endpoint='/metrics', object_selector: str = '*', labels: dict = {}, **kwargs)
+
+   Bases: :py:obj:`heros.DatasourceObserver`
+
+
+   A class that can observe and handle the data emitted by one or more datasource HEROs.
+   In particular, this class provides an efficient way to listen to the data emitted by all datasource HEROs in
+   the realm. By not instantiating the HEROs themselves but just subscribing to the topics for the datasource, this
+   reduces the pressure on the backing zenoh network. If, however, only the data of a few HEROs should be observed,
+   it might make more sense to just instantiate the according RemoteHEROs and connect a callback to their `observable_data`
+   signal.
+
+   :param object_selector: selector to specify which objects to observe. This becomes part of a zenoh selector and thus
+   :param can be anything that makes sense in the selector. Defaults to * to observe all HEROs in the realm.:
+
+
+   .. py:attribute:: cache
+
+
+   .. py:attribute:: _http_port
+      :value: 9090
+
+
+
+   .. py:attribute:: _bind_address
+      :value: 'localhost'
+
+
+
+   .. py:attribute:: _metrics_endpoint
+      :value: '/metrics'
+
+
+
+   .. py:attribute:: _global_labels
+
+
+   .. py:method:: _http_handle_metrics(request)
+      :async:
+
+
+
+   .. py:method:: _start_webserver()
+      :async:
+
+
+
+   .. py:method:: _metric_name(key)
+
+      create a clean name for a metric without special characters matching [a-z0-9_].
+
+
+
+   .. py:method:: _unit_name(unit)
+
+      cleans units to not contain special characters
+
+
+
+   .. py:method:: _update(source_name, data)
+
+      update the values in the cache for source_name
+
+
+
+   .. py:method:: _convert_to_metrics(dsrs: heros.datasource.types.DatasourceReturnSet, prefix=None)
+
+
+   .. py:method:: get_cache()
+
+
+   .. py:method:: clear()
+
+

@@ -1,0 +1,202 @@
+herostools.actor.data_archiver
+==============================
+
+.. py:module:: herostools.actor.data_archiver
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   herostools.actor.data_archiver.HERODataArchiver
+   herostools.actor.data_archiver.ArrayArchiver
+   herostools.actor.data_archiver.JsonArchiver
+
+
+Module Contents
+---------------
+
+.. py:class:: HERODataArchiver(object_selector: str, event_name: str, default_metadata: dict | None = None, max_retries: int = 5, *args, **kwargs)
+
+   Bases: :py:obj:`heros.EventObserver`
+
+
+   This EventObserver subscribes to a user-definced event of a HERO and saves its payload to a file
+   path. The event payload must have the form of an iterable with the first entry being the data and the second
+   entry being a dictionary containing metadata.
+
+   :param object_selector: Zenoh object selector for the devices to subscribe to. In the simplest case this is the
+                           name of the target HERO
+   :param event_name: Name of the event.
+   :param default_metadata: A dictionary containing the default metadata.
+   :param max_retries: In case storing the data failed, retry storing until :code:`max_retries`.
+
+   .. note::
+
+      Do not use this class directly, use a child class which implements the method :meth:`_store`.
+      For example, :class:`ArrayArchiver` assumes the data to be array-like and saves it as a numpy array.
+
+
+   .. py:attribute:: metadata
+      :value: None
+
+
+
+   .. py:attribute:: max_retries
+      :value: 5
+
+
+
+   .. py:attribute:: _payload_queue
+
+
+   .. py:attribute:: _stop_event
+
+
+   .. py:attribute:: _worker_thread
+
+
+   .. py:method:: _process_queue() -> None
+
+      Background task to process the queue.
+
+
+
+   .. py:method:: _stop()
+
+      Stop the background thread gracefully.
+
+
+
+   .. py:method:: _teardown() -> None
+
+      Teardown method is called by boss.
+
+
+
+   .. py:method:: feed(source_name: str, data: Iterable, retry_count: int = 0) -> None
+
+      Callback function called by the source event.
+
+      :param source_name: Name of the event source (the HERO).
+      :param data: Data to be archived in the format (payload: object, metadata: dict)
+      :param retry_count: Count how often this queue item was already encountered.
+
+
+
+   .. py:method:: _store(source_name: str, payload: Any, metadata: dict) -> None
+      :abstractmethod:
+
+
+      Abstract method to store the payload.
+      Must be implemented by subclasses.
+
+      :param source_name: Name of the event source (the HERO).
+      :param payload: The actual data.
+      :param metadata: The received metadata combined with the default metadata.
+
+
+
+.. py:class:: ArrayArchiver(save_template: str, split_data_array: bool = False, *args, **kwargs)
+
+   Bases: :py:obj:`HERODataArchiver`
+
+
+   This HERODataArchiver assumes the data to be numpy-like arrays and saves them as npy files.
+
+   :param object_selector: Zenoh object selector for the devices to subscribe to. In the simplest case this is the
+                           name of the target HERO
+   :param event_name: Name of the event.
+   :param save_template: The template from which the file name is generated.
+                         `Jinja2 <https://jinja.palletsprojects.com/en/stable/>`_ is used to generate a filename from the
+                         template using the given meta data given as a dictionary. Meta data can be supplied either by
+                         :code:`default_metadata` or obtained from the payload. For an example see the json example below.
+   :param split_data_array: If True and the payload is an array, the observer will split the array into individual
+                            frames and save them as separate files. The key :code:`_split_index` can be used in :code:`save_template`
+                            to specify the subframe index in the filename.
+   :param default_metadata: A dictionary containing the default metadata to be used when generating the filename.
+   :param max_retries: In case storing the data failed, retry storing until :code:`max_retries`.
+
+   .. rubric:: Example
+
+   The class can be started with BOSS using a json string as in the following example::
+
+       {
+         "_id": "my-camera-capturer",
+         "classname": "herostools.actor.ArrayArchiver",
+         "arguments": {
+           "object_selector": "my-camera",
+           "event_name": "acquisition_data",
+           "default_metadata": {
+             "file_path": "/mnt/mystorage/images"
+           },
+           "save_template": "{{ file_path }}/testimg-{{ '%04d' % ( frame / 2 ) |round(0, 'floor') }}-{{ frame % 2 }}.npy"
+         }
+       }
+
+   The templates generates file paths like the following::
+
+       /mnt/mystorage/images/testimg-0000-0.npy
+       /mnt/mystorage/images/testimg-0000-1.npy
+       /mnt/mystorage/images/testimg-0001-0.npy
+
+   assuming that :code:`frame` is a running iterator provided by the payload metadata (i.e. a key in the metadata dictionary).
+
+
+   .. py:attribute:: name_template
+
+
+   .. py:attribute:: split_data_array
+      :value: False
+
+
+
+   .. py:method:: _store(source_name: str, payload: numpy.typing.NDArray[Any], metadata: dict) -> None
+
+      Save data to a numpy array.
+      The filename is generated from the jinja template using the metadata.
+
+      :param source_name: Name of the event source (the HERO).
+      :param payload: The actual data as a numpy array.
+      :param metadata: The received metadata combined with the default metadata.
+
+
+
+.. py:class:: JsonArchiver(save_template: str, merge_metadata: bool = False, *args, **kwargs)
+
+   Bases: :py:obj:`HERODataArchiver`
+
+
+   This HERODataArchiver assumes the data to be a dictionary and saves it as a json file.
+
+   :param object_selector: Zenoh object selector for the devices to subscribe to. In the simplest case this is the
+                           name of the target HERO
+   :param event_name: Name of the event.
+   :param save_template: The template from which the file name is generated.
+                         `Jinja2 <https://jinja.palletsprojects.com/en/stable/>`_ is used to generate a filename from the
+                         template using the given meta data given as a dictionary. Meta data can be supplied either by
+                         :code:`default_metadata` or obtained from the payload. For an example see the json example below.
+   :param merge_metadata: If True,  merge the accompanying metadata to the data itself under the key :code:`metadata`..
+   :param default_metadata: A dictionary containing the default metadata to be used when generating the filename.
+
+
+   .. py:attribute:: name_template
+
+
+   .. py:attribute:: merge_metadata
+      :value: False
+
+
+
+   .. py:method:: _store(source_name: str, payload: dict, metadata: dict) -> None
+
+      Save data to a json file.
+      The filename is generated from the jinja template using the metadata.
+
+      :param source_name: Name of the event source (the HERO).
+      :param payload: The actual data.
+      :param metadata: The received metadata combined with the default metadata.
+
+
+

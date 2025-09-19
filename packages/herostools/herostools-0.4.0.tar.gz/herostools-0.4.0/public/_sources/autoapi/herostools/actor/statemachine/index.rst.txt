@@ -1,0 +1,130 @@
+herostools.actor.statemachine
+=============================
+
+.. py:module:: herostools.actor.statemachine
+
+.. autoapi-nested-parse::
+
+   # State Machine for HEROs
+
+   This keeps a cache of the last known state of a datasource and
+   allows to query this cache via a HTTP metrics endpoint. This is
+   especially useful for scraping from prometheus or influxdb.
+
+
+    * {observable}_time {return_value.time}
+    * {observable}_value {return_value.value}
+      if unit is not 'None' a label {unit='{{return_value.unit}}'} is attached
+    * {observable}_raw_value {return_value.raw_value}
+      if unit is not 'None' a label {unit='{{return_value.raw_unit}}'} is attached
+
+   A predefined set of labels is attached to the metrics.
+   Observable names are cleaned to match metric names [a-z0-9_]
+    trailing _ and repetitions _ are removed.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   herostools.actor.statemachine.no_metric
+   herostools.actor.statemachine.minify_metric
+   herostools.actor.statemachine.allowed_types
+   herostools.actor.statemachine.loop
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   herostools.actor.statemachine.HERODatasourceStateMachine
+
+
+Module Contents
+---------------
+
+.. py:data:: no_metric
+
+.. py:data:: minify_metric
+
+.. py:data:: allowed_types
+
+.. py:class:: HERODatasourceStateMachine(loop, *args, http_port: int = 9090, bind_address: str = 'localhost', metrics_endpoint='/metrics', object_selector: str = '*', labels: dict = {}, **kwargs)
+
+   Bases: :py:obj:`heros.DatasourceObserver`
+
+
+   A class that can observe and handle the data emitted by one or more datasource HEROs.
+   In particular, this class provides an efficient way to listen to the data emitted by all datasource HEROs in
+   the realm. By not instantiating the HEROs themselves but just subscribing to the topics for the datasource, this
+   reduces the pressure on the backing zenoh network. If, however, only the data of a few HEROs should be observed,
+   it might make more sense to just instantiate the according RemoteHEROs and connect a callback to their `observable_data`
+   signal.
+
+   :param object_selector: selector to specify which objects to observe. This becomes part of a zenoh selector and thus
+   :param can be anything that makes sense in the selector. Defaults to * to observe all HEROs in the realm.:
+
+
+   .. py:attribute:: cache
+
+
+   .. py:attribute:: _http_port
+      :value: 9090
+
+
+
+   .. py:attribute:: _bind_address
+      :value: 'localhost'
+
+
+
+   .. py:attribute:: _metrics_endpoint
+      :value: '/metrics'
+
+
+
+   .. py:attribute:: _global_labels
+
+
+   .. py:method:: _http_handle_metrics(request)
+      :async:
+
+
+
+   .. py:method:: _start_webserver()
+      :async:
+
+
+
+   .. py:method:: _metric_name(key)
+
+      create a clean name for a metric without special characters matching [a-z0-9_].
+
+
+
+   .. py:method:: _unit_name(unit)
+
+      cleans units to not contain special characters
+
+
+
+   .. py:method:: _update(source_name, data)
+
+      update the values in the cache for source_name
+
+
+
+   .. py:method:: _convert_to_metrics(dsrs: heros.datasource.types.DatasourceReturnSet, prefix=None)
+
+
+   .. py:method:: get_cache()
+
+
+   .. py:method:: clear()
+
+
+.. py:data:: loop
+

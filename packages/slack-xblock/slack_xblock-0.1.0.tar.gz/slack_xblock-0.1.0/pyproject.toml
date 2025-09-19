@@ -1,0 +1,31 @@
+[project]
+name = "slack-xblock"
+version = "0.1.0"
+description = "A simple XBlock to add a Slack channel link to Open edX courses."
+authors = [
+    {name = "Zawadi .W"}
+]
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["xblock", "openedx", "slack"]
+
+dependencies = [
+    "XBlock",
+    "xblock-utils",
+    "requests",
+    "python-decouple",
+    "django",
+]
+
+[project.urls]
+Homepage = "https://github.com/3N61N33R/slack-xblock"
+Repository = "https://github.com/3N61N33R/slack-xblock"
+"Bug Tracker" = "https://github.com/3N61N33R/slack-xblock/issues"
+
+[project.entry-points."xblock.v1"]
+slack_xblock = "slack_xblock:SlackXBlock"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,217 @@
+<!-- templates/studio_edit.html -->
+<div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
+    <div class="component-tab-content">
+        <div class="component-edit-settings">
+            <h3 class="component-tab-heading">Slack Integration Settings</h3>
+
+            <div class="list-input settings-list">
+                <div class="field field-text">
+                    <label for="display_name" class="label">Display Name</label>
+                    <input type="text" id="display_name" name="display_name" value="{{ display_name }}"
+                        placeholder="Course Discussion on Slack" class="input">
+                    <span class="tip">The name students see for this Slack integration</span>
+                </div>
+
+                <div class="field field-text">
+                    <label for="slack_workspace_url" class="label">Slack Workspace URL *</label>
+                    <input type="url" id="slack_workspace_url" name="slack_workspace_url"
+                        value="{{ slack_workspace_url }}" placeholder="https://coding-campi.slack.com" class="input"
+                        required>
+                    <span class="tip">Base URL of your Slack workspace (e.g., https://yourworkspace.slack.com)</span>
+                </div>
+
+                <div class="field field-checkbox">
+                    <input type="checkbox" id="auto_generate_channel" name="auto_generate_channel" {% if
+                        auto_generate_channel %}checked{% endif %}>
+                    <label for="auto_generate_channel" class="label">Auto-generate Channel Name</label>
+                    <span class="tip">Automatically create channel name from course information</span>
+                </div>
+
+                <div class="field field-text" id="manual-channel-field"
+                    style="{% if auto_generate_channel %}display: none;{% endif %}">
+                    <label for="channel_name" class="label">Channel Name</label>
+                    <input type="text" id="channel_name" name="channel_name" value="{{ channel_name }}"
+                        placeholder="general-discussion" class="input">
+                    <span class="tip">Slack channel name (without #). Only used if auto-generate is disabled.</span>
+                </div>
+
+                <div class="field field-textarea">
+                    <label for="channel_description" class="label">Channel Description</label>
+                    <textarea id="channel_description" name="channel_description" class="input" rows="3"
+                        placeholder="Description for the Slack channel">{{ channel_description }}</textarea>
+                    <span class="tip">Description that appears in the channel info</span>
+                </div>
+
+                <div class="field field-checkbox">
+                    <input type="checkbox" id="show_member_count" name="show_member_count" {% if show_member_count
+                        %}checked{% endif %}>
+                    <label for="show_member_count" class="label">Show Member Count</label>
+                    <span class="tip">Display the number of members in the channel</span>
+                </div>
+            </div>
+
+            <div class="xblock-actions">
+                <div class="action-item">
+                    <a href="#" class="button action-primary save-button">Save</a>
+                </div>
+                <div class="action-item">
+                    <a href="#" class="button action-secondary cancel-button">Cancel</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-preview">
+            <h4>Preview</h4>
+            <div class="preview-container">
+                <div class="slack-preview-widget">
+                    <div class="preview-header">
+                        <span class="slack-icon">💬</span>
+                        <span id="preview-display-name">{{ display_name }}</span>
+                    </div>
+                    <div class="preview-channel">
+                        <span>#</span><span id="preview-channel-name">{{ channel_name|default:"auto-generated" }}</span>
+                    </div>
+                    <div class="preview-description" id="preview-description">
+                        {{ channel_description|default:"Course discussion channel" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .slack-preview-widget {
+        border: 1px solid #e0e0e0;
+        padding: 15px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        margin-top: 10px;
+    }
+
+    .preview-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .preview-channel {
+        color: #4a154b;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .preview-description {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .field {
+        margin-bottom: 20px;
+    }
+
+    .label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .input:focus {
+        border-color: #4a154b;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(74, 21, 75, 0.1);
+    }
+
+    .tip {
+        display: block;
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .field-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .field-checkbox .label {
+        margin-bottom: 0;
+    }
+
+    .xblock-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .action-primary {
+        background-color: #4a154b;
+        color: white;
+    }
+
+    .action-secondary {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 1px solid #ccc;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Toggle manual channel field based on auto-generate checkbox
+        const autoGenerateCheckbox = document.getElementById('auto_generate_channel');
+        const manualChannelField = document.getElementById('manual-channel-field');
+
+        autoGenerateCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                manualChannelField.style.display = 'none';
+            } else {
+                manualChannelField.style.display = 'block';
+            }
+            updatePreview();
+        });
+
+        // Update preview when fields change
+        function updatePreview() {
+            const displayName = document.getElementById('display_name').value || 'Course Discussion on Slack';
+            const channelName = document.getElementById('channel_name').value || 'auto-generated';
+            const channelDescription = document.getElementById('channel_description').value || 'Course discussion channel';
+            const autoGenerate = document.getElementById('auto_generate_channel').checked;
+
+            document.getElementById('preview-display-name').textContent = displayName;
+            document.getElementById('preview-channel-name').textContent = autoGenerate ? 'auto-generated' : channelName;
+            document.getElementById('preview-description').textContent = channelDescription;
+        }
+
+        // Add event listeners for real-time preview updates
+        ['display_name', 'channel_name', 'channel_description'].forEach(function (fieldId) {
+            document.getElementById(fieldId).addEventListener('input', updatePreview);
+        });
+
+        // Initial preview update
+        updatePreview();
+    });
+</script>

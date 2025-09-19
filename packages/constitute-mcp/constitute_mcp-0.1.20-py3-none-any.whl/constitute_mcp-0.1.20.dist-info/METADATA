@@ -1,0 +1,222 @@
+Metadata-Version: 2.4
+Name: constitute-mcp
+Version: 0.1.20
+Summary: MCP server for Constitute Project constitution scraping and analysis
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/constitute-mcp
+Project-URL: Repository, https://github.com/yourusername/constitute-mcp
+Project-URL: Issues, https://github.com/yourusername/constitute-mcp/issues
+Keywords: mcp,constitute,constitution,legal,analysis
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mcp<2.0,>=1.2
+Requires-Dist: fastmcp<1.0,>=0.3
+Requires-Dist: requests>=2.31.0
+Requires-Dist: beautifulsoup4>=4.12.0
+Requires-Dist: lxml>=4.9.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: toml>=0.10.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: build>=0.10.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Dynamic: license-file
+
+# Constitute MCP Server
+
+A Model Context Protocol (MCP) server that provides tools for analyzing and scraping constitutional documents from the Constitute Project.
+
+## Features
+
+This MCP server provides comprehensive tools for constitutional analysis:
+
+### Core Functionality
+- **Constitution Listing**: Get lists of all available constitutions with filtering options
+- **Country Search**: Find constitutions by country name with fuzzy matching
+- **Full Text Scraping**: Extract complete constitutional documents with structured parsing
+- **Article Retrieval**: Access specific articles by number or ranges
+- **Keyword Search**: Find articles containing specific terms
+- **Topic Analysis**: Search constitutions by legal topics (e.g., economic planning, environment, judiciary)
+- **Data Export**: Save constitutions as JSON or plain text files
+- **Batch Operations**: Scrape multiple constitutions efficiently
+
+### Available Tools
+
+1. **get_constitutions_list** - List all available constitutions
+2. **find_constitution_by_country** - Search constitutions by country name
+3. **scrape_constitution** - Download and parse a complete constitution
+4. **get_article_by_number** - Retrieve a specific article
+5. **get_articles_range** - Get multiple articles in a range
+6. **search_articles_by_keyword** - Find articles containing keywords
+7. **topic_constitutions** - Find constitutions by topic
+8. **topic_sections** - Get topic-related sections from constitutions
+9. **export_constitution_json** - Export constitution as JSON
+10. **export_constitution_text** - Export constitution as plain text
+11. **scrape_all_constitutions** - Batch scrape operation
+
+## Installation
+
+### Using uvx (Recommended)
+
+```bash
+# Install directly from PyPI (once published)
+uvx constitute-mcp
+
+# Or install from local development
+uvx --from . constitute-mcp
+```
+
+### Using pip
+
+```bash
+pip install constitute-mcp
+```
+
+### Development Installation
+
+#### Linux/macOS
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/constitute-mcp.git
+cd constitute-mcp
+
+# Initialize development environment
+make init
+```
+
+#### Windows
+
+```cmd
+# Clone the repository
+git clone https://github.com/yourusername/constitute-mcp.git
+cd constitute-mcp
+
+# Initialize development environment
+scripts\setup.bat
+```
+
+For detailed Windows instructions, see [README_Windows.md](README_Windows.md).
+
+## Usage
+
+### As an MCP Server
+
+Add to your MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "constitute": {
+      "command": "constitute-mcp"
+    }
+  }
+}
+```
+
+### Example Usage
+
+```python
+# Example tool calls through MCP client
+
+# List all constitutions
+get_constitutions_list()
+
+# Find constitutions for a specific country
+find_constitution_by_country(country_name="Taiwan")
+
+# Scrape a specific constitution
+scrape_constitution(constitution_id="taiwan")
+
+# Get a specific article
+get_article_by_number(constitution_id="taiwan", article_number="1")
+
+# Search for articles about "freedom"
+search_articles_by_keyword(constitution_id="taiwan", keyword="freedom")
+
+# Find constitutions dealing with economic planning
+topic_constitutions(topic_key="econplan")
+```
+
+## Configuration
+
+The server automatically handles:
+- Rate limiting (1 second delay between requests)
+- Request logging with unique IDs
+- Error handling and retry logic
+- File naming sanitization for Windows compatibility
+
+## Data Sources
+
+This server uses the Constitute Project API (https://constituteproject.org), which provides:
+- 200+ constitutions from around the world
+- Current and historical constitutional texts
+- Structured data about constitutional topics
+- Professional legal annotations
+
+## Development
+
+### Project Structure
+
+```
+constitute-mcp/
+├── constitute_mcp/
+│   ├── __init__.py
+│   ├── server.py          # Main MCP server implementation
+│   └── scraper.py         # Constitution scraping logic
+├── pyproject.toml         # Project configuration
+├── README.md
+└── scripts/
+    ├── publish_to_pypi.py # Automated PyPI publishing
+    └── version_manager.py # Automatic version management
+```
+
+### Running Tests
+
+```bash
+pytest
+```
+
+### Code Quality
+
+```bash
+# Format code
+black constitute_mcp/
+
+# Check imports
+isort constitute_mcp/
+
+# Type checking
+mypy constitute_mcp/
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and quality checks
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [Constitute Project](https://constituteproject.org) for providing the constitutional database
+- [Model Context Protocol](https://modelcontextprotocol.io) for the integration framework

@@ -1,0 +1,86 @@
+[project]
+authors = [
+    { name = "Nicu Tofan", email = "nicu.tofan@gmail.com" },
+]
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Development Status :: 3 - Alpha",
+  "License :: Other/Proprietary License",
+  "Typing :: Typed",
+]
+description = "Lightweight code search for your own projects."
+dynamic = ["version"]
+name = "find-stuff"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dependencies = [
+  "click>=8.1.8,<9",
+  "dotenv>=0.9.9",
+  "sqlalchemy>=2.0,<3",
+  "requests>=2.32.3,<3",
+  "beautifulsoup4>=4.12,<5",
+  "attrs>=23,<26",
+  "pyyaml>=6.0,<7",
+  "openpyxl>=3.1,<4",
+  "InquirerPy>=0.3.4,<0.4",
+  "colorama>=0.4.6,<0.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/pyl1b/find-stuff"
+Repository = "https://github.com/pyl1b/find-stuff"
+Changelog = "https://github.com/pyl1b/find-stuff/blob/main/CHANGELOG.md"
+Issues = "https://github.com/pyl1b/find-stuff/issues"
+Documentation = "https://github.com/pyl1b/find-stuff/blob/main/README.md"
+
+[project.scripts]
+find-stuff = "find_stuff.__main__:cli"
+
+[project.optional-dependencies]
+dev = [
+  "ruff",
+  "build",
+  "mypy>=1.8,<2",
+  "pre-commit",
+  "pytest-cov",
+  "pytest-mock",
+  "pytest",
+  "twine",
+  "wheel",
+  "types-requests",
+  "types-PyYAML",
+  "types-openpyxl",
+]
+
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=68.0", "setuptools_scm[toml]>=8", "wheel"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+exclude = ["venv*", "playground*"]
+
+[tool.setuptools_scm]
+fallback_version = "0.0.1-dev"
+write_to = "find_stuff/__version__.py"
+
+[tool.ruff]
+line-length = 79
+target-version = "py313"
+extend-exclude = ["venv", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "ANN"]  # E=pycodestyle, F=pyflakes, I=imports
+ignore = ["ANN102", "ANN401", "E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+plugins = []

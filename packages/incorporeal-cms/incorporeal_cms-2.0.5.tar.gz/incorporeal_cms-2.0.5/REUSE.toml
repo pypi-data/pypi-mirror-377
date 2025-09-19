@@ -1,0 +1,28 @@
+version = 1
+SPDX-PackageName = "incorporeal-cms"
+SPDX-PackageSupplier = "Brian S. Stephan <bss@incorporeal.org>"
+SPDX-PackageDownloadLocation = "https://git.incorporeal.org/bss/incorporeal-cms"
+
+[[annotations]]
+path = [".gitignore", ".gitattributes"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "© 2020 Brian S. Stephan <bss@incorporeal.org>"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+[[annotations]]
+path = "**.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "© 2020 Brian S. Stephan <bss@incorporeal.org>"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+[[annotations]]
+path = "tests/instance/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "© 2020 Brian S. Stephan <bss@incorporeal.org>"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+[[annotations]]
+path = ["MANIFEST.in", "pyproject.toml", "tox.ini", "requirements/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "© 2020 Brian S. Stephan <bss@incorporeal.org>"
+SPDX-License-Identifier = "GPL-3.0-or-later"

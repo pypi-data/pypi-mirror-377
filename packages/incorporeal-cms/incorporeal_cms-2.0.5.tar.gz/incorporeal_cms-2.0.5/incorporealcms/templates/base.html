@@ -1,0 +1,51 @@
+<!doctype html>{#
+SPDX-FileCopyrightText: © 2020 Brian S. Stephan <bss@incorporeal.org>
+SPDX-License-Identifier: GPL-3.0-or-later
+#}
+<html lang="en">
+<title>{{ title }}</title>
+<meta charset="utf-8">
+<meta property="og:url" content="{{ base_url }}">
+{% if title %}<meta property="og:title" content="{{ title }}">{% endif %}
+{% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
+{% if image %}<meta property="og:image" content="{{ image }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" title="{{ config.DEFAULT_PAGE_STYLE }}" href="{{ config.PAGE_STYLES[config.DEFAULT_PAGE_STYLE] }}">
+{% for style, stylesheet in config.PAGE_STYLES.items() %}
+<link rel="alternate stylesheet" type="text/css" title="{{ style }}" href="{{ stylesheet }}">
+{% endfor %}
+<link rel="icon" href="{{ config.FAVICON }}">
+<link rel="alternate" type="application/atom+xml" href="/feed/atom">
+<link rel="alternate" type="application/rss+xml" href="/feed/rss">
+<script type="text/javascript" src="/static/js/style_switcher.js"></script>
+
+<div {% block site_class %}class="site-wrap site-wrap-normal-width"{% endblock %}>
+    {% block header %}
+    <div class="header">
+        <div class="nav">
+            {% for nav in navs %}
+            <a href="{{ nav.1 }}">{{ nav.0 }}</a>
+            {% if not loop.last %} &raquo; {% endif %}
+            {% endfor %}
+        </div>
+        {% if config.PAGE_STYLES %}
+        <div class="styles">
+            {% for style, stylesheet in config.PAGE_STYLES.items() %}
+            <a href="" onclick="setStyle('{{ style }}'); return false;">[{{ style }}]</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+    {% block body %}
+    <div class="content">
+        {{ content }}
+    </div>
+    <footer>
+        {% if extra_footer %}<div class="extra-footer"><i>{{ extra_footer|safe }}</i></div>{% endif %}
+        <div class="footer"><i>Last modified: {{ mtime }}</i></div>
+    </footer>
+    {% endblock %}
+</div>
+</html>

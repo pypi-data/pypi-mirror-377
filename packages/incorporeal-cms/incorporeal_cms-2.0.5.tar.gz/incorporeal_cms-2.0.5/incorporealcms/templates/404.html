@@ -1,0 +1,23 @@
+{#
+SPDX-FileCopyrightText: © 2020 Brian S. Stephan <bss@incorporeal.org>
+SPDX-License-Identifier: GPL-3.0-or-later
+#}
+{% extends "base.html" %}
+
+{% block header %}
+<div class="header">
+    <a href="/">{{ config.TITLE_SUFFIX }}</a>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>NOT FOUND</h1>
+    <p>Sorry, the file you requested does not seem to exist, at least not anymore.</p>
+    <p>It's possible you followed a dead link on this site, in which case I would appreciate it if you could email me at
+    {{ config.CONTACT_EMAIL }} and I can take a look. I make an effort to symlink old content to its new location,
+    so old links and URLs should, generally speaking, work.</p>
+    <p>Otherwise, I suggest you go <a href="/">to the index</a> and navigate your way (hopefully) to what
+    you're looking for.</p>
+</div>
+{% endblock %}

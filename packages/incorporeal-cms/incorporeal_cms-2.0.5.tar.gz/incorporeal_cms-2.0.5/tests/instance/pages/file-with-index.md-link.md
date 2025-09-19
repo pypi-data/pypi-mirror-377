@@ -1,0 +1,6 @@
+[Cool](cool/index.md)
+[Anchored Cool](cool/index.md#anchor)
+[This Index](index.md)
+[Anchored This Index](index.md#anchor)
+[Parent](../index.md)
+[Anchored Parent](../index.md#anchor)

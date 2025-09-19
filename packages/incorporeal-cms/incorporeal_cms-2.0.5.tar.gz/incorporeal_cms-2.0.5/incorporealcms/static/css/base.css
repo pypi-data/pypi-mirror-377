@@ -1,0 +1,177 @@
+/*
+ * SPDX-FileCopyrightText: © 2020 Brian S. Stephan <bss@incorporeal.org>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+html {
+    font-family: sans-serif;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+.site-wrap-normal-width {
+    max-width: 65pc;
+}
+
+.site-wrap-double-width {
+    max-width: 130pc;
+}
+
+.site-wrap {
+    min-height: 100vh;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+    font-weight: bold;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+}
+
+div.header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    padding: 1rem 1rem;
+    padding-bottom: 0;
+}
+
+div.content {
+    font-size: 11pt;
+    padding: 0 1rem;
+    line-height: 1.6em;
+}
+
+div.content p {
+    margin: 1.25em 0;
+}
+
+sup, sub {
+	vertical-align: baseline;
+	position: relative;
+	top: -0.4em;
+}
+sub {
+	top: 0.4em;
+}
+
+footer {
+    clear: both;
+    display: block;
+    font-size: 75%;
+    color: #999;
+    padding: 0 1em;
+    padding-bottom: 16px;
+    margin-top: 30px;
+}
+
+.extra-footer {
+    margin-bottom: 5px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+blockquote {
+    background-color: rgba(120, 120, 120, 0.3);
+    padding: 1px 10px;
+}
+
+.splash {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+}
+
+.img-25 {
+    max-width: 25% !important;
+}
+
+.img-50 {
+    max-width: 50% !important;
+}
+
+.img-75 {
+    max-width: 75% !important;
+}
+
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img-left {
+    float: left;
+    margin-right: 1em;
+}
+
+.img-right {
+    float: right;
+    margin-left: 1em;
+}
+
+figure {
+    padding: 5px;
+    margin: 0;
+    margin-bottom: 5px;
+    text-align: center;
+    max-width: 30%;
+    min-width: 10em;
+    display: inline-block;
+}
+
+figure.right {
+    float: right;
+    margin-left: 10px;
+    display: block;
+}
+
+figure.left {
+    float: left;
+    margin-right: 10px;
+    display: block;
+}
+
+figure img {
+    max-width: 100%;
+    height: auto;
+}
+
+figcaption {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.footnote {
+    font-size: 0.8em;
+}
+
+.footnote p {
+    margin: 0;
+}
+
+.footnote-ref:link, .footnote-ref:visited, .footnote-ref:hover, .footnote-ref:active {
+    font-weight: normal;
+}

@@ -1,0 +1,26 @@
+---
+name: mypy
+
+"on":
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5.0.0
+        with:
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Running mypy
+        run: |
+          echo 'args = {}' > config.py
+          python -m pip install --quiet --no-cache-dir --upgrade uv
+          uv run mypy $(basename $(pwd) | sed -E 's/-/_/g') tests/ examples/
+          uv run ty check

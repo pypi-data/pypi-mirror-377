@@ -1,0 +1,93 @@
+CHANGES
+=======
+
+0.13.0
+------
+
+* Remove stable/2023.2 job
+* Add stable/2025.1 job
+
+0.12.0
+------
+
+* Remove note about the old pip's behavior
+* Bump hacking
+* Remove stable/2023.1 job from master gate
+* Remove Wallaby-specific job
+* Support py3.12 and drop py3.8
+
+0.11.0
+------
+
+* Add stable/2024.2 job
+* Avoid lies about image format
+* Fix typo in README.rst
+
+0.10.0
+------
+
+* Update CI testing configuration
+* Drop usage of six
+
+0.9.0
+-----
+
+* Replace deprecated perl-style regex
+
+0.8.0
+-----
+
+* glance-tempest-plugin branchless: add stable branch testing
+* Assert on system scope permission based on supported flag
+
+0.6.0
+-----
+
+* Make rbac functional job voting
+* Fix assert for checking things in different project
+* Pin glance-tempest-plugin for wallaby job
+* Pin glance-tempest-plugin for yoga/xena jobs
+
+0.5.0
+-----
+
+* Update Image APIs tests to check system user is not permitted
+* Fix incorrect run command and add stestr config file
+* Refactor rbac metadef tests structure
+
+0.4.0
+-----
+
+* Refactor rbac tests structure
+* Implement API protection testing for metadef tags
+* Implement API protection testing for metadef properties
+* Implement API protection testing for metadef resource types
+* Update python testing classifier
+* Update README.md for running glance tests in tempest
+
+0.3.0
+-----
+
+* Implement API protection testing for metadef objects
+* Cleanup some images created in the tests
+* Add protection testing for metadef namespaces
+
+0.2.0
+-----
+
+* Refactor RbacBasetest to inherit from tempest
+* Remove plugin-specific enforce\_scope configuration option
+* Fix glance tempest plugin test to use the right tempest variables
+* setup.cfg: Replace dashes with underscores
+
+0.1.0
+-----
+
+* Increase oslo.policy logging for protection tests
+* Add tests for image membership, deactivation, and reactivation
+* Implement API protection testing for images
+* trivial: Fix incorrect project name in setup.cfg
+* Add doc/requirements
+* Apply cookiecutter to newly added glance-tempest-plugin
+* Add setup.cfg
+* Create glance-tempest-plugin

@@ -1,0 +1,53 @@
+# This file contains parameters for the liquid alloy viscosity model from Deng et al. (2018).
+# Reference: Deng, Y., Zhang, J., & Jiao, K. (2018). Viscosity measurement and prediction
+# model of molten iron. Ironmaking & Steelmaking, 45(8), 773-777.
+Fe:
+  parameters:
+    const: 34.42973
+    T_k: -0.01514
+  T_range_K:
+    min: 1463.0
+    max: 1723.0
+  reference: deng2018
+C:
+  wt_pct_range:
+    min: 3.0
+    max: 4.5
+  parameters:
+    component_coefficient: -0.00349
+  reference: deng2018
+Si:
+  wt_pct_range:
+    min: 0.2
+    max: 0.6
+  parameters:
+    component_coefficient: 0.76756
+  reference: deng2018
+Mn:
+  wt_pct_range:
+    min: 0.1
+    max: 0.5
+  parameters:
+    component_coefficient: -2.35139
+  reference: deng2018
+P:
+  wt_pct_range:
+    min: 0.1
+    max: 0.3
+  parameters:
+    component_coefficient: -3.63856
+  reference: deng2018
+S:
+  wt_pct_range:
+    min: 0.02
+    max: 0.08
+  parameters:
+    component_coefficient: -6.91921
+  reference: deng2018
+Ti:
+  wt_pct_range:
+    min: 0.05
+    max: 0.2
+  parameters:
+    component_coefficient: 5.91118
+  reference: deng2018

@@ -1,0 +1,146 @@
+#!python
+import argparse
+import os
+import subprocess
+import sys
+from argparse import RawTextHelpFormatter
+from logger_slg import init_logger
+from pprint import pformat
+from slg_script_helpers.helpers import strip_sensitive_arguments, \
+    guarantee_requirements_met, build_true_configuration
+
+# this section is here because when we pass in a config file we also want to include those variables as potential arguments
+# and required=True in the argparse arguments would not allow that to happen.
+# So from now on I'm using these two sections to verify arguments are up to standard
+REQUIRED_ARGUMENTS = ['repo_url', 'branch', 'destination']
+DYNAMIC_DEFAULTS = {}
+SENSITIVE_ARGUMENTS = []
+SPECIAL_REQUIREMENTS = {
+    'config_filepath': [
+        {
+            'name': 'Filepath is an absolute filepath',
+            'requirement': lambda value: value.startswith('/')
+        },
+    ]
+}
+
+def get_arguments():
+    parser = argparse.ArgumentParser(description='''
+    Clone dotfiles repository with specific branch and use stow to link files to appropriate locations.
+''',
+    formatter_class=RawTextHelpFormatter)
+
+    parser.add_argument('-r', '--repo_url', default='https://github.com/slgotting/dotfiles', help='URL of the dotfiles repository')
+    parser.add_argument('-b', '--branch', default='remote-server', help='Branch to clone (default: remote-server)')
+    parser.add_argument('-d', '--destination', default=os.path.expanduser('~/dotfiles'), help='Destination directory for cloned repo')
+    parser.add_argument('-s', '--stow_packages', default='bash,vim,zsh,config', help='Comma-separated list of stow packages to use')
+    parser.add_argument('-t', '--target_dir', default=os.path.expanduser('~'), help='Target directory for stow (default: home directory)')
+    parser.add_argument('-c', '--config_filepath', default=f'/home/steven/.config/slg/dotfiles_setup.yml')
+
+    return parser.parse_args()
+
+def check_command_exists(command):
+    """Check if a command exists in the system."""
+    try:
+        subprocess.run(['which', command], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+def clone_repository(repo_url, branch, destination, logger):
+    """Clone the repository to the specified destination."""
+    logger.info(f"Cloning repository {repo_url} (branch: {branch}) to {destination}")
+
+    if os.path.exists(destination):
+        logger.warning(f"Destination directory {destination} already exists")
+        response = input(f"Directory {destination} already exists. Remove it? [y/N]: ")
+        if response.lower() == 'y':
+            subprocess.run(['rm', '-rf', destination], check=True)
+        else:
+            logger.info("Using existing directory")
+            return
+
+    try:
+        subprocess.run(['git', 'clone', '--recurse-submodules', '--branch', branch, repo_url, destination], check=True)
+        logger.info("Repository cloned successfully")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to clone repository: {e}")
+        sys.exit(1)
+
+def stow_dotfiles(stow_packages, destination, target_dir, logger):
+    """Use stow to link dotfiles."""
+    logger.info(f"Setting up dotfiles using stow from {destination} to {target_dir}")
+
+    os.chdir(destination)
+
+    for package in stow_packages.split(','):
+        package = package.strip()
+        if not os.path.exists(package):
+            logger.warning(f"Package {package} does not exist in the repository, skipping")
+            continue
+
+        logger.info(f"Stowing package: {package}")
+        try:
+            # Use --no-folding to prevent stow from merging directories
+            subprocess.run(['stow', '--target', target_dir, '--restow', package], check=True)
+            logger.info(f"Successfully stowed {package}")
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to stow {package}: {e}")
+
+if __name__ == '__main__':
+    args = get_arguments()
+    try:
+        logger = init_logger(
+            name=__name__,
+            log_path=f'/var/log/slg/{__file__.split("/")[-1]}.log'
+        )
+        if 'config_filepath' in args:
+            config = build_true_configuration(args, DYNAMIC_DEFAULTS, logger, args.config_filepath)
+            guarantee_requirements_met(config, logger, REQUIRED_ARGUMENTS, SPECIAL_REQUIREMENTS)
+            sensitive_stripped_config = strip_sensitive_arguments(config, SENSITIVE_ARGUMENTS)
+            logger.info(f'\nUsing configuration:\n\n{pformat(sensitive_stripped_config)}')
+
+        input("\n\n When using this, if the file or directory already exists (ie .zshrc or .oh-my-zsh) It will not be stowed. You can delete them manually to fix this, but will lose any unique changes you've made to them. Press enter to continue and signify you understand\n\n")
+
+        # Check if stow is installed and install it if not
+        if not check_command_exists('stow'):
+            logger.info("Stow is not installed. Attempting to install it...")
+            try:
+                subprocess.run(['sudo', 'apt-get', 'update'], check=True)
+                subprocess.run(['sudo', 'apt-get', 'install', '-y', 'stow'], check=True)
+                logger.info("Stow installed successfully")
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Failed to install stow: {e}")
+                sys.exit(1)
+
+        # Check if fzf is installed and install it if not
+        if not check_command_exists('fzf'):
+            logger.info("fzf is not installed. Attempting to install it...")
+            try:
+                fzf_dir = os.path.expanduser('~/.fzf')
+                if not os.path.exists(fzf_dir):
+                    subprocess.run(['git', 'clone', '--depth', '1', 'https://github.com/junegunn/fzf.git', fzf_dir], check=True)
+                    subprocess.run([f'{fzf_dir}/install', '--all'], check=True)
+                    logger.info("fzf installed successfully via git")
+                else:
+                    logger.info("fzf directory already exists at ~/.fzf")
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Failed to install fzf: {e}")
+
+        # Check if required commands exist
+        for cmd in ['git', 'stow']:
+            if not check_command_exists(cmd):
+                logger.error(f"Required command '{cmd}' not found. Please install it before running this script.")
+                sys.exit(1)
+
+        # Clone repository
+        clone_repository(config.get('repo_url'), config.get('branch'), config.get('destination'), logger)
+
+        # Stow dotfiles
+        stow_dotfiles(config.get('stow_packages'), config.get('destination'), config.get('target_dir'), logger)
+
+        logger.info("Dotfiles setup completed successfully")
+
+    except Exception:
+        logger.exception('An error occurred')
+        sys.exit(1)

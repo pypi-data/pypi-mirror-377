@@ -1,0 +1,561 @@
+.window-title-content {
+  background-color: transparent;
+  margin-top: 8px;
+  margin-left: 15px;
+}
+
+.window-title-label {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  color: #ebdbb2;
+}
+
+.window-title-icon {
+  -gtk-icon-size: 28px;
+}
+
+.left-panel {
+  -gtk-icon-size: 48px;
+  margin-left: 5px;
+  background: transparent;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  border-style: none;
+  color: #ebdbb2;
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 2px 0px,
+    rgba(0, 0, 0, 0.555) 0 2px 0px,
+    #00000075 0 -4px 0 inset;
+}
+
+.right-panel {
+  -gtk-icon-size: 42px;
+  background: transparent;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border-style: none;
+  color: #ebdbb2;
+  padding: 6px;
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 2px 0px,
+    rgba(0, 0, 0, 0.555) 0 2px 0px,
+    #00000075 0 -4px 0 inset;
+}
+
+.dockbar-buttons {
+  background: #1d2021dc;
+  border-radius: 7px;
+  padding: 5px;
+  box-shadow:
+    inset 3px 3px 5px rgba(255, 255, 255, 0.05),
+    /* Top-left highlight */ inset -3px -3px 5px rgba(0, 0, 0, 0.5),
+    /* Bottom-right shadow */ #00000075 0 -4px 0 inset;
+
+  -gtk-icon-size: 42px;
+  font-size: 16px;
+}
+
+.dockbar-buttons:hover {
+  color: #282828;
+  background-color: #d5c4a1;
+  text-shadow: 0.006em 0.006em 0.007em rgba(9, 5, 5, 0.8);
+}
+
+.box-widgets {
+  margin: -3px;
+  padding: 1px;
+}
+
+.window-controls-box {
+  border-style: solid;
+  background: rgba(36, 40, 59, 0);
+  margin: 5px;
+}
+
+.window-controls-close-button:hover,
+.window-controls-maximize-button:hover,
+.window-controls-minimize-button:hover {
+  background-color: #5c8f97;
+  box-shadow:
+    rgba(0, 0, 0, 0.6) 0 2px 4px,
+    rgba(0, 0, 0, 0.5) 0 2px 4px,
+    #00000075 0 -2px 0 inset;
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.window-controls-close-button {
+  -gtk-icon-size: 20px;
+  background: linear-gradient(
+    145deg,
+    #cc241d,
+    #32302f
+  ); /* Subtle gradient for depth */
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 1px 1px,
+    rgba(0, 0, 0, 0.555) 0 1px 1px,
+    #00000075 0 -4px 0 inset;
+  padding: 2px 8px 2px 8px;
+  margin-left: 2px;
+  margin-right: 1px;
+  background-size: 100% auto;
+  color: #ebdbb2;
+  border-color: rgba(36, 40, 59, 0.744);
+  border-radius: 4px;
+}
+
+.window-controls-maximize-button {
+  -gtk-icon-size: 20px;
+  background: linear-gradient(
+    145deg,
+    #458588,
+    #32302f
+  ); /* Subtle gradient for depth */
+
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 1px 1px,
+    rgba(0, 0, 0, 0.555) 0 1px 1px,
+    #00000075 0 -4px 0 inset;
+  padding: 2px 8px 2px 8px;
+  margin-left: 2px;
+  margin-right: 1px;
+  background-size: 100% auto;
+  color: #ebdbb2;
+  border-color: rgba(36, 40, 59, 0.744);
+  border-radius: 4px;
+}
+
+.window-controls-minimize-button {
+  -gtk-icon-size: 20px;
+  background-color: #98971a;
+  background: linear-gradient(
+    145deg,
+    #98971a,
+    #32302f
+  ); /* Subtle gradient for depth */
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 1px 1px,
+    rgba(0, 0, 0, 0.555) 0 1px 1px,
+    #00000075 0 -4px 0 inset;
+  padding: 2px 8px 2px 8px;
+  margin-left: 2px;
+  margin-right: 1px;
+  background-size: 100% auto;
+  color: #ebdbb2;
+  border-color: rgba(36, 40, 59, 0.744);
+  border-radius: 4px;
+}
+
+/* notes plugin */
+.notes_button_clear.text-button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.notes_button_add.text-button {
+  background-color: #008000;
+  color: white;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.notes_button_delete.image-button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover states */
+.close-button:hover {
+  background-color: #ff5f56cc;
+}
+
+.maximize-button:hover {
+  background-color: #ffbd2ecc;
+}
+
+.minimize-button:hover {
+  background-color: #28c940cc;
+}
+
+/* Active states */
+.close-button:active {
+  background-color: #ff5f5699;
+}
+
+.maximize-button:active {
+  background-color: #ffbd2e99;
+}
+
+.minimize-button:active {
+  background-color: #28c94099;
+}
+
+.top-panel-box-widgets-left {
+  background: linear-gradient(
+    145deg,
+    #1d2021af,
+    #1d20214f
+  ); /* Subtle gradient for depth */
+  border-radius: 7px;
+  box-shadow:
+    inset 3px 3px 5px rgba(255, 255, 255, 0.05),
+    /* Top-left highlight */ inset -3px -3px 5px rgba(0, 0, 0, 0.5),
+    /* Bottom-right shadow */ 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+scale slider {
+  min-width: 20px;
+  min-height: 20px;
+  color: #ebdbb2;
+}
+
+scale {
+  min-width: 60px;
+}
+
+.weather-label {
+  font-size: 15px;
+  font-weight: bold;
+  background-color: transparent;
+  color: #89a899;
+}
+
+/*this is for menubuttons from systray menus*/
+.image-button {
+  -gtk-icon-size: 16px;
+  color: #ffffffd8;
+  background-color: #18181800;
+}
+
+.text-button {
+  border-radius: 0px;
+  background-color: rgba(13, 61, 151, 0);
+  font-size: 12px;
+  color: rgba(221, 221, 221, 0.9);
+  border-style: solid;
+  border-color: rgba(36, 40, 59, 0.744);
+}
+
+.bluetooth-dashboard-buttons {
+  background-color: #4479e1;
+  color: white;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+}
+
+.button_clear_from_clipboard {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.notification-panel-button {
+  padding-top: 6px;
+}
+
+.notify-client-box {
+  background-color: #558588;
+  border-radius: 10px;
+  margin: 3px;
+}
+
+.notify-client-heading {
+  margin-top: 12px;
+  font-weight: bold;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    sans-serif;
+  font-size: 16px;
+}
+
+.notify-client-body-label {
+  margin: 3px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    sans-serif;
+}
+
+.notify-client-timestamp {
+  margin: 3px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    sans-serif;
+  font-size: 13px;
+}
+
+.notify-window {
+  background-color: transparent;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.notify-server-vbox {
+  background-color: #282828;
+  color: #ebdbb2;
+  padding: 10px;
+  font-weight: bold;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    sans-serif;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+/*prevent the popover menu icon from being selected*/
+.app-lancuner-menu-icon:focus {
+  outline: none;
+  background-color: transparent;
+}
+
+/*icons from bookbarks menu*/
+.app-launcher-icon-from-popover {
+  -gtk-icon-size: 68px;
+  transition: all 0.2s ease;
+  padding: 1px;
+}
+
+.app-launcher-label-from-popover {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.app-launcher-popover {
+  background-color: transparent;
+}
+
+.app-launcher-flowbox {
+  background-color: transparent;
+}
+
+.app-launcher-icon-from-popover:hover {
+  background-color: #282828;
+  border-radius: 10px;
+}
+
+.app-launcher-main-box {
+  background-color: transparent;
+}
+
+.places-icon-from-popover {
+  -gtk-icon-size: 42px;
+}
+
+.places-label-from-popover {
+  font-size: 20px;
+  font-family: "Sriracha";
+}
+
+.places-label-from-popover {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bookmarks-icon-from-popover {
+  -gtk-icon-size: 36px;
+}
+
+.clock-label {
+  /* Background & Border */
+  background: linear-gradient(
+    145deg,
+    #1d202154,
+    #1d2021ce
+  ); /* Subtle gradient for depth */
+  border-radius: 7px;
+  padding: 3px;
+  box-shadow:
+    inset 3px 3px 5px rgba(255, 255, 255, 0.05),
+    /* Top-left highlight */ inset -3px -3px 5px rgba(0, 0, 0, 0.5),
+    /* Bottom-right shadow */ 2px 2px 5px rgba(0, 0, 0, 0.3);
+
+  /* Font Styling */
+  font-family: "DSEG7-Classic", "DSEG14-Classic", monospace;
+
+  font-size: 18px;
+  color: #ebdbb2; /* Soft yellow (Gruvbox-like) */
+  text-decoration: none;
+
+  /* Optional: LCD glow effect */
+  text-shadow:
+    0 0 2px rgba(235, 219, 178, 0.1),
+    /* Subtle glow */ 0 0 5px rgba(235, 219, 178, 0.1); /* Wider blur */
+}
+
+.Clock-box {
+  /* Complete transparency */
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.clock-button {
+  background-color: transparent;
+}
+
+.tray_icon {
+  background-color: #202020;
+  min-width: 24px;
+  min-height: 24px;
+  -gtk-icon-size: 16px;
+}
+
+.tray-menu-button {
+  border-radius: 8px;
+  margin-left: 5px;
+}
+
+/*system dashboard: if gsettings prefer-dark, then changes for white colors is necessary*/
+.system_dashboard_stack {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.top-panel {
+  background-color: #1d202186;
+  border-bottom: 1px solid #1a1a1a;
+  color: #e0e0e0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+}
+
+.top-panel-box-right {
+  background-color: #f0f1f4;
+  color: #e0e0e0;
+  font-weight: 400;
+}
+
+.top-panel-box-left {
+  -gtk-icon-size: 32px;
+}
+
+.right-box-spacer {
+  background-color: transparent;
+}
+
+.top-panel-box-right {
+  background-color: transparent;
+}
+
+.app-launcher-menu-button,
+.bookmarks-menu-button,
+.places-menu-button {
+  -gtk-icon-size: 29px;
+}
+
+.ai-prompt-label:hover {
+  color: #282828;
+  background-color: #d5c4a1;
+  text-shadow: 0.006em 0.006em 0.007em rgba(9, 5, 5, 0.8);
+}
+
+.top-panel-box-systray {
+  background: linear-gradient(
+    145deg,
+    #1d2021b6,
+    #1d2021a9
+  ); /* Subtle gradient for depth */
+  border-radius: 10px;
+  padding-top: 2px;
+  margin-right: 5px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  box-shadow:
+    inset 3px 3px 5px rgba(255, 255, 255, 0.05),
+    /* Top-left highlight */ inset -3px -3px 5px rgba(0, 0, 0, 0.5),
+    /* Bottom-right shadow */ 2px 2px 5px rgba(0, 0, 0, 0.3); /* Outer drop shadow */
+}
+
+.top_panel_box_center {
+  -gtk-icon-size: 0px;
+}
+
+.floating-volume-widget {
+  background-color: rgba(30, 30, 30, 0.6);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.floating-volume-icon {
+  color: #fff;
+}
+
+.floating-volume-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.mullvad-header-label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.BottomBar {
+  background-color: #00000000;
+  margin: 1px 11px 1px 1px;
+  padding: 1px 1px 1px 1px;
+}
+
+.taskbar {
+  border-radius: 8px;
+  -gtk-icon-size: 42px;
+  background: transparent;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border-style: none;
+  color: #ebdbb2;
+  padding: 6px;
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 2px 0px,
+    rgba(0, 0, 0, 0.555) 0 2px 0px,
+    #00000075 0 -4px 0 inset;
+}
+
+.taskbar-button {
+  background-color: #1d20218e;
+
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  color: #ebdbb2;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  border-radius: 8px;
+  border-style: none;
+  padding: 5px 5px 5px 5px;
+  box-shadow:
+    rgba(0, 0, 0, 0.507) 0 2px 0px,
+    rgba(0, 0, 0, 0.555) 0 2px 0px,
+    #00000075 0 -4px 0 inset;
+  -gtk-icon-size: 42px;
+  font-size: 16px;
+}
+
+.taskbar-button.focused {
+  background-color: #d5c4a1;
+  color: #282828;
+  font-weight: bold;
+  border: 1px solid white;
+  box-shadow: 0 0 8px rgba(100, 180, 255, 0.5);
+}
+
+.taskbar-button.focused:hover {
+  background-color: #282828;
+  transform: scale(1.05);
+  transition: all 0.1s ease;
+  color: #d5c4a1;
+}
+
+.taskbar-button:hover {
+  color: #282828;
+  background-color: #d5c4a1;
+  text-shadow: 0.006em 0.006em 0.007em rgba(9, 5, 5, 0.8);
+}

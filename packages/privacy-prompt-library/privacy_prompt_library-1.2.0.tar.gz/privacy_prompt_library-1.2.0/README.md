@@ -1,0 +1,386 @@
+# Privacy-Preserving Prompt Library
+
+A comprehensive Python library that transforms user prompts to protect disability privacy while maintaining functional context for AI interactions. **Now with smart combination technology that reduces description length by 50%+ while preserving complete accessibility information.**
+
+## ✨ Key Features
+
+🔒 **Privacy Protection** - Removes medical terms while preserving functional needs  
+🎯 **Smart Combinations** - Combines multiple accessibility needs into optimized single descriptions  
+⚡ **50%+ More Efficient** - Dramatically reduces word count without losing information  
+🧠 **AI-Ready** - Perfect single-string descriptions for prompt engineering  
+📚 **14 Categories** - Comprehensive coverage of disability and accessibility needs  
+
+## 🎯 Purpose
+
+This library helps users interact with AI models without disclosing specific medical conditions by:
+- **Detecting** disability mentions in prompts
+- **Redacting** medical/diagnostic terms
+- **Adding** functional context for better AI responses
+- **Preserving** user privacy and intent
+- **Smart Combining** multiple accessibility needs into efficient single descriptions
+
+## 🔄 How It Works
+
+```
+Input: "I'm paralyzed and need help finding accessible restaurants"
+↓
+Output: "I use mobility equipment and need help finding accessible restaurants. I need step-free access to buildings and accessible parking close to entrances."
+```
+
+## ⚡ Smart Multiple Keys (v1.2.0)
+
+```python
+# Instead of 179 words across 3 separate descriptions...
+keys = ["visual-impairment", "hearing-impairment", "physical-disability"]
+result = transform_multiple_keys(keys)
+
+# Get 1 optimized 76-word description (57% more efficient!)
+print(result['output'])
+# "I have comprehensive accessibility needs requiring screen reader 
+# compatibility with detailed text descriptions... [complete single description]"
+```
+
+## 🏗️ Architecture
+
+- **14 Disability Categories** with comprehensive subgroups
+- **Pattern Detection Engine** for identifying disability mentions
+- **Redaction Engine** for replacing medical terms
+- **Context Enrichment** for adding functional needs
+- **Privacy Validation** to ensure no medical data leaks
+- **Smart Combination Engine** for optimizing multiple accessibility descriptions
+
+## 📦 Installation
+
+```bash
+pip install privacy-prompt-library
+```
+
+## 🚀 Quick Start
+
+### Basic Usage - Transform Personal Prompts
+```python
+from prompt_library import transform_prompt
+
+# Protect your privacy while getting AI help
+result = transform_prompt("I'm blind and need coding help")
+print(result['output'])
+# "I use screen readers and need coding help. Please ensure any visual content 
+# includes text descriptions and is compatible with screen readers."
+```
+
+### Key-Based Descriptions  
+```python
+from prompt_library import transform_by_key, get_supported_keys
+
+# See what accessibility categories are available
+print("Available categories:", get_supported_keys())
+
+# Get a detailed 60-word accessibility description
+description = transform_by_key("visual-impairment")  
+print(description['output'])
+# Returns comprehensive visual accessibility needs without medical terms
+
+# Use in your AI prompts
+ai_prompt = f"{description['output']} Help me learn web development."
+```
+
+### Smart Multiple Keys (Most Efficient!)
+```python
+from prompt_library import transform_multiple_keys
+
+# Get 1 optimized description instead of 3 separate ones
+keys = ["visual-impairment", "hearing-impairment", "physical-disability"] 
+result = transform_multiple_keys(keys)  # Smart combination by default
+
+print(f"Efficiency: {result['validation']['efficiency_gain']} space saved!")
+print(f"Single optimized description:\n{result['output']}")
+```
+
+### Library Information
+```python
+from prompt_library import get_library_info
+info = get_library_info()
+print(f"Version: {info['version']}")
+print(f"Features: {', '.join(info['features'])}")
+```
+
+## ⭐ What's New in v1.2.0: Smart Combination
+
+Transform multiple accessibility needs into **one optimized description** instead of handling separate strings:
+
+```python
+# OLD WAY: Get 3 separate 60-word descriptions (180 words total)
+desc1 = transform_by_key("visual-impairment")     # 60 words
+desc2 = transform_by_key("hearing-impairment")    # 60 words  
+desc3 = transform_by_key("physical-disability")   # 60 words
+# Total: 180 words, lots of redundancy
+
+# NEW WAY: Get 1 smart combined description (76 words total)
+result = transform_multiple_keys(["visual-impairment", "hearing-impairment", "physical-disability"])
+print(f"Efficiency gain: {result['validation']['efficiency_gain']}")  # "57.5%"
+print(result['output'])  # One cohesive, optimized description
+```
+
+**Benefits:**
+- 🎯 **50-60% more efficient** - Dramatically reduced word count
+- 🔄 **No redundancy** - Removes repeated accessibility terminology  
+- 📝 **Better readability** - Flows as one natural description
+- ⚡ **Perfect for AI** - Single string ready for prompts
+
+Input: "I'm paralyzed and need help finding accessible restaurants"
+↓
+Output: "I use mobility equipment and need help finding accessible restaurants. I need step-free access to buildings and accessible parking close to entrances."
+```
+
+## 🔑 Key-Based Descriptions
+Generate detailed 60-word accessibility descriptions from simple category keys:
+
+```python
+from prompt_library import transform_by_key, get_supported_keys
+
+# Get all available category keys
+supported_keys = get_supported_keys()
+print("Available keys:", supported_keys)
+
+# Generate a functional description from a key
+description = transform_by_key("visual-impairment")
+print(description['output'])
+# Output: "I have specific visual accessibility needs requiring comprehensive 
+# screen reader compatibility, high contrast display options with customizable 
+# color schemes, detailed text descriptions for all visual content including 
+# images, alternative format documents in accessible formats, large print 
+# materials when needed, audio descriptions for multimedia content, tactile 
+# feedback options, keyboard navigation support, and accessible navigation 
+# systems that work seamlessly with assistive technology."
+
+# Example usage for different needs:
+mobility_desc = transform_by_key("physical-disability")
+hearing_desc = transform_by_key("hearing-impairment")
+speech_desc = transform_by_key("speech-language-communication-and-swallowing-disability")
+
+print(f"Word count: {len(mobility_desc['output'].split())} words")  # Always 60 words
+```
+
+**Available Keys:**
+- `visual-impairment` - Visual accessibility needs and assistive technology
+- `hearing-impairment` - Hearing accessibility and communication needs  
+- `physical-disability` - Mobility and physical accessibility requirements
+- `speech-language-communication-and-swallowing-disability` - Communication support needs
+- `speech-intellectual-autism-spectrum-disorders` - Cognitive and sensory support
+- `maxillofacial-disabilities` - Facial and oral function considerations
+- `progressive-chronic-disorders` - Adaptive and flexible accommodation needs
+
+## 🚀 Why Use Smart Combinations?
+
+**Problem**: Traditional approach requires handling multiple separate descriptions
+```python
+# Old way: 3 separate descriptions = 180 words + manual combining
+visual_desc = transform_by_key("visual-impairment")      # 60 words
+hearing_desc = transform_by_key("hearing-impairment")    # 60 words  
+mobility_desc = transform_by_key("physical-disability")  # 60 words
+# You have to manually combine and remove redundancy
+```
+
+**Solution**: Smart combination gives you one optimized description
+```python
+# New way: 1 smart description = 76 words, ready to use
+result = transform_multiple_keys(["visual-impairment", "hearing-impairment", "physical-disability"])
+ai_prompt = f"{result['output']} Help me plan a conference presentation."
+# 57% more efficient, no redundancy, perfect for AI prompts
+```
+
+### 🔗 Multiple Keys (New in v1.2.0)
+Process multiple accessibility categories at once with intelligent combination:
+
+```python
+from prompt_library import transform_multiple_keys
+
+# Smart combination (default) - Intelligently merges descriptions, removes redundancy
+keys = ["visual-impairment", "hearing-impairment", "physical-disability"]
+result = transform_multiple_keys(keys)  # Uses smart_combined by default
+
+print(f"Original total: {sum(result['transformation']['individual_word_counts'])} words")
+print(f"Smart combined: {result['transformation']['total_word_count']} words")
+print(f"Efficiency gain: {result['validation']['efficiency_gain']}")
+print(f"\nCombined description:\n{result['output']}")
+
+# Alternative methods if needed:
+separate_result = transform_multiple_keys(keys, combine_method="separate")
+simple_combined = transform_multiple_keys(keys, combine_method="simple_combined")
+prioritized = transform_multiple_keys(keys, combine_method="prioritized")
+```
+
+**Combination Methods:**
+- `"smart_combined"` - **Default**: Intelligently merges while avoiding redundancy (57% more efficient!)
+- `"separate"` - Returns individual descriptions for each key
+- `"simple_combined"` - Basic concatenation of all descriptions
+- `"prioritized"` - Emphasizes first key, adds others as supplementary needs
+
+**Smart Combination Benefits:**
+- 🎯 **Efficiency**: Reduces word count by ~50-60% while preserving all key information
+- 🔄 **Deduplication**: Removes redundant terms like "accessibility needs" and "screen reader"
+- 📝 **Coherence**: Creates flowing, natural language instead of repetitive chunks
+- ⚡ **Performance**: Single cohesive description instead of multiple separate strings
+
+## 💡 Usage Examples
+
+### Scenario 1: Getting a Functional Description for AI Prompts
+```python
+from prompt_library import transform_by_key
+
+# Instead of saying "I'm blind", use a functional description
+visual_needs = transform_by_key("visual-impairment")
+prompt = f"{visual_needs['output']} Can you help me learn Python programming?"
+
+# This gives the AI detailed context about your accessibility needs
+# without revealing medical information
+```
+
+### Scenario 2: Multiple Accessibility Needs
+```python
+from prompt_library import transform_multiple_keys
+
+# Smart combination automatically optimizes for efficiency
+multiple_needs = transform_multiple_keys(
+    ["visual-impairment", "physical-disability"]
+)
+# Result is a single, optimized 58-word description instead of 120 words
+
+ai_prompt = f"{multiple_needs['output']} Help me set up a home office workspace."
+print(f"Efficiency: {multiple_needs['validation']['efficiency_gain']} space saved!")
+```
+
+### Scenario 3: Building Accessibility Profiles
+```python
+# Create comprehensive accessibility descriptions
+keys = ["visual-impairment", "hearing-impairment", "physical-disability"]
+accessibility_profile = []
+
+for key in keys:
+    description = transform_by_key(key)
+    accessibility_profile.append(description['output'])
+
+combined_profile = " ".join(accessibility_profile)
+print(f"Complete accessibility profile: {combined_profile}")
+```
+
+### Scenario 3: Privacy-Safe Prompt Enhancement
+```python
+# Transform personal prompts to be privacy-safe
+personal_prompt = "I have multiple sclerosis and need help with work accommodations"
+safe_prompt = transform_prompt(personal_prompt)
+
+print("Original:", personal_prompt)
+print("Safe version:", safe_prompt['output'])
+# Result protects medical info while preserving functional needs
+```
+
+### Command Line Interface
+```bash
+# Transform a prompt via CLI
+privacy-prompt "I have ADHD and need focus strategies"
+
+# Get library information
+privacy-prompt --info
+
+# Custom privacy level
+privacy-prompt --privacy-level medium "Your prompt here"
+```
+
+### Async Support
+```python
+from prompt_library import PromptLibrary
+
+library = PromptLibrary()
+await library.initialize()
+result = await library.transform_prompt("I'm autistic and need help with social situations")
+print(result['output'])
+```
+
+## 📋 Categories Supported
+
+1. Physical Disabilities
+2. Visual Impairments  
+3. Hearing Impairments
+4. Speech & Language
+5. Intellectual Disabilities
+6. Learning Disabilities
+7. Autism Spectrum
+8. Developmental Disabilities
+9. Mental Health
+10. Emotional & Behavioral
+11. Invisible Disabilities
+12. Multiple Disabilities
+13. Neurological
+14. Genetic & Rare Disorders
+
+## 🔒 Privacy Guarantee
+
+- ✅ No medical terms in output
+- ✅ No diagnostic language
+- ✅ Functional descriptions only
+- ✅ Complete user anonymity
+
+## 🐍 Python Package Features
+
+This repository now includes a fully-featured Python package with:
+
+- **Modern Packaging**: Uses `pyproject.toml` and is available on PyPI
+- **Async Support**: Full async/await compatibility
+- **CLI Tool**: Command-line interface for easy integration
+- **Type Hints**: Complete typing for better development experience
+- **Testing**: Comprehensive test suite with pytest
+
+### Python Installation & Usage
+
+```bash
+# Install from PyPI
+pip install privacy-prompt-library
+
+# Basic usage
+python -c "from prompt_library import transform_prompt; print(transform_prompt('I have autism and need help'))"
+
+# CLI usage
+privacy-prompt --info
+privacy-prompt "I'm deaf and need communication help"
+```
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/git-markkuria/kanuni-layer-sdk.git
+cd kanuni-layer-sdk
+
+# Install in development mode
+pip install -e .
+
+# Run tests
+pytest tests/
+```
+
+## 📁 Repository Structure
+
+```
+├── prompt_library/          # Python package
+│   ├── core/               # Core processing engines
+│   ├── engines/            # Context and redaction engines
+│   ├── data/               # JSON data files
+│   └── cli.py              # Command-line interface
+├── src/                    # JavaScript/Node.js version
+├── tests/                  # Python tests
+├── pyproject.toml          # Python packaging config
+└── package.json            # Node.js config
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

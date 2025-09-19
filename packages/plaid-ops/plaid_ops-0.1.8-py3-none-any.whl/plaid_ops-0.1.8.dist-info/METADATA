@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: plaid-ops
+Version: 0.1.8
+Summary: Mesh operations for PLAID datasets
+Author-email: Safran <fabien.casenave@safrangroup.com>
+License: BSD 3-Clause License
+Project-URL: homepage, https://github.com/PLAID-lib/plaid-ops
+Project-URL: documentation, https://plaid-ops.readthedocs.io
+Project-URL: repository, https://github.com/PLAID-lib/plaid-ops
+Keywords: machine learning,physics,data-model,Safran
+Platform: Linux
+Platform: Mac OS-X
+Platform: Unix
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: <3.14,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pyplaid==0.1.8
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pyright[nodejs]; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: sphinx; extra == "dev"
+Requires-Dist: sphinx-autoapi; extra == "dev"
+Requires-Dist: myst-nb; extra == "dev"
+Requires-Dist: myst-parser; extra == "dev"
+Requires-Dist: jupytext; extra == "dev"
+Requires-Dist: furo; extra == "dev"
+Requires-Dist: pyvista[jupyter]; extra == "dev"
+Dynamic: license-file
+
+
+# [WIP] Standardized operations on PLAID samples and datasets
+
+> [!WARNING]
+> The code is still in its initial configuration stages, consider not using it for the moment. This is also the case for tentative PyPi packages being configured.
+
+
+[Documentation](https://plaid-ops.readthedocs.io/en/latest/)

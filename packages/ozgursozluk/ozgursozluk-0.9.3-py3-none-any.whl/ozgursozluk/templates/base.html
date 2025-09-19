@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="origin" name="referrer" />
+        <meta name="theme-color" content="#000000">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% block meta %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="/static/fontello.css">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        {% set theme = request.cookies.get("theme", "Light") %}
+        {% if theme not in themes %}
+            {% set theme = "Light" %}
+        {% endif %}
+        {% set filename = theme|lower|replace(" ", "-") ~ ".css" %}
+        <link rel="stylesheet" href="{{ url_for('static', filename=filename) }}" />
+        <link rel="manifest"
+              href="{{ url_for('static', filename='manifest.json') }}">
+        <title>
+            {% block title %}{% endblock %}
+        </title>
+    </head>
+    <body>
+        <nav>
+            <div class="inner-nav">
+                <div class="nav-item">
+                    <img class="site-logo"
+                         src="{{ url_for('static', filename='favicon.png') }}" />
+                    <a class="site-name" href="/">
+                        <span class="ozgur">özgür</span><span class="sozluk">sözlük</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <div class="search-bar">
+                        <form method="POST" action="/" autocomplete="off">
+                            <input type="text" name="q" autofocus="" placeholder="Search..." dir="auto" />
+                            <button type="submit">
+                                <span class="icon-search"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="nav-item right">
+                    <div>
+                        <a href="{{ url_for("rentry") }}">Rentry</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for("about") }}">About</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for("settings") }}">Settings</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="panel-container">
+                {% block main %}{% endblock %}
+            </div>
+        </div>
+        <div style="margin-bottom: 5rem;"></div>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+🐛 API spec for extraction pipeline (#1981)
+
+# Description
+
+Small bug in the YAML spec for extraction pipelines
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Fixed
+
+- When running `cdf build` Toolkit no longer give warnings on extraction
+pipelines for unused field sendNotification. For example: ` In
+contacts[1] unused field: 'sendNotification'`
+
+## templates
+
+No changes.

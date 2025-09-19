@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ModulePyConText"
+version = "0.0.1"
+description = "A windows-only python package for displaying text in the console with format and give console cursor control."
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+
+authors = [
+  { name = "Baibhav Kumar Jha", email = "baibhavkumarjha1@gmail.com" }
+]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: Microsoft :: Windows",
+]
+
+dependencies = [
+  "keyboard>=0.13.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/Beta-Verse-Hub/PyConText"

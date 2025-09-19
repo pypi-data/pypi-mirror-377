@@ -1,0 +1,207 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  PYTHON_VERSION: "3.13"
+  REGISTRY: ghcr.io
+  IMAGE_NAME: othervibes/mcp-as-a-judge
+
+jobs:
+  build_dist:
+    name: Build sdist/wheel and verify version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: latest
+      - name: Set up Python
+        run: uv python install ${{ env.PYTHON_VERSION }}
+      - name: Extract version from tag
+        id: ver
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - name: Verify version matches pyproject.toml
+        run: |
+          PROJECT_VERSION=$(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+          test "$PROJECT_VERSION" = "${{ steps.ver.outputs.VERSION }}"
+      - name: Clean dist directory
+        run: rm -rf dist/
+      - name: Build package
+        run: uv build
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+  publish_pypi:
+    name: Publish to PyPI
+    needs: build_dist
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+  docker_build_push:
+    name: Build & push multi-arch image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Extract version from tag
+        id: ver
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ steps.ver.outputs.VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  create_release:
+    name: Create GitHub Release with artifacts
+    needs: build_dist
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Generate changelog
+        run: |
+          echo "## What's Changed" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          git log --oneline --pretty=format:"* %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> CHANGELOG.md || echo "* Initial release" >> CHANGELOG.md
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          body_path: CHANGELOG.md
+          generate_release_notes: true
+
+  publish_mcp_registry:
+    name: Publish to MCP Registry (preview)
+    needs: [publish_pypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install MCP Publisher CLI
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/download/v1.0.0/mcp-publisher_1.0.0_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+      - name: Extract version from tag
+        id: ver
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      - name: Generate server.json
+        id: server
+        env:
+          VERSION: ${{ steps.ver.outputs.VERSION }}
+        run: |
+          python - <<'PY'
+          import json, tomllib, os
+          VERSION = os.environ['VERSION']
+          with open('pyproject.toml','rb') as f:
+              data = tomllib.load(f)
+          project = data['project']
+          server = {
+              "name": f"io.github.OtherVibes/{project['name']}",
+              "description": project['description'],
+              "version": VERSION,
+              "homepage": next((url[1] for url in project.get('urls', {}).items() if url[0] == 'Homepage'), ''),
+              "license": project.get('license', {}).get('text', 'MIT'),
+              "runtime": {
+                  "type": "uv",
+                  "package": f"{project['name']}=={VERSION}",
+                  "transport": {"type": "stdio"}
+              }
+          }
+          with open('server.json', 'w') as f:
+              json.dump(server, f, indent=2)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"json={json.dumps(server)}\n")
+          PY
+      - name: Login to MCP Registry (GitHub OIDC)
+        run: |
+          ./mcp-publisher login github-oidc
+      - name: Publish to MCP Registry
+        env:
+          NAME: ${{ fromJSON(steps.server.outputs.json).name }}
+        run: |
+          ./mcp-publisher publish server.json
+      - name: Verify publication
+        env:
+          NAME: ${{ fromJSON(steps.server.outputs.json).name }}
+        run: |
+          sleep 10
+          ./mcp-publisher search "$NAME" > out.json
+          python - <<'PY'
+          import json, sys, os
+          name = os.environ['NAME']
+          try:
+              data=json.load(open('out.json'))
+          except Exception:
+              sys.exit(1)
+          items = []
+          if isinstance(data, dict):
+              items = data.get('results') or data.get('servers') or data.get('data') or []
+          elif isinstance(data, list):
+              items = data
+          found = any(item.get('name') == name for item in items)
+          if not found:
+              print(f"Package {name} not found in registry")
+              sys.exit(1)
+          print(f"✅ Package {name} successfully published to MCP Registry")
+          PY

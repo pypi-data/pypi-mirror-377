@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div x-data="borgitoryApp()" x-init="initApp()" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <!-- Mobile sidebar overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden hidden" hx-on:click="
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        this.classList.add('hidden');
+        this.classList.remove('show');
+        document.getElementById('hamburger-icon').classList.remove('hidden');
+        document.getElementById('close-icon').classList.add('hidden');
+        document.getElementById('mobile-menu-button').setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('mobile-sidebar-open');
+    "></div>
+    
+    {% include "partials/navigation.html" %}
+
+    <!-- Main Content Area -->
+    <div class="flex-1 overflow-hidden lg:ml-0">
+        <div class="h-full overflow-y-auto p-6">
+            <!-- Main Content Container - tabs loaded here via HTMX -->
+            <div id="main-content"
+                 hx-get="{{ initial_content_url or '/api/tabs/repositories' }}"
+                 hx-trigger="load">
+                <!-- Default loading state -->
+                <div class="text-gray-500 dark:text-gray-400 text-sm">Loading {{ active_tab or 'repositories' }}...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.nav-item.active {
+    @apply bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-r-2 border-blue-600 dark:border-blue-400;
+}
+
+.tab-content {
+    min-height: 500px;
+}
+
+/* HTMX Loading Indicator - Only shows when explicitly targeted */
+.htmx-indicator {
+    display: none;
+}
+</style>
+
+{% endblock %}

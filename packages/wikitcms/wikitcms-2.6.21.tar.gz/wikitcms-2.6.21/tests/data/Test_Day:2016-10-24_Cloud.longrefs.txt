@@ -1,0 +1,500 @@
+{{Infobox_group
+| name = Fedora Test Day
+| image = [[File:Echo-testing-48px.png|link=QA/Test Days]]
+| caption = [[Fedora Cloud Test day]]
+| date = 2016-10-24
+| time = all day
+| website = [[QA/Test Days]]
+| irc = [irc://irc.freenode.net/#fedora-test-day #fedora-test-day] ([http://webchat.freenode.net/?channels=fedora-test-day webirc])
+| fedora_mailing_list = test
+}}
+
+{{admon/note | Can't make the date? | If you come to this page before or after the test day is completed, your testing is still valuable, and you can use the information on this page to test, file any bugs you find at [http://bugzilla.redhat.com Bugzilla], and add your results to the results section. If this page is more than a month old when you arrive here, please check the [[QA/Test_Days|current schedule]] and see if a similar but more recent Test Day is planned or has already happened.}}
+
+== What to test? ==
+
+Today's installment of Fedora Test Day will focus on '''Cloud, Atomic Host''' images for Fedora 25.
+
+== Who's available ==
+
+The following cast of characters will be available testing, workarounds, bug fixes, and general discussion ...
+* Development - 
+* Quality Assurance -
+* Community Members - dustymabe, jasonbrooks, kushal, bowlofeggs
+
+== Prerequisite for Test Day == 
+
+You will require at least a system with libvirt/kvm installed. Having access to any Openstack or other Cloud IAAS system where you can upload an image will be even better.
+
+Download the images from below links
+
+* [https://kojipkgs.fedoraproject.org/compose/branched/Fedora-25-20161023.n.0/compose/CloudImages/x86_64/images/Fedora-Atomic-25-20161023.n.0.x86_64.qcow2 Atomic Host QCOW2]
+* [https://kojipkgs.fedoraproject.org/compose/branched/Fedora-25-20161023.n.0/compose/CloudImages/x86_64/images/Fedora-Atomic-Vagrant-25-20161023.n.0.x86_64.vagrant-virtualbox.box Vagrant Virtualbox Atomic]
+* [https://kojipkgs.fedoraproject.org/compose/branched/Fedora-25-20161023.n.0/compose/CloudImages/x86_64/images/Fedora-Atomic-Vagrant-25-20161023.n.0.x86_64.vagrant-libvirt.box Vagrant libvirt Atomic]
+
+* [https://kojipkgs.fedoraproject.org/compose/branched/Fedora-25-20161023.n.0/compose/CloudImages/x86_64/images/Fedora-Cloud-Base-25-20161023.n.0.x86_64.qcow2 Cloud Base QCOW2]
+* [https://kojipkgs.fedoraproject.org/compose/branched/Fedora-25-20161023.n.0/compose/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-25-20161023.n.0.x86_64.vagrant-virtualbox.box Vagrant Virtualbox Cloud Base]
+
+* [https://kojipkgs.fedoraproject.org/compose/branched/Fedora-25-20161023.n.0/compose/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-25-20161023.n.0.x86_64.vagrant-libvirt.box Vagrant libvirt Cloud Base]
+
+ 
+List of AMIs
+
+{| class="wikitable"
+|-
+! Image Name
+! AMI id
+! Destination
+! Virt type   
+! Vol type
+|-
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (us-west-2)      || ami-2d4bef4d    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (us-west-2)      || ami-7d48ec1d    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (us-west-1)      || ami-c4450ea4    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (sa-east-1)      || ami-1bd64a77    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (eu-west-1)      || ami-1b327b68    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (eu-central-1)   || ami-2645bc49    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (ap-southeast-2) || ami-100b3673    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (ap-southeast-1) || ami-afe948cc    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (ap-northeast-1) || ami-5abd1c3b    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (us-west-1)      || ami-6a400b0a    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (sa-east-1)      || ami-39d64a55    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (eu-west-1)      || ami-52337a21    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (eu-central-1)   || ami-9d44bdf2    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (ap-southeast-2) || ami-7a0a3719    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (ap-southeast-1) || ami-71e94812    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (ap-northeast-1) || ami-8fba1bee    || hvm           || gp2 
+|-            
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (us-east-1)      || ami-a7461bb0    || hvm           || standard 
+|-       
+|  Fedora-Atomic-25-20161023.n.0.x86_64          || EC2 (us-east-1)      || ami-71471a66    || hvm           || gp2 
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-2)      ||  ami-a74befc7    ||  paravirtual   ||  gp2
+|-            
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-2)      ||  ami-a54befc5    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-1)      ||  ami-bc470cdc    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (sa-east-1)      ||  ami-e2da468e    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-west-1)      ||  ami-05337a76    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-central-1)   ||  ami-2b45bc44    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-2) ||  ami-33053850    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-1) ||  ami-9be746f8    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-1)      ||  ami-07460d67    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (sa-east-1)      ||  ami-47d4482b    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-west-1)      ||  ami-51347d22    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-central-1)   ||  ami-7db84012    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-2) ||  ami-dc0a37bf    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-1) ||  ami-99e746fa    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-northeast-1) ||  ami-ffbf1e9e    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-northeast-1) ||  ami-37802156    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-east-1)      ||  ami-ed401dfa    ||  paravirtual   ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-east-1)      ||  ami-f1461be6    ||  paravirtual   ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-2)      ||  ami-194feb79    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (sa-east-1)      ||  ami-ce069ba2    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-1)      ||  ami-a1470cc1    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-west-1)      ||  ami-91337ae2    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-central-1)   ||  ami-fb46bf94    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-2) ||  ami-130b3670    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-1) ||  ami-a4e849c7    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-2)      ||  ami-114aee71    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-northeast-1) ||  ami-3cbe1f5d    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (sa-east-1)      ||  ami-cd069ba1    ||  hvm           ||  gp2  
+|-          
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-west-1)      ||  ami-c6450ea6    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-west-1)      ||  ami-b1327bc2    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (eu-central-1)   ||  ami-f546bf9a    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-2) ||  ami-1a0b3679    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-southeast-1) ||  ami-2ce8494f    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (ap-northeast-1) ||  ami-64812005    ||  hvm           ||  gp2            
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-east-1)      ||  ami-d04a17c7    ||  hvm           ||  standard       
+|-
+|  Fedora-Cloud-Base-25-20161023.n.0.x86_64      ||  EC2 (us-east-1)      ||  ami-cf4419d8    ||  hvm           ||  gp2  
+|}
+
+
+Here's a chunk which is commonly used for most Test Days. Replace XX with whatever Fedora release is pending:
+
+* An updated [https://www.happyassassin.net/nightlies.html Fedora 25 nightly Cloud/Atomic Host image]
+
+== How to test? ==
+
+* Boot the images on a cloud system, or on Vagrant or using testcloud on a local system.
+* Execute the tests.
+
+Note: For the service manipulation tests we are stopping/disabling '''chronyd''' service on Fedora 25 systems.
+
+=== Known Issues ===
+
+For the Atomic qcow2 image we have a known docker storage issue. Use the following cloud-config to start an instance
+in a cloud.
+
+    #cloud-config
+    bootcmd:
+    - sed s/After=cloud-final.service/After=cloud-init-local.service/ /usr/lib/systemd/system/docker-storage-setup.service > /etc/systemd/system/docker-storage-setup.service
+    - systemctl daemon-reload
+    - systemctl start --no-block docker.service
+
+=== Run the tests ===
+
+Visit the [http://testdays.fedorainfracloud.org/events/15 result page] and click on the column title links to see the tests that need to be run: most column titles are links to a specific test case. Follow the instructions there, then enter your results by clicking the ''Enter result'' button for the test.
+
+=== Exploratory testing ===
+
+If you run out of test cases, congratulations! But that's not the end! You can still help out by playing around with the tool in whatever ways you can think of: try out all the things you can find, and try writing different Fedora images with it. If you have systems with different Windows versions, try running the tool on all of them. Get creative! Any problems you find please file a bug, or report to the IRC channel.
+
+== Reporting bugs ==
+
+
+
+If you have problems with any of the tests, report a bug to [https://bugzilla.redhat.com Bugzilla]. If you are unsure about exactly how to file the report or what other information to include, just ask on IRC and we will help you.
+
+ IRC Channel name: #fedora-cloud, #fedora-test-day
+ Server: Freenode
+
+== Test Results ==
+
+Results transferred from the [http://testdays.fedorainfracloud.org/events/15 result page] 2018-02-06.
+
+=== Basic Tests ===
+{| class="wikitable"
+! User
+! Profile
+! [http://fedoraproject.org/wiki/QA:Testcase_base_startup Base startup]
+! [http://fedoraproject.org/wiki/QA:Testcase_base_system_logging System logging]
+! [http://fedoraproject.org/wiki/QA:Testcase_Services_start Services start]
+! [http://fedoraproject.org/wiki/QA:Testcase_base_selinux SELinux]
+! [http://fedoraproject.org/wiki/QA:Testcase_base_service_manipulation Service manipulation]
+! References
+|-
+| [[User:bowlofeggs|bowlofeggs]]
+| Vagrant libvirt Cloud Base
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:jasonbrooks|jasonbrooks]]
+| qcow2 -- atomic -- libvirt
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}<ref>`systemctl --all --failed` reported no failed services, despite https://bugzilla.redhat.com/show_bug.cgi?id=1387934</ref>
+| {{result|pass}}
+| {{result|pass}}<ref group="long">Works, despite continual, maddening "service changed on disk. Run 'systemctl daemon-reload' to reload" bug: https://bugzilla.redhat.com/show_bug.cgi?id=1384150</ref>
+| <references/>
+|-
+| [[User:jberkus|jberkus]]
+| AWS, us-west-2, Fedora-Atomic-25-20161023.n.0.x86_64-us-west-2-HVM-gp2-0 (ami-2d4bef4d), T2 Small
+| {{result|pass}}<ref>Booted on AWS</ref>
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|warn}}<ref>Got bogus "Warning: docker.service changed on disk. Run 'systemctl daemon-reload' to reload units." on status.
+</ref>{{result|pass}}
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| 
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}<ref>* With the userdata patch from Dusty</ref>
+| {{result|pass}}
+| {{result|pass}}{{result|pass}}
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| AWS t2.medium us-west-1 ami-c4450ea4
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| Openstack
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:trishnag|trishnag]]
+| 
+| 
+| {{result|pass}}
+| 
+| 
+| 
+| <references/>
+|-
+| [[User:trishnag|trishnag]]
+| Openstack
+| 
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+
+|-
+|}
+
+=== Atomic Tests ===
+{| class="wikitable"
+! User
+! Profile
+! [http://fedoraproject.org/wiki/User:Roshi/QA/AtomicTests/Atomic_Image_Boots Image boots]
+! [http://fedoraproject.org/wiki/User:Roshi/QA/AtomicTests/Atomic_Upgrade Upgrade works]
+! [http://fedoraproject.org/wiki/User:Roshi/QA/AtomicTests/Atomic_Rollback Rollback works]
+! References
+|-
+| [[User:dustymabe|dustymabe]]
+| openstack newton
+| {{result|pass}}
+| 
+| 
+| <references/>
+|-
+| [[User:dustymabe|dustymabe]]
+| openstack newton atomic qcow
+| {{result|pass}}
+| 
+| 
+| <references/>
+|-
+| [[User:jasonbrooks|jasonbrooks]]
+| qcow2 -- atomic -- libvirt
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:jasonbrooks|jasonbrooks]]
+| vagrant -- atomic -- libvirt
+| {{result|pass}}
+| {{result|pass}}<ref>I tested upgrade by first deploying a previous version: `atomic host deploy 25.32 && reboot`</ref>
+| 
+| <references/>
+|-
+| [[User:jberkus|jberkus]]
+| AWS, us-west-2, Fedora-Atomic-25-20161023.n.0.x86_64-us-west-2-HVM-gp2-0 (ami-2d4bef4d), T2 Small
+| {{result|pass}}
+| {{result|pass}}<ref>Unable to upgrade because I installed the latest version.  However, "rpm-ostree upgrade" gave the correct result.</ref>
+| 
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| AWS t2.medium us-west-1 ami-c4450ea4
+| {{result|pass}}
+| 
+| 
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| Openstack
+| {{result|pass}}
+| 
+| 
+| <references/>
+|-
+| [[User:trishnag|trishnag]]
+| Openstack
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+
+|-
+|}
+
+=== Docker tests ===
+{| class="wikitable"
+! User
+! Profile
+! [http://fedoraproject.org/wiki/QA:Testcase_Docker_Install Docker install]
+! [http://fedoraproject.org/wiki/QA:Testcase_Docker_Storage_Setup Docker storage setup]
+! [http://fedoraproject.org/wiki/QA:Testcase_Docker_Daemon Docker daemon]
+! References
+|-
+| [[User:dustymabe|dustymabe]]
+| openstack newton atomic qcow
+| {{result|pass}}
+| {{result|fail}}<ref group="long">{{bz|1387934}} Had to work around the bug with user data from https://lists.fedoraproject.org/archives/list/cloud@lists.fedoraproject.org/message/R7S4AMKFAZZBDROBS4D76PRSOK7OIW6O/</ref>
+| {{result|pass}}<ref>passed with workaround from #1387934</ref>
+| <references/>
+|-
+| [[User:jasonbrooks|jasonbrooks]]
+| qcow2 -- atomic -- libvirt
+| 
+| {{result|fail}}<ref group="long">{{bz|1387934}} Didn't run automatically, so docker started w/ loopback storage. I worked around w: `systemctl stop docker && rm -rf /var/lib/docker && docker-storage-setup && systemctl start docker`</ref>
+| {{result|warn}}<ref>Started automatically, but w/ loopback storage, worked around by running docker-storage-setup manually.</ref>
+| <references/>
+|-
+| [[User:jberkus|jberkus]]
+| AWS, us-west-2, Fedora-Atomic-25-20161023.n.0.x86_64-us-west-2-HVM-gp2-0 (ami-2d4bef4d), T2 Small
+| {{result|pass}}<ref>Docker 1.12 installed.</ref>
+| {{result|fail}}<ref group="long">docker-storage-setup.service: Job docker-storage-setup.service/start deleted to break ordering cycle starting with multi
+Starting Docker Storage Setup...
+CHANGED: partition=2 start=616448 old: size=11966464 end=12582912 new: size=20355072,end=20971520
+  Physical volume "/dev/xvda2" changed
+  1 physical volume(s) resized / 0 physical volume(s) not resized
+  WARNING: D-Bus notification failed: The name com.redhat.lvmdbus1 was not provided by any .service files
+ERROR: Docker has been previously configured for use with devicemapper graph driver. Not creating a new thin pool as exi
+INFO: Docker state can be reset by stopping docker and by removing /var/lib/docker directory. This will destroy existing
+docker-storage-setup.service: Main process exited, code=exited, status=1/FAILURE
+Failed to start Docker Storage Setup.
+docker-storage-setup.service: Unit entered failed state.
+docker-storage-setup.service: Failed with result 'exit-code'.
+
+Also, Docker Pool reports that it's using a loopback which is 100GB in size.  This VM only has 11GB RAM + Storage *total*.  This seems like an issue.</ref>
+| {{result|pass}}<ref>Started with loopback storage; had to be manually torn down and docker-storage-setup rerun.</ref>
+| <references/>
+|-
+| [[User:lnie|lnie]]
+| openstack
+| {{result|pass}}
+| {{result|fail}}<ref>{{bz|1388000}}</ref>
+| 
+| <references/>
+
+|-
+|}
+
+=== More Atomic related tests ===
+{| class="wikitable"
+! User
+! Profile
+! [http://fedoraproject.org/wiki/QA:Testcase_Atomic_command Atomic command]
+! [http://fedoraproject.org/wiki/QA:Testcase_Atomic_read_only_mounts Atomic read only mounts]
+! [http://fedoraproject.org/wiki/QA:Testcase_Atomic_root_mount Atomic root mount]
+! [http://fedoraproject.org/wiki/QA:Testcase_Tmp_Mount Atomic tmp mount]
+! [http://fedoraproject.org/wiki/QA/Draft/Testcase_tmp_writable Atomic tmp writable]
+! [http://fedoraproject.org/wiki/QA:Testcase_Journal_Written Atomic journal written]
+! References
+|-
+| [[User:dustymabe|dustymabe]]
+| openstack newton atomic qcow
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:jasonbrooks|jasonbrooks]]
+| qcow2 -- atomic -- libvirt
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:jberkus|jberkus]]
+| AWS, us-west-2, Fedora-Atomic-25-20161023.n.0.x86_64-us-west-2-HVM-gp2-0 (ami-2d4bef4d), T2 Small
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| AWS t2.medium us-west-1 ami-c4450ea4
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+|-
+| [[User:kushal|kushal]]
+| Openstack
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| {{result|pass}}
+| <references/>
+
+|-
+|}
+
+=== Vagrant test ===
+{| class="wikitable"
+! User
+! Profile
+! [http://fedoraproject.org/wiki/QA/Draft/Testcase_Vagrant_eth0_naming eth0 naming]
+! References
+|-
+| [[User:bowlofeggs|bowlofeggs]]
+| Vagrant libvirt Cloud Base
+| {{result|pass}}
+| <references/>
+|-
+| [[User:jasonbrooks|jasonbrooks]]
+| vagrant -- atomic -- libvirt
+| {{result|pass}}
+| <references/>
+
+|-
+|}
+
+== Long comments ==
+<references group="long" />
+
+[[Category:Fedora 25 Test Days]]

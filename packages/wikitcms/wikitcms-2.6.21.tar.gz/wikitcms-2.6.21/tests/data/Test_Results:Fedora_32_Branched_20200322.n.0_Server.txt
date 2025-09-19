@@ -1,0 +1,184 @@
+{{Release_validation_instructions|testtype=Server|release=32|milestone=Branched|compose=|date=20200322.n.0}}
+
+{{anchor|results}}
+== '''Test Matrix''' ==
+
+<onlyinclude>
+==== General tests ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! x86_64 !! aarch64
+|-
+| Basic
+| [[QA:Testcase_kickstart_firewall_disabled]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_kickstart_firewall_configured]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Basic
+| [[ QA:Testcase_Server_firewall_default]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_Server_cockpit_default]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_Remote_Logging]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Server_cockpit_basic]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Server_filesystem_default]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== FreeIPA server installation and functionality tests ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! x86_64 !! aarch64
+|-
+| Basic
+| [[QA:Testcase_freeipa_trust_server_installation]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_freeipa_trust_server_uninstallation]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_FreeIPA_web_ui]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_FreeIPA_password_change]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_freeipa_replication]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_freeipa_replication_advanced]]
+| {{result|none}}
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== Domain joining tests: '''FreeIPA''' ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! Result
+|-
+| Basic
+| [[QA:Testcase_realmd_join_kickstart]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_realmd_join_sssd]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_realmd_join_cockpit]]
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+<references/>
+
+==== Domain joining tests: '''Active Directory''' ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! Result
+|-
+| Basic
+| [[QA:Testcase_realmd_join_kickstart]]
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_realmd_join_sssd]]
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_realmd_join_cockpit]]
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== Domain client tests ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! Result
+|-
+| Beta
+| [[QA:Testcase_domain_client_authenticate]] (FreeIPA)
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_FreeIPA_realmd_login]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Optional
+| [[QA:Testcase_domain_client_authenticate]] (Active Directory)
+| {{result|none}}
+|}
+<references/>
+
+==== PostgreSQL server installation and functionality tests ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! x86_64 !! aarch64
+|-
+| Basic
+| [[QA:Testcase_postgresql_server_installation]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_database_server_remote_client]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== Upgrade tests ====
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+! Milestone !! Test Case !! x86_64 !! aarch64
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_server_domain_controller]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_server_domain_controller]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+|}
+<references/></onlyinclude>
+
+[[Category:Server_validation_testing]]
+{{#if:20200322.n.0|[[Category:Fedora_32_Nightly_Test_Results|Server]]|[[Category:Fedora_32_Branched_Test_Results|Server]]}}

@@ -1,0 +1,145 @@
+# Messaging Core Python SDK
+
+[![PyPI version](https://badge.fury.io/py/messaging-core.svg)](https://badge.fury.io/py/messaging-core)
+[![Python Version](https://img.shields.io/pypi/pyversions/messaging-core.svg)](https://pypi.org/project/messaging-core/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Python gRPC client for the Messaging Core service, providing easy access to messaging functionality.
+
+## Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- gRPC and Protocol Buffers support
+
+### Install from PyPI
+
+```bash
+pip install messaging-core
+```
+
+## Quick Start
+
+### Basic Usage
+
+```python
+import grpc
+from messaging_core import users, users_pb2_grpc
+
+# Set up the gRPC channel (replace with your server address)
+channel = grpc.insecure_channel('your-server-address:50051')
+
+# Initialize the client
+users_client = users_pb2_grpc.UsersServiceStub(channel)
+
+# Example: Get user information
+try:
+    user_request = users.GetUserRequest(user_id="123")
+    response = users_client.GetUser(user_request)
+    print(f"User found: {response.user.name}")
+except grpc.RpcError as e:
+    print(f"Error: {e.code()}: {e.details()}")
+```
+
+### Available Services
+
+The SDK provides the following service clients:
+
+- **Users Service**: `users_pb2_grpc.UsersServiceStub`
+- **Auth Service**: `auth_pb2_grpc.AuthServiceStub`
+- **Messaging Service**: `messaging_pb2_grpc.MessagingServiceStub` 
+- **Conversation Service**: `conversation_pb2_grpc.ConversationServiceStub`
+- **Attachment Service**: `attachment_pb2_grpc.AttachmentServiceStub`
+
+### Example: Sending a Message
+
+```python
+import grpc
+from messaging_core import messaging, messaging_pb2_grpc
+
+channel = grpc.insecure_channel('your-server-address:50051')
+messaging_client = messaging_pb2_grpc.MessagingServiceStub(channel)
+
+message = {
+    'sender_id': 'user123',
+    'conversation_id': 'conv456',
+    'content': 'Hello from Python SDK!',
+    'type': 'TEXT'
+}
+
+response = messaging_client.SendMessage(
+    messaging.SendMessageRequest(message=message)
+)
+print(f"Message sent with ID: {response.message_id}")
+```
+
+## Error Handling
+
+All gRPC errors are raised as `grpc.RpcError`. You can handle them like this:
+
+```python
+try:
+    # Your gRPC call here
+    response = client.YourMethod(request)
+except grpc.RpcError as e:
+    if e.code() == grpc.StatusCode.NOT_FOUND:
+        print("Requested resource not found")
+    elif e.code() == grpc.StatusCode.UNAUTHENTICATED:
+        print("Authentication failed")
+    else:
+        print(f"RPC failed: {e.code()}: {e.details()}")
+```
+
+## Development
+
+For development and contributing, you'll need:
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/alijkdkar/Messaging-Core.git
+   cd Messaging-Core/docs/sdk/python
+   ```
+
+2. Install dependencies:
+   ```bash
+   poetry install
+   ```
+
+### Generating gRPC Code
+
+To regenerate the gRPC code from the .proto files:
+
+```bash
+./scripts/generate_sdk.sh
+```
+
+### Running Tests
+
+```bash
+pytest tests/
+```
+
+### Building the Package
+
+```bash
+python -m build
+```
+
+### Publishing to PyPI
+
+1. Build the package:
+   ```bash
+   python -m build
+   ```
+
+2. Upload to PyPI:
+   ```bash
+   twine upload dist/*
+   ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

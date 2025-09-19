@@ -1,0 +1,67 @@
+/* Includes ------------------------------------------------------------------*/
+#include "capabilities.h"
+
+/* Private Variables ---------------------------------------------------------*/
+
+
+const char* PORT_LABELS[] = {
+  {% for port in ports %}
+  "{{ port.label }}"{% if not loop.last %},{% endif %}
+  {% endfor %}
+}
+
+
+{% for cap in capabilities %}
+uint8_t {{ cap.name }}_packed[{{ cap.packed|length }}] = { {% for byte in cap.packed %}0x{{ '%02x' % byte }}{% if not loop.last %}, {% endif %}{% endfor %} };
+packed_cap_t {{ cap.name }} = {
+  .handle = {{ "0x%08x" % cap.handle }},
+  .packed = {{ cap.name }}_packed,
+  .packed_len = {{ cap.packed|length }}
+};
+
+{% endfor %}
+
+packed_cap_t CAPABILITIES[] = {
+  {% for cap in capabilities %}{{ cap.name }}{% if not loop.last %},
+  {% endif %}{% endfor %}
+};
+
+
+/* Functions -----------------------------------------------------------------*/
+
+/**
+ * @brief Get capabilities packet by handle
+ * @param handle handle to get
+ */
+packed_cap_t capabilities_get_by_handle(uint32_t handle)
+{
+  for(int i = 0; i < CAPABILITIES_COUNT; i++)
+  {
+    if(CAPABILITIES[i].handle == handle)
+    {
+      return CAPABILITIES[i];
+    }
+  }
+
+  packed_cap_t empty = {
+    .handle = 0,
+    .packed = NULL,
+    .packed_len = 0
+  };
+  return empty;
+}
+
+packed_cap_t capabilities_get_by_index(uint32_t index)
+{
+  if(index < CAPABILITIES_COUNT)
+  {
+    return CAPABILITIES[index];
+  }
+
+  packed_cap_t empty = {
+    .handle = 0,
+    .packed = NULL,
+    .packed_len = 0
+  };
+  return empty;
+}

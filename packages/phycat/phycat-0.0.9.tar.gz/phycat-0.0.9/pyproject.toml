@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "phycat"
+version = "0.0.9"
+description = "Phycat Tools and CLI"
+readme = "README.rst"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [
+    { name = "Jason Berger", email = "berg472@gmail.com" },
+]
+
+[project.scripts]
+phycat = "phycat.phycat_cli:main"
+phymake = "phycat.phycat_make:main"
+
+[project.urls]
+homepage = "https://gitlab.com/phycat/phycat-py"
+
+repository = "https://gitlab.com/phycat/phycat-py"
+
+# If you need to specify where your packages are:
+[tool.hatch.build.targets.wheel]
+packages = ["phycat"]
+
+# If you need to include additional data files:
+[tool.hatch.build]
+include = [
+    "phycat/**/*",
+]
+
+# Dependencies (equivalent to install_requires):
+dependencies = [
+    "cliify",
+    "prompt_toolkit",
+    "pyyaml",
+    "cobs",
+    "polypacket",
+    "jinja2",
+    "termcolor"
+]

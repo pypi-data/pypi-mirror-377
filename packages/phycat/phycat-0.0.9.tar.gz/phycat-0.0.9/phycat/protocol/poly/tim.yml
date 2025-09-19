@@ -1,0 +1,84 @@
+---
+name: phycat_timer
+namespace: pc
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+  - timFlags:
+      type: flags
+      desc: Timer interface flags
+      vals:
+        - SUPPORTS_OUTPUT: { desc: Interface supports PWM output mode }
+        - SUPPORTS_CAPTURE: { desc: Interface supports input capture mode }
+        - POLARITY_HIGH: { desc: Timer channel polarity is active high }
+
+  - channels: {type: uint32*16, desc: Pins for the timer (1 per channel) }
+  - period: {type: uint32, desc: Period of timer in microseconds}
+  - channel: {type: uint32, desc: Channel of the timer interface}
+  - jitter_us: {type: uint32, desc: Jitter threshold in microseconds for pwm/ppm input}
+  - dshotData: {type: uint16, desc: DSHOT command}
+  - pulseData: {type: uint32, desc: Pulse width in microseconds}
+
+  - timMode:
+      type: enum
+      format: hex
+      desc: Defines the modes of a timer interface
+      vals:
+        - TIM_MODE_CAPTURE: { desc: Timer capture mode }
+        - TIM_MODE_OUTPUT: { desc: Timer output mode }
+
+  - timChannelMode:
+      type: enum
+      format: hex
+      desc: Defines the modes of a timer channel
+      vals:
+        - TIM_CH_MODE_PWM_CAPTURE: { desc: PWM capture mode }
+        - TIM_CH_MODE_PPM_CAPTURE: { desc: PPM capture mode }
+        - TIM_CH_MODE_DSHOT_CAPTURE: { desc: DSHOT capture mode }
+        - TIM_CH_MODE_PWM_OUTPUT: { desc: PWM output mode }
+        - TIM_CH_MODE_PPM_OUTPUT: { desc: PPM output mode }
+        - TIM_CH_MODE_DSHOT_OUTPUT: { desc: DSHOT output mode }
+
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - TimCapabilities:
+      desc: Defines the capabilities of a timer interface
+      fields:
+        - handle
+        - timFlags
+        - channels
+
+  - TimConfig:
+      desc: Message to configure a timer interface
+      fields:
+        - handle
+        - timMode
+        - period
+
+  - TimChannelConfig:
+      desc: Message to configure a timer channel
+      fields:
+        - handle
+        - channel
+        - timChannelMode
+        - period
+        - jitter_us
+
+
+  - TimData:
+      desc: Data message to or from a timer channel
+      fields:
+        - handle
+        - channel
+        - dshotData 
+        - pulseData
+        - period

@@ -1,0 +1,38 @@
+crypto_exchanges:
+  test-binance-enhanced:
+    api_key: '87789798'
+    api_secret: '67868678'
+    enabled: false
+    exchange_type: binance
+    name: test-binance-enhanced
+    rate_limit: 1200
+    sandbox: false
+    timeout: 30
+  test-enhanced-demo:
+    api_key: demo_enhanced_api_key_12345
+    api_secret: demo_enhanced_api_secret_67890
+    enabled: true
+    exchange_type: binance
+    name: test-enhanced-demo
+    rate_limit: 1200
+    sandbox: true
+    timeout: 30
+  test-enhanced-live:
+    api_key: live_enhanced_api_key_1234567890123456789012345
+    api_secret: live_enhanced_api_secret_1234567890123456789012345
+    enabled: true
+    exchange_type: binance
+    name: test-enhanced-live
+    rate_limit: 1200
+    sandbox: false
+    timeout: 30
+forex_brokers:
+  test-oanda-demo:
+    account_id: 101-001-12345678-001
+    api_key: demo_oanda_enhanced_key
+    broker_type: oanda
+    enabled: true
+    max_retries: 3
+    name: test-oanda-demo
+    sandbox: true
+    timeout: 30

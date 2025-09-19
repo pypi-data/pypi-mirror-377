@@ -1,0 +1,65 @@
+# Production Environment Configuration Overrides
+# This file contains production-specific settings that override the main configuration
+
+environment: "production"
+
+# Production settings
+debug: false
+dry_run: false  # Live trading in production
+
+# Logging settings for production
+log_level: "INFO"
+log_file: "logs/prod_trading_bot.log"
+
+# Database settings for production (use PostgreSQL)
+database_url: "${DATABASE_URL}"  # Set via environment variable
+pool_size: 10
+max_overflow: 20
+
+# Risk settings for production (standard settings)
+max_position_size: 0.1   # 10% max position size
+max_daily_loss: 0.05     # 5% max daily loss
+risk_per_trade: 0.01     # 1% risk per trade
+
+# Market settings for production
+crypto_enabled: true
+forex_enabled: true  # Enable both markets in production
+
+# Disable sandbox/testnet for all exchanges and brokers
+crypto:
+  exchanges:
+    binance:
+      sandbox: false
+    coinbase:
+      sandbox: false
+
+forex:
+  brokers:
+    oanda:
+      sandbox: false
+    mt5:
+      sandbox: false
+    ib:
+      sandbox: false
+      port: 7496  # Live trading port
+
+# Enhanced compliance for production
+compliance:
+  enabled: true
+  generate_reports: true
+  report_frequency: "daily"
+  audit_trail_enabled: true
+
+# Production-specific strategy settings
+strategies:
+  multi_indicator_crypto:
+    enabled: true
+    max_positions: 5
+  
+  forex_session_strategy:
+    enabled: true
+    max_positions: 3
+  
+  cross_market_arbitrage:
+    enabled: true
+    max_positions: 2

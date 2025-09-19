@@ -1,0 +1,71 @@
+# Legacy Single-Market Trading Bot Configuration
+app_name: "LegacyTradingBot"
+version: "1.0.0"
+debug: false
+dry_run: true
+base_currency: "USDT"
+
+# Exchange configurations
+exchanges:
+  binance:
+    exchange_type: "binance"
+    api_key: "test_binance_key"
+    api_secret: "test_binance_secret"
+    sandbox: true
+    enabled: true
+  
+  coinbase:
+    exchange_type: "coinbase"
+    api_key: "test_coinbase_key"
+    api_secret: "test_coinbase_secret"
+    api_passphrase: "test_passphrase"
+    sandbox: true
+    enabled: false
+
+# Strategy configurations
+strategies:
+  moving_average:
+    strategy_type: "moving_average"
+    enabled: true
+    symbols: ["BTC/USDT", "ETH/USDT"]
+    timeframe: "1h"
+    parameters:
+      fast_period: 10
+      slow_period: 20
+    max_positions: 2
+  
+  rsi_strategy:
+    strategy_type: "rsi"
+    enabled: false
+    symbols: "ADA/USDT"
+    timeframe: "15m"
+    parameters:
+      rsi_period: 14
+      oversold: 30
+      overbought: 70
+    max_positions: 1
+
+# Risk management
+risk:
+  max_position_size: 0.1
+  max_daily_loss: 0.05
+  max_drawdown: 0.15
+  stop_loss_percentage: 0.02
+  max_open_positions: 5
+  position_sizing_method: "fixed_fraction"
+  risk_per_trade: 0.01
+
+# Database configuration
+database:
+  database_type: "sqlite"
+  database_url: "sqlite:///legacy_trading_bot.db"
+  pool_size: 5
+  echo: false
+
+# Logging configuration
+logging:
+  log_level: "INFO"
+  log_format: "standard"
+  log_file: "logs/legacy_trading_bot.log"
+  max_file_size: 10485760
+  backup_count: 5

@@ -1,0 +1,42 @@
+[project]
+name = "brewing"
+version = "0.0.3"
+description = "A web framework built on sqlachemy and fastapi."
+readme = "README.md"
+authors = [
+    { name = "Mike Cowie", email = "24739590+mikemcowie@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "brewinglib-cli",
+]
+
+[project.scripts]
+brewing = "brewing.cli:cli"
+dev = "brewing.cli:dev"
+
+[project.urls]
+Homepage = "https://mikemcowie.github.io/brewing/"
+Documentation = "https://mikemcowie.github.io/brewing/"
+Repository = "https://github.com/mikemcowie/brewing"
+Issues = "https://github.com/mikemcowie/brewing"
+Releases = "https://github.com/mikemcowie/brewing/releases"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+brewinglib-generic = { workspace = true }
+brewinglib-cli = { workspace = true }
+
+[tool.ruff.lint]
+# Extra rules for this package
+# on top of the repo rules
+extend-select = [
+    "D"
+]
+extend-ignore = [
+    # Choices that need to be made in pydocstyle
+    "D203",
+    "D212",
+]

@@ -1,0 +1,38 @@
+[project]
+name = "flex-data-sdk"
+dynamic = ["version"]
+description = "Handy tools for data access"
+dependencies = [
+    "pandas>=2",
+    "adlfs>=2023",
+    "fsspec>=2023",
+    "pyarrow>=14",
+    "sqlalchemy>=2",
+    "pyodbc>=4",
+    "azure-identity>=1",
+    "psycopg2-binary>=2",
+]
+readme = "README.md"
+requires-python = ">= 3.9"
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "flex.data"
+
+[tool.uv]
+dev-dependencies = [
+    "ipython",
+    "pytest>=8.3.4",
+    "coverage>=7.6.10",
+    "pdoc>=15.0.1",
+    "ruff>=0.13.0",
+    "ty>=0.0.1a20",
+]
+
+[tool.coverage.run]
+omit = [
+    "*/tests/**",
+]

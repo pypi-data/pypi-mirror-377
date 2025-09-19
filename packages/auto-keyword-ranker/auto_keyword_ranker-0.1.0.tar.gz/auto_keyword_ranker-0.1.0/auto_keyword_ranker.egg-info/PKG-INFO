@@ -1,0 +1,42 @@
+Metadata-Version: 2.4
+Name: auto-keyword-ranker
+Version: 0.1.0
+Summary: Lightweight keyword & keyphrase extraction and ranking using TF-IDF with optional embedding re-ranking.
+Author-email: Reya Oberoi <reyaoberoi2005@gmail.com>
+License: MIT
+Keywords: nlp,keywords,tfidf,embeddings,text
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.21
+Requires-Dist: scikit-learn>=1.0
+Provides-Extra: embed
+Requires-Dist: sentence-transformers>=2.2; extra == "embed"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Dynamic: license-file
+
+# auto-keyword-ranker
+[![PyPI version](https://img.shields.io/pypi/v/auto-keyword-ranker)](https://pypi.org/project/auto-keyword-ranker)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+
+Lightweight Python package to extract and rank the most relevant keywords and keyphrases from text.
+
+
+**Goal:** One-line call to get ranked keywords for articles, blog posts, or short documents. Core approach uses TF-IDF; optional re-ranking with sentence-transformer embeddings.
+
+
+## Install
+
+
+Core (TF-IDF only):
+
+
+```bash
+pip install autokeyword

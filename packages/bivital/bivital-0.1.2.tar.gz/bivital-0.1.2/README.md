@@ -1,0 +1,71 @@
+# py_bivital
+
+**py_bivital** is the official Python library for the BiVital data workflow.  
+It helps you organize, preprocess and manage measurement projects, series, and raw data collected via BiVital systems.
+
+---
+
+## 🚀 Features
+
+- Project structure setup
+- Series and data import
+- Label management
+- CLI tool (`bvtool`) for fast interaction
+- Ready for Jupyter workflows and pipeline processing
+
+---
+
+## 📦 Installation
+
+> ✅ **Recommended Python version: 3.11/3.12**  
+> Other versions (e.g. 3.13) might cause compatibility issues with some dependencies like `pyarrow`.
+
+### 1. Create and activate a virtual environment (recommended)
+
+#### 🔹 Option A: Using `venv` (standard Python virtual environment)
+
+Open a terminal and navigate to your project directory:
+```
+cd path/to/your/project
+```
+Then create and activate your virtual environment:
+```bash
+pip install virtualenv                     # If virtualenv is not installed
+python -m venv <env>                       # Make sure Python 3.11/3.12 is installed
+source <env>/bin/activate                  # On Linux/Mac
+<env>\Scripts\activate                     # On Windows
+```
+
+#### 🔹 Option B: Using conda
+```bash
+conda create -n <env> python=3.12
+conda activate <env>
+conda install pip
+```
+
+### 2. Install via pip
+```bash
+pip install git+https://gitlab.ub.uni-bielefeld.de/bi-vital-open-source/py_bivital
+```
+---
+
+## 🛠 Usage
+### Command-Line Interface (CLI)
+```bash
+bvtool -h                     # Show help
+bvtool project -p PATH -n NAME
+bvtool series -p PATH -n NAME
+bvtool data -p PATH -s pc
+bvtool label -p PATH
+````
+---
+## 📂 Project Structure
+Your project will be organized like this:
+```
+BiVitalProject/
+├── Series1/
+│   └── MAC_01/
+│       └── log_01.csv
+└── Series2/
+    └── ...
+```

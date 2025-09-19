@@ -1,0 +1,9 @@
+# Exclude all .py source files from final package
+recursive-exclude Virec_publish *.py
+
+# Keep __init__.py (needed so Python sees it as a package)
+include Virec_publish/__init__.py
+
+# Always include important docs
+include LICENSE
+include README.md

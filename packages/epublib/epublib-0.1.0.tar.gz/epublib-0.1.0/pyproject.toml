@@ -1,0 +1,33 @@
+[project]
+name = "epublib"
+version = "0.1.0"
+description = "A modern EPUB3 python library"
+readme = "README.md"
+authors = [
+    { name = "João Seckler", email = "jseckler@riseup.net" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.13.5",
+    "lxml>=6.0.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.13.0",
+    "myst-parser>=4.0.1",
+    "sphinx>=8.2.3",
+    "sphinx-pyproject>=0.3.0",
+    "sybil[pytest]>=9.2.0",
+    "basedpyright>=1.31.4",
+]
+
+[tool.pytest.ini_options]
+addopts = "--doctest-glob='*.rst'"

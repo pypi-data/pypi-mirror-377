@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amt-augpy1.0"
+version = "1.0.7"
+authors = [
+  { name="Lars Monstad", email="lars.monstad@gmail.com" },
+]
+description = "Python augmentation toolkit for Automatic Music Transcription datasets"
+readme = "README.md"
+requires-python = ">=3.8, <3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = { file = "LICENSE" }
+dependencies = [
+    "librosa>=0.9.1,<1.0.0",
+    "numpy>=1.23.5,<2.0.0",
+    "soundfile>=0.12.1",
+    "pedalboard>=0.7.3",
+    "pretty_midi>=0.2.10",
+    "tqdm>=4.64.1",
+    "numba>=0.56.4",
+    "llvmlite>=0.39.1",
+    "pyyaml>=5.1.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/LarsMonstad/amt-augpy"
+Issues = "https://github.com/LarsMonstad/amt-augpy/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "mypy>=1.0.0",
+    "black>=23.0.0",
+    "pylint>=2.15.0",
+    "sphinx>=6.0.0",
+    "types-PyYAML>=5.4.0",
+    "types-tqdm>=4.64.0",
+]
+
+[project.scripts]
+amt-augpy = "amt_augpy.main:main"

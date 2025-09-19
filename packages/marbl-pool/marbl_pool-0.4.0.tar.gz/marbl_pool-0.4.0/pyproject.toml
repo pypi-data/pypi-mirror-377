@@ -1,0 +1,94 @@
+[project]
+authors = [{name = "Mads Nielsen", email = "madsn@msn.com"}]
+dependencies = [
+  "pysam>=0.23.3,<0.24",
+  "pandas>=2.3.2,<3",
+  "scipy>=1.16.1,<2",
+  "tqdm>=4.67.1,<5",
+]
+description = "Matrix assignment of rare variants using bayesian logic."
+name = "marbl-pool"
+requires-python = ">= 3.11"
+version = "0.4.0"
+license = { file = "LICENSE" }
+readme = { file = "README.md", content-type = "text/markdown" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+[project.urls]
+Homepage = "https://github.com/madscort/marbl"
+Repository = "https://github.com/madscort/marbl.git"
+Issues = "https://github.com/madscort/marbl/issues"
+
+[project.scripts]
+marbl = "marbl.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0", 
+    "ruff>=0.1.0",
+]
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.project]
+channels = ["conda-forge", "bioconda"]
+platforms = ["osx-arm64", "linux-64"]
+
+[tool.pixi.pypi-dependencies]
+marbl-pool = { path = ".", editable = true }
+
+[tool.pixi.dependencies]
+hatch = ">=1.14.1,<2"
+pysam = ">=0.23.3,<0.24"
+tqdm = ">=4.67.1,<5"
+pandas = ">=2.3.2,<3"
+scipy = ">=1.16.1,<2"
+ruff = ">=0.13.0,<0.14"
+twine = ">=6.2.0,<7"
+
+[tool.pixi.feature.dev.dependencies]
+pytest = "*"
+pytest-cov = "*"
+ruff = "*"
+
+[tool.pixi.environments]
+default = {solve-group = "default"}
+dev = {features = ["dev"], solve-group = "default"}
+
+[tool.pixi.tasks]
+test = "pytest -q"
+lint = "ruff check ."
+fmt  = "ruff check --fix ."
+cov  = "pytest --cov=marbl --cov-report=term-missing -q"
+smoke = """
+marbl \
+  --sampletable tests/data/minimal/pooltable.tsv \
+  --decodetable tests/data/minimal/decodetable.tsv \
+  --vcf-folder tests/data/minimal \
+  --mpileup-folder tests/data/minimal \
+  --output ./_smoke_out
+"""
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.build]
+include = ["src/marbl/py.typed", "README.md", "LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/marbl"]

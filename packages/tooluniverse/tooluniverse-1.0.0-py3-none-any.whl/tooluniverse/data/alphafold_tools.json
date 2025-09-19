@@ -1,0 +1,87 @@
+[
+  {
+    "name": "alphafold_get_prediction_by_uniprot_id",
+    "description": "Retrieve AlphaFold-predicted 3D protein structure metadata and download links for a given UniProt accession ID.",
+    "type": "AlphaFoldRESTTool",
+    "parameter": {
+      "type": "object",
+      "properties": {
+        "uniprot_id": {
+          "type": "string",
+          "description": "UniProt accession ID (e.g., 'P69905' for hemoglobin alpha)."
+        }
+      },
+      "required": ["uniprot_id"]
+    },
+    "fields": {
+      "endpoint": "/prediction/{uniprot_id}",
+      "return_format": "JSON"
+    },
+    "return_schema": {
+      "type": "object",
+      "description": "AlphaFold predicted protein structure metadata.",
+      "properties": {
+        "uniprotAccession": {
+          "type": "string",
+          "description": "UniProt accession ID"
+        },
+        "uniprotDescription": {
+          "type": "string",
+          "description": "Protein description"
+        },
+        "organismScientificName": {
+          "type": "string",
+          "description": "Scientific name of the source organism"
+        },
+        "gene": {
+          "type": "string",
+          "description": "Gene name if available"
+        },
+        "modelCreatedDate": {
+          "type": "string",
+          "description": "Date this AlphaFold model was created"
+        },
+        "globalMetricValue": {
+          "type": "number",
+          "description": "Global pLDDT confidence score"
+        },
+        "fractionPlddtVeryLow": {
+          "type": "number",
+          "description": "Fraction of residues with very low pLDDT (<50)"
+        },
+        "fractionPlddtLow": {
+          "type": "number",
+          "description": "Fraction of residues with low pLDDT (50–70)"
+        },
+        "fractionPlddtConfident": {
+          "type": "number",
+          "description": "Fraction of residues with confident pLDDT (70–90)"
+        },
+        "fractionPlddtVeryHigh": {
+          "type": "number",
+          "description": "Fraction of residues with very high pLDDT (>90)"
+        },
+        "pdbUrl": {
+          "type": "string",
+          "description": "Download link for PDB file"
+        },
+        "cifUrl": {
+          "type": "string",
+          "description": "Download link for CIF file"
+        },
+        "bcifUrl": {
+          "type": "string",
+          "description": "Download link for BCIF file"
+        },
+        "paeImageUrl": {
+          "type": "string",
+          "description": "Predicted aligned error plot image URL"
+        },
+        "paeDocUrl": {
+          "type": "string",
+          "description": "Predicted aligned error JSON URL"
+        }
+      }
+    }
+  }
+]

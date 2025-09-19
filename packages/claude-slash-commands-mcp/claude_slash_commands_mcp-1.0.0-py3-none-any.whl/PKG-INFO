@@ -1,0 +1,75 @@
+Metadata-Version: 2.4
+Name: claude-slash-commands-mcp
+Version: 1.0.0
+Summary: MCP server for Claude Code slash commands
+Project-URL: Homepage, https://github.com/jleechanorg/worldarchitect.ai
+Project-URL: Repository, https://github.com/jleechanorg/worldarchitect.ai
+Project-URL: Issues, https://github.com/jleechanorg/worldarchitect.ai/issues
+Author-email: Claude Code <claude@anthropic.com>
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Communications
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Requires-Dist: aiofiles>=23.0
+Requires-Dist: fastmcp>=2.11.3
+Requires-Dist: mcp>=0.1.0
+Requires-Dist: pyyaml>=6.0
+Provides-Extra: dev
+Requires-Dist: black>=22.0.0; extra == 'dev'
+Requires-Dist: flake8>=5.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Claude Slash Commands MCP Server
+
+MCP server for Claude Code slash commands, providing unified access to slash command functionality.
+
+## Features
+
+- Unified router pattern for 29+ slash commands
+- High-speed Cerebras code generation integration
+- Secure, filtered command exposure
+- FastMCP-based implementation
+
+## Installation
+
+From the repository root or the MCP server directory:
+
+```bash
+cd mcp_servers/slash_commands
+pip install -e .
+```
+
+## Usage
+
+### Via CLI Script (Recommended)
+
+After installation, the server is available as a command:
+
+```bash
+claude-slash-commands-mcp
+```
+
+Add to Claude MCP configuration:
+
+```bash
+claude mcp add --scope user "claude-slash-commands" "claude-slash-commands-mcp"
+```
+
+### Direct Module Execution
+
+Alternatively, run directly as a Python module:
+
+```bash
+python -m mcp_servers.slash_commands
+```

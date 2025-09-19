@@ -1,0 +1,177 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Security - GitHub token
+.token
+
+# Ignore Python virtual environments
+venv
+venv/
+.venv
+.venv/
+mvp_site/venv/
+test_venv/
+
+# Test artifacts and performance results
+**/performance_test_results.json
+**/artifacts/**
+**/benchmarks/**
+logs/react-mcp-logs.json
+
+# Service account keys
+key.json
+
+# GitHub token file
+.token
+
+# IDE / OS specific
+.vscode/
+.idea/
+.DS_Store
+
+# World Architect AI
+serviceAccountKey.json
+gemini_api_key.txt
+local_api_key.txt
+*_api_key.txt
+
+# User data and uploads
+usage_tracking2.json
+uploads/
+
+# ChromeDriver binary
+mvp_site/bin/chromedriver*
+
+# World files are now permanently part of mvp_site
+
+# MCP Server Configuration
+.mcp.json
+
+# Git worktrees - keep local only
+worktree_*/
+/worktree_*
+
+# Context optimization monitoring - temporary files and logs
+/tmp/worldarchitect.ai/context_optimization/
+scripts/context_monitor.log
+scripts/context_optimization_cache/
+.claude/hooks/*.pyc
+.claude/hooks/__pycache__/
+
+# Orchestration status files - auto-updated timestamps
+orchestration/tasks/shared_status.txt
+
+# Serena MCP files - language server cache
+.serena/
+
+# Node.js / JavaScript
+node_modules/
+mvp_site/node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Note: package-lock.json should be committed for reproducible builds
+# yarn.lock should be committed for Yarn projects
+
+# Build outputs
+dist/
+build/
+*.min.js
+
+# Frontend v2 build artifacts
+mvp_site/static/v2/assets/
+*.js.map
+*.gz
+*.br
+
+# Temp files
+tmp/
+mvp_site/tmp/
+
+# Phase 0 Data Files
+data/*.json
+data/*.csv
+data/*.log
+data/narrative_samples/
+data/raw/
+data/processed/
+
+# Analysis outputs
+analysis/*.tmp
+analysis/*.cache
+analysis/working/
+
+# Prototype outputs
+prototype/*.pyc
+prototype/__pycache__/
+prototype/benchmarks/*.json
+prototype/benchmarks/benchmark_results/
+prototype/*.prof
+prototype/.pytest_cache/
+
+# Script outputs
+scripts/*.log
+scripts/output/
+scripts/__pycache__/
+scripts/*.pyc
+
+# Testing
+.coverage
+.coverage.*
+.pytest_cache/
+htmlcov/
+.tox/
+.hypothesis/
+coverage_html*/
+coverage_report*/
+coverage_complete/
+coverage_full/
+**/coverage/
+docs/coverage/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+.cache/
+temp/
+*_snapshot.txt
+
+# Large data files that shouldn't be tracked
+mvp_site/prompts/5e_SRD_All.md
+mvp_site/*_Campaign_*.txt
+
+# Environment files with sensitive data
+testing_ui/testing_full/.env
+mvp_site/frontend_v2/.env
+# All .env files in frontend directories
+mvp_site/frontend*/.env
+
+# Browser binaries (Chrome/ChromeDriver) - large files that exceed GitHub's 100MB limit
+chrome/
+chromedriver/
+agent_workspace_*
+orchestration/tasks/health_report.json
+agent_dir/
+headless_*/
+[workspace]
+venv
+ci_logs.zip
+
+# Temporary JSON files
+*.json.tmp
+fresh_*.json
+temp_*.json
+
+# MCP and React logs
+logs/
+logs/*.json
+logs/*.txt
+logs/*.log
+task-agent-*/
+logs/react-mcp-logs.json
+logs/react-mcp-logs.txt

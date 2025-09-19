@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-owasp-security"
+version = "0.1.1"
+description = "OWASP Security Middleware and Utilities for Python APIs"
+authors = [
+  { name = "Jhoan Pragma", email = "jhoan.gonzaleze@pragma.com.co" }
+]
+license = { text = "Apache-2.0" }
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+  "Flask>=3.0.0",
+  "pydantic>=2.0.0",
+  "jsonschema>=4.0.0",
+  "prometheus-client>=0.20.0",
+  "requests>=2.31.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/JhoanPragma/python-owasp-security"
+"Bug Tracker" = "https://github.com/JhoanPragma/python-owasp-security/issues"

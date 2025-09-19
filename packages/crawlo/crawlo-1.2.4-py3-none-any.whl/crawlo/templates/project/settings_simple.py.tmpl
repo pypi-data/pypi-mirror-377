@@ -1,0 +1,109 @@
+# -*- coding: UTF-8 -*-
+"""
+{{project_name}} 项目配置文件（简化版）
+=============================
+基于 Crawlo 框架的简化爬虫项目配置。
+适合快速开始和小型项目。
+"""
+
+import os
+from crawlo.config import CrawloConfig
+
+# ============================== 项目基本信息 ==============================
+PROJECT_NAME = '{{project_name}}'
+try:
+    from crawlo import __version__
+    VERSION = __version__
+except ImportError:
+    VERSION = '1.0.0'
+
+# ============================== 简化版配置说明 ==============================
+# 
+# 本模板专为快速开始和小型项目设计，适用于以下场景：
+# - 学习和实验目的
+# - 小规模数据采集任务
+# - 个人项目或原型开发
+# 
+# 运行模式特点：
+# - RUN_MODE = 'standalone'（单机模式）
+# - QUEUE_TYPE = 'memory'（使用内存队列）
+# - FILTER_CLASS = 'crawlo.filters.memory_filter.MemoryFilter'（内存过滤器）
+# - DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.memory_dedup_pipeline.MemoryDedupPipeline'（内存去重）
+# 
+# 配置优势：
+# - 简单易用，开箱即用
+# - 无需额外依赖（如Redis）
+# - 资源占用少，适合个人开发环境
+# 
+# 扩展建议：
+# - 如需跨会话去重，可将FILTER_CLASS和DEFAULT_DEDUP_PIPELINE改为Redis实现
+# - 如需更高性能，可调整CONCURRENCY和DOWNLOAD_DELAY参数
+#
+# 🎯 最佳使用方式：
+# 推荐使用配置工厂方式创建基本配置：
+# from crawlo.config import CrawloConfig
+# config = CrawloConfig.standalone()
+# process = CrawlerProcess(settings=config.to_dict())
+
+# ============================== 基本配置 ==============================
+# 使用配置工厂创建基本配置
+CONFIG = CrawloConfig.standalone(
+    concurrency=4,
+    download_delay=1.0
+)
+
+# 获取配置
+locals().update(CONFIG.to_dict())
+
+# ============================== 网络请求配置 ==============================
+DOWNLOADER = "crawlo.downloader.httpx_downloader.HttpXDownloader"
+DOWNLOAD_TIMEOUT = 30
+VERIFY_SSL = True
+
+# ============================== 并发配置 ==============================
+CONCURRENCY = 4
+DOWNLOAD_DELAY = 1.0
+
+# ============================== 数据存储配置 ==============================
+# MySQL 配置
+MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
+MYSQL_PORT = int(os.getenv('MYSQL_PORT', 3306))
+MYSQL_USER = os.getenv('MYSQL_USER', 'root')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '123456')
+MYSQL_DB = os.getenv('MYSQL_DB', '{{project_name}}')
+MYSQL_TABLE = '{{project_name}}_data'
+
+# MongoDB 配置
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017')
+MONGO_DATABASE = '{{project_name}}_db'
+MONGO_COLLECTION = '{{project_name}}_items'
+
+# ============================== 去重配置 ==============================
+# 明确指定简化模式下使用内存去重管道
+DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.memory_dedup_pipeline.MemoryDedupPipeline'
+FILTER_CLASS = 'crawlo.filters.memory_filter.MemoryFilter'
+
+# ============================== 中间件与管道 ==============================
+MIDDLEWARES = [
+    'crawlo.middleware.request_ignore.RequestIgnoreMiddleware',
+    'crawlo.middleware.download_delay.DownloadDelayMiddleware',
+    'crawlo.middleware.default_header.DefaultHeaderMiddleware',
+    'crawlo.middleware.retry.RetryMiddleware',
+    'crawlo.middleware.response_code.ResponseCodeMiddleware',
+]
+
+PIPELINES = [
+    'crawlo.pipelines.console_pipeline.ConsolePipeline',
+    # '{{project_name}}.pipelines.DatabasePipeline',
+]
+
+# 明确添加内存去重管道到管道列表开头
+PIPELINES.insert(0, DEFAULT_DEDUP_PIPELINE)
+
+# ============================== 日志配置 ==============================
+LOG_LEVEL = 'INFO'
+LOG_FILE = f'logs/{{project_name}}.log'
+STATS_DUMP = True
+
+# ============================== 自定义配置 ==============================
+# 在此处添加项目特定的配置项

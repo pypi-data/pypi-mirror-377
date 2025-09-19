@@ -1,0 +1,94 @@
+---
+title: "Installation"
+description: "Step-by-step instructions for setting up Timbal CLI and Python package"
+---
+
+Timbal uses `uv` for python dependency management and package handling, streamlining project setup and execution for a seamless development experience.
+
+<Info>
+Install uv to manage your Python dependencies.
+
+- On **macOS/Linux**:
+
+  Use `curl` to download the script and execute it with `sh`:
+
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+  If your system doesn't have `curl`, you can use `wget`:
+
+  ```bash
+  wget -qO- https://astral.sh/uv/install.sh | sh
+  ```
+  
+- On **Windows**:
+
+  Use `irm` to download the script and `iex` to execute it:
+
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+If you run into any issues, refer to **[UV's installation](https://docs.astral.sh/uv/get-started/installation/)** guide for more information.
+</Info>
+
+## CLI
+
+The **Timbal CLI** provides a command-line interface for managing Timbal projects, including initialization, building, deploying, and other project management tasks.
+
+<Info>
+Before installing the CLI, ensure you have [docker](https://docs.docker.com/engine/install/) installed and running.
+</Info>
+
+**macOS/Linux**
+
+Use `curl` to download and execute the installation script:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/timbal-ai/timbal/main/cli/install.sh | sh
+```
+
+**Windows**
+
+Use PowerShell to download and execute the installation script:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/timbal-ai/timbal/main/cli/install.ps1 | iex"
+```
+
+<Tip>
+Once installed, you can use the `timbal` command to manage your projects! You can skip to the [quickstart guide](./quickstart) to get started.
+</Tip>
+
+## Python Package
+
+If you want to use Timbal directly in your Python projects or integrate it into an existing codebase, you can install the Python package directly.
+
+<Info>
+Before adding the package, ensure you have `python>=3.11` installed.
+</Info>
+
+Using `uv`:
+
+```bash
+uv add timbal
+```
+
+Using `pip`:
+
+```bash
+pip install timbal
+```
+
+Alternatively, if you want the latest changes and want to experiment with beta features, you can clone the repository and install from source:
+
+```bash
+git clone https://github.com/timbal-ai/timbal.git
+cd timbal
+uv add -e . # pip install -e .
+```
+
+<Tip>
+**Next Steps:** You're ready to create your first Timbal project! Continue to the [quickstart guide](./quickstart) to build your first AI agent.
+</Tip>

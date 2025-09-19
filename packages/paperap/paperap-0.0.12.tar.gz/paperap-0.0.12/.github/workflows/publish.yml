@@ -1,0 +1,44 @@
+name: Build and Publish Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    name: Build and publish Python package
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+
+    - name: Install uv
+      run: pip install uv
+
+    - name: Install Dependencies
+      run: uv sync --all-groups
+
+    - name: Build package
+      run: uv build
+
+    - name: Publish to PyPI
+      run: |
+        set +e
+        uv publish 2>&1 | tee publish.log
+        status=${PIPESTATUS[0]}
+        if grep -q "File already exists" publish.log; then
+          echo "Warning: Package version already exists. Skipping publish."
+          exit 0
+        fi
+        exit $status

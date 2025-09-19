@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>paperap.models.share_links.model module &mdash; Paperap 0.0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="canonical" href="/api/paperap.models.share_links.model.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=53b53b71"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script defer="defer" src="../_static/readthedocs.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Paperap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Paperap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Paperap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">paperap.models.share_links.model module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/paperap.models.share_links.model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-paperap.models.share_links.model">
+<span id="paperap-models-share-links-model-module"></span><h1>paperap.models.share_links.model module<a class="headerlink" href="#module-paperap.models.share_links.model" title="Link to this heading"></a></h1>
+<p>Module for managing share links in Paperless-NgX.</p>
+<p>This module provides the ShareLinks model for creating, retrieving, and managing
+document share links in Paperless-NgX. Share links allow documents to be shared
+with users who don’t have access to the Paperless-NgX instance.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paperap.models.share_links.model.</span></span><span class="sig-name descname"><span class="pre">ShareLinks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/paperap/models/share_links/model.html#ShareLinks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="paperap.models.abstract.model.html#paperap.models.abstract.model.StandardModel" title="paperap.models.abstract.model.StandardModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModel</span></code></a></p>
+<p>Model representing a share link in Paperless-NgX.</p>
+<p>Share links allow documents to be shared with users who don’t have access to the
+Paperless-NgX instance. Each share link has a unique slug that can be used to access
+the document without authentication.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.expiration">
+<span class="sig-name descname"><span class="pre">expiration</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.expiration" title="Link to this definition"></a></dt>
+<dd><p>When the share link expires. If None, the link never expires.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.slug">
+<span class="sig-name descname"><span class="pre">slug</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.slug" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for the share link URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.document">
+<span class="sig-name descname"><span class="pre">document</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.document" title="Link to this definition"></a></dt>
+<dd><p>ID of the document being shared.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.created">
+<span class="sig-name descname"><span class="pre">created</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.created" title="Link to this definition"></a></dt>
+<dd><p>When the share link was created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.file_version">
+<span class="sig-name descname"><span class="pre">file_version</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.file_version" title="Link to this definition"></a></dt>
+<dd><p>Which version of the document to share.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ShareLinkFileVersionType</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.owner">
+<span class="sig-name descname"><span class="pre">owner</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.owner" title="Link to this definition"></a></dt>
+<dd><p>ID of the user who created the share link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a new share link for document with ID 123</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">share_link</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">share_links</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Share link created: </span><span class="si">{</span><span class="n">share_link</span><span class="o">.</span><span class="n">slug</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a share link that expires in 7 days</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expiry</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">share_link</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">share_links</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">document</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">expiration</span><span class="o">=</span><span class="n">expiry</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">expiration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">slug</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">document</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">file_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ShareLinkFileVersionType</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">owner</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/paperap/models/share_links/model.html#ShareLinks.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="paperap.models.abstract.model.html#paperap.models.abstract.model.StandardModel.Meta" title="paperap.models.abstract.model.StandardModel.Meta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Meta</span></code></a></p>
+<p>Metadata for the ShareLinks model.</p>
+<p>This class defines the queryset class to use for ShareLinks queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<span class="sphinx_autodoc_typehints-type">type[_Self]</span>)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.queryset" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="paperap.models.share_links.queryset.html#paperap.models.share_links.queryset.ShareLinksQuerySet" title="paperap.models.share_links.queryset.ShareLinksQuerySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShareLinksQuerySet</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.blacklist_filtering_params">
+<span class="sig-name descname"><span class="pre">blacklist_filtering_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.blacklist_filtering_params" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.field_map">
+<span class="sig-name descname"><span class="pre">field_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[str,</span> <span class="pre">str]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.field_map" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.filtering_disabled">
+<span class="sig-name descname"><span class="pre">filtering_disabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.filtering_disabled" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.filtering_fields">
+<span class="sig-name descname"><span class="pre">filtering_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'_resource',</span> <span class="pre">'created',</span> <span class="pre">'document',</span> <span class="pre">'expiration',</span> <span class="pre">'file_version',</span> <span class="pre">'id',</span> <span class="pre">'owner',</span> <span class="pre">'slug'}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.filtering_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.read_only_fields">
+<span class="sig-name descname"><span class="pre">read_only_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'id'}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.read_only_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.supported_filtering_params">
+<span class="sig-name descname"><span class="pre">supported_filtering_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'id',</span> <span class="pre">'id__in',</span> <span class="pre">'limit'}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.supported_filtering_params" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">type[_Self]</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.Meta.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.Meta.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.serialize_datetime">
+<span class="sig-name descname"><span class="pre">serialize_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/paperap/models/share_links/model.html#ShareLinks.serialize_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.serialize_datetime" title="Link to this definition"></a></dt>
+<dd><p>Serialize a datetime object to an ISO 8601 formatted string.</p>
+<p>This serializer converts datetime objects to ISO 8601 formatted strings
+for JSON serialization when sending data to the Paperless-NgX API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span> <span class="pre">|</span> <span class="pre">None</span></code>) – The datetime object to serialize.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The ISO 8601 formatted string representation of the datetime,</dt><dd><p>or None if the input is None.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a> | None</p>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">share_link</span> <span class="o">=</span> <span class="n">ShareLinks</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">share_link</span><span class="o">.</span><span class="n">serialize_datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<span class="go">&#39;2023-01-15T12:30:45&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">share_link</span><span class="o">.</span><span class="n">serialize_datetime</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.get_document">
+<span class="sig-name descname"><span class="pre">get_document</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/paperap/models/share_links/model.html#ShareLinks.get_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.get_document" title="Link to this definition"></a></dt>
+<dd><p>Get the document associated with this share link.</p>
+<p>Retrieves the full Document object associated with this share link
+by querying the Paperless-NgX API using the document ID stored in
+this share link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The document object associated with this share link.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="paperap.models.html#paperap.models.Document" title="paperap.models.Document">Document</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – If the document ID is not set on this share link.</p></li>
+<li><p><a class="reference internal" href="paperap.exceptions.html#paperap.exceptions.ResourceNotFoundError" title="paperap.exceptions.ResourceNotFoundError"><strong>ResourceNotFoundError</strong></a> – If the document doesn’t exist in Paperless-NgX.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">share_link</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">share_links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">share_link</span><span class="o">.</span><span class="n">get_document</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shared document title: </span><span class="si">{</span><span class="n">document</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'ignore',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'use_enum_values':</span> <span class="pre">True,</span> <span class="pre">'validate_assignment':</span> <span class="pre">True,</span> <span class="pre">'validate_default':</span> <span class="pre">True}</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.model_post_init" title="Link to this definition"></a></dt>
+<dd><p>We need to both initialize private attributes and call the user-defined model_post_init
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a></span>)</p></li>
+<li><p><strong>context</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.share_links.model.ShareLinks.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#paperap.models.share_links.model.ShareLinks.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Jess Mann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

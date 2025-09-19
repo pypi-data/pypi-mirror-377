@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>paperap.models.config.config module &mdash; Paperap 0.0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="canonical" href="/api/paperap.models.config.config.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=53b53b71"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script defer="defer" src="../_static/readthedocs.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Paperap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Paperap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Paperap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">paperap.models.config.config module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/paperap.models.config.config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-paperap.models.config.config">
+<span id="paperap-models-config-config-module"></span><h1>paperap.models.config.config module<a class="headerlink" href="#module-paperap.models.config.config" title="Link to this heading"></a></h1>
+<p>Configuration model for Paperless-NgX system settings.</p>
+<p>This module provides the Config model class for interacting with the Paperless-NgX
+configuration API endpoint. It allows retrieving and modifying system-wide settings
+that control document processing, OCR behavior, and application appearance.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paperap.models.config.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/paperap/models/config/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#paperap.models.config.config.Config" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="paperap.models.abstract.model.html#paperap.models.abstract.model.StandardModel" title="paperap.models.abstract.model.StandardModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardModel</span></code></a></p>
+<p>Model representing Paperless-NgX system configuration settings.</p>
+<p>This model provides access to system-wide configuration settings that control
+document processing, OCR behavior, and application appearance. These settings
+correspond to those available in the Paperless-NgX admin interface.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.user_args">
+<span class="sig-name descname"><span class="pre">user_args</span></span><a class="headerlink" href="#paperap.models.config.config.Config.user_args" title="Link to this definition"></a></dt>
+<dd><p>Custom arguments passed to the OCR engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.output_type">
+<span class="sig-name descname"><span class="pre">output_type</span></span><a class="headerlink" href="#paperap.models.config.config.Config.output_type" title="Link to this definition"></a></dt>
+<dd><p>Default output format for OCR results (e.g., “pdfa”, “pdf”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.pages">
+<span class="sig-name descname"><span class="pre">pages</span></span><a class="headerlink" href="#paperap.models.config.config.Config.pages" title="Link to this definition"></a></dt>
+<dd><p>Page range specification for OCR processing (e.g., “1,3-5”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#paperap.models.config.config.Config.language" title="Link to this definition"></a></dt>
+<dd><p>Default OCR language code (e.g., “eng”, “deu”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><a class="headerlink" href="#paperap.models.config.config.Config.mode" title="Link to this definition"></a></dt>
+<dd><p>OCR processing mode (e.g., “skip”, “redo”, “force”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.skip_archive_file">
+<span class="sig-name descname"><span class="pre">skip_archive_file</span></span><a class="headerlink" href="#paperap.models.config.config.Config.skip_archive_file" title="Link to this definition"></a></dt>
+<dd><p>Whether to skip creating archive files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.image_dpi">
+<span class="sig-name descname"><span class="pre">image_dpi</span></span><a class="headerlink" href="#paperap.models.config.config.Config.image_dpi" title="Link to this definition"></a></dt>
+<dd><p>DPI setting for image processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.unpaper_clean">
+<span class="sig-name descname"><span class="pre">unpaper_clean</span></span><a class="headerlink" href="#paperap.models.config.config.Config.unpaper_clean" title="Link to this definition"></a></dt>
+<dd><p>Whether to use unpaper for document cleaning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.deskew">
+<span class="sig-name descname"><span class="pre">deskew</span></span><a class="headerlink" href="#paperap.models.config.config.Config.deskew" title="Link to this definition"></a></dt>
+<dd><p>Whether to automatically deskew (straighten) documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.rotate_pages">
+<span class="sig-name descname"><span class="pre">rotate_pages</span></span><a class="headerlink" href="#paperap.models.config.config.Config.rotate_pages" title="Link to this definition"></a></dt>
+<dd><p>Whether to automatically rotate pages to the correct orientation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.rotate_pages_threshold">
+<span class="sig-name descname"><span class="pre">rotate_pages_threshold</span></span><a class="headerlink" href="#paperap.models.config.config.Config.rotate_pages_threshold" title="Link to this definition"></a></dt>
+<dd><p>Confidence threshold for automatic page rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.max_image_pixels">
+<span class="sig-name descname"><span class="pre">max_image_pixels</span></span><a class="headerlink" href="#paperap.models.config.config.Config.max_image_pixels" title="Link to this definition"></a></dt>
+<dd><p>Maximum number of pixels to process in images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.color_conversion_strategy">
+<span class="sig-name descname"><span class="pre">color_conversion_strategy</span></span><a class="headerlink" href="#paperap.models.config.config.Config.color_conversion_strategy" title="Link to this definition"></a></dt>
+<dd><p>Strategy for color conversion (e.g., “none”, “grayscale”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.app_title">
+<span class="sig-name descname"><span class="pre">app_title</span></span><a class="headerlink" href="#paperap.models.config.config.Config.app_title" title="Link to this definition"></a></dt>
+<dd><p>Custom title for the Paperless-NgX web application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.app_logo">
+<span class="sig-name descname"><span class="pre">app_logo</span></span><a class="headerlink" href="#paperap.models.config.config.Config.app_logo" title="Link to this definition"></a></dt>
+<dd><p>Custom logo path for the Paperless-NgX web application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<p>Retrieve current system configuration:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">config</span> <span class="pre">=</span> <span class="pre">client.config.get()</span>
+<span class="pre">print(f&quot;Current</span> <span class="pre">OCR</span> <span class="pre">language:</span> <span class="pre">{config.language}&quot;)</span>
+<span class="pre">`</span></code></p>
+<p>Update system configuration:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">config</span> <span class="pre">=</span> <span class="pre">client.config.get()</span>
+<span class="pre">config.language</span> <span class="pre">=</span> <span class="pre">&quot;eng+deu&quot;</span>&#160; <span class="pre">#</span> <span class="pre">Set</span> <span class="pre">OCR</span> <span class="pre">to</span> <span class="pre">use</span> <span class="pre">English</span> <span class="pre">and</span> <span class="pre">German</span>
+<span class="pre">config.deskew</span> <span class="pre">=</span> <span class="pre">True</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">Enable</span> <span class="pre">automatic</span> <span class="pre">document</span> <span class="pre">straightening</span>
+<span class="pre">config.save()</span>
+<span class="pre">`</span></code></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">user_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">output_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">pages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">skip_archive_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">image_dpi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">unpaper_clean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">deskew</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">rotate_pages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">rotate_pages_threshold</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">max_image_pixels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">color_conversion_strategy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span></em><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">app_title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">app_logo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paperap.models.config.config.Config.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="paperap.models.abstract.model.html#paperap.models.abstract.model.StandardModel.Meta" title="paperap.models.abstract.model.StandardModel.Meta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Meta</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<span class="sphinx_autodoc_typehints-type">type[_Self]</span>)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta.blacklist_filtering_params">
+<span class="sig-name descname"><span class="pre">blacklist_filtering_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.Meta.blacklist_filtering_params" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta.field_map">
+<span class="sig-name descname"><span class="pre">field_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[str,</span> <span class="pre">str]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.Meta.field_map" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta.filtering_disabled">
+<span class="sig-name descname"><span class="pre">filtering_disabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.Meta.filtering_disabled" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta.filtering_fields">
+<span class="sig-name descname"><span class="pre">filtering_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'_resource',</span> <span class="pre">'app_logo',</span> <span class="pre">'app_title',</span> <span class="pre">'color_conversion_strategy',</span> <span class="pre">'deskew',</span> <span class="pre">'id',</span> <span class="pre">'image_dpi',</span> <span class="pre">'language',</span> <span class="pre">'max_image_pixels',</span> <span class="pre">'mode',</span> <span class="pre">'output_type',</span> <span class="pre">'pages',</span> <span class="pre">'rotate_pages',</span> <span class="pre">'rotate_pages_threshold',</span> <span class="pre">'skip_archive_file',</span> <span class="pre">'unpaper_clean',</span> <span class="pre">'user_args'}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.Meta.filtering_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta.read_only_fields">
+<span class="sig-name descname"><span class="pre">read_only_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'id'}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.Meta.read_only_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.Meta.supported_filtering_params">
+<span class="sig-name descname"><span class="pre">supported_filtering_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[set[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'id',</span> <span class="pre">'id__in',</span> <span class="pre">'limit'}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.Meta.supported_filtering_params" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'ignore',</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'use_enum_values':</span> <span class="pre">True,</span> <span class="pre">'validate_assignment':</span> <span class="pre">True,</span> <span class="pre">'validate_default':</span> <span class="pre">True}</span></em><a class="headerlink" href="#paperap.models.config.config.Config.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paperap.models.config.config.Config.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#paperap.models.config.config.Config.model_post_init" title="Link to this definition"></a></dt>
+<dd><p>We need to both initialize private attributes and call the user-defined model_post_init
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel" title="(in Pydantic v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a></span>)</p></li>
+<li><p><strong>context</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Jess Mann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

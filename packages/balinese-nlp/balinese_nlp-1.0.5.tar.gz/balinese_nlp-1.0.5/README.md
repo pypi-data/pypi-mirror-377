@@ -1,0 +1,97 @@
+# Balinese Natural Language Processing Package
+> The First Comprehensive Python NLP Tools for Natural Language Processing
+
+Package Structure of ***balinese_nlp***: <br>
+- **textpreprocessor** &check;
+	- `TextPreprocessor.py`
+	- `utils.py`
+	- *data* 
+		- *lemmatization*
+			- `balivocab.txt`
+		- *normalizedwords*
+			- `data.xlsx`
+		- *stopwords*
+			- `data.txt`
+	- *lemmatization* 
+		- *LevenstheinDistance*
+			- `Lemmatization.py`
+			- `LemmatizationRules.py`
+	- *stemming*  (under development)
+- **narratives**
+	- *aliasclustering* &check;
+		- *rule_based* &check;
+			- `AliasClusteringRuleBased.py`
+			- `PairwiseDistanceString.py`
+		- *supervised* (under development) 
+	- *characterclassification* 
+		- *rule_based* &check;
+			- `RuleBasedLexiconClassifier.py`
+		- *supervised* (under development) 
+	- *characterner* &check;
+		- *datapreparation* 
+			- `DataPreparation.py`
+		- `BaseModel.py`
+		- `ConditionalRandomFields.py`
+		- `HiddenMarkovModel.py`
+		- `HybridBPSOCRF.py`
+		- `ScikitLearnClassifiers.py`
+	- *clustercharacterner* &check;
+		- `AgglomerativeClusteringNER.py`
+		- `Base.py`
+		- `BIRCHNER.py`
+		- `DBSCANNER.py`
+		- `HDBSCANNER.py`
+		- `KMeansNER.py`
+		- `OPTICSNER.py`
+		- `SpectralClusteringNER.py`
+- **corefresolution**
+	- *rule_based* &check;
+		- `CoreferenceResolution.py`
+		- `LinkedList.py`
+	- *supervised* (under development)
+- **embeddings** &check;
+	- `BasePretrained.py` 
+	- *BERT* 
+		- `BalimultiLingBERT.py`
+	- *gensims* 
+		- `BaliFastText.py`
+		- `BaliWord2Vecs.py`
+	- *gloves* 
+		- `BaliGlove.py`
+		- `Glove.py`
+- **feature_extractor**
+	- *data* &check;
+		- `booster_words.txt`
+		- `negation_words.txt`
+	- *narratives* &check;
+		- *characterclassification*
+			- `BaseModelFeatureExtraction.py`
+			- `FeatureExtraction.py`
+			- `LexiconFeatureExtraction.py`
+			- `POSTagFeatureExtraction.py`
+			- `WordEmbeddingFeatureExtraction.py`
+- **ner** &check;
+	- `utils.py`
+	- *data* 
+		- `BaliVocab.txt`
+		- `sansekertavocab.txt`
+	- *rule_based* 
+		- `NERLocation.py`
+		- `NERPerson.py`
+		- `NERTimeExpression.py`
+- **postag** &check;
+	- `utils.py`
+	- *data* 
+		- *HMM*
+			- `hmmmodel.txt`
+	- *HMM* 
+		- `HiddenMarkovModelPOSTag.py`
+- **quoteattribution**
+	- *rule_based* 
+		- `RuleBasedSentenceGrouping.py`
+- **summarization** (under development)
+	- *abstractive* 
+	- *extractive* 
+		- *deeplearning* 
+		- *machinelearning* 
+		- *metaheuristics* 

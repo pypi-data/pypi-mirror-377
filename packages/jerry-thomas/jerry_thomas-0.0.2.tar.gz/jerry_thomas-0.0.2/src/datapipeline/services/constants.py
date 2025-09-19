@@ -1,0 +1,12 @@
+PARSER_KEY = "parser"
+LOADER_KEY = "loader"
+SOURCE_KEY = "source"
+MAPPER_KEY = "mapper"
+ENTRYPOINT_KEY = "entrypoint"
+ARGS_KEY = "args"
+
+PARSERS_GROUP = "parsers"
+LOADERS_GROUP = "loaders"
+MAPPERS_GROUP = "mappers"
+FILTERS_GROUP = "filters"
+COMPOSED_LOADER_EP = "composed.loader"

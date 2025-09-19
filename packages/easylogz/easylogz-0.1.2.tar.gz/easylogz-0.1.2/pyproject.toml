@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easylogz"
+version = "0.1.2"
+authors = [
+  { name = "zhong", email = "2629144335@qq.com" }
+]
+description = "一个简单易用的Python日志工具，提供开箱即用的日志管理功能"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Logging"
+]
+dependencies = []  # 如果有依赖，比如 "uvicorn", "fastapi" 等，填在这里
+
+[project.urls]
+Homepage = "https://github.com/z5013/EasyLog"
+"Bug Tracker" = "https://github.com/z5013/EasyLog/issues"
+"Source Code" = "https://github.com/z5013/EasyLog"
+

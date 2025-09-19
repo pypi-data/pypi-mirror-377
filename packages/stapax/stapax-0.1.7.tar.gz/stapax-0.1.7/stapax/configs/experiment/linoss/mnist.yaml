@@ -1,0 +1,19 @@
+# @package _global_
+
+defaults:
+    - base: mnist
+    - /model/encoder: linoss_encoder
+    - /model/encoder/sequence_mixer: linoss
+    # - /sweeper: linoss # only used when running with --multirun flag
+    - _self_
+
+model:
+    encoder:
+        hidden_dim: 64
+        num_blocks: 10
+        sequence_mixer:
+            discretization: 'IMEX'
+            damping: true
+            dim: 64
+            r_min: 0.9
+            theta_max: 3.141592653589793

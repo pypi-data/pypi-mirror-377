@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tic-tac-toe-aiman"
+version = "0.1.0"
+description = "لعبة X و O مع واجهة رسومية وذكاء اصطناعي"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [
+  { name="Your Name", email="you@example.com" }
+]
+dependencies = ["pygame>=2.0"]
+
+[project.urls]
+Homepage = "https://github.com/yourname/tic-tac-toe-aiman"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"tic_tac_toe_aiman" = ["*.ttf"]

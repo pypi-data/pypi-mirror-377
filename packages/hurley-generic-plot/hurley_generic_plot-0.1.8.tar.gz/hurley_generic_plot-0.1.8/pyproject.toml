@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=0.7.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hurley-generic-plot"
+version = "0.1.8"
+description = "Just some generic functions to make plots"
+readme = "README.md"
+authors = [
+    { name = "Hurley Li", email = "lihe.oscar@gmail.com" }
+]
+license = "MIT"
+requires-python = ">=3.7"
+dependencies = [
+    "seaborn",
+    "matplotlib",
+    "numpy",
+    "scipy",
+    "pandas"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/hurleyLi/generic-plot"
+"Bug Tracker" = "https://github.com/hurleyLi/generic-plot/issues"

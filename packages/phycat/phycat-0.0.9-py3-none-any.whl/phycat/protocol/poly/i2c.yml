@@ -1,0 +1,90 @@
+---
+name: phycat_i2c
+namespace: pc  #this defines the namespace used for functions and types in the code. This allows multiple protocols to be used in a project
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+
+  - i2cFlags:
+      type: flags 
+      desc: I2C bus flags
+      vals:
+        - MASTER: { desc: Interface supports I2C master mode }
+        - SLAVE: { desc: Interface supports I2C slave mode }
+        - PROMISCUOUS: { desc: Interface supports I2C promiscuous mode, a passive slave mode that relays all traffic on the bus }
+        - CLOCK_STRETCHING: { desc: Interface supports clock stretching }
+        - PULL_UPS: { desc: Device has pull-up resistors that can be enabled }
+
+  - i2cTransactionFlags:
+      type: flags
+      desc: I2C transaction flags
+      vals:
+        - START: { desc: Send Start condition before operation }
+        - STOP: { desc: Send Stop condition after operation}
+        - ACK: { desc: Device acknowledged operation }
+        
+  - max_7bit_addresses: {type: uint8, desc: Maximum number of 7-bit addresses supported}
+  - max_10bit_addresses: {type: uint16, desc: Maximum number of 10-bit addresses supported}
+  - sda_pin: {type: uint64, desc: SDA port and pin, first 32 bits are port, last 32 bits are pin}
+  - scl_pin: {type: uint64, desc: SCL port and pin, first 32 bits are port, last 32 bits are pin}
+
+  - addresses_7bit: {type: uint8*16, desc: Number of 7-bit addresses}
+  - addresses_10bit: {type: uint16*16, desc: Number of 10-bit addresses}
+
+
+  - i2cOperation:
+      type: enum
+      format: hex
+      desc: I2C operation
+      vals:
+        - WRITE: { desc: Write operation }
+        - READ: { desc: Read operation }
+        - DATA: { desc: Data packet }
+
+
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - I2cCapabilities:
+      desc: I2C capabilities
+      fields: 
+        - handle
+        - i2cFlags
+        - clockSpeed: {desc: Maximum clock speed in Hz}
+        - max_7bit_addresses
+        - max_10bit_addresses
+        - sda_pin
+        - scl_pin
+
+  - I2cConfig:
+      desc: I2C configuration
+      response: Status
+      fields:
+        - handle
+        - i2cFlags
+        - clockSpeed 
+        - addresses_7bit
+        - addresses_10bit
+
+  - I2cData:
+      desc: I2C data packet
+      response: I2cData
+      fields:
+        - handle
+        - i2cOperation
+        - i2cTransactionFlags
+        - address
+        - memAddr
+        - memAddrSize
+        - data
+        - size
+
+

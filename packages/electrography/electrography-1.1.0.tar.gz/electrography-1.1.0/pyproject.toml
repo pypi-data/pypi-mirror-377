@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "Cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "electrography"
+version = "1.1.0"
+description = "Python package to record and analyse data from OpenBCI boards"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE.txt" }
+keywords = ["electrophysiology", "electrocardiography", "electrogastrography","electroencephalography"]
+authors = [{ name = "Edwin Dalmaijer", email = "edwin@dalmaijer.org" }]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+]
+dependencies = ["brainflow", "numpy", "scipy", "scikit-learn"]
+
+[project.urls]
+"Homepage" = "https://www.dalmaijer.org"
+"Bug Reports" = "https://github.com/esdalmaijer/electrography/issues"
+"Source" = "https://github.com/esdalmaijer/electrography"
+
+[tool.setuptools]
+ext-modules = [
+  {name = "electrography.data_helper_functions", sources = ["src/zippy_cython_functions/data_helper_functions.pyx"]}
+]
+# Intentionally commented out in case we need any additional files to
+# be included in the future.
+#package-data = { "sample" = ["*.dat"] }
+

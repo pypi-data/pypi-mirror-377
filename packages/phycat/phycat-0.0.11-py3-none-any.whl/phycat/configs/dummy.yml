@@ -1,0 +1,36 @@
+ports:
+  0: A
+  1: B
+  2: C
+  3: D
+  4: E
+  5: F
+
+interfaces:
+  uart0:
+    driver: phycat.drivers:Serial
+    port: /dev/ttyS0 
+  # gpioA0:
+  #   &gpio_default
+  #   driver: print
+  #   capabilities:
+  #     supports_input: true
+  #     supports_output: true
+  #     supports_interrupts: true
+  #     supports_pwm_output: true
+  #     supports_pwm_input: true
+  #     supports_dshot_output: true
+  #     supports_dshot_input: true
+  # gpioA1:
+  #   <<: *gpio_default
+  # gpioA2:
+  #   <<: *gpio_default
+  # gpioA3:
+  #   <<: *gpio_default
+  # gpioA4:
+  #   <<: *gpio_default
+
+
+
+
+      

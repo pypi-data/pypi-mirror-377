@@ -1,0 +1,19 @@
+name: rpi4
+description: Raspberry Pi 4 phycat device 
+ports:
+  0: gpio
+
+interfaces:
+  uart0:
+    driver: phycat.drivers.Serial 
+    port: /dev/ttyS0
+  i2c0:
+    driver: phycat.drivers.pigpio.I2c
+    bus: 1 
+  gpio0:
+    driver: phycat.drivers.pigpio.Gpio
+    pin: 1
+  gpio1:
+    driver: phycat.drivers.pigpio.Gpio
+    pin: 2
+

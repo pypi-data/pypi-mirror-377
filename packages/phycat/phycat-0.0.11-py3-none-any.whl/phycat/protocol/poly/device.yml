@@ -1,0 +1,73 @@
+---
+name: phycat_device
+namespace: pc  #this defines the namespace used for functions and types in the code. This allows multiple protocols to be used in a project
+desc: This is a protocol for emulating device memory banks
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields: 
+  - devHandle: {type: uint32, desc: Device handle}
+
+  - memFlags:
+      type: flags 
+      desc: Memory bank flags
+      vals:
+        - READ: { desc: Bank supports read operations }
+        - WRITE: { desc: Bank supports write operations }
+        - FIFO: { desc: Bank is a FIFO }
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - AddDevice:
+      desc: Add an emulated device to an interface
+      response: Status
+      fields:
+        - handle: {desc: handle of interface to add device to}
+        - devHandle: {req: true, desc: handle of device to add}
+        - address: {req: true, desc: Address of device on interface (for I2C/ETH)}
+        - cs_pin: {req: true, desc: CS pin of device on interface (for SPI)}
+        - memAddrSize: { desc: Size of memory address in bits }
+  
+  - AddMemoryBank:
+      desc: Add an emulated memory bank to an emulated device
+      response: Status
+      fields:
+        - handle: {desc: handle of interface to add memory bank to}
+        - devHandle: {req: true, desc: handle of device to add memory bank to}
+        - memFlags: {req: true, desc: Memory bank flags}
+        - memAddr: {req: true, desc: Memory address of bank}
+        - size: {req: true, desc: Size of bank in bytes}
+
+  - MemRead:
+      desc: Read memory from an  emulated devices memory bank
+      response: MemData
+      fields:
+        - handle: {req: true, desc: handle of interface}
+        - devHandle: {req: true, desc: handle of device}
+        - memAddr: {req: true, desc: Memory address to read}
+        - size: {req: true, desc: Size of memory to read}
+
+  - MemWrite:
+      desc: Write memory to an emulated devices memory bank
+      response: Status
+      fields:
+        - handle: {req: true, desc: handle of interface}
+        - devHandle: {req: true, desc: handle of device}
+        - memAddr: {req: true, desc: Memory address to write}
+        - data: {req: true, desc: Data to write}
+
+  - MemData:
+      desc: Memory data packet
+      fields:
+        - handle: {req: true, desc: handle of interface}
+        - devHandle: {req: true, desc: handle of device}
+        - memAddr: {req: true, desc: Memory address to read/write}
+        - data: {req: true, desc: Data to read/write}
+
+

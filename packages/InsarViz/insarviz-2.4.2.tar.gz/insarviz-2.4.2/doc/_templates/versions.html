@@ -1,0 +1,37 @@
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="{{ _('Versions') }}">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Read the Docs</span>
+    v: {{ version }}
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="insarviz-versions-list">
+      <dt>{{ _('Versions') }}</dt>
+      <script>
+        function htmlNode(name, attrs = {}, subs = []) {
+            const ret = document.createElement(name);
+            for(const attrName in attrs) 
+                ret.setAttribute(attrName, attrs[attrName]);
+            ret.replaceChildren(...subs);
+            return ret;
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            const vlist = document.getElementById('insarviz-versions-list');
+            const here = window.location.pathname.split('/').pop();
+            console.log(here);
+            
+            (async function() {
+                const res = await fetch("versions.json");
+                const versions = await res.json();
+
+                for(const {path, name} of versions) {
+                    vlist.appendChild(htmlNode('dt', {}, [
+                        htmlNode('a', { href: `../${path}/${here}` }, [ document.createTextNode(name) ])
+                    ]));
+                }
+            })();
+        });
+      </script>
+    </dl>
+  </div>
+</div>

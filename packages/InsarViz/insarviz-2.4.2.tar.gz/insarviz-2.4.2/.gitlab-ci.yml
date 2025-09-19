@@ -1,0 +1,62 @@
+stages:
+  - test
+  - docs
+  - pages
+  - deploy
+
+# Old configuration, doesn't work in the etalab runner
+# test_with_pytest:
+#   stage: test
+#   image: "python:3.9"
+#   script: scripts/ci test
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "schedule"
+#     - if: $CI_PIPELINE_SOURCE == "web"
+
+stage-docs:
+  stage: docs
+  image: "python:3.9"
+  script: scripts/ci docs
+  artifacts:
+    name: "html-doc"
+    paths: [ html-doc.tar.gz ]
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^release-.*/
+      when: never
+    - changes:
+        - doc/**/*
+      variables:
+        EXPIRE_IN: "1 week"
+
+# IMPORTANT: keep the name 'tag-docs', otherwise the artifacts won't
+# be accessible when building future versions
+tag-docs:
+  stage: docs
+  image: "python:3.9"
+  script: scripts/ci docs
+  artifacts:
+    name: "html-doc"
+    paths: [ html-doc.tar.gz ]
+    expire_in: never
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^release-.*/
+
+pages:
+  stage: pages
+  image: "python:3.9"
+  script: scripts/ci pages
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_TAG
+    - changes:
+        - doc/**/*
+
+deploy-ist-oar:
+  stage: deploy
+  tags:
+    - ist-etalab
+  script: scripts/ci deploy
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^release-.*/

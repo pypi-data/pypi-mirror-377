@@ -1,0 +1,40 @@
+TODO - PSANN Refactor Roadmap
+
+1. Inventory & Decisions [DONE]
+   1.1 [DONE] Catalogue current parameter names across modules (hidden_width vs hidden_channels, output_shape vs out_dim, etc.).
+   1.2 [DONE] Define the canonical naming scheme and capture backwards-compat shims we need.
+   1.3 [DONE] Document desired supervised extras behaviour for time-series use (append columns + state propagation).
+   1.4 [DONE] Map sklearn.py responsibilities; decide module boundaries for HISSO helpers, preprocessors, and shared training.
+   1.5 [DONE] Review TODOs and # pragma: no cover spots; mark which require tests vs follow-up issues.
+
+2. Core Code Refactors
+   2.1 Extract shared _fit core (batching, optimiser setup, extras scheduling, validation) used by PSANNRegressor, ResPSANNRegressor, and PSANNLanguageModel. [IN PROGRESS]
+   2.2 Update regressor classes to call the shared helper; remove duplicated loops. [IN PROGRESS]
+   2.3 Standardise parameter naming
+       2.3.1 Update core network modules (psann.nn, psann.conv, psann.lsm) with canonical names (+ shims) [DONE]
+       2.3.2 Adjust estimator constructors to accept both old/new keywords with warnings [DONE]
+       2.3.3 Update serialization/load paths (model payloads, configs) to persist canonical names [DONE]
+   2.4 Preprocessor interface & LSM integration
+       2.4.1 Introduce preprocessor registry module (e.g., psann/preproc.py) [DONE]
+       2.4.2 Refactor lsm= handling to use the new interface [DONE]
+       2.4.3 Ensure preprocessors expose transform/fit hooks for validation and warm-start paths [DONE]
+   2.5 HISSO extraction
+       2.5.1 Move HISSO trainer setup/warm-start logic into psann/hisso.py [DONE]
+       2.5.2 Wire estimators to the new module (thin wrapper calls) [DONE]
+       2.5.3 Align HISSO config dataclasses with canonical naming [DONE]
+   2.6 Extras rollout alignment
+       2.6.1 Implement shared extras rollout helper for supervised time-series [DONE]
+       2.6.2 Expose matching inference utilities (supervised series rollout) [DONE]
+       2.6.3 Harmonise state caching between supervised and HISSO paths [DONE]
+
+3. Packaging & Documentation
+   3.1 Refresh quick-start examples in README; relocate advanced scenarios under docs/examples.
+   3.2 Sync README, TECHNICAL_DETAILS.md, and docs/API.md with new APIs, naming, and extras behaviour; ensure version numbers match pyproject.
+   3.3 Clarify dependency story: keep pyproject authoritative, document role of requirements-compat.txt (or replace it) and consider psann[sklearn] extra.
+   3.4 Evaluate NumPy 2.0 compatibility; note required code changes or caveats.
+   3.5 Expand docstrings in refactored modules (fit helper, preprocessors, state controller) with tensor shape and parameter details.
+
+4. Testing & Coverage
+   4.1 Add regression tests for shared _fit helper, supervised extras (incl. appended columns), HISSO warm-start path, and preprocessor interface.
+   4.2 Revisit areas with # pragma: no cover; add tests or document why coverage is skipped.
+   4.3 Run full test suite + linting after each major phase.

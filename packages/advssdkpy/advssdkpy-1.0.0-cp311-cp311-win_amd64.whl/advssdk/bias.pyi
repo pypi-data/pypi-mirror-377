@@ -1,0 +1,13 @@
+from typing import NamedTuple, List
+
+
+class BiasRange(NamedTuple):
+    min: float
+    max: float
+
+
+class __Bias:
+    def getBiasIds(self) -> List[str]: ...
+    def getBias(self, biasId: str) -> float: ...
+    def getBiasRange(self, biasId: str) -> BiasRange: ...
+    def setBias(self, biasId: str, volts: float) -> None: ...

@@ -1,0 +1,21 @@
+[project]
+name = "web-features"
+version = "3.0.0"
+description = "Library for working with web-features data"
+authors = [
+  {name = "James Graham", email = "james@hoppipolla.co.uk"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx[http2]>=0.28.1",
+    "pydantic>=2.11.3",
+]
+
+[project.optional-dependencies]
+test = [
+  "mypy==1.17.1",
+  "ruff==0.12.11",
+  "pytest==8.4.0",
+  "pytest-ruff==0.5",
+]

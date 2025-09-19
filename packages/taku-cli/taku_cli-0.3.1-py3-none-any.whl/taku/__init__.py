@@ -1,0 +1,310 @@
+import argparse
+import os
+import shutil
+import stat
+import subprocess
+import sys
+import tomllib
+from contextlib import suppress
+from pathlib import Path
+from string import Template
+from typing import Annotated
+
+import tomli_w
+
+# Ensure unbuffered output for immediate display
+os.environ.setdefault("PYTHONUNBUFFERED", "1")
+
+from .command_parser import ArgSpec
+from .command_parser import command
+from .exceptions import ScriptAlreadyExistsError
+from .exceptions import ScriptNotFoundError
+from .exceptions import TemplateNotFoundError
+from .run import run_script, _resolve_script, default_scripts_dir
+
+try:
+    from rich_argparse import RichHelpFormatter
+
+    formatter_class = RichHelpFormatter
+except ImportError:
+    formatter_class = argparse.ArgumentDefaultsHelpFormatter
+
+
+parser = argparse.ArgumentParser(
+    prog="taku",
+    description="Manage and execute scripts with ease",
+    epilog="For more information, visit https://github.com/Tobi-De/taku",
+    formatter_class=formatter_class,
+)
+
+parser.add_argument(
+    "--scripts",
+    "-s",
+    type=Path,
+    default=default_scripts_dir,
+    help=f"Scripts directory, default to {default_scripts_dir}",
+)
+parser.add_argument("--version", action="version", version="%(prog)s 0.3.1")
+subparsers = parser.add_subparsers(dest="command", required=True)
+
+cmd = command(subparsers)
+
+
+def main() -> None:
+    args = parser.parse_args()
+    args.func(**vars(args))
+
+
+def _list_scripts(scripts: Path) -> list[str]:
+    return [
+        s.name for s in scripts.iterdir() if not s.name.startswith(".") and s.is_dir()
+    ]
+
+
+cmd("run")(run_script)
+
+
+@cmd("list", aliases=["ls"])
+def list_scripts(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    templates: Annotated[
+        bool,
+        "--templates",
+        "-t",
+        ArgSpec(action="store_true", help="List templates too"),
+    ] = False,
+):
+    """List all available scripts"""
+    if templates:
+        print("Available templates:")
+        print(
+            "\n".join(
+                f"- {f.name}" for f in (scripts / ".templates").iterdir() if f.is_file()
+            )
+        )
+    print("Available scripts:")
+    print("\n".join(f"- {name}" for name in _list_scripts(scripts)))
+
+
+@cmd("new")
+def new_script(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    name: Annotated[str, ArgSpec(help="Name of the new script")],
+    template_name: Annotated[
+        str | None,
+        "--template",
+        "-t",
+        ArgSpec(help="Optional template for the script", dest="template_name"),
+    ] = None,
+    content: Annotated[
+        str | None,
+        "--content",
+        "-c",
+        ArgSpec(help="Content for the new script"),
+    ] = None,
+):
+    """Create a new script"""
+
+    assert not (content and template_name), (
+        "Cannot specify both --content and --template options"
+    )
+
+    scripts.mkdir(parents=True, exist_ok=True)
+    script_name, script_path = _resolve_script(scripts, name)
+    script_folder = script_path.parent
+    if script_folder.exists():
+        raise ScriptAlreadyExistsError(f"The script {script_name} already exists")
+
+    if content:
+        script_content = content
+    elif template_name:
+        if not (template := scripts / ".templates" / template_name).exists():
+            if not (template := Path() / template_name).exists():
+                raise TemplateNotFoundError(f"Template {template} does not exists")
+        script_content = Template(template.read_text()).substitute(script_name=name)
+    else:
+        script_content = f"#!/usr/bin/env bash\n\necho 'hello from {script_name}'"
+    script_folder.mkdir(parents=True, exist_ok=True)
+    script = script_folder / name
+    script.touch()
+    script.write_text(script_content)
+    script.chmod(script.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    if "." in name:
+        (script.parent / script_name).symlink_to(script.name)
+    print(f"script {name} created")
+
+
+@cmd("get")
+def get_script(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    name: Annotated[str, ArgSpec(help="Name of the script")],
+    script: Annotated[
+        bool,
+        "--script",
+        "-s",
+        ArgSpec(action="store_true", help="Print only script content"),
+    ] = False,
+):
+    """Get details about an existing script"""
+    _, script_path = _resolve_script(scripts, name, raise_error=True)
+    content = script_path.read_text()
+    if script:
+        print(content)
+        return
+    meta = script_path.parent / "meta.toml"
+    data = {"name": name}
+    if meta.exists():
+        data |= tomllib.loads(meta.read_text())
+    data["content"] = content
+    print("---")
+    for key, value in data.items():
+        print(key, ":", value)
+
+
+@cmd("rm")
+def rm_script(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    name: Annotated[str, ArgSpec(help="Name of the script")],
+):
+    """Remove an existing script"""
+    script_name, script_path = _resolve_script(scripts, name, raise_error=True)
+    script_folder = script_path.parent
+    uninstall_scripts(scripts, name)
+    shutil.rmtree(script_folder, ignore_errors=True)
+    print(f"Script {script_name} removed")
+    push_scripts(scripts)
+
+
+@cmd("edit")
+def edit_script(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    name: Annotated[str, ArgSpec(help="Name of the script to edit")],
+):
+    """Edit an existing script"""
+    script_path = scripts / name / name
+
+    if not script_path.exists():
+        raise ScriptNotFoundError(f"Script '{name}' not found")
+
+    editor = os.environ.get("EDITOR") or os.environ.get("VISUAL") or "vi"
+    subprocess.run([editor, str(script_path.resolve())])
+    push_scripts(scripts)
+
+
+@cmd("install")
+def install_scripts(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    name: Annotated[
+        str, ArgSpec(help="Name of the script to install, use 'all' for all scripts")
+    ],
+    install_name: Annotated[
+        str | None,
+        "--install-name",
+        "-i",
+        ArgSpec(
+            help="Optional name when installed in PATH, only used when installing a single script"
+        ),
+    ] = None,
+):
+    """Install a script to ~/.local/bin"""
+    target_dir = Path.home() / ".local/bin"
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    install_name = install_name or name
+
+    if name != "all":
+        _resolve_script(scripts, name, raise_error=True)
+
+    to_install = (
+        {name: install_name}
+        if name != "all"
+        else {s: s for s in _list_scripts(scripts)}
+    )
+    exec_path = Path(sys.executable).parent / "tax"
+
+    for script_name, script_install_name in to_install.items():
+        target_file = target_dir / script_install_name
+        metadata_file = scripts / script_name / "meta.toml"
+
+        if target_file.exists():
+            print(
+                f"Error: File '{target_file}' already exists. Skipping {script_name}."
+            )
+            continue
+
+        # Create shim script
+        content = f"""#!/usr/bin/env bash
+# Shim for taku script {script_name}
+export TAKU_SCRIPTS="{scripts.resolve()}"
+exec {exec_path} "{script_name}" "$@"
+"""
+        target_file.write_text(content)
+        target_file.chmod(
+            target_file.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+        )
+        metadata = (
+            tomllib.loads(metadata_file.read_text()) if metadata_file.exists() else {}
+        )
+        metadata["install_name"] = script_install_name
+        metadata_file.write_text(tomli_w.dumps(metadata))
+        print(f"Installed {script_name} to {target_file}")
+
+
+@cmd("uninstall")
+def uninstall_scripts(
+    scripts: Annotated[Path, ArgSpec(ignore=True)],
+    name: Annotated[
+        str, ArgSpec(help="Name of the script to uninstall, use 'all' for all scripts")
+    ],
+):
+    """Uninstall a script from ~/.local/bin"""
+    target_dir = Path.home() / ".local/bin"
+
+    if name != "all":
+        _resolve_script(scripts, name)
+
+    to_uninstall = [name] if name != "all" else _list_scripts(scripts)
+
+    for script_name in to_uninstall:
+        metadata_file = scripts / script_name / "meta.toml"
+        metadata = (
+            tomllib.loads(metadata_file.read_text()) if metadata_file.exists() else {}
+        )
+        target_file = target_dir / metadata.get("install_name", script_name)
+
+        if target_file.exists():
+            metadata.pop("install_name", None)
+            metadata_file.write_text(tomli_w.dumps(metadata))
+            target_file.unlink()
+            print(f"Uninstalled {script_name} from {target_file}")
+        else:
+            print(f"Warning: {script_name} not found in {target_dir}")
+
+
+def push_scripts(scripts: Path):
+    """Auto-push changes to git if it's a git repo with changes"""
+    with suppress(subprocess.CalledProcessError):
+        # Check if it's a git repo and has changes in one go
+        result = subprocess.run(
+            ["git", "-C", str(scripts), "status", "--porcelain"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+
+        # If no output, no changes to commit
+        if not result.stdout.strip():
+            return
+
+        # Add, commit, and push
+        subprocess.run(["git", "-C", str(scripts), "add", "."], check=True)
+        subprocess.run(
+            ["git", "-C", str(scripts), "commit", "-m", "Auto-sync: Update scripts"],
+            check=True,
+        )
+        subprocess.run(["git", "-C", str(scripts), "push"], check=True)
+        print("Successfully pushed changes to remote")
+
+
+if __name__ == "__main__":
+    main()

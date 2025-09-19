@@ -1,0 +1,99 @@
+"""Styling primitives and theme registry for PlotX."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Dict, Literal, Mapping
+from matplotlib import font_manager
+
+from matplotlib import pyplot as plt
+
+from .exceptions import ThemeNotFoundError
+
+StyleName = Literal["light", "dark", "engineering", "extraordinary"]
+
+
+@dataclass(frozen=True)
+class PlotXTheme:
+    """Encapsulates matplotlib style parameters used by PlotX."""
+
+    name: StyleName
+    palette: Dict[str, str]
+    background: str
+    grid: Dict[str, object] = field(default_factory=dict)
+    font_family: str = "DejaVu Sans"
+
+    def apply(self) -> None:
+        """Apply the theme to Matplotlib's global rcParams."""
+        font_path = "orbitron/Orbitron Medium.ttf"
+        font_manager.fontManager.addfont(font_path)
+        prop = font_manager.FontProperties(fname=font_path)
+        plt.style.use("default")
+        plt.rcParams["figure.facecolor"] = self.background
+        plt.rcParams["axes.facecolor"] = self.background
+        plt.rcParams["axes.edgecolor"] = self.palette.get("axes", "#222222")
+        plt.rcParams["axes.labelcolor"] = self.palette.get("label", "#111111")
+        plt.rcParams["xtick.color"] = self.palette.get("tick", "#111111")
+        plt.rcParams["ytick.color"] = self.palette.get("tick", "#111111")
+        plt.rcParams["grid.color"] = self.grid.get("color", "#CCCCCC")
+        plt.rcParams["grid.linestyle"] = self.grid.get("linestyle", "--")
+        plt.rcParams["font.family"] = prop.get_name()
+
+
+THEMES: Mapping[str, PlotXTheme] = {
+    "light": PlotXTheme(
+        name="light",
+        palette={"axes": "#1f2933", "label": "#111827", "tick": "#4b5563"},
+        background="#ffffff",
+        grid={"color": "#d1d5db", "linestyle": "--"},
+    ),
+    "dark": PlotXTheme(
+        name="dark",
+        palette={"axes": "#f3f4f6", "label": "#f9fafb", "tick": "#d1d5db"},
+        background="#111827",
+        grid={"color": "#374151", "linestyle": ":"},
+        font_family="DejaVu Sans",
+    ),
+    "engineering": PlotXTheme(
+        name="engineering",
+        palette={"axes": "#2d3748", "label": "#1a202c", "tick": "#2d3748"},
+        background="#f7fafc",
+        grid={"color": "#cbd5e0", "linestyle": "-"},
+        font_family="DejaVu Sans Mono",
+    ),
+    "extraordinary": PlotXTheme(
+        name="extraordinary",
+        palette={
+            "axes": "#c026d3",
+            "label": "#be185d",
+            "tick": "#db2777",
+        },
+        background="#000000",
+        grid={"color": "#4f46e5", "linestyle": "-."},
+        font_family="Orbitron",
+    ),
+}
+
+ALIASES = {"eng": "engineering", "default": "light"}
+
+
+def _normalize_style(style: StyleName | str) -> str:
+    key = style.lower() if isinstance(style, str) else style
+    return ALIASES.get(key, key)
+
+
+def get_theme(style: StyleName | str) -> PlotXTheme:
+    """Retrieve a theme by key and raise if not found."""
+    key = _normalize_style(style)
+    if key not in THEMES:
+        raise ThemeNotFoundError(
+            f"Unknown theme '{style}'. Available: {', '.join(sorted(THEMES))}"
+        )
+    return THEMES[key]
+
+
+def apply_theme(style: StyleName | str) -> PlotXTheme:
+    """Load a theme by name and apply it globally."""
+    theme = get_theme(style)
+    theme.apply()
+    return theme

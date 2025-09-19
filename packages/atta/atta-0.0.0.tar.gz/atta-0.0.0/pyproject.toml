@@ -1,0 +1,212 @@
+[project]
+name = "atta"
+version = "0.0.0"
+description = "Attachable AI building blocks for creating flexible, modular AI-driven applications."
+readme = "README.md"
+authors = [
+    { name = "Florian Peschke", email = "tech@florian-peschke.de" }
+]
+requires-python = ">=3.13"
+
+# -------------------------------
+# Metadata
+# -------------------------------
+
+keywords = ["AI", "framework", "LLM", "components"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed"
+]
+
+[project.urls]
+Homepage = "https://github.com/florianpeschke/atta"
+Issues = "https://github.com/florianpeschke/atta/issues"
+Repository = "https://github.com/florianpeschke/atta"
+
+# -------------------------------
+# Build Configuration
+# -------------------------------
+
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
+# -------------------------------
+# Library (self) packages
+# -------------------------------
+
+[project.optional-dependencies]
+all = ["atta-openai"]
+ai = ["atta-openai"]
+openai = ["atta-openai"]
+
+[tool.uv.sources]
+atta = { workspace = true}
+atta-openai = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "openai",
+    "packages/*",
+]
+
+# -------------------------------
+# Semantic Release
+# -------------------------------
+
+[tool.semantic_release]
+allow_zero_version = true
+major_on_zero = true
+commit_parser = "conventional-monorepo"
+version_toml = ["pyproject.toml:project.version"]
+commit_message = "chore(release): atta@{version}"
+tag_format = "atta-v{version}"
+
+[tool.semantic_release.commit_parser_options]
+# Only consider changes at repo root for the root package
+path_filters = ["."]
+scope_prefix = "atta-"
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+
+[tool.semantic_release.publish]
+upload_to_pypi = true
+upload_to_vcs_release = true
+
+[tool.semantic_release.changelog]
+changelog_file = "CHANGELOG.md"
+exclude_commit_patterns = [
+    "^chore(?:\\([^)]*\\))?: .+",
+    "^ci(?:\\([^)]*\\))?: .+",
+    "^refactor(?:\\([^)]*\\))?: .+",
+    "^style(?:\\([^)]*\\))?: .+",
+    "^test(?:\\([^)]*\\))?: .+",
+    "^[Ii]nitial [Cc]ommit",
+]
+
+# -------------------------------
+# Dependencies
+# -------------------------------
+
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18.1",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-benchmark>=5.1.0",
+    "pytest-cov>=7.0.0",
+    "python-semantic-release>=10.4.1",
+    "ruff>=0.13.0",
+]
+
+
+# -------------------------------
+# Testing
+# -------------------------------
+
+# Coverage
+
+[tool.coverage.run]
+omit = ["*/tests/*"]  # Exclude test files
+source = ["src", "packages/*/src"]  # Measure coverage in all workspace sources
+
+# Pytest
+
+[tool.pytest]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q --strict-markers --cov=src --cov=packages --cov-report=term-missing -m 'not benchmark'"
+asyncio_default_fixture_loop_scope = "function"  # Async fixture scope
+# Filter common warnings
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning"
+]
+minversion = "8.0"  # Require modern pytest
+pythonpath = ["src", "packages/*/src"]
+testpaths = ["tests", "packages/*/tests"]
+
+# Marker definitions for better test organization
+markers = [
+    "slow: Slow tests",
+]
+
+# -------------------------------
+# Code Quality
+# -------------------------------
+
+# MyPy
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unused_configs = true
+exclude = ["\\.venv", "build", "dist", "\\.mypy_cache", "\\.ruff_cache"]
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+allow_untyped_defs = true
+allow_untyped_calls = true
+allow_untyped_decorators = true
+
+# Ruff
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+exclude = [".venv", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "C90", "PIE", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["aeroai"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*.py" = ["F401", "F841", "ARG001", "ARG002"]
+
+
+# Codespell
+
+[tool.codespell]
+ignore-words-list = "afile,asend,assertio,feld,hove,ned,noes,notin,paramete,parth,tesults,varius,wil"
+skip = "AUTHORS,*/plugin_list.rst,*pyproject.toml"
+
+
+# -------------------------------
+# Security
+# -------------------------------
+
+# Bandit
+
+[tool.bandit]
+# Target paths to scan (can be multiple packages)
+targets = ["src", "packages/*/src"]
+
+# Exclude directories (venv, build, dist, etc.)
+exclude_dirs = [".venv", "build", "dist"]
+
+# Severity and confidence levels
+severity = "MEDIUM"        # Only report MEDIUM and HIGH severity issues
+confidence = "MEDIUM"      # Only report MEDIUM and HIGH confidence issues
+
+# Format of output
+format = "txt"              # Can be "txt", "json", "html"
+
+# Skip B101, B102, etc. (common false positives)
+skips = ["B101", "B102"]
+
+# Show line numbers
+show_lines = true

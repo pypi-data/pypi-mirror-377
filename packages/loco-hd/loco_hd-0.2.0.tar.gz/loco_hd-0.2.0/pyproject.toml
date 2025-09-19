@@ -1,0 +1,21 @@
+[build-system]
+requires = ["maturin>=1.7"]
+build-backend = "maturin"
+
+[project]
+name = "loco_hd"
+version = "0.2.0"
+authors = [
+    { name = "Zsolt Fazekas", email = "zsolt.fazekas.9@gmail.com" }
+]
+description = "Implementation of the LoCoHD metric for quantitative protein structure and substructure comparison"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+    "biopython>=1.80",
+    "numpy>=1.21.6"
+]

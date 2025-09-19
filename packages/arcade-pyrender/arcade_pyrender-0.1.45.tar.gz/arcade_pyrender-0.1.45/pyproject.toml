@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arcade-pyrender"
+version = "0.1.45" 
+description = "Easy-to-use Python renderer for 3D visualization, hard-forked for use in DeepDRR."
+readme = "README.md"
+authors = [
+    { name = "Matthew Matl", email = "matthewcmatl@gmail.com" }
+]
+license = { text = "MIT" }
+keywords = ["rendering", "graphics", "opengl", "3d", "visualization", "pbr", "gltf"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering"
+]
+dependencies = [
+    "freetype-py",
+    "imageio",  # If you're supporting Python 2, handle <=2.6.1 in setup.py or conditionally with env markers
+    "networkx",
+    "numpy",
+    "Pillow",
+    "pyglet>=1.4.10",
+    "PyOpenGL~=3.1.6",
+    "scipy",
+    "six",
+    "trimesh"
+]
+
+[project.optional-dependencies]
+dev = [
+    "flake8",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "tox"
+]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    "sphinx-automodapi"
+]
+
+[tool.setuptools]
+packages = ["pyrender", "pyrender.platforms"]
+
+[tool.setuptools.package-data]
+"*" = ["*"]

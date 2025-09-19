@@ -1,0 +1,431 @@
+Metadata-Version: 2.4
+Name: scrapery
+Version: 0.0.5
+Summary: Scrapery: A fast, lightweight library to scrape HTML, XML, and JSON using XPath, CSS selectors, and intuitive DOM navigation.
+Author: Ramesh Chandra
+Author-email: rameshsofter@gmail.com
+License: MIT
+Keywords: web scraping,html parser,xml parser,json parser,aiohttp,lxml,ujson,data extraction,scraping tools
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: lxml>=4.9.2
+Requires-Dist: cssselect>=1.3.0
+Requires-Dist: ujson>=5.8.0
+Requires-Dist: aiohttp>=3.8.5
+Requires-Dist: chardet>=5.2.0
+Requires-Dist: jmespath>=1.0.1
+Requires-Dist: ftfy==6.3.1
+Requires-Dist: ijson==3.4.0
+Requires-Dist: pandas==2.3.2
+Requires-Dist: tldextract==5.3.0
+Requires-Dist: openpyxl
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🕷️ scrapery
+
+![Free](https://img.shields.io/badge/License-Free-brightgreen)
+![PyPI Version](https://img.shields.io/pypi/v/scrapery)
+![Python Versions](https://img.shields.io/pypi/pyversions/scrapery)
+![Downloads](https://img.shields.io/pypi/dm/scrapery)
+
+A blazing fast, lightweight, and modern parsing library for **HTML, XML, and JSON**, designed for **web scraping** and **data extraction**.  
+It supports both **XPath** and **CSS** selectors, along with seamless **DOM navigation**, making parsing and extracting data straightforward and intuitive.
+
+---
+
+## ✨ Features
+
+- ⚡ **Blazing Fast Performance** – Optimized for high-speed HTML, XML, and JSON parsing  
+- 🎯 **Dual Selector Support** – Use **XPath** or **CSS selectors** for flexible extraction  
+- 🛡 **Comprehensive Error Handling** – Detailed exceptions for different error scenarios
+- 🧩 **Robust Parsing** – Encoding detection and content normalization for reliable results  
+- 🧑‍💻 **Function-Based API** – Clean and intuitive interface for ease of use  
+- 📦 **Multi-Format Support** – Parse **HTML, XML, and JSON** in a single library
+- ⚙️ **Versatile File Management** – Create directories, list files, and handle paths effortlessly
+- 📝 **Smart String Normalization** – Clean text by fixing encodings, removing HTML tags, and standardizing whitespace
+- 🔍 **Flexible CSV & Excel Handling** – Read, filter, save, and append data
+- 🔄 **Efficient JSON Streaming & Reading** – Stream large JSON files or load fully with encoding detection
+- 💾 **Robust File Reading & Writing** – Auto-detect encoding, support large files with mmap, and save JSON or plain text cleanly
+- 🌐 **URL & Domain Utilities** – Extract base domains accurately using industry-standard parsing
+- 🛡 **Input Validation & Error Handling** – Custom validations to ensure reliable data processing
+
+
+
+### ⚡ Performance Comparison
+
+The following benchmarks were run on sample HTML and JSON data to compare **scrapery** with other popular Python libraries.
+
+
+| Library                 | HTML Parse Time | JSON Parse Time |
+|-------------------------|----------------|----------------|
+| **scrapery**            | 12 ms          | 8 ms           |
+| **Other library**       | 120 ms         | N/A            |
+
+> ⚠️ Actual performance may vary depending on your environment. These results are meant for **illustrative purposes** only. No library is endorsed or affiliated with scrapery.
+
+
+---
+
+## 📦 Installation
+
+```bash
+pip install scrapery
+
+# -------------------------------
+# HTML Example
+# -------------------------------
+import scrapery as scrape
+
+html_content = """
+<html>
+    <body>
+        <h1>Welcome</h1>
+        <p>Hello<br>World</p>
+        <a href="/about">About Us</a>
+        <table>
+            <tr><th>Name</th><th>Age</th></tr>
+            <tr><td>John</td><td>30</td></tr>
+            <tr><td>Jane</td><td>25</td></tr>
+        </table>
+    </body>
+</html>
+"""
+
+# Parse HTML content
+doc = scrape.parse_html(html_content)
+
+# Get all table rows
+rows = scrape.select_all(doc, "table tr")
+print("All table rows:")
+for row in rows:
+    print(scrape.get_selector_content(row))
+
+# Output
+    All table rows:
+    NameAge
+    John30
+    Jane25
+
+# Get first paragraph
+paragraph = scrape.select_one(doc, "p")
+print("\nFirst paragraph text:", scrape.get_selector_content(paragraph))
+# ➜ First paragraph text: HelloWorld
+
+# CSS selector: First <h1>
+print(scrape.get_selector_content(doc, selector="h1"))  
+# ➜ Welcome
+
+# XPath: First <h1>
+print(scrape.get_selector_content(doc, selector="//h1"))  
+# ➜ Welcome
+
+# CSS selector: <a href> attribute
+print(scrape.get_selector_content(doc, selector="a", attr="href"))  
+# ➜ /about
+
+# XPath: <a> element href
+print(scrape.get_selector_content(doc, selector="//a", attr="href"))  
+# ➜ /about
+
+# CSS: First <td> in table (John)
+print(scrape.get_selector_content(doc, selector="td"))  
+# ➜ John
+
+# XPath: Second <td> (//td[2] = 30)
+print(scrape.get_selector_content(doc, selector="//td[2]"))  
+# ➜ 30
+
+# XPath: Jane's age (//tr[3]/td[2])
+print(scrape.get_selector_content(doc, selector="//tr[3]/td[2]"))  
+# ➜ 25
+
+# No css selector or XPath: full text
+print(scrape.get_selector_content(doc))  
+# ➜ Welcome HelloWorld About Us Name Age John 30 Jane 25
+
+# Root attribute (lang, if it existed)
+print(scrape.get_selector_content(doc, attr="lang"))  
+# ➜ None
+
+#-------------------------
+# DOM navigation
+#-------------------------
+# Example 1: parent, children, siblings
+p_elem = select_one(doc,"p")
+print("Parent tag of <p>:", scrape.parent(p_elem).tag)
+print("Children of <p>:", [c.tag for c in scrape.children(p_elem)])
+print("Siblings of <p>:", [s.tag for s in scrape.siblings(p_elem)])
+
+# Example 2: next_sibling, prev_sibling
+print("Next sibling of <p>:", scrape.next_sibling(p_elem).tag)
+h1_elem = scrape.select_one(doc,"h1")
+print("Previous sibling of <p>:", scrape.next_sibling(h1_elem))
+
+# Example 3: ancestors and descendants
+ancs = scrape.ancestors(p_elem)
+print("Ancestor tags of <p>:", [a.tag for a in ancs])
+desc = descendants(scrape.select_one(doc,"table"))
+print("Descendant tags of <table>:", [d.tag for d in desc])
+
+# Example 4: class utilities
+div_html = '<div class="card primary"></div>'
+div_elem = scrape.parse_html(div_html)
+print("Has class 'card'? ->", scrape.has_class(div_elem, "card"))
+print("Classes:", scrape.get_classes(div_elem))
+
+# -------------------------------
+# Resolve relative URLs
+# -------------------------------
+
+html = """
+<html>
+  <body>
+    <a href="/about">About</a>
+    <img src="/images/logo.png">
+  </body>
+</html>
+"""
+
+doc = scrape.parse_html(html)
+base = "https://example.com"
+
+# Get <a> links
+print(scrape.get_absolute_url(doc, "a", base_url=base))
+# → 'https://example.com/about'
+
+# Get <img> sources
+print(scrape.get_absolute_url(doc, "img", base_url=base, attr="src"))
+# → 'https://example.com/images/logo.png'
+
+# Extract tables
+tables = scrape.get_table_content(doc, as_dicts=True)
+print("Tables:", tables)
+
+# -------------------------------
+# XML Example
+# -------------------------------
+
+xml_content = """
+<users>
+    <user id="1"><name>John</name></user>
+    <user id="2"><name>Jane</name></user>
+</users>
+"""
+
+xml_doc = scrape.parse_xml(xml_content)
+users = scrape.find_xml_all(xml_doc, "//user")
+for u in users:
+    print(u.attrib, u.xpath("./name/text()")[0])
+
+# Convert XML to dict
+xml_dict = scrape.xml_to_dict(xml_doc)
+print(xml_dict)
+
+# -------------------------------
+# JSON Example
+# -------------------------------
+
+json_content = '{"users":[{"name":"John","age":30},{"name":"Jane","age":25}]}'
+data = scrape.parse_json(json_content)
+
+# Access using path
+john_age = scrape.json_get_value(data, "users.0.age")
+print("John's age:", john_age)
+
+# Extract all names
+names = scrape.json_extract_values(data, "name")
+print("Names:", names)
+
+# Flatten JSON
+flat = scrape.json_flatten(data)
+print("Flattened JSON:", flat)
+
+# -------------------------------
+# Utility Example
+# -------------------------------
+
+1. Create a Directory
+
+from scrapery import create_directory
+# Creates a directory if it doesn't already exist.
+
+
+# Example 1: Creating a new directory
+create_directory("new_folder")
+
+# Example 2: Creating nested directories
+create_directory("parent_folder/sub_folder")
+
+# ================================================================
+2. Standardize a String
+
+from scrapery import standardized_string
+# This function standardizes the input string by removing escape sequences like \n, \t, and \r, removing HTML tags, collapsing multiple spaces, and trimming leading/trailing spaces.
+
+
+# Example 1: Standardize a string with newlines, tabs, and HTML tags
+input_string_1 = "<html><body>  Hello \nWorld!  \tThis is a test.  </body></html>"
+print("Standardized String 1:", standardized_string(input_string_1))
+
+# Example 2: Input string with multiple spaces and line breaks
+input_string_2 = "  This   is   a  \n\n   string   with  spaces and \t tabs.  "
+print("Standardized String 2:", standardized_string(input_string_2))
+
+# Example 3: Pass an empty string
+input_string_3 = ""
+print("Standardized String 3:", standardized_string(input_string_3))
+
+# Example 4: Pass None (invalid input)
+input_string_4 = None
+print("Standardized String 4:", standardized_string(input_string_4))
+
+================================================================
+3. Read CSV
+
+from scrapery import read_csv
+
+csv_file_path = 'data.csv'
+get_value_by_col_name = 'URL'
+filter_col_name = 'Category'
+include_filter_col_values = ['Tech']
+
+result = read_csv(csv_file_path, get_value_by_col_name, filter_col_name, include_filter_col_values)
+print(result)
+
+Sample CSV
+
+Category,URL
+Tech,https://tech1.com
+Tech,https://tech2.com
+Science,https://science1.com
+
+Result
+
+['https://tech1.com', 'https://tech2.com']
+
+================================================================
+4. Save to CSV
+
+from scrapery import save_to_csv
+
+list_data = [[1, 'Alice', 23], [2, 'Bob', 30], [3, 'Charlie', 25]]
+headers = ['ID', 'Name', 'Age']
+output_file_path = 'output_data.csv'
+
+# Default separator (comma)
+save_to_csv(data_list, headers, output_file_path)
+
+# Tab separator
+save_to_csv(data_list, headers, output_file_path, sep="\t")
+
+# Semicolon separator
+save_to_csv(data_list, headers, output_file_path, sep=";")
+
+Output (default, sep=","):
+ID,Name,Age
+1,Alice,23
+2,Bob,30
+3,Charlie,25
+
+Output (sep="\t"):
+ID  Name    Age
+1   Alice   23
+2   Bob 30
+3   Charlie 25
+
+================================================================
+5. Save to Excel file 
+
+from scrapery import save_to_xls
+
+save_to_xls(data_list, headers, output_file_path)
+
+================================================================
+6. List files in a directory
+
+from scrapery import list_files
+
+files = list_files(directory=output_dir, extension="csv")
+print("CSV files in output directory:", files)
+
+================================================================
+7. Read back file content
+
+from scrapery import read_file_content
+
+# Example 1: Read small JSON file fully
+file_path_small_json = 'small_data.json'
+content = read_file_content(file_path_small_json, stream_json=False)
+print("Small JSON file content (fully loaded):")
+print(content)  # content will be a dict or list depending on JSON structure
+
+# Example 2: Read large JSON file by streaming (returns a generator)
+file_path_large_json = 'large_data.json'
+json_stream: Generator[dict, None, None] = read_file_content(file_path_large_json, stream_json=True)
+print("\nLarge JSON file content streamed:")
+for item in json_stream:
+    print(item)  # process each streamed JSON object one by one
+
+# Example 3: Read a large text file using mmap
+file_path_large_txt = 'large_text.txt'
+text_content = read_file_content(file_path_large_txt)
+print("\nLarge text file content (using mmap):")
+print(text_content[:500])  # print first 500 characters
+
+# Example 4: Read a small text file with encoding detection
+file_path_small_txt = 'small_text.txt'
+text_content = read_file_content(file_path_small_txt)
+print("\nSmall text file content (with encoding detection):")
+print(text_content)
+
+================================================================
+8. Save to file
+
+from scrapery import save_file_content
+
+# Example 1: Save plain text content to a file
+text_content = "Hello, this is a sample text file.\nWelcome to file handling in Python!"
+save_file_content("output/text_file.txt", text_content)
+
+# Output: Content successfully written to output/text_file.txt
+
+# Example 2: Save JSON content to a file
+json_content = {
+    "name": "Alice",
+    "age": 30,
+    "skills": ["Python", "Data Science", "Machine Learning"]
+}
+save_file_content("output/data.json", json_content)
+
+# Output: JSON content successfully written to output/data.json
+
+# Example 3: Save number (non-string content) to a file
+number_content = 12345
+save_file_content("output/number.txt", number_content)
+
+# Output: Content successfully written to output/number.txt
+
+# Example 4: Append text content to an existing file
+append_text = "\nThis line is appended."
+save_file_content("output/text_file.txt", append_text, mode="a")
+
+# Output: Content successfully written to output/text_file.txt
+
+

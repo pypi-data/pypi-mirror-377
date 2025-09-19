@@ -1,0 +1,47 @@
+<h1>{{effective_title}}</h1>
+
+{{{text_html}}}
+
+<br/>
+<a href="https://{{{provider_url}}}/courses/{{course_id}}/exercises/{{exercise_id}}/summary">{{SEE_IN_LAHENDUS}}</a>
+<br/>
+<br/>
+<hr>
+
+{{#solution}}
+    <h2>{{LAST_SUBMISSION}}</h2>
+    <br/>
+    <pre><code>{{solution}}</code></pre>
+{{/solution}}
+
+<h2>{{SUBMITTING_TITLE}}</h2>
+{{#is_open}}
+    <form action="/student/courses/{{course_id}}/exercises/{{exercise_id}}/submissions">
+        <input type="hidden" name="{{EDITOR_CONTENT_NAME}}"/>
+        <input type="submit" value="{{SUBMIT_ACTIVE}}"/>
+    </form>
+    <br/>
+{{/is_open}}
+
+{{#not_open}}
+    <div>{{CLOSED_DENIED_INFO}}</div>
+    <br/>
+{{/not_open}}
+
+{{#points}}
+    <h2>{{POINTS_TITLE}}</h2>
+    <div>{{points}}/100 {{feedback_type}}</div>
+    <br/>
+{{/points}}
+
+{{#latest_feedback_teacher}}
+    <h2>{{TEACHER_COMMENT}}</h2>
+    <div>{{{latest_feedback_teacher}}}</div>
+    <br/>
+{{/latest_feedback_teacher}}
+
+{{#feedback_auto}}
+    <h2>{{AUTOMATIC_TESTS}}</h2>
+    <pre><code>{{feedback_auto}}</code></pre>
+    <br/>
+{{/feedback_auto}}

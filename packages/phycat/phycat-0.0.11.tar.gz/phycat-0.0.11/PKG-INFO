@@ -1,0 +1,207 @@
+Metadata-Version: 2.4
+Name: phycat
+Version: 0.0.11
+Summary: Phycat Tools and CLI
+Project-URL: homepage, https://gitlab.com/phycat/phycat-py
+Project-URL: repository, https://gitlab.com/phycat/phycat-py
+Author-email: Jason Berger <berg472@gmail.com>
+License: MIT
+Requires-Python: >=3.7
+Requires-Dist: cliify
+Requires-Dist: cobs
+Requires-Dist: jinja2
+Requires-Dist: polypacket
+Requires-Dist: prompt-toolkit
+Requires-Dist: pyyaml
+Requires-Dist: termcolor
+Description-Content-Type: text/x-rst
+
+phycat-py
+=========
+
+This repo contains the phycat python package which contains the CLI utility and the library for using phycat in other tools. 
+
+Phycat is a tool for remotely configuring and using hardware peripherals. The typical use case is to run a 'server' on an embedded device and a client can connect to use the peripheral interfaces (e.g. GPIO, I2C, SPI, etc). Linux machines can also run with a configuration file to define the interfaces it exposes. 
+
+
+Using CLi 
+---------
+
+Starting the CLI 
+~~~~~~~~~~~~~~~~
+
+.. code:: bash 
+
+    phycat -c tcp:localhost:2020                # Connect to a phycat over tcp at port 2020 
+
+    phycat -c serial:/dev/ttyUSB0               #connect to a phycat server device over serial 
+    phycat -c serial:/dev/ttyUSB0:115200-8E2    #connect to a phycat server device over serial with specific serial settings 
+
+    phycat -c tcp:8020 -s my-config.yml            #start a phycat server in linux using my-config.yml to define interfaces
+
+
+Using the CLI 
+~~~~~~~~~~~~~
+
+After connecting to a phycat server, you get a CLI with some information and auto completion for the device
+
+
+Set up an i2c device and write to it
+
+.. code:: bash 
+
+    $> ls  # list all interfaces and devices
+       
+      ...
+      i2c0:
+        capabilities: 
+          supports_master: true
+          supports_slave: true 
+          speeds: [ 100000, 400000, 1000000]
+          max_7bit_addresses: 4
+          max_10bit_addresses: 2
+
+      ...
+
+    $> config i2c0 --role master --speed 1000000 --cache-memory # set up the i2c interface to be a master at 1Mhz and cache memory as it reads and writes
+
+    $> i2c0.scan # scan for i2c devices on the bus
+
+              0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+          00: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+          10: -- -- -- -- -- -- -- -- -- -- -- -- WR -- -- --
+          20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+          30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+          40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+          50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+          60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+          70: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+    $> i2c0.write --dev 0x1c 0x02 0x01 0x02 # raw write of 3 bytes to an i2c device at address 0x1c
+    $> i2c0.write --dev 0x1c --reg 0x02 0x01 0x02 0x03 0x04 #If a reg is specified, it wll write to that register on the device
+    $> i2c0.read --dev 0x1c --reg 0x30 2 # read 3 bytes from an i2c device at address 0x1c starting at register 0x10
+
+      <<<[i2c0] address: 0x1c , data: [ 0x17 , 0x38 ]
+
+    $> ls i2c0 # show details for the i2c0 interface
+       
+      ...
+      i2c0:
+        capabilities: 
+          supports_master: true
+          supports_slave: true 
+          speeds: [ 100000, 400000, 1000000 ]
+          max_7bit_addresses: 4
+          max_10bit_addresses: 2
+          pins: 
+            - {sda: A3, scl: A2}  # when sda and scl are not specified, the first available pins are used
+            - {sda: A4, scl: A5}
+            - {sda: A6, scl: A7}
+        config:
+          role: master
+          speed: 1000000
+          sda: A3
+          scl: A2
+        devices:
+          '0x1c': 
+            address: 0x1c
+            memory:
+               0x00: -- -- 01 02 03 04 -- -- -- -- -- -- -- -- -- -- | .....  # memory cache of the device,
+               ...                                                            # broken into contiguos blocks
+               0x30: 17 38 -- -- -- -- -- -- -- -- -- -- -- -- -- -- | .8... 
+
+            
+
+
+Pwm example 
+
+.. code:: bash 
+
+  $> ls 
+
+    ...
+    gpio0:
+      capabilities:
+        supports_input: true
+        supports_output: true
+        supports_interrupts: true
+        supports_pwm_output: true
+        supports_pwm_input: true
+        supports_dshot_output: true
+        supports_dshot_input: true
+    gpio1:
+      capabilities:
+        supports_input: true
+        supports_output: true
+        supports_interrupts: true
+        supports_pwm_output: true
+        supports_pwm_input: true
+        supports_dshot_output: true
+        supports_dshot_input: true
+
+  $> config gpio0 --mode pwm_output 
+  $> config gpio1 --mode pwm_input  --jitter_filter_us 10 # set up the gpio1 interface to be a pwm input with a jitter of 10us
+  $> gpio0.pwm --period 2000 --pulse 1000 # set the pwm period to 2ms and the pulse width to 1ms
+   
+    <<<[gpio1] period: 2000, pulse: 1000 #If the pins are connected, you should get a message that the pwm value has changed
+
+
+Data formats 
+~~~~~~~~~~~~
+
+The CLI accepts data in a few formats. 
+
+.. code:: bash 
+
+  $> uart0.write 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09 0x0A # raw hex bytes 
+  $> uarto.write $(b'hello world') # use $() to evaluate python code. must return bytes or bytearray
+  $> uart0.write SGVsbG8gV29ybGQ= # base64 encoded data
+
+
+
+Example Config File
+-------------------
+
+Below is an example server side configuration file exposing a uart, i2c, spi and can interface. This configuration also includes a local phycat device. When it runs, the server will connect to that device and expose all of its interfaces along with its own. 
+
+.. code:: yml
+
+    interfaces:
+      - name: uart-0
+        type: uart
+        driver: linux-serial    # use the default linux-serial driver
+        driver_options:
+            device: /dev/ttyUSB0 
+        bauds: [ 9600, 115200, 230400, 460800, 921600]
+
+      - name: i2c-0
+        type: i2c
+        driver: pigpio-i2c      # Use the pigpio i2c driver for this interface
+        driver_options:
+            sda: 1                  # Use GPIO 1 for SDA ()
+            scl: 0                  
+        supports_master: true   
+        supports_slave: false
+
+      - name: spi-0
+        type: spi
+        driver: linux-spi
+        driver_options:
+            device: /dev/spidev0.0
+        supports_master: true
+        supports_slave: false
+        max_speed: 1000000
+
+      - name: can-0
+        type: can
+        driver: linux-slcand
+        devive: /dev/ttyACM0
+        supports_fd: true
+        supports_extended: true
+
+      - name: phycat-serial 
+        type: phycat
+        driver: phycat
+        connection: serial:/dev/ttyS3:115200-8E2
+

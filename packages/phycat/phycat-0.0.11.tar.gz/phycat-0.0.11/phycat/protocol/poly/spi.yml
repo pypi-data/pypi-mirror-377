@@ -1,0 +1,74 @@
+---
+name: phycat_spi
+namespace: pc
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+
+  - spiFlags:
+      type: flags
+      desc: SPI interface flags
+      vals:
+        - SUPPORTS_MASTER: { desc: Interface supports SPI master mode }
+        - SUPPORTS_SLAVE: { desc: Interface supports SPI slave mode }
+        - SUPPORTS_PROMISCUOUS: { desc: Interface supports SPI promiscuous mode }
+
+  - max_speed: {type: uint32, desc: Maximum Supported SPI clock speeds in Hertz}
+  - speed: {type: uint32, desc: Desired SPI clock frequency in Hertz}
+  
+  - mosi_pin: {type: uint64, desc: MOSI port and pin, first 32 bits are port, last 32 bits are pin}
+  - miso_pin: {type: uint64, desc: MISO port and pin, first 32 bits are port, last 32 bits are pin}
+  - sclk_pin: {type: uint64, desc: SCLK port and pin, first 32 bits are port, last 32 bits are pin}
+  - mosi_data: {type: uint8*64, desc: MOSI data to transmit}
+  - miso_data: {type: uint8*64, desc: MISO data received}
+
+  - spiMode:
+      type: enum
+      format: hex
+      desc: SPI mode configuration
+      vals:
+        - SPI_MODE_0: { desc: CPOL=0, CPHA=0 }
+        - SPI_MODE_1: { desc: CPOL=0, CPHA=1 }
+        - SPI_MODE_2: { desc: CPOL=1, CPHA=0 }
+        - SPI_MODE_3: { desc: CPOL=1, CPHA=1 }
+
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - spiCapabilities:
+      desc: Describes the complete SPI capabilities of a device interface
+      fields:
+        - handle
+        - spiFlags
+        - max_speed
+        - mosi_pin
+        - miso_pin
+        - sclk_pin
+
+  - spiConfig:
+      desc: Message to configure an SPI interface
+      fields:
+        - handle
+        - busRole
+        - speed
+        - spiMode
+        - mosi_pin
+        - miso_pin
+        - sclk_pin
+        - cs_pin
+
+  - spiData:
+      desc: Message to send data over an SPI interface
+      fields:
+        - handle
+        - mosi_data
+        - miso_data
+        - token

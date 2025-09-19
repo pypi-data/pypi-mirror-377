@@ -1,0 +1,195 @@
+from gi.repository import GLib
+from gi.repository import Gtk4LayerShell as LayerShell
+from src.core.create_panel import (
+    get_monitor_info,
+)
+from src.plugins.core._base import BasePlugin
+from src.plugins.core.event_handler_decorator import subscribe_to_event
+
+ENABLE_PLUGIN = True
+
+
+def get_plugin_placement(panel_instance):
+    return "background"
+
+
+def initialize_plugin(panel_instance):
+    if ENABLE_PLUGIN:
+        return PanelOutputMoverPlugin(panel_instance)
+    return None
+
+
+class PanelOutputMoverPlugin(BasePlugin):
+    """Move the panel to the first available output when its current one is disabled."""
+
+    PLUGIN_NAME = "panel_output_mover"
+
+    def __init__(self, panel_instance):
+        super().__init__(panel_instance)
+        self.panel = panel_instance
+        self.current_output_name = None
+        self._debounce_timeout_id = None
+        self.primary_output_name = self.config.get("panel", {}).get("primary_output")
+        if self.primary_output_name:
+            self.logger.info(
+                f"Primary output preference set to: {self.primary_output_name}"
+            )
+        else:
+            self.logger.info("No primary output set. Will use first available output.")
+            self.primary_output_name = [i for i in self.ipc.list_outputs()][0]["name"]
+
+        # Schedule initial output assignment
+        GLib.idle_add(self._apply_initial_output)
+
+    def _apply_initial_output(self):
+        """Assign panel to the best available output on startup."""
+        try:
+            self._set_panel_on_output()
+            self.logger.info(
+                f"[{self.PLUGIN_NAME}] Initial output assignment completed."
+            )
+        except Exception as e:
+            self.logger.error(
+                f"[{self.PLUGIN_NAME}] Error during initial assignment: {e}"
+            )
+
+    @subscribe_to_event("output-layout-changed")
+    def on_output_layout_changed(self, event_message):
+        """React when outputs layout change."""
+        self.logger.debug(f"[{self.PLUGIN_NAME}] Output layout changed. Re-evaluating.")
+        outputs = event_message["configuration"]
+        output = [i for i in outputs if i["name"] == self.primary_output_name][0]
+        default_output_enabled = output["output-id"] != -1
+        default_output_enabled = output["source"] != "dpms"
+
+        self.current_output_name = self.primary_output_name
+
+        if not default_output_enabled:
+            self.current_output_name = [i for i in outputs if i["source"] != "dpms"][0][
+                "name"
+            ]
+
+        if self._debounce_timeout_id:
+            GLib.source_remove(self._debounce_timeout_id)
+
+        current_output = [i for i in outputs if i["name"] == self.current_output_name][
+            0
+        ]
+        # panel wont move to the current output if the current workspace has any fullscreen view
+        if not self.utils.has_output_fullscreen_view(current_output["output-id"]):
+            self._debounce_timeout_id = GLib.timeout_add(100, self._debounced_update)
+
+    def _debounced_update(self):
+        """Perform the actual update after debounce delay."""
+        self._debounce_timeout_id = None
+        try:
+            self._set_panel_on_output()
+        except Exception as e:
+            self.logger.error(f"[{self.PLUGIN_NAME}] Error updating panel output: {e}")
+        return False  # Run only once
+
+    def get_target_monitor(self, monitors):
+        """Determine which monitor will be the default"""
+
+        return next(
+            (
+                monitor
+                for name, monitor in monitors.items()
+                if name == self.current_output_name
+            ),
+            None,
+        )
+
+    def _set_panel_on_output(self):
+        """Update the GTK Layer Shell monitor for the panel window."""
+        monitors = get_monitor_info()
+        monitor = self.get_target_monitor(monitors)
+        monitor_gdk_obj = monitor["monitor"]  # pyright: ignore[]
+        monitor_name = monitor_gdk_obj.get_connector()
+        output = [i for i in self.ipc.list_outputs() if i["name"] == monitor_name][0]
+        geo = output["geometry"]
+        output_width = geo["width"]
+        user_defined_height_top_panel = (
+            self.config.get("panel", {}).get("top", {}).get("height", 32)
+        )
+
+        user_defined_width_top_panel = (
+            self.config.get("panel", {}).get("top", {}).get("width", output_width)
+        )
+        user_defined_height_left_panel = (
+            self.config.get("panel", {}).get("left", {}).get("height", 32)
+        )
+        user_defined_width_left_panel = (
+            self.config.get("panel", {}).get("left", {}).get("width", 32)
+        )
+        user_defined_height_right_panel = (
+            self.config.get("panel", {}).get("right", {}).get("height", 32)
+        )
+        user_defined_width_right_panel = (
+            self.config.get("panel", {}).get("right", {}).get("width", 32)
+        )
+        user_defined_height_bottom_panel = (
+            self.config.get("panel", {}).get("bottom", {}).get("height", 32)
+        )
+        user_defined_width_bottom_panel = (
+            self.config.get("panel", {}).get("bottom", {}).get("width", output_width)
+        )
+        user_defined_height_bottom_panel = (
+            self.config.get("panel", {}).get("bottom", {}).get("height", 32)
+        )
+        user_defined_width_bottom_panel = (
+            self.config.get("panel", {}).get("bottom", {}).get("width", output_width)
+        )
+
+        if monitor:
+            LayerShell.set_monitor(self.top_panel, monitor_gdk_obj)
+            LayerShell.set_monitor(self.left_panel, monitor_gdk_obj)
+            LayerShell.set_monitor(self.right_panel, monitor_gdk_obj)
+            LayerShell.set_monitor(self.bottom_panel, monitor_gdk_obj)
+            self.top_panel.set_default_size(
+                user_defined_width_top_panel, user_defined_height_top_panel
+            )
+            self.left_panel.set_default_size(
+                user_defined_width_left_panel, user_defined_height_left_panel
+            )
+            self.right_panel.set_default_size(
+                user_defined_width_right_panel, user_defined_height_right_panel
+            )
+            self.bottom_panel.set_default_size(
+                user_defined_width_bottom_panel, user_defined_height_bottom_panel
+            )
+
+    def about(self):
+        """
+        Panel Output Mover Plugin
+        =========================
+
+        Purpose
+        -------
+        This plugin ensures that the panel (the bar or dock managed by the application)
+        is always visible on an active monitor, even when the user changes the output
+        layout—for example, when a monitor is unplugged, turned off, or goes into DPMS
+        (power-saving) mode. It automatically moves all panel surfaces (top, bottom,
+        left, and right panels) to a valid monitor whenever the currently assigned
+        output is no longer available.
+
+        Key Configuration
+        -----------------
+        In the application configuration file, the following setting is required if you
+        want to force the panel to always prefer a specific monitor:
+
+            [panel]
+            primary_output = "Output-Name"
+
+        If `primary_output` is omitted, the plugin will simply choose the first
+        available monitor as reported by the compositor.
+
+        Why It Matters
+        --------------
+        Without this plugin, if the monitor hosting the panel is turned off, removed,
+        or enters DPMS mode, the panel might remain bound to that inactive output,
+        making it inaccessible. The Panel Output Mover Plugin guarantees that the
+        panel remains visible and usable to the user at all times, improving both
+        usability and resilience in multi-monitor setups.
+        """
+        return self.about.__doc__

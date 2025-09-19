@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  jupyter:
+    #image: jupyter/minimal-notebook:latest
+    build: .
+    container_name: mcp-jupyter
+    restart: unless-stopped
+    ports:
+      # bind to localhost only; change to "8888:8888" if you need LAN access
+      - "127.0.0.1:8888:8888"
+    environment:
+      # Fixed token so your MCP client can auth easily
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-mcp-dev-token}
+      JUPYTER_ENABLE_LAB: "yes"
+    volumes:
+      # persisted workspace (host ./notebooks -> /home/jovyan/work)
+      - ./notebooks:/home/jovyan/work
+    command: >
+      start-notebook.py
+      --IdentityProvider.token=${JUPYTER_TOKEN:-mcp-dev-token}
+      --ServerApp.allow_remote_access=True
+      --ServerApp.root_dir=/home/jovyan/work

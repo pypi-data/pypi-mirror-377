@@ -1,0 +1,41 @@
+/**
+  *@file capabilities2.h
+  *@brief header for 
+  *@author jason
+  *@date 02/06/25
+  */
+
+#pragma once
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
+
+/* Exported types ------------------------------------------------------------*/
+
+typedef struct{
+  uint32_t handle;  //Unique handle for interface
+  uint8_t* packed;  //Packed capabilities packet
+  uint32_t packed_len;  //Length of packed packet
+} packed_cap_t;
+
+
+/* Exported constants --------------------------------------------------------*/
+#define PORTS_COUNT {{ ports|length }}
+#define CAPABILITIES_COUNT {{ capabilities|length }}
+extern packed_cap_t CAPABILITIES[];
+extern const char* PORT_LABELS[];
+
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions ------------------------------------------------------- */
+packed_cap_t capabilities_get_by_handle(uint32_t handle);
+packed_cap_t capabilities_get_by_index(uint32_t index);
+#ifdef __cplusplus
+}
+#endif
+
+
+

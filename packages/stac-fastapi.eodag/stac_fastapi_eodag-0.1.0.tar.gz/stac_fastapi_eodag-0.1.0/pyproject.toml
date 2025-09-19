@@ -1,0 +1,114 @@
+[project]
+name = "stac_fastapi.eodag"
+version = "0.1.0"
+description = "A stac-fastapi backend using EODAG"
+readme = "README.md"
+authors = [{ name = "CS GROUP - France (CSSI)", email = "eodag@csgroup.space" }]
+license = { file = "LICENSE" }
+requires-python = ">= 3.9"
+dependencies = [
+    "attr",
+    "eodag[all-providers]",
+    "fastapi",
+    "geojson-pydantic",
+    "orjson",
+    "pydantic",
+    "pydantic_core",
+    "pygeofilter",
+    "stac-fastapi.api >= 4.0",
+    "stac-fastapi.extensions",
+    "stac-fastapi.types",
+    "stac-pydantic==3.1.*",
+    "brotli-asgi",
+    "starlette",
+    "typing_extensions",
+    "shapely",
+]
+
+[project.urls]
+Homepage = "https://github.com/CS-SI/stac-fastapi-eodag"
+Repository = "https://github.com/CS-SI/stac-fastapi-eodag.git"
+"Bug Tracker" = "https://github.com/CS-SI/stac-fastapi-eodag/issues/"
+
+[project.optional-dependencies]
+server = ["uvicorn[standard]"]
+telemetry = [
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-exporter-otlp-proto-http",
+    "opentelemetry-instrumentation-eodag>=0.2.0",
+    "opentelemetry-instrumentation-fastapi",
+]
+dev = [
+    "stac_fastapi.eodag[server,telemetry]",
+    "geojson",
+    "httpx",
+    "importlib-metadata",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-socket",
+    "pytest-html",
+    "responses",
+    "stdlib-list",
+    "tox",
+    "tox-uv",
+    "types-shapely",
+]
+
+[tool.mypy]
+namespace_packages = true
+explicit_package_bases = true
+exclude = ["tests", ".venv"]
+
+[[tool.mypy.overrides]]
+module = ["pygeofilter", "pygeofilter.*", "stac_fastapi", "stac_fastapi.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "--disable-socket --allow-unix-socket --allow-hosts=localhost"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+testpaths = ["tests"]
+filterwarnings = ["ignore:Unused async fixture loop scope:pytest.PytestWarning"]
+
+[tool.ruff]
+target-version = "py39" # minimum supported version
+line-length = 120
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+select = [
+    "B",   # flake8-bugbear
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "C90", # mccabe (complexity)
+    "I",   # isort
+    "T20", # flake8-print
+    "D1",  # pydocstyle - docstring presence only
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["stac_fastapi.eodag"]
+known-third-party = ["rasterio", "stac-pydantic", "fastapi", "stac_fastapi"]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 18
+
+[tool.setuptools.packages.find]
+include = ["stac_fastapi*"]

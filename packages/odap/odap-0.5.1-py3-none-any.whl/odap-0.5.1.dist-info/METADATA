@@ -1,0 +1,74 @@
+Metadata-Version: 2.4
+Name: odap
+Version: 0.5.1
+Summary: ODAP framework
+Author-email: Lukas Langr <lukas.langr@datasentics.com>, Karel Gudera <karel.gudera@datasentics.com>
+License: LICENSING TERMS
+        The Licensing Terms apply to the use of ODAP Use Case Builder Framework (“Software”). The Software is provided by DataSentics, a.s., with its registered office at
+        Washingtonova 1599/17, Nové Město, 110 00 Praha 1, ID No. 05355541, entered in the Commercial
+        Register maintained by the Municipal Court in Prague under File No. B 24293 (“Provider”).
+        The “user” means an individual or legal entity whose funds are used to pay the subscription fee or an
+        employee or a contractor thereof. By clicking the "I Agree" button, downloading or using the Software,
+        the user agrees to be bound by these licensing terms.
+        If the Software is used by an entity who does not fulfil the definition of the “user” according to these
+        terms, such entity shall pay to the Provider unjust enrichment in the amount of the usual license
+        (subscription) fee.
+        The Provider grants the user with a non-exclusive territorially unlimited license consisting in the
+        right to access and use the Software for the duration of the subscription period.
+        This license is non-transferable to a third party.
+        This license does not allow the user to copy, modify, alter, update, or create collective or derivative
+        works of the Software. The user is not entitled to translate, decompile or otherwise attempt to extract
+        the source code of the Software or part thereof.
+        The Software is provided “As Is”, without warranty of any kind, expressed or implied. In particular, but
+        not exclusively, the Provider is not responsible for:
+        a) outages of the Software of a technical nature;
+        b) defects caused by third party interventions in the Software or as a result of their use contrary to their intended purpose;
+        c) damage caused to the user in direct connection with the use of the Software, including loss of stored data or late reaction time of the Software;
+        d) the impossibility or limitation of the Software caused by failures of the Internet network, as well as other circumstances of a technical nature, which the Provider is not able to influence or the solution of which requires the cooperation of third parties;
+        e) the content of the Software provided by the user, in particular all materials, information, works (including author's works) such as texts, images, videos, etc. The user undertakes to ensure that the content of the Software provided by the user does not infringe the rights of third parties; 
+        f) damages resulting from Force Majeure; 
+        g) any lost profit of the user.
+License-File: LICENSE
+Requires-Python: ~=3.8
+Description-Content-Type: text/markdown
+
+# ODAP Use Case Builder Framework
+
+## Overview
+
+ODAP is a lightweight framework for creating use cases, writing features and exporting
+segments to various destinations (e.g. Facebook, Salesforce, etc.)
+
+Both SQL and Pyspark syntax is supported.
+
+It's build on top of the Databricks platform.
+
+You can try the framework right now by cloning [demo project](https://github.com/DataSentics/features-factory-demo) to your Databricks Workspace.
+
+## Documentation
+For documentation see [ODAP Documentation](https://datasentics.notion.site/ODAP-framework-f6ed0a95140d48c69b642b568c6db85f).
+
+## Development
+There are two main components (sub-packages)
+- `feature_factory` - responsible for features development and orchestration
+- `segment_factory` - responsible for segments creation and exports
+
+### DBR & Python
+DBR 10.4+ with python 3.8+ are supported
+
+### Dependency management
+Use `poetry` as main dependency management tool
+
+### Linting & Formatting
+- pylint
+- pyre-check
+- black
+
+### Code style
+- functions-only python (no dependency injection)
+- try to avoid classes as much as possible
+- data classes are OK
+- no `__init__.py` files
+- keep the `src` directory in root
+- project config is raw YAML
+- use type hinting as much as possible

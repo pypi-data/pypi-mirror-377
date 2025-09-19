@@ -1,0 +1,112 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string",
+      "description": "Invoice number"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date the invoice was issued"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The due date for payment"
+    },
+    "delivery_period": {
+      "type": "string",
+      "description": "Billing or delivery period for the invoice"
+    },
+    "buyer": {
+      "type": "string",
+      "description": "The buyer receiving the invoice"
+    },
+    "seller": {
+      "type": "string",
+      "description": "The seller issuing the invoice"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ]
+          },
+          "gas_day": {
+            "type": "string",
+            "description": "Trade Date"
+          },
+          "trader": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "volume": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "MMBTU"
+            ]
+          },
+          "amount": {
+            "type": "number",
+            "description": "The invoice amount involved in the transaction. If the amount is put in parenthesis, it means that the amount is negative."
+          },
+          "pipeline": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "deal_number",
+          "buy_sell",
+          "gas_day",
+          "price",
+          "volume",
+          "amount",
+          "pipeline",
+          "location"
+        ]
+      }
+    },
+    "grand_total_volume": {
+      "type": "number",
+      "description": "Total volume across all transactions"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount due or payable. If the total appears after 'SouthStar Energy Services LLC will pay the following amount:' then take total as negative."
+      },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ],
+      "description": "Currency of the invoice"
+    }
+  },
+  "required": [
+    "invoice_number",
+    "invoice_date",
+    "due_date",
+    "buyer",
+    "seller",
+    "line_items",
+    "invoice_total"
+  ]
+}

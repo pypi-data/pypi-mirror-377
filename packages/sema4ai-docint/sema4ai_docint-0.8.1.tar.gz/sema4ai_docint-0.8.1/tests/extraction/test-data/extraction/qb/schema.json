@@ -1,0 +1,156 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_detail": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "invoice_number": {
+          "type": "string"
+        },
+        "delivery_period": {
+          "type": "string",
+          "format": "date"
+        },
+        "due_date": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found at the top follow by TOTAL AMOUNT DUE"
+    },
+    "transactions_summary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Description of the sales/purchases"
+          },
+          "volume": {
+            "type": "number",
+            "description": "Total volume for this summary line"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price per unit for this summary line"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Total monetary amount for this summary line"
+          }
+        },
+        "required": ["description", "volume", "price", "amount"]
+      }
+    },
+    "sales_point": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pipeline_name": {
+            "type": "string",
+            "description": "The name of the pipeline, should be taken from the table header as after SALES POINT:"
+          },
+          "billed_volume": {
+            "type": "array",
+            "description": "Billed volumes table showing flow date-wise breakdown",
+            "items": {
+              "type": "object",
+              "properties": {
+                "flow_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "term_sales": {
+                  "type": "number"
+                },
+                "monthly_sales": {
+                  "type": "number"
+                },
+                "daily_sales": {
+                  "type": "number"
+                },
+                "purchases": {
+                  "type": "number"
+                },
+                "total": {
+                  "type": "number"
+                }
+              },
+              "required": ["flow_date", "term_sales", "monthly_sales", "daily_sales", "purchases", "total"]
+            }
+          },
+          "summary": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "summary": {
+                  "type": "string"
+                },
+                "volume": {
+                  "type": "number"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "amount": {
+                  "type": "number"
+                }
+              },
+              "required": ["summary", "volume", "price", "amount"]
+            }
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "pipeline": {
+                  "type": "string",
+                  "description": "pipeline name"
+                },
+                "gas_day": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "TRADE DATE column"
+                },
+                "buy_sell": {
+                  "type": "string",
+                  "enum": ["Buy", "Sell"],
+                  "description": "Refer DEAL column to determine if it is a buy or sell"
+                },
+                "flow_term": {
+                  "type": "string"
+                },
+                "volume": {
+                  "type": "number",
+                  "description": "The volume of the transaction"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "The price per unit involved in the transaction."
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The monetary amount involved in the transaction."
+                }
+              },
+              "required": ["gas_day", "buy_sell", "pipeline", "volume", "price", "amount"]
+            }
+          }
+        },
+        "required": ["pipeline_name", "line_items", "billed_volume", "summary"]
+      }
+    }
+  },
+  "required": ["invoice_total", "sales_point", "invoice_detail", "transactions_summary"]
+}

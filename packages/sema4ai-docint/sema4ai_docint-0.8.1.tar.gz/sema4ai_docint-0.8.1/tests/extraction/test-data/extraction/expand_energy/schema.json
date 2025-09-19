@@ -1,0 +1,159 @@
+{
+  "type": "object",
+  "required": [
+    "invoice_details",
+    "buyer",
+    "seller",
+    "line_items"
+  ],
+  "properties": {
+    "buyer": {
+      "type": "object",
+      "required": [
+        "name",
+        "email"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the buyer as listed in the document"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the buyer"
+        }
+      }
+    },
+    "seller": {
+      "type": "object",
+      "required": [
+        "name",
+        "email",
+        "address",
+        "account_details"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the seller"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the seller"
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the seller"
+        },
+        "account_details": {
+          "type": "string",
+          "description": "The banking account details of the seller"
+        }
+      }
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "DO NOT SKIP ANY LINE ITEM. Specifically, the line items mentioned at the mid or end of the page must be included.",
+        "required": [
+          "deal_id",
+          "type",
+          "description",
+          "pipeline",
+          "location",
+          "start_date",
+          "end_date",
+          "price",
+          "volume",
+          "amount"
+        ],
+        "properties": {
+          "deal_id": {
+            "type": "string",
+            "description": "The deal number as listed in the document"
+          },
+          "type": {
+            "type": "string",
+            "description": "Transaction type (e.g., Buy/Sell)."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the transaction"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline for the transaction. Mentioned as 'Pipeline' in the document"
+          },
+          "location": {
+            "type": "string",
+            "description": "The location of the transaction"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the transaction"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date of the transaction"
+          },
+          "price": {
+            "type": "number",
+            "description": "The price at which the transaction was made"
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of the transaction in MMBTU"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The total amount of the transaction"
+          }
+        }
+      }
+    },
+    "invoice_details": {
+      "type": "object",
+      "required": [
+        "invoice_number",
+        "invoice_total",
+        "invoice_date",
+        "due_date",
+        "flow_month",
+        "remit_to"
+      ],
+      "properties": {
+        "invoice_number": {
+          "type": "string",
+          "description": "The invoice number"
+        },
+        "invoice_total": {
+          "type": "number",
+          "description": "The total amount of the invoice"
+        },
+        "invoice_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of the invoice"
+        },
+        "due_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The due date for payment"
+        },
+        "flow_month": {
+          "type": "string",
+          "description": "The flow month for the transactions"
+        },
+        "remit_to": {
+          "type": "string",
+          "description": "The payment remit to address or entity"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_info": {
+      "type": "object",
+      "properties": {
+        "invoice_number": { "type": "string" },
+        "contract_number": { "type": "string" },
+        "invoice_date": { "type": "string", "format": "date" },
+        "due_date": { "type": "string", "format": "date" },
+        "production_month": { "type": "string" },
+        "vendor": { "type": "string" },
+        "bill_to": { "type": "string" }
+      }
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "buy_sell": {
+            "type": "string",
+            "description": "Translate the raw letter from the 'P/S' column EXACTLY as follows—and ONLY as follows: the letter 'P' (always an uppercase P) maps to 'Buy' (Purchase) and the letter 'S' maps to 'Sell' (Sale)."
+          },
+          "deal_number": {
+            "type": "string",
+            "description": "Exact deal number shown in the 'Deal' column. Copy verbatim."
+          },
+          "trader": { "type": "string" },
+          "price_type": {
+            "type": "string",
+            "description": "Copy the text from the 'Price Type' column EXACTLY as printed—preserving every space, underscore, and hyphen. Pay special attention to short codes that contain spaces (e.g., 'IF SSTAR'): NEVER convert those spaces to underscores. Likewise, descriptions that include a space-hyphen-space must keep that punctuation intact (e.g., 'Settlement Adjustment - Flat fee'). Do NOT add, remove, or substitute ANY characters."
+          },
+          "location": {
+            "type": "string",
+            "description": "Copy the text from the 'Description' column verbatim, preserving ALL punctuation, periods, and hyphens—especially internal patterns like 'PT. SENA FIELD POOL' (keep the period after 'PT.') or numeric prefixes such as '6 - ROCKY MOUNTAIN POOL' (keep the space-hyphen-space). If the cell is blank in the source row, output an empty string."
+          },
+          "meter": {
+            "type": "string",
+            "description": "Capture the full meter value ONLY from its column. If the meter is split across adjacent cells (e.g., '-16B' in one cell and '37654' in the next), JOIN them with a single space in the same order. RETAIN a leading minus sign ONLY when it physically appears with the meter in the source (never invent or drop it). Do NOT add or remove any other characters or spaces besides the single joiner between split parts."
+          },
+          "volume": {
+            "type": "number",
+            "description": "Numeric quantity from the 'Quantity (MMBTU)' column. Parse as a number; values shown in parentheses represent negatives."
+          },
+          "price": {
+            "type": "number",
+            "description": "Unit price from the 'Price' column. Parse as a float."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount due from the 'Amount Due' column. Convert parentheses to negative and output as a float with two-decimal precision."
+          },
+          "tax": {
+            "type": "number",
+            "description": "Tax amount if present; parse as a float. If it is not present take it as 0.0"
+          }
+        },
+        "required": [
+          "buy_sell",
+          "deal_number",
+          "price_type",
+          "location",
+          "meter",
+          "volume",
+          "price",
+          "amount",
+          "tax"
+        ],
+        "description": "The invoice of two tables, one is the line items table and the other is the summary table, we are interested in the line items table. DO NOT SKIP ANY LINE ITEM."
+      }
+    },
+    "statement_details": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pipeline": {
+            "type": "string",
+            "description": "Pipeline name, it is in the sub header of the table"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location name, it is in the sub header of the table"
+          },
+          "deal_number": {
+            "type": "string",
+            "description": "Deal number, it is in the sub header of the table"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Gas day, it is in the sub header of the table"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total of the month"
+          },
+          "day_wise_details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "prod_day": {"type": "string"},
+                "daily_volume": {"type": "number"},
+                "index": {"type": "number"},
+                "spread": {"type": "number"},
+                "net_price": {"type": "number"},
+                "daily_total": {"type": "number"}
+              }
+            },
+            "required": ["prod_day", "daily_volume", "index", "spread", "net_price", "daily_total"],
+            "description": "This table has the daily transection for each pipeline, it is a horizontal table"
+          }
+        }
+      }
+    },
+    "invoice_total_amount": {
+      "type": "number",
+      "description": "In the summary table on the first page, 'Total Due to: ...' in the amount column. parse as a float"
+    },
+    "invoice_total_volume": {
+      "type": "number",
+      "description": "In the summary table on the first page, 'Total Due to: ...' in the quantity column. parse as a float"
+    }
+  },
+  "required": ["line_items", "invoice_total_amount", "invoice_total_volume"]
+}

@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": "string" },
+    "invoice_date": { "type": "string", "format": "date" },
+    "due_date": { "type": "string", "format": "date" },
+    "production_month": { "type": "string" },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, found at the end of the document near the text 'Due to Koch Energy Services, LLC'. If in parentheses, treat as negative. Do not calculate the total."
+    },
+    "tax_amount": {
+      "type": "number",
+      "description": "If not found in the document, set this value to 0"
+    },
+    "bank_details": {
+      "type": "object",
+      "properties": {
+        "bank_name": { "type": "string" },
+        "aba": { "type": "string" },
+        "account_number": { "type": "string" }
+      },
+      "required": ["bank_name", "aba", "account_number"]
+    },
+    "line_items": {
+      "type": "array",
+      "description": "Extract all line items from all pages, even if the table header is not repeated. Continue row extraction until no further structured data is found. Do not stop after the first table. Tables may span multiple pages and may not repeat headers. Take amount as negative if enclosed within parentheses.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction"
+          },
+          "deal_number": {
+            "type": "string",
+            "description": "Deal number in the Trade column. If not found, set to null."
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": ["Buy", "Sell"]
+          },
+          "pipeline": { "type": "string" },
+          "location": {
+            "type": "string",
+            "description": "Location of the transaction, in the Point column"
+          },
+          "volume": { "type": "number" },
+          "price": { "type": "number" },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount. take this amount as negative if enclosed within parentheses. In some cases, the amount is in partheses even for sell transactions, in such case, take the amount as negative."
+          }
+        },
+        "required": [
+          "gas_day",
+          "deal_number",
+          "buy_sell",
+          "pipeline",
+          "location",
+          "volume",
+          "price",
+          "amount"
+        ]
+      }
+    }
+  },
+  "required": ["invoice_total", "line_items"]
+}

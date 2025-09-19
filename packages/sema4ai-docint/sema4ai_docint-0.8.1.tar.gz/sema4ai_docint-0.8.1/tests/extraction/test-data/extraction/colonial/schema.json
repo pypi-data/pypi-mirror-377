@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string",
+      "description": "Invoice number"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the invoice"
+    },
+    "delivery_period": {
+      "type": "string",
+      "description": "Delivery period"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Due date for payment"
+    },
+    "line_items": {
+      "type": "array",
+      "description": "Make sure to include all rows from both Sales to Koch Energy Services and Purchases from Koch Energy Services sections",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pipeline": {
+            "type": "string",
+            "description": "Full pipeline name, e.g. 'Northern Natural Gas'. If name includes parentheses, e.g. 'TGP (Tenneco)', extract only the part before the parentheses."
+          },
+          "deal_id": {
+            "type": "string",
+            "description": "Deal identifier"
+          },
+          "location": {
+            "type": "string",
+            "description": "Point Number"
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volumes"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price. If the price is inside parenthesis, it means its a negative amount."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount Value or transaction amount. The value should be negative if the rows are from Purchases from Koch Energy Services section"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ],
+            "description": "Indicates whether this is a buy or sell transaction"
+          }
+        },
+        "required": [
+          "pipeline",
+          "deal_id",
+          "location",
+          "volume",
+          "price",
+          "amount",
+          "buy_sell"
+        ]
+      }
+    },
+    "purchase_total": {
+      "type": "number",
+      "description": "Total amount of the purchase transactions which is negative, followed by Net Payable Due to Koch Energy Services"
+    },
+    "sales_total": {
+      "type": "number",
+      "description": "Total amount of the sales transactions, followed by Net Receivable Due from Koch Energy Services"
+    },
+    "invoice_total":
+      {
+          "type": "number",
+          "description": "sales_total + purchase_total"
+      }
+  },
+  "required": [
+    "line_items",
+    "purchase_total",
+    "sales_total",
+    "invoice_total"
+  ]
+}

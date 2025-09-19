@@ -1,0 +1,69 @@
+{
+  "type": "object",
+  "properties": {
+    "statement_number": {
+      "type": "string",
+      "description": "Unique identifier for the statement"
+    },
+    "statement_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date the statement was issued"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "number",
+            "description": "It is in POINT NBR column and in format '40555 - FRANCEY1' where 40555 is the deal number"
+          },
+          "gas_day": {
+            "type": "string",
+            "description": "Gas day is the date of the transaction, it is mentioned as date range in TRAN DATES column"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": ["Buy", "Sell"],
+            "description": "Buy or sell, can be detected in the subheader as Purchase from KOCH ENERGY SERVICES or Sale to KOCH ENERGY SERVICES"
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the transaction mentioned in 'QUANTITY MMBTU' column"
+          },
+          "price": {
+            "type": "number",
+            "description": "Unit price in USD"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of the transaction mentioned in 'INVOICE' column"
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction description mentioned in 'DESCRIPTION' column"
+          },
+          "location": {
+            "type": "string",
+            "description": "Transaction hub or pool location, it is in NAME column"
+          }
+        },
+        "required": ["deal_number", "gas_day", "buy_sell", "volume", "price", "amount", "location","description"]
+      }
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total of the invoice, followed by 'Total Due to KINDER MORGAN TEJAS PIPELINE LLC/(KOCH ENERGY SERVICES, LLC)'"
+    },
+    "tax_amount": {
+      "type": "number",
+      "description": "Tax of the invoice, followed by 'Tax Total'"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "Method of payment"
+    }
+  },
+  "required": ["line_items", "invoice_total","tax_amount"]
+}

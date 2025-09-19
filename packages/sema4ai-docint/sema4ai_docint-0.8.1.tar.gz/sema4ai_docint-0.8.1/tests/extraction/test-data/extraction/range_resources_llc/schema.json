@@ -1,0 +1,153 @@
+{
+    "type": "object",
+    "required": [
+      "Invoice_details",
+      "Buyer",
+      "Seller",
+      "Transactions"
+    ],
+    "properties": {
+      "Buyer": {
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "email",
+          "phone_no"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the buyer company."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address for buyer contact."
+          },
+          "address": {
+            "type": "string",
+            "description": "The physical address of the buyer."
+          },
+          "phone_no": {
+            "type": "string",
+            "description": "The contact phone number of the buyer."
+          }
+        }
+      },
+      "Seller": {
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "email"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the seller company."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address for seller contact."
+          },
+          "address": {
+            "type": "string",
+            "description": "The physical address of the seller."
+          }
+        }
+      },
+      "Transactions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "type",
+            "price",
+            "amount",
+            "volume",
+            "deal_id",
+            "end_date",
+            "location",
+            "pipeline",
+            "start_date"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of transaction (BUY/SELL)."
+            },
+            "price": {
+              "type": "number",
+              "description": "The price per unit for the transaction."
+            },
+            "amount": {
+              "type": "number",
+              "description": "The total monetary amount of the transaction."
+            },
+            "volume": {
+              "type": "number",
+              "description": "The volume of gas in mmbtu."
+            },
+            "deal_id": {
+              "type": "string",
+              "description": "The unique deal identifier."
+            },
+            "end_date": {
+              "type": "string",
+              "format": "date",
+              "description": "The end date of the transaction period."
+            },
+            "location": {
+              "type": "string",
+              "description": "The delivery location of the transaction."
+            },
+            "pipeline": {
+              "type": "string",
+              "description": "The pipeline used in the transaction."
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "description": "The start date of the transaction period."
+            }
+          }
+        }
+      },
+      "Invoice_details": {
+        "type": "object",
+        "required": [
+          "invoice_number",
+          "invoice_total",
+          "invoice_date",
+          "due_date",
+          "production_month"
+        ],
+        "properties": {
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The due date for payment of the invoice."
+          },
+          "invoice_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date when the invoice was issued."
+          },
+          "invoice_total": {
+            "type": "number",
+            "description": "The total amount due as shown on the invoice."
+          },
+          "invoice_number": {
+            "type": "string",
+            "description": "The unique number assigned to the invoice."
+          },
+          "production_month": {
+            "type": "string",
+            "description": "The production month for the invoice."
+          }
+        }
+      }
+    }
+  }

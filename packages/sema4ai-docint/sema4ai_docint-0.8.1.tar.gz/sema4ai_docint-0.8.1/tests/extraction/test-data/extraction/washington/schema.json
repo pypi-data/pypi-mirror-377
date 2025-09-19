@@ -1,0 +1,57 @@
+{
+    "type": "object",
+    "properties": {
+      "invoice_total": {
+        "type": "number",
+         "description": "This is the gross invoice amount mentioned besides 'Net Payable Due to Koch Energy Services, LLC'. Mark amount as negative if it is payable to 'Koch Energy Services, LLC'"
+      },
+      "line_items": {
+        "type": "array",
+        "description": "Be precise and thorough. Mark required, missing fields as null. Omit optional fields. You are processing financial documents that outline the purchase and sale of natural gas. Transactions which are marked as sells should be positive. Transactions which are marked as purchases (buys) should be negative.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "deal_number": { 
+              "type": "string",
+              "description": "The unique identifier for the transaction. Mentioned in the 'Confirm ID' column"
+            },
+            "buy_sell": {
+              "type": "string",
+              "enum": ["Buy", "Sell"],
+              "description": "All transactions under 'Sales to Koch Energy Services, LLC' sub heading should be considered as 'Sell'. All transactions under 'Purchases from Koch Energy Services, LLC' sub heading should be considered as 'Buy'."
+            },
+            "pipeline": {
+              "type": "string",
+              "description": "Pipeline used for delivery of the gas. Mentioned in the 'Pipeline' column."
+            },
+            "location": {
+              "type": "string",
+              "description": "Location used for delivery of the gas. Mentioned in the 'Point Number' column. Consider the entire value of the column as the location name."
+            },
+            "volume": {
+              "type": "number",
+              "description": "The TOTAL VOLUME of the transaction. Mentioned in the 'Total Volumes' column. Always ensure volume = amount / price."
+            },
+            "price": {
+              "type": "number",
+              "description": "The price per unit involved in the transaction. Mentioned in the 'Price' column"
+            },
+            "amount": {
+              "type": "number",
+              "description": "The monetary amount involved in the transaction. Transactions which are marked as sales should be positive. Transactions which are marked as purchases (buys) should be negative. Mentioned in the 'Amount' column."
+            }
+          },
+          "required": [
+            "deal_number",
+            "buy_sell",
+            "pipeline",
+            "location",
+            "volume",
+            "price",
+            "amount"
+          ]
+        }
+      }
+    },
+    "required": ["invoice_total", "line_items"]
+  }

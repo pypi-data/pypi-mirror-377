@@ -1,0 +1,85 @@
+{
+    "type": "object",
+    "properties": {
+      "invoice_number": { "type": "string" },
+      "invoice_date": { "type": "string", "format": "date" },
+      "due_date": { "type": "string", "format": "date" },
+      "delivery_period": { "type": "string" },
+      "bill_to": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "address": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" }
+        },
+        "required": ["name"]
+      },
+      "line_items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "pipeline": { 
+                "type": "string",
+                "description": "Pipeline name, it is in the sub header of the first table of the page"
+            },
+            "gas_day": { 
+                "type": "string",
+                "format": "date",
+                "description": "Gas day of the transaction, it is in Gas Day column and is a date series from first to last day of the delivery month"
+            },
+            "volume": { 
+                "type": "number",
+                "description": "Volume of the transaction, it is MMBtu column"
+            },
+            "price": { 
+                "type": "number",
+                "description": "Price of the transaction, it is Price column"
+            },
+            "amount": { 
+                "type": "number",
+                "description": "Amount of the transaction, it is Amount column"
+            }
+          },
+          "required": ["pipeline", "gas_day", "volume", "price", "amount"]
+        },
+        "description": "The table has the daily transection for each pipeline, it can have a row for a day when no transaction is made, so the volume and amount can be 0, but do not skip it from extraction"
+      },
+      "invoice_total": { 
+        "type": "number",
+        "description": "Invoice total, it is on the first page"
+      },
+      "total_volume": { 
+        "type": "number",
+        "description": "Total volume of the transactions, it is on the first page"
+      },
+      "payment_instructions": {
+        "type": "object",
+        "properties": {
+          "contact_name": { "type": "string" },
+          "contact_phone": { "type": "string" },
+          "wire_transfer": {
+            "type": "object",
+            "properties": {
+              "account_name": { "type": "string" },
+              "account_number": { "type": "string" },
+              "aba_number": { "type": "string" },
+              "bank": { "type": "string" }
+            }
+          },
+          "ach_delivery": {
+            "type": "object",
+            "properties": {
+              "account_name": { "type": "string" },
+              "account_number": { "type": "string" },
+              "aba_number": { "type": "string" },
+              "bank": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "required": ["line_items", "invoice_total"]
+  }
+  

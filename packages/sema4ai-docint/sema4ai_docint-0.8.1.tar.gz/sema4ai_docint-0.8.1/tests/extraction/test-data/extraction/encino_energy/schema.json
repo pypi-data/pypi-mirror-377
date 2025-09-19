@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found at the top follow by TOTAL AMOUNT DUE"
+    },
+    "tax_amount": {
+      "type": "number",
+      "description": "Tax amount of the invoice, can be found at the bottom follow by Tax"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "PROD DATE column"
+          },
+          "deal_number": {
+            "type": "string",
+            "description": "TRADE column"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ],
+            "description": "Buy/Sell indicator, is in the BUY/SELL column"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "PIPELINE column, can be empty"
+          },
+          "location": {
+            "type": "string",
+            "description": "LOCATION column, can be empty"
+          },
+          "description": {
+            "type": "string",
+            "description": "the description of the transaction"
+          },
+          "days": {
+            "type": "number",
+            "description": "DAYS column"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of the transaction"
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the transaction. If the volume is in parentheses, the volume is negative."
+          },
+          "UOM": {
+            "type": "string",
+            "description": "UOM column"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount involved in the transaction. If the price is in parentheses, the amount is negative."
+          }
+        },
+        "required": [
+          "gas_day",
+          "deal_number",
+          "buy_sell",
+          "pipeline",
+          "location",
+          "price",
+          "volume",
+          "amount"
+        ]
+      }
+    }
+  },
+  "required": [
+    "line_items",
+    "invoice_total",
+    "tax_amount"
+  ]
+}

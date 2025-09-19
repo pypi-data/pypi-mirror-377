@@ -1,0 +1,117 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string",
+      "description": "Unique identifier for the invoice"
+    },
+    "invoice_month": {
+      "type": "string",
+      "description": "Month of the invoice period, e.g. '12/2024'"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when the invoice was issued"
+    },
+    "invoice_due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Payment due date for the invoice"
+    },
+    "buyer": {
+      "type": "string",
+      "description": "Customer or buyer receiving the invoice"
+    },
+    "seller": {
+      "type": "string",
+      "description": "Company issuing the invoice"
+    },
+    "line_items": {
+      "type": "array",
+      "description": "Aggregate all rows in the tables 'Purchases' and 'Sales'.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal."
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline through which the transaction is processed or executed."
+          },
+          "location": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit involved in the transaction."
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of items or units involved in the transaction. If the volume is put in parenthesis, it means that the volume is negative."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The invoice amount involved in the transaction. If the amount is put in parenthesis, it means that the amount is negative."
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ],
+            "description": "Buy/Sell indicator, can be inferred from Purchase/Sales"
+          }
+        },
+        "required": [
+          "deal_number",
+          "gas_day",
+          "pipeline",
+          "location",
+          "price",
+          "volume",
+          "amount",
+          "buy_sell"
+        ]
+      }
+    },
+    "purchase_total": {
+      "type": "number",
+      "description": "Total amount for purchases"
+    },
+    "sales_total": {
+      "type": "number",
+      "description": "Total amount for sales"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Net amount due to Spark Energy Gas LLC"
+    },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ],
+      "description": "Currency for the invoice amounts"
+    }
+  },
+  "required": [
+    "invoice_number",
+    "invoice_month",
+    "invoice_date",
+    "invoice_due_date",
+    "buyer",
+    "seller",
+    "line_items",
+    "purchase_total",
+    "sales_total",
+    "invoice_total"
+  ]
+}

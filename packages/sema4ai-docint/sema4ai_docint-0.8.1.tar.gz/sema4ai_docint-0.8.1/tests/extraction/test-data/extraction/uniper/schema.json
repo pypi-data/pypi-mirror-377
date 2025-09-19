@@ -1,0 +1,68 @@
+{
+    "type": "object",
+    "properties": {
+        "line_items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "buy_sell": {
+                        "type": "string",
+                        "enum": [
+                            "Buy",
+                            "Sell"
+                        ],
+                        "description": "Buy or Sell of the transaction, it is in mention in the sub header"
+                    },
+                    "deal_number": {
+                        "type": "string"
+                    },
+                    "gas_day": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Delivery date of the transaction"
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "refer to the Location column in the document."
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "volume": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "The monetary amount involved in the transaction. If the amount is put in parenthesis, it means that the amount is negative."
+                    }
+                },
+                "required": [
+                    "buy_sell",
+                    "deal_number",
+                    "gas_day",
+                    "location",
+                    "volume",
+                    "price",
+                    "amount"
+                ]
+            }
+        },
+        "invoice_total": {
+            "type": "number",
+            "description": "Total amount of the invoice, it is in the bottom of the document. If the amount is put in parenthesis, it means that the amount is negative."
+        }
+    },
+    "required": [
+        "line_items",
+        "invoice_total"
+    ]
+}

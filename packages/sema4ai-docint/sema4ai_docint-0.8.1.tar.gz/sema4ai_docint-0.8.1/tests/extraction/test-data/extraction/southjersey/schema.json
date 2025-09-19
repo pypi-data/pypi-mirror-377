@@ -1,0 +1,153 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "delivery_period": {
+      "type": "string"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "from": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "address"
+      ]
+    },
+    "to": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "address"
+      ]
+    },
+    "transactions": {
+      "type": "array",
+      "description": "Aggregate all rows in the tables 'Purchase Transactions' and 'Sales Transactions'.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal."
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline through which the transaction is processed or executed."
+          },
+          "zone": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit involved in the transaction."
+          },
+          "spread": {
+            "type": "number"
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of items or units involved in the transaction."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount involved in the transaction."
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": ["Buy", "Sell"],
+            "description": "Buy/Sell indicator e.g Buy or Sell"
+          }
+        },
+        "required": [
+          "deal_number",
+          "gas_day",
+          "pipeline",
+          "zone",
+          "location",
+          "price",
+          "spread",
+          "volume",
+          "amount",
+          "buy_sell"
+        ]
+      }
+    },
+    "purchase_total": {
+      "type": "number",
+      "description": "Total amount of the purchase transactions, the number is negative if wrapped in parentheses"
+    },
+    "sales_total": {
+      "type": "number",
+      "description": "Total amount of the sell transactions, the number is negative if wrapped in parentheses"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found besides the phrase 'South Jersey Resources Group, LLC will remit following amount'"
+    }
+  },
+  "required": [
+    "invoice_number",
+    "invoice_date",
+    "delivery_period",
+    "due_date",
+    "from",
+    "to",
+    "transactions",
+    "purchase_total",
+    "sales_total",
+    "invoice_total"
+  ]
+}

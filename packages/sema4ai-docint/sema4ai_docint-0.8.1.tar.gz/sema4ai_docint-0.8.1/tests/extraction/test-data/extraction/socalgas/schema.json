@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": "string" },
+    "invoice_date": { "type": "string", "format": "date" },
+    "account_period": { "type": "string" },
+    "seller": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "address": { "type": "string" }
+      },
+      "required": ["name", "address"]
+    },
+    "buyer": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "address": { "type": "string" }
+      },
+      "required": ["name", "address"]
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start_date": { "type": "string", "format": "date" },
+          "gas_day": { "type": "string", "format": "date" },
+          "amount": { "type": "number" },
+          "price": { "type": "number" },
+          "volume": { "type": "integer" },
+          "pipeline": { "type": "string" },
+          "basin_zone": { "type": "string" },
+          "receipt_delivery_point": { "type": "string" },
+          "transport_agreement": {
+            "type": "string",
+            "description": "The transport agreement code (e.g., Z99PT)"
+          },
+          "deal_number": {
+            "type": "string",
+            "description": "The offer or deal number (e.g., 329895)"
+          },
+          "buy_sell": {
+            "type": "string",
+            "description": "Buy/Sell indicator e.g Buy or Sell"
+          }
+        },
+        "required": [
+          "gas_day",
+          "amount",
+          "price",
+          "volume",
+          "pipeline",
+          "deal_number",
+          "transport_agreement",
+          "buy_sell"
+        ]
+      }
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found besides the phrase 'TOTAL AMOUNT DUE'"
+    },
+    "remit_to": {
+      "type": "object",
+      "properties": {
+        "bank_name": { "type": "string" },
+        "address": { "type": "string" },
+        "aba_ach": { "type": "string" },
+        "aba_wire": { "type": "string" },
+        "account_number": { "type": "string" },
+        "swift": { "type": "string" }
+      },
+      "required": ["bank_name", "aba_ach", "aba_wire", "account_number"]
+    }
+  },
+  "required": ["invoice_total", "line_items"]
+}

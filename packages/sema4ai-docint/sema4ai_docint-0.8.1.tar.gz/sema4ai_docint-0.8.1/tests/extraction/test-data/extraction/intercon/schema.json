@@ -1,0 +1,132 @@
+{
+    "type": "object",
+    "properties":
+    {
+        "invoice_number":
+        {
+            "type": "string",
+            "description": "Invoice number"
+        },
+        "invoice_date":
+        {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the invoice"
+        },
+        "delivery_period":
+        {
+            "type": "string",
+            "description": "Delivery period"
+        },
+        "due_date":
+        {
+            "type": "string",
+            "format": "date",
+            "description": "Due date for payment"
+        },
+        "transactions":
+        {
+            "type": "array",
+            "description": "Aggregate all rows from both purchases and sales sections, organized by pipelines",
+            "items":
+            {
+                "type": "object",
+                "properties":
+                {
+                    "pipeline_name":
+                    {
+                        "type": "string",
+                        "description": "Name of the pipeline"
+                    },
+                    "line_items":
+                    {
+                        "type": "array",
+                        "description": "List of individual line items for this pipeline",
+                        "items":
+                        {
+                            "type": "object",
+                            "properties":
+                            {
+                                "deal_id":
+                                {
+                                    "type": "string",
+                                    "description": "Deal identifier"
+                                },
+                                "location":
+                                {
+                                    "type": "string",
+                                    "description": "Location Name or Refer Point"
+                                },
+                                "volume":
+                                {
+                                    "type": "number",
+                                    "description": "Volumes"
+                                },
+                                "price":
+                                {
+                                    "type": "number",
+                                    "description": "Price. If the price is inside parenthesis, it means its a negative amount."
+                                },
+                                "amount":
+                                {
+                                    "type": "number",
+                                    "description": "Amount Value or transaction amount"
+                                },
+                                "buy_sell":
+                                {
+                                    "type": "string",
+                                    "enum":
+                                    [
+                                        "Buy",
+                                        "Sell"
+                                    ],
+                                    "description": "Indicates whether this is a buy or sell transaction"
+                                }
+                            },
+                            "required":
+                            [
+                                "deal_id",
+                                "location",
+                                "volume",
+                                "price",
+                                "amount",
+                                "buy_sell"
+                            ]
+                        }
+                    }
+                },
+                "required":
+                [
+                    "pipeline_name",
+                    "line_items"
+                ]
+            }
+        },
+        "purchase_total":
+        {
+            "type": "number",
+            "description": "Total amount of the purchase transactions. If the amount is inside parenthesis, it means its a negative amount."
+        },
+        "sales_total":
+        {
+            "type": "number",
+            "description": "Total amount of the sales transactions"
+        },
+        "invoice_total":
+        {
+            "type": "number",
+            "description": "The invoice total amount, followed by text Total Due to Interconn Resources. If the amount is inside parenthesis, it means its a negative amount."
+        }
+    },
+    "required":
+    [
+        "invoice_number",
+        "invoice_date",
+        "delivery_period",
+        "due_date",
+        "transactions",
+        "purchase_total",
+        "sales_total",
+        "invoice_total"
+    ]
+}

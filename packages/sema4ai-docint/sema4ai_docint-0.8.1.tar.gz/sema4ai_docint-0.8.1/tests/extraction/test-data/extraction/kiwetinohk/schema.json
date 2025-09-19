@@ -1,0 +1,141 @@
+{
+    "type": "object",
+    "properties":
+    {
+        "invoice_number":
+        {
+            "type": "string"
+        },
+        "invoice_date":
+        {
+            "type": "string",
+            "format": "date"
+        },
+        "due_date":
+        {
+            "type": "string",
+            "format": "date"
+        },
+        "production_month":
+        {
+            "type": "string"
+        },
+        "issued_to":
+        {
+            "type": "string"
+        },
+        "invoice_total":
+        {
+            "type": "number"
+        },
+        "line_items":
+        {
+            "type": "array",
+            "items":
+            {
+                "type": "object",
+                "properties":
+                {
+                    "gas_day":
+                    {
+                        "type": "string",
+                        "format": "date",
+                        "description": "It is the day on which trade was executed"
+                    },
+                    "location":
+                    {
+                        "type": "string"
+                    },
+                    "buy_sell":
+                    {
+                        "type": "string",
+                        "enum":
+                        [
+                            "Buy",
+                            "Sell"
+                        ],
+                        "description": "Buy is the volume is positive, sell if the volume is negative"
+                    },
+                    "pricing_index":
+                    {
+                        "type": "string"
+                    },
+                    "price":
+                    {
+                        "type": "number"
+                    },
+                    "premium":
+                    {
+                        "type": "number"
+                    },
+                    "unit":
+                    {
+                        "type": "string"
+                    },
+                    "volume":
+                    {
+                        "type": "integer"
+                    },
+                    "currency":
+                    {
+                        "type": "string"
+                    },
+                    "amount":
+                    {
+                        "type": "number",
+                        "description": "The value in the amount column. If the buy_sell value is buy, the value should be negative. If the buy_sell value is sell, then the value should be positive."
+                    }
+                },
+                "required":
+                [
+                    "location",
+                    "gas_day",
+                    "price",
+                    "volume",
+                    "amount",
+                    "buy_sell"
+                ]
+            }
+        },
+        "bank_info":
+        {
+            "type": "object",
+            "properties":
+            {
+                "bank_name":
+                {
+                    "type": "string"
+                },
+                "aba_number":
+                {
+                    "type": "string"
+                },
+                "swift_address":
+                {
+                    "type": "string"
+                },
+                "account_number":
+                {
+                    "type": "string"
+                },
+                "account_name":
+                {
+                    "type": "string"
+                },
+                "account_type":
+                {
+                    "type": "string"
+                },
+                "bank_address":
+                {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "required":
+    [
+        "invoice_total",
+        "line_items"
+    ]
+}

@@ -1,0 +1,52 @@
+FROM python:3.11-slim as production
+
+# Production Dockerfile with minimal file copying
+# Only includes essential files needed for production deployment
+# Excludes all development, testing, and analysis files
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install AWS CLI with architecture detection
+RUN ARCH=$(uname -m) \
+    && if [ "$ARCH" = "x86_64" ]; then \
+        AWS_CLI_ARCH="x86_64"; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        AWS_CLI_ARCH="aarch64"; \
+    else \
+        echo "Unsupported architecture: $ARCH" && exit 1; \
+    fi \
+    && echo "Installing AWS CLI for architecture: $AWS_CLI_ARCH" \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-${AWS_CLI_ARCH}.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf awscliv2.zip aws/ \
+    && aws --version
+
+# Set working directory
+WORKDIR /app
+
+# Copy project configuration and source code
+COPY pyproject.toml .
+COPY policy.json .
+COPY src/ ./src/
+
+# Install only production dependencies
+RUN pip install --no-cache-dir .
+
+# Create non-root user for security
+RUN useradd -m -u 1000 awsquery
+
+# Configure bash autocomplete for awsquery user
+RUN echo '# Enable awsquery autocomplete' >> /home/awsquery/.bashrc \
+    && echo 'eval "$(register-python-argcomplete awsquery)"' >> /home/awsquery/.bashrc \
+    && chown awsquery:awsquery /home/awsquery/.bashrc
+
+USER awsquery
+
+# Set default command to the CLI tool
+ENTRYPOINT ["awsquery"]
+CMD ["--help"]

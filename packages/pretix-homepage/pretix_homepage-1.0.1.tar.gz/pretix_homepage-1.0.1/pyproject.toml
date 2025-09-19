@@ -1,0 +1,42 @@
+[project]
+name = "pretix-homepage"
+dynamic = ["version"]
+description = "A home page for self hosted Pretix"
+readme = "README.rst"
+license = {text = "Apache"}
+keywords = ["pretix"]
+authors = [
+    {name = "Diptangshu Chakrabarty", email = "cdiptangshu@gmail.com"},
+]
+maintainers = [
+    {name = "Diptangshu Chakrabarty", email = "cdiptangshu@gmail.com"},
+]
+
+dependencies = [
+]
+
+[project.entry-points."pretix.plugin"]
+pretix_homepage = "pretix_homepage:PretixPluginMeta"
+
+[project.entry-points."distutils.commands"]
+build = "pretix_plugin_build.build:CustomBuild"
+
+[build-system]
+requires = [
+    "setuptools",
+    "pretix-plugin-build",
+]
+
+[project.urls]
+homepage = "https://github.com/cdiptangshu/pretix-homepage"
+repository = "https://github.com/cdiptangshu/pretix-homepage"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "pretix_homepage.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["pretix*"]
+namespaces = false

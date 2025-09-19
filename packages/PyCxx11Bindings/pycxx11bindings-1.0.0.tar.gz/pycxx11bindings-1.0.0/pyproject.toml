@@ -1,0 +1,64 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools >= 61", "setuptools_scm>=7"]
+
+[project]
+classifiers = [
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.13"
+]
+dependencies = []
+dynamic = ["version"]
+license = {text = "MIT"}
+name = "PyCxx11Bindings"
+readme = "README.md"
+requires-python = ">=3.8, <3.14"
+
+[project.optional-dependencies]
+develop = [
+  'PyCxx11Bindings[test]',
+  'commitizen',
+  'ipykernel',
+  'pre-commit',
+  'pylsp-rope',
+  'python-lsp-ruff',
+  'python-lsp-server[all]',
+  'ruff'
+]
+docs = [
+  'pdoc'
+]
+test = [
+  'pytest',
+  'pytest-xdist'
+]
+
+[project.urls]
+Changelog = "https://github.com/dicomstudio/PyCxx11Bindings/blob/dev/CHANGELOG.md"
+Documentation = "https://dicomstudio.github.io/PyCxx11Bindings"
+Issues = "https://github.com/dicomstudio/PyCxx11Bindings/issues"
+Repository = "https://github.com/dicomstudio/PyCxx11Bindings"
+
+[tool.commitizen]
+major_version_zero = true
+name = "cz_conventional_commits"
+tag_format = "v$version"
+update_changelog_on_bump = true
+version_provider = "scm"
+version_scheme = "pep440"
+
+[tool.ruff]
+indent-width = 4
+line-length = 88
+target-version = "py37"
+
+[tool.ruff.lint]
+select = ["I", "E", "F"]
+
+[tool.setuptools_scm]
+# https://stackoverflow.com/a/74404703
+# omits local version, useful because pypi does not support it
+local_scheme = "no-local-version"

@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(python -m pytest tests/test_monitors/ -v)",
+      "Bash(python:*)",
+      "Bash(poetry show:*)",
+      "Bash(poetry update:*)",
+      "Bash(poetry install:*)",
+      "Bash(git push:*)",
+      "Bash(docker build:*)",
+      "Bash(docker run:*)",
+      "WebFetch(domain:mlflow.org)",
+      "Bash(mkdir:*)",
+      "Bash(uv init:*)",
+      "Bash(touch:*)",
+      "Bash(uv sync:*)",
+      "Bash(source:*)",
+      "Bash(export MLFLOW_EXPERIMENT_ID=test)",
+      "Bash(export GOOGLE_CLOUD_PROJECT=test-project)",
+      "Bash(uv run:*)",
+      "Bash(git checkout:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(git reset:*)",
+      "Bash(grep:*)",
+      "Bash(timeout:*)",
+      "Bash(pip install:*)",
+      "Bash(pre-commit:*)",
+      "Bash(detect-secrets scan:*)",
+      "Bash(chmod:*)",
+      "Bash(make:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,39 @@
+<div class="glide" id="{{ carousel_id }}">
+  <div class="glide__track" data-glide-el="track">
+    <ul class="glide__slides">
+      {% for item in items %}
+        {% include slide_template with item=item only %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  {% if arrows or arrows_template %}
+    {% if arrows_template %}
+      {% include arrows_template %}
+    {% else %}
+      <div class="glide__arrows" data-glide-el="controls">
+	      <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><</button>
+	      <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {% if bullets or bullets_template %}
+    {% if bullets_template %}
+      {% include bullets_template %}
+    {% else %}
+      <div class="glide__bullets" data-glide-el="controls[nav]">
+        {% for item in items %}
+          <button class="glide__bullet" data-glide-dir="={{ forloop.counter0 }}"></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new Glide('#{{ carousel_id }}', {{ options|safe|default:"{}" }}).mount();
+  });
+</script>

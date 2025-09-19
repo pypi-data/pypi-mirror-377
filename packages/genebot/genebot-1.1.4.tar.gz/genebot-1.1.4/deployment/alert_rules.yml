@@ -1,0 +1,441 @@
+groups:
+  - name: trading_bot_system_alerts
+    rules:
+      # System resource alerts
+      - alert: HighCPUUsage
+        expr: trading_bot_system_cpu_usage_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Trading bot CPU usage is high"
+          description: "CPU usage has been above 80% for more than 5 minutes. Current value: {{ $value }}%"
+
+      - alert: CriticalCPUUsage
+        expr: trading_bot_system_cpu_usage_percent > 95
+        for: 2m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Trading bot CPU usage is critically high"
+          description: "CPU usage has been above 95% for more than 2 minutes. Current value: {{ $value }}%"
+
+      - alert: HighMemoryUsage
+        expr: trading_bot_system_memory_usage_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Trading bot memory usage is high"
+          description: "Memory usage has been above 85% for more than 5 minutes. Current value: {{ $value }}%"
+
+      - alert: CriticalMemoryUsage
+        expr: trading_bot_system_memory_usage_percent > 95
+        for: 2m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Trading bot memory usage is critically high"
+          description: "Memory usage has been above 95% for more than 2 minutes. Current value: {{ $value }}%"
+
+      - alert: HighDiskUsage
+        expr: trading_bot_system_disk_usage_percent > 90
+        for: 10m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Trading bot disk usage is high"
+          description: "Disk usage has been above 90% for more than 10 minutes. Current value: {{ $value }}%"
+
+      - alert: CriticalDiskUsage
+        expr: trading_bot_system_disk_usage_percent > 98
+        for: 5m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Trading bot disk usage is critically high"
+          description: "Disk usage has been above 98% for more than 5 minutes. Current value: {{ $value }}%"
+
+  - name: trading_bot_error_alerts
+    rules:
+      # Error rate alerts
+      - alert: HighErrorRate
+        expr: trading_bot_error_rate_per_minute > 5
+        for: 3m
+        labels:
+          severity: warning
+          component: errors
+        annotations:
+          summary: "Trading bot error rate is high"
+          description: "Error rate has been above 5 errors per minute for more than 3 minutes. Current rate: {{ $value }} errors/min"
+
+      - alert: CriticalErrorRate
+        expr: trading_bot_error_rate_per_minute > 20
+        for: 1m
+        labels:
+          severity: critical
+          component: errors
+        annotations:
+          summary: "Trading bot error rate is critically high"
+          description: "Error rate has been above 20 errors per minute for more than 1 minute. Current rate: {{ $value }} errors/min"
+
+      # Operation-specific error alerts
+      - alert: ExchangeConnectionErrors
+        expr: increase(trading_bot_operation_errors_total{component="exchange"}[5m]) > 10
+        labels:
+          severity: warning
+          component: exchange
+        annotations:
+          summary: "High number of exchange connection errors"
+          description: "More than 10 exchange connection errors in the last 5 minutes for {{ $labels.operation }}"
+
+      - alert: StrategyExecutionErrors
+        expr: increase(trading_bot_operation_errors_total{component="strategy"}[5m]) > 5
+        labels:
+          severity: warning
+          component: strategy
+        annotations:
+          summary: "High number of strategy execution errors"
+          description: "More than 5 strategy execution errors in the last 5 minutes for {{ $labels.operation }}"
+
+      - alert: OrderExecutionErrors
+        expr: increase(trading_bot_operation_errors_total{component="order_manager"}[5m]) > 3
+        labels:
+          severity: critical
+          component: trading
+        annotations:
+          summary: "High number of order execution errors"
+          description: "More than 3 order execution errors in the last 5 minutes for {{ $labels.operation }}"
+
+  - name: trading_bot_trading_alerts
+    rules:
+      # Trading performance alerts
+      - alert: NoTradesExecuted
+        expr: increase(trading_bot_trades_total[1h]) == 0
+        for: 2h
+        labels:
+          severity: warning
+          component: trading
+        annotations:
+          summary: "No trades executed recently"
+          description: "No trades have been executed in the last 2 hours. This may indicate a problem with strategy execution or market conditions."
+
+      - alert: ExcessiveTrading
+        expr: rate(trading_bot_trades_total[5m]) > 2
+        for: 10m
+        labels:
+          severity: warning
+          component: trading
+        annotations:
+          summary: "Excessive trading activity detected"
+          description: "Trading rate has been above 2 trades per minute for more than 10 minutes. Current rate: {{ $value }} trades/min"
+
+      - alert: LargeLosses
+        expr: rate(trading_bot_trade_pnl_total[1h]) < -1000
+        for: 15m
+        labels:
+          severity: critical
+          component: trading
+        annotations:
+          summary: "Large losses detected"
+          description: "Trading losses have exceeded $1000 per hour for more than 15 minutes. Current hourly loss rate: ${{ $value }}"
+
+      - alert: HighOrderFailureRate
+        expr: (rate(trading_bot_orders_total{status="failed"}[10m]) / rate(trading_bot_orders_total[10m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          component: trading
+        annotations:
+          summary: "High order failure rate"
+          description: "Order failure rate has been above 10% for more than 5 minutes. Current failure rate: {{ $value | humanizePercentage }}"
+
+      - alert: CriticalOrderFailureRate
+        expr: (rate(trading_bot_orders_total{status="failed"}[5m]) / rate(trading_bot_orders_total[5m])) > 0.3
+        for: 2m
+        labels:
+          severity: critical
+          component: trading
+        annotations:
+          summary: "Critical order failure rate"
+          description: "Order failure rate has been above 30% for more than 2 minutes. Current failure rate: {{ $value | humanizePercentage }}"
+
+  - name: trading_bot_exchange_alerts
+    rules:
+      # Exchange connectivity alerts
+      - alert: ExchangeDisconnected
+        expr: trading_bot_exchange_connections{status="connected"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: exchange
+        annotations:
+          summary: "Exchange disconnected"
+          description: "Exchange {{ $labels.exchange }} has been disconnected for more than 1 minute"
+
+      - alert: ExchangeConnectionUnstable
+        expr: changes(trading_bot_exchange_connections{status="connected"}[10m]) > 3
+        labels:
+          severity: warning
+          component: exchange
+        annotations:
+          summary: "Unstable exchange connection"
+          description: "Exchange {{ $labels.exchange }} connection has been unstable with {{ $value }} connection changes in the last 10 minutes"
+
+  - name: trading_bot_strategy_alerts
+    rules:
+      # Strategy performance alerts
+      - alert: StrategyUnderperforming
+        expr: trading_bot_strategy_performance{metric="return"} < -0.05
+        for: 1h
+        labels:
+          severity: warning
+          component: strategy
+        annotations:
+          summary: "Strategy underperforming"
+          description: "Strategy {{ $labels.strategy }} has a return below -5% for more than 1 hour. Current return: {{ $value | humanizePercentage }}"
+
+      - alert: StrategyNoSignals
+        expr: increase(trading_bot_strategy_signals_total[2h]) == 0
+        for: 4h
+        labels:
+          severity: warning
+          component: strategy
+        annotations:
+          summary: "Strategy not generating signals"
+          description: "Strategy {{ $labels.strategy }} has not generated any signals in the last 4 hours"
+
+      - alert: StrategyExcessiveSignals
+        expr: rate(trading_bot_strategy_signals_total[5m]) > 5
+        for: 10m
+        labels:
+          severity: warning
+          component: strategy
+        annotations:
+          summary: "Strategy generating excessive signals"
+          description: "Strategy {{ $labels.strategy }} is generating more than 5 signals per minute for {{ $labels.symbol }}"
+
+  - name: trading_bot_portfolio_alerts
+    rules:
+      # Portfolio alerts
+      - alert: LowPortfolioValue
+        expr: trading_bot_portfolio_value < 1000
+        for: 5m
+        labels:
+          severity: warning
+          component: portfolio
+        annotations:
+          summary: "Low portfolio value"
+          description: "Portfolio value on {{ $labels.exchange }} has dropped below $1000. Current value: ${{ $value }}"
+
+      - alert: CriticalPortfolioValue
+        expr: trading_bot_portfolio_value < 500
+        for: 1m
+        labels:
+          severity: critical
+          component: portfolio
+        annotations:
+          summary: "Critical portfolio value"
+          description: "Portfolio value on {{ $labels.exchange }} has dropped below $500. Current value: ${{ $value }}"
+
+      - alert: ExcessivePositions
+        expr: sum(trading_bot_active_positions) by (exchange) > 50
+        for: 10m
+        labels:
+          severity: warning
+          component: portfolio
+        annotations:
+          summary: "Excessive number of active positions"
+          description: "Number of active positions on {{ $labels.exchange }} has been above 50 for more than 10 minutes. Current count: {{ $value }}"
+
+      - alert: StuckPendingOrders
+        expr: trading_bot_pending_orders > 20
+        for: 30m
+        labels:
+          severity: warning
+          component: trading
+        annotations:
+          summary: "High number of pending orders"
+          description: "Number of pending orders for {{ $labels.symbol }} on {{ $labels.exchange }} has been above 20 for more than 30 minutes. Current count: {{ $value }}"
+
+  - name: trading_bot_operational_alerts
+    rules:
+      # Operational alerts
+      - alert: TradingBotDown
+        expr: up{job="trading-bot"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Trading bot is down"
+          description: "Trading bot has been down for more than 1 minute"
+
+      - alert: SlowOperations
+        expr: histogram_quantile(0.95, rate(trading_bot_operation_duration_seconds_bucket[5m])) > 10
+        for: 5m
+        labels:
+          severity: warning
+          component: performance
+        annotations:
+          summary: "Slow operations detected"
+          description: "95th percentile of {{ $labels.component }}.{{ $labels.operation }} duration has been above 10 seconds for more than 5 minutes"
+
+      - alert: CriticalSlowOperations
+        expr: histogram_quantile(0.95, rate(trading_bot_operation_duration_seconds_bucket[5m])) > 30
+        for: 2m
+        labels:
+          severity: critical
+          component: performance
+        annotations:
+          summary: "Critically slow operations detected"
+          description: "95th percentile of {{ $labels.component }}.{{ $labels.operation }} duration has been above 30 seconds for more than 2 minutes"  - name:
+ multi_market_alerts
+    rules:
+      # Market-specific high error rate
+      - alert: MarketHighErrorRate
+        expr: trading_bot_market_error_rate > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          component: multi_market
+        annotations:
+          summary: "High error rate in {{ $labels.market_type }} market"
+          description: "{{ $labels.market_type }} market error rate is {{ $value | humanizePercentage }}"
+      
+      # Market high latency
+      - alert: MarketHighLatency
+        expr: trading_bot_market_latency_ms > 1000
+        for: 3m
+        labels:
+          severity: warning
+          component: multi_market
+        annotations:
+          summary: "High latency in {{ $labels.market_type }} market"
+          description: "{{ $labels.market_type }} market latency is {{ $value }}ms"
+      
+      # High correlation alert
+      - alert: HighCrossMarketCorrelation
+        expr: abs(trading_bot_correlation_coefficient) > 0.8
+        for: 10m
+        labels:
+          severity: warning
+          component: correlation
+        annotations:
+          summary: "High correlation detected between markets"
+          description: "Correlation between {{ $labels.symbol1 }} ({{ $labels.market1 }}) and {{ $labels.symbol2 }} ({{ $labels.market2 }}) is {{ $value }}"
+      
+      # Compliance violations
+      - alert: ComplianceViolation
+        expr: increase(trading_bot_compliance_violations_total[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          component: compliance
+        annotations:
+          summary: "Compliance violation detected"
+          description: "{{ $labels.severity }} compliance violation in {{ $labels.market_type }} market: {{ $labels.rule_id }}"
+      
+      # Market session unexpected closure
+      - alert: UnexpectedMarketClosure
+        expr: trading_bot_session_status == 0 and hour() >= 8 and hour() <= 17 and on() day_of_week() >= 1 and on() day_of_week() <= 5
+        for: 5m
+        labels:
+          severity: warning
+          component: sessions
+        annotations:
+          summary: "Unexpected market closure"
+          description: "{{ $labels.session_name }} session in {{ $labels.market_type }} market is closed during expected trading hours"
+      
+      # High multi-market alert rate
+      - alert: HighMultiMarketAlertRate
+        expr: rate(trading_bot_multi_market_alerts_total[5m]) * 60 > 10
+        for: 5m
+        labels:
+          severity: warning
+          component: multi_market
+        annotations:
+          summary: "High multi-market alert rate"
+          description: "Multi-market alerts are being generated at {{ $value }} per minute"
+      
+      # Volume anomaly
+      - alert: VolumeAnomaly
+        expr: trading_bot_market_volume_24h > 2 * avg_over_time(trading_bot_market_volume_24h[7d])
+        for: 15m
+        labels:
+          severity: info
+          component: volume
+        annotations:
+          summary: "Volume anomaly detected"
+          description: "{{ $labels.market_type }} market 24h volume ({{ $value }}) is significantly higher than 7-day average"
+      
+      # Arbitrage opportunity spike
+      - alert: ArbitrageOpportunitySpike
+        expr: trading_bot_arbitrage_opportunities > 5
+        for: 2m
+        labels:
+          severity: info
+          component: arbitrage
+        annotations:
+          summary: "Multiple arbitrage opportunities detected"
+          description: "{{ $value }} arbitrage opportunities detected between {{ $labels.market1 }} and {{ $labels.market2 }} for {{ $labels.symbol }}"
+      
+      # Cross-market correlation breakdown
+      - alert: CorrelationBreakdown
+        expr: abs(trading_bot_correlation_coefficient - avg_over_time(trading_bot_correlation_coefficient[24h])) > 0.3
+        for: 30m
+        labels:
+          severity: warning
+          component: correlation
+        annotations:
+          summary: "Correlation breakdown detected"
+          description: "Correlation between {{ $labels.symbol1 }} and {{ $labels.symbol2 }} has changed significantly from recent average"
+      
+      # Market connectivity issues
+      - alert: MarketConnectivityIssues
+        expr: trading_bot_market_active_symbols == 0 and trading_bot_session_status == 1
+        for: 2m
+        labels:
+          severity: critical
+          component: connectivity
+        annotations:
+          summary: "Market connectivity issues"
+          description: "No active symbols in {{ $labels.market_type }} market despite session being open"
+      
+      # Session transition alerts
+      - alert: ForexSessionOpening
+        expr: changes(trading_bot_session_status{market_type="forex"}[5m]) > 0 and trading_bot_session_status == 1
+        for: 0m
+        labels:
+          severity: info
+          component: sessions
+        annotations:
+          summary: "Forex session opening"
+          description: "{{ $labels.session_name }} forex session is now open"
+      
+      - alert: ForexSessionClosing
+        expr: changes(trading_bot_session_status{market_type="forex"}[5m]) > 0 and trading_bot_session_status == 0
+        for: 0m
+        labels:
+          severity: info
+          component: sessions
+        annotations:
+          summary: "Forex session closing"
+          description: "{{ $labels.session_name }} forex session is now closed"
+      
+      # Cross-market risk concentration
+      - alert: HighCrossMarketRiskConcentration
+        expr: sum(trading_bot_correlation_coefficient > 0.7) by (market1, market2) > 10
+        for: 15m
+        labels:
+          severity: warning
+          component: risk
+        annotations:
+          summary: "High cross-market risk concentration"
+          description: "{{ $value }} highly correlated pairs detected between {{ $labels.market1 }} and {{ $labels.market2 }} markets"

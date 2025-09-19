@@ -1,0 +1,106 @@
+<div align="center">
+
+SyNAP-Python-API
+===========================
+<h3> NPU accelerated inference with Python</h3>
+
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](https://developer.synaptics.com/)
+[![python](https://img.shields.io/badge/python-3.10-brightgreen)](https://www.python.org/downloads/release/python-3123/)
+[![version](https://img.shields.io/badge/release-0.9.0-yellow)](https://github.com/synaptics-synap/synap-python/releases)
+[![license](https://img.shields.io/badge/license-Apache%202-blue)](./LICENSE)
+
+[Hardware](https://www.synaptics.com/products/embedded-processors/astra-machina-foundation-series)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[Models](https://developer.synaptics.com/models?operator=AND)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[Documentation](https://developer.synaptics.com/)
+</div>
+<hr>
+
+## Overview
+
+
+The **SyNAP Python API** provides Python bindings that closely mirror our SyNAP C++ API, enabling seamless integration for inference in Python. The Python bindings offer a straightforward yet flexible approach to deep learning workflows, allowing users to incorporate custom pre-processing and post-processing functionalities.
+
+> [!NOTE]
+> SyNAP Python API serves as the primary interface for low-level access to [SyNAP C++ Framework](https://github.com/synaptics-astra/synap-framework), enabling seamless integration for inference in Python. 
+
+> [!TIP]
+> For a rapid AI development experience, we recommend using [SynapRT](https://github.com/synaptics-synap/synap-rt), which provides ready-to-use AI pipelines.
+
+
+### Available Modules and Classes
+
+The SyNAP Python API provides access to the following classes and functions: 
+#### **Core Module (`synap`)**
+- `Network`
+- `Tensors`
+- `Tensor`
+
+#### **Preprocessing Module (`synap.preprocess`)**
+- `Preprocessor`
+- `InputData`
+
+#### **Postprocessing Module (`synap.postprocess`)**
+- `Detector`
+- `Classifier`
+- (Additional auxiliary helper classes)
+
+#### **Data Type Definitions (`synap.types`)**
+- `DataType`
+- `Dim2d`
+- `Landmark`
+- `Layout`
+- `Mask`
+- `Rect`
+- `Shape`
+
+## Building the Python Wheel
+
+Follow the steps below to set up your development environment and build the Python wheel. You can build this on a Linux machine, WSL2, or locally on the Astra board.
+
+### **Prerequisites**
+
+Ensure you have necessary build dependencies installed:
+
+#### **Linux/WSL2**
+
+```sh
+sudo apt update
+sudo apt install python3.10 python3.10-venv python3.10-dev
+sudo apt install -y build-essential cmake ninja-build
+```
+
+#### **Astra**
+
+The [`python3-dev` debian package](https://synaptics-synap.github.io/examples-prebuilts/packages/python3-dev_3.10.13-r0_arm64.deb) for Astra is required. Install with:
+```sh
+wget https://synaptics-synap.github.io/examples-prebuilts/packages/python3-dev_3.10.13-r0_arm64.deb
+dpkg -i python3-dev_3.10.13-r0_arm64.deb
+```
+
+### **Setup Virtual Environment**
+
+Create and activate a virtual environment to manage dependencies:
+
+```sh
+python3.10 -m venv venv
+source venv/bin/activate
+```
+
+### **Build Package**:
+To build the Python wheel, just run:
+```sh
+./build.sh 
+```
+Use `--verbose` for detailed build steps and `--clean` for a clean build.
+
+The build process generates a wheel file stored in the dist folder. The output should resemble the following:
+
+```sh
+Successfully built synap_python-0.9.0-cp310-cp310-manylinux_2_35_aarch64.whl
+Building Python extensions ... Success!
+Build completed successfully, wheel located at /home/../synap-python/dist/
+```
+
+ 
+ 
+
+ 
+

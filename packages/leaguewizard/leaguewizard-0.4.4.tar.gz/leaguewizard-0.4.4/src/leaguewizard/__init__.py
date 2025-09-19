@@ -1,0 +1,37 @@
+"""LeagueWizard main entry point."""
+
+import asyncio
+import os
+import socket
+from pathlib import Path
+
+from loguru import logger
+
+from .core import start
+from .exceptions import LeWizardGenericError
+
+base_dir = os.getenv("LOCALAPPDATA", "tempfile.gettempdir()")
+lewizard_dir = Path(base_dir, "LeagueWizard")
+log_dir = Path(lewizard_dir, "logs")
+log_dir.mkdir(parents=True, exist_ok=True)
+
+
+def main() -> None:
+    """LeagueWizard main entry point function."""
+    logger.add(f"{log_dir}/log.txt", rotation="1MB")
+    s = socket.socket()
+    try:
+        s.bind(("127.0.0.1", 54321))
+    except OSError as e:
+        raise LeWizardGenericError(
+            message="Another instance is already running",
+            show=True,
+            title="Error!",
+            exit=True,
+        ) from e
+
+    asyncio.run(start())
+
+
+if __name__ == "__main__":
+    main()

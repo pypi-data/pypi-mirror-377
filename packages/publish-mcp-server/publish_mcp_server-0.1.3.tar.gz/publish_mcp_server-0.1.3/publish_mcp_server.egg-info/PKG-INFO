@@ -1,0 +1,59 @@
+Metadata-Version: 2.4
+Name: publish-mcp-server
+Version: 0.1.3
+Summary: An MCP server that helps users publish their MCP servers to the registry
+Author-email: Marlene Mhangami <marlenemhangami@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/marlenezw/publish-mcp-server
+Project-URL: Bug Tracker, https://github.com/marlenezw/publish-mcp-server/issues
+Project-URL: Repository, https://github.com/marlenezw/publish-mcp-server
+Keywords: mcp,model-context-protocol,server,publishing
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastmcp>=0.1.0
+Dynamic: license-file
+
+# Publish MCP Server to the MCP Registry
+
+A Python package to help you publish an MCP server to the MCP Registry!
+
+This is an MCP server that contains a prompt the user can use to be able to have their client decide the best way to publish their MCP server. The prompt directs the client to read and decide on the best action to take based on the instructions in the [MCP documentation](https://raw.githubusercontent.com/modelcontextprotocol/registry/refs/heads/main/docs/guides/publishing/publish-server.md). Once published anyone can access and use your MCP server from the registry!
+
+<!-- mcp-name: io.github.marlenezw/publish-mcp-server -->
+
+## Features
+
+- Provides an MCP prompt for your client with guidance on MCP server publishing
+- When the server is run the prompt will instruct the client on what to do to publish your server
+- Supports automated CI/CD workflows with GitHub Actions
+- Recommends best practices for publishing to the MCP registry
+
+## Installation
+
+Install package like any other Python package:
+```bash
+pip install publish-mcp-server
+```
+
+## Usage
+
+Once installed update your `mcp.json` file with the following:
+```json
+{
+  "inputs": [],
+  "servers": {
+    "publish-mcp-server": {
+      "command": "publish-mcp-server"
+    }
+  }
+}
+```

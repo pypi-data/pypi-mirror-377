@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "survey_stats"
+version = "1.1.24"
+authors = [
+  { name="Mohammad Ali Barati", email="mabaraty@gmail.com" },
+]
+description = "survey_stats a simple and powerfull package for data processing and statistics"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "statsmodels",
+    "scikit-learn",
+    "openpyxl",
+    "xlrd",
+    "pyodbc",
+    "msaccessdb",
+    "jdatetime",
+    "requests",
+]
+
+[project.urls]
+Homepage = "https://github.com/mohammad-ali-barati"
+Issues = "https://github.com/pypa/sampleproject//survey_stats"

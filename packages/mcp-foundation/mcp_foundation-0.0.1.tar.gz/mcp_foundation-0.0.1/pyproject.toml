@@ -1,0 +1,118 @@
+[project]
+name = "mcp-foundation"
+version = "0.0.1"
+description = "Foundation library for building Model Context Protocol (MCP) servers with enterprise features including security, monitoring, caching, and extensible architecture"
+authors = [
+    {name = "MCP Foundation Team", email = "team@yourcompany.com"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+keywords = ["mcp", "model-context-protocol", "ai", "framework", "library"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "pydantic>=2.4.2,<3.0.0",
+    "pydantic-settings>=2.0.3,<3.0.0",
+    "requests>=2.31.0,<3.0.0",
+    "aiohttp>=3.8.6,<4.0.0",
+    "croniter>=1.4.1,<2.0.0",
+    "redis>=5.0.1,<6.0.0",
+    "paramiko>=3.3.1,<4.0.0",
+    "PyYAML>=6.0,<7.0.0",
+    "kafka-python>=2.0.2,<3.0.0",
+    "fastmcp>=2.11.1",
+    "jsonschema>=4.17.0,<5.0.0",
+    "cryptography>=3.4.8,<5.0.0",
+    "prometheus-client>=0.16.0,<1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+
+[project.scripts]
+# Sample MCP server entry point (for demonstration)
+sample-mcp = "examples.sample_mcp.main:main"
+
+[project.urls]
+Homepage = "https://git.zias.io/tools/mcp-foundation"
+Repository = "https://git.zias.io/tools/mcp-foundation.git"
+Documentation = "https://git.zias.io/tools/mcp-foundation/wiki"
+"Bug Tracker" = "https://git.zias.io/tools/mcp-foundation/issues"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mcp_foundation*"]
+
+[tool.setuptools.package-data]
+"mcp_foundation" = ["*.json", "*.yml", "*.yaml", "*.md"]
+
+# Development tools configuration
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]

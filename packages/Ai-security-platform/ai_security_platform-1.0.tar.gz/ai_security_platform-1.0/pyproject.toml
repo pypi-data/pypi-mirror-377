@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Ai_security_platform"                 # must be unique on PyPI
+version = "1.0"
+description = "RAG"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "user", email = "user@gmail.com" }]
+license = { text = "MIT" }
+dependencies = []                   # add any external libs if needed
+
+[project.urls]
+Homepage = "https://github.com"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["Ai_security_platform"]

@@ -1,0 +1,32 @@
+# rusampling
+
+rusampling.com
+
+A Python package for Ratio-of-Uniforms sampling in multiple dimensions.
+
+Ratio-of-Uniforms is a method of sampling random variables that uses the pdf, which does not need to be normalised, and requires minimal setup.
+
+Install from the terminal with pip install RUSampling.
+
+Development of this package was funded by the Lighthill Risk Network: https://lighthillrisknetwork.org.
+
+Many thanks to Paul Northrop, the author of RUST, the package for Ratio-of-Uniforms sampling in R, and who helped me with the development of this project.
+
+
+### Usage
+- Create an instance of the Ru class, passing the log-pdf logf, the dimension d (default 1), and any extra arguments that the log-pdf takes.
+- Call this object's rvs method, passing the number of samples n to generate. This returns a (n, d)- dimensional numpy array of samples.
+
+
+### Example: Sampling the log-normal distribution
+```
+import numpy as np
+import scipy
+from ru import Ru
+
+logf = scipy.stats.lognorm.logpdf
+
+t = Ru(logf, s=1)
+samples = t.rvs(n=100000)
+t.plot()
+```

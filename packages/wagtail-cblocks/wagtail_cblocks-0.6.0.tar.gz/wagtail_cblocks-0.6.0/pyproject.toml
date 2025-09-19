@@ -1,0 +1,137 @@
+[project]
+name = "wagtail_cblocks"
+dynamic = ["version"]
+description = "Collection of StreamField blocks for Wagtail"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Cliss XXI", email = "contact@cliss21.com" },
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Web Environment",
+  "Framework :: Django",
+  "Framework :: Wagtail",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+keywords = [
+  "wagtail",
+  "blocks",
+  "streamfield",
+]
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+
+dependencies = [
+  "django >=4.2",
+  "wagtail >=6.3",
+]
+
+[project.optional-dependencies]
+factories = [
+  "wagtail-factories>=4.0.0",
+]
+
+[project.urls]
+Repository = "https://framagit.org/cliss21/wagtail-cblocks"
+Issues = "https://framagit.org/cliss21/wagtail-cblocks/-/issues"
+
+[dependency-groups]
+testing = [
+  "pytest ~=8.4.1",
+  "pytest-cov ~=6.2.1",
+  "pytest-django ~=4.11.1",
+]
+dev = [
+  "tox >=4.25",
+  "ruff ~=0.12.11",
+  { include-group = "testing" },
+]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["wagtail_cblocks"]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["wagtail_cblocks"]
+
+[tool.ruff]
+extend-exclude = [
+  "LC_MESSAGES",
+  "locale",
+  "tests/migrations/*.py",
+]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+  "B",      # flake8-bugbear
+  "BLE",    # flake8-blind-except
+  "C4",     # flake8-comprehensions
+  "DJ",     # flake8-django
+  "E",      # pycodestyle
+  "F",      # pyflakes
+  "I",      # isort
+  "RUF100", # unused noqa
+  "S",      # flake8-bandit
+  "T20",    # flake8-print
+  "UP",     # pyupgrade
+  "W",      # warning
+]
+fixable = ["C4", "E", "F", "I", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["wagtail_cblocks"]
+section-order = [
+  "future",
+  "standard-library",
+  "django",
+  "wagtail",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+
+[tool.ruff.lint.isort.sections]
+django = ["django"]
+wagtail = ["wagtail"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "ARG",     # unused function args (pytest fixtures)
+  "FBT",     # booleans as positional arguments (@pytest.mark.parametrize)
+  "PLR2004", # magic value used in comparison
+  "S101",    # asserts allowed in tests
+  "S311",    # standard pseudo-random generators are not suitable for cryptographic purposes
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+markers = ["wip: mark a test as a work in progress"]
+testpaths = ["tests"]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+
+[tool.coverage.run]
+branch = true
+source = ["wagtail_cblocks"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "# pragma: no cover",
+  "raise NotImplementedError",
+]
+show_missing = true

@@ -1,0 +1,199 @@
+{{Infobox_group
+| name = Fedora Test Days
+| image = [[File:Echo-testing-48px.png|link=QA/Fedora_20_test_days]]
+| caption = [[Printing|Printing]]
+| date = 2013-11-05
+| time = all day
+| website = [[QA/Fedora_20_test_days]]
+| irc = [irc://irc.freenode.net/#fedora-test-day #fedora-test-day] ([http://webchat.freenode.net/?channels=fedora-test-day webirc])
+| fedora_mailing_list = test
+}}
+
+{{admon/note | Can't make the date? | If you come to this page before or after the test day is completed, your testing is still valuable, and you can use the information on this page to test, file any bugs you find at [http://bugzilla.redhat.com Bugzilla], and add your results to the results section. If this page is more than a month old when you arrive here, please check the [[QA/Test_Days|current schedule]] and see if a similar but more recent Test Day is planned or has already happened.}}
+
+== What to test? ==
+
+Today's instalment of Fedora Test Day will focus on '''Printing'''.
+
+This test day is for testing all aspects of printing, including setting up the printer, sharing printers on the network, and printing jobs.
+
+The changes in Fedora 20 are relatively minor: switching to CUPS 1.7 and Ghostscript 9.10, and some improvements to cups-filters and the "Printers" part of GNOME Settings.
+
+Note that since Fedora 19, printer sharing and discovery uses mDNS/DNS-SD rather than the CUPS Browsing method that's been the default in older releases.  The '''cups-browsed''' service provides backwards compatibility for CUPS Browsing/BrowsePoll.  One of the changes in Fedora 20 is for cups-browsed to use a more efficient method for BrowsePoll (asking for new/removed printers rather than fetching the entire list each time).
+
+Remember that CUPS unit testing is only one small part of the story: printing is very much in need of '''integration''' testing. Try printing with different applications, using options you don't normally use in the print dialog. Try to see how many different ways you can break it!
+
+If you see a problem and are not sure which component is to blame, [[Printing/Debugging|the Debugging Printing page]] can help you to diagnose it.
+
+== Who's available ==
+
+The following cast of characters will be available testing, workarounds, bug fixes, and general discussion ...
+* Development - [[User:Twaugh|Tim Waugh]] (twaugh), [[User:Mkasik|Marek Kasik]] (mkasik), [[User:Jpopelka|Jiri Popelka]] (jpopelka)
+* Quality Assurance - [[User:Psklenar|Petr Sklenar]] (psklenar)
+
+== Prerequisite for Test Day == 
+
+All you need is:
+
+* An updated [http://fedoraproject.org/get-prerelease Fedora 20 pre-release]
+* Access to a printer
+
+== How to test? ==
+
+First, make sure you have applied updates from the updates-testing repository.
+
+* Configuring a printer not yet known to the system
+* Printing a test page
+* Printing something more complicated, e.g. LibreOffice document, PDF, email
+* Taking advantage of extra print features of your printer e.g. duplexing, stapling
+
+== Test Cases ==
+
+Use the [http://testdays.qa.fedoraproject.org/testdays/show_event?event_id=13 TestDayApp] to view test case instructions and submit test results. When it asks you about your "Hardware", enter your printer make and model name.
+
+{{admon/tip|Checking the Device ID is correctly listed|The hpijs, gutenprint-cups, foomatic-db-ppds and foomatic packages all contain tags that associate them with the Device IDs for the printers they support. If you are not given the opportunity to install one of these packages when your printer is supported by them, it may be that they do not list its Device ID correctly.  You can check this by running <code>/usr/share/system-config-printer/check-device-ids.py</code> as root.}}
+
+== Test Results ==
+
+If you have problems with any of the tests, report a bug to [https://bugzilla.redhat.com Bugzilla].  Choose the correct component:
+
+* [https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&version=19&component=gnome-settings-daemon gnome-settings-daemon] for problems relating to job reporting and printer status feedback in GNOME Shell
+* [https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&version=19&component=control-center control-center] for problems specific to printer administration in GNOME Shell e.g. the new system settings module
+* [https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&version=19&component=cups cups] for printing problems that persist even when using command line utilities such as '''lp'''
+* [https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&version=19&component=gtk2 gtk2] for printing problems common to all GTK+ applications using the GTK+ print dialog
+* [https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&version=19&component=system-config-printer system-config-printer] for bugs in the printing configuration program used in GNOME fallback mode and in other graphical environments
+* [https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&version=19&component=selinux-policy selinux-policy] if there is some selinux issues
+
+If you see something unexpected, even if you are not entirely sure whether it's a bug, please take the time to report it as one.  Without doing that, it may be difficult to follow up and fix.
+
+=== Basic Tests ===
+
+{| class="wikitable" width=100%
+! User
+! Hardware
+! [[QA:Testcase_Printing_New_Printer|Connect a local printer]]
+! [[QA:Testcase_Printing_Known_Printer|Reconnect a local printer]]
+! [[QA:Testcase_Printing_Network_Printer|Print to network printer]]
+! [[QA:Testcase_Printing_Complex|Print dialog options]]
+! [[QA:Testcase_Printing_Troubleshooting|Status feedback]]
+! [[QA:Testcase_selinux-AVCs|SELinux AVCs]]
+! [[QA:Testcase_KDE4_Printer|KDE printer setup]]
+! References
+|-
+| [[User:lnie|lnie]]
+| Lenovo Thinkstation S20
+| 
+| 
+| {{result|pass}}  
+| {{result|pass}}  
+| 
+| 
+| 
+| <references/>
+|-
+| [[User:twaugh|twaugh]]
+| HP DeskJet 990Cxi
+| {{result|pass}}  <ref>Configured as A4 automatically (correct). Uses hpcups... right/bottom margins look a little wide though.</ref>
+| {{result|pass}}  
+| 
+| {{result|pass}}  <ref group="long">Tested 2 collated copies of 3-page document, duplexed, with libreoffice, evince, and firefox. Also same test of 1-page document with evolution.</ref>
+| 
+| 
+| 
+| <references/>
+|-
+| [[User:twaugh|twaugh]]
+| HP Photosmart 5510 (hp backend)
+| 
+| 
+| 
+| {{result|pass}}  <ref>Out of paper notification works correctly when hp backend is used (not dnssd).</ref>
+| 
+| 
+| 
+| <references/>
+|-
+| [[User:twaugh|twaugh]]
+| HP Photosmart 5510
+| 
+| 
+| {{result|fail||1026940}}<ref>Hard to set up printer because the dnssd backend is unreliable.</ref>
+| 
+| {{result|fail||1026949}}
+| 
+| 
+| <references/>
+|-
+| [[User:twaugh|twaugh]]
+| HP PSC 2210
+| {{result|pass}}  
+| {{result|pass}}  
+| 
+| 
+| {{result|fail||1026928}}{{result|fail||1026909|1026914}}<ref>No status feedback. In addition, print was corrupted after paper replaced.</ref>
+| 
+| 
+| <references/>
+|-
+| [[User:Roshi|Roshi]]
+| HP Deskjet 1000 j110 on i386 RC3 installation Xfce
+| {{result|pass}}  
+| {{result|pass}}  
+| 
+| {{result|pass}}  <ref>All options not available on my printer were blurred out.</ref>
+| {{result|pass}}  
+| 
+| 
+| <references/>
+|-
+| [[User:Roshi|Roshi]]
+| HP Deskjet 1000 j110 on x86_64 RC2 Live KDE
+| {{result|warn||1027425}}{{result|fail}}  <ref>KDE from the live image recognizes the printer and configures it. When you attempt to print - you get a 'filter failed' error. </ref>
+| 
+| 
+| 
+| 
+| 
+| {{result|fail}}  <ref>Printer get recognized and configured correctly by KDE - printing fails with 'filter error.'</ref>
+| <references/>
+|-
+| [[User:satellit|satellit]]
+| system76 laptop i7
+| {{result|pass}}  <ref>wireless connectio to HP 6100 turned off/on prints successfully</ref>
+| 
+| 
+| {{result|warn}}  <ref>printed from pdf file 15 pages and then cancelled running job sucessfully</ref>
+| 
+| 
+| 
+| <references/>
+|-
+| [[User:Astrik|Astrik]]
+| HP C4180 All in One
+| {{result|pass}}  <ref>Printer recognized and pop up stated it was configuring printer.</ref>
+| {{result|pass}}  
+| 
+| {{result|pass}}  <ref>Different options selected all seemed to work as expected.</ref>
+| {{result|pass}}  
+| {{result|pass}}  
+| 
+| <references/>
+|-
+| [[User:luya|luya]]
+| HP Photosmart eStation C510
+| {{result|pass}}  
+| {{result|pass}}  
+| {{result|pass}}  
+| {{result|pass}}  
+| 
+| {{result|pass}}  
+| 
+| <references/>
+|-
+|}
+
+== Long comments ==
+<references group="long" />
+
+ [[Category:Fedora 20 Test Days]]
+

@@ -1,0 +1,833 @@
+{{Release_validation_instructions|testtype=Installation|release=32|milestone=Branched|compose=|date=20200322.n.0}}
+
+{{anchor|results}}
+== '''Test Matrix''' ==
+
+<onlyinclude>
+Please click ''[show]'' in each table to view the tests of each media installation, and click ''[edit]'' to post your test results using the syntax in [[#Key|Key Section]]. 
+
+<div style="background-color: darkgreen; text-align: center; border-style: solid; border-width: thin">
+==== Image sanity ====
+</div>
+{{admon/note|Details|The result column titles are ''variants'' in Pungi/productmd parlance. For each variant, the checksums for all images in that variant can be checked; the maximum size for all images in that variant which have a maximum size can be checked; and repoclosure and fileconflicts can be checked for any DVD image in that variant. Any failure for any tested image should be filed as a bug and reported as a failure here. Please provide the bug ID and a '''short''' note of exactly which image(s) failed as a comment.}}
+
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+!style="width:10em"|Milestone !! Test Case !! Everything !! Server !! Workstation !! Cloud !! Spins !! Labs
+|-
+| Basic / Final
+| [[QA:Testcase_Mediakit_Checksums]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Mediakit_ISO_Size]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|fail|coconut|bot=true}}<ref>LXQt live x86_64, size 1456766976, max 1400000000</ref><ref>SoaS live x86_64, size 1121878016, max 734003200</ref>
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_Mediakit_Repoclosure]]
+| style="background:lightgrey;"| 
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"| 
+| style="background:lightgrey;"| 
+| style="background:lightgrey;"| 
+| style="background:lightgrey;"| 
+|-
+| Final
+| [[QA:Testcase_Mediakit_FileConflicts]]
+| style="background:lightgrey;"| 
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"| 
+| style="background:lightgrey;"| 
+| style="background:lightgrey;"| 
+| style="background:lightgrey;"| 
+|-
+|}
+<references/>
+<div style="background-color: lightgreen; text-align: center; border-style: solid; border-width: thin">
+
+==== Default boot and install ====
+</div>
+{{admon/note|Single test table|In all of these tests, the test case used is [[QA:Testcase_Boot_default_install]]. That is where the links point. The same test needs to be run for multiple images, target platforms, and install media. Note that the non-installer-based ARM disk images are covered by the later [[#ARM disk images]] section. The '''VM''' columns are for results from testing in a virtual machine. The '''CD/DVD''' columns are for results from testing on a real system with the image written to a real CD or DVD. The '''USB''' columns are for results from testing on a real system with the image written to a USB stick.}}
+
+{{admon/note|Expected coverage|For Beta, we expect a reasonable sampling of tests across the table, with at least some testing for VM and USB boot method, both firmware types, and each major class of deliverable (netinst, live and DVD). For Final, we expect full coverage for ''Basic / Final'' rows with VM and USB boot method. Optical boot testing from physical media in Final is optional (but blocking if issues are found) for [[Releases/{{FedoraVersionNumber|next|short}}/ReleaseBlocking|supported images]].}}
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+!style="width:10em"|Milestone !! Image !! VM BIOS !! VM UEFI !! USB BIOS !! USB UEFI !! CD/DVD BIOS (Optional) !! CD/DVD UEFI (Optional)
+|-
+| Basic / Final
+| [[QA:Testcase_Boot_default_install|Workstation live]]
+| {{result|none}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Basic / Final
+| [[QA:Testcase_Boot_default_install|Everything netinst]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Basic / Final
+| [[QA:Testcase_Boot_default_install|Server netinst]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Basic / Final
+| [[QA:Testcase_Boot_default_install|Server dvd]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Basic / Final
+| [[QA:Testcase_Boot_default_install|KDE live]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|Silverblue dvd-ostree]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|Xfce live]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|LXDE live]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|LXQt live]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|MATE live]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|Cinnamon live]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Boot_default_install|SoaS live]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+|}
+<references/>
+
+<div style="background-color: MediumSlateBlue; text-align: center; border-style: solid; border-width: thin">
+
+==== Fedora Media Writer ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- <!-- this next line uses complex wiki magic, see https://www.mediawiki.org/wiki/Help:Substitution . please don't mess with it unless you understand it. -->
+!style="width:10em"|Milestone !! Test Case !! Fedora 30 !! Fedora  31 !! Fedora  32 !! Windows 10 !! macOS
+|-
+| Beta / Optional
+| [[QA:Testcase_USB_fmw]]
+| {{result|none}}
+| {{result|none}}
+| {{result|pass|alciregi}}
+| {{result|none}}
+| {{result|none}}
+|-
+|}
+<references/>
+
+<div style="background-color: yellowgreen; text-align: center; border-style: solid; border-width: thin">
+
+==== ARM disk images ====
+</div>
+{{admon/note|Single test table|In all of these tests, the test case used is [[QA:Testcase_arm_image_deployment]]. That is where the links point. The same test needs to be run for multiple images and target platforms.}}
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+!style="width:10em"|Milestone !! Image !! Ext boot  
+|-
+| Basic
+| [[QA:Testcase_arm_image_deployment|Minimal]]
+| {{result|pass|pwhalen}}
+|-
+| Basic
+| [[QA:Testcase_arm_image_deployment|Workstation]]
+| {{result|pass|pwhalen}}
+|-
+| Optional
+| [[QA:Testcase_arm_image_deployment|KDE]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_arm_image_deployment|Xfce]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_arm_image_deployment|LXDE]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_arm_image_deployment|LXQt]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_arm_image_deployment|MATE]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_arm_image_deployment|SoaS]]
+| {{result|none}}
+|-
+|}
+
+<references/>
+<div style="background-color: dodgerblue; text-align: center; border-style: solid; border-width: thin">
+
+==== PXE boot ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 !! ARM
+|-
+| Beta
+| [[QA:Testcase_Boot_Methods_Pxeboot]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+|}
+<references/>
+<div style="background-color: teal; text-align: center; border-style: solid; border-width: thin">
+
+==== Virtualization ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI !! ARM
+|-
+| Basic
+| [[QA:Testcase_Install_to_Previous_KVM]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Install_to_Current_KVM]]
+| {{result|pass|alciregi}}
+| {{result|none}}
+| {{result|pass|pwhalen}}
+|-
+| Optional
+| [[QA:Testcase_Boot_Methods_Xen_Para_Virt]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+|}
+<references/>
+<div style="background-color: orange; text-align: center; border-style: solid; border-width: thin">
+
+==== Storage devices ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+!style="width:10em"|Milestone !! Test Case !! x86_64 !! ARM
+|-
+| Basic
+| [[QA:Testcase_install_to_SATA]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Basic
+| [[QA:Testcase_install_to_PATA]]
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"| 
+|-
+| Basic
+| [[QA:Testcase_install_to_SCSI]]
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+| Basic
+| [[QA:Testcase_install_to_SAS]]
+| {{result|none}}
+| style="background:lightgrey;"| 
+|-
+| Beta
+| [[QA:Testcase_install_to_firmware_RAID]]
+| {{result|none}}
+| style="background:lightgrey;"| 
+|-
+| Beta
+| [[QA:Testcase_install_to_hardware_RAID]]
+| {{result|none}}
+| style="background:lightgrey;"| 
+|-
+| Beta
+| [[QA:Testcase_install_to_VirtIO]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Final
+| [[QA:Testcase_install_to_iSCSI_no_authentication]]
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"| 
+|-
+| Final
+| [[QA:Testcase_install_to_FCoE_target]]
+| {{result|none}}
+| style="background:lightgrey;"| 
+|-
+| Optional
+| [[QA:Testcase_install_to_multipath]]
+| {{result|none}}
+| style="background:lightgrey;"| 
+|-
+|}
+<references/>
+<div style="background-color: darkgoldenrod; text-align: center; border-style: solid; border-width: thin">
+
+==== Guided storage configuration ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI !! ARM
+|-
+| Basic
+| [[QA:Testcase_partitioning_guided_empty]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Basic
+| [[QA:Testcase_partitioning_guided_delete_all]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Basic
+| [[QA:Testcase_partitioning_guided_multi_select]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+| Beta
+| [[QA:Testcase_partitioning_guided_delete_partial]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+| Beta
+| [[QA:Testcase_partitioning_guided_free_space]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+| Beta
+| [[QA:Testcase_partitioning_guided_encrypted]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_partitioning_guided_multi_empty_all]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+|}
+<references/>
+<div style="background-color: burlywood; text-align: center; border-style: solid; border-width: thin">
+
+==== Guided storage shrinking ====
+</div>
+{{admon/note|Environments|For this test, the column headings refer to the storage volume type ''to be shrunk'', not the one chosen to replace it for the new installation.}}
+{| class="wikitable sortable" width = 100%
+|-
+!style="width:10em"|Milestone !! Test Case !! ext4 !! NTFS
+|-
+| Final
+| [[QA:Testcase_partitioning_guided_shrink]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+<references/>
+<div style="background-color: gold; text-align: center; border-style: solid; border-width: thin">
+
+==== Custom storage configuration ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI !! ARM
+|-
+| Beta
+| [[QA:Testcase_partitioning_custom_software_RAID]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"| 
+|-
+| Final
+| [[QA:Testcase_partitioning_custom_btrfs]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_partitioning_custom_lvmthin]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_partitioning_custom_standard_partition_ext3]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_partitioning_custom_standard_partition_xfs]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_partitioning_custom_no_swap]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+|}
+<references/>
+<div style="background-color: darkorange; text-align: center; border-style: solid; border-width: thin">
+
+==== Advanced custom storage configuration ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|-
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI !! ARM
+|-
+| Beta
+| [[QA:Testcase_partitioning_blivet_software_RAID]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"| 
+|-
+| Final
+| [[QA:Testcase_partitioning_blivet_btrfs]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_partitioning_blivet_lvmthin]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_partitioning_blivet_standard_partition_ext3]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_partitioning_blivet_standard_partition_xfs]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_partitioning_blivet_no_swap]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+|}
+<references/>
+<div style="background-color: orchid; text-align: center; border-style: solid; border-width: thin">
+
+==== User interface ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! Result
+|-
+| Basic
+| [[QA:Testcase_Anaconda_User_Interface_Graphical]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_Anaconda_User_Interface_Text]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_Anaconda_User_Interface_VNC]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_Anaconda_User_Interface_VNC_Vncconnect]]
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI
+|-
+| Basic / Final
+| [[QA:Testcase_Anaconda_User_Interface_Basic_Video_Driver]]
+| {{result|none}}
+| {{result|none}}
+|-
+|}
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 !! ARM
+|-
+| Beta
+| [[QA:Testcase_Anaconda_User_Interface_serial_console]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+|}
+<references/>
+<div style="background-color: lavender; text-align: center; border-style: solid; border-width: thin">
+
+==== Installation repositories ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! Result
+|-
+| Basic
+| [[QA:Testcase_install_repository_Mirrorlist_graphical]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_install_repository_HTTP/FTP_graphical]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_install_repository_HTTP/FTP_variation]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_install_repository_NFS_graphical]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_install_repository_NFS_variation]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_install_repository_NFSISO_variation]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_install_repository_Hard_drive_variation]]
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+<references/>
+<div style="background-color: plum; text-align: center; border-style: solid; border-width: thin">
+==== Package sets ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! Result
+|-
+| Beta
+| [[QA:Testcase_Package_Sets_Minimal_Package_Install]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Optional
+| [[QA:Testcase_Package_Sets_KDE_Package_Install]]
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+<references/>
+<div style="background-color: coral; text-align: center; border-style: solid; border-width: thin">
+==== Kickstart ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! Result
+|-
+| Basic
+| [[QA:Testcase_kickstart_user_creation]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_Kickstart_Http_Server_Ks_Cfg]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_Kickstart_File_Path_Ks_Cfg]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_Kickstart_Hd_Device_Path_Ks_Cfg]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_Kickstart_Nfs_Server_Path_Ks_Cfg]]
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+<references/>
+<div style="background-color: pink; text-align: center; border-style: solid; border-width: thin">
+==== Upgrade ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 !! ARM
+|-
+| Beta
+| [[QA:Testcase_upgrade_gnome-software_current_workstation]]
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_gnome-software_previous_workstation]]
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_workstation]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_workstation]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_workstation_encrypted]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_workstation_encrypted]]
+| {{result|pass|coconut|bot=true}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_server]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_server]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_kde]]
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_kde]]
+| {{result|pass|coconut|bot=true}}
+| style="background:lightgrey;"|
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_minimal]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_minimal]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|pwhalen}}
+|-
+|}
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_current_any]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_upgrade_dnf_previous_any]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+|-
+|}
+<references/>
+
+<div style="background-color: lightpink; text-align: center; border-style: solid; border-width: thin">
+
+==== Internationalization and Localization ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! Result
+|-
+| Final
+| [[QA:Testcase_Arabic_Language_Install]]
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_Asian_Language_Install]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_Cyrillic_Language_Install]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_Non-English_European_Language_Install]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Optional
+| [[QA:Testcase_i18n_default_fonts]]
+| {{result|none}}
+|-
+|}
+<references/>
+<div style="background-color: mistyrose; text-align: center; border-style: solid; border-width: thin">
+==== Miscellaneous ====
+</div>
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 !! ARM
+|-
+| Basic
+| [[QA:Testcase_Anaconda_user_creation]]
+| {{result|pass|coconut|bot=true}}{{result|pass|alciregi}}
+| {{result|pass|pwhalen}}
+|-
+|}
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! Result
+|-
+| Basic
+| [[QA:Testcase_Anaconda_save_traceback_to_bugzilla]] (GUI mode)
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_Anaconda_save_traceback_to_bugzilla]] (text mode)
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_Anaconda_updates.img_via_URL]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_Anaconda_updates.img_via_installation_source]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_Anaconda_updates.img_via_local_media]]
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_Anaconda_help]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Anaconda_traceback_debug_mode]] (GUI mode)
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Anaconda_traceback_debug_mode]] (text mode)
+| {{result|none}}
+|-
+|}
+{| class="wikitable sortable mw-collapsible" width=100%
+|- 
+!style="width:10em"|Milestone !! Test Case !! x86_64 BIOS !! x86_64 UEFI
+|-
+| Beta
+| [[QA:Testcase_Anaconda_rescue_mode]]
+| {{result|pass|coconut|bot=true}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_dualboot_with_windows]]
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_dualboot_with_macOS]]
+| style="background:lightgrey;"|
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_Install_Image_Boot_Local]]
+| {{result|none}}
+| style="background:lightgrey;"|
+|-
+| Optional
+| [[QA:Testcase_Memtest86]]
+| {{result|none}}
+| style="background:lightgrey;"|
+|-
+|}
+<references/></onlyinclude>
+
+[[Category:Installation_validation_testing]]
+{{#if:20200322.n.0|[[Category:Fedora_32_Nightly_Test_Results|Installation]]|[[Category:Fedora_32_Branched_Test_Results|Installation]]}}
+

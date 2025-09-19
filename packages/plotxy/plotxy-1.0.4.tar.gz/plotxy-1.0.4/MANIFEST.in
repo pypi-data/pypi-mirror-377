@@ -1,0 +1,64 @@
+# PlotX Package Manifest
+# Include additional files in the distribution package
+
+# Documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+include DEPENDENCY_AUDIT.md
+
+# Documentation directory
+recursive-include docs *.md
+recursive-include docs *.rst
+recursive-include docs *.txt
+
+# Examples
+recursive-include examples *.py
+recursive-include examples *.md
+recursive-include examples *.txt
+recursive-include examples *.html
+recursive-include examples *.js
+recursive-include examples *.css
+
+# Source code
+recursive-include src *.py
+recursive-include src *.pyi
+
+# Templates and static files
+recursive-include src/plotx/templates *.html
+recursive-include src/plotx/static *.js
+recursive-include src/plotx/static *.css
+recursive-include src/plotx/themes *.json
+
+# Configuration files
+include pyproject.toml
+include setup.py
+include setup.cfg
+
+# Version control and development files to exclude
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude .pytest_cache
+global-exclude .mypy_cache
+global-exclude .coverage
+global-exclude htmlcov
+
+# Exclude build directories
+global-exclude build
+global-exclude dist
+global-exclude *.egg-info
+
+# Exclude test files from distribution
+global-exclude test_*.py
+global-exclude tests/*
+
+# Exclude development and CI files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude Makefile

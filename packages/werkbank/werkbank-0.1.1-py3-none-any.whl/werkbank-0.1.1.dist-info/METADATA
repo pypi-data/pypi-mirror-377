@@ -1,0 +1,21 @@
+Metadata-Version: 2.3
+Name: werkbank
+Version: 0.1.1
+Summary:  Model Context Protocol for Atomistic Simulations
+Requires-Dist: fastmcp>=2.12.0
+Requires-Dist: mp-api>=0.45.8
+Requires-Dist: rcsb-api>=1.4.0
+Requires-Dist: zntrack>=0.8.9
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+
+# Werkbank - Model Context Protocol for Atomistic Simulations
+
+Setup
+-----
+To connect the werkbank server to claude code at the current working directory, ensure `werkbank` is installed in the current working directory and then run:
+
+```bash
+bunx @anthropic-ai/claude-code mcp add werkbank -- uv run --project "$(pwd)" werkbank
+bunx @anthropic-ai/claude-code
+```

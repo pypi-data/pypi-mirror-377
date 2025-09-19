@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: dhlab
+Version: 2.42.0
+Summary: Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway
+Home-page: https://www.nb.no/dh-lab/
+License: MIT
+Author: The Digital Humanities Lab at The National Library of Norway (NB)
+Author-email: dh-lab@nb.no
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: beautifulsoup4 (>=4.12.2,<5.0.0)
+Requires-Dist: ipython (>=8.17.2,<9.0.0)
+Requires-Dist: jinja2 (>=3.1.4,<4.0.0)
+Requires-Dist: matplotlib (>=3.8.1,<4.0.0)
+Requires-Dist: networkx (>=3.2.1,<4.0.0)
+Requires-Dist: numpy (>=1.26.3,<2.0.0)
+Requires-Dist: openpyxl (>=3.1.2,<4.0.0)
+Requires-Dist: pandas (>=2.1.2,<3.0.0)
+Requires-Dist: python-louvain (>=0.16,<0.17)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: seaborn (>=0.13.0,<0.14.0)
+Requires-Dist: tqdm (>=4.66.6,<5.0.0)
+Project-URL: Bug Tracker, https://github.com/NationalLibraryOfNorway/DHLAB/issues
+Project-URL: Changelog, https://github.com/NationalLibraryOfNorway/DHLAB/blob/main/CHANGELOG.md
+Project-URL: Documentation, https://dhlab.readthedocs.io/en/stable/
+Project-URL: Repository, https://github.com/NationalLibraryOfNorway/DHLAB
+Project-URL: Tutorials, https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html
+Description-Content-Type: text/markdown
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/NationalLibraryOfNorway/digital_tekstanalyse/HEAD)
+# DHLAB
+
+<!-- start dhlab-intro -->
+
+ [`dhlab`](https://pypi.org/project/dhlab/) is a python library for doing qualitative and quantitative analyses of the digital texts from [*Nettbiblioteket*](https://www.nb.no/search) (eng: "the online library") at the [National Library of Norway](https://www.nb.no/) (NLN). *Nettbiblioteket* is the NLN's digital collection of media publications.
+
+<!-- end dhlab-intro -->
+
+Check out our [documentation](https://nationallibraryofnorway.github.io/DHLAB/) for more info.
+
+<!-- start installation -->
+## Installation with pip
+
+Install the latest version of [`dhlab`](https://pypi.org/project/dhlab/) in your (Unix) terminal with pip:
+
+```shell
+pip install -U dhlab
+```
+<!-- end installation -->
+
+## Install dhlab from github repo
+
+Open you terminal in the file location you will work with [DHLAB](https://github.com/NationalLibraryOfNorway/DHLAB).
+
+``` shell
+git clone https://github.com/NationalLibraryOfNorway/DHLAB.git
+cd DHLAB
+pip install -U -e .
+```
+
+## Contact
+<!-- start contact-info -->
+The code here is developed and maintained by [The Digital Humanities lab group](https://www.nb.no/dh-lab/).
+
+If you have any questions, or run into any problems with the code, please log them in our [issue
+tracker](https://github.com/NationalLibraryOfNorway/DHLAB/issues).
+<!-- end contact-info -->
+

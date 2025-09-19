@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Test Application - Crawailer Testing</title>
+    <script src="https://unpkg.com/@angular/core@17/bundles/core.umd.js"></script>
+    <script src="https://unpkg.com/@angular/common@17/bundles/common.umd.js"></script>
+    <script src="https://unpkg.com/@angular/forms@17/bundles/forms.umd.js"></script>
+    <script src="https://unpkg.com/@angular/platform-browser@17/bundles/platform-browser.umd.js"></script>
+    <script src="https://unpkg.com/@angular/platform-browser-dynamic@17/bundles/platform-browser-dynamic.umd.js"></script>
+    <script src="https://unpkg.com/rxjs@7/dist/bundles/rxjs.umd.min.js"></script>
+    <script src="https://unpkg.com/zone.js@0.14.2/bundles/zone.umd.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #dd0031 0%, #c3002f 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .app-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 { 
+            color: #dd0031; 
+            text-align: center; 
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .section h2 {
+            color: #dd0031;
+            margin-top: 0;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: #dd0031;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #c3002f;
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        input, textarea, select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dd0031;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #dd0031;
+            transition: all 0.3s ease;
+        }
+        
+        .todo-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .todo-item.completed {
+            opacity: 0.7;
+            border-left-color: #28a745;
+        }
+        
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #dd0031;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #dd0031;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success { background: #28a745; }
+        .notification.warning { background: #ffc107; color: #333; }
+        .notification.error { background: #dc3545; }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .reactive-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .observable-demo {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .service-status {
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .reactive-demo {
+                grid-template-columns: 1fr;
+            }
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="app-container">
+            <h1>🅰️ Angular TypeScript Testing App</h1>
+            <div class="section">
+                <h2>Loading...</h2>
+                <p>Please wait while Angular application initializes...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Angular application setup
+        const { Component, NgModule, Injectable, Input, Output, EventEmitter, OnInit, OnDestroy } = ng.core;
+        const { CommonModule } = ng.common;
+        const { ReactiveFormsModule, FormBuilder, FormGroup, Validators } = ng.forms;
+        const { BrowserModule } = ng.platformBrowser;
+        const { platformBrowserDynamic } = ng.platformBrowserDynamic;
+        const { BehaviorSubject, Observable, Subject, interval } = rxjs;
+        const { map, takeUntil, debounceTime, distinctUntilChanged } = rxjs.operators;
+
+        // Data models (TypeScript-like)
+        class Todo {
+            constructor(id, text, completed = false, priority = 'medium') {
+                this.id = id;
+                this.text = text;
+                this.completed = completed;
+                this.priority = priority;
+                this.createdAt = new Date();
+            }
+        }
+
+        class User {
+            constructor(name = '', email = '', preferences = {}) {
+                this.name = name;
+                this.email = email;
+                this.preferences = preferences;
+            }
+        }
+
+        // Services
+        @Injectable({ providedIn: 'root' })
+        class TodoService {
+            constructor() {
+                this.todos$ = new BehaviorSubject([
+                    new Todo(1, 'Learn Angular 17 Standalone Components', true, 'high'),
+                    new Todo(2, 'Implement RxJS Observables', false, 'high'),
+                    new Todo(3, 'Test with Crawailer JavaScript API', false, 'medium')
+                ]);
+                this.nextId = 4;
+            }
+
+            getTodos() {
+                return this.todos$.asObservable();
+            }
+
+            addTodo(text, priority = 'medium') {
+                const currentTodos = this.todos$.value;
+                const newTodo = new Todo(this.nextId++, text, false, priority);
+                this.todos$.next([...currentTodos, newTodo]);
+                return newTodo;
+            }
+
+            toggleTodo(id) {
+                const currentTodos = this.todos$.value;
+                const updatedTodos = currentTodos.map(todo =>
+                    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+                );
+                this.todos$.next(updatedTodos);
+            }
+
+            removeTodo(id) {
+                const currentTodos = this.todos$.value;
+                const filteredTodos = currentTodos.filter(todo => todo.id !== id);
+                this.todos$.next(filteredTodos);
+            }
+
+            clearCompleted() {
+                const currentTodos = this.todos$.value;
+                const activeTodos = currentTodos.filter(todo => !todo.completed);
+                this.todos$.next(activeTodos);
+            }
+        }
+
+        @Injectable({ providedIn: 'root' })
+        class NotificationService {
+            constructor() {
+                this.notifications$ = new Subject();
+            }
+
+            show(message, type = 'success') {
+                this.notifications$.next({ message, type, show: true });
+                setTimeout(() => {
+                    this.notifications$.next({ message, type, show: false });
+                }, 3000);
+            }
+        }
+
+        @Injectable({ providedIn: 'root' })
+        class TimerService {
+            constructor() {
+                this.timer$ = interval(1000);
+                this.elapsed$ = new BehaviorSubject(0);
+                this.isRunning$ = new BehaviorSubject(false);
+            }
+
+            start() {
+                if (!this.isRunning$.value) {
+                    this.isRunning$.next(true);
+                    this.subscription = this.timer$.subscribe(() => {
+                        this.elapsed$.next(this.elapsed$.value + 1);
+                    });
+                }
+            }
+
+            stop() {
+                if (this.subscription) {
+                    this.subscription.unsubscribe();
+                    this.isRunning$.next(false);
+                }
+            }
+
+            reset() {
+                this.stop();
+                this.elapsed$.next(0);
+            }
+        }
+
+        // Components
+        @Component({
+            selector: 'app-root',
+            template: `
+                <div class="app-container">
+                    <h1>🅰️ Angular TypeScript Testing App</h1>
+                    
+                    <!-- Reactive Forms Section -->
+                    <div class="section">
+                        <h2>📋 Reactive Forms & Validation</h2>
+                        <form [formGroup]="userForm" (ngSubmit)="onSubmitForm()">
+                            <div class="reactive-demo">
+                                <div>
+                                    <div class="form-group">
+                                        <label>Name:</label>
+                                        <input 
+                                            formControlName="name" 
+                                            placeholder="Enter your name"
+                                            data-testid="name-input">
+                                        <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" 
+                                             style="color: red; font-size: 12px;">
+                                            Name is required (min 2 characters)
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email:</label>
+                                        <input 
+                                            formControlName="email" 
+                                            type="email" 
+                                            placeholder="Enter your email"
+                                            data-testid="email-input">
+                                        <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" 
+                                             style="color: red; font-size: 12px;">
+                                            Valid email is required
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Role:</label>
+                                        <select formControlName="role" data-testid="role-select">
+                                            <option value="user">User</option>
+                                            <option value="admin">Administrator</option>
+                                            <option value="developer">Developer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3>Form Status:</h3>
+                                    <p><strong>Valid:</strong> {{ userForm.valid ? '✅' : '❌' }}</p>
+                                    <p><strong>Touched:</strong> {{ userForm.touched ? '✅' : '❌' }}</p>
+                                    <p><strong>Dirty:</strong> {{ userForm.dirty ? '✅' : '❌' }}</p>
+                                    <p><strong>Name Value:</strong> {{ userForm.get('name')?.value || 'Empty' }}</p>
+                                    <p><strong>Email Value:</strong> {{ userForm.get('email')?.value || 'Empty' }}</p>
+                                </div>
+                            </div>
+                            <button type="submit" [disabled]="!userForm.valid" data-testid="submit-form-btn">
+                                Submit Form
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Observable Streams Section -->
+                    <div class="section">
+                        <h2>🌊 Observable Streams & RxJS</h2>
+                        <div class="observable-demo">
+                            <p><strong>Timer Status:</strong> {{ (timerService.isRunning$ | async) ? 'Running' : 'Stopped' }}</p>
+                            <p><strong>Elapsed Time:</strong> {{ timerService.elapsed$ | async }} seconds</p>
+                            <div class="controls">
+                                <button (click)="timerService.start()" data-testid="start-timer-btn">Start Timer</button>
+                                <button (click)="timerService.stop()" data-testid="stop-timer-btn">Stop Timer</button>
+                                <button (click)="timerService.reset()" data-testid="reset-timer-btn">Reset Timer</button>
+                            </div>
+                        </div>
+                        
+                        <div class="observable-demo">
+                            <p><strong>Search Results:</strong> {{ searchResults.length }} items</p>
+                            <input 
+                                [(ngModel)]="searchTerm" 
+                                placeholder="Search todos (debounced)..."
+                                data-testid="search-input">
+                            <div *ngFor="let result of searchResults" class="todo-item">
+                                {{ result.text }} (Priority: {{ result.priority }})
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Todo Management Section -->
+                    <div class="section">
+                        <h2>📝 Todo Management with Services</h2>
+                        <div class="controls">
+                            <input 
+                                [(ngModel)]="newTodoText" 
+                                (keyup.enter)="addTodo()"
+                                placeholder="Add a new todo..."
+                                data-testid="todo-input">
+                            <select [(ngModel)]="newTodoPriority" data-testid="priority-select">
+                                <option value="low">Low Priority</option>
+                                <option value="medium">Medium Priority</option>
+                                <option value="high">High Priority</option>
+                            </select>
+                            <button (click)="addTodo()" [disabled]="!newTodoText.trim()" data-testid="add-todo-btn">
+                                Add Todo
+                            </button>
+                            <button (click)="clearCompleted()" data-testid="clear-completed-btn">
+                                Clear Completed ({{ completedCount$ | async }})
+                            </button>
+                        </div>
+                        
+                        <div class="todo-list" data-testid="todo-list">
+                            <div 
+                                *ngFor="let todo of filteredTodos$ | async; trackBy: trackByTodoId"
+                                [class]="'todo-item ' + (todo.completed ? 'completed' : '')"
+                                [attr.data-testid]="'todo-' + todo.id">
+                                <input 
+                                    type="checkbox" 
+                                    [checked]="todo.completed"
+                                    (change)="toggleTodo(todo.id)"
+                                    [attr.data-testid]="'todo-checkbox-' + todo.id">
+                                <span class="todo-text">{{ todo.text }}</span>
+                                <span style="margin-left: auto; padding: 0 10px; font-size: 12px;">
+                                    {{ todo.priority.toUpperCase() }}
+                                </span>
+                                <button (click)="removeTodo(todo.id)" [attr.data-testid]="'remove-todo-' + todo.id">
+                                    ❌
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="controls">
+                            <button 
+                                *ngFor="let filter of ['all', 'active', 'completed']"
+                                (click)="currentFilter = filter"
+                                [style.background]="currentFilter === filter ? '#dd0031' : '#ccc'"
+                                [attr.data-testid]="'filter-' + filter">
+                                {{ filter | titlecase }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics & State Section -->
+                    <div class="section">
+                        <h2>📊 Live Statistics & Computed Values</h2>
+                        <div class="stats">
+                            <div class="stat-card">
+                                <div class="stat-number">{{ (totalTodos$ | async) || 0 }}</div>
+                                <div>Total Todos</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">{{ (completedCount$ | async) || 0 }}</div>
+                                <div>Completed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">{{ (activeCount$ | async) || 0 }}</div>
+                                <div>Active</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">{{ userForm.get('name')?.value?.length || 0 }}</div>
+                                <div>Name Length</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Status Section -->
+                    <div class="section">
+                        <h2>🔧 Service Status & Dependency Injection</h2>
+                        <div class="service-status">
+                            <p><strong>TodoService:</strong> ✅ Active ({{ (totalTodos$ | async) || 0 }} todos managed)</p>
+                            <p><strong>NotificationService:</strong> ✅ Active</p>
+                            <p><strong>TimerService:</strong> {{ (timerService.isRunning$ | async) ? '🟢 Running' : '🔴 Stopped' }}</p>
+                            <p><strong>Change Detection:</strong> {{ changeDetectionCount }} runs</p>
+                        </div>
+                        
+                        <div class="controls">
+                            <button (click)="triggerChangeDetection()" data-testid="trigger-cd-btn">
+                                Trigger Change Detection
+                            </button>
+                            <button (click)="simulateAsyncOperation()" [disabled]="isLoading" data-testid="async-operation-btn">
+                                {{ isLoading ? 'Loading...' : 'Simulate Async Operation' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Component -->
+                <div 
+                    *ngIf="notification$ | async as notification"
+                    [class]="'notification ' + notification.type + (notification.show ? ' show' : '')"
+                    data-testid="notification">
+                    {{ notification.message }}
+                </div>
+            `
+        })
+        class AppComponent {
+            constructor(fb, todoService, notificationService, timerService, cdr) {
+                this.fb = fb;
+                this.todoService = todoService;
+                this.notificationService = notificationService;
+                this.timerService = timerService;
+                this.cdr = cdr;
+                
+                this.destroy$ = new Subject();
+                this.changeDetectionCount = 0;
+                this.isLoading = false;
+                
+                // Form setup
+                this.userForm = this.fb.group({
+                    name: ['', [Validators.required, Validators.minLength(2)]],
+                    email: ['', [Validators.required, Validators.email]],
+                    role: ['user']
+                });
+                
+                // Todo management
+                this.newTodoText = '';
+                this.newTodoPriority = 'medium';
+                this.currentFilter = 'all';
+                this.searchTerm = '';
+                this.searchResults = [];
+                
+                // Observables
+                this.todos$ = this.todoService.getTodos();
+                this.notification$ = this.notificationService.notifications$;
+                
+                this.totalTodos$ = this.todos$.pipe(
+                    map(todos => todos.length)
+                );
+                
+                this.completedCount$ = this.todos$.pipe(
+                    map(todos => todos.filter(todo => todo.completed).length)
+                );
+                
+                this.activeCount$ = this.todos$.pipe(
+                    map(todos => todos.filter(todo => !todo.completed).length)
+                );
+                
+                this.filteredTodos$ = this.todos$.pipe(
+                    map(todos => {
+                        switch (this.currentFilter) {
+                            case 'active':
+                                return todos.filter(todo => !todo.completed);
+                            case 'completed':
+                                return todos.filter(todo => todo.completed);
+                            default:
+                                return todos;
+                        }
+                    })
+                );
+            }
+            
+            ngOnInit() {
+                // Search functionality with debounce
+                this.searchSubject = new BehaviorSubject('');
+                this.searchSubject.pipe(
+                    debounceTime(300),
+                    distinctUntilChanged(),
+                    takeUntil(this.destroy$)
+                ).subscribe(searchTerm => {
+                    this.todos$.pipe(
+                        map(todos => todos.filter(todo => 
+                            todo.text.toLowerCase().includes(searchTerm.toLowerCase())
+                        ))
+                    ).subscribe(results => {
+                        this.searchResults = results;
+                    });
+                });
+                
+                // Monitor search term changes
+                Object.defineProperty(this, 'searchTerm', {
+                    get: () => this._searchTerm,
+                    set: (value) => {
+                        this._searchTerm = value;
+                        this.searchSubject.next(value);
+                    }
+                });
+                this._searchTerm = '';
+                
+                console.log('Angular component initialized');
+            }
+            
+            ngOnDestroy() {
+                this.destroy$.next();
+                this.destroy$.complete();
+            }
+            
+            ngAfterViewChecked() {
+                this.changeDetectionCount++;
+            }
+            
+            onSubmitForm() {
+                if (this.userForm.valid) {
+                    const formData = this.userForm.value;
+                    this.notificationService.show(`Form submitted: ${formData.name} (${formData.role})`, 'success');
+                    console.log('Form submitted:', formData);
+                }
+            }
+            
+            addTodo() {
+                if (this.newTodoText.trim()) {
+                    const todo = this.todoService.addTodo(this.newTodoText.trim(), this.newTodoPriority);
+                    this.newTodoText = '';
+                    this.notificationService.show(`Todo added: ${todo.text}`, 'success');
+                }
+            }
+            
+            toggleTodo(id) {
+                this.todoService.toggleTodo(id);
+                this.notificationService.show('Todo status updated', 'success');
+            }
+            
+            removeTodo(id) {
+                this.todoService.removeTodo(id);
+                this.notificationService.show('Todo removed', 'warning');
+            }
+            
+            clearCompleted() {
+                this.todoService.clearCompleted();
+                this.notificationService.show('Completed todos cleared', 'success');
+            }
+            
+            trackByTodoId(index, todo) {
+                return todo.id;
+            }
+            
+            triggerChangeDetection() {
+                this.cdr.detectChanges();
+                this.notificationService.show('Change detection triggered', 'success');
+            }
+            
+            async simulateAsyncOperation() {
+                this.isLoading = true;
+                this.notificationService.show('Starting async operation...', 'success');
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                this.isLoading = false;
+                this.notificationService.show('Async operation completed!', 'success');
+            }
+        }
+
+        // Module definition
+        @NgModule({
+            declarations: [AppComponent],
+            imports: [BrowserModule, CommonModule, ReactiveFormsModule],
+            providers: [TodoService, NotificationService, TimerService],
+            bootstrap: [AppComponent]
+        })
+        class AppModule {}
+
+        // Bootstrap the application
+        platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
+            console.log('Angular application bootstrapped successfully');
+            
+            // Global test data for Crawailer JavaScript API testing
+            window.testData = {
+                framework: 'angular',
+                version: ng.VERSION?.full || 'Unknown',
+                
+                // Component analysis
+                getComponentInfo: () => {
+                    const app = document.querySelector('app-root');
+                    const inputs = document.querySelectorAll('input');
+                    const buttons = document.querySelectorAll('button');
+                    const testableElements = document.querySelectorAll('[data-testid]');
+                    
+                    return {
+                        totalInputs: inputs.length,
+                        totalButtons: buttons.length,
+                        testableElements: testableElements.length,
+                        hasAngularDevtools: typeof window.ng !== 'undefined',
+                        componentInstance: !!app
+                    };
+                },
+                
+                // Get application state
+                getAppState: () => {
+                    try {
+                        const appElement = document.querySelector('app-root');
+                        const componentRef = ng.getComponent(appElement);
+                        
+                        if (componentRef) {
+                            return {
+                                formValue: componentRef.userForm?.value,
+                                formValid: componentRef.userForm?.valid,
+                                isLoading: componentRef.isLoading,
+                                currentFilter: componentRef.currentFilter,
+                                changeDetectionCount: componentRef.changeDetectionCount,
+                                searchTerm: componentRef.searchTerm
+                            };
+                        }
+                        return { error: 'Could not access Angular component state' };
+                    } catch (error) {
+                        return { error: error.message };
+                    }
+                },
+                
+                // Get service data
+                getServiceData: () => {
+                    try {
+                        const appElement = document.querySelector('app-root');
+                        const componentRef = ng.getComponent(appElement);
+                        
+                        if (componentRef && componentRef.todoService) {
+                            const todos = componentRef.todoService.todos$.value;
+                            return {
+                                totalTodos: todos.length,
+                                completedTodos: todos.filter(t => t.completed).length,
+                                activeTodos: todos.filter(t => !t.completed).length,
+                                timerRunning: componentRef.timerService.isRunning$.value,
+                                timerElapsed: componentRef.timerService.elapsed$.value
+                            };
+                        }
+                        return { error: 'Could not access Angular services' };
+                    } catch (error) {
+                        return { error: error.message };
+                    }
+                },
+                
+                // User interaction simulation
+                simulateUserAction: async (action) => {
+                    const actions = {
+                        'fill-form': () => {
+                            const nameInput = document.querySelector('[data-testid="name-input"]');
+                            const emailInput = document.querySelector('[data-testid="email-input"]');
+                            const roleSelect = document.querySelector('[data-testid="role-select"]');
+                            
+                            nameInput.value = 'Test User';
+                            emailInput.value = 'test@example.com';
+                            roleSelect.value = 'developer';
+                            
+                            nameInput.dispatchEvent(new Event('input'));
+                            emailInput.dispatchEvent(new Event('input'));
+                            roleSelect.dispatchEvent(new Event('change'));
+                            
+                            return 'Form filled';
+                        },
+                        'submit-form': () => {
+                            const submitBtn = document.querySelector('[data-testid="submit-form-btn"]');
+                            if (!submitBtn.disabled) {
+                                submitBtn.click();
+                                return 'Form submitted';
+                            }
+                            return 'Form invalid, cannot submit';
+                        },
+                        'add-todo': () => {
+                            const input = document.querySelector('[data-testid="todo-input"]');
+                            const button = document.querySelector('[data-testid="add-todo-btn"]');
+                            input.value = `Angular todo ${Date.now()}`;
+                            input.dispatchEvent(new Event('input'));
+                            button.click();
+                            return 'Todo added';
+                        },
+                        'start-timer': () => {
+                            document.querySelector('[data-testid="start-timer-btn"]').click();
+                            return 'Timer started';
+                        },
+                        'search-todos': () => {
+                            const searchInput = document.querySelector('[data-testid="search-input"]');
+                            searchInput.value = 'Angular';
+                            searchInput.dispatchEvent(new Event('input'));
+                            return 'Search performed';
+                        },
+                        'async-operation': async () => {
+                            document.querySelector('[data-testid="async-operation-btn"]').click();
+                            // Wait for operation to complete
+                            await new Promise(resolve => {
+                                const checkComplete = () => {
+                                    const appElement = document.querySelector('app-root');
+                                    const componentRef = ng.getComponent(appElement);
+                                    if (!componentRef.isLoading) {
+                                        resolve();
+                                    } else {
+                                        setTimeout(checkComplete, 100);
+                                    }
+                                };
+                                checkComplete();
+                            });
+                            return 'Async operation completed';
+                        }
+                    };
+                    
+                    if (actions[action]) {
+                        return await actions[action]();
+                    }
+                    throw new Error(`Unknown action: ${action}`);
+                },
+                
+                // Detect Angular-specific features
+                detectAngularFeatures: () => {
+                    return {
+                        hasAngular: typeof ng !== 'undefined',
+                        hasRxJS: typeof rxjs !== 'undefined',
+                        hasReactiveForms: typeof ng.forms?.ReactiveFormsModule !== 'undefined',
+                        hasCommonModule: typeof ng.common?.CommonModule !== 'undefined',
+                        hasServices: true, // We have injectable services
+                        hasObservables: typeof rxjs.Observable !== 'undefined',
+                        hasChangeDetection: true,
+                        angularVersion: ng.VERSION?.full || 'Unknown',
+                        hasDevtools: typeof window.ng !== 'undefined',
+                        hasZoneJS: typeof Zone !== 'undefined'
+                    };
+                },
+                
+                // Observable monitoring
+                monitorObservables: () => {
+                    const appElement = document.querySelector('app-root');
+                    const componentRef = ng.getComponent(appElement);
+                    
+                    if (componentRef) {
+                        return {
+                            todosObservable: componentRef.todos$ !== undefined,
+                            notificationObservable: componentRef.notification$ !== undefined,
+                            timerObservable: componentRef.timerService.timer$ !== undefined,
+                            hasSubscriptions: componentRef.destroy$ !== undefined
+                        };
+                    }
+                    return { error: 'Cannot access observables' };
+                },
+                
+                // Performance measurement
+                measureChangeDetection: () => {
+                    const start = performance.now();
+                    const appElement = document.querySelector('app-root');
+                    const componentRef = ng.getComponent(appElement);
+                    
+                    // Trigger multiple change detection cycles
+                    for (let i = 0; i < 10; i++) {
+                        componentRef.cdr.detectChanges();
+                    }
+                    
+                    const end = performance.now();
+                    
+                    return {
+                        detectionTime: end - start,
+                        cyclesPerSecond: 10 / ((end - start) / 1000)
+                    };
+                },
+                
+                // Complex workflow simulation
+                simulateComplexWorkflow: async () => {
+                    const steps = [];
+                    
+                    // Step 1: Fill and submit form
+                    await window.testData.simulateUserAction('fill-form');
+                    steps.push('Form filled');
+                    
+                    await window.testData.simulateUserAction('submit-form');
+                    steps.push('Form submitted');
+                    
+                    // Step 2: Add multiple todos
+                    for (let i = 1; i <= 3; i++) {
+                        await window.testData.simulateUserAction('add-todo');
+                    }
+                    steps.push('Multiple todos added');
+                    
+                    // Step 3: Start timer
+                    await window.testData.simulateUserAction('start-timer');
+                    steps.push('Timer started');
+                    
+                    // Step 4: Search todos
+                    await window.testData.simulateUserAction('search-todos');
+                    steps.push('Search performed');
+                    
+                    // Step 5: Run async operation
+                    await window.testData.simulateUserAction('async-operation');
+                    steps.push('Async operation completed');
+                    
+                    return {
+                        stepsCompleted: steps,
+                        finalState: window.testData.getAppState(),
+                        serviceData: window.testData.getServiceData()
+                    };
+                }
+            };
+
+            // Global error handler for testing
+            window.addEventListener('error', (event) => {
+                console.error('Global error:', event.error);
+                window.lastError = {
+                    message: event.error.message,
+                    stack: event.error.stack,
+                    timestamp: new Date().toISOString()
+                };
+            });
+
+            console.log('Available test methods:', Object.keys(window.testData));
+            console.log('Angular version:', ng.VERSION?.full);
+        }).catch(err => {
+            console.error('Error bootstrapping Angular application:', err);
+            
+            // Fallback content
+            document.getElementById('app').innerHTML = `
+                <div class="app-container">
+                    <h1>🅰️ Angular Test Application</h1>
+                    <div class="section">
+                        <h2>❌ Bootstrap Error</h2>
+                        <p>Angular application failed to bootstrap. Error: ${err.message}</p>
+                        <p>This may be due to CDN loading issues or compatibility problems.</p>
+                    </div>
+                </div>
+            `;
+            
+            // Basic test data even if Angular fails
+            window.testData = {
+                framework: 'angular',
+                version: 'failed-to-load',
+                error: err.message,
+                getComponentInfo: () => ({ error: 'Angular failed to load' }),
+                getAppState: () => ({ error: 'Angular failed to load' }),
+                detectAngularFeatures: () => ({ hasAngular: false, error: err.message })
+            };
+        });
+    </script>
+</body>
+</html>

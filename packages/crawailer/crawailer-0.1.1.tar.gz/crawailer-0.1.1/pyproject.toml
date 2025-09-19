@@ -1,0 +1,171 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crawailer"
+dynamic = ["version"]
+description = "Modern Python library for browser automation and intelligent content extraction with full JavaScript execution support"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "rpm", email = "hello@crawailer.dev"},
+]
+maintainers = [
+    {name = "rpm", email = "hello@crawailer.dev"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Framework :: Pytest",
+    "Framework :: AsyncIO",
+    "Environment :: Console",
+    "Typing :: Typed",
+]
+keywords = [
+    "web-automation", 
+    "browser-control", 
+    "content-extraction", 
+    "javascript-execution",
+    "playwright", 
+    "web-scraping",
+    "ai", 
+    "llm", 
+    "mcp",
+    "automation", 
+    "spa-crawling",
+    "react-scraping",
+    "vue-scraping",
+    "angular-scraping"
+]
+
+dependencies = [
+    # Browser automation
+    "playwright>=1.40.0",
+    # Fast HTML processing (5-10x faster than BeautifulSoup)
+    "selectolax>=0.3.17",
+    "markdownify>=0.11.6",
+    # Content intelligence
+    "justext>=3.0.0",
+    # Async & HTTP
+    "httpx>=0.25.0",
+    "anyio>=4.0.0",
+    # Storage & utilities
+    "msgpack>=1.0.0",
+    "pydantic>=2.0.0",
+    "rich>=13.0.0",
+    # Optional fast libraries
+    "xxhash>=3.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-httpserver>=1.0.0",
+    "pytest-cov>=4.0.0",
+    "aiohttp>=3.9.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.0.0",
+]
+ai = [
+    "sentence-transformers>=2.2.0",
+    "spacy>=3.7.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+]
+mcp = [
+    "mcp>=0.5.0",
+    "fastmcp>=0.1.0",
+]
+testing = [
+    "pytest>=8.0.0", 
+    "pytest-asyncio>=0.21.0",
+    "pytest-httpserver>=1.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "aiohttp>=3.9.0",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocstrings[python]>=0.20.0",
+]
+all = [
+    "crawailer[dev,ai,mcp,testing,docs]",
+]
+
+[project.urls]
+Homepage = "https://git.supported.systems/MCP/crawailer"
+Repository = "https://git.supported.systems/MCP/crawailer"
+Documentation = "https://git.supported.systems/MCP/crawailer/src/branch/main/docs/README.md"
+"Bug Tracker" = "https://git.supported.systems/MCP/crawailer/issues"
+"Source Code" = "https://git.supported.systems/MCP/crawailer"
+"API Reference" = "https://git.supported.systems/MCP/crawailer/src/branch/main/docs/API_REFERENCE.md"
+"JavaScript Guide" = "https://git.supported.systems/MCP/crawailer/src/branch/main/docs/JAVASCRIPT_API.md"
+"Benchmarks" = "https://git.supported.systems/MCP/crawailer/src/branch/main/docs/BENCHMARKS.md"
+Changelog = "https://git.supported.systems/MCP/crawailer/releases"
+
+[project.scripts]
+crawailer = "crawailer.cli:main"
+
+[tool.hatch.version]
+path = "src/crawailer/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/crawailer"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+select = ["E", "F", "I", "N", "UP", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = [
+    "--strict-markers",
+    "--strict-config", 
+    "--cov=src/crawailer",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "security: marks tests as security tests",
+    "performance: marks tests as performance tests",
+    "javascript: marks tests as JavaScript execution tests",
+]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+python_classes = ["Test*"]

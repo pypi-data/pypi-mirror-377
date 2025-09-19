@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Files Server</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-item {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-name {
+            font-weight: 500;
+        }
+        .file-size {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .download-btn {
+            background: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 Static Files Directory</h1>
+        <p>Collection of test files for download and processing scenarios.</p>
+        
+        <ul class="file-list">
+            <li class="file-item">
+                <div>
+                    <div class="file-name">📄 sample-document.pdf</div>
+                    <div class="file-size">2.3 MB</div>
+                </div>
+                <a href="/static/files/sample-document.pdf" class="download-btn">Download</a>
+            </li>
+            <li class="file-item">
+                <div>
+                    <div class="file-name">🖼️ test-image.jpg</div>
+                    <div class="file-size">856 KB</div>
+                </div>
+                <a href="/static/files/test-image.jpg" class="download-btn">Download</a>
+            </li>
+            <li class="file-item">
+                <div>
+                    <div class="file-name">📊 data-export.csv</div>
+                    <div class="file-size">143 KB</div>
+                </div>
+                <a href="/static/files/data-export.csv" class="download-btn">Download</a>
+            </li>
+            <li class="file-item">
+                <div>
+                    <div class="file-name">🎵 audio-sample.mp3</div>
+                    <div class="file-size">4.2 MB</div>
+                </div>
+                <a href="/static/files/audio-sample.mp3" class="download-btn">Download</a>
+            </li>
+            <li class="file-item">
+                <div>
+                    <div class="file-name">📦 archive.zip</div>
+                    <div class="file-size">1.8 MB</div>
+                </div>
+                <a href="/static/files/archive.zip" class="download-btn">Download</a>
+            </li>
+        </ul>
+    </div>
+    
+    <script>
+        window.testData = {
+            fileCount: 5,
+            totalSize: '9.3 MB',
+            fileTypes: ['pdf', 'jpg', 'csv', 'mp3', 'zip'],
+            generateTimestamp: () => new Date().toISOString()
+        };
+    </script>
+</body>
+</html>

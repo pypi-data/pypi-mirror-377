@@ -1,0 +1,108 @@
+# Crawailer Test Server Configuration
+# Serves controlled test content for reliable JavaScript API testing
+
+{
+    auto_https off
+}
+
+# Main test site hub
+localhost:8083, test.crawailer.local:8083 {
+    root * /srv
+    file_server browse
+    
+    # Enable CORS for testing
+    header {
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers *
+    }
+    
+    # Health check endpoint
+    respond /health "OK" 200
+    
+    # API endpoints for dynamic testing
+    handle /api/* {
+        header Content-Type "application/json"
+        respond /api/users `{"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}], "total": 2}`
+        respond /api/products `{"products": [{"id": 1, "name": "Widget", "price": 19.99}, {"id": 2, "name": "Gadget", "price": 29.99}], "total": 2}`
+        respond /api/slow `{"message": "Slow response", "timestamp": "{{now.Unix}}"}`
+        respond /api/error `{"error": "Simulated error", "code": 500}` 500
+    }
+    
+    # Static content with JavaScript
+    handle /static/* {
+        root * /srv/static
+        file_server
+    }
+    
+    # SPA routes - serve index.html for client-side routing
+    handle /spa/* {
+        root * /srv/spa
+        try_files {path} /index.html
+        file_server
+    }
+    
+    # E-commerce demo
+    handle /shop/* {
+        root * /srv/ecommerce
+        try_files {path} /index.html
+        file_server
+    }
+    
+    # News/blog demo
+    handle /news/* {
+        root * /srv/news
+        try_files {path} /index.html
+        file_server
+    }
+    
+    # Documentation sites
+    handle /docs/* {
+        root * /srv/docs
+        file_server
+    }
+    
+    # Default handler
+    handle {
+        root * /srv/hub
+        try_files {path} /index.html
+        file_server
+    }
+}
+
+# Subdomain for different scenarios
+spa.test.crawailer.local:8083 {
+    root * /srv/spa
+    file_server
+    try_files {path} /index.html
+}
+
+ecommerce.test.crawailer.local:8083 {
+    root * /srv/ecommerce
+    file_server
+    try_files {path} /index.html
+}
+
+docs.test.crawailer.local:8083 {
+    root * /srv/docs
+    file_server
+}
+
+api.test.crawailer.local:8083 {
+    header Content-Type "application/json"
+    
+    respond /v1/users `{"users": [{"id": 1, "name": "Alice", "email": "alice@test.com"}, {"id": 2, "name": "Bob", "email": "bob@test.com"}]}`
+    respond /v1/products `{"products": [{"id": 1, "name": "JavaScript Widget", "price": 25.99, "inStock": true}, {"id": 2, "name": "React Component", "price": 15.50, "inStock": false}]}`
+    respond /v1/analytics `{"pageViews": 1234, "uniqueVisitors": 567, "conversionRate": 0.125, "timestamp": "{{now.Unix}}"}`
+    
+    # Simulate different response times
+    respond /v1/fast `{"message": "Fast response", "latency": "< 100ms"}` 200
+    respond /v1/slow `{"message": "Slow response", "latency": "> 3s"}`
+    
+    # Error simulation
+    respond /v1/error `{"error": "Internal server error", "message": "Database connection failed"}` 500
+    respond /v1/timeout `{"error": "Request timeout"}` 408
+    
+    # Default 404
+    respond * `{"error": "Endpoint not found", "available": ["/v1/users", "/v1/products", "/v1/analytics"]}` 404
+}

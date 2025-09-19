@@ -1,0 +1,44 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: crawailer-test-server
+    restart: unless-stopped
+    ports:
+      - "8083:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./sites:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - caddy
+    labels:
+      - "caddy.route=/health"
+      - "caddy.route.respond=/health * 200"
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+
+  # Optional: Local DNS for easier testing
+  dnsmasq:
+    image: jpillora/dnsmasq
+    container_name: crawailer-dns
+    restart: unless-stopped
+    ports:
+      - "53:53/udp"
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - caddy
+    profiles:
+      - dns
+
+volumes:
+  caddy_data:
+    external: false
+  caddy_config:
+
+networks:
+  caddy:
+    external: false

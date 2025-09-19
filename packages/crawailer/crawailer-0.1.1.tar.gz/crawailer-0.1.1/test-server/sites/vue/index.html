@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js Test Application - Crawailer Testing</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .app-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 { 
+            color: #4FC08D; 
+            text-align: center; 
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .section h2 {
+            color: #4FC08D;
+            margin-top: 0;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: #4FC08D;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #369870;
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        input, textarea, select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4FC08D;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #4FC08D;
+            transition: all 0.3s ease;
+        }
+        
+        .todo-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .todo-item.completed {
+            opacity: 0.7;
+            border-left-color: #28a745;
+        }
+        
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #4FC08D;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4FC08D;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success { background: #28a745; }
+        .notification.warning { background: #ffc107; color: #333; }
+        .notification.error { background: #dc3545; }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .reactive-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .reactive-demo {
+                grid-template-columns: 1fr;
+            }
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="app-container">
+            <h1>🌿 Vue.js 3 Reactive Testing App</h1>
+            
+            <!-- Real-time Data Binding Section -->
+            <div class="section">
+                <h2>📊 Real-time Data Binding & Reactivity</h2>
+                <div class="reactive-demo">
+                    <div>
+                        <div class="form-group">
+                            <label>Your Name:</label>
+                            <input v-model="user.name" placeholder="Enter your name" data-testid="name-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Your Email:</label>
+                            <input v-model="user.email" type="email" placeholder="Enter your email" data-testid="email-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Theme:</label>
+                            <select v-model="settings.theme" data-testid="theme-select">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Live Preview:</h3>
+                        <p><strong>Name:</strong> {{ user.name || 'Anonymous' }}</p>
+                        <p><strong>Email:</strong> {{ user.email || 'Not provided' }}</p>
+                        <p><strong>Theme:</strong> {{ settings.theme }}</p>
+                        <p><strong>Character Count:</strong> {{ totalCharacters }}</p>
+                        <p><strong>Valid Email:</strong> {{ isValidEmail ? '✅' : '❌' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Todo List with Advanced State -->
+            <div class="section">
+                <h2>📝 Advanced Todo List (Vuex-style State)</h2>
+                <div class="controls">
+                    <input 
+                        v-model="newTodo" 
+                        @keyup.enter="addTodo" 
+                        placeholder="Add a new todo..." 
+                        data-testid="todo-input">
+                    <button @click="addTodo" :disabled="!newTodo.trim()" data-testid="add-todo-btn">
+                        Add Todo
+                    </button>
+                    <button @click="clearCompleted" :disabled="!hasCompletedTodos" data-testid="clear-completed-btn">
+                        Clear Completed ({{ completedCount }})
+                    </button>
+                    <button @click="toggleAllTodos" data-testid="toggle-all-btn">
+                        {{ allCompleted ? 'Mark All Incomplete' : 'Mark All Complete' }}
+                    </button>
+                </div>
+                
+                <div class="todo-list" data-testid="todo-list">
+                    <div 
+                        v-for="todo in filteredTodos" 
+                        :key="todo.id"
+                        :class="['todo-item', { completed: todo.completed }]"
+                        :data-testid="`todo-${todo.id}`">
+                        <input 
+                            type="checkbox" 
+                            v-model="todo.completed"
+                            :data-testid="`todo-checkbox-${todo.id}`">
+                        <span class="todo-text">{{ todo.text }}</span>
+                        <button @click="removeTodo(todo.id)" :data-testid="`remove-todo-${todo.id}`">❌</button>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button 
+                        v-for="filter in ['all', 'active', 'completed']" 
+                        :key="filter"
+                        @click="currentFilter = filter"
+                        :class="{ active: currentFilter === filter }"
+                        :data-testid="`filter-${filter}`">
+                        {{ filter.charAt(0).toUpperCase() + filter.slice(1) }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Components & Advanced Interactions -->
+            <div class="section">
+                <h2>🎛️ Dynamic Components & Interactions</h2>
+                <div class="controls">
+                    <button @click="incrementCounter" data-testid="increment-btn">
+                        Increment ({{ counter }})
+                    </button>
+                    <button @click="decrementCounter" data-testid="decrement-btn">
+                        Decrement
+                    </button>
+                    <button @click="resetCounter" data-testid="reset-btn">
+                        Reset
+                    </button>
+                    <button @click="simulateAsyncOperation" :disabled="isLoading" data-testid="async-btn">
+                        {{ isLoading ? 'Loading...' : 'Async Operation' }}
+                    </button>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ counter }}</div>
+                        <div>Counter Value</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ todos.length }}</div>
+                        <div>Total Todos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ completedCount }}</div>
+                        <div>Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ user.name.length }}</div>
+                        <div>Name Length</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watchers & Lifecycle Demo -->
+            <div class="section">
+                <h2>🔄 Watchers & Lifecycle</h2>
+                <p><strong>Component Mounted:</strong> {{ mountTime }}</p>
+                <p><strong>Updates Count:</strong> {{ updateCount }}</p>
+                <p><strong>Last Action:</strong> {{ lastAction }}</p>
+                <p><strong>Deep Watch Demo:</strong> {{ JSON.stringify(watchedData) }}</p>
+                <button @click="triggerDeepChange" data-testid="deep-change-btn">
+                    Trigger Deep Change
+                </button>
+            </div>
+        </div>
+
+        <!-- Notification System -->
+        <div 
+            v-if="notification.show"
+            :class="['notification', notification.type, { show: notification.show }]"
+            data-testid="notification">
+            {{ notification.message }}
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, watch, onMounted, onUpdated, nextTick } = Vue;
+
+        createApp({
+            setup() {
+                // Reactive data
+                const user = ref({
+                    name: '',
+                    email: ''
+                });
+                
+                const settings = ref({
+                    theme: 'light'
+                });
+                
+                const todos = ref([
+                    { id: 1, text: 'Learn Vue.js 3 Composition API', completed: true },
+                    { id: 2, text: 'Build reactive components', completed: false },
+                    { id: 3, text: 'Test with Crawailer', completed: false }
+                ]);
+                
+                const newTodo = ref('');
+                const currentFilter = ref('all');
+                const counter = ref(0);
+                const isLoading = ref(false);
+                const updateCount = ref(0);
+                const mountTime = ref('');
+                const lastAction = ref('Initial load');
+                
+                const watchedData = ref({
+                    nested: {
+                        value: 'initial',
+                        count: 0
+                    }
+                });
+                
+                const notification = ref({
+                    show: false,
+                    message: '',
+                    type: 'success'
+                });
+
+                // Computed properties
+                const totalCharacters = computed(() => {
+                    return user.value.name.length + user.value.email.length;
+                });
+                
+                const isValidEmail = computed(() => {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(user.value.email);
+                });
+                
+                const completedCount = computed(() => {
+                    return todos.value.filter(todo => todo.completed).length;
+                });
+                
+                const hasCompletedTodos = computed(() => completedCount.value > 0);
+                
+                const allCompleted = computed(() => {
+                    return todos.value.length > 0 && todos.value.every(todo => todo.completed);
+                });
+                
+                const filteredTodos = computed(() => {
+                    switch (currentFilter.value) {
+                        case 'active':
+                            return todos.value.filter(todo => !todo.completed);
+                        case 'completed':
+                            return todos.value.filter(todo => todo.completed);
+                        default:
+                            return todos.value;
+                    }
+                });
+
+                // Methods
+                const addTodo = () => {
+                    if (newTodo.value.trim()) {
+                        const newId = Math.max(...todos.value.map(t => t.id), 0) + 1;
+                        todos.value.push({
+                            id: newId,
+                            text: newTodo.value.trim(),
+                            completed: false
+                        });
+                        newTodo.value = '';
+                        lastAction.value = 'Added todo';
+                        showNotification('Todo added successfully!', 'success');
+                    }
+                };
+                
+                const removeTodo = (id) => {
+                    const index = todos.value.findIndex(todo => todo.id === id);
+                    if (index > -1) {
+                        todos.value.splice(index, 1);
+                        lastAction.value = 'Removed todo';
+                        showNotification('Todo removed!', 'warning');
+                    }
+                };
+                
+                const clearCompleted = () => {
+                    const beforeCount = todos.value.length;
+                    todos.value = todos.value.filter(todo => !todo.completed);
+                    const removedCount = beforeCount - todos.value.length;
+                    lastAction.value = `Cleared ${removedCount} completed todos`;
+                    showNotification(`Cleared ${removedCount} completed todos`, 'success');
+                };
+                
+                const toggleAllTodos = () => {
+                    const newStatus = !allCompleted.value;
+                    todos.value.forEach(todo => {
+                        todo.completed = newStatus;
+                    });
+                    lastAction.value = newStatus ? 'Marked all complete' : 'Marked all incomplete';
+                    showNotification(lastAction.value, 'success');
+                };
+                
+                const incrementCounter = () => {
+                    counter.value++;
+                    lastAction.value = 'Incremented counter';
+                };
+                
+                const decrementCounter = () => {
+                    counter.value--;
+                    lastAction.value = 'Decremented counter';
+                };
+                
+                const resetCounter = () => {
+                    counter.value = 0;
+                    lastAction.value = 'Reset counter';
+                    showNotification('Counter reset!', 'success');
+                };
+                
+                const simulateAsyncOperation = async () => {
+                    isLoading.value = true;
+                    lastAction.value = 'Started async operation';
+                    
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    isLoading.value = false;
+                    lastAction.value = 'Completed async operation';
+                    showNotification('Async operation completed!', 'success');
+                };
+                
+                const triggerDeepChange = () => {
+                    watchedData.value.nested.count++;
+                    watchedData.value.nested.value = `Updated ${watchedData.value.nested.count} times`;
+                    lastAction.value = 'Triggered deep change';
+                };
+                
+                const showNotification = (message, type = 'success') => {
+                    notification.value = {
+                        show: true,
+                        message,
+                        type
+                    };
+                    
+                    setTimeout(() => {
+                        notification.value.show = false;
+                    }, 3000);
+                };
+
+                // Watchers
+                watch(user, (newUser, oldUser) => {
+                    console.log('User changed:', { newUser, oldUser });
+                }, { deep: true });
+                
+                watch(counter, (newVal, oldVal) => {
+                    console.log(`Counter changed from ${oldVal} to ${newVal}`);
+                });
+                
+                watch(watchedData, (newData) => {
+                    console.log('Deep watched data changed:', newData);
+                }, { deep: true });
+
+                // Lifecycle hooks
+                onMounted(() => {
+                    mountTime.value = new Date().toLocaleTimeString();
+                    console.log('Vue component mounted');
+                    
+                    // Simulate initial data load
+                    setTimeout(() => {
+                        showNotification('Vue app loaded successfully!', 'success');
+                    }, 500);
+                });
+                
+                onUpdated(() => {
+                    updateCount.value++;
+                });
+
+                return {
+                    user,
+                    settings,
+                    todos,
+                    newTodo,
+                    currentFilter,
+                    counter,
+                    isLoading,
+                    updateCount,
+                    mountTime,
+                    lastAction,
+                    watchedData,
+                    notification,
+                    totalCharacters,
+                    isValidEmail,
+                    completedCount,
+                    hasCompletedTodos,
+                    allCompleted,
+                    filteredTodos,
+                    addTodo,
+                    removeTodo,
+                    clearCompleted,
+                    toggleAllTodos,
+                    incrementCounter,
+                    decrementCounter,
+                    resetCounter,
+                    simulateAsyncOperation,
+                    triggerDeepChange,
+                    showNotification
+                };
+            }
+        }).mount('#app');
+
+        // Global test data for Crawailer JavaScript API testing
+        window.testData = {
+            framework: 'vue',
+            version: Vue.version,
+            
+            // Component analysis
+            getComponentInfo: () => {
+                const app = document.querySelector('#app');
+                const inputs = app.querySelectorAll('input');
+                const buttons = app.querySelectorAll('button');
+                const reactiveElements = app.querySelectorAll('[data-testid]');
+                
+                return {
+                    totalInputs: inputs.length,
+                    totalButtons: buttons.length,
+                    testableElements: reactiveElements.length,
+                    hasVueDevtools: typeof window.__VUE_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined'
+                };
+            },
+            
+            // State access
+            getAppState: () => {
+                // Access Vue app instance data
+                const appInstance = document.querySelector('#app').__vueParentComponent;
+                if (appInstance) {
+                    return {
+                        userState: appInstance.setupState?.user,
+                        todosCount: appInstance.setupState?.todos?.length || 0,
+                        counterValue: appInstance.setupState?.counter || 0,
+                        isLoading: appInstance.setupState?.isLoading || false
+                    };
+                }
+                return { error: 'Could not access Vue app state' };
+            },
+            
+            // User interaction simulation
+            simulateUserAction: async (action) => {
+                const actions = {
+                    'add-todo': () => {
+                        const input = document.querySelector('[data-testid="todo-input"]');
+                        const button = document.querySelector('[data-testid="add-todo-btn"]');
+                        input.value = `Test todo ${Date.now()}`;
+                        input.dispatchEvent(new Event('input'));
+                        button.click();
+                        return 'Todo added';
+                    },
+                    'increment-counter': () => {
+                        document.querySelector('[data-testid="increment-btn"]').click();
+                        return 'Counter incremented';
+                    },
+                    'change-theme': () => {
+                        const select = document.querySelector('[data-testid="theme-select"]');
+                        select.value = 'dark';
+                        select.dispatchEvent(new Event('change'));
+                        return 'Theme changed to dark';
+                    },
+                    'fill-form': () => {
+                        const nameInput = document.querySelector('[data-testid="name-input"]');
+                        const emailInput = document.querySelector('[data-testid="email-input"]');
+                        nameInput.value = 'Test User';
+                        emailInput.value = 'test@example.com';
+                        nameInput.dispatchEvent(new Event('input'));
+                        emailInput.dispatchEvent(new Event('input'));
+                        return 'Form filled';
+                    },
+                    'async-operation': async () => {
+                        document.querySelector('[data-testid="async-btn"]').click();
+                        // Wait for operation to complete
+                        await new Promise(resolve => {
+                            const checkComplete = () => {
+                                const btn = document.querySelector('[data-testid="async-btn"]');
+                                if (!btn.disabled) {
+                                    resolve();
+                                } else {
+                                    setTimeout(checkComplete, 100);
+                                }
+                            };
+                            checkComplete();
+                        });
+                        return 'Async operation completed';
+                    }
+                };
+                
+                if (actions[action]) {
+                    return await actions[action]();
+                }
+                throw new Error(`Unknown action: ${action}`);
+            },
+            
+            // Wait for Vue reactivity updates
+            waitForUpdate: async () => {
+                await Vue.nextTick();
+                return 'Vue reactivity updated';
+            },
+            
+            // Get reactive data
+            getReactiveData: () => {
+                return {
+                    totalCharacters: document.querySelector('#app').__vueParentComponent?.setupState?.totalCharacters || 0,
+                    isValidEmail: document.querySelector('#app').__vueParentComponent?.setupState?.isValidEmail || false,
+                    completedCount: document.querySelector('#app').__vueParentComponent?.setupState?.completedCount || 0,
+                    filteredTodosCount: document.querySelector('#app').__vueParentComponent?.setupState?.filteredTodos?.length || 0
+                };
+            },
+            
+            // Detect Vue-specific features
+            detectVueFeatures: () => {
+                return {
+                    hasCompositionAPI: typeof Vue.ref !== 'undefined',
+                    hasReactivity: typeof Vue.reactive !== 'undefined',
+                    hasWatchers: typeof Vue.watch !== 'undefined',
+                    hasComputed: typeof Vue.computed !== 'undefined',
+                    hasLifecycleHooks: typeof Vue.onMounted !== 'undefined',
+                    vueVersion: Vue.version,
+                    isVue3: Vue.version.startsWith('3'),
+                    hasDevtools: typeof window.__VUE_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined'
+                };
+            },
+            
+            // Performance measurement
+            measureReactivity: async () => {
+                const start = performance.now();
+                
+                // Trigger multiple reactive updates
+                for (let i = 0; i < 100; i++) {
+                    document.querySelector('[data-testid="increment-btn"]').click();
+                }
+                
+                await Vue.nextTick();
+                const end = performance.now();
+                
+                return {
+                    updateTime: end - start,
+                    updatesPerSecond: 100 / ((end - start) / 1000)
+                };
+            },
+            
+            // Complex workflow simulation
+            simulateComplexWorkflow: async () => {
+                const steps = [];
+                
+                // Step 1: Fill form
+                const nameInput = document.querySelector('[data-testid="name-input"]');
+                nameInput.value = 'Workflow Test User';
+                nameInput.dispatchEvent(new Event('input'));
+                steps.push('Form filled');
+                
+                // Step 2: Add multiple todos
+                for (let i = 1; i <= 3; i++) {
+                    const input = document.querySelector('[data-testid="todo-input"]');
+                    input.value = `Workflow Task ${i}`;
+                    input.dispatchEvent(new Event('input'));
+                    document.querySelector('[data-testid="add-todo-btn"]').click();
+                }
+                steps.push('Multiple todos added');
+                
+                // Step 3: Complete first todo
+                await Vue.nextTick();
+                const firstCheckbox = document.querySelector('[data-testid="todo-checkbox-4"]');
+                if (firstCheckbox) {
+                    firstCheckbox.click();
+                    steps.push('First todo completed');
+                }
+                
+                // Step 4: Increment counter
+                for (let i = 0; i < 5; i++) {
+                    document.querySelector('[data-testid="increment-btn"]').click();
+                }
+                steps.push('Counter incremented 5 times');
+                
+                // Step 5: Change filter
+                document.querySelector('[data-testid="filter-completed"]').click();
+                steps.push('Filter changed to completed');
+                
+                await Vue.nextTick();
+                
+                return {
+                    stepsCompleted: steps,
+                    finalState: window.testData.getAppState()
+                };
+            }
+        };
+
+        // Global error handler for testing
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            window.lastError = {
+                message: event.error.message,
+                stack: event.error.stack,
+                timestamp: new Date().toISOString()
+            };
+        });
+
+        // Console log for debugging
+        console.log('Vue.js 3 Test Application loaded successfully');
+        console.log('Available test methods:', Object.keys(window.testData));
+        console.log('Vue version:', Vue.version);
+    </script>
+</body>
+</html>

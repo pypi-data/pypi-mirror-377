@@ -1,0 +1,2 @@
+class ServiceNetworkError(Exception):
+    pass

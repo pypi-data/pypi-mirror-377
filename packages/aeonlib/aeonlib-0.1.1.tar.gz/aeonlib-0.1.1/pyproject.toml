@@ -1,0 +1,56 @@
+[project]
+name = "aeonlib"
+version = "0.1.1"
+description = "A suite of modules to enable TDA/MMA observations"
+readme = "README.md"
+authors = [{ name = "Austin Riba", email = "ariba@lco.global" }]
+requires-python = ">=3.12"
+dependencies = [
+    "astropy>=7.0.1",
+    "httpx>=0.28.1",
+    "pydantic>=2.11.1",
+    "pydantic-settings>=2.9.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+codegen = [
+    "jinja2>=3.1.6",
+    "textcase>=0.2.1",
+]
+
+dev = ["pytest>=8.3.5"]
+
+[project.optional-dependencies]
+eso = ["p2api>=1.0.10"]
+lt = [
+    "lxml>=5.4.0",
+    "lxml-stubs>=0.5.1",
+    "suds>=1.2.0",
+]
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib",  "-m not online"]
+markers = [
+    "online: Marks tests that run online, for example, validating schemas",
+    "side_effect: Online tests that have side effects such as creating observation requests",
+]
+log_cli = true
+log_cli_format = "%(levelname)s [%(name)s %(filename)s:%(lineno)s %(funcName)s()] %(message)s"
+
+[tool.ruff.lint]
+exclude = ["*.ipynb"]
+
+[tool.ruff.format]
+exclude = [
+    "*.ipynb",
+    "src/aeonlib/ocs/*/instruments.py",
+]
+
+[tool.pyright]
+reportExplicitAny = false
+reportAny = false
+reportMissingTypeStubs = false

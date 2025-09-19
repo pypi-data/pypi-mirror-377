@@ -1,0 +1,135 @@
+# -*- coding: UTF-8 -*-
+"""
+高性能模式配置模板
+针对大规模高并发优化
+"""
+
+# ============================== 项目基本信息 ==============================
+PROJECT_NAME = '{{project_name}}'
+
+# ============================== 高性能运行模式 ==============================
+# 运行模式：'standalone'(单机), 'distributed'(分布式), 'auto'(自动检测)
+RUN_MODE = 'standalone'  # 单机模式 - 适用于开发和小规模数据采集
+
+# 并发配置
+CONCURRENCY = 32  # 高并发数以充分利用系统资源
+DOWNLOAD_DELAY = 0.1  # 极小延迟以提高吞吐量
+RANDOMNESS = False  # 禁用随机延迟以保证性能
+
+# ============================== 队列配置 ==============================
+
+# 队列类型：'auto'（自动选择）, 'memory'（内存队列）, 'redis'（分布式队列）
+QUEUE_TYPE = 'auto'  # 自动检测，如果Redis可用则使用Redis队列
+SCHEDULER_MAX_QUEUE_SIZE = 5000
+SCHEDULER_QUEUE_NAME = f'crawlo:{{project_name}}:queue:requests'
+QUEUE_MAX_RETRIES = 3
+QUEUE_TIMEOUT = 300
+
+# ============================== 去重过滤配置 ==============================
+
+# 高性能模式下，如果Redis可用则使用Redis去重，否则使用内存去重
+DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.redis_dedup_pipeline.RedisDedupPipeline'
+FILTER_CLASS = 'crawlo.filters.aioredis_filter.AioRedisFilter'
+
+# --- Redis 配置（用于分布式去重和队列） ---
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379
+REDIS_PASSWORD = ''  # 如果有密码，请填写
+
+# 根据是否有密码生成 URL
+if REDIS_PASSWORD:
+    REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0'
+else:
+    REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+
+# Redis key配置已移至各组件中，使用统一的命名规范
+# crawlo:{project_name}:filter:fingerprint (请求去重)
+# crawlo:{project_name}:item:fingerprint (数据项去重)
+# crawlo:{project_name}:queue:requests (请求队列)
+# crawlo:{project_name}:queue:processing (处理中队列)
+# crawlo:{project_name}:queue:failed (失败队列)
+
+REDIS_TTL = 0
+CLEANUP_FP = 0
+FILTER_DEBUG = True
+DECODE_RESPONSES = True
+
+# ============================== 中间件配置 ==============================
+
+MIDDLEWARES = [
+    # === 请求预处理阶段 ===
+    'crawlo.middleware.request_ignore.RequestIgnoreMiddleware',
+    'crawlo.middleware.download_delay.DownloadDelayMiddleware',
+    'crawlo.middleware.default_header.DefaultHeaderMiddleware',
+    'crawlo.middleware.proxy.ProxyMiddleware',
+    'crawlo.middleware.offsite.OffsiteMiddleware', 
+    
+    # === 响应处理阶段 ===
+    'crawlo.middleware.retry.RetryMiddleware',
+    'crawlo.middleware.response_code.ResponseCodeMiddleware',
+    'crawlo.middleware.response_filter.ResponseFilterMiddleware',
+]
+
+# ============================== 数据管道配置 ==============================
+
+# 数据处理管道（启用的存储方式）
+PIPELINES = [
+    'crawlo.pipelines.console_pipeline.ConsolePipeline',
+    # '{{project_name}}.pipelines.DatabasePipeline',        # 自定义数据库管道
+    # 'crawlo.pipelines.mysql_pipeline.AsyncmyMySQLPipeline',  # MySQL 存储
+    # 'crawlo.pipelines.mongo_pipeline.MongoPipeline',      # MongoDB 存储
+]
+
+# 明确添加默认去重管道到管道列表开头
+PIPELINES.insert(0, DEFAULT_DEDUP_PIPELINE)
+
+# ============================== 扩展组件 ==============================
+
+EXTENSIONS = [
+    'crawlo.extension.log_interval.LogIntervalExtension',
+    'crawlo.extension.log_stats.LogStats',
+    'crawlo.extension.logging_extension.CustomLoggerExtension',
+    # 'crawlo.extension.memory_monitor.MemoryMonitorExtension',  # 内存监控
+    # 'crawlo.extension.request_recorder.RequestRecorderExtension',  # 请求记录
+    # 'crawlo.extension.performance_profiler.PerformanceProfilerExtension',  # 性能分析
+    # 'crawlo.extension.health_check.HealthCheckExtension',  # 健康检查
+]
+
+# ============================== 日志配置 ==============================
+
+LOG_LEVEL = 'INFO'
+STATS_DUMP = True
+LOG_FILE = f'logs/{{project_name}}.log'
+LOG_FORMAT = '%(asctime)s - [%(name)s] - %(levelname)s： %(message)s'
+LOG_ENCODING = 'utf-8'
+
+# ============================== 性能优化配置 ==============================
+
+# 连接池配置
+CONNECTION_POOL_LIMIT = 100
+DOWNLOAD_MAXSIZE = 10 * 1024 * 1024    # 10MB
+DOWNLOAD_WARN_SIZE = 1024 * 1024       # 1MB
+
+# 下载器优化配置
+DOWNLOADER_HEALTH_CHECK = True
+HEALTH_CHECK_INTERVAL = 30
+
+# 请求统计配置
+REQUEST_STATS_ENABLED = True
+STATS_RESET_ON_START = False
+
+# HttpX 下载器专用配置
+HTTPX_HTTP2 = True
+HTTPX_FOLLOW_REDIRECTS = True
+
+# AioHttp 下载器专用配置
+AIOHTTP_AUTO_DECOMPRESS = True
+AIOHTTP_FORCE_CLOSE = False
+
+# 通用优化配置
+CONNECTION_TTL_DNS_CACHE = 300
+CONNECTION_KEEPALIVE_TIMEOUT = 15
+
+# 性能监控
+ENABLE_PERFORMANCE_MONITORING = True
+MEMORY_USAGE_WARNING_THRESHOLD = 800  # MB

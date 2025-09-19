@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "paranet_agent"
+dynamic = ["version"]
+description = "Paranet Agent SDK"
+authors = [{ name = "Otonoma" }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "aiohttp",
+    "strawberry-graphql",
+    "python-on-whales",
+    "pyyaml",
+    "requests"
+]
+
+[project.scripts]
+
+[tool.hatch.version]
+path = "paranet_agent/version.py"
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple/"
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"

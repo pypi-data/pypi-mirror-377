@@ -1,0 +1,22 @@
+loaders:
+- type: python
+  search_path: [../]
+  modules:
+  - paranet_agent.actor
+  - paranet_agent.connector
+renderer:
+  type: docusaurus
+  markdown:
+    render_toc: false
+    signature_code_block: false
+    render_module_header: false
+    header_level_by_type:
+      Module: 1
+      Class: 2
+      Method: 3
+      Function: 2
+      Variable: 4
+  docs_base_path: .
+  relative_output_path: sdk
+  relative_sidebar_path: sidebar.json
+  sidebar_top_level_label: API

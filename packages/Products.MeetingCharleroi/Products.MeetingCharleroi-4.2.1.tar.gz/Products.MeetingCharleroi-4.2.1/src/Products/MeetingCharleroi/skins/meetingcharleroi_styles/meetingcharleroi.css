@@ -1,0 +1,60 @@
+/* Colors on states */
+/* Items */
+
+.state-proposed_to_refadmin {
+    color: DarkOrange !important;
+}
+
+/* listType 'depose' */
+table.listing tr[class][class] td.meeting_item_listType_depose {
+    background-color: DarkOrchid;
+}
+span.item_listType_depose,
+div.tooltipster-content a.item_listType_depose:link,
+div.tooltipster-content a.item_listType_depose:visited {
+    color: DarkOrchid;
+}
+
+/* listType 'lateextracollege' */
+table.listing tr[class][class] td.meeting_item_listType_lateextracollege {
+    background: repeating-linear-gradient(
+    45deg,
+    red,
+    red 10px,
+    lightgrey 10px,
+    lightgrey 20px);
+}
+
+span.item_listType_lateextracollege,
+div.tooltipster-content a.item_listType_lateextracollege:link,
+div.tooltipster-content a.item_listType_lateextracollege:visited {
+    color: red;
+}
+
+/* listType 'communication' */
+table.listing tr[class][class] td.meeting_item_listType_communication {
+    background: repeating-linear-gradient(
+    45deg,
+    blue,
+    blue 10px,
+    lightgrey 10px,
+    lightgrey 20px);
+}
+span.item_listType_communication,
+div.tooltipster-content a.item_listType_communication:link,
+div.tooltipster-content a.item_listType_communication:visited {
+    color: blue;
+}
+
+/* highlight special categories for MeetingManagers */
+body.template-meeting_view.userrole-manager .td_cell_proposition-de-motion,
+body.template-meeting_view.userrole-manager .td_cell_proposes-par-un-conseiller,
+body.template-meeting_view.userrole-manager .td_cell_interventions,
+body.template-meeting_view.userrole-manager .td_cell_questions-actualite,
+body.template-meeting_view.userrole-meetingmanager .td_cell_proposition-de-motion,
+body.template-meeting_view.userrole-meetingmanager .td_cell_proposes-par-un-conseiller,
+body.template-meeting_view.userrole-meetingmanager .td_cell_interventions,
+body.template-meeting_view.userrole-meetingmanager .td_cell_questions-actualite {
+    color: red;
+    font-weight: bold;
+}

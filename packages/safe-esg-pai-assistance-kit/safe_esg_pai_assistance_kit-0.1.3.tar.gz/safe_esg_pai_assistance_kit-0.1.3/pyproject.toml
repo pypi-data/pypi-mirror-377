@@ -1,0 +1,21 @@
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "safe-esg-pai-assistance-kit"
+version = "0.1.3"
+description = "Minimal tools for SFDR PAI interpolation & diagnostics"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "scikit-learn>=1.2",
+  "statsmodels>=0.14",
+  "matplotlib>=3.7"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

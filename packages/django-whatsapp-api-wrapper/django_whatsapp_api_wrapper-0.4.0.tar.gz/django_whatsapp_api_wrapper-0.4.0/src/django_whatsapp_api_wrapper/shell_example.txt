@@ -1,0 +1,25 @@
+#############################
+#### SEND TEMPLATE ##########
+#############################
+
+from django_whatsapp_api_wrapper import *
+wp = WhatsApp()
+
+language = {"code": "pt_BR"}
+template = {"name": "opa", "language": language}
+data = template
+
+m = wp.build_message(to = "", type = "template", data=data)
+m.send()
+
+
+#############################
+#### SEND MESSAGE ###########
+#############################
+
+from django_whatsapp_api_wrapper import *
+wp = WhatsApp()
+
+data = {"preview_url": False, "body": "será que só funciona?"}
+m3 = wp.build_message(to = "", type = "text", data=data)
+m3.send()

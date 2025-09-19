@@ -1,0 +1,909 @@
+- job:
+    name: manila-tempest-plugin-base
+    abstract: true
+    description: Base job for devstack/tempest based manila jobs.
+    parent: devstack-tempest
+    timeout: 10800
+    required-projects: &manila-tempest-required-projects
+      - openstack/manila
+      - openstack/manila-tempest-plugin
+      - openstack/python-manilaclient
+      - openstack/tempest
+    irrelevant-files: &irrelevant-files
+      - ^(test-|)requirements.txt$
+      - ^.*\.rst$
+      - ^api-ref/.*$
+      - ^doc/.*$
+      - ^manila/hacking/.*$
+      - ^manila/tests/.*$
+      - ^\.pre-commit-config\.yaml$
+      - ^releasenotes/.*$
+      - ^setup.cfg$
+      - ^tools/.*$
+      - ^tox.ini$
+    vars: &manila-tempest-base-vars
+      tox_envlist: all
+      tempest_test_regex: manila_tempest_tests
+      tempest_concurrency: 8
+      tempest_plugins:
+        - manila-tempest-plugin
+      devstack_plugins:
+        manila: https://opendev.org/openstack/manila
+      devstack_services:
+        cinder: false
+        s-account: false
+        s-container: false
+        s-object: false
+        s-proxy: false
+        horizon: false
+        tls-proxy: true
+      devstack_localrc:
+        USE_PYTHON3: true
+        MYSQL_REDUCE_MEMORY: True
+        MANILA_USE_DOWNGRADE_MIGRATIONS: true
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
+        MANILA_ALLOW_NAS_SERVER_PORTS_ON_HOST: true
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True'
+        MANILA_CONFIGURE_DEFAULT_TYPES: true
+        MANILA_SHARE_MIGRATION_PERIOD_TASK_INTERVAL: 1
+        MANILA_SERVER_MIGRATION_PERIOD_TASK_INTERVAL: 10
+        MANILA_REPLICA_STATE_UPDATE_INTERVAL: 10
+
+- job:
+    name: manila-tempest-plugin-ipv6-base
+    abstract: true
+    description: |
+      Base job for devstack/tempest based manila jobs in a 4+6 (dual-stack)
+      devstack environment with IPv6 control plane endpoints.
+    parent: devstack-tempest-ipv6
+    timeout: 10800
+    irrelevant-files: *irrelevant-files
+    required-projects: *manila-tempest-required-projects
+    vars: *manila-tempest-base-vars
+
+- job:
+    name: manila-tempest-plugin-standalone-base
+    abstract: true
+    description: |
+      Base job for running a minimal devstack with tempest based manila jobs.
+    timeout: 3600
+    parent: devstack-minimal
+    irrelevant-files: *irrelevant-files
+    roles:
+      - zuul: opendev.org/openstack/devstack
+      - zuul: opendev.org/openstack/tempest
+    required-projects:
+      - openstack/keystone
+      - openstack/manila
+      - openstack/manila-tempest-plugin
+      - openstack/python-manilaclient
+      - openstack/tempest
+    run: playbooks/manila-tempest-plugin-standalone/run.yaml
+    post-run: playbooks/manila-tempest-plugin-standalone/post.yaml
+    vars:
+      tox_envlist: all
+      tempest_test_regex: manila_tempest_tests.tests.api
+      tempest_concurrency: 16
+      tempest_plugins:
+        - manila-tempest-plugin
+      devstack_plugins:
+        manila: https://opendev.org/openstack/manila
+      test_results_stage_name: test_results
+      zuul_copy_output:
+        '{{ devstack_base_dir }}/tempest/etc/tempest.conf': logs
+        '{{ devstack_base_dir }}/tempest/etc/accounts.yaml': logs
+        '{{ devstack_base_dir }}/tempest/tempest.log': logs
+        '{{ stage_dir }}/{{ test_results_stage_name }}.subunit': logs
+        '{{ stage_dir }}/{{ test_results_stage_name }}.html': logs
+        '{{ stage_dir }}/stackviz': logs
+      extensions_to_txt:
+        conf: true
+        log: true
+        yaml: true
+        yml: true
+      devstack_localrc:
+        USE_PYTHON3: true
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
+        MANILA_SERVICE_IMAGE_ENABLED: false
+        MANILA_SHARE_MIGRATION_PERIOD_TASK_INTERVAL: 1
+        MANILA_SERVER_MIGRATION_PERIOD_TASK_INTERVAL: 10
+        MANILA_REPLICA_STATE_UPDATE_INTERVAL: 10
+      devstack_services:
+        tls-proxy: true
+        key: true
+        tempest: true
+
+- job:
+    name: manila-tempest-plugin-zfsonlinux-base
+    abstract: true
+    description: Test ZFSOnLinux multibackend (DHSS=False) with postgresql db
+    parent: manila-tempest-plugin-base
+    vars:
+      tempest_test_regex: '(^manila_tempest_tests.tests)(?=.*\[.*\bbackend\b.*\])'
+      devstack_localrc:
+        SHARE_DRIVER: manila.share.drivers.zfsonlinux.driver.ZFSonLinuxShareDriver
+        MANILA_ENABLED_BACKENDS: london,paris
+        MANILA_BACKEND1_CONFIG_GROUP_NAME: london
+        MANILA_BACKEND2_CONFIG_GROUP_NAME: paris
+        MANILA_SHARE_BACKEND1_NAME: LONDON
+        MANILA_SHARE_BACKEND2_NAME: PARIS
+        MANILA_OPTGROUP_london_driver_handles_share_servers: false
+        MANILA_OPTGROUP_paris_driver_handles_share_servers: false
+        MANILA_SHARE_MIGRATION_PERIOD_TASK_INTERVAL: 1
+        MANILA_REPLICA_STATE_UPDATE_INTERVAL: 60
+        MANILA_ZFSONLINUX_SERVICE_IP: 127.0.0.1
+        MANILA_ZFSONLINUX_USE_SSH: true
+        MANILA_USE_SCHEDULER_CREATING_SHARE_FROM_SNAPSHOT: true
+      devstack_services:
+        mysql: false
+        postgresql: true
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              default_share_type_name: default
+              run_driver_assisted_migration_tests: true
+              run_host_assisted_migration_tests: true
+              run_replication_tests: true
+              run_manage_unmanage_snapshot_tests: true
+              run_manage_unmanage_tests: true
+              run_multiple_share_replicas_tests: false
+              run_create_share_from_snapshot_in_another_pool_or_az_tests: true
+              backend_replication_type: readable
+              enable_protocols: nfs
+              capability_storage_protocol: NFS
+              build_timeout: 180
+              enable_ip_rules_for_protocols: nfs
+              multitenancy_enabled: False
+              backend_names: LONDON,PARIS
+              multi_backend: true
+              image_password: manila
+              dd_input_file: /dev/urandom
+
+- job:
+    name: manila-tempest-plugin-zfsonlinux
+    description: Test ZFSOnLinux multibackend (DHSS=False) with postgresql db
+    parent: manila-tempest-plugin-zfsonlinux-base
+    # https://bugs.launchpad.net/manila/+bug/2087192
+    nodeset: openstack-single-node-jammy
+    branches: &ubuntu_jammy_test_image_branches
+      regex: ^stable/(yoga|xena|wallaby|victoria|ussuri)$
+      negate: true
+
+- job:
+    name: manila-tempest-plugin-lvm-base
+    description: |
+      Test LVM multibackend (DHSS=False) in a 4+6 (dual-stack) devstack
+      environment with IPv6 control plane endpoints.
+    parent: manila-tempest-plugin-ipv6-base
+    abstract: true
+    # TODO(carloss): enable neutron-dynamic-routing setup when LP #1998489
+    # is fixed.
+    vars:
+      tempest_test_regex: '(^manila_tempest_tests.tests)(?=.*\[.*\bbackend\b.*\])'
+      devstack_services: &devstack-with-ovs
+        # NOTE(gouthamr): LP#1940324 prevents bgp usage with OVN, disable OVN
+        br-ex-tcpdump: false
+        br-int-flows: false
+        ovn-controller: false
+        ovn-northd: false
+        ovs-vswitchd: false
+        ovsdb-server: false
+        q-ovn-metadata-agent: false
+        # Neutron services
+        neutron-local-ip-static: true
+        q-agt: true
+        q-dhcp: true
+        q-l3: true
+        q-meta: true
+        q-metering: true
+        openstack-cli-server: true
+      devstack_localrc:
+        # NOTE(gouthamr): LP#1940324 prevents bgp usage with OVN, use OVS
+        Q_AGENT: openvswitch
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan
+        Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+        SHARE_DRIVER: manila.share.drivers.lvm.LVMShareDriver
+        MANILA_ENABLED_BACKENDS: london,paris
+        MANILA_BACKEND1_CONFIG_GROUP_NAME: london
+        MANILA_BACKEND2_CONFIG_GROUP_NAME: paris
+        MANILA_SHARE_BACKEND1_NAME: LONDON
+        MANILA_SHARE_BACKEND2_NAME: PARIS
+        MANILA_OPTGROUP_london_driver_handles_share_servers: false
+        MANILA_OPTGROUP_paris_driver_handles_share_servers: false
+        SHARE_BACKING_FILE_SIZE: 32000M
+        MANILA_SHARE_MIGRATION_PERIOD_TASK_INTERVAL: 1
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True revert_to_snapshot_support=True mount_snapshot_support=True'
+        MANILA_SETUP_IPV6: true
+        NEUTRON_CREATE_INITIAL_NETWORKS: false
+        MANILA_RESTORE_IPV6_DEFAULT_ROUTE: false
+      # TODO(carloss): enable neutron-dynamic-routing setup when LP #1998489
+      # is fixed.
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              default_share_type_name: default
+              run_ipv6_tests: true
+              run_mount_snapshot_tests: true
+              run_host_assisted_migration_tests: true
+              run_shrink_tests: false
+              run_revert_to_snapshot_tests: true
+              enable_user_rules_for_protocols: cifs
+              enable_ip_rules_for_protocols: nfs
+              multitenancy_enabled: False
+              backend_names: LONDON,PARIS
+              multi_backend: true
+              image_password: manila
+
+- job:
+    name: manila-tempest-plugin-lvm
+    description: |
+      Test LVM multibackend (DHSS=False) in a 4+6 (dual-stack) devstack
+      environment with IPv6 control plane endpoints.
+    branches: *ubuntu_jammy_test_image_branches
+    parent: manila-tempest-plugin-lvm-base
+    vars:
+      # TODO(gouthamr): some tests are disabled due to bugs
+      # IPv6 Tests: https://bugs.launchpad.net/manila/+bug/1998489
+      # drop these overrides once we address that bug.
+      tempest_exclude_regex: '(^manila_tempest_tests.tests.scenario.*IPv6.*)'
+      devstack_localrc:
+        MANILA_SETUP_IPV6: false
+        NEUTRON_CREATE_INITIAL_NETWORKS: true
+
+
+# TODO(gmann): As per the 2025.1 testing runtime, we need to run at least
+# one job on jammy. This job can be removed as per the future testing
+# runtime (whenever we start testing Ubuntu 26.04 as default version).
+- job:
+    name: manila-tempest-plugin-lvm-jammy
+    description: This is integrated job testing on Ubuntu jammy(22.04)
+    parent: manila-tempest-plugin-lvm
+    nodeset: openstack-single-node-jammy
+    branches:
+      - stable/2025.1
+
+- job:
+    name: manila-tempest-plugin-container
+    description: |
+      Test the container driver multibackend (DHSS=True) with CIFS
+      and postgresql db. API only, in a minimal devstack
+    parent: manila-tempest-plugin-base
+    vars:
+      tempest_test_regex: manila_tempest_tests.tests.api
+      devstack_localrc:
+        SHARE_DRIVER: manila.share.drivers.container.driver.ContainerShareDriver
+        MANILA_SERVICE_IMAGE_ENABLED: false
+        MANILA_ENABLED_BACKENDS: london,paris
+        MANILA_BACKEND1_CONFIG_GROUP_NAME: london
+        MANILA_BACKEND2_CONFIG_GROUP_NAME: paris
+        MANILA_SHARE_BACKEND1_NAME: LONDON
+        MANILA_SHARE_BACKEND2_NAME: PARIS
+        MANILA_OPTGROUP_london_driver_handles_share_servers: true
+        MANILA_OPTGROUP_paris_driver_handles_share_servers: true
+        SHARE_BACKING_FILE_SIZE: 64000M
+        MANILA_CONFIGURE_DEFAULT_TYPES: false
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=false'
+        TEMPEST_USE_TEST_ACCOUNTS: true
+      devstack_services:
+        mysql: false
+        postgresql: true
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              enable_ip_rules_for_protocols: ""
+              run_share_group_tests: false
+              run_manage_unmanage_tests: true
+              run_snapshot_tests: false
+              run_shrink_tests: false
+              enable_user_rules_for_protocols: cifs
+              enable_protocols: cifs
+              capability_storage_protocol: CIFS
+              multitenancy_enabled: true
+              backend_names: LONDON,PARIS
+              multi_backend: true
+              run_share_server_migration_tests: true
+              run_share_server_multiple_subnet_tests: true
+              run_network_allocation_update_tests: true
+
+- job:
+    name: manila-tempest-plugin-generic-base
+    abstract: true
+    description: |
+      Test the generic driver multibackend (DHSS=True) with NFS and CIFS
+    parent: manila-tempest-plugin-base
+    vars:
+      tempest_test_regex: '(^manila_tempest_tests.tests.api)(?=.*\[.*\bbackend\b.*\])'
+      # The generic driver uses nova VMs as share servers; running with a
+      # high concurrency could starve the driver of RAM/Disk/CPUs to
+      # function properly in a small single node devstack VM.
+      tempest_concurrency: 2
+      devstack_localrc:
+        VOLUME_BACKING_FILE_SIZE: 24G
+        SHARE_DRIVER: manila.share.drivers.generic.GenericShareDriver
+        MANILA_ENABLED_BACKENDS: london,paris
+        MANILA_BACKEND1_CONFIG_GROUP_NAME: london
+        MANILA_BACKEND2_CONFIG_GROUP_NAME: paris
+        MANILA_SHARE_BACKEND1_NAME: LONDON
+        MANILA_SHARE_BACKEND2_NAME: PARIS
+        MANILA_OPTGROUP_london_driver_handles_share_servers: true
+        MANILA_OPTGROUP_paris_driver_handles_share_servers: true
+        MANILA_USE_SERVICE_INSTANCE_PASSWORD: true
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True'
+        TEMPEST_USE_TEST_ACCOUNTS: true
+        GLANCE_ENFORCE_SCOPE: false
+      devstack_services:
+        cinder: true
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              default_share_type_name: default
+              run_share_group_tests: false
+              multitenancy_enabled: true
+              suppress_errors_in_cleanup: true
+              share_creation_retry_number: 2
+              backend_names: LONDON,PARIS
+              multi_backend: true
+              image_password: manila
+
+- job:
+    name: manila-tempest-plugin-generic
+    description: |
+      Test the scenario test cases on the generic driver multibackend
+      (DHSS=True) with NFS and CIFS
+    parent: manila-tempest-plugin-generic-base
+    branches: *ubuntu_jammy_test_image_branches
+
+- job:
+    name: manila-tempest-plugin-generic-scenario-base
+    abstract: true
+    description: |
+      Test the scenario test cases on the generic driver multibackend
+      (DHSS=True) with NFS and CIFS
+    parent: manila-tempest-plugin-generic-base
+    vars:
+      tempest_test_regex: '(^manila_tempest_tests.tests.scenario)(?=.*\[.*\bbackend\b.*\])'
+      # The generic driver uses nova VMs as share servers; running with a
+      # high concurrency could starve the driver of RAM/Disk/CPUs to
+      # function properly in a small single node devstack VM.
+      tempest_concurrency: 1
+
+- job:
+    name: manila-tempest-plugin-generic-scenario
+    description: |
+      Test the scenario test cases on the generic driver multibackend
+      (DHSS=True) with NFS and CIFS
+    parent: manila-tempest-plugin-generic-scenario-base
+    branches: *ubuntu_jammy_test_image_branches
+
+- job:
+    name: manila-tempest-plugin-cephfs-native-base
+    abstract: true
+    description: Test CephFS Native (DHSS=False)
+    parent: manila-tempest-plugin-base
+    required-projects:
+      - openstack/devstack-plugin-ceph
+    vars:
+      devstack_plugins:
+        devstack-plugin-ceph: https://opendev.org/openstack/devstack-plugin-ceph
+      tempest_test_regex: manila_tempest_tests.tests
+      devstack_localrc:
+        # TODO (gouthamr): update to squid after
+        # https://bugs.launchpad.net/manila/+bug/2105833
+        CEPH_RELEASE: 'reef'
+        CONTAINER_IMAGE: 'quay.io/ceph/ceph:v18.2'
+        VOLUME_BACKING_FILE_SIZE: 60GB
+        SHARE_DRIVER: manila.share.drivers.cephfs.driver.CephFSDriver
+        MANILA_ENABLED_BACKENDS: cephfsnative
+        ENABLED_SHARE_PROTOCOLS: CEPHFS
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True'
+        MANILA_OPTGROUP_cephfsnative_share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+        MANILA_OPTGROUP_cephfsnative_driver_handles_share_servers: false
+        MANILA_OPTGROUP_cephfsnative_cephfs_conf_path: /etc/ceph/ceph.conf
+        MANILA_OPTGROUP_cephfsnative_cephfs_auth_id: manila
+        # NOTE(gouthamr): The following need to use the latest images, however, there's a bug
+        # with cephfs on Ubuntu 20.04 LTS: https://tracker.ceph.com/issues/47236
+        # the latest image is built as https://tarballs.opendev.org/openstack/manila-image-elements/images/manila-service-image-cephfs-master.qcow2
+        MANILA_SERVICE_IMAGE_URL: https://tarballs.opendev.org/openstack/manila-image-elements/images/manila-service-image-cephfs-1.3.0-58-g2859569.qcow2
+        MANILA_SERVICE_IMAGE_NAME: manila-service-image-cephfs-1.3.0-58-g2859569
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              default_share_type_name: default
+              enable_cephx_rules_for_protocols: cephfs
+              run_share_group_tests: false
+              multitenancy_enabled: false
+              backend_names: CEPHFSNATIVE
+              capability_storage_protocol: CEPHFS
+              enable_protocols: cephfs
+              image_password: manila
+
+- job:
+    name: manila-tempest-plugin-cephfs-native
+    description: Test CephFS Native (DHSS=False)
+    parent: manila-tempest-plugin-cephfs-native-base
+    branches: *ubuntu_jammy_test_image_branches
+
+- job:
+    name: manila-tempest-plugin-cephfs-native-cephadm
+    description: Test CephFS Native (DHSS=False) deployed with cephadm
+    parent: manila-tempest-plugin-cephfs-native-base
+    vars:
+      configure_swap_size: 8192
+      tempest_test_regex: manila_tempest_tests.tests
+      # NOTE(gouthamr): Avoiding ceph fuse tests to conserve resources;
+      # we're hoping we'd get sufficient coverage through kernel tests.
+      # test_extend_share: https://bugs.launchpad.net/manila/+bug/2075981
+      tempest_exclude_regex: "\
+        (^manila_tempest_tests.tests.scenario.*ceph_fuse.*)|\
+        (^manila_tempest_tests.tests.scenario.test_share_extend.*)"
+      devstack_localrc:
+        ENABLE_CEPH_NOVA: false
+        CEPHADM_DEPLOY: true
+        CEPHADM_DEV_OSD: true
+        TARGET_DEV_OSD_DIR: /opt/stack
+        CEPH_LOOPBACK_DISK_SIZE: 40G
+        DISABLE_CEPHADM_POST_DEPLOY: True
+        MANILA_SERVICE_IMAGE_URL: https://tarballs.opendev.org/openstack/manila-image-elements/images/manila-service-image-cephfs-master.qcow2
+        MANILA_SERVICE_IMAGE_NAME: manila-service-image-cephfs-master
+
+- job:
+    name: manila-tempest-plugin-cephfs-nfs-base
+    abstract: true
+    description: Test CephFS NFS (DHSS=False)
+    parent: manila-tempest-plugin-base
+    required-projects:
+      - openstack/devstack-plugin-ceph
+      # TODO(carloss): enable neutron-dynamic-routing setup when LP #1998489
+      # is fixed.
+    vars:
+      tempest_concurrency: 2
+      # turning off some tests due to exhaustion of disk space
+      # https://bugs.launchpad.net/manila/+bug/2009083
+      tempest_exclude_regex: "\
+        (^manila_tempest_tests.tests.scenario.test_share_extend.TestShareExtendNFSIPv6.test_create_extend_and_write)|\
+        (^manila_tempest_tests.tests.scenario.test_share_shrink.TestShareShrinkNFSIPv6.test_create_shrink_and_write)"
+      devstack_services: *devstack-with-ovs # LP 1940324
+      devstack_plugins:
+        devstack-plugin-ceph: https://opendev.org/openstack/devstack-plugin-ceph
+        # TODO(carloss): enable neutron-dynamic-routing setup when LP #1998489
+        # is fixed.
+      devstack_localrc:
+        # NOTE(gouthamr): LP#1940324 prevents bgp usage with OVN, use OVS
+        Q_AGENT: openvswitch
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan
+        Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+        VOLUME_BACKING_FILE_SIZE: 60GB
+        SHARE_DRIVER: manila.share.drivers.cephfs.driver.CephFSDriver
+        MANILA_ENABLED_BACKENDS: cephfsnfs
+        ENABLED_SHARE_PROTOCOLS: NFS
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True'
+        MANILA_SERVICE_IMAGE_ENABLED: true
+        MANILA_OPTGROUP_cephfsnfs_share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+        MANILA_OPTGROUP_cephfsnfs_driver_handles_share_servers: false
+        MANILA_OPTGROUP_cephfsnfs_cephfs_protocol_helper_type: NFS
+        MANILA_OPTGROUP_cephfsnfs_cephfs_conf_path: /etc/ceph/ceph.conf
+        MANILA_OPTGROUP_cephfsnfs_cephfs_auth_id: manila
+        MANILA_CEPH_DRIVER: cephfsnfs
+        MANILA_SETUP_IPV6: true
+        NEUTRON_CREATE_INITIAL_NETWORKS: false
+        MANILA_RESTORE_IPV6_DEFAULT_ROUTE: false
+      zuul_copy_output:
+        '/var/log/ganesha': logs
+        '/etc/ganesha': logs
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              default_share_type_name: default
+              run_ipv6_tests: true
+              run_share_group_tests: false
+              multitenancy_enabled: false
+              backend_names: CEPHFSNFS
+              enable_protocols: nfs
+              capability_storage_protocol: NFS
+              image_password: manila
+
+- job:
+    name: manila-tempest-plugin-cephfs-nfs
+    description: Test CephFS NFS (DHSS=False)
+    parent: manila-tempest-plugin-cephfs-nfs-base
+    branches: *ubuntu_jammy_test_image_branches
+    vars:
+      tempest_concurrency: 1
+      # TODO(gouthamr): some tests are disabled due to bugs
+      # IPv6 Tests: https://bugs.launchpad.net/manila/+bug/1998489
+      # test_share_extend: https://bugs.launchpad.net/manila/+bug/2075981
+      tempest_exclude_regex: "\
+        (^manila_tempest_tests.tests.scenario.*IPv6.*)|\
+        (^manila_tempest_tests.tests.scenario.test_share_extend.*)"
+      tempest_test_regex: '(^manila_tempest_tests.tests)(?=.*\[.*\bbackend\b.*\])'
+      devstack_localrc:
+        CEPHADM_DEPLOY: True
+        CEPHADM_DEV_OSD: True
+        CEPH_LOOPBACK_DISK_SIZE: 40GB
+        CEPHADM_DEPLOY_NFS: False
+        TARGET_DEV_OSD_DIR: /opt/stack
+        ENABLED_SHARE_PROTOCOLS: NFS
+        MANILA_OPTGROUP_cephfsnfs_cephfs_ganesha_server_ip: "{{ hostvars[inventory_hostname]['nodepool']['private_ipv4'] }}"
+        CEPH_RELEASE: "reef"
+        MANILA_SETUP_IPV6: false
+        NEUTRON_CREATE_INITIAL_NETWORKS: true
+        IP_VERSION: 4
+
+- job:
+    name: manila-tempest-plugin-multinode-base
+    abstract: true
+    description: |
+      Base job for testing multinode with Manila. Manila is enabled in
+      the controller node; and we have an additional compute node.
+    parent: tempest-multinode-full-py3
+    timeout: 10800
+    irrelevant-files: *irrelevant-files
+    required-projects: *manila-tempest-required-projects
+    vars:
+      tox_envlist: all
+      tempest_test_regex: manila_tempest_tests
+      tempest_plugins:
+        - manila-tempest-plugin
+      tempest_concurrency: 8
+      devstack_services:
+        cinder: false
+        c-bak: false
+        s-account: false
+        s-container: false
+        s-object: false
+        s-proxy: false
+        horizon: false
+        tls-proxy: true
+      devstack_localrc:
+        MANILA_USE_DOWNGRADE_MIGRATIONS: false
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
+        MANILA_ALLOW_NAS_SERVER_PORTS_ON_HOST: true
+        MANILA_SHARE_MIGRATION_PERIOD_TASK_INTERVAL: 1
+        MANILA_SERVER_MIGRATION_PERIOD_TASK_INTERVAL: 10
+        MANILA_REPLICA_STATE_UPDATE_INTERVAL: 10
+    group-vars:
+      tempest:
+        devstack_plugins:
+          manila: https://opendev.org/openstack/manila
+      subnode:
+        devstack_services:
+          cinder: false
+          c-bak: false
+
+- job:
+    name: manila-tempest-plugin-multinode-cephfs-nfs-cephadm
+    description: Test CephFS NFS (DHSS=False) in a Multinode devstack env
+    parent: manila-tempest-plugin-multinode-base
+    required-projects:
+      - openstack/devstack-plugin-ceph
+    vars:
+      configure_swap_size: 8192
+      tempest_concurrency: 2
+        # TODO(gouthamr): some tests are disabled due to bugs
+        # IPv6 Tests: https://bugs.launchpad.net/manila/+bug/1998489
+        # test_share_extend: https://bugs.launchpad.net/manila/+bug/2075981
+      tempest_exclude_regex: "\
+        (^manila_tempest_tests.tests.scenario.*IPv6.*)|\
+        (^manila_tempest_tests.tests.scenario.test_share_extend.*)"
+      devstack_localrc:
+        MYSQL_REDUCE_MEMORY: True
+        CEPHADM_DEPLOY: True
+        ENABLE_INGRESS: False
+        CEPHADM_DEV_OSD: true
+        CEPH_LOOPBACK_DISK_SIZE: 40GB
+        ENABLED_SHARE_PROTOCOLS: NFS
+        ENABLE_CEPH_MANILA: True
+        ENABLE_CEPH_NOVA: False
+        MANILA_CEPH_DRIVER: cephfsnfs
+        MANILA_CONFIGURE_DEFAULT_TYPES: true
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True'
+        MANILA_ENABLED_BACKENDS: cephfsnfs
+        MANILA_OPTGROUP_cephfsnfs_cephfs_auth_id: manila
+        MANILA_OPTGROUP_cephfsnfs_cephfs_conf_path: /etc/ceph/ceph.conf
+        MANILA_OPTGROUP_cephfsnfs_cephfs_nfs_cluster_id: cephfs
+        MANILA_OPTGROUP_cephfsnfs_cephfs_protocol_helper_type: NFS
+        MANILA_OPTGROUP_cephfsnfs_driver_handles_share_servers: false
+        MANILA_OPTGROUP_cephfsnfs_share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+        MANILA_SERVICE_IMAGE_ENABLED: True
+        MANILA_SETUP_IPV6: false
+        SHARE_DRIVER: manila.share.drivers.cephfs.driver.CephFSDriver
+        TARGET_DEV_OSD_DIR: /opt/stack
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              backend_names: cephfsnfs
+              capability_storage_protocol: NFS
+              default_share_type_name: default
+              enable_protocols: nfs
+              image_password: manila
+              multitenancy_enabled: false
+              run_share_group_tests: false
+    group-vars:
+      subnode:
+        devstack_plugins:
+          devstack-plugin-ceph: https://opendev.org/openstack/devstack-plugin-ceph
+        devstack_localrc:
+          REMOTE_CEPH: True
+          ENABLE_CEPH_NOVA: False
+      tempest:
+        devstack_plugins:
+          devstack-plugin-ceph: https://opendev.org/openstack/devstack-plugin-ceph
+
+- job:
+    name: manila-tempest-plugin-dummy-no-dhss
+    description: Test the Dummy driver with DHSS=False
+    parent: manila-tempest-plugin-standalone-base
+    vars:
+      devstack_localrc:
+        SHARE_DRIVER: manila.tests.share.drivers.dummy.DummyDriver
+        MANILA_CONFIGURE_GROUPS: alpha,beta,gamma,membernet,netapp_active_iq
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True revert_to_snapshot_support=True mount_snapshot_support=True'
+        MANILA_ENABLED_BACKENDS: alpha,beta,gamma
+        MANILA_OPTGROUP_DEFAULT_scheduler_default_weighers: NetAppAIQWeigher,CapacityWeigher,GoodnessWeigher,HostAffinityWeigher,PoolWeigher
+        MANILA_OPTGROUP_netapp_active_iq_aiq_transport_type: https
+        MANILA_OPTGROUP_netapp_active_iq_aiq_ssl_verify: False
+        MANILA_OPTGROUP_netapp_active_iq_aiq_username: admin
+        MANILA_OPTGROUP_netapp_active_iq_aiq_password: 123
+        MANILA_OPTGROUP_netapp_active_iq_aiq_hostname: localhost
+        MANILA_OPTGROUP_alpha_driver_handles_share_servers: false
+        MANILA_OPTGROUP_alpha_replication_domain: DUMMY_DOMAIN
+        MANILA_OPTGROUP_alpha_share_backend_name: ALPHA
+        MANILA_OPTGROUP_alpha_share_driver: manila.tests.share.drivers.dummy.DummyDriver
+        MANILA_OPTGROUP_beta_driver_handles_share_servers: false
+        MANILA_OPTGROUP_beta_replication_domain: DUMMY_DOMAIN
+        MANILA_OPTGROUP_beta_share_backend_name: BETA
+        MANILA_OPTGROUP_beta_share_driver: manila.tests.share.drivers.dummy.DummyDriver
+        # With below opts we'll enable a DHSS=True back-end solely for
+        # for the migration test case "test_migration_opposite_driver_modes"
+        MANILA_OPTGROUP_gamma_driver_handles_share_servers: true
+        MANILA_OPTGROUP_gamma_network_config_group: membernet
+        MANILA_OPTGROUP_gamma_share_backend_name: GAMMA
+        MANILA_OPTGROUP_gamma_share_driver: manila.tests.share.drivers.dummy.DummyDriver
+        MANILA_OPTGROUP_gamma_admin_network_config_group: membernet
+        MANILA_OPTGROUP_membernet_network_api_class: manila.network.standalone_network_plugin.StandaloneNetworkPlugin
+        MANILA_OPTGROUP_membernet_network_plugin_ipv4_enabled: true
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_allowed_ip_ranges: 10.0.0.10-10.0.0.209
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_gateway: 10.0.0.1
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_mask: 24
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_network_type: vlan
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_segmentation_id: 1010
+        MANILA_CREATE_BACKUP_CONTINUE_TASK_INTERVAL: 30
+        MANILA_RESTORE_BACKUP_CONTINUE_TASK_INTERVAL: 30
+      devstack_local_conf:
+        test-config:
+          "$TEMPEST_CONFIG":
+            share:
+              backend_names: ALPHA,BETA
+              backend_replication_type: readable
+              build_timeout: 180
+              capability_sg_consistent_snapshot_support: pool
+              enable_ip_rules_for_protocols: nfs
+              enable_ro_access_level_for_protocols: nfs,cifs
+              enable_user_rules_for_protocols: cifs
+              multi_backend: true
+              multitenancy_enabled: false
+              run_driver_assisted_backup_tests: true
+              run_driver_assisted_migration_tests: true
+              run_manage_unmanage_snapshot_tests: true
+              run_manage_unmanage_tests: true
+              run_migration_with_preserve_snapshots_tests: true
+              run_mount_snapshot_tests: true
+              run_replication_tests: true
+              run_revert_to_snapshot_tests: true
+              # for migration test case "test_migration_opposite_driver_modes"
+              create_networks_when_multitenancy_enabled: false
+
+- job:
+    name: manila-tempest-plugin-dummy-dhss
+    description: Test the Dummy driver with DHSS=True
+    parent: manila-tempest-plugin-standalone-base
+    vars:
+      devstack_localrc:
+        SHARE_DRIVER: manila.tests.share.drivers.dummy.DummyDriver
+        MANILA_CONFIGURE_GROUPS: alpha,beta,gamma,membernet,adminnet,netapp_active_iq
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True revert_to_snapshot_support=True mount_snapshot_support=True'
+        MANILA_ENABLED_BACKENDS: alpha,beta
+        MANILA_OPTGROUP_DEFAULT_quota_share_networks: 50
+        MANILA_OPTGROUP_DEFAULT_scheduler_default_weighers: NetAppAIQWeigher,CapacityWeigher,GoodnessWeigher,HostAffinityWeigher,PoolWeigher
+        MANILA_OPTGROUP_netapp_active_iq_aiq_transport_type: https
+        MANILA_OPTGROUP_netapp_active_iq_aiq_ssl_verify: False
+        MANILA_OPTGROUP_netapp_active_iq_aiq_username: admin
+        MANILA_OPTGROUP_netapp_active_iq_aiq_password: 123
+        MANILA_OPTGROUP_netapp_active_iq_aiq_hostname: localhost
+        MANILA_OPTGROUP_adminnet_network_api_class: manila.network.standalone_network_plugin.StandaloneNetworkPlugin
+        MANILA_OPTGROUP_adminnet_network_plugin_ipv4_enabled: true
+        MANILA_OPTGROUP_adminnet_standalone_network_plugin_allowed_ip_ranges: 11.0.0.10-11.0.0.19,11.0.0.30-11.0.0.39,11.0.0.50-11.0.0.199
+        MANILA_OPTGROUP_adminnet_standalone_network_plugin_gateway: 11.0.0.1
+        MANILA_OPTGROUP_adminnet_standalone_network_plugin_mask: 24
+        MANILA_OPTGROUP_adminnet_standalone_network_plugin_network_type: vlan
+        MANILA_OPTGROUP_adminnet_standalone_network_plugin_segmentation_id: 1011
+        MANILA_OPTGROUP_alpha_admin_network_config_group: adminnet
+        MANILA_OPTGROUP_alpha_driver_handles_share_servers: true
+        MANILA_OPTGROUP_alpha_network_config_group: membernet
+        MANILA_OPTGROUP_alpha_replication_domain: DUMMY_DOMAIN
+        MANILA_OPTGROUP_alpha_share_backend_name: ALPHA
+        MANILA_OPTGROUP_alpha_share_driver: manila.tests.share.drivers.dummy.DummyDriver
+        MANILA_OPTGROUP_beta_admin_network_config_group: adminnet
+        MANILA_OPTGROUP_beta_driver_handles_share_servers: true
+        MANILA_OPTGROUP_beta_network_config_group: membernet
+        MANILA_OPTGROUP_beta_replication_domain: DUMMY_DOMAIN
+        MANILA_OPTGROUP_beta_share_backend_name: BETA
+        MANILA_OPTGROUP_beta_share_driver: manila.tests.share.drivers.dummy.DummyDriver
+        MANILA_OPTGROUP_membernet_network_api_class: manila.network.standalone_network_plugin.StandaloneNetworkPlugin
+        MANILA_OPTGROUP_membernet_network_plugin_ipv4_enabled: true
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_allowed_ip_ranges: 10.0.0.10-10.0.0.209
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_gateway: 10.0.0.1
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_mask: 24
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_network_type: vlan
+        MANILA_OPTGROUP_membernet_standalone_network_plugin_segmentation_id: 1010
+        # With below opts we'll enable a DHSS=False back-end solely for
+        # for the migration test case "test_migration_opposite_driver_modes"
+        MANILA_OPTGROUP_gamma_driver_handles_share_servers: false
+        MANILA_OPTGROUP_gamma_share_backend_name: GAMMA
+        MANILA_OPTGROUP_gamma_share_driver: manila.tests.share.drivers.dummy.DummyDriver
+      devstack_local_conf:
+        test-config:
+          "$TEMPEST_CONFIG":
+            share:
+              backend_names: ALPHA,BETA
+              backend_replication_type: readable
+              build_timeout: 180
+              capability_sg_consistent_snapshot_support: pool
+              create_networks_when_multitenancy_enabled: false
+              enable_ip_rules_for_protocols: nfs
+              enable_ro_access_level_for_protocols: nfs,cifs
+              enable_user_rules_for_protocols: cifs
+              multi_backend: true
+              multitenancy_enabled: true
+              run_driver_assisted_migration_tests: true
+              run_manage_unmanage_snapshot_tests: true
+              run_manage_unmanage_tests: true
+              run_migration_with_preserve_snapshots_tests: true
+              run_mount_snapshot_tests: true
+              run_replication_tests: true
+              run_revert_to_snapshot_tests: true
+              run_share_server_migration_tests: true
+              run_share_server_multiple_subnet_tests: true
+              run_network_allocation_update_tests: true
+
+- job:
+    name: manila-tempest-plugin-glusterfs-native
+    description: |
+      Test the GlusterFS driver (DHSS=False) with the native GlusterFS protocol
+    parent: manila-tempest-plugin-standalone-base
+    required-projects:
+      - x/devstack-plugin-glusterfs
+    vars:
+      tempest_concurrency: 8
+      devstack_plugins:
+        devstack-plugin-glusterfs: https://opendev.org/x/devstack-plugin-glusterfs
+      devstack_localrc:
+        CONFIGURE_GLUSTERFS_MANILA: true
+        GLUSTERFS_MANILA_DRIVER_TYPE: glusterfs-native
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=True create_share_from_snapshot_support=True'
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              run_share_group_tests: false
+              run_snapshot_tests: false
+              multitenancy_enabled: false
+              run_shrink_tests: false
+              run_extend_tests: false
+              multi_backend: false
+              suppress_errors_in_cleanup: True
+              share_creation_retry_number: 2
+              backend_names: GLUSTERNATIVE
+              enable_cert_rules_for_protocols: glusterfs
+              capability_storage_protocol: glusterfs
+              enable_protocols: glusterfs
+
+- job:
+    name: manila-tempest-plugin-glusterfs-nfs
+    description: |
+      Test the GlusterFS driver (DHSS=False) with the native NFS protocol
+    parent: manila-tempest-plugin-standalone-base
+    required-projects:
+      - x/devstack-plugin-glusterfs
+    vars:
+      tempest_concurrency: 8
+      devstack_plugins:
+        devstack-plugin-glusterfs: https://opendev.org/x/devstack-plugin-glusterfs
+      devstack_localrc:
+        CONFIGURE_GLUSTERFS_MANILA: true
+        GLUSTERFS_MANILA_DRIVER_TYPE: glusterfs-nfs
+        MANILA_DEFAULT_SHARE_TYPE_EXTRA_SPECS: 'snapshot_support=False'
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            share:
+              run_share_group_tests: false
+              run_snapshot_tests: false
+              multitenancy_enabled: False
+              run_shrink_tests: true
+              multi_backend: false
+              suppress_errors_in_cleanup: True
+              share_creation_retry_number: 2
+              backend_names: GLUSTERFS
+              enable_ip_rules_for_protocols: nfs
+              capability_storage_protocol: NFS
+              enable_protocols: nfs
+              # read-only access rules not supported
+              enable_ro_access_level_for_protocols: ""
+
+- job:
+    name: manila-tempest-plugin-dummy-no-dhss-rbac
+    parent: manila-tempest-plugin-dummy-no-dhss
+    description: |
+      This job runs the devstack with scope checks enabled,
+      on the Dummy driver with DHSS=False.
+    vars:
+      tempest_test_regex: 'manila_tempest_tests.tests.rbac'
+      devstack_localrc:
+        MANILA_ENFORCE_SCOPE: true
+      devstack_local_conf:
+        test-config:
+          "$TEMPEST_CONFIG":
+            share:
+              default_share_type_name: default
+
+- job:
+    name: manila-tempest-plugin-lvm-fips-base
+    parent: manila-tempest-plugin-lvm-base
+    nodeset: devstack-single-node-centos-9-stream
+    description: |
+      Run LVM DHSS false tests for manila project using FIPS.
+    pre-run:
+      - playbooks/enable-fips.yaml
+    vars:
+      nslookup_target: 'opendev.org'
+      devstack_localrc:
+        MANILA_SETUP_IPV6: false
+        NEUTRON_CREATE_INITIAL_NETWORKS: true
+        IP_VERSION: 4
+      configure_swap_size: 4096
+      devstack_local_conf:
+        test-config:
+          "$TEMPEST_CONFIG":
+            validation:
+              ssh_key_type: 'ecdsa'
+            share:
+              run_ipv6_tests: false
+
+- job:
+    name: manila-tempest-plugin-lvm-fips
+    parent: manila-tempest-plugin-lvm-fips-base
+    branches:
+      regex: ^stable/(yoga|xena|wallaby|victoria|ussuri)$
+      negate: true
+
+- project-template:
+    name: manila-tempest-plugin-jobs-using-service-image
+    description: |
+      Runs jobs that will also perform scenario tests in the branches that are
+      newer than Yoga.
+    check:
+      jobs:
+        - manila-tempest-plugin-lvm
+        - manila-tempest-plugin-lvm-jammy
+        - manila-tempest-plugin-generic-scenario:
+            voting: false
+        - manila-tempest-plugin-generic:
+            voting: false
+        - manila-tempest-plugin-cephfs-native-cephadm:
+            voting: false
+        - manila-tempest-plugin-multinode-cephfs-nfs-cephadm:
+            voting: false
+        - manila-tempest-plugin-zfsonlinux:
+            voting: false
+    gate:
+      jobs:
+        - manila-tempest-plugin-lvm
+        - manila-tempest-plugin-lvm-jammy

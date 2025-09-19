@@ -1,0 +1,582 @@
+# Generated File
+import typing
+
+import retro_data_structures.properties.prime.archetypes.ActorParameters as _ActorParameters_Prime
+import retro_data_structures.properties.echoes.archetypes.ActorParameters as _ActorParameters_Echoes
+import retro_data_structures.properties.corruption.archetypes.ActorParameters as _ActorParameters_Corruption
+import retro_data_structures.properties.prime.archetypes.BehaveChance as _BehaveChance_Prime
+import retro_data_structures.properties.echoes.archetypes.BehaveChance as _BehaveChance_Echoes
+import retro_data_structures.properties.echoes.archetypes.CameraShakerData as _CameraShakerData_Echoes
+import retro_data_structures.properties.corruption.archetypes.CameraShakerData as _CameraShakerData_Corruption
+import retro_data_structures.properties.echoes.archetypes.ConditionalTest as _ConditionalTest_Echoes
+import retro_data_structures.properties.corruption.archetypes.ConditionalTest as _ConditionalTest_Corruption
+import retro_data_structures.properties.echoes.archetypes.Connection as _Connection_Echoes
+import retro_data_structures.properties.corruption.archetypes.Connection as _Connection_Corruption
+import retro_data_structures.properties.prime.archetypes.DamageInfo as _DamageInfo_Prime
+import retro_data_structures.properties.echoes.archetypes.DamageInfo as _DamageInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.DamageInfo as _DamageInfo_Corruption
+import retro_data_structures.properties.prime.archetypes.DamageVulnerability as _DamageVulnerability_Prime
+import retro_data_structures.properties.echoes.archetypes.DamageVulnerability as _DamageVulnerability_Echoes
+import retro_data_structures.properties.corruption.archetypes.DamageVulnerability as _DamageVulnerability_Corruption
+import retro_data_structures.properties.echoes.archetypes.DynamicLightFalloff as _DynamicLightFalloff_Echoes
+import retro_data_structures.properties.corruption.archetypes.DynamicLightFalloff as _DynamicLightFalloff_Corruption
+import retro_data_structures.properties.echoes.archetypes.DynamicLightIntensity as _DynamicLightIntensity_Echoes
+import retro_data_structures.properties.corruption.archetypes.DynamicLightIntensity as _DynamicLightIntensity_Corruption
+import retro_data_structures.properties.echoes.archetypes.DynamicLightMotionSpline as _DynamicLightMotionSpline_Echoes
+import retro_data_structures.properties.corruption.archetypes.DynamicLightMotionSpline as _DynamicLightMotionSpline_Corruption
+import retro_data_structures.properties.echoes.archetypes.DynamicLightParent as _DynamicLightParent_Echoes
+import retro_data_structures.properties.corruption.archetypes.DynamicLightParent as _DynamicLightParent_Corruption
+import retro_data_structures.properties.echoes.archetypes.DynamicLightSpotlight as _DynamicLightSpotlight_Echoes
+import retro_data_structures.properties.corruption.archetypes.DynamicLightSpotlight as _DynamicLightSpotlight_Corruption
+import retro_data_structures.properties.echoes.archetypes.EditorProperties as _EditorProperties_Echoes
+import retro_data_structures.properties.corruption.archetypes.EditorProperties as _EditorProperties_Corruption
+import retro_data_structures.properties.prime.archetypes.FlareDef as _FlareDef_Prime
+import retro_data_structures.properties.echoes.archetypes.FlareDef as _FlareDef_Echoes
+import retro_data_structures.properties.corruption.archetypes.FlareDef as _FlareDef_Corruption
+import retro_data_structures.properties.prime.archetypes.GrappleParameters as _GrappleParameters_Prime
+import retro_data_structures.properties.echoes.archetypes.GrappleParameters as _GrappleParameters_Echoes
+import retro_data_structures.properties.echoes.archetypes.GuiWidgetProperties as _GuiWidgetProperties_Echoes
+import retro_data_structures.properties.corruption.archetypes.GuiWidgetProperties as _GuiWidgetProperties_Corruption
+import retro_data_structures.properties.prime.archetypes.HealthInfo as _HealthInfo_Prime
+import retro_data_structures.properties.echoes.archetypes.HealthInfo as _HealthInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.HealthInfo as _HealthInfo_Corruption
+import retro_data_structures.properties.echoes.archetypes.LayerInfo as _LayerInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.LayerInfo as _LayerInfo_Corruption
+import retro_data_structures.properties.prime.archetypes.LayerSwitch as _LayerSwitch_Prime
+import retro_data_structures.properties.echoes.archetypes.LayerSwitch as _LayerSwitch_Echoes
+import retro_data_structures.properties.prime.archetypes.LightParameters as _LightParameters_Prime
+import retro_data_structures.properties.echoes.archetypes.LightParameters as _LightParameters_Echoes
+import retro_data_structures.properties.corruption.archetypes.LightParameters as _LightParameters_Corruption
+import retro_data_structures.properties.echoes.archetypes.MysteryFlyerData as _MysteryFlyerData_Echoes
+import retro_data_structures.properties.corruption.archetypes.MysteryFlyerData as _MysteryFlyerData_Corruption
+import retro_data_structures.properties.prime.archetypes.PatternedAITypedef as _PatternedAITypedef_Prime
+import retro_data_structures.properties.echoes.archetypes.PatternedAITypedef as _PatternedAITypedef_Echoes
+import retro_data_structures.properties.corruption.archetypes.PatternedAITypedef as _PatternedAITypedef_Corruption
+import retro_data_structures.properties.echoes.archetypes.PlasmaBeamInfo as _PlasmaBeamInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.PlasmaBeamInfo as _PlasmaBeamInfo_Corruption
+import retro_data_structures.properties.echoes.archetypes.PlatformMotionProperties as _PlatformMotionProperties_Echoes
+import retro_data_structures.properties.corruption.archetypes.PlatformMotionProperties as _PlatformMotionProperties_Corruption
+import retro_data_structures.properties.prime.archetypes.PlayerActorStruct as _PlayerActorStruct_Prime
+import retro_data_structures.properties.corruption.archetypes.PlayerActorStruct as _PlayerActorStruct_Corruption
+import retro_data_structures.properties.echoes.archetypes.RotationSplines as _RotationSplines_Echoes
+import retro_data_structures.properties.corruption.archetypes.RotationSplines as _RotationSplines_Corruption
+import retro_data_structures.properties.echoes.archetypes.ScaleSplines as _ScaleSplines_Echoes
+import retro_data_structures.properties.corruption.archetypes.ScaleSplines as _ScaleSplines_Corruption
+import retro_data_structures.properties.echoes.archetypes.ScanInfoSecondaryModel as _ScanInfoSecondaryModel_Echoes
+import retro_data_structures.properties.corruption.archetypes.ScanInfoSecondaryModel as _ScanInfoSecondaryModel_Corruption
+import retro_data_structures.properties.prime.archetypes.ScannableParameters as _ScannableParameters_Prime
+import retro_data_structures.properties.echoes.archetypes.ScannableParameters as _ScannableParameters_Echoes
+import retro_data_structures.properties.corruption.archetypes.ScannableParameters as _ScannableParameters_Corruption
+import retro_data_structures.properties.echoes.archetypes.ShockWaveInfo as _ShockWaveInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.ShockWaveInfo as _ShockWaveInfo_Corruption
+import retro_data_structures.properties.echoes.archetypes.SpacePirateWeaponData as _SpacePirateWeaponData_Echoes
+import retro_data_structures.properties.corruption.archetypes.SpacePirateWeaponData as _SpacePirateWeaponData_Corruption
+import retro_data_structures.properties.prime.archetypes.SpindleCameraStruct as _SpindleCameraStruct_Prime
+import retro_data_structures.properties.echoes.archetypes.SpindleCameraStruct as _SpindleCameraStruct_Echoes
+import retro_data_structures.properties.echoes.archetypes.SplineType as _SplineType_Echoes
+import retro_data_structures.properties.corruption.archetypes.SplineType as _SplineType_Corruption
+import retro_data_structures.properties.echoes.archetypes.SurroundPan as _SurroundPan_Echoes
+import retro_data_structures.properties.corruption.archetypes.SurroundPan as _SurroundPan_Corruption
+import retro_data_structures.properties.echoes.archetypes.TBallTransitionResources as _TBallTransitionResources_Echoes
+import retro_data_structures.properties.corruption.archetypes.TBallTransitionResources as _TBallTransitionResources_Corruption
+import retro_data_structures.properties.echoes.archetypes.TBeamInfo as _TBeamInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.TBeamInfo as _TBeamInfo_Corruption
+import retro_data_structures.properties.echoes.archetypes.TDamageInfo as _TDamageInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.TDamageInfo as _TDamageInfo_Corruption
+import retro_data_structures.properties.echoes.archetypes.TGunResources as _TGunResources_Echoes
+import retro_data_structures.properties.corruption.archetypes.TGunResources as _TGunResources_Corruption
+import retro_data_structures.properties.echoes.archetypes.TIcon_Configurations as _TIcon_Configurations_Echoes
+import retro_data_structures.properties.corruption.archetypes.TIcon_Configurations as _TIcon_Configurations_Corruption
+import retro_data_structures.properties.echoes.archetypes.TWeaponDamage as _TWeaponDamage_Echoes
+import retro_data_structures.properties.corruption.archetypes.TWeaponDamage as _TWeaponDamage_Corruption
+import retro_data_structures.properties.echoes.archetypes.TextProperties as _TextProperties_Echoes
+import retro_data_structures.properties.corruption.archetypes.TextProperties as _TextProperties_Corruption
+import retro_data_structures.properties.echoes.archetypes.Transform as _Transform_Echoes
+import retro_data_structures.properties.corruption.archetypes.Transform as _Transform_Corruption
+import retro_data_structures.properties.echoes.archetypes.TriggerInfo as _TriggerInfo_Echoes
+import retro_data_structures.properties.corruption.archetypes.TriggerInfo as _TriggerInfo_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakAutoMapper_Base as _TweakAutoMapper_Base_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakAutoMapper_Base as _TweakAutoMapper_Base_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakAutoMapper_DoorColors as _TweakAutoMapper_DoorColors_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakAutoMapper_DoorColors as _TweakAutoMapper_DoorColors_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_BoostBall as _TweakBall_BoostBall_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_BoostBall as _TweakBall_BoostBall_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_Camera as _TweakBall_Camera_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_Camera as _TweakBall_Camera_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_CannonBall as _TweakBall_CannonBall_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_CannonBall as _TweakBall_CannonBall_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_DeathBall as _TweakBall_DeathBall_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_DeathBall as _TweakBall_DeathBall_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_Misc as _TweakBall_Misc_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_Misc as _TweakBall_Misc_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_Movement as _TweakBall_Movement_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_Movement as _TweakBall_Movement_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakBall_ScrewAttack as _TweakBall_ScrewAttack_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakBall_ScrewAttack as _TweakBall_ScrewAttack_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGuiColors_HUDColorsTypedef as _TweakGuiColors_HUDColorsTypedef_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGuiColors_HUDColorsTypedef as _TweakGuiColors_HUDColorsTypedef_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGuiColors_Misc as _TweakGuiColors_Misc_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGuiColors_Misc as _TweakGuiColors_Misc_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGuiColors_Multiplayer as _TweakGuiColors_Multiplayer_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGuiColors_Multiplayer as _TweakGuiColors_Multiplayer_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGuiColors_TurretHudTypedef as _TweakGuiColors_TurretHudTypedef_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGuiColors_TurretHudTypedef as _TweakGuiColors_TurretHudTypedef_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_Completion as _TweakGui_Completion_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_Completion as _TweakGui_Completion_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_Credits as _TweakGui_Credits_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_Credits as _TweakGui_Credits_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_HudColorTypedef as _TweakGui_HudColorTypedef_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_HudColorTypedef as _TweakGui_HudColorTypedef_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_Misc as _TweakGui_Misc_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_Misc as _TweakGui_Misc_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_MovieVolumes as _TweakGui_MovieVolumes_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_MovieVolumes as _TweakGui_MovieVolumes_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_ScanVisor as _TweakGui_ScanVisor_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_ScanVisor as _TweakGui_ScanVisor_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_ScannableObjectDownloadTimes as _TweakGui_ScannableObjectDownloadTimes_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_ScannableObjectDownloadTimes as _TweakGui_ScannableObjectDownloadTimes_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakGui_VisorColorSchemeTypedef as _TweakGui_VisorColorSchemeTypedef_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakGui_VisorColorSchemeTypedef as _TweakGui_VisorColorSchemeTypedef_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_Arm_Position as _TweakPlayerGun_Arm_Position_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_Arm_Position as _TweakPlayerGun_Arm_Position_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_Beam_Misc as _TweakPlayerGun_Beam_Misc_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_Beam_Misc as _TweakPlayerGun_Beam_Misc_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_Holstering as _TweakPlayerGun_Holstering_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_Holstering as _TweakPlayerGun_Holstering_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_Misc as _TweakPlayerGun_Misc_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_Misc as _TweakPlayerGun_Misc_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_Position as _TweakPlayerGun_Position_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_Position as _TweakPlayerGun_Position_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_RicochetDamage_Factor as _TweakPlayerGun_RicochetDamage_Factor_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_RicochetDamage_Factor as _TweakPlayerGun_RicochetDamage_Factor_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerGun_Weapons as _TweakPlayerGun_Weapons_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerGun_Weapons as _TweakPlayerGun_Weapons_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerRes_AutoMapperIcons as _TweakPlayerRes_AutoMapperIcons_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerRes_AutoMapperIcons as _TweakPlayerRes_AutoMapperIcons_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayerRes_MapScreenIcons as _TweakPlayerRes_MapScreenIcons_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayerRes_MapScreenIcons as _TweakPlayerRes_MapScreenIcons_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_AimStuff as _TweakPlayer_AimStuff_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_AimStuff as _TweakPlayer_AimStuff_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Collision as _TweakPlayer_Collision_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Collision as _TweakPlayer_Collision_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_FirstPersonCamera as _TweakPlayer_FirstPersonCamera_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_FirstPersonCamera as _TweakPlayer_FirstPersonCamera_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Frozen as _TweakPlayer_Frozen_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Frozen as _TweakPlayer_Frozen_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Grapple as _TweakPlayer_Grapple_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Grapple as _TweakPlayer_Grapple_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_GrappleBeam as _TweakPlayer_GrappleBeam_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_GrappleBeam as _TweakPlayer_GrappleBeam_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Misc as _TweakPlayer_Misc_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Misc as _TweakPlayer_Misc_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Motion as _TweakPlayer_Motion_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Motion as _TweakPlayer_Motion_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Orbit as _TweakPlayer_Orbit_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Orbit as _TweakPlayer_Orbit_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_ScanVisor as _TweakPlayer_ScanVisor_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_ScanVisor as _TweakPlayer_ScanVisor_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_Shield as _TweakPlayer_Shield_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_Shield as _TweakPlayer_Shield_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakPlayer_SuitDamageReduction as _TweakPlayer_SuitDamageReduction_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakPlayer_SuitDamageReduction as _TweakPlayer_SuitDamageReduction_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakTargeting_Charge_Gauge as _TweakTargeting_Charge_Gauge_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakTargeting_Charge_Gauge as _TweakTargeting_Charge_Gauge_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakTargeting_LockDagger as _TweakTargeting_LockDagger_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakTargeting_LockDagger as _TweakTargeting_LockDagger_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakTargeting_LockFire as _TweakTargeting_LockFire_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakTargeting_LockFire as _TweakTargeting_LockFire_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakTargeting_OuterBeamIcon as _TweakTargeting_OuterBeamIcon_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakTargeting_OuterBeamIcon as _TweakTargeting_OuterBeamIcon_Corruption
+import retro_data_structures.properties.echoes.archetypes.TweakTargeting_Scan as _TweakTargeting_Scan_Echoes
+import retro_data_structures.properties.corruption.archetypes.TweakTargeting_Scan as _TweakTargeting_Scan_Corruption
+import retro_data_structures.properties.prime.archetypes.Vector2f as _Vector2f_Prime
+import retro_data_structures.properties.echoes.archetypes.Vector2f as _Vector2f_Echoes
+import retro_data_structures.properties.corruption.archetypes.Vector2f as _Vector2f_Corruption
+import retro_data_structures.properties.prime.archetypes.VisorParameters as _VisorParameters_Prime
+import retro_data_structures.properties.echoes.archetypes.VisorParameters as _VisorParameters_Echoes
+import retro_data_structures.properties.corruption.archetypes.VisorParameters as _VisorParameters_Corruption
+import retro_data_structures.properties.echoes.archetypes.WeaponVulnerability as _WeaponVulnerability_Echoes
+import retro_data_structures.properties.corruption.archetypes.WeaponVulnerability as _WeaponVulnerability_Corruption
+
+ActorParameters = typing.Union[
+    _ActorParameters_Prime.ActorParameters,
+    _ActorParameters_Echoes.ActorParameters,
+    _ActorParameters_Corruption.ActorParameters
+]
+BehaveChance = typing.Union[
+    _BehaveChance_Prime.BehaveChance,
+    _BehaveChance_Echoes.BehaveChance
+]
+CameraShakerData = typing.Union[
+    _CameraShakerData_Echoes.CameraShakerData,
+    _CameraShakerData_Corruption.CameraShakerData
+]
+ConditionalTest = typing.Union[
+    _ConditionalTest_Echoes.ConditionalTest,
+    _ConditionalTest_Corruption.ConditionalTest
+]
+Connection = typing.Union[
+    _Connection_Echoes.Connection,
+    _Connection_Corruption.Connection
+]
+DamageInfo = typing.Union[
+    _DamageInfo_Prime.DamageInfo,
+    _DamageInfo_Echoes.DamageInfo,
+    _DamageInfo_Corruption.DamageInfo
+]
+DamageVulnerability = typing.Union[
+    _DamageVulnerability_Prime.DamageVulnerability,
+    _DamageVulnerability_Echoes.DamageVulnerability,
+    _DamageVulnerability_Corruption.DamageVulnerability
+]
+DynamicLightFalloff = typing.Union[
+    _DynamicLightFalloff_Echoes.DynamicLightFalloff,
+    _DynamicLightFalloff_Corruption.DynamicLightFalloff
+]
+DynamicLightIntensity = typing.Union[
+    _DynamicLightIntensity_Echoes.DynamicLightIntensity,
+    _DynamicLightIntensity_Corruption.DynamicLightIntensity
+]
+DynamicLightMotionSpline = typing.Union[
+    _DynamicLightMotionSpline_Echoes.DynamicLightMotionSpline,
+    _DynamicLightMotionSpline_Corruption.DynamicLightMotionSpline
+]
+DynamicLightParent = typing.Union[
+    _DynamicLightParent_Echoes.DynamicLightParent,
+    _DynamicLightParent_Corruption.DynamicLightParent
+]
+DynamicLightSpotlight = typing.Union[
+    _DynamicLightSpotlight_Echoes.DynamicLightSpotlight,
+    _DynamicLightSpotlight_Corruption.DynamicLightSpotlight
+]
+EditorProperties = typing.Union[
+    _EditorProperties_Echoes.EditorProperties,
+    _EditorProperties_Corruption.EditorProperties
+]
+FlareDef = typing.Union[
+    _FlareDef_Prime.FlareDef,
+    _FlareDef_Echoes.FlareDef,
+    _FlareDef_Corruption.FlareDef
+]
+GrappleParameters = typing.Union[
+    _GrappleParameters_Prime.GrappleParameters,
+    _GrappleParameters_Echoes.GrappleParameters
+]
+GuiWidgetProperties = typing.Union[
+    _GuiWidgetProperties_Echoes.GuiWidgetProperties,
+    _GuiWidgetProperties_Corruption.GuiWidgetProperties
+]
+HealthInfo = typing.Union[
+    _HealthInfo_Prime.HealthInfo,
+    _HealthInfo_Echoes.HealthInfo,
+    _HealthInfo_Corruption.HealthInfo
+]
+LayerInfo = typing.Union[
+    _LayerInfo_Echoes.LayerInfo,
+    _LayerInfo_Corruption.LayerInfo
+]
+LayerSwitch = typing.Union[
+    _LayerSwitch_Prime.LayerSwitch,
+    _LayerSwitch_Echoes.LayerSwitch
+]
+LightParameters = typing.Union[
+    _LightParameters_Prime.LightParameters,
+    _LightParameters_Echoes.LightParameters,
+    _LightParameters_Corruption.LightParameters
+]
+MysteryFlyerData = typing.Union[
+    _MysteryFlyerData_Echoes.MysteryFlyerData,
+    _MysteryFlyerData_Corruption.MysteryFlyerData
+]
+PatternedAITypedef = typing.Union[
+    _PatternedAITypedef_Prime.PatternedAITypedef,
+    _PatternedAITypedef_Echoes.PatternedAITypedef,
+    _PatternedAITypedef_Corruption.PatternedAITypedef
+]
+PlasmaBeamInfo = typing.Union[
+    _PlasmaBeamInfo_Echoes.PlasmaBeamInfo,
+    _PlasmaBeamInfo_Corruption.PlasmaBeamInfo
+]
+PlatformMotionProperties = typing.Union[
+    _PlatformMotionProperties_Echoes.PlatformMotionProperties,
+    _PlatformMotionProperties_Corruption.PlatformMotionProperties
+]
+PlayerActorStruct = typing.Union[
+    _PlayerActorStruct_Prime.PlayerActorStruct,
+    _PlayerActorStruct_Corruption.PlayerActorStruct
+]
+RotationSplines = typing.Union[
+    _RotationSplines_Echoes.RotationSplines,
+    _RotationSplines_Corruption.RotationSplines
+]
+ScaleSplines = typing.Union[
+    _ScaleSplines_Echoes.ScaleSplines,
+    _ScaleSplines_Corruption.ScaleSplines
+]
+ScanInfoSecondaryModel = typing.Union[
+    _ScanInfoSecondaryModel_Echoes.ScanInfoSecondaryModel,
+    _ScanInfoSecondaryModel_Corruption.ScanInfoSecondaryModel
+]
+ScannableParameters = typing.Union[
+    _ScannableParameters_Prime.ScannableParameters,
+    _ScannableParameters_Echoes.ScannableParameters,
+    _ScannableParameters_Corruption.ScannableParameters
+]
+ShockWaveInfo = typing.Union[
+    _ShockWaveInfo_Echoes.ShockWaveInfo,
+    _ShockWaveInfo_Corruption.ShockWaveInfo
+]
+SpacePirateWeaponData = typing.Union[
+    _SpacePirateWeaponData_Echoes.SpacePirateWeaponData,
+    _SpacePirateWeaponData_Corruption.SpacePirateWeaponData
+]
+SpindleCameraStruct = typing.Union[
+    _SpindleCameraStruct_Prime.SpindleCameraStruct,
+    _SpindleCameraStruct_Echoes.SpindleCameraStruct
+]
+SplineType = typing.Union[
+    _SplineType_Echoes.SplineType,
+    _SplineType_Corruption.SplineType
+]
+SurroundPan = typing.Union[
+    _SurroundPan_Echoes.SurroundPan,
+    _SurroundPan_Corruption.SurroundPan
+]
+TBallTransitionResources = typing.Union[
+    _TBallTransitionResources_Echoes.TBallTransitionResources,
+    _TBallTransitionResources_Corruption.TBallTransitionResources
+]
+TBeamInfo = typing.Union[
+    _TBeamInfo_Echoes.TBeamInfo,
+    _TBeamInfo_Corruption.TBeamInfo
+]
+TDamageInfo = typing.Union[
+    _TDamageInfo_Echoes.TDamageInfo,
+    _TDamageInfo_Corruption.TDamageInfo
+]
+TGunResources = typing.Union[
+    _TGunResources_Echoes.TGunResources,
+    _TGunResources_Corruption.TGunResources
+]
+TIcon_Configurations = typing.Union[
+    _TIcon_Configurations_Echoes.TIcon_Configurations,
+    _TIcon_Configurations_Corruption.TIcon_Configurations
+]
+TWeaponDamage = typing.Union[
+    _TWeaponDamage_Echoes.TWeaponDamage,
+    _TWeaponDamage_Corruption.TWeaponDamage
+]
+TextProperties = typing.Union[
+    _TextProperties_Echoes.TextProperties,
+    _TextProperties_Corruption.TextProperties
+]
+Transform = typing.Union[
+    _Transform_Echoes.Transform,
+    _Transform_Corruption.Transform
+]
+TriggerInfo = typing.Union[
+    _TriggerInfo_Echoes.TriggerInfo,
+    _TriggerInfo_Corruption.TriggerInfo
+]
+TweakAutoMapper_Base = typing.Union[
+    _TweakAutoMapper_Base_Echoes.TweakAutoMapper_Base,
+    _TweakAutoMapper_Base_Corruption.TweakAutoMapper_Base
+]
+TweakAutoMapper_DoorColors = typing.Union[
+    _TweakAutoMapper_DoorColors_Echoes.TweakAutoMapper_DoorColors,
+    _TweakAutoMapper_DoorColors_Corruption.TweakAutoMapper_DoorColors
+]
+TweakBall_BoostBall = typing.Union[
+    _TweakBall_BoostBall_Echoes.TweakBall_BoostBall,
+    _TweakBall_BoostBall_Corruption.TweakBall_BoostBall
+]
+TweakBall_Camera = typing.Union[
+    _TweakBall_Camera_Echoes.TweakBall_Camera,
+    _TweakBall_Camera_Corruption.TweakBall_Camera
+]
+TweakBall_CannonBall = typing.Union[
+    _TweakBall_CannonBall_Echoes.TweakBall_CannonBall,
+    _TweakBall_CannonBall_Corruption.TweakBall_CannonBall
+]
+TweakBall_DeathBall = typing.Union[
+    _TweakBall_DeathBall_Echoes.TweakBall_DeathBall,
+    _TweakBall_DeathBall_Corruption.TweakBall_DeathBall
+]
+TweakBall_Misc = typing.Union[
+    _TweakBall_Misc_Echoes.TweakBall_Misc,
+    _TweakBall_Misc_Corruption.TweakBall_Misc
+]
+TweakBall_Movement = typing.Union[
+    _TweakBall_Movement_Echoes.TweakBall_Movement,
+    _TweakBall_Movement_Corruption.TweakBall_Movement
+]
+TweakBall_ScrewAttack = typing.Union[
+    _TweakBall_ScrewAttack_Echoes.TweakBall_ScrewAttack,
+    _TweakBall_ScrewAttack_Corruption.TweakBall_ScrewAttack
+]
+TweakGuiColors_HUDColorsTypedef = typing.Union[
+    _TweakGuiColors_HUDColorsTypedef_Echoes.TweakGuiColors_HUDColorsTypedef,
+    _TweakGuiColors_HUDColorsTypedef_Corruption.TweakGuiColors_HUDColorsTypedef
+]
+TweakGuiColors_Misc = typing.Union[
+    _TweakGuiColors_Misc_Echoes.TweakGuiColors_Misc,
+    _TweakGuiColors_Misc_Corruption.TweakGuiColors_Misc
+]
+TweakGuiColors_Multiplayer = typing.Union[
+    _TweakGuiColors_Multiplayer_Echoes.TweakGuiColors_Multiplayer,
+    _TweakGuiColors_Multiplayer_Corruption.TweakGuiColors_Multiplayer
+]
+TweakGuiColors_TurretHudTypedef = typing.Union[
+    _TweakGuiColors_TurretHudTypedef_Echoes.TweakGuiColors_TurretHudTypedef,
+    _TweakGuiColors_TurretHudTypedef_Corruption.TweakGuiColors_TurretHudTypedef
+]
+TweakGui_Completion = typing.Union[
+    _TweakGui_Completion_Echoes.TweakGui_Completion,
+    _TweakGui_Completion_Corruption.TweakGui_Completion
+]
+TweakGui_Credits = typing.Union[
+    _TweakGui_Credits_Echoes.TweakGui_Credits,
+    _TweakGui_Credits_Corruption.TweakGui_Credits
+]
+TweakGui_HudColorTypedef = typing.Union[
+    _TweakGui_HudColorTypedef_Echoes.TweakGui_HudColorTypedef,
+    _TweakGui_HudColorTypedef_Corruption.TweakGui_HudColorTypedef
+]
+TweakGui_Misc = typing.Union[
+    _TweakGui_Misc_Echoes.TweakGui_Misc,
+    _TweakGui_Misc_Corruption.TweakGui_Misc
+]
+TweakGui_MovieVolumes = typing.Union[
+    _TweakGui_MovieVolumes_Echoes.TweakGui_MovieVolumes,
+    _TweakGui_MovieVolumes_Corruption.TweakGui_MovieVolumes
+]
+TweakGui_ScanVisor = typing.Union[
+    _TweakGui_ScanVisor_Echoes.TweakGui_ScanVisor,
+    _TweakGui_ScanVisor_Corruption.TweakGui_ScanVisor
+]
+TweakGui_ScannableObjectDownloadTimes = typing.Union[
+    _TweakGui_ScannableObjectDownloadTimes_Echoes.TweakGui_ScannableObjectDownloadTimes,
+    _TweakGui_ScannableObjectDownloadTimes_Corruption.TweakGui_ScannableObjectDownloadTimes
+]
+TweakGui_VisorColorSchemeTypedef = typing.Union[
+    _TweakGui_VisorColorSchemeTypedef_Echoes.TweakGui_VisorColorSchemeTypedef,
+    _TweakGui_VisorColorSchemeTypedef_Corruption.TweakGui_VisorColorSchemeTypedef
+]
+TweakPlayerGun_Arm_Position = typing.Union[
+    _TweakPlayerGun_Arm_Position_Echoes.TweakPlayerGun_Arm_Position,
+    _TweakPlayerGun_Arm_Position_Corruption.TweakPlayerGun_Arm_Position
+]
+TweakPlayerGun_Beam_Misc = typing.Union[
+    _TweakPlayerGun_Beam_Misc_Echoes.TweakPlayerGun_Beam_Misc,
+    _TweakPlayerGun_Beam_Misc_Corruption.TweakPlayerGun_Beam_Misc
+]
+TweakPlayerGun_Holstering = typing.Union[
+    _TweakPlayerGun_Holstering_Echoes.TweakPlayerGun_Holstering,
+    _TweakPlayerGun_Holstering_Corruption.TweakPlayerGun_Holstering
+]
+TweakPlayerGun_Misc = typing.Union[
+    _TweakPlayerGun_Misc_Echoes.TweakPlayerGun_Misc,
+    _TweakPlayerGun_Misc_Corruption.TweakPlayerGun_Misc
+]
+TweakPlayerGun_Position = typing.Union[
+    _TweakPlayerGun_Position_Echoes.TweakPlayerGun_Position,
+    _TweakPlayerGun_Position_Corruption.TweakPlayerGun_Position
+]
+TweakPlayerGun_RicochetDamage_Factor = typing.Union[
+    _TweakPlayerGun_RicochetDamage_Factor_Echoes.TweakPlayerGun_RicochetDamage_Factor,
+    _TweakPlayerGun_RicochetDamage_Factor_Corruption.TweakPlayerGun_RicochetDamage_Factor
+]
+TweakPlayerGun_Weapons = typing.Union[
+    _TweakPlayerGun_Weapons_Echoes.TweakPlayerGun_Weapons,
+    _TweakPlayerGun_Weapons_Corruption.TweakPlayerGun_Weapons
+]
+TweakPlayerRes_AutoMapperIcons = typing.Union[
+    _TweakPlayerRes_AutoMapperIcons_Echoes.TweakPlayerRes_AutoMapperIcons,
+    _TweakPlayerRes_AutoMapperIcons_Corruption.TweakPlayerRes_AutoMapperIcons
+]
+TweakPlayerRes_MapScreenIcons = typing.Union[
+    _TweakPlayerRes_MapScreenIcons_Echoes.TweakPlayerRes_MapScreenIcons,
+    _TweakPlayerRes_MapScreenIcons_Corruption.TweakPlayerRes_MapScreenIcons
+]
+TweakPlayer_AimStuff = typing.Union[
+    _TweakPlayer_AimStuff_Echoes.TweakPlayer_AimStuff,
+    _TweakPlayer_AimStuff_Corruption.TweakPlayer_AimStuff
+]
+TweakPlayer_Collision = typing.Union[
+    _TweakPlayer_Collision_Echoes.TweakPlayer_Collision,
+    _TweakPlayer_Collision_Corruption.TweakPlayer_Collision
+]
+TweakPlayer_FirstPersonCamera = typing.Union[
+    _TweakPlayer_FirstPersonCamera_Echoes.TweakPlayer_FirstPersonCamera,
+    _TweakPlayer_FirstPersonCamera_Corruption.TweakPlayer_FirstPersonCamera
+]
+TweakPlayer_Frozen = typing.Union[
+    _TweakPlayer_Frozen_Echoes.TweakPlayer_Frozen,
+    _TweakPlayer_Frozen_Corruption.TweakPlayer_Frozen
+]
+TweakPlayer_Grapple = typing.Union[
+    _TweakPlayer_Grapple_Echoes.TweakPlayer_Grapple,
+    _TweakPlayer_Grapple_Corruption.TweakPlayer_Grapple
+]
+TweakPlayer_GrappleBeam = typing.Union[
+    _TweakPlayer_GrappleBeam_Echoes.TweakPlayer_GrappleBeam,
+    _TweakPlayer_GrappleBeam_Corruption.TweakPlayer_GrappleBeam
+]
+TweakPlayer_Misc = typing.Union[
+    _TweakPlayer_Misc_Echoes.TweakPlayer_Misc,
+    _TweakPlayer_Misc_Corruption.TweakPlayer_Misc
+]
+TweakPlayer_Motion = typing.Union[
+    _TweakPlayer_Motion_Echoes.TweakPlayer_Motion,
+    _TweakPlayer_Motion_Corruption.TweakPlayer_Motion
+]
+TweakPlayer_Orbit = typing.Union[
+    _TweakPlayer_Orbit_Echoes.TweakPlayer_Orbit,
+    _TweakPlayer_Orbit_Corruption.TweakPlayer_Orbit
+]
+TweakPlayer_ScanVisor = typing.Union[
+    _TweakPlayer_ScanVisor_Echoes.TweakPlayer_ScanVisor,
+    _TweakPlayer_ScanVisor_Corruption.TweakPlayer_ScanVisor
+]
+TweakPlayer_Shield = typing.Union[
+    _TweakPlayer_Shield_Echoes.TweakPlayer_Shield,
+    _TweakPlayer_Shield_Corruption.TweakPlayer_Shield
+]
+TweakPlayer_SuitDamageReduction = typing.Union[
+    _TweakPlayer_SuitDamageReduction_Echoes.TweakPlayer_SuitDamageReduction,
+    _TweakPlayer_SuitDamageReduction_Corruption.TweakPlayer_SuitDamageReduction
+]
+TweakTargeting_Charge_Gauge = typing.Union[
+    _TweakTargeting_Charge_Gauge_Echoes.TweakTargeting_Charge_Gauge,
+    _TweakTargeting_Charge_Gauge_Corruption.TweakTargeting_Charge_Gauge
+]
+TweakTargeting_LockDagger = typing.Union[
+    _TweakTargeting_LockDagger_Echoes.TweakTargeting_LockDagger,
+    _TweakTargeting_LockDagger_Corruption.TweakTargeting_LockDagger
+]
+TweakTargeting_LockFire = typing.Union[
+    _TweakTargeting_LockFire_Echoes.TweakTargeting_LockFire,
+    _TweakTargeting_LockFire_Corruption.TweakTargeting_LockFire
+]
+TweakTargeting_OuterBeamIcon = typing.Union[
+    _TweakTargeting_OuterBeamIcon_Echoes.TweakTargeting_OuterBeamIcon,
+    _TweakTargeting_OuterBeamIcon_Corruption.TweakTargeting_OuterBeamIcon
+]
+TweakTargeting_Scan = typing.Union[
+    _TweakTargeting_Scan_Echoes.TweakTargeting_Scan,
+    _TweakTargeting_Scan_Corruption.TweakTargeting_Scan
+]
+Vector2f = typing.Union[
+    _Vector2f_Prime.Vector2f,
+    _Vector2f_Echoes.Vector2f,
+    _Vector2f_Corruption.Vector2f
+]
+VisorParameters = typing.Union[
+    _VisorParameters_Prime.VisorParameters,
+    _VisorParameters_Echoes.VisorParameters,
+    _VisorParameters_Corruption.VisorParameters
+]
+WeaponVulnerability = typing.Union[
+    _WeaponVulnerability_Echoes.WeaponVulnerability,
+    _WeaponVulnerability_Corruption.WeaponVulnerability
+]

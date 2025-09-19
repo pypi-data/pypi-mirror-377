@@ -1,0 +1,275 @@
+Metadata-Version: 2.4
+Name: backboard-sdk
+Version: 1.0.1
+Summary: Python SDK for the Backboard API - Build conversational AI applications with persistent memory and intelligent document processing
+Home-page: https://github.com/backboard/backboard-python-sdk
+Author: Backboard
+Author-email: Backboard <support@backboard.io>
+License: MIT
+Project-URL: Homepage, https://backboard.io
+Project-URL: Documentation, https://docs.backboard.io
+Project-URL: Repository, https://github.com/backboard/backboard-python-sdk
+Project-URL: Bug Reports, https://github.com/backboard/backboard-python-sdk/issues
+Keywords: ai,api,sdk,conversational,chatbot,assistant,documents,rag
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.28.0
+Requires-Dist: urllib3>=1.26.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Backboard Python SDK
+
+A developer-friendly Python SDK for the Backboard API. Build conversational AI applications with persistent memory and intelligent document processing.
+
+## Installation
+
+```bash
+pip install backboard-sdk
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/backboard/backboard-python-sdk.git
+cd backboard-python-sdk
+pip install -e .
+```
+
+## Quick Start
+
+```python
+from backboard import BackboardClient
+
+# Initialize the client
+client = BackboardClient(api_key="your_api_key_here")
+
+# Create an assistant
+assistant = client.create_assistant(
+    name="Support Bot",
+    description="A helpful customer support assistant"
+)
+
+# Create a conversation thread
+thread = client.create_thread(assistant.assistant_id)
+
+# Send a message
+response = client.add_message(
+    thread_id=thread.thread_id,
+    content="Hello! Can you help me with my account?"
+)
+
+print(response.latest_message.content)
+```
+
+## Features
+
+### Assistants
+- Create, list, get, update, and delete assistants
+- Configure custom tools and capabilities
+- Upload documents for assistant-level context
+
+### Threads
+- Create conversation threads under assistants
+- Maintain persistent conversation history
+- Support for message attachments
+
+### Documents
+- Upload documents to assistants or threads
+- Automatic processing and indexing for RAG
+- Support for PDF, Office files, text, and more
+- Real-time processing status tracking
+
+### Messages
+- Send messages with optional file attachments
+- Streaming and non-streaming responses
+- Tool calling support
+- Custom LLM provider and model selection
+
+## API Reference
+
+### Client Initialization
+
+```python
+client = BackboardClient(
+    api_key="your_api_key",
+    base_url="https://backboard.io/api",  # Optional, defaults to production
+    timeout=30,  # Request timeout in seconds
+    max_retries=3  # Max retries for failed requests
+)
+```
+
+### Assistants
+
+```python
+# Create assistant
+assistant = client.create_assistant(
+    name="My Assistant",
+    description="Assistant description",
+    tools=[tool_definition]  # Optional
+)
+
+# List assistants
+assistants = client.list_assistants(skip=0, limit=100)
+
+# Get assistant
+assistant = client.get_assistant(assistant_id)
+
+# Update assistant
+assistant = client.update_assistant(
+    assistant_id,
+    name="New Name",
+    description="New description"
+)
+
+# Delete assistant
+result = client.delete_assistant(assistant_id)
+```
+
+### Threads
+
+```python
+# Create thread
+thread = client.create_thread(assistant_id)
+
+# List threads
+threads = client.list_threads(skip=0, limit=100)
+
+# Get thread with messages
+thread = client.get_thread(thread_id)
+
+# Delete thread
+result = client.delete_thread(thread_id)
+```
+
+### Messages
+
+```python
+# Send message
+response = client.add_message(
+    thread_id=thread_id,
+    content="Your message here",
+    files=["path/to/file.pdf"],  # Optional attachments
+    llm_provider="openai",  # Optional
+    model_name="gpt-4o",  # Optional
+    stream=False  # Set to True for streaming
+)
+
+# Streaming messages
+for chunk in client.add_message(thread_id, content="Hello", stream=True):
+    if chunk.get('type') == 'message_delta':
+        print(chunk.get('content', ''), end='')
+```
+
+### Tool Outputs
+
+```python
+from backboard import ToolOutput
+
+# Submit tool outputs
+response = client.submit_tool_outputs(
+    thread_id=thread_id,
+    run_id=run_id,
+    tool_outputs=[
+        ToolOutput(tool_call_id="call_123", output="Tool result")
+    ]
+)
+```
+
+### Documents
+
+```python
+# Upload document to assistant
+document = client.upload_document_to_assistant(
+    assistant_id=assistant_id,
+    file_path="path/to/document.pdf"
+)
+
+# Upload document to thread
+document = client.upload_document_to_thread(
+    thread_id=thread_id,
+    file_path="path/to/document.pdf"
+)
+
+# List assistant documents
+documents = client.list_assistant_documents(assistant_id)
+
+# List thread documents
+documents = client.list_thread_documents(thread_id)
+
+# Get document status
+document = client.get_document_status(document_id)
+
+# Delete document
+result = client.delete_document(document_id)
+```
+
+## Error Handling
+
+The SDK includes comprehensive error handling:
+
+```python
+from backboard import (
+    BackboardAPIError,
+    BackboardValidationError,
+    BackboardNotFoundError,
+    BackboardRateLimitError,
+    BackboardServerError
+)
+
+try:
+    assistant = client.get_assistant("invalid_id")
+except BackboardNotFoundError:
+    print("Assistant not found")
+except BackboardValidationError as e:
+    print(f"Validation error: {e}")
+except BackboardAPIError as e:
+    print(f"API error: {e}")
+```
+
+## Supported File Types
+
+The SDK supports uploading the following file types:
+- PDF files (.pdf)
+- Microsoft Office files (.docx, .xlsx, .pptx, .doc, .xls, .ppt)
+- Text files (.txt, .csv, .md, .markdown)
+- Code files (.py, .js, .html, .css, .xml)
+- JSON files (.json, .jsonl)
+
+## Requirements
+
+- Python 3.8+
+- requests >= 2.28.0
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+- Documentation: https://docs.backboard.io
+- Issues: https://github.com/backboard/backboard-python-sdk/issues
+- Email: support@backboard.io

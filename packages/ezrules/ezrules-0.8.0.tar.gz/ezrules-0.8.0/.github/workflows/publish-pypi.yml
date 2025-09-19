@@ -1,0 +1,35 @@
+name: Upload Python Package to PyPi
+
+on:
+    release:
+      types: [published]
+
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install UV
+      uses: astral-sh/setup-uv@v4
+      with:
+        enable-cache: true
+    - name: Extract version from tag
+      id: extract_version
+      run: |
+       echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+       echo ${TAG_NAME}
+    - name: Update version in pyproject.toml
+      run: |
+         sed -i "s/^version = .*/version = \"$TAG_NAME\"/" pyproject.toml
+    - name: Build package
+      run: uv build
+    - name: Publish package
+      run: uv publish --token ${{ secrets.PYPI_PUBLISH_TOKEN }}

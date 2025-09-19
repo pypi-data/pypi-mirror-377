@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: ezrules
+Version: 0.8.0
+Summary: Open-source transaction monitoring engine for business rules
+Author-email: Konstantin Sofeikov <sofeykov@gmail.com>
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Requires-Dist: bootstrap-flask
+Requires-Dist: celery>=5.4.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: email-validator
+Requires-Dist: flask-security-too[common]
+Requires-Dist: flask-wtf
+Requires-Dist: flask>=3.0.3
+Requires-Dist: gunicorn
+Requires-Dist: pandas>=2.2.2
+Requires-Dist: psycopg2-binary
+Requires-Dist: pydantic-settings>=2.3.3
+Requires-Dist: pydantic>=2.7.4
+Requires-Dist: pyparsing
+Requires-Dist: pytz
+Requires-Dist: pyyaml
+Requires-Dist: ruamel-yaml
+Requires-Dist: sphinx
+Requires-Dist: sqlalchemy
+Requires-Dist: sqlalchemy-utils
+Description-Content-Type: text/markdown
+
+# ezrules
+
+Welcome to an open-source transaction monitoring engine! This product is designed to simplify the definition and management of business rules while also offering a scalable infrastructure for rule execution and backtesting.
+
+Read the [quick start guide](https://github.com/sofeikov/ezrules/wiki/Quick-start) to get started.

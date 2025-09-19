@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: puzzle-game
+Version: 0.1.0
+Summary: 8-puzzle solver using BFS
+Author-email: "en.shaima" <shaimamanager3@example.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# puzzle_game
+
+لعبة ألغاز 8-puzzle باستخدام خوارزمية BFS لحلها.
+
+## التثبيت
+
+```bash
+pip install puzzle-game
+
+##الاستخدام
+from puzzle_game import Puzzle, bfs_solve
+
+puzzle = Puzzle()
+puzzle.shuffle(10)
+solution, expanded, time_taken = bfs_solve(puzzle)

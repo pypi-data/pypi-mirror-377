@@ -1,0 +1,13 @@
+
+syntax = "proto3";
+
+package robotics;
+
+// Next ID: 6
+message BeamformData {
+  repeated float doa_azimuth = 1;
+  repeated float doa_elevation = 2;
+  repeated float doa_intensity = 3;
+  int32 channels = 4;
+  repeated float audio_data = 5;
+}

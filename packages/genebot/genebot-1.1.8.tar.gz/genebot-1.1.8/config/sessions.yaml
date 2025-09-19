@@ -1,0 +1,97 @@
+# Market Session Configuration
+# Defines trading sessions for different market types
+
+sessions:
+  # Crypto markets (24/7 trading)
+  crypto:
+    crypto_24_7:
+      open: "00:00"
+      close: "23:59"
+      timezone: "UTC"
+      days: [0, 1, 2, 3, 4, 5, 6]  # All days (Mon=0, Sun=6)
+      description: "Cryptocurrency markets trade 24/7"
+  
+  # Forex markets (session-based trading)
+  forex:
+    sydney:
+      open: "22:00"
+      close: "07:00"  # Next day
+      timezone: "UTC"
+      days: [0, 1, 2, 3, 4]  # Monday to Friday
+      description: "Sydney forex session"
+    
+    tokyo:
+      open: "00:00"
+      close: "09:00"
+      timezone: "UTC"
+      days: [0, 1, 2, 3, 4]  # Monday to Friday
+      description: "Tokyo forex session"
+    
+    london:
+      open: "08:00"
+      close: "17:00"
+      timezone: "UTC"
+      days: [0, 1, 2, 3, 4]  # Monday to Friday
+      description: "London forex session"
+    
+    new_york:
+      open: "13:00"
+      close: "22:00"
+      timezone: "UTC"
+      days: [0, 1, 2, 3, 4]  # Monday to Friday
+      description: "New York forex session"
+
+# Holiday calendars for different markets
+holidays:
+  forex:
+    holidays:
+      - "2024-01-01"  # New Year's Day
+      - "2024-12-25"  # Christmas Day
+      - "2024-07-04"  # Independence Day (US)
+      - "2024-11-28"  # Thanksgiving (US)
+    early_close:
+      - date: "2024-12-24"
+        time: "18:00"
+        description: "Christmas Eve early close"
+      - date: "2024-11-29"
+        time: "19:00"
+        description: "Day after Thanksgiving early close"
+  
+  crypto:
+    holidays: []  # Crypto markets don't observe holidays
+    early_close: []
+
+# Session overlap periods (high volatility/volume times)
+overlaps:
+  tokyo_london:
+    start: "08:00"
+    end: "09:00"
+    description: "Tokyo-London overlap"
+    markets: ["forex"]
+  
+  london_new_york:
+    start: "13:00"
+    end: "17:00"
+    description: "London-New York overlap (most active)"
+    markets: ["forex"]
+  
+  sydney_tokyo:
+    start: "00:00"
+    end: "07:00"
+    description: "Sydney-Tokyo overlap"
+    markets: ["forex"]
+
+# Market-specific settings
+market_settings:
+  crypto:
+    continuous_trading: true
+    weekend_trading: true
+    holiday_trading: true
+    min_volume_threshold: 1000
+    
+  forex:
+    continuous_trading: false
+    weekend_trading: false
+    holiday_trading: false
+    min_volume_threshold: 10000
+    session_break_minutes: 60  # Break between sessions

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "TextAnalyzerLib"
+version = "0.1.0"
+description = "Analyze text: words, sentences, characters, word frequency"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [{ name = "aisha aljmal", email = "moaljml3601@gmail.com" }]
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.scripts]
+TextAnalyzerLib = "textanalyzer.__main__:main"
+
+[project.urls]
+Homepage = "https://pypi.org/project/TextAnalyzerLib/"

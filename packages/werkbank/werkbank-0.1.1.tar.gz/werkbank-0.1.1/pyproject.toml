@@ -1,0 +1,39 @@
+[project]
+name = "werkbank"
+version = "0.1.1"
+description = " Model Context Protocol for Atomistic Simulations"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.12.0",
+    "mp-api>=0.45.8",
+    "rcsb-api>=1.4.0",
+    "zntrack>=0.8.9",
+]
+
+[project.scripts]
+werkbank = 'werkbank:mcp.run'
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+mlipx = { git = "https://github.com/basf/mlipx" }
+plumed-nodes = { path = "../plumed-nodes", editable = true }
+ipsuite = { path = "../ipsuite", editable = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "plumed-nodes",
+    "ipsuite",
+    "mlipx",
+]
+
+[project.entry-points.'zntrack.nodes']
+ipsuite = 'werkbank.nodes:nodes'
+
+[tool.codespell]
+ignore-words-list = "basf"
+skip = "uv.lock"

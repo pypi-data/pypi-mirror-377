@@ -1,0 +1,18 @@
+[project]
+name = "markovmusic"
+version = "0.1.0"
+description = "Generate music by training a Markov chain on your own MIDI files!"
+authors = [{ name = "Ronit Kunkolienker", email = "ronitkunk@gmail.com" }]
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "sounddevice",
+    "scipy",
+    "mido",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

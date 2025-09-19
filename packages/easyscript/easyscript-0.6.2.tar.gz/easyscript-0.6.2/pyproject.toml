@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easyscript"
+dynamic = ["version"]
+description = "A simple scripting language that blends Python and JavaScript syntax"
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+authors = [
+    {name = "EasyScript", email = "java4life@gmail.com"}
+]
+keywords = ["scripting", "language", "interpreter", "javascript", "python", "regex"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Interpreters",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/rhulha/easyscript"
+Documentation = "https://github.com/rhulha/easyscript#readme"
+Repository = "https://github.com/rhulha/easyscript"
+"Bug Reports" = "https://github.com/rhulha/easyscript/issues"
+
+[project.scripts]
+easyscript = "easyscript.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black",
+    "flake8",
+]
+
+[tool.setuptools]
+packages = ["easyscript"]
+
+[tool.setuptools.dynamic]
+version = {attr = "easyscript.__version__"}
+

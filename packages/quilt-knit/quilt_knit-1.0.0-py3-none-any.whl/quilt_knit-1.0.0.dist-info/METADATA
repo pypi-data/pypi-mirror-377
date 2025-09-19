@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: quilt-knit
+Version: 1.0.0
+Summary: A knit-programming library for modular combination of knitted structures defined by the knitout machine knitting language.
+Home-page: https://mhofmann-Khoury.github.io/quilt-knit/
+License: License :: Free for non-commercial use
+Keywords: machine knitting,act lab,Northeastern University,knitout,quilt,knit script
+Author: Megan Hofmann
+Author-email: m.hofmann@northeastern.edu
+Maintainer: Megan Hofmann
+Maintainer-email: m.hofmann@northeastern.edu
+Requires-Python: >=3.11,<3.13
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: License :: Other/Proprietary License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Requires-Dist: intervaltree (>=3.1.0,<4.0.0)
+Requires-Dist: knit-graphs (>=0.0.9)
+Requires-Dist: knitout-interpreter (>=0.0.22)
+Requires-Dist: knitout-to-dat-python (>=0.0.3)
+Requires-Dist: virtual-knitting-machine (>=0.0.20)
+Project-URL: Documentation, https://mhofmann-Khoury.github.io/quilt-knit/
+Project-URL: Repository, https://github.com/mhofmann-Khoury/quilt-knit
+Description-Content-Type: text/markdown
+
+# Quilt
+
+A knit-programming library for modular combination of knitted structures defined by the knitout machine knitting language.
+
+[![Build Status](https://img.shields.io/github/workflow/status/mhofmann-Khoury/QUILT/CI)](https://github.com/mhofmann-Khoury/QUILT/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/quilt-knit)](https://pypi.org/project/quilt-knit/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/quilt-knit)](https://pypi.org/project/quilt-knit/)
+
+## Overview
+
+Quilt enables you to combine individual knitted swatches into larger, more complex structures through:
+
+- **Course-wise merging** (horizontal combination)
+- **Wale-wise merging** (vertical combination)
+- **Quilt construction** (complex grid patterns)
+
+Mix and match different stitch patterns including jersey, rib, seed, lace, cable, and jacquard.
+
+## Quick Install
+
+```bash
+pip install quilt-knit
+```
+
+Requires Python 3.11 or higher.
+
+## Documentation
+
+**📖 Full documentation is available at: https://mhofmann-Khoury.github.io/quilt-knit/**
+
+The documentation includes:
+- Complete installation instructions
+- Detailed usage examples
+- API reference
+- Advanced quilt patterns
+
+## Quick Example
+
+```python
+"""Example of left->right course merge"""
+from quilt_knit.swatch.Swatch import Swatch
+from quilt_knit.swatch.course_wise_merging.Course_Wise_Connection import Course_Wise_Connection
+from quilt_knit.swatch.course_wise_merging.Course_Merge_Process import Course_Merge_Process
+
+# Create and merge two swatches horizontally
+left_swatch = Swatch("left", "left_program.k")
+right_swatch = Swatch("right", "right_program.k")
+
+connection = Course_Wise_Connection(left_swatch, right_swatch)
+merger = Course_Merge_Process(connection)
+merger.merge_swatches()
+merger.compile_to_dat('merged_output')
+```
+
+## License
+
+This project is licensed for non-commercial use. See the [LICENSE](LICENSE.md) file for details.
+

@@ -1,0 +1,32 @@
+[project]
+name = "richtext-typst"
+dynamic = ["version"]
+description = "Convert Rich Text JSON to Typst"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Bruno DI LIVIO", email = "perruque-gruau-7k@icloud.com" }
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Lamkateh/richtext-typst"
+Issues = "https://github.com/Lamkateh/richtext-typst/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.13.0",
+    "setuptools-scm>=9.2.0",
+]
+
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"

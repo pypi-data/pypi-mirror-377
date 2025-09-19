@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: pkn
+Version: 0.2.0
+Summary: My Pocket Knife
+Project-URL: Repository, https://github.com/1kbgz/pkn
+Project-URL: Homepage, https://github.com/1kbgz/pkn
+Author-email: the pkn authors <t.paine154@gmail.com>
+License: Apache-2.0
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.9
+Requires-Dist: ccflow
+Requires-Dist: colorlog
+Requires-Dist: emails
+Requires-Dist: pydantic
+Provides-Extra: develop
+Requires-Dist: build; extra == 'develop'
+Requires-Dist: bump-my-version; extra == 'develop'
+Requires-Dist: check-manifest; extra == 'develop'
+Requires-Dist: codespell<2.5,>=2.4; extra == 'develop'
+Requires-Dist: hatchling; extra == 'develop'
+Requires-Dist: mdformat-tables>=1; extra == 'develop'
+Requires-Dist: mdformat<0.8,>=0.7.22; extra == 'develop'
+Requires-Dist: pytest; extra == 'develop'
+Requires-Dist: pytest-cov; extra == 'develop'
+Requires-Dist: ruff; extra == 'develop'
+Requires-Dist: twine; extra == 'develop'
+Requires-Dist: uv; extra == 'develop'
+Requires-Dist: wheel; extra == 'develop'
+Description-Content-Type: text/markdown
+
+# pkn
+
+My Pocket Knife
+
+[![Build Status](https://github.com/1kbgz/pkn/actions/workflows/build.yaml/badge.svg?branch=main&event=push)](https://github.com/1kbgz/pkn/actions/workflows/build.yaml)
+[![codecov](https://codecov.io/gh/1kbgz/pkn/branch/main/graph/badge.svg)](https://codecov.io/gh/1kbgz/pkn)
+[![License](https://img.shields.io/github/license/1kbgz/pkn)](https://github.com/1kbgz/pkn)
+[![PyPI](https://img.shields.io/pypi/v/pkn.svg)](https://pypi.python.org/pypi/pkn)
+
+## Overview
+
+> [!NOTE]
+> This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).

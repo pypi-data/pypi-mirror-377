@@ -1,0 +1,133 @@
+[project]
+name = "ocpiupdate"
+version = "0.6.1"
+description = "An updater for OpenCPI Projects"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "lxml == 6.0.1",
+    "tree-sitter == 0.24.0",
+    "tree-sitter-make == 1.1.1",
+    "tree-sitter-xml == 0.7.0",
+]
+authors = [
+    { name = "Dom Walters" },
+]
+keywords = ["ocpi", "opencpi", "update"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage == 7.10.6",
+    "h11 >= 0.16.0",  # dependency of hatch, updated to avoid GHSA-vqfr-h8mv-ghfj
+    "hatch == 1.14.1",
+    "lxml-stubs == 0.5.1",
+    "mypy == 1.18.1",
+    "pre-commit == 4.3.0",
+    "pytest == 8.4.2",
+    "pytest-cov == 7.0.0",
+    "pytest-sugar == 1.1.1",
+    "pytest-xdist == 3.8.0",
+    "ruff == 0.13.0",
+    "uv >= 0.8.6",  # dependency of hatch, updated to avoid GHSA-8qf3-x8v5-2pj8
+]
+
+[project.scripts]
+ocpiupdate = "ocpiupdate.executables.__main__:main"
+ocpiparsemake = "ocpiupdate.executables.ocpiparsemake:main"
+ocpiparsexml = "ocpiupdate.executables.ocpiparsexml:main"
+ocpifindsymlink = "ocpiupdate.executables.ocpifindsymlink:main"
+
+[project.urls]
+Repository = "https://gitlab.com/dawalters/ocpiupdate"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.codespell]
+skip = ".sbom*.json"
+
+[tool.coverage.html]
+directory = ".htmlcov"
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "if typing\\.TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.xml]
+output = ".coverage.xml"
+
+[tool.hatch.build]
+include = [
+    "**/*.py",
+    "src/ocpiupdate/executables/ocpiupdate.toml",
+    "src/ocpiupdate/py.typed",
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.*",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ocpiupdate"]
+
+[tool.hatch.envs.hatch-test]
+dependencies = [
+    "coverage == 7.10.6",
+    "pytest == 8.4.2",
+    "pytest-cov == 7.0.0",
+    "pytest-sugar == 1.1.1",
+    "pytest-xdist == 3.8.0",
+]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.12", "3.13"]
+
+[tool.mypy]
+exclude = "opencpi"
+strict = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+addopts = "--capture=fd -n auto --cov=ocpiupdate --cov-report html --cov-report xml --verbose --junitxml=.junit.xml -o junit_family=legacy"
+testpaths = [
+    "tests",
+]
+
+[tool.ruff]
+unsafe-fixes = true
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+ignore = [
+    "CPY001",   # I don't want copyright notices in every file
+    "D203",     # I don't want blank lines before class docstrings
+    "D212",     # I want docstring opening lines to be after the """
+    "DOC201",   # I don't want to mandate documenting return type with typehints
+    "FIX002",   # I want to be able to type TODO
+    "TD002",    # I don't want TODOs to need authors
+    "TD003",    # I don't want TODOs to need issue IDs
+]
+preview = true
+select = [
+    "ALL",
+]
+unfixable = [
+    "T201", # Don't fix print statements
+]

@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: zymmr-client
+Version: 0.1.0
+Summary: Python client library for Zymmr Project Management API
+Project-URL: Homepage, https://github.com/kiran-harbak/zymmr-client
+Project-URL: Repository, https://github.com/kiran-harbak/zymmr-client.git
+Project-URL: Issues, https://github.com/kiran-harbak/zymmr-client/issues
+Author-email: Kiran Harbak <kiran.harbak@amruts.com>
+License: MIT
+License-File: LICENSE
+Keywords: api-client,project-management,rest-api,zymmr
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# Zymmr Client
+
+A Python client library for interacting with the Zymmr Project Management API.
+
+## Features
+
+- Simple and intuitive API interface
+- Authentication handling
+- Full CRUD operations for projects, tasks, and resources
+- Error handling and retry mechanisms
+- Type hints for better development experience
+
+## Installation
+
+```bash
+pip install zymmr-client
+```
+
+## Quick Start
+
+```python
+from zymmr_client import ZymmrClient
+
+# Initialize the client
+client = ZymmrClient(
+    base_url="https://your-zymmr-instance.com",
+    api_key="your-api-key"
+)
+
+# Get all projects
+projects = client.projects.list()
+
+# Create a new task
+task = client.tasks.create({
+    "title": "My Task",
+    "project_id": "project-123",
+    "status": "open"
+})
+```
+
+## Development
+
+This project uses `uv` for dependency management:
+
+```bash
+# Install dependencies
+uv sync
+
+# Run tests
+uv run pytest
+
+# Build package
+uv build
+```
+
+## License
+
+MIT License

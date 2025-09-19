@@ -1,0 +1,56 @@
+[project]
+name = "rangerlite"
+version = "1.0.1"
+description = "A pytorch implementation of the Lookahead optimizer with RAdam as inner optimizer"
+authors = [
+    {name = "Thorsten Buss", email = "thorsten.buss@uni-hamburg.de"}
+]
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "torch>=2.0.0,<3.0.0"
+]
+readme = "README.md"
+license = "MIT"
+keywords = ["machine-learning", "deep-learning", "pytorch", "optimizer", "lookahead", "radam"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.12.11",
+    "pre-commit==4.3.0",
+    "numpy>=2.0.0,<3.0.0"
+]
+test = [
+    "pytest>=8.4.2",
+]
+
+[project.urls]
+Repository = "https://github.com/FLC-QU-hep/ranger-lite.git"
+Issues = "https://github.com/FLC-QU-hep/ranger-lite/issues"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["rangerlite"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["*_test.py"]
+addopts = "-v"
+
+[tool.ruff]
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+extend-select = ["C4", "I", "SIM", "UP"]

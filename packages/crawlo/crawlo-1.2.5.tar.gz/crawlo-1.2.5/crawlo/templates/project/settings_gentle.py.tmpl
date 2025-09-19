@@ -1,0 +1,128 @@
+# -*- coding: UTF-8 -*-
+"""
+{{project_name}} 项目配置文件（温和版）
+=============================
+基于 Crawlo 框架的温和爬虫项目配置。
+适合对目标网站友好的低负载爬取。
+"""
+import os
+from crawlo.config import CrawloConfig
+
+# ============================== 项目基本信息 ==============================
+PROJECT_NAME = '{{project_name}}'
+
+# ============================== 温和模式配置说明 ==============================
+# 
+# 本模板专为对目标网站友好的低负载爬取设计，适用于以下场景：
+# - 需要避免对目标网站造成过大压力
+# - 长时间运行的监控类爬虫
+# - 对目标网站有友好性要求的项目
+# 
+# 运行模式特点：
+# - RUN_MODE = 'standalone'（单机模式）
+# - QUEUE_TYPE = 'memory'（使用内存队列）
+# - FILTER_CLASS = 'crawlo.filters.memory_filter.MemoryFilter'（内存过滤器）
+# - DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.memory_dedup_pipeline.MemoryDedupPipeline'（内存去重）
+# 
+# 配置特点：
+# - 低并发：CONCURRENCY = 2
+# - 高延迟：DOWNLOAD_DELAY = 3.0秒
+# - 随机化：启用RANDOMNESS增加随机性
+# - 连接池限制：减少连接数避免给服务器造成压力
+# 
+# 扩展建议：
+# - 如需跨会话去重，可将FILTER_CLASS和DEFAULT_DEDUP_PIPELINE改为Redis实现
+# - 可根据目标网站特性调整DOWNLOAD_DELAY和RANDOM_RANGE参数
+#
+# 🎯 最佳使用方式：
+# 推荐使用配置工厂方式创建温和模式配置：
+# from crawlo.config import CrawloConfig
+# config = CrawloConfig.presets().gentle()
+# process = CrawlerProcess(settings=config.to_dict())
+
+# ============================== 温和模式配置 ==============================
+# 使用配置工厂创建温和模式配置
+CONFIG = CrawloConfig.presets().gentle()
+
+# 获取配置
+locals().update(CONFIG.to_dict())
+
+# ============================== 网络请求配置 ==============================
+DOWNLOADER = "crawlo.downloader.httpx_downloader.HttpXDownloader"
+DOWNLOAD_TIMEOUT = 60
+VERIFY_SSL = True
+
+# ============================== 低并发配置 ==============================
+CONCURRENCY = 2
+MAX_RUNNING_SPIDERS = 1
+DOWNLOAD_DELAY = 3.0
+RANDOMNESS = True
+RANDOM_RANGE = (2.0, 5.0)
+
+# ============================== 连接池配置 ==============================
+CONNECTION_POOL_LIMIT = 10
+CONNECTION_POOL_LIMIT_PER_HOST = 5
+
+# ============================== 重试配置 ==============================
+MAX_RETRY_TIMES = 3
+RETRY_HTTP_CODES = [408, 429, 500, 502, 503, 504, 522, 524]
+IGNORE_HTTP_CODES = [403, 404]
+
+# ============================== 队列配置 ==============================
+SCHEDULER_MAX_QUEUE_SIZE = 1000
+QUEUE_MAX_RETRIES = 3
+QUEUE_TIMEOUT = 300
+
+# ============================== 数据存储配置 ==============================
+# MySQL 配置
+MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
+MYSQL_PORT = int(os.getenv('MYSQL_PORT', 3306))
+MYSQL_USER = os.getenv('MYSQL_USER', 'root')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '123456')
+MYSQL_DB = os.getenv('MYSQL_DB', '{{project_name}}')
+MYSQL_TABLE = '{{project_name}}_data'
+
+# MongoDB 配置
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017')
+MONGO_DATABASE = '{{project_name}}_db'
+MONGO_COLLECTION = '{{project_name}}_items'
+
+# ============================== 去重配置 ==============================
+# 明确指定温和模式下使用内存去重管道
+DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.memory_dedup_pipeline.MemoryDedupPipeline'
+FILTER_CLASS = 'crawlo.filters.memory_filter.MemoryFilter'
+REDIS_TTL = 0
+CLEANUP_FP = 0
+FILTER_DEBUG = True
+
+# ============================== 中间件与管道 ==============================
+MIDDLEWARES = [
+    'crawlo.middleware.request_ignore.RequestIgnoreMiddleware',
+    'crawlo.middleware.download_delay.DownloadDelayMiddleware',
+    'crawlo.middleware.default_header.DefaultHeaderMiddleware',
+    'crawlo.middleware.retry.RetryMiddleware',
+    'crawlo.middleware.response_code.ResponseCodeMiddleware',
+]
+
+PIPELINES = [
+    'crawlo.pipelines.console_pipeline.ConsolePipeline',
+    # '{{project_name}}.pipelines.DatabasePipeline',
+]
+
+# 明确添加内存去重管道到管道列表开头
+PIPELINES.insert(0, DEFAULT_DEDUP_PIPELINE)
+
+# ============================== 扩展组件 ==============================
+EXTENSIONS = [
+    'crawlo.extension.log_interval.LogIntervalExtension',
+    'crawlo.extension.log_stats.LogStats',
+    'crawlo.extension.logging_extension.CustomLoggerExtension',
+]
+
+# ============================== 日志配置 ==============================
+LOG_LEVEL = 'INFO'
+LOG_FILE = f'logs/{{project_name}}.log'
+STATS_DUMP = True
+
+# ============================== 自定义配置 ==============================
+# 在此处添加项目特定的配置项

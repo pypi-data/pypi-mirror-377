@@ -1,0 +1,155 @@
+# -*- coding: UTF-8 -*-
+"""
+{{project_name}} 项目配置文件（分布式版）
+=============================
+基于 Crawlo 框架的分布式爬虫项目配置。
+适合大规模数据采集和多节点部署。
+"""
+import os
+from crawlo.config import CrawloConfig
+
+# ============================== 项目基本信息 ==============================
+PROJECT_NAME = '{{project_name}}'
+
+# ============================== 分布式配置说明 ==============================
+# 
+# 本模板专为分布式部署设计，适用于以下场景：
+# - 大规模数据采集任务
+# - 需要多节点协同工作的项目
+# - 高并发、高吞吐量需求
+# 
+# 运行模式特点：
+# - RUN_MODE = 'distributed'（分布式模式）
+# - QUEUE_TYPE = 'redis'（使用Redis队列实现分布式协调）
+# - FILTER_CLASS = 'crawlo.filters.aioredis_filter.AioRedisFilter'（Redis过滤器）
+# - DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.redis_dedup_pipeline.RedisDedupPipeline'（Redis去重）
+# 
+# 部署要求：
+# - 需要配置Redis服务器连接参数
+# - 建议使用独立的Redis数据库避免数据冲突
+# - 多节点部署时确保所有节点能访问同一Redis实例
+#
+# 🎯 最佳使用方式：
+# 推荐使用配置工厂方式创建分布式配置：
+# from crawlo.config import CrawloConfig
+# config = CrawloConfig.distributed(
+#     redis_host='your_redis_host',
+#     redis_port=6379,
+#     redis_password='your_password',
+#     project_name='{{project_name}}'
+# )
+# process = CrawlerProcess(settings=config.to_dict())
+
+# ============================== 分布式配置 ==============================
+# 使用配置工厂创建分布式配置
+CONFIG = CrawloConfig.distributed(
+    redis_host=os.getenv('REDIS_HOST', '127.0.0.1'),
+    redis_port=int(os.getenv('REDIS_PORT', 6379)),
+    redis_password=os.getenv('REDIS_PASSWORD', ''),
+    project_name='{{project_name}}',
+    concurrency=16,
+    download_delay=1.0
+)
+
+# 获取配置
+locals().update(CONFIG.to_dict())
+
+# ============================== 网络请求配置 ==============================
+DOWNLOADER = "crawlo.downloader.httpx_downloader.HttpXDownloader"
+DOWNLOAD_TIMEOUT = 60
+VERIFY_SSL = True
+
+# ============================== 并发配置 ==============================
+CONCURRENCY = 16
+MAX_RUNNING_SPIDERS = 5
+DOWNLOAD_DELAY = 1.0
+
+# ============================== 队列配置 ==============================
+SCHEDULER_MAX_QUEUE_SIZE = 5000
+QUEUE_MAX_RETRIES = 5
+QUEUE_TIMEOUT = 300
+
+# ============================== Redis 配置 ==============================
+REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', '')
+REDIS_DB = int(os.getenv('REDIS_DB', 0))
+
+# 根据是否有密码生成 URL
+if REDIS_PASSWORD:
+    REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+else:
+    REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+
+# ============================== 数据存储配置 ==============================
+# MySQL 配置
+MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
+MYSQL_PORT = int(os.getenv('MYSQL_PORT', 3306))
+MYSQL_USER = os.getenv('MYSQL_USER', 'root')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '123456')
+MYSQL_DB = os.getenv('MYSQL_DB', '{{project_name}}')
+MYSQL_TABLE = '{{project_name}}_data'
+MYSQL_BATCH_SIZE = 100
+MYSQL_USE_BATCH = True
+
+# MongoDB 配置
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017')
+MONGO_DATABASE = '{{project_name}}_db'
+MONGO_COLLECTION = '{{project_name}}_items'
+MONGO_BATCH_SIZE = 100
+MONGO_USE_BATCH = True
+
+# ============================== 去重配置 ==============================
+# 明确指定分布式模式下使用Redis去重管道
+DEFAULT_DEDUP_PIPELINE = 'crawlo.pipelines.redis_dedup_pipeline.RedisDedupPipeline'
+FILTER_CLASS = 'crawlo.filters.aioredis_filter.AioRedisFilter'
+REDIS_TTL = 0
+CLEANUP_FP = 0
+FILTER_DEBUG = True
+
+# ============================== 中间件与管道 ==============================
+MIDDLEWARES = [
+    'crawlo.middleware.request_ignore.RequestIgnoreMiddleware',
+    'crawlo.middleware.download_delay.DownloadDelayMiddleware',
+    'crawlo.middleware.default_header.DefaultHeaderMiddleware',
+    'crawlo.middleware.proxy.ProxyMiddleware',
+    'crawlo.middleware.offsite.OffsiteMiddleware', 
+    
+    'crawlo.middleware.retry.RetryMiddleware',
+    'crawlo.middleware.response_code.ResponseCodeMiddleware',
+    'crawlo.middleware.response_filter.ResponseFilterMiddleware',
+]
+
+PIPELINES = [
+    'crawlo.pipelines.console_pipeline.ConsolePipeline',
+    # '{{project_name}}.pipelines.DatabasePipeline',
+    # 'crawlo.pipelines.mysql_pipeline.AsyncmyMySQLPipeline',
+    # 'crawlo.pipelines.mongo_pipeline.MongoPipeline',
+]
+
+# 明确添加Redis去重管道到管道列表开头
+PIPELINES.insert(0, DEFAULT_DEDUP_PIPELINE)
+
+# ============================== 扩展组件 ==============================
+EXTENSIONS = [
+    'crawlo.extension.log_interval.LogIntervalExtension',
+    'crawlo.extension.log_stats.LogStats',
+    'crawlo.extension.logging_extension.CustomLoggerExtension',
+    # 'crawlo.extension.memory_monitor.MemoryMonitorExtension',
+    # 'crawlo.extension.request_recorder.RequestRecorderExtension',
+]
+
+# ============================== 日志配置 ==============================
+LOG_LEVEL = 'INFO'
+LOG_FILE = f'logs/{{project_name}}.log'
+STATS_DUMP = True
+
+# ============================== 代理配置 ==============================
+PROXY_ENABLED = False
+PROXY_API_URL = ""
+PROXY_EXTRACTOR = "proxy"
+PROXY_REFRESH_INTERVAL = 60
+PROXY_API_TIMEOUT = 10
+
+# ============================== 自定义配置 ==============================
+# 在此处添加项目特定的配置项

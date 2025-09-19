@@ -1,0 +1,543 @@
+Metadata-Version: 2.4
+Name: TINTOlib
+Version: 1.0.6.1
+Summary: Converting tabular data into images
+Project-URL: Homepage, https://github.com/oeg-upm/TINTOlib-Documentation
+Author-email: BorjaRei <borjareinoso@gmail.com>, manwestc <jcastillo@fi.upm.es>, DavidGonzalezFernandez <david.g.f.2@gmail.com>, JiayunLiu <jiayun.liu@upm.es>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: bitstring==4.3.0
+Requires-Dist: matplotlib==3.9.4
+Requires-Dist: mpi4py==4.0.3
+Requires-Dist: numpy==2.0.2
+Requires-Dist: opencv-python==4.11.0.86
+Requires-Dist: pandas==2.2.3
+Requires-Dist: scikit-learn==1.6.1
+Description-Content-Type: text/markdown
+
+# TINTOlib: Python Library to convert Tabular Data into Synthetic Images
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](https://github.com/oeg-upm/TINTOlib-Documentation/blob/main/LICENSE)
+[![Python Version](https://img.shields.io/badge/Python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)](https://pypi.python.org/pypi/)
+[![Documentation Status](https://readthedocs.org/projects/morph-kgc/badge/?version=latest)](https://tintolib.readthedocs.io/en/latest/)
+[![Open In Colab-CNN](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/oeg-upm/TINTOlib-Crash_Course/blob/main/Notebooks/Challenge/Regression_CNN.ipynb)
+[![Open In Colab-CNN+MLP](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/oeg-upm/TINTOlib-Crash_Course/blob/main/Notebooks/Challenge/Regression_CNN%2BMLP.ipynb)
+[![Open In Colab-ViT](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/oeg-upm/TINTOlib-Crash_Course/blob/main/Notebooks/Challenge/Regression_ViT.ipynb)
+[![Open In Colab-ViT+MLP](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/oeg-upm/TINTOlib-Crash_Course/blob/main/Notebooks/Challenge/Regression_ViT%2BMLP.ipynb)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/oeg-upm/TINTOlib)
+[![PyPI Downloads](https://static.pepy.tech/badge/tintolib)](https://pepy.tech/projects/tintolib)
+
+
+<div>
+    <p align = "center">
+    <img src="https://raw.githubusercontent.com/DCY1117/TEMP-Images/refs/heads/main/TINTOlib-images/logo.svg" alt="TINTO Logo" width="150">
+    </p>
+</div>
+
+## 🎉 New Free Course on Udemy! (Spanish) 🎉
+
+**We’ve just launched a 100% free course on Udemy** about **using TINTOlib** and developing **Hybrid Neural Networks**.
+
+Learn how to turn tabular data into synthetic images and apply CNNs, ViTs, and hybrid architectures like a pro.
+
+<p align="center">
+  <a href="https://www.udemy.com/course/tintolib-deep-learning-tabutar-data-con-imagenes-sinteticas/?referralCode=16B7C59C2E3B0BD249D0" target="_blank">
+    <img src="https://img.shields.io/badge/Udemy-Free%20Course-blueviolet?style=for-the-badge&logo=Udemy&logoColor=white" alt="Access the Course on Udemy"/>
+  </a>
+</p>
+
+---
+
+### 📺 VideoTutorial Course (English/Spanish)
+
+🎥 Prefer not to register on Udemy or looking for the English version of the course? No worries — you can follow the full course directly on GitHub!
+
+This hands-on tutorial includes **bilingual videos (English/Spanish)** and **practical notebooks** to help you learn how to use **TINTOlib** with deep learning models like CNNs, ViTs, and hybrid architectures.
+
+<p align="center">
+  <a href="https://github.com/oeg-upm/TINTOlib-Crash_Course/blob/main/5_TINTOlib%20Videotutorial%20course/README.md" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-VideoTutorial%20Course-black?style=for-the-badge&logo=GitHub&logoColor=white" alt="Access the Course on GitHub"/>
+  </a>
+</p>
+
+
+---
+
+## 🧠 Overview
+
+**TINTOlib** is a state-of-the-art Python library that transforms **tidy data** (also known as tabular data) into **synthetic images**, enabling the application of advanced deep learning techniques, including **Vision Transformers (ViTs)** and **Convolutional Neural Networks (CNNs)**, to traditionally structured data. This transformation bridges the gap between tabular data and powerful vision-based machine learning models, unlocking new possibilities for tackling regression, classification, and other complex tasks.
+
+---
+
+## 🔎 Explore TINTOlib with DeepWiki
+
+TINTOlib has a dedicated space on **[DeepWiki](https://deepwiki.com/oeg-upm/TINTOlib)**, where you can explore semantic documentation, relevant links, bibliography, and answers to frequently asked questions about its use and application.
+
+<p align="center">
+  <a href="https://deepwiki.com/oeg-upm/TINTOlib" target="_blank">
+    <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"/>
+  </a>
+</p>
+
+<!--
+**Citing TINTO**: If you used TINTO in your work, please cite the **[SoftwareX](https://doi.org/10.1016/j.softx.2023.101391)**:
+
+```bib
+@article{softwarex_TINTO,
+    title = {TINTO: Converting Tidy Data into Image for Classification with 2-Dimensional Convolutional Neural Networks},
+    journal = {SoftwareX},
+    author = {Manuel Castillo-Cara and Reewos Talla-Chumpitaz and Raúl García-Castro and Luis Orozco-Barbosa},
+    volume={22},
+    pages={101391},
+    year = {2023},
+    issn = {2352-7110},
+    doi = {https://doi.org/10.1016/j.softx.2023.101391}
+}
+```
+
+And use-case developed in **[INFFUS Paper](https://doi.org/10.1016/j.inffus.2022.10.011)** 
+
+```bib
+@article{inffus_TINTO,
+    title = {A novel deep learning approach using blurring image techniques for Bluetooth-based indoor localisation},
+    journal = {Information Fusion},
+    author = {Reewos Talla-Chumpitaz and Manuel Castillo-Cara and Luis Orozco-Barbosa and Raúl García-Castro},
+    volume = {91},
+    pages = {173-186},
+    year = {2023},
+    issn = {1566-2535},
+    doi = {https://doi.org/10.1016/j.inffus.2022.10.011}
+}
+```
+-->
+---
+
+## 📚 Features
+- Input formats: **CSV** or Pandas DataFrame
+- Designed for tidy data (**target column last**)
+- Output: grayscale images from reduction and transformation methods
+- Compatible with **Linux, Windows, macOS**
+- Requires **Python 3.7+**
+
+---
+
+
+## 🧪 Methods
+TINTOlib includes a variety of methods for generating synthetic images. Below is a summary of the supported methods and their hyperparameters:
+
+| Methods | Class | Hyperparameters |
+|:----------------------------------------------------------------:|:------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [TINTO](https://github.com/oeg-upm/TINTO) | `TINTO()` | `problem` `normalize` `verbose` `pixels` `algorithm` `blur` `submatrix` `amplification` `distance` `steps` `option` `times` `train_m` `zoom` `random_seed` |
+| [IGTD](https://github.com/zhuyitan/igtd) | `IGTD()` | `problem` `normalize` `verbose` `scale` `fea_dist_method` `image_dist_method` `error` `max_step` `val_step` `switch_t` `min_gain` `zoom` `random_seed` |
+| [REFINED](https://github.com/omidbazgirTTU/REFINED) | `REFINED()` | `problem` `normalize` `verbose` `hcIterations` `n_processors` `zoom` `random_seed` |
+| [BarGraph](https://github.com/anuraganands/Non-image-data-classification-with-CNN/) | `BarGraph()` | `problem` `normalize` `verbose` `pixel_width` `gap` `zoom` |
+| [DistanceMatrix](https://github.com/anuraganands/Non-image-data-classification-with-CNN/) | `DistanceMatrix()` | `problem` `normalize` `verbose` `zoom` |
+| [Combination](https://github.com/anuraganands/Non-image-data-classification-with-CNN/) | `Combination()` | `problem` `normalize` `verbose` `zoom` |
+| [SuperTML](https://github.com/GilesStrong/SuperTML_HiggsML_Test) | `SuperTML()` | `problem` `normalize` `verbose` `pixels` `feature_importance` `font_size` `random_seed` |
+| [FeatureWrap](https://link.springer.com/chapter/10.1007/978-3-319-70139-4_87) | `FeatureWrap()` | `problem` `normalize` `verbose` `size` `bins` `zoom` |
+| [BIE](https://ieeexplore.ieee.org/document/10278393) | `BIE()` | `problem` `normalize` `verbose` `precision` `zoom` |
+
+---
+
+## ⚠️ Platform-Specific Requirements for Certain Transformation Methods
+
+Some transformation methods in TINTOlib have specific system requirements or limitations when used on platforms such as Google Colab, Windows, Linux, or macOS.
+
+### REFINED
+
+This method relies on `mpi4py`, which enables parallel computation using MPI (Message Passing Interface). However, `mpi4py` requires administrative permissions to utilize multiple processors, making it incompatible with platforms like Google Colab. 
+
+- **Linux**:
+  Ensure that the MPI environment is set up before installing `mpi4py`. Run the following commands:
+
+    ```bash
+      sudo apt-get install python3
+      sudo apt install python3-pip
+      sudo apt install python3-mpi4py
+    ```
+  Once MPI is installed:
+
+    ```bash
+      pip install mpi4py
+    ```
+- **MacOS / Windows:** Direct installation is usually supported:
+
+    ```bash
+      pip install mpi4py
+    ```
+
+### SuperTML
+
+The **SuperTML** method generates text-based synthetic images and requires the **MS Sans Serif** font.
+
+- On **Windows**, this font is typically available by default.
+- On **Linux** and **macOS**, it must be installed manually to avoid rendering issues.
+
+#### Font Installation
+
+- **Linux**: Install Microsoft Core Fonts:
+  
+    ```bash
+      sudo apt install ttf-mscorefonts-installer
+    ```
+
+On **Google Colab**, installing additional fonts is not permitted due to administrative restrictions.
+
+## 📄 Getting Started
+
+- You can install TINTOlib using **[Pypi](https://pypi.org/project/TINTOlib/)**:
+    ```bash
+      pip install TINTOlib
+    ```
+
+TINTOlib already includes all necessary dependencies, so there’s no need to install them individually.
+
+However, if you prefer manual installation or want to explore the full environment:
+
+- The repository includes a `requirements.txt` file listing the **core dependencies** required to use TINTOlib. You can directly run the **TINTOlib-example.ipynb** notebook located in the examples/ folder using the dependencies listed in `requirements.txt`.
+- **Other notebooks**, which include training deep learning models on the generated images, require additional libraries. To run them, install the extended dependencies from `requirements-example.txt`:
+
+---
+
+## 🧩 Importing a Specific Model
+
+- To use a specific image transformation model, import it directly. For example, to use **TINTO**:
+
+    ```python
+      from TINTOlib.tinto import TINTO
+    ```
+
+- To import a specific model use: 
+    ```python
+      from TINTOlib.tinto import TINTO
+    ```
+
+- Create the model. If you don't set any hyperparameter, the model will use the default values, refer to the **[Models Section](#models)** or the **[TINTO Documentation](https://tintolib.readthedocs.io/en/latest/)**.
+
+    ```python
+      model = TINTO(problem="supervised", blur=True)
+    ```
+
+---
+
+## 🔧 Generating Synthetic Images
+To generate synthetic images, use the following workflow with the `fit`, `transform`, and `fit_transform` methods:
+
+**Parameters**:
+- **data**: A path to a CSV file or a Pandas DataFrame  (target column must be the last column).
+- **folder**: Path to the folder where the synthetic images will be saved.
+
+#### Sintaxis
+
+1. The `fit` method trains the model on the tabular data and prepares it for image generation.
+    ```python
+      model.fit(data)
+    ```
+
+2. The `transform` method generates and saves synthetic images in a specified folder. It requires the model to be fitted first.
+    ```python
+      model.transform(data, folder)
+    ```
+
+3. The `fit_transform` method combines the training and image generation steps. It fits the model to the data and generates synthetic images in one step.
+
+  ```python
+    model.fit_transform(data, folder)
+  ```
+
+#### Notes:
+- **The model must be fitted** before using the `transform` method. If the model isn't fitted, a `RuntimeError` will be raised.
+
+
+### Iris dataset Example
+To get started with **TINTOlib**, a dedicated **[Crash Course Repository](https://github.com/oeg-upm/TINTOlib-Crash_Course)** is available. It includes videoturials, slides and Jupyter Notebooks that demonstrate how to apply state-of-the-art vision models like Vision Transformers (ViTs), Convolutional Neural Networks (CNNs) and Hybrid Neural Networks to problems.
+<!--It includes:
+
+- **Slides and Jupyter notebooks** demonstrating how to:
+  - Transform tabular data into images using **TINTOlib**.
+  - Apply state-of-the-art vision models like **Vision Transformers (ViTs)** and **Convolutional Neural Networks (CNNs)** to classification and regression problems.
+
+- Integration of **Hybrid Neural Networks (HyNNs)**, where:
+  - **One branch** (MLP) processes the original tabular data.
+  - **Another branch** (CNN or ViT) processes synthetic images.
+
+This architecture leverages the strengths of both tabular and image-based data representations, enabling improved performance on complex machine learning tasks. The repository is ideal for those looking to integrate image-based deep learning techniques into tabular data workflows.
+-->
+
+For example, the following table shows a classic example of the [IRIS CSV dataset](https://archive.ics.uci.edu/ml/datasets/iris) as it should look like for the run:
+
+
+| sepal length | sepal width | petal length | petal width | target |
+|--------------|-------------|--------------|-------------|--------|
+| 4.9 | 3.0 | 1.4 | 0.2 | 1 |
+| 7.0 | 3.2 | 4.7 | 1.4 | 2 |
+| 6.3 | 3.3 | 6.0 | 2.5 | 3 |
+
+
+- The following example shows how to execute TINTOlib using the TINTO method and then display the synthetic image generated for the first row:
+
+    ```python
+      model = TINTO(problem="supervised", pixel=30, algorithm="t-SNE", steps=5, blur=True)
+      model.fit_transform("iris.csv", "synthetic_images")
+    ```
+
+<!--
+- **Blurring (-B)**: Create the images with blurring technique.
+- **Dimensional Reduction Algorithm (-alg)**: t-SNE is used.
+- **Blurring option (-oB)**: Create de images with maximum value of overlaping pixel
+- **Image size (-px)**: 30x30 pixels
+- **Blurring steps (-sB)**: Expand 5 pixels the blurring.
+-->
+<div>
+<p align = "center">
+<kbd><img src="https://raw.githubusercontent.com/DCY1117/TEMP-Images/refs/heads/main/TINTOlib-images/blurring.png" alt="TINTO blurring" width="250"></kbd>
+</p>
+</div>
+
+---
+
+## 🚀 Vision-based Neural Network Architectures
+
+Using synthetic images, experiment with either vision models like CNNs or ViTs, and explore hybrid models. Below are the architectures that will be presented, and the ones you will modify and use during the session:
+
+- **Synthetic images using CNN**  
+  ![Tabular-to-Image CNN](imgs/Tabular-to-image-CNN.jpg)
+
+- **Synthetic images using Hybrid Neural Network with ViT (HyViT)**  
+  ![Tabular-to-Image HyNNViT](imgs/HybridViT.png)
+
+---
+
+## 💬 More information
+
+- For more detailed information, refer to the **[TINTOlib ReadTheDocs](https://tintolib.readthedocs.io/en/latest/)**.  
+- GitHub repository: **[TINTOlib Documentation](https://github.com/oeg-upm/TINTOlib-Documentation)**.
+- PyPI: **[PyPI](https://pypi.org/project/TINTOlib/)**.
+
+---
+
+## 🛡️ License
+
+TINTOlib is available under the **[Apache License 2.0](https://github.com/oeg-upm/TINTOlib-Documentation/blob/main/LICENSE)**.
+
+---
+
+## 👥 Authors
+- **[Manuel Castillo-Cara](https://github.com/manwestc)**
+- **[Raúl García-Castro](https://github.com/rgcmme)**
+- **[David González Fernández](https://github.com/DavidGonzalezFernandez)**
+- **[Jiayun Liu](https://github.com/DCY1117)**
+
+---
+
+## 🏛️ Contributors
+
+<div>
+<p align = "center">
+<kbd><img src="https://raw.githubusercontent.com/DCY1117/TEMP-Images/refs/heads/main/TINTOlib-images/logo-oeg.png" alt="Ontology Engineering Group" width="150"></kbd> <kbd><img src="https://raw.githubusercontent.com/DCY1117/TEMP-Images/refs/heads/main/TINTOlib-images/logo-upm.png" alt="Universidad Politécnica de Madrid" width="150"></kbd> <kbd><img src="https://raw.githubusercontent.com/DCY1117/TEMP-Images/refs/heads/main/TINTOlib-images/logo-uned-.jpg" alt="Universidad Nacional de Educación a Distancia" width="231"></kbd> <kbd><img src="https://raw.githubusercontent.com/DCY1117/TEMP-Images/refs/heads/main/TINTOlib-images/logo-uclm.png" alt="Universidad de Castilla-La Mancha" width="115"></kbd> 
+</p>
+</div>

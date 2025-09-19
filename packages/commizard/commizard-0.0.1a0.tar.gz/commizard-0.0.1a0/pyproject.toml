@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "commizard"
+dynamic = ["version"]
+authors = [
+    { name = "Chungzter", email = "freezycry@protonmail.com" },
+]
+description = "The commit writing Wizard Assistant"
+dependencies = [
+    "rich>=13.9.0,<=14.1.0",
+    "requests>=2.32.2,<=2.32.5",
+    "pyperclip>=1.8.0,<=1.9.0",
+]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = [
+    "Commit message helper",
+    "commit assistant",
+    "git",
+    "AI assistant",
+]
+
+[project.urls]
+Homepage = "https://github.com/Chungzter/CommiZard"
+Issues = "https://github.com/Chungzter/CommiZard/issues"
+
+[project.scripts]
+commizard = "commizard.cli:main"
+
+[tool.hatch.version]
+path = "src/commizard/__init__.py"

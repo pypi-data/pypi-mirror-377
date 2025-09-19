@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "constitute-mcp"
+version = "0.1.15"
+description = "MCP server for Constitute Project constitution scraping and analysis"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["mcp", "constitute", "constitution", "legal", "analysis"]
+requires-python = ">=3.9"
+dependencies = [
+    "mcp>=1.0.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "pydantic>=2.0.0",
+    "toml>=0.10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/constitute-mcp"
+Repository = "https://github.com/yourusername/constitute-mcp"
+Issues = "https://github.com/yourusername/constitute-mcp/issues"
+
+[project.scripts]
+constitute-mcp = "constitute_mcp.server:cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["constitute_mcp*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "0.1.15"
+strict = true
+warn_return_any = true
+warn_unused_configs = true

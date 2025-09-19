@@ -1,0 +1,831 @@
+Variable,Description
+peridnum,22-digit unique person identifier
+ph_seq,household seq number
+p_seq,sequence number of person in hhld
+a_lineno,roster line number
+pf_seq,pointer to the sequence number of family record in household (related subfamilies point to primary family)
+phf_seq,pointer to the sequence number of own family record in household. (care should be exercised when using these data as the related subfamilies are a part of the primary family and usually their characteristics come from the primary family record)
+oed_typ1,source 1 other than gi bill received (oed_typ1- source of other government assistance)
+oed_typ2,"source 2 other than gi bill received (oed_typ2- scholarships, grants etc. from the school)"
+oed_typ3,"source other than gi bill received (oed_typ3- other assistance (employers friends, etc.)"
+perrp,expanded relationship categories
+pxrrp,allocation flag for perrp
+pxmaritl,allocation flag for a_maritl
+pxrace1,allocation flag for prdtrace
+pehspnon,"are you spanish, hispanic, or latino?"
+pxhspnon,allocation flag for pehspnon
+peafever,did you ever serve on active duty in the u.s. armed forces?
+pxafever,allocation flag for peafever
+peafwhn1,when did you serve?
+pxafwhn1,allocation flag for peafwhn1
+peafwhn2,when did you serve?
+peafwhn3,when did you serve?
+peafwhn4,when did you serve?
+pxspouse,allocation flag for a_spouse
+penatvty,in what country were you born?
+pxnatvty,allocation flag for penatvty
+pemntvty,in what country was your mother born?
+pxmntvty,allocation flag for pemntvty
+pefntvty,in what country was your father born?
+pxfntvty,allocation flag for pefntvty
+peinusyr,when did you come to the u.s. to stay?
+pxinusyr,allocation flag for peinusyr
+pepar1,line number of parent 1
+pxpar1,demographics allocation flag for pepar1
+pepar2,line number of parent 2
+pxpar2,allocation flag for pepar2
+pepar1typ,demographics type of parent 1 (pepar1)
+pxpar1typ,allocation flag for pepar1typ
+pepar2typ,demographics type of parent 2 (pepar2)
+pxpar2typ,allocation flag for pepar2typ
+prdasian,detailed asian subgroup
+prdthsp,detailed hispanic recode
+prdtrace,race
+prpertyp,type of person record recode
+prcitflg,allocation flag for prcitshp
+prcitshp,citizenship group
+pecohab,line number of cohabiting partner
+pxcohab,demographics allocation flag for pecohab
+peabsrsn,what was the main reason...was absent from work last week?
+pehruslt,hours usually worked last week
+pemlr,major labor force recode
+prdisc,discouraged worker recode
+prptrea,detailed reason for part-time
+pruntype,reason for unemployment
+prwkstat,full/part-time work status
+peio1cow,individual class of worker on first job.
+prcow1,class of worker recode-job 1
+prerelg,earnings eligibility flag
+prwernal,allocation flag for a_grswk
+prhernal,allocation flag for a_hrspay
+prnlfsch,not in labor force (nlf) activity in school or not in school
+pedisear,is...deaf or does ...have serious difficulty hearing?
+pediseye,is...blind or does...have serious difficulty seeing even when wearing glasses?
+pedisrem,"because of a physical, mental, or emotional condition, does...have serious difficulty concentrating, remembering, or making decisions?"
+pedisphy,does...have serious difficulty walking or climbing stairs?
+pedisdrs,does...have difficulty dressing or bathing?
+pedisout,"because of a physical, mental, or emotional condition, does...have difficulty doing errands alone such as visiting a doctor’s office or shopping?"
+pxdisear,allocation flag
+pxdiseye,allocation flag
+pxdisrem,allocation flag
+pxdisphy,allocation flag
+pxdisdrs,allocation flag
+pxdisout,allocation flag
+prdisflg,does this person have any of these disability conditions?
+pecert1,do you have a currently active professional certification or a state or industry license?
+pecert2,"were any of your certifications or licenses issued by the federal, state, or local government?"
+pecert3,is your certification required for your job? main job? job from which you are on layoff? job at which you last worked?
+pxcert1,allocation flag for pecert1
+pxcert2,allocation flag for pecert2
+pxcert3,allocation flag for pecert3
+a_age,age
+a_sex,sex
+a_dtind,detailed industry recode see appendix a for list of legal codes
+a_hrspay,how much does ... earn per hour?
+a_payabs,is ... receiving wages or salary for any of the time off last week?
+a_wantjb,"does ... want a regular job now, either full or part-time?"
+a_hrlywk,is ... paid by the hour on this job?
+a_enrlw,"last week was ... attending or enrolled in a high school, college or university"
+a_explf,experienced labor force employment status
+a_mjind,major industry code
+a_unmem,"on this job, is ... a member of a labor union or of an employee association similar to a union?"
+a_mjocc,major occupation recode
+a_dtocc,detailed occupation recode see appendix b for list of legal codes
+a_uncov,"on this job, is ... covered by a union or employee association contract?"
+a_hscol,high school or college/university enrollment status
+a_ftpt,is ... enrolled in school as a full-time or part-time student
+a_wksch,labor force by time worked or lost
+a_fnlwgt,(cps variable pwsswgt) final weight
+a_ernlwt,(cps variable pworwgt) earnings/not in labor force weight
+a_famrel,family relationship
+a_famnum,family number from basic cps
+axage,allocation flag for a_age
+axsex,allocation flag for a_sex
+axlfsr,allocation flag for a_lfsr
+axhrs,allocation flag for a_hrs
+axwhyabs,allocation flag for axwhyabs
+axpayabs,allocation flag for a_payabs
+axclswkr,allocation flag for a_clswkr
+axnlflj,allocation flag for a_nlflj
+axuslhrs,allocation flag for axuslhrs
+axunmem,allocation flag for axunmem
+axuncov,allocation flag for a_uncov
+axenrlw,allocation flag for a_enrlw
+axhscol,allocation flag for a_hscol
+axftpt,allocation flag for a_ftpt
+axhga,allocation flag for a_hga
+axhrlywk,allocation flag for a_hrlywk
+a_uslhrs,how many hrs per week does ... usually work at this job?
+a_famtyp,family type
+a_grswk,"how much does ... usually earn per week at this job before deductions , subject to topcoding, the higher of either the amount of item 25a times item 25c or the actual item 25d entry will be present."
+a_wkslk,duration of unemployment
+a_spouse,spouse's line number
+a_maritl,marital status
+a_hga,item 18h - educational attainment
+a_hrs1,how many hrs did ... work last week at all jobs?
+p_stat,status of person identifier
+a_uslft,does ... usually work 35 hrs or more a week at this job?
+a_civlf,civilian labor force
+a_ftlf,full/time labor force
+a_untype,reason for unemployment
+a_clswkr,class of worker
+a_exprrp,expanded relationship code
+a_wkstat,full/part-time status
+a_lfsr,labor force status recode
+a_whyabs,why was ... absent from work last week?
+a_pfrel,primary family relationship
+a_whenlj,when did ... last work?
+a_nlflj,"when did ... last work for pay at a regular job or business, either full- time or part-time"
+marsupwt,asec supplement final weight
+actc_crd,additional child tax credit
+age1,age recode - persons 15+ years
+agi,federal adjusted gross income
+ann_val,"retirement income, annuities amount"
+ann_yn,"retirement income, annuities, y/n"
+caid,medicaid coverage last year
+cap_val,capital gains value
+cap_yn,yes/no answer to ‘did you receive capital gain from your shares of stock or mutual fund?’. (unedited variable is ucap_yn).
+champva,champva coverage last year
+chcare_yn,paid child care was needed for this child?
+chelsew_yn,does this person have a child living outside the household?
+chsp_val,what is the annual amount of child support paid?
+chsp_yn,is this person required to pay child support?
+clwk,longest job class of worker (recode)
+cov,any health insurance coverage last year
+cov_cyr,any coverage last year
+cov_mult_cyr,concurrent coverage last year
+csp_val,how much did ... receive in child support payments?
+csp_yn,did ... receive child support payments?
+ctc_crd,child tax credit and other dependent credit
+dbtn_val,total amount of retirement distributions received (dst_val1 + dst_val2)
+depdir,direct-purchase coverage through household member last year
+depgrp,employment-based coverage through household member last year
+depmil,tricare coverage through household member last year
+depmrk,marketplace coverage through household member last year
+depmrks,subsidized marketplace coverage through household member last year
+depmrkun,unsubsidized marketplace coverage through household member last year
+depnonm,non-marketplace coverage through household member last year
+deppriv,private coverage through household member last year
+dir,any direct-purchase coverage last year
+dirftyp,type of direct-purchase plan last year 1
+dirftyp2,type of direct-purchase plan last year 2
+dirlin1,policyholder line number 1 - direct-purchase coverage last year
+dirout,provided direct-purchase coverage to someone outside hh last year
+dis_cs,who in this household retired or left a job for health reasons?
+dis_hp,who has a health problem or a disability which prevents work or which limits the kind or amount of work?
+dis_sc1,what was the source of disability income?
+dis_sc2,what was the source of disability income?
+dis_val1,how much did ... receive (source type) during 20.. ?
+dis_val2,how much did ... receive (source type) during 20.. ?
+dis_yn,other than social security did ... receive any income in 20.. as a result of health problems?
+div_val,how much did ... receive in dividends from stocks or mutual funds during 20.. ?
+div_yn,did ... receive dividends?
+dsab_val,"total amount of disability income received, combined amounts in edited sources one and two"
+dst_sc1,retirement income distribution source 1
+dst_sc2,"retirement income, distribution source 2"
+dst_sc1_yng,"retirement distribution source 1, person under age 58"
+dst_sc2_yng,"retirement distribution source 2, person under age 58"
+dst_val1,retirement income amount distribution source 1
+dst_val2,"retirement income amount, distribution source 2"
+dst_val1_yng,"retirement distribution amount 1, under age 58"
+dst_val2_yng,"retirement distribution amount 2, under age 58"
+dst_yn,retirement income distribution y/n
+dst_yn_yng,"retirement distribution recipiency, person under age 58"
+earner,earner status recode
+ed_val,total amount of educational assistance received (combined amounts in pell grant and other educational) assistance during 20.. ?
+ed_yn,did ... receive educational assistance?
+eit_cred,earned income tax credit
+ern_otr,"wage and salary money earned from other work, y/n"
+ern_srce,source of earnings from longest job
+ern_val,how much did ... earn from this employer before deductions in 20..? what was ... net earnings from this business/ farm after expenses during 20..?
+ern_yn,earnings from employer or net earnings from business/ farm after expenses from longest job during 20.. ?
+esicould,eligible to purchase employer's health insurance plan (expanded universe)
+esielig1,reason not eligible - don't work enough hours per week or weeks per year (expanded universe)
+esielig2,reason not eligible - contract or temporary employees not allowed in plan (expanded universe)
+esielig3,reason not eligible - have not yet worked for this employer long enough (expanded universe)
+esielig4,reason not eligible - have a pre-existing condition (expanded universe)
+esielig5,reason not eligible - too expensive (expanded universe)
+esielig6,reason not eligible - other (expanded universe)
+esioffer,employer offers health insurance plan (expanded universe)
+esitake1,reason did not take up - covered by another plan (expanded universe)
+esitake2,reason did not take up - traded health insurance for higher pay (expanded universe)
+esitake3,reason did not take up - too expensive (expanded universe)
+esitake4,reason did not take up - don't need health insurance (expanded universe)
+esitake5,reason did not take up - have a pre-existing condition (expanded universe)
+esitake6,reason did not take up - have not yet worked for this employer long enough (expanded universe)
+esitake7,reason did not take up - contract or temporary employees not allowed in plan (expanded universe)
+esitake8,reason did not take up - other (expanded universe)
+famrel,family relationship
+fedtax_ac,"federal income tax liability, after all refundable credits and economic impact payments 1 and 2. fedtax_ac = fedtax_bc - actc_crd - eit_cred - eip_crd"
+fedtax_bc,"federal income tax liability, before refundable credits"
+fed_ret,federal retirement payroll deduction
+fica,social security retirement payroll deduction
+fin_val,how much did ... receive in financial assistance income during 20.. ?
+fin_yn,did ... receive financial assistance?
+frmotr,receiving farm self-employment from secondary source
+frm_val,amount of farm self-employment earnings from secondary source
+frse_val,"total amount of farm self-employment earnings (combined amounts in ern-val, if ern-srce=3, and frse-val)"
+frse_yn,receiving any farm self-employment
+grp,any employment-based coverage last year
+grpftyp,type of employment-based plan last year 1
+grpftyp2,type of employment-based plan last year 2 (see https://www.census.gov/topics/health/health- insurance/guidance.html)
+grplin1,policyholder line number 1 - employment-based coverage last year
+grpout,provided employment-based coverage to someone outside hh last year
+hea,health status
+hhdfmx,detailed household and family status
+hhdrel,detailed household summary
+hipaid,"employer paid all, some or no premiums last year"
+hrcheck,interviewer check item - number of hours in item 41 is?
+hrswk,in the weeks that ... worked how may hours did ... usually work per week?
+ihsflg,coverage through the indian health service last year
+industry,industry of longest job last year. see appendix a for values.
+int_val,edited total combined interest income
+int_yn,"edited total combined interest income, y/n"
+i_annval,allocation flag for ann_val
+i_annyn,allocation flag for ann_yn
+i_caid,allocation flag for caid
+i_capval,allocation flag for cap_val
+i_capyn,allocation flag for cap_yn
+i_champva,allocation flag for champva
+i_chcareyn,allocation flag for chcare_yn
+i_chelsewyn,allocation flag for chelsew_yn
+i_chspval,allocation flag for chsp_val
+i_chspyn,allocation flag for chsp_yn
+i_cspval,allocation flag for csp_val
+i_cspyn,allocation flag for csp_yn
+i_depdir,allocation flag for depdir
+i_depgrp,allocation flag for depgrp
+i_depmil,allocation flag for depmil
+i_depmrk,allocation flag for depmrk
+i_depmrks,allocation flag for depmrks
+i_depmrkun,allocation flag for depmrkun
+i_depnonm,allocation flag for depnonm
+i_deppriv,allocation flag for deppriv
+i_dir,allocation flag for dir
+i_dirout,allocation flag for dirout
+i_discs,allocation flag for dis_cs
+i_dishp,allocation flag for dis_hp
+i_dissc1,allocation flag dis_sc1
+i_dissc2,allocation flag for dis_sc2
+i_disyn,allocation flag for dis_yn
+i_divval,allocation flag for div_val
+i_divyn,allocation flag for div_yn
+i_dstsc,allocation flag for dst_sc(2)
+i_dstsccomp,"allocation flag for all sources of retirement distributions, dst_sc(2)"
+i_dstval1comp,"composite allocation flag, distribution amount from first retirement, dst_val1"
+i_dstval2comp,"composite allocation flag, distribution amount from second retirement account, dst_val2"
+i_dstyncomp,"composite allocation flag, distribution from retirement account, dst_yn"
+i_edtyp,allocation flag for oed_typ(1-3)
+i_edyn,allocation flag for ed_yn
+i_ernsrc,allocation flag for ern_srce
+i_ernval,allocation flag for ern_val
+i_ernyn,allocation flag for ern_yn
+i_esicould,allocation flag for esicould
+i_esielig1,allocation flag for esielig1
+i_esielig2,allocation flag for esielig2
+i_esielig3,allocation flag for esielig3
+i_esielig4,allocation flag for esielig4
+i_esielig5,allocation flag for esielig5
+i_esielig6,allocation flag for esielig6
+i_esioffer,allocation flag for esioffer
+i_esitake1,allocation flag for esitake1
+i_esitake2,allocation flag for esitake2
+i_esitake3,allocation flag for esitake3
+i_esitake4,allocation flag for esitake4
+i_esitake5,allocation flag for esitake5
+i_esitake6,allocation flag for esitake6
+i_esitake7,allocation flag for esitake7
+i_esitake8,allocation flag for esitake8
+i_finval,allocation flag for fin_val
+i_finyn,allocation flag for fin_yn
+i_frmval,allocation flag for frm_val
+i_frmyn,allocation flag for frm_yn
+i_grp,allocation flag for grp
+i_grpout,allocation flag for grpout
+i_hea,allocation flag for hea
+i_hipaid,allocation flag for hipaid
+i_hrchk,allocation flag for hrcheck
+i_hrswk,allocation flag for hrswk
+i_ihsflg,allocation flag for ihsflg
+i_indus,allocation flag for industry
+i_intval,composite allocation flag incorporating information for all interest components
+i_intyn,composite allocation flag for all interest components
+i_ljcw,allocation flag for ljcw
+i_lkstr,allocation flag for lkstrch
+i_lkweek,allocation flag for lkweeks
+i_losewk,allocation flag for losewks
+i_mcaid,allocation flag for mcaid
+i_mcare,allocation flag for mcare
+i_mcprem,allocation flag: medicare premium amount (pemcprem)
+i_mig1,migsame imputation flag
+i_mig2,mig_st imputation flag
+i_mig3,level of allocation (assignment) for previous residence
+i_mil,allocation flag for mil
+i_milout,allocation flag for milout
+i_moop,allocation flag for moop
+i_moop2,allocation flag for moop2
+i_mrk,allocation flag for mrk
+i_mrkout,allocation flag for mrkout
+i_mrks,allocation flag for mrks
+i_mrksout,allocation flag for mrksout
+i_mrkun,allocation flag for mrkun
+i_mrkunout,allocation flag for mrkunout
+i_noemp,allocation flag for noemp
+i_nonm,allocation flag for nonm
+i_nonmout,allocation flag for nonmout
+i_now_caid,allocation flag for now_caid
+i_now_champva,allocation flag for now_champva
+i_now_depdir,allocation flag for now_depdir
+i_now_depgrp,allocation flag for now_depgrp
+i_now_depmil,allocation flag for now_depmil
+i_now_depmrk,allocation flag for now_depmrk
+i_now_depmrks,allocation flag for now_depmrks
+i_now_depmrkun,allocation flag for now_depmrkun
+i_now_depnonm,allocation flag for now_depnonm
+i_now_deppriv,allocation flag for now_deppriv
+i_now_dir,allocation flag for now_dir
+i_now_dirout,allocation flag for now_dirout
+i_now_grp,allocation flag for now_grp
+i_now_grpout,allocation flag for now_grpout
+i_now_hipaid,allocation flag for now_hipaid
+i_now_ihsflg,allocation flag for now_ihsflg
+i_now_mcaid,allocation flag for now_mcaid
+i_now_mcare,allocation flag for now_mcare
+i_now_mil,allocation flag for now_mil
+i_now_milout,allocation flag for now_milout
+i_now_mrk,allocation flag for mrk
+i_now_mrkout,allocation flag for now_mrkout
+i_now_mrks,allocation flag for mrks
+i_now_mrksout,allocation flag for now_mrksout
+i_now_mrkun,allocation flag for mrkun
+i_now_mrkunout,allocation flag for now_mrkunout
+i_now_nonm,allocation flag for now_nonm
+i_now_nonmout,allocation flag for now_nonmout
+i_now_othmt,allocation flag for now_othmt
+i_now_outdir,allocation flag for now_outdir
+i_now_outgrp,allocation flag for now_outgrp
+i_now_outmil,allocation flag for now_outmil
+i_now_outmrk,allocation flag for now_outmrk
+i_now_outmrks,allocation flag for now_outmrks
+i_now_outmrkun,allocation flag for now_outmrkun
+i_now_outnonm,allocation flag for now_outnonm
+i_now_outpriv,allocation flag for now_outpriv
+i_now_owndir,allocation flag for now_owndir
+i_now_owngrp,allocation flag for now_owngrp
+i_now_ownmil,allocation flag for now_ownmil
+i_now_ownmrk,allocation flag for now_ownmrk
+i_now_ownmrks,allocation flag for now_ownmrks
+i_now_ownmrkun,allocation flag for now_ownmrkun
+i_now_ownnonm,allocation flag for now_ownnonm
+i_now_ownpriv,allocation flag for now_ownpriv
+i_now_pchip,allocation flag for now_pchip
+i_now_priv,allocation flag for now_priv
+i_now_pub,allocation flag for now_pub
+i_now_vacare,allocation flag for now_vacare
+i_nwlkwk,allocation flag for nwlkwk
+i_nwlook,allocation flag for nwlook
+i_nxtres,imputation flag for nxtres
+i_occup,allocation flag for occup
+i_oedval,allocation flag for ed_val
+i_oival,allocation flag for oi_val
+i_othmt,allocation flag for othmt
+i_outdir,allocation flag for outdir
+i_outgrp,allocation flag for outgrp
+i_outmil,allocation flag for outmil
+i_outmrk,allocation flag for outmrk
+i_outmrks,allocation flag for outmrks
+i_outmrkun,allocation flag for outmrkun
+i_outnonm,allocation flag for outnonm
+i_outpriv,allocation flag for outpriv
+i_owndir,allocation flag for owndir
+i_owngrp,allocation flag for owngrp
+i_ownmil,allocation flag for ownmil
+i_ownmrk,allocation flag for ownmrk
+i_ownmrks,allocation flag for ownmrks
+i_ownmrkun,allocation flag for ownmrkun
+i_ownnonm,allocation flag for ownnonm
+i_ownpriv,allocation flag for ownpriv
+i_pawmo,allocation flag for paw_mon
+i_pawtyp,allocation flag for paw_typ
+i_pawval,allocation flag for paw_val
+i_pawyn,allocation flag for paw_yn
+i_pchip,allocation flag for pchip
+i_pecould,allocation flag for pecould
+i_peninc,allocation flag for penincl
+i_penpla,allocation flag for penplan
+i_pensc1,allocation flag for pen_sc1
+i_pensc2,allocation flag pen_sc2
+i_penval1,"allocation flag, pen_val1"
+i_penval2,allocation flag pen_val2
+i_penyn,allocation flag for pen_yn
+i_peoffer,allocation flag for peoffer
+i_pewnelig1,allocation flag for pewnelig1
+i_pewnelig2,allocation flag for pewnelig2
+i_pewnelig3,allocation flag for pewnelig3
+i_pewnelig4,allocation flag for pewnelig4
+i_pewnelig5,allocation flag for pewnelig5
+i_pewnelig6,allocation flag for pewnelig6
+i_pewntake1,allocation flag for pewntake1
+i_pewntake2,allocation flag for pewntake2
+i_pewntake3,allocation flag for pewntake3
+i_pewntake4,allocation flag for pewntake4
+i_pewntake5,allocation flag for pewntake5
+i_pewntake6,allocation flag for pewntake6
+i_pewntake7,allocation flag for pewntake7
+i_pewntake8,allocation flag for pewntake8
+i_phipval,allocation flag for phip_val
+i_phipval2,allocation flag for phip_val2
+i_phmemp,allocation flag for phmemprs
+i_pmedval,allocation flag for pmed_val
+i_potcval,allocation flag for potc_val
+i_priv,allocation flag for priv
+i_ptrsn,allocation flag for ptrsn
+i_ptwks,allocation flag for ptweeks
+i_ptyn,allocation flag for ptyn
+i_pub,allocation flag for pub
+i_pyrsn,allocation flag for pyrsn
+i_retcbval,imputation flag for retcb_val
+i_retcbyn,imputation flag for retcb_yn
+i_rintsc,allocation flag for rint_sc1
+i_rintval1,allocation flag for rint_val1
+i_rintval2,allocation flag for rint_val2
+i_rintyn,allocation flag for rint_yn
+i_rntval,allocation flag for rnt_val
+i_rntyn,allocation flag for rnt_yn
+i_rsnnot,allocation flag for rsnnotw
+i_seval,allocation flag for se_val
+i_seyn,allocation flag for seotr
+i_ssival,allocation flag for ssi_val
+i_ssiyn,allocation flag for ssi_yn
+i_ssval,composite allocation flag for ss_val
+i_ssyn,composite allocation flag for ss_yn
+i_sursc1,allocation flag for sur_sc1
+i_sursc2,allocation flag for sur_sc2
+i_suryn,allocation flag for sur_yn
+i_ucval,composite allocation flag for all unemployment compensation components
+i_ucyn,composite allocation flag for all unemployment compensation components
+i_vacare,allocation flag for vacare
+i_vetqva,allocation flag for vet_qva
+i_vettyp,allocation flag for vet_typ
+i_vetval,composite allocation flag for all components of veterans income
+i_vetyn,allocation flag for vet_yn
+i_wctyp,allocation flag for wc_type
+i_wcval,allocation flag for wc_val
+i_wcyn,allocation flag for wc_yn
+i_wkchk,allocation flag for wkcheck
+i_wkswk,allocation flag for wkswork
+i_workyn,allocation flag for workyn
+i_wsval,allocation flag for ws_val
+i_wsyn,allocation flag for ws_yn
+i_wtemp,allocation flag for wtemp
+ljcw,longest job class of worker
+lknone,you said... worked about (entry in item 33) weeks in 20... how many of the remaining (52 minus entry in item 33) weeks was ... looking for work or on layoff from a job?
+lkstrch,"were the (entry in item 36) weeks ... was looking for work (or on layoff), all in one stretch?"
+lkweeks,in how many of the remaining weeks was ... looking for work or on layoff from a job?
+losewks,did ... lose any full weeks of work in 20.. because was on layoff from a job or lost a job?
+marg_tax,marginal tax rate
+mcaid,"medicaid, pchip or other means-tested coverage last year"
+mcaid_cyr,medicaid coverage last year
+mcare,medicare coverage last year
+migsame,"was ... living in this house (apt.) 1 year ago; that is, on march 1, 20..?"
+mig_div,census division of previous year residence
+mig_mtr1,mover recode - metropolitan status before and after move
+mig_mtr3,mover recode - within area moves
+mig_mtr4,mover recode - region of previous residence
+mig_reg,census region
+mig_st,fips state code of previous residence
+mil,any tricare coverage last year
+milftyp,type of tricare plan last year 1
+milftyp2,type of tricare plan last year 2
+millin1,policyholder line number 1 - tricare coverage last year
+milout,provided tricare coverage to someone outside hh last year
+moop,"total medical out of pocket expenditures. calculated from phip_val, potc_val, and pmed_val."
+moop2,"total medical out of pocket expenditures. calculated from phip_val2, potc_val, and pmed_val."
+mrk,any marketplace coverage last year
+mrkftyp,type of marketplace plan last year 1
+mrkftyp2,type of marketplace plan last year 2
+mrklin1,policyholder line number 1 - marketplace coverage last year
+mrkout,provided marketplace coverage to someone outside hh last year
+mrks,any subsidized marketplace coverage last year
+mrksftyp,type of subsidized marketplace coverage last year 1
+mrksftyp2,type of subsidized marketplace coverage last year 2
+mrkslin1,policyholder line number 1 - subsidized marketplace coverage last year
+mrksout,provided subsidized marketplace coverage to someone outside hh last year
+mrkun,any unsubsidized marketplace coverage last year
+mrkunftyp,type of unsubsidized marketplace coverage last year 1
+mrkunftyp2,type of unsubsidized marketplace coverage last year 2
+mrkunlin1,policyholder line number 1 - unsubsidized marketplace coverage last year
+mrkunout,provided unsubsidized marketplace coverage to someone outside hh last year
+nocov_cyr,no health coverage recode
+noemp,"counting all locations where this employer operates, what is the total number of persons who work for ...'s employer?"
+nonm,any non-marketplace coverage last year
+nonmftyp,type of non-marketplace plan last year 1
+nonmftyp2,type of non-marketplace plan last year 2
+nonmlin1,policyholder line number 1 - non-marketplace coverage last year
+nonmout,provided non-marketplace coverage to someone outside hh last year
+now_caid,current medicaid coverage
+now_champva,current champva coverage
+now_cov,currently covered by health insurance coverage
+now_depdir,current direct-purchase coverage through household member
+now_depgrp,current employment-based coverage through household member
+now_depmil,current tricare coverage through household member
+now_depmrk,current marketplace coverage through household member
+now_depmrks,current subsidized marketplace coverage through household member
+now_depmrkun,current unsubsidized marketplace coverage through household member
+now_depnonm,current non-marketplace coverage through household member
+now_deppriv,current private coverage through household member
+now_dir,any current direct-purchase coverage
+now_dirftyp,type of current direct-purchase plan 1
+now_dirftyp2,type of current direct-purchase plan 2
+now_dirlin,policyholder line number - current direct-purchase coverage
+now_dirout,currently provides direct-purchase coverage to someone outside hh last year
+now_grp,any current employment-based coverage
+now_grpftyp,type of current employment-based plan 1
+now_grpftyp2,type of current employment-based plan 2
+now_grplin,policyholder line number - current employment-based coverage
+now_grpout,currently provides employment-based coverage to someone outside hh last year
+now_hipaid,"employer currently pays all, some or no premiums"
+now_ihsflg,current coverage through the indian health service
+now_mcaid,"current medicaid, pchip, or other means-tested coverage"
+now_mcare,current medicare coverage
+now_mil,any current tricare coverage
+now_milftyp,type of current tricare plan 1
+now_milftyp2,type of current tricare plan 2
+now_millin,policyholder line number - current tricare coverage
+now_milout,currently provides tricare coverage to someone outside hh last year
+now_mrk,any current marketplace coverage
+now_mrkftyp,type of current marketplace plan 1
+now_mrkftyp2,type of current marketplace plan 2
+now_mrklin,policyholder line number - current marketplace coverage
+now_mrkout,currently provides marketplace coverage to someone outside hh last year
+now_mrks,any current subsidized marketplace coverage
+now_mrksftyp,type of current subsidized marketplace plan 1
+now_mrksftyp2,type of current subsidized marketplace plan 2
+now_mrkslin,policyholder line number - current subsidized marketplace coverage
+now_mrksout,currently provides subsidized marketplace coverage to someone outside hh last year
+now_mrkun,any current unsubsidized marketplace coverage
+now_mrkunftyp,type of current unsubsidized marketplace plan 1
+now_mrkunftyp2,type of current unsubsidized marketplace plan 2
+now_mrkunlin,policyholder line number - current unsubsidized marketplace coverage
+now_mrkunout,currently provides unsubsidized marketplace coverage to someone outside hh last year
+now_nonm,any current non-marketplace coverage
+now_nonmftyp,type of current non-marketplace plan 1
+now_nonmftyp2,type of current non-marketplace plan 2
+now_nonmlin,policyholder line number - current non-marketplace coverage
+now_nonmout,currently provides non-marketplace coverage to someone outside hh last year
+now_othmt,current other means-tested coverage
+now_outdir,current direct-purchase coverage through someone outside hh
+now_outgrp,current employment-based coverage through someone outside hh
+now_outmil,current tricare coverage through someone outside hh
+now_outmrk,current marketplace coverage through someone outside hh
+now_outmrks,current subsidized marketplace coverage through someone outside hh
+now_outmrkun,current unsubsidized marketplace coverage through someone outside hh
+now_outnonm,current non-marketplace coverage through someone outside hh
+now_outpriv,current private coverage through someone outside the household
+now_owndir,current direct-purchase coverage - policyholder
+now_owngrp,current employment-based coverage - policyholder
+now_ownmil,current tricare coverage - policyholder
+now_ownmrk,current marketplace coverage - policyholder
+now_ownmrks,current subsidized marketplace coverage - policyholder
+now_ownmrkun,current unsubsidized marketplace coverage - policyholder
+now_ownnonm,current non-marketplace coverage - policyholder
+now_ownpriv,current private coverage - policyholder
+now_pchip,current pchip coverage
+now_priv,current private coverage
+now_pub,current public coverage
+now_vacare,current vacare coverage
+nwlkwk,how may different weeks was ... looking for work or on layoff?
+nwlook,even though ... did not work in 20.. did spend and time trying to find a job or on layoff?
+nxtres,what was ... main reason for moving?
+occup,occupation of longest job last year. see appendix b for values.
+oi_off,other income sources
+oi_val,how much did ... receive in other incomes
+oi_yn,did ... receive cash income not already covered from any other source?
+othmt,other means-tested coverage last year
+outdir,direct-purchase coverage through someone outside hh last year
+outgrp,employment-based coverage through someone outside hh last year
+outmil,tricare coverage through someone outside hh last year
+outmrk,marketplace coverage through someone outside hh last year
+outmrks,subsidized marketplace coverage through someone outside hh last year
+outmrkun,unsubsidized marketplace coverage through someone outside hh last year
+outnonm,non-marketplace coverage through someone outside hh last year
+outpriv,private coverage through someone outside last year
+owndir,direct-purchase coverage last year - policyholder
+owngrp,employment-based coverage last year - policyholder
+ownmil,tricare coverage last year - policyholder
+ownmrk,marketplace coverage last year - policyholder
+ownmrks,subsidized marketplace coverage last year - policyholder
+ownmrkun,unsubsidized marketplace coverage last year - policyholder
+ownnonm,non-marketplace coverage last year - policyholder
+ownpriv,private coverage last year - policyholder
+parent,presence of parents
+paw_mon,in how many months of 20.. did ... receive public assistance payments?
+paw_typ,what type of program did... receive cash assistance?
+paw_val,how much did ... receive in public assistance or welfare during 20..?
+paw_yn,"at any time during 20.., even for one month, did... receive any cash assistance from a state or county welfare program such as (state program name fill)?"
+pchip,pchip coverage last year
+pearnval,total persons earnings
+pecould,eligible to purchase employer's health insurance plan
+pemcprem,edited medicare premium amount
+penincl,was ... included in that plan?
+penplan,other than social security did the employer or union that ... worked for in 20.. have a pension or other type of retirement plan?
+pen_sc1,"retirement income, pension source 1"
+pen_sc2,"retirement income, pension source 2"
+pen_val1,"retirement income amount, pension source 1"
+pen_val2,"retirement income amount, pension source 2"
+pen_yn,"retirement income, pension y/n"
+peoffer,employer offers health insurance plan
+perlis,poverty level of persons (subfamily members have primary family recode)
+pewnelig1,reason not eligible - don't work enough hours per week or weeks per year
+pewnelig2,reason not eligible - contract or temporary employees not allowed in plan
+pewnelig3,reason not eligible - have not yet worked for this employer long enough
+pewnelig4,reason not eligible - have a pre-existing condition
+pewnelig5,reason not eligible - too expensive
+pewnelig6,reason not eligible - other
+pewntake1,reason did not take up - covered by another plan
+pewntake2,reason did not take up - traded health insurance for higher pay
+pewntake3,reason did not take up - too expensive
+pewntake4,reason did not take up - don't need health insurance
+pewntake5,reason did not take up - have a pre-existing condition
+pewntake6,reason did not take up - have not yet worked for this employer long enough
+pewntake7,reason did not take up - contract or temporary employees not allowed in plan
+pewntake8,reason did not take up - other
+phip_val,out of pocket expenditures for comprehensive and non- comprehensive health insurance premiums
+phip_val2,out of pocket expenditures for comprehensive and non- comprehensive health insurance premiums - alternative (see https://www.census.gov/topics/health/health- insurance/guidance.html)
+phmemprs,"for how many employers did ... work in 20..? if more than one at same time, only count it as one employer."
+pmed_val,out of pocket expenditures for non-premium medical care
+pnsn_val,total combined amount of pension income received from all pension sources
+poccu2,occup. of longest job by detailed groups
+potc_val,out of pocket expenditures for over the counter health related spending
+pothval,all income not from earnings
+pov_univ,poverty universe flag
+pppos,person identifier. this field plus ph_seq results in a unique person number for the file.
+precord,record type. used to identify records on ascii file.
+priv,covered by private plan last year
+priv_cyr,private coverage last year
+prswkxpns,work expenses
+ptotval,total persons income
+ptot_r,total person income recode
+ptrsn,what was the main reason ... worked less than 35 hours per week?
+ptweeks,how many weeks did ... work less than 35 hours in 20..?
+ptyn,"did ... work less than 35 hours for at least one week in 20..? (exclue time off with pay because of holidays, vacation, days off, or sickness.)"
+pub,public coverage last year
+pub_cyr,public coverage last year
+pyrsn,what was the main reason ... was not working or looking for work in the remaining weeks of 20..?
+resnss1,what were the reasons (you/name) (was/were) getting social security income last year?
+resnss2,second reason you are getting social security income last year?
+resnssa,allocation flag for resnss1-2
+resnssi1,what were the reasons (you/name) (was/were) getting supplemental security income last year?
+resnssi2,second reason getting supplemental security income last year?
+resnssia,allocation flag for resnssi1-2
+retcb_val,"retirement contributiion, amount"
+retcb_yn,"retirement contribution, y/n"
+rint_sc1,"interest income, retirement source 1"
+rint_sc2,"interest income, retirement source 2"
+rint_val1,"interest income amt, retirement source 1"
+rint_val2,"interest income amt, retirement source 2"
+rint_yn,"interest income - retirement, y/n"
+rnt_val,how much did ... receive in income from rent after expenses during 20..?
+rnt_yn,"did ... own any land, property, rented to others, or receive income from royalties, roomers or boarders, or from estates or trusts?"
+rsnnotw,what was the main reason ... did not work in 20..?
+semp_val,"total own business self-employment earnings (combined amounts in ern-val, if ern-srce=2, and se-val)"
+semp_yn,"receiving own business self-employment, y/n"
+seotr,"receiving own business self-employment earnings from secondary source, y/n"
+se_val,amount of own business self-employment earnings from secondary source
+spm_actc,spm units additional child tax credit
+spm_caphousesub,spm unit's capped housing subsidy
+spm_capwkccxpns,spm unit's capped work and child care expenses
+spm_childcarexpns,spm unit's child care expenses-not capped
+spm_childsuppd,spm unit's child support paid
+spm_eitc,spm unit's federal earned income tax credit
+spm_engval,spm unit's value
+spm_equivscale,equivalence scale is used to adjust reference thresholds for the number of adults and children in the spm unit and is normalized so that the scale for a 2 adult and 2 child spm unit=1.
+spm_famtype,spm unit's family type
+spm_fedtax,spm unit's federal tax
+spm_fedtaxbc,spm unit's federal tax before refundable tax credits
+spm_fica,spm unit's federal insurance contributions act and federal retirement contribution
+spm_geoadj,"spm unit's geographic food, shelter, clothing and utility (fscu) adjustment"
+spm_hage,head of spm unit's age
+spm_head,indicator for head of spm resource unit
+spm_hhisp,head of spm unit is hispanic
+spm_hmaritalstatus,head of spm unit's marital status
+spm_hrace,"head of spm unit's race, not considering hispanic"
+spm_id,spm unit identification number
+spm_medxpns,spm unit's medical out-of-pocket (moop) and medicare part b subsidy
+spm_numadults,spm unit's number of adults
+spm_numkids,spm unit's number of chil
+spm_numper,spm unit's number of persons
+spm_poor,spm poverty status
+spm_povthreshold,spm unit's spm poverty threshold
+spm_resources,total spm resources for spm unit
+spm_schlunch,spm units school lunch subsidy
+spm_snapsub,spm unit's supplemental nutrition assistance program (snap) subsidy
+spm_sttax,spm unit's state tax
+spm_tenmortstatus,spm unit's tenure/mortgage status
+spm_totval,spm unit's cash income
+spm_wcohabit,spm unit has cohabiting couple
+spm_weight,spm unit's integer weight
+spm_wfoster22,spm unit has a foster child under 22 years old
+spm_wicval,"spm unit's women, infants, and children (wic) subsidy"
+spm_wkxpns,spm unit's work expenses-not capped
+spm_wnewhead,spm unit has a new head of household
+spm_wnewparent,spm unit has a new parent
+spm_wui_lt15,spm unit has an unrelated individual under 15 years old
+srvs_val,total amount of survivor's income received (combined amounts in edited sources sur_val1 and sur_val2 plus the unedited sources 3 & 4 starting in 1995)
+ssi_val,how much did ... receive in supplemental security income during 20..?
+ssi_yn,did ... received ssi?
+ss_val,how much did ... receive in social security payments during 20.. ?
+ss_yn,who received social security payments either for themselves or as combined payments with other family members?
+statetax_a,"state income tax liability, after all credits"
+statetax_b,"state income tax liability, before credits"
+strkuc,at any time during 20.. did ... receive any union unemployment or strike benefits?
+subuc,at any time during 20.. did ... receive any supplemental unemployment benefits?
+sur_sc1,what was the source of this other widow or survivor income?
+sur_sc2,what was the source of this other widow or survivor income?
+sur_val1,how much did ... receive (survivor source type) during 20.. ?
+sur_val2,how much did ... receive (source type) during 20.. ?
+sur_yn,"during 20.. did ... receive any survivor benefits such as widow's pensions, estates, trusts, insurance annuities, or other survivor's income?"
+tax_inc,taxable income amount
+trdint_val,"interest amount, excluding retirement account interest."
+uc_val,how much did ... receive in unemployment benefits during 20..?
+uc_yn,"any type of unemployment compensation? (combination of subuc, strkuc, and uctot_yn)"
+vacare,vacare coverage last year
+vet_qva,is ... required to fill out an annual income questionnaire for the veteran's administration?
+vet_typ1,what type of veterans payments did .... receive? (vet_typ1- disability compensation?)
+vet_typ2,what type of veterans payments did .... receive? (vet_typ2- survivor benefits?)
+vet_typ3,what type of veterans payments did .... receive? (vet_typ3- veteran's pension?)
+vet_typ4,what type of veterans payments did .... receive? (vet_typ4- education assistance?)
+vet_typ5,what type of veterans payments did .... receive? (vet_typ5- other veteran's payments?)
+vet_val,how much did ... receive from veterans' administration during 20..?
+vet_yn,did ... receive veterans' payments?
+wageotr,"receiving wage and salary earnings from other employers, y/n"
+wc_type,what was source of these payments?
+wc_val,how much compensation did ... receive during 20..?
+wc_yn,during 20.. did ... receive any worker's compensation payments or other payments as a result of a job related injury or illness?
+weclw,persons 15+ -- longest job class of worker
+weind,ind. of longest job by detailed groups
+welknw,weeks looking - nonworkers recode
+wemind,ind. of longest job by major ind. groups
+wemocg,occup. of longest job by major groups
+weuemp,part year worker weeks recode looking
+wewkrs,weeks worked recode
+wexp,worked full/part time recode
+wicyn,who received wic?
+wicyna,allocation flag for wicyn
+wkcheck,interviewer check item - number of weeks in item 34
+wkswork,during 20.. in how many weeks did ... work even for a few hours? (include paid vacation and sick leave as work.)
+workyn,did ... work at a job or business at any time during 20..?
+wrk_ck,"worked last year recode, including temporary and part-time"
+wsal_val,"total wage and salary earnings (combined amounts in ern-val, if ern-srce=1, and ws-val)"
+wsal_yn,receiving wage and salary earnings
+ws_val,amount of wage and salary earnings from other employers
+wtemp,"did ... do any temporary, part-time, or seasonal work even for a few days during 20..?"
+fl_665,supplement interview status
+tpen_val1,topcode flag for pen_val1
+tpen_val2,topcode flag for pen_val2
+tann_val,topcode flag for ann_val
+tdst_val1,topcode flag for dst_val1
+tdst_val2,topcode flag for dst_val2
+tdst_val1_yng,topcode flag for dst_val1_yng
+tdst_val2_yng,topcode flag for dst_val2_yng
+tfin_val,topcode flag for fin_val
+toi_val,topcode flag for oi_val
+ttrdint_val,topcode flag for trdint_val (interest income excluding retirement interest)
+trint_val1,topcode flag for rint_val1
+trint_val2,topcode flag for rint_val2
+trnt_val,"rent income, topcoded flag"
+tcap_val,topcode flag for cap_val
+tdiv_val,topcode flag for div_val
+tcsp_val,topcode flag for csp_val
+ted_val,topcode flag for ed_val
+tchsp_val,topcode flag for chsp_val
+tphip_val,topcode flag for phip_val
+tphip_val2,topcode flag for phip_val2
+tpmed_val,topcode flag for pmed_val
+tpotc_val,topcode flag for potc_val
+tpemcprem,topcde flag for pemcprem
+tcernval,topcode flag for ern_val
+tcwsval,topcode flag for ws_val
+tcseval,topcode flag for se_val
+tcffmval,topcode flag for frm_val
+tsurval1,"survivor income source 1, topcoded flag"
+tsurval2,"survivor income source 2, topcoded flag"
+tdisval1,topcode flag for dis_val1
+tdisval2,topcode flag for dis_val2
+tax_id,tax unit id number
+eip_crd,sum of economic impact payment 1 (cares act) and economic impact payment 2 (crrsa act)
+spm_eip,spm unit's economic impact payments 1 and 2
+peioind,industry
+peioocc,occupation
+a_werntf,current earnings - weekly pay topcoded flag
+a_herntf,current earnings - hourly pay topcoded flag
+i_disvl1,allocation flag for dis _val1
+i_disvl2,allocation flag for dis _val2
+i_survl1,allocation flag for sur_val1
+i_survl2,allocation flag for sur_val2
+mig_cbst,metropolitan cbsa status of residence 1 year ago
+mig_dscp,principal city/balance status within metropolitan cbsa for residence 1 year ago
+dep_stat,person index (a_lineno) of filer who claimed this dependent
+filedate,file creation date in mmddyy format
+filestat,tax filer status
+yyyymm,data collection date

@@ -1,0 +1,107 @@
+﻿Variable,Description
+aggregation_method,aggregation period used to compute this metric
+date,date of the data
+version,version of the table
+airport_name,aggregation period used to compute this metric
+percent_of_baseline,proportion of trips on this date as compared to avg number of trips on the same day of week in baseline period i.e 1st february 2020 - 15th march 2020
+center_point_geom,geographic representation of the centroid of the airport polygon
+city,city within which the airport is located
+state_region,state within which the airport is located
+country_iso_code_2,iso 3166-2 code representing the county and subdivision within which the airport is located
+country_name,full text name of the country within which the airport is located
+airport_geom,geographic representation of the airport polygon
+city_name,name of city
+date_time,date and time of the measurement
+percent_congestion,percent of congestion relative to the baseline
+alpha_code_3,if the record contains country-level stats: 3-letter country code
+country_iso_code_2,"if the record contains state-level stats: 2-letter country code, followed by dash, then 2-letter state code."
+region,if the record contains region-level stats: region description as found in `bigquery-public-data.covid19_geotab_mobility_impact.lookup_region`
+date,date of the data
+day_of_week,"day of week starting with sunday as day 1. range between [1,7]"
+percent_of_baseline_activity,"number of trips taken on date, relative to the median value for the same day-of-week during baseline period"
+percent_of_baseline_commercial,"percent_of_baseline_activity counting only trips starting around commercial buildings, as labelled by openstreetmap"
+percent_of_baseline_industrial,"percent_of_baseline_activity counting only trips starting around industrial buildings, as labelled by openstreetmap"
+percent_of_baseline_warehouse,"percent_of_baseline_activity counting only trips starting around warehouse buildings, as labelled by openstreetmap"
+percent_of_baseline_grocery_store,"percent_of_baseline_activity counting only trips starting around grocery store buildings, as labelled by openstreetmap"
+percent_of_baseline_other_retail,"percent_of_baseline_activity counting only trips starting around all retail buildings, excluding those classified as grocerystore, as labelled by openstreetmap"
+region_geom,"geographic shape of the country, region, or state; for performance, shapes of regions and states are rough approximates of real boundaries."
+version,version of the table
+alpha_code_3,if the record contains country-level stats: 3-letter country code
+region,if the record contains region-level stats: region description as found in `bigquery-public-data.covid19_geotab_mobility_impact.lookup_region`
+industry,major industry impacted by covid.
+date,date of the data
+percent_of_baseline,percent of baseline activity for the corresponding industry and region.
+version,version of the table
+date,date of the data
+vehicle_class,vehicle class
+percent_of_normal_volume,the percentage of fuelling events at fuel stations relative to the baseline period.
+version,version of the table
+week_start,the start of the week in which fuelling events at fuel stations was measured.
+week_end,the end of the week in which fuelling events at fuel stations was measured.
+state_province,the state where fuelling events was measured.
+country_iso_code_2,iso 3166-2 code representing the county and state/province of the aggregation
+percent_of_normal_volume,the percentage of fuelling events at fuel stations relative to the baseline period.
+version,version of the table
+country_iso_code_2,iso 3166-2 code representing the county and state/province
+region_id,unique identifier for each region
+region_description,name of the region
+states,concatenated list of states that are contained within the region. values are separated by a semi-colon (;)
+country_iso_code_2,iso 3166-2 code representing the county and state/province where the port is located
+port_id,unique port identifier
+port,port name
+year_week,concatenation of the year and week for which the aggregation values are calculated. format <yyyyww>
+week_end,the last day of the week for the aggregation calculations. format <yyyy-mm-dd>
+aggregation_method,define the level of the aggregation. weekly: the average metric is calculated across the full week prior to the week_end
+percent_of_vehicle_volume_change,the percentage change in vehicle volumes in relation to the previous week
+percent_of_trip_volume_change,the percentage change in trip volumes in relation to the previous week
+percent_of_hdt_volume_change,the percentage change in hdt vehicle volumes in relation to the previous week. hdt = heavy duty trucks; weight class 7-8
+percent_of_mdt_volume_change,the percentage change in mdt vehicle volumes in relation to the previous week. mdt = medium duty trucks; weight class 4-6
+percent_of_ldt_volume_change,the percentage change in ldt vehicle volumes in relation to the previous week. ldt = light duty trucks; weight class 1-3 | a-h
+percent_of_mpv_volume_change,the percentage change in mpv vehicle volumes in relation to the previous week. mpv = multi-purpose vehicle
+percent_of_car_volume_change,the percentage change in car vehicle volumes in relation to the previous week.
+percent_of_other_volume_change,"the percentage change in vehicle volumes in relation to the previous week, for all vehicles that are not classed as a hdt, mdt, ldt, mpv or car"
+percent_of_agg_truck_volume_change,"the percentage change in vehicle volumes in relation to the previous week, for a combined grouping of hdt, mdt and ldt vehicle types"
+percent_of_agg_nontruck_volume_change,"the percentage change in vehicle volumes in relation to the previous week, for a combined grouping of mpv, car and other vehicle types"
+wait_time_avg,the average wait time (in minutes)
+wait_time_hdt,the average wait time (in minutes) for hdt vehicle types. hdt = heavy duty trucks; weight class 7-8
+wait_time_mdt,the average wait time (in minutes) for mdt vehicle types. mdt = medium duty trucks; weight class 4-6
+wait_time_ldt,the average wait time (in minutes) for mdt vehicle types ldt = light duty trucks; weight class 1-3 | a-h
+wait_time_mpv,the average wait time (in minutes) for mdt vehicle types mpv = multi-purpose vehicle
+wait_time_car,the average wait time (in minutes) for car vehicle types
+wait_time_other,"the average wait time (in minutes) for all vehicles that are not classed as a hdt, mdt, ldt, mpv or car"
+wait_time_agg_truck,"the average wait time (in minutes) for a combined grouping of hdt, mdt and ldt vehicle types"
+wait_time_agg_nontruck,"the average wait time (in minutes) for a combined grouping of mpv, car and other vehicle types"
+city,city in which the port resides
+port_latitude,latitude of the centroid for the port
+port_longitude,longitude of the centroid for the port
+version,version of the table
+port_geom,polygon object of the port bounds
+trip_direction,direction of the trip
+day_type,weekday/weekend indicator
+day_of_week,"day of week starting with sunday as day 1. range between [1,7]"
+date,date of the data
+avg_crossing_duration,weighted average crossing duration (min)
+percent_of_normal_volume,"the overall daily trip volume is compared to avg number of trips in baseline period i.e jan.1st to feb.29, 2020."
+avg_crossing_duration_truck,weighted average crossing duration (min) for trucks
+percent_of_normal_volume_truck,"the truck daily trip volume is compared to avg number of trips in baseline period i.e jan.1st to feb.29, 2020."
+version,version of the table
+border_id,unique id of the border crossing
+port_name,port name in canada or mexico
+port_name_us,port name in the us
+trip_direction,direction of the trip
+hour_local,local hour of the data
+date_local,local date of the data
+day_type,weekday/weekend indicator
+date_utc,utc date of the data
+hour_utc,utc hour of the data
+avg_crossing_duration,average border crossing times (in minutes)
+aggregation_method,daily average: the average is taken for the current localhour; weekly average: the average is taken for the full week prior to the current localdate; monthly average: the average is taken for the full month prior to the current localdate; yearly average: the average is taken for the full year prior to the localdate
+percent_of_baseline_trip_volume,proportion of trips in this time interval as compared to avg number of trips on the same hour of day in baseline period i.e 1st february 2020 - 15th march 2020. data is only available for daily aggregation level with valid baseline number.
+border_zone,polygon of the port in canada or mexico
+province_code,iso 3166-2 country-province code in canada or mexico
+border_zone_us,polygon of the port in the us
+state_code_us,iso 3166-2 country-state code for us
+border_latitude,latitude of the border
+border_longitude,longitude of the border
+border_geohash,geohash of the border station with level of 7
+version,version of the table

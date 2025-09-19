@@ -1,0 +1,22 @@
+﻿Variable,Description
+npi,national provider identifier
+nppes_provider_last_org_name,last name/organization name of the provider
+nppes_provider_first_name,first name of the provider
+nppes_provider_city,city of the provider
+nppes_provider_state,state code of the provider
+specialty_description,provider specialty type
+description_flag,source of provider specialty
+drug_name,name of the drug
+generic_name,generic name of the drug
+bene_count,number of medicare beneficiaries
+total_claim_count,"number of medicare part d claims, including refills"
+total_day_supply,number of day's supply for all claims
+total_drug_cost,aggregate cost paid for all claims
+bene_count_ge65,number of medicare beneficiaries age 65+
+bene_count_ge65_suppress_flag,reason for suppression of bene_count_ge65
+total_claim_count_ge65,"number of claims, including refills, for beneficiaries age 65+"
+ge65_suppress_flag,"reason for suppression of total_claim_count_ge65, total_drug_cost_ge65, and total_day_supply_ge65"
+total_day_supply_ge65,number of day's supply for all claims for beneficiaries age 65+
+total_drug_cost_ge65,aggregate cost paid for all claims for beneficiaries age 65+
+total_30_day_fill_count,the aggregate number of medicare part d standardized 30-day fills. the standardized 30-day fill is derived from the number of days supplied on each part d claim divided by 30. standardized 30-day fill values less than 1.0 were bottom-coded with a value of 1.0 and standardized 30- day fill values greater than 12.0 were top-coded with a value of 12.0.
+total_30_day_fill_count_ge65,the number of medicare part d standardized 30-day fills for beneficiaries age 65 and older. the standardized 30-day fill is derived from the number of days supplied on each part d claim divided by 30. standardized 30-day fill values less than 1.0 were bottom-coded with a value of 1.0 and standardized 30-day fill values greater than 12.0 were top-coded with a value of 12.0.

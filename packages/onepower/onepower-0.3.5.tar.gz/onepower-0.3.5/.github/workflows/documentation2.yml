@@ -1,0 +1,230 @@
+name: "sphinx: render"
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      refs:
+        description: 'List of branches/tags to build (comma-separated, e.g., main,andrej_dev,v1.0.0)'
+        required: false
+        default: 'main,andrej_dev'
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ refs/tags/v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "Skipping tag push because release will handle it"
+            echo "matrix=$(jq -nc '[]')" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            REFS=("${GITHUB_REF_NAME}")
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            REFS=("main")
+          else
+            IFS=',' read -ra REFS <<< "${{ github.event.inputs.refs || 'main' }}"
+          fi
+
+          if [ ${#REFS[@]} -eq 0 ]; then
+            REFS=("main")
+          fi
+
+          echo "matrix=$(jq -nc --argjson refs "$(printf '%s\n' "${REFS[@]}" | jq -R . | jq -s .)" '$refs')" >> $GITHUB_OUTPUT
+
+  build:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    if: needs.prepare-matrix.outputs.matrix != '[]'
+    strategy:
+      matrix:
+        ref: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ matrix.ref }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Determine docs folder
+        id: vars
+        run: |
+          if [[ "${{ matrix.ref }}" == "main" || "${{ matrix.ref }}" == "andrej_dev" ]]; then
+            echo "folder=main" >> $GITHUB_OUTPUT
+            echo "always_build=true" >> $GITHUB_OUTPUT
+          elif [[ "${{ matrix.ref }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "folder=${{ matrix.ref }}" >> $GITHUB_OUTPUT
+            echo "always_build=false" >> $GITHUB_OUTPUT
+          else
+            echo "folder=${{ matrix.ref }}" >> $GITHUB_OUTPUT
+            echo "always_build=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if docs already exist in gh-pages
+        id: check
+        uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+          path: gh-pages-check
+        continue-on-error: true
+
+      - name: Set exists flag
+        id: exists-flag
+        run: |
+          if [ -d "gh-pages-check/${{ steps.vars.outputs.folder }}" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.vars.outputs.always_build == 'true' || steps.exists-flag.outputs.exists == 'false'
+
+      - name: Install pandoc
+        if: steps.vars.outputs.always_build == 'true' || steps.exists-flag.outputs.exists == 'false'
+        uses: pandoc/actions/setup@v1
+
+      - name: Install dependencies
+        if: steps.vars.outputs.always_build == 'true' || steps.exists-flag.outputs.exists == 'false'
+        run: |
+          pip install git+https://github.com/halomod/halomod.git@main
+          pip install -e .[docs]
+
+      - name: Build Sphinx documentation
+        if: steps.vars.outputs.always_build == 'true' || steps.exists-flag.outputs.exists == 'false'
+        run: sphinx-build -b html docs docs/_build/html --keep-going
+
+      - name: Upload built docs
+        if: steps.vars.outputs.always_build == 'true' || steps.exists-flag.outputs.exists == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-docs-${{ matrix.ref }}
+          path: docs/_build/html/
+
+  update-index:
+    needs: build
+    if: github.event_name == 'release' || github.ref_name == 'main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+          persist-credentials: true
+          path: gh-pages
+
+      - name: Fetch tags (shallow)
+        run: |
+          cd gh-pages
+          git fetch --tags --depth=1
+
+      - name: Update version index and JSON
+        working-directory: gh-pages
+        run: |
+          latest_tag=$(git tag -l 'v*.*.*' --sort=-version:refname | head -n 1)
+          if [ -z "$latest_tag" ]; then
+            latest_tag="main"
+          fi
+
+          cat > index.html <<EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <meta http-equiv="refresh" content="0; url=https://kids-wl.github.io/onepower/${latest_tag}/">
+              <title>Redirecting to latest stable version</title>
+          </head>
+          <body>
+              <h1>Redirecting to the latest stable version (${latest_tag})...</h1>
+              <p>If you are not redirected automatically, <a href="https://kids-wl.github.io/onepower/${latest_tag}/">click here</a>.</p>
+              <ul>
+          EOF
+
+          versions_json="["
+          dirs=$(ls -d */ | sed 's#/##' | grep -vE '^\.(git|github)$' | sort -V -r)
+          for version_name in $dirs; do
+            url="https://kids-wl.github.io/onepower/$version_name/"
+            if [[ "$version_name" == "$latest_tag" ]]; then
+              name="$version_name (stable)"
+            else
+              name="$version_name"
+            fi
+            versions_json="${versions_json}
+            {\"name\": \"${name}\", \"version\": \"${version_name}\", \"url\": \"${url}\"},"
+          done
+          versions_json="${versions_json}
+          {\"name\": \"main (development)\", \"version\": \"main\", \"url\": \"https://kids-wl.github.io/onepower/main/\"}
+          ]"
+          echo "$versions_json" > versions.json
+
+          git add index.html versions.json
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update version list and versions.json" || echo "No changes"
+
+      - name: Upload index files
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh-pages-index
+          path: |
+            gh-pages/index.html
+            gh-pages/versions.json
+
+  squash-gh-pages:
+    needs: update-index
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || github.ref_name == 'main' || github.event_name == 'workflow_dispatch'
+    concurrency:
+      group: gh-pages
+      cancel-in-progress: true
+    steps:
+      - name: Clone gh-pages branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git clone --depth=1 --branch gh-pages \
+            https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages-squash
+          cd gh-pages-squash
+          git switch --orphan gh-pages-squashed
+
+      - name: Download built docs
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Move built docs into place
+        run: |
+          cd gh-pages-squash
+          for d in ../artifacts/html-docs-*; do
+            ref=$(basename "$d" | sed 's/html-docs-//')
+            mkdir -p "$ref"
+            cp -r "$d"/* "$ref"/
+          done
+          cp ../artifacts/gh-pages-index/index.html .
+          cp ../artifacts/gh-pages-index/versions.json .
+
+      - name: Commit and push squashed gh-pages
+        run: |
+          cd gh-pages-squash
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy all docs for $GITHUB_REF_NAME (squashed)"
+          git branch -D gh-pages
+          git branch -m gh-pages
+          git push -f origin gh-pages

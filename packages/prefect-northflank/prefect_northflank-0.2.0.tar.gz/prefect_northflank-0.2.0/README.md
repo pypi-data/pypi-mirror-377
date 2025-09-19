@@ -1,0 +1,310 @@
+# prefect-northflank
+
+[![PyPI version](https://badge.fury.io/py/prefect-northflank.svg)](https://badge.fury.io/py/prefect-northflank)
+
+Prefect integrations for running flows on the [Northflank](https://northflank.com) platform.
+
+This collection provides a Prefect worker that can execute flow runs as containerized jobs on Northflank's cloud platform, giving you powerful orchestration capabilities with Northflank's container-native infrastructure.
+
+## Installation
+
+Install `prefect-northflank` with pip:
+
+```bash
+pip install prefect-northflank
+```
+
+## Quick Start
+
+1. **Set up Northflank credentials**:
+   ```python
+   from prefect_northflank import Northflank
+
+   credentials = Northflank(
+       api_token="your-northflank-api-token",
+   )
+   credentials.save("northflank-creds")
+   ```
+
+2. **Create a work pool**:
+   ```bash
+   prefect work-pool create --type northflank my-northflank-pool
+   ```
+
+3. **Configure your deployment** (prefect.yaml):
+   ```yaml
+   deployments:
+   - name: my-northflank-deployment
+     entrypoint: flows.py:my_flow
+     work_pool:
+       name: my-northflank-pool
+        job_variables:
+          credentials: "{{ prefect.blocks.northflank.northflank-creds }}"
+          project_id: "your-northflank-project-id"
+          deployment_external_image_path: "python:3.12-slim"
+          billing_deployment_plan: "nf-compute-20"
+   ```
+
+4. **Start a worker**:
+   ```bash
+   prefect worker start --pool my-northflank-pool
+   ```
+
+5. **Deploy and run your flow**:
+   ```bash
+   prefect deploy --all
+   prefect deployment run 'my-flow/my-northflank-deployment'
+   ```
+
+## Complete CLI Walkthrough
+
+Here's a complete step-by-step guide to set up and run a flow:
+
+```bash
+# 1. Install the package
+pip install prefect-northflank
+
+# 2. Save your Northflank credentials
+python -c "
+from prefect_northflank import Northflank
+creds = Northflank(api_token='your-api-token-here')
+creds.save('my-northflank-creds')
+"
+
+# 3. Create a work pool
+prefect work-pool create --type northflank my-northflank-pool
+
+# 4. Create a simple flow file
+cat > my_flow.py << 'EOF'
+from prefect import flow, task
+
+@task
+def process_data(data: str):
+    return f"Processed: {data.upper()}"
+
+@flow
+def my_northflank_flow(data: str = "hello world"):
+    result = process_data(data)
+    print(result)
+    return result
+EOF
+
+# 5. Create prefect.yaml configuration
+cat > prefect.yaml << 'EOF'
+name: northflank-demo
+prefect-version: 3.1.1
+
+deployments:
+  - name: demo-deployment
+    entrypoint: my_flow.py:my_northflank_flow
+    parameters:
+      data: "Hello from Northflank!"
+    work_pool:
+      name: my-northflank-pool
+      job_variables:
+        credentials: "{{ prefect.blocks.northflank.my-northflank-creds }}"
+        project_id: "your-project-id"  # Replace with your Northflank project ID
+        deployment_external_image_path: "python:3.12-slim"
+        billing_deployment_plan: "nf-compute-20"
+        settings_active_deadline_seconds: 1800
+        runtime_environment:
+          CUSTOM_VAR: "production"
+EOF
+
+# 6. Deploy the flow
+prefect deploy --all
+
+# 7. Start a worker (in one terminal)
+prefect worker start --pool my-northflank-pool
+
+# 8. Trigger a flow run (in another terminal)
+prefect deployment run my-northflank-flow/demo-deployment
+
+# 9. Monitor the run
+prefect flow-run ls --limit 5
+```
+
+## Features
+
+- **Containerized execution**: Run flows in isolated containers on Northflank
+- **Resource control**: Configure CPU, memory, and GPU resources via deployment plans
+- **Secret management**: Secure injection of environment variables and secrets
+- **Job lifecycle management**: Automatic job creation, execution, and cleanup
+- **Status monitoring**: Real-time tracking of job execution status
+- **Retry handling**: Built-in support for job retries and failure handling
+- **Cancellation support**: Proper handling of flow run cancellation with job termination
+- **Environment merging**: Automatic injection of Prefect environment variables
+- **Flexible commands**: Support for custom container commands or default Prefect engine execution
+
+## Configuration
+
+### Flattened Configuration Structure
+
+The Northflank worker uses a flattened configuration structure to work with Prefect's JSON schema requirements. Complex nested objects are flattened using underscore notation:
+
+- `billing.deploymentPlan` → `billing_deployment_plan`
+- `deployment.external.imagePath` → `deployment_external_image_path`
+- `settings.activeDeadlineSeconds` → `settings_active_deadline_seconds`
+
+This allows for easier configuration in YAML files and work pools while maintaining compatibility with the full Northflank API.
+
+### Worker Configuration
+
+The Northflank worker supports the following configuration options:
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| `credentials` | Northflank | API credentials | Required |
+| `project_id` | str | Northflank project ID | Required |
+| `cleanup_job` | bool | Delete job after completion | True |
+| `name` | str | Job name | Auto-generated |
+| `description` | str | Job description | Auto-generated |
+| `tags` | List[str] | Resource tags | None |
+| **Infrastructure** | | | |
+| `infrastructure_architecture` | str | CPU architecture (x86/arm) | None |
+| **Billing** | | | |
+| `billing_deployment_plan` | str | Resource allocation plan | "nf-compute-20" |
+| `billing_build_plan` | str | Build plan ID | None |
+| `billing_gpu_enabled` | bool | Enable GPU support | False |
+| `billing_gpu_type` | str | GPU type | None |
+| `billing_gpu_count` | int | Number of GPUs | 1 |
+| `billing_gpu_timesliced` | bool | Timesliced GPU sharing | None |
+| **Deployment** | | | |
+| `deployment_external_image_path` | str | Container image | "prefecthq/prefect:3-python3.12" |
+| `deployment_external_credentials` | str | Registry credentials ID | None |
+| `deployment_internal_build_service` | str | Build service ID | None |
+| `deployment_internal_branch` | str | Git branch | None |
+| `deployment_internal_sha` | str | Git commit SHA | None |
+| `deployment_docker_config_type` | str | Docker config type | "customCommand" |
+| `deployment_docker_custom_command` | str | Custom command | None |
+| **Build** | | | |
+| `build_configuration_docker_credentials` | List[str] | Docker credential IDs | None |
+| **Runtime** | | | |
+| `runtime_environment` | Dict[str, str] | Environment variables | None |
+| **Settings** | | | |
+| `settings_backoff_limit` | int | Retry attempts | 3 |
+| `settings_active_deadline_seconds` | int | Job timeout (seconds) | 3600 |
+| `settings_run_on_source_change` | str | Source change trigger | "never" |
+
+### Cancellation and Error Handling
+
+The Northflank worker provides robust cancellation support:
+
+- **Flow cancellation**: When a Prefect flow run is cancelled, the worker automatically attempts to cancel the corresponding Northflank job run
+- **Timeout handling**: Jobs that exceed their `active_deadline_seconds` are automatically terminated
+- **Cleanup on failure**: Failed jobs are cleaned up according to the `cleanup_job` setting
+- **Graceful error handling**: Network errors and API failures are logged with appropriate detail levels
+
+### Environment Variables
+
+The worker automatically injects Prefect environment variables into job containers:
+
+- `PREFECT_FLOW_RUN_ID`: The unique flow run identifier
+- `PREFECT_FLOW_ID`: The flow identifier
+- `PREFECT_API_URL`: Prefect server/cloud API URL (if configured)
+- `PREFECT_API_KEY`: Prefect API authentication key (if configured)
+
+User-provided environment variables in `runtime_environment` take precedence over automatic variables.
+
+## Examples
+
+### Basic Flow Example
+
+```python
+from prefect import flow
+
+@flow
+def my_flow():
+    print("Hello from Northflank!")
+    return "Flow completed successfully"
+
+if __name__ == "__main__":
+    my_flow()
+```
+
+### GPU Configuration Example
+
+```yaml
+# prefect.yaml for GPU workloads
+deployments:
+  - name: gpu-training
+    entrypoint: train_model.py:training_flow
+    work_pool:
+      name: northflank-gpu-pool
+      job_variables:
+        credentials: "{{ prefect.blocks.northflank.my-creds }}"
+        project_id: "proj-123456"
+        deployment_external_image_path: "nvidia/pytorch:23.10-py3"
+        billing_deployment_plan: "nf-gpu-h100-80-1g"
+        billing_gpu_enabled: true
+        billing_gpu_type: "h100-80"
+        billing_gpu_count: 2
+        settings_active_deadline_seconds: 14400  # 4 hours
+        runtime_environment:
+          CUDA_VISIBLE_DEVICES: "0,1"
+          TORCH_CUDA_ARCH_LIST: "8.9"
+```
+
+## Authentication
+
+### API Token Setup
+
+1. Log in to your [Northflank dashboard](https://app.northflank.com)
+2. Navigate to Account Settings > Tokens
+3. Create a new API Role with appropriate permissions
+  - Select the Job General/Deployment scopes
+4. Create a new API Token using the role you just created
+5. Store the token securely using Prefect's block system
+
+```python
+from prefect_northflank import Northflank
+
+credentials = Northflank(api_token="nf-...")
+credentials.save("my-northflank-creds")
+```
+
+### Environment Variables
+
+You can also set the API token via environment variable:
+
+```bash
+export NORTHFLANK_API_TOKEN="nfp_..."
+```
+
+## Development
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/northflank/prefect-northflank.git
+   cd prefect-northflank
+   ```
+
+2. Install with uv:
+   ```bash
+   uv sync
+   uv run python -m pip install -e .
+   ```
+
+### Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+For support with this integration, please:
+
+1. Check the [documentation](https://github.com/northflank/prefect-northflank)
+2. Search existing [issues](https://github.com/northflank/prefect-northflank/issues)
+3. Create a new issue if needed
+
+## Links
+
+- [Prefect Documentation](https://docs.prefect.io)
+- [Northflank Documentation](https://northflank.com/docs)
+- [Northflank API Documentation](https://northflank.com/docs/v1/api)

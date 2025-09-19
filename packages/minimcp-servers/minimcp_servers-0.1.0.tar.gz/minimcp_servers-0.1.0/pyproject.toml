@@ -1,0 +1,64 @@
+[project]
+name = "minimcp-servers"
+version = "0.1.0"
+description = "MCP servers built with MiniMCP to expose Python’s standard library modules."
+authors = [{ name = "Sreenath Somarajapuram", email = "somarajapuram@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: AsyncIO",
+    "Topic :: Software Development :: Libraries",
+]
+
+dependencies = [
+    "minimcp>=0.3.3",
+]
+
+[dependency-groups]
+dev = [
+    "build>=1.3.0",
+    "pre-commit>=4.3.0",
+    "pre-commit-uv>=4.1.4",
+    "pyright>=1.1.403",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "ruff>=0.12.8",
+    "twine>=6.1.0",
+]
+
+[project.urls]
+Repository = "https://github.com/sreenaths/minimcp-servers"
+PyPI = "https://pypi.org/project/minimcp-servers/"
+
+[project.scripts]
+stdio-math-server = "examples.math_mcp_server.stdio:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/minimcp_servers"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+exclude = ["README.md", "venv", ".venv"]
+
+[tool.ruff.lint]
+select = ["C4", "E", "F", "I", "PERF", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.markdown.lint]
+MD029 = false
+MD013 = false
+MD033 = false
+MD041 = false

@@ -1,0 +1,26 @@
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'transformix'
+version = '1.1.0'
+description = 'A Python wrapper for transformix'
+readme.file = 'README.md'
+readme.content-type = 'text/markdown'
+requires-python = ">=3.6"
+license = {file = "LICENSE"}
+keywords = ['transformix', 'elastix', 'elastic', 'non-rigid', 'registration', 'alignment', 'warping']
+authors = [{name = 'Jasper Phelps', email = 'jasper.s.phelps@gmail.com'}]
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+    'Operating System :: MacOS',
+    'Operating System :: POSIX :: Linux',
+]
+urls = {Repository = 'https://github.com/jasper-tms/pytransformix'}
+dependencies = ['numpy', 'numpyimage']
+
+[tool.setuptools.packages.find]
+include = ['transformix']

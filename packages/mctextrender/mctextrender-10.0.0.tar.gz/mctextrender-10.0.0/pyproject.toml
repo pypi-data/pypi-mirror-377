@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mctextrender"
+version = "10.0.0"
+description = "A rendering library for Minecraft-style text and images"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "Ventros", email = "ventros.development@gmail.com" }
+]
+dependencies = [
+  "Pillow",
+]
+
+[tool.setuptools]
+packages = ["mctextrender"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+mctextrender = ["font/*.ttf"]

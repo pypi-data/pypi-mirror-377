@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: matrixutils_example_pkg
+Version: 0.0.1
+Summary: A tiny example package providing a simple matrix multiplication function.
+Author-email: Your Name <you@example.com>
+License: 
+        ---
+        
+        ### `LICENSE` (MIT skeleton — Sadiq Ali)
+        ```text
+        MIT License
+        
+        Copyright (c) 2025 Your Name
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        [...standard MIT text...]
+        
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# matrixutils_example_pkg
+
+Minimal example Python package that implements matrix multiplication.
+
+## Features
+- `matrix_multiply(a, b)` multiplies two matrices represented as nested lists.
+- Includes basic input validation and helpful errors.
+- Tests included (pytest).
+
+## Quickstart (local)
+```bash
+git clone <your-gitlab-repo-url>
+cd matrixutils_example_pkg
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip build
+python -m build
+pip install dist/*.whl
+python -c "from matrixutils import matrix_multiply; print(matrix_multiply([[1,2],[3,4]], [[5,6],[7,8]]))"

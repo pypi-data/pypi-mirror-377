@@ -1,0 +1,29 @@
+# Google Gemini API Configuration
+# Get your API key from: https://makersuite.google.com/app/apikey
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Optional: Default output directory for generated videos
+DEFAULT_OUTPUT_DIR=generated_videos
+
+# Optional: Default model to use
+DEFAULT_MODEL=veo-3.0-generate-preview
+
+# Optional: Default aspect ratio
+DEFAULT_ASPECT_RATIO=16:9
+
+# Optional: Person generation setting (required for EU/UK/CH/MENA)
+PERSON_GENERATION=dont_allow
+
+# Optional: Polling configuration
+POLL_INTERVAL=10
+MAX_POLL_TIME=600
+
+# Azure Blob Storage Configuration
+# Get your connection string from Azure Portal -> Storage Account -> Access keys
+AZURE_STORAGE_CONNECTION_STRING=your_azure_storage_connection_string_here
+
+# Azure Blob Container name (will be created if it doesn't exist)
+AZURE_BLOB_CONTAINER_NAME=generated-videos
+
+# Optional: Enable/disable Azure upload (default: true)
+AZURE_UPLOAD_ENABLED=true

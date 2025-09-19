@@ -1,0 +1,28 @@
+[project]
+name = "dspy-cli"
+version = "0.1"
+description = "Utility for deploying dspy applications"
+readme = "README.md"
+authors = [{name = "Isaac Miller"}]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.8"
+classifiers = []
+dependencies = [
+    "click"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/isaacbmiller/dspy-cli"
+Changelog = "https://github.com/isaacbmiller/dspy-cli/releases"
+Issues = "https://github.com/isaacbmiller/dspy-cli/issues"
+CI = "https://github.com/isaacbmiller/dspy-cli/actions"
+
+[project.scripts]
+dspy-cli = "dspy_cli.cli:cli"
+
+[project.optional-dependencies]
+test = ["pytest"]

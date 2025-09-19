@@ -1,0 +1,98 @@
+# Include documentation and metadata files
+include README_GENEBOT.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include CODE_OF_CONDUCT.md
+include .env.example
+include pyproject.toml
+include setup.py
+
+# Include configuration files
+recursive-include config *.yaml *.yml *.json *.toml
+recursive-include genebot/config *.yaml *.yml *.json *.toml
+
+# Include templates and examples
+recursive-include config/templates *.yaml *.yml *.json
+recursive-include examples *.py *.yaml *.yml *.json *.md
+recursive-include docs *.md *.rst *.txt
+
+# Include test data and fixtures
+recursive-include tests/fixtures *.json *.yaml *.yml *.csv
+recursive-include tests/data *.json *.yaml *.yml *.csv
+
+# Include deployment configurations
+recursive-include deployment *.yml *.yaml *.json *.sh *.sql
+recursive-include deployment/grafana *.json
+recursive-include deployment/scripts *.sh *.py *.sql
+
+# Include monitoring configurations
+recursive-include src/monitoring *.yaml *.yml *.json
+recursive-include config/monitoring *.yaml *.yml *.json
+
+# Include strategy configurations
+recursive-include src/strategies *.yaml *.yml *.json
+recursive-include config/strategies *.yaml *.yml *.json
+
+# Include database migrations
+recursive-include alembic *.py *.mako
+recursive-include alembic/versions *.py
+
+# Include scripts
+recursive-include scripts *.py *.sh *.bat
+
+# Include package data
+recursive-include genebot *.yaml *.yml *.json *.txt *.md
+recursive-include genebot/templates *.yaml *.yml *.json *.jinja2
+
+# Exclude development and build artifacts
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude Makefile
+exclude docker-compose.yml
+exclude Dockerfile
+exclude .dockerignore
+
+# Exclude cache and temporary files
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude .coverage
+global-exclude .pytest_cache
+global-exclude .mypy_cache
+global-exclude .ruff_cache
+
+# Exclude development directories
+prune .git
+prune .venv
+prune venv
+prune .tox
+prune build
+prune dist
+prune *.egg-info
+prune .pytest_cache
+prune .mypy_cache
+prune .ruff_cache
+prune node_modules
+
+# Exclude IDE files
+global-exclude .vscode
+global-exclude .idea
+global-exclude *.swp
+global-exclude *.swo
+global-exclude *~
+
+# Exclude log files
+global-exclude *.log
+global-exclude logs/*
+
+# Exclude sensitive files
+global-exclude .env
+global-exclude .env.local
+global-exclude .env.production
+global-exclude secrets.yaml
+global-exclude private_keys/*

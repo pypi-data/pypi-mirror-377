@@ -1,0 +1,172 @@
+# Monitoring and Alerting Configuration
+
+# Core monitoring settings
+monitoring:
+  # Metrics collection settings
+  max_metrics: 10000
+  metrics_storage_path: "logs/metrics"
+  
+  # Error tracking settings
+  max_errors: 1000
+  
+  # Trade logging settings
+  trade_log_file: "logs/trades.log"
+  
+  # Monitoring intervals (seconds)
+  monitoring_interval: 60      # Health checks and system metrics
+  prometheus_interval: 30      # Prometheus metrics updates
+
+# Prometheus configuration
+prometheus:
+  enabled: true
+  port: 8080
+  metrics_path: "/metrics"
+
+# Notification settings
+notifications:
+  # Rate limiting
+  max_notifications_per_hour: 100
+  
+  # Email notifications
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    use_tls: true
+    username: "${EMAIL_USERNAME}"
+    password: "${EMAIL_PASSWORD}"
+    from_email: "${EMAIL_FROM}"
+    to_emails:
+      - "alerts@example.com"
+      - "admin@example.com"
+  
+  # Slack notifications
+  slack:
+    enabled: false
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#trading-alerts"
+    username: "Trading Bot"
+  
+  # Discord notifications
+  discord:
+    enabled: false
+    webhook_url: "${DISCORD_WEBHOOK_URL}"
+    username: "Trading Bot"
+  
+  # Generic webhook notifications
+  webhook:
+    enabled: false
+    webhook_url: "${WEBHOOK_URL}"
+    headers:
+      Authorization: "Bearer ${WEBHOOK_TOKEN}"
+      Content-Type: "application/json"
+
+# Alert thresholds
+alert_thresholds:
+  # System resource thresholds
+  cpu_usage_warning: 80.0      # CPU usage percentage
+  cpu_usage_critical: 95.0
+  memory_usage_warning: 85.0   # Memory usage percentage
+  memory_usage_critical: 95.0
+  disk_usage_warning: 90.0     # Disk usage percentage
+  disk_usage_critical: 98.0
+  
+  # Error rate thresholds
+  error_rate_warning: 5.0      # Errors per minute
+  error_rate_critical: 20.0
+  
+  # Trading performance thresholds
+  trade_success_rate_warning: 95.0  # Minimum success rate percentage
+  portfolio_value_warning: 1000.0   # Minimum portfolio value (USD)
+  portfolio_value_critical: 500.0
+  
+  # Strategy performance thresholds
+  strategy_return_warning: -5.0     # Strategy return percentage
+  max_drawdown_warning: -10.0       # Maximum drawdown percentage
+  max_drawdown_critical: -20.0
+
+# Default notification channels for each alert level
+default_channels:
+  info:
+    - console
+  warning:
+    - console
+    - email
+    - slack
+  error:
+    - console
+    - email
+    - slack
+    - discord
+  critical:
+    - console
+    - email
+    - slack
+    - discord
+    - webhook
+
+# Multi-market monitoring settings
+multi_market:
+  # Market-specific monitoring
+  market_monitoring:
+    crypto:
+      error_rate_threshold: 0.05
+      latency_threshold_ms: 500
+      volume_anomaly_multiplier: 2.0
+    forex:
+      error_rate_threshold: 0.02
+      latency_threshold_ms: 1000
+      volume_anomaly_multiplier: 1.5
+  
+  # Cross-market correlation monitoring
+  correlation_monitoring:
+    enabled: true
+    update_interval: 300  # 5 minutes
+    high_correlation_threshold: 0.8
+    correlation_change_threshold: 0.3
+    lookback_days: 30
+    min_data_points: 10
+  
+  # Session monitoring
+  session_monitoring:
+    enabled: true
+    transition_alerts: true
+    pre_close_warning_minutes: 15
+    pre_open_warning_minutes: 15
+    unexpected_closure_alert: true
+  
+  # Compliance monitoring
+  compliance_monitoring:
+    enabled: true
+    violation_alert_immediate: true
+    daily_compliance_report: true
+    risk_concentration_threshold: 0.7
+  
+  # Alert rate limiting
+  alert_rate_limiting:
+    max_alerts_per_hour: 50
+    correlation_alert_cooldown: 600  # 10 minutes
+    session_alert_cooldown: 300     # 5 minutes
+    compliance_alert_cooldown: 0    # No cooldown for compliance
+
+# Grafana dashboard settings
+grafana:
+  enabled: true
+  port: 3000
+  admin_user: "admin"
+  admin_password: "${GRAFANA_ADMIN_PASSWORD}"
+  
+  # Dashboard provisioning
+  dashboards:
+    - name: "Trading Bot Overview"
+      path: "deployment/grafana/dashboards/trading-bot-overview.json"
+    - name: "Trading Bot Detailed"
+      path: "deployment/grafana/dashboards/trading-bot-detailed.json"
+    - name: "Multi-Market Correlation"
+      path: "deployment/grafana/dashboards/multi-market-correlation-dashboard.json"
+  
+  # Data source configuration
+  datasources:
+    - name: "Prometheus"
+      type: "prometheus"
+      url: "http://prometheus:9090"

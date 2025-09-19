@@ -1,0 +1,54 @@
+<style>
+.{{ attrs.name }}_anterior_widget{
+	display: block;
+	padding-top: 5px;
+	margin-top: 8px;
+	border-top: 1px solid #eee;
+}
+</style>
+{% if form.instance.id %}
+<div class="form-group">
+	<label for="">{{ widget.label|default:attrs.name }}</label>
+	<input type="{{ widget.input_type }}"
+		{% if widget.is_required %}
+			required="required"
+		{% endif %}
+		{% for k, v in attrs.items %}
+			{{ k }}="{{ v }}"
+		{% endfor %}
+	>
+</div>
+{% else %}
+<div class="custom-widget-wrapper">
+	<label class="control control-checkbox">
+		<input type="checkbox" name="usar_{{ attrs.name }}_anterior" id="id_usar_{{ attrs.name }}_anterior" />
+			Usar {{ widget.label|default:attrs.name|lower }} anterior
+		<span class="control_indicator"></span>
+	</label>
+
+	<div class="form-group {{ attrs.name }}_anterior_widget" id="id_{{ attrs.name }}_anterior_widget" style="display:none">
+		<label for="">{{ widget.label|default:attrs.name }}</label>
+		<input type="{{ widget.input_type }}"
+			{% if widget.is_required %}
+				required="required"
+			{% endif %}
+			{% for k, v in attrs.items %}
+				{{ k }}="{{ v }}"
+			{% endfor %}
+		>
+	</div>
+</div>
+{% endif %}
+
+
+<script>
+$(function(){
+	$("#id_usar_{{ attrs.name }}_anterior").change(function(){
+		if ($(this).is(':checked')) {
+			$("#id_{{ attrs.name }}_anterior_widget").show();
+		} else {
+			$("#id_{{ attrs.name }}_anterior_widget").hide();
+		}
+	});
+});
+</script>

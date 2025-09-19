@@ -1,0 +1,55 @@
+{% extends 'sh/layout.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col-md-12">
+        <form method="GET" action=".">
+            <div class="aling-bottom d-inline-block">
+				<label for="fecha_min">Desde</label>
+				 {{ filtro_form.desde }}
+				 {{ filtro_form.desde.errors }}
+			 </div>
+			 <div class="aling-bottom d-inline-block">
+				 <label for="fecha_max">Hasta</label>
+				 {{ filtro_form.hasta }}
+				 {{ filtro_form.hasta.errors }}
+			 </div>
+            {% include "sh/filtro_form.html" %}
+        </form>
+        <br>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Inicio</th>
+                        <th>Duración</th>
+                        <th>Comando</th>
+                        <th>Usuario</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for obj in list.object_list %}
+                    <tr>
+                        <td><a href="{% url 'sh:command' obj.pk %}">{{ obj.start|date:"d/m/Y H:i:s" }}</a></td>
+                        <td>
+                            {% if obj.end %}
+                            <a title="Fin: {{ obj.command.end }}" href="{% url 'sh:command' obj.pk %}">{{ obj.get_duracion }}</a>
+                            {% endif %}    
+                        </td>
+                        <td><a href="{% url 'sh:command' obj.pk %}">{{ obj.text|truncatechars:100 }}</a></td>
+                        <td><a href="{% url 'sh:command' obj.pk %}">{{ obj.user|default:"" }}</a></td>
+                        <td class="text-end">
+                            <a href="{% url 'sh:save_command' obj.pk %}" class="btn btn-sm btn-light text-dark">Guardar en favoritos</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include 'sh/paginado.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

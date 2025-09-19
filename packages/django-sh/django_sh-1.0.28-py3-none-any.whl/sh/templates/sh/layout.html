@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" class="clean-layout">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|default:'Django Sh' }}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" href="https://admintotal.com/site_media_central/favicon.png" type="image/png" />
+    <link href="https://unpkg.com/ionicons@4.5.9-1/dist/css/ionicons.min.css" rel="stylesheet">
+
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet"> 
+    <link rel="stylesheet" href="{% static 'sh/js/jquery-ui-1.13.1/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sh/js/bootstrap-5.1.3/css/bootstrap.css' %}">   
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript" src="{% static 'sh/js/bootstrap-5.1.3/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'sh/js/jquery-ui-1.13.1/jquery-ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'sh/js/datetimepicker/jquery-ui-timepicker-addon.js' %}"></script>
+
+    <style>
+    html, body{
+        background-color: #1e1f1b;
+        color: #b5b5b5;
+    }
+    .table,
+    .table a{
+        color: #b5b5b5;
+    }
+    .table td, 
+    .table th {
+        border-color: rgba(255,255,255,.2) !important;
+    }
+    .CodeMirror{
+        font-size: .95em;
+        position: relative;
+        height: auto;
+    }
+    .top-filters{
+        background-color: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        position: relative;
+        z-index: 0;
+    }
+    .texto_respuesta {
+        opacity: .8;
+        font-size: .9em;
+    }
+    </style>
+    {% block extra_head %}
+    {% endblock extra_head %}
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="d-flex flex-wrap justify-content-between align-items-center py-2">
+            <div>
+                <a href="{% url "sh:command" %}" class="btn btn-sm btn-link mr-2 text-light font-weight-bold"> 
+                    Django sh
+                </a>
+            </div>
+
+            <div>
+                <a href="{% url "sh:command" %}" class="btn btn-sm btn-dark mr-2">
+                    Nuevo comando
+                </a>
+                <a href="{% url "sh:command_history" %}" class="btn btn-sm btn-dark mr-2">
+                    Historial de comandos
+                </a>
+                <a href="{% url "sh:saved_commands" %}" class="btn btn-sm btn-dark mr-2">
+                    Comandos guardados
+                </a>
+                <a href="{% url "sh:settings" %}" class="btn btn-sm btn-dark mr-2">
+                    Configuración
+                </a>
+                <a href="{% url "sh:reports" %}" class="btn btn-sm btn-dark mr-2">
+                    Reportes
+                </a>
+            </div>
+        </div>
+        {% block contenido %}
+        {% endblock contenido %}
+    </div>
+
+    {% block js %}
+    {% endblock js %}
+</body>
+<script>
+
+
+    
+jQuery().ready(function () {
+
+    var calendar_options = {
+    changeMonth: true,
+    yearRange: "-30:+1",
+    changeYear: true,
+    dateFormat: 'dd/mm/yy',
+    buttonImageOnly: true
+    };
+
+    var cal_options_h = {
+        hourMin: 0,
+        hourMax: 23,
+        dateFormat: 'dd/mm/yy',
+    };
+
+    $(".has_datepicker").datepicker(calendar_options); 
+    $(".has_datetimepicker").datetimepicker(cal_options_h); 
+
+
+});
+            
+</script>
+</html>

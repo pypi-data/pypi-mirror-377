@@ -1,0 +1,92 @@
+{% extends 'sh/layout.html' %}
+{% load static %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'sh/codemirror/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'sh/codemirror/theme/monokai.css' %}">
+<script type="text/javascript" src="{% static 'sh/codemirror/lib/codemirror.js' %}"></script>
+<script type="text/javascript" src="{% static 'sh/codemirror/mode/python/python.js' %}"></script>
+
+{% endblock extra_head %}
+	
+{% block contenido %}
+  <form action="." method="POST">
+    {% csrf_token %}
+	<div class="row mb-2">
+		<div class="col-md-6">
+			<div>Ejecutar antes del comando:</div>
+			<textarea id="antes" name="code_before" class="query-textarea">{{ shell_settings.code_before|default:"" }}</textarea>
+		</div>
+		<div class="col-md-6">
+			<div>Función de autenticación:</div>
+			<textarea id="auth_function" name="auth_function" class="query-textarea">{{ shell_settings.auth_function|default:"" }}</textarea>
+		</div>
+	</div>
+
+	<div class="text-right">
+		<input id="guardar" class="btn btn-sm btn-primary" type="submit" value="Guardar">
+	</div>
+  </form>
+
+  <script>
+	var h = window.outerHeight;
+	
+	window.editor_antes = CodeMirror.fromTextArea(document.getElementById("antes"), {
+		mode: {name: "python", singleLineStringErrors: false},
+		lineNumbers: true,
+		indentUnit: 4,
+		matchBrackets: true,
+		theme: 'monokai',
+		autofocus: true,
+		extraKeys: {
+			"Tab": function(cm){
+			cm.replaceSelection("    " , "end");
+			}
+		}
+	});
+	
+	window.editor_antes.on("keydown", function (cm, event) {
+	  event = {
+		type: "keydown",
+		keyCode: event.keyCode,
+		ctrlKey: event.ctrlKey,
+		shiftKey: event.shiftKey,
+		altKey: event.altKey,
+		metaKey: event.metaKey
+	  };
+				
+	  if (event.ctrlKey && event.keyCode == 13) {
+		$("#guardar").click()
+	  }
+	});
+
+	window.editor_auth_function = CodeMirror.fromTextArea(document.getElementById("auth_function"), {
+		mode: {name: "python", singleLineStringErrors: false},
+		lineNumbers: true,
+		indentUnit: 4,
+		matchBrackets: true,
+		theme: 'monokai'
+	});
+	
+	window.editor_auth_function.on("keydown", function (cm, event) {
+	  event = {
+		type: "keydown",
+		keyCode: event.keyCode,
+		ctrlKey: event.ctrlKey,
+		shiftKey: event.shiftKey,
+		altKey: event.altKey,
+		metaKey: event.metaKey
+	  };
+				
+	  if (event.ctrlKey && event.keyCode == 13) {
+		$("#guardar").click()
+	  }
+	});
+	
+	
+	window.editor_antes.setSize(null, h - 270);
+	window.editor_auth_function.setSize(null, h - 270);
+	</script>
+	
+  {% endblock %}

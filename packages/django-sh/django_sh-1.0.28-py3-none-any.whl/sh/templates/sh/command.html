@@ -1,0 +1,121 @@
+{% extends 'sh/layout.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'sh/codemirror/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'sh/codemirror/theme/monokai.css' %}">
+<link rel="stylesheet" href="{% static 'sh/css/main.css' %}">
+
+<script type="text/javascript" src="{% static 'sh/codemirror/lib/codemirror.js' %}"></script>
+<script type="text/javascript" src="{% static 'sh/codemirror/mode/python/python.js' %}"></script>
+
+<style>
+    {% if command_obj.error %}
+        .error{
+            background-color: #bd2626;
+            color: #f9f9f9;
+            font-size: 17px;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 2px;
+        }
+    {% endif %}
+    pre{
+        color: white;
+        margin: 0;
+        padding: 10px 15px;
+        max-height: 90vh;
+        border-radius: 2px;
+        max-width:100%;
+        white-space:normal; 
+    }
+</style>
+{% endblock %}
+
+
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-md-7">
+            <form method="post" action="." name="myForm">
+                {% csrf_token %}
+                <div class="row">
+                    <div>
+                        <label class="control control-checkbox mb-1 mr-2">
+                            <input type="checkbox" checked="checked" name="enable_try"> 
+                            Habilitar try/catch
+                            <span class="control_indicator"></span>
+                        </label>
+                    </div>
+                </div>
+
+                {% if pk %}
+                <div class="d-flex align-items-center justify-content-between py-2">
+                    <div>
+                        <div class="badge bg-light text-dark">Inicio: {{ command_obj.created_at|date:"d/m/Y H:i" }}</div>
+                        <div class="badge bg-light text-dark">Fin: {{ command_obj.end|date:"d/m/Y H:i" }}</div>
+                        <div class="badge bg-info text-dark">Duración: {{ command_obj.get_duracion }}</div>
+                        <div class="badge bg-light text-dark">Usuario: {{ command_obj.user.username }}</div>
+                    </div>
+                    <div class="text-end">
+                        <a class="btn btn-sm btn-dark mr-2" href="{% url 'sh:save_command' pk %}">Guardar en favoritos</a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <textarea name="query" id="id_query" class="query-textarea">{{ query }}</textarea>
+
+                <div class="text-right my-2">
+                    <input type="submit" value="Ejecutar" class="btn btn-dark" id="ejecutar">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <div style="max-height:95vh;overflow:auto"> 
+                {% if command_obj.error %}
+                <div class="error">{{ command_obj.error }}</div>
+                {% endif %}
+
+                <pre>
+                    {{ command_obj.output|linebreaks }}
+                </pre>
+            </div>
+        </div>
+    </div>
+
+<script>
+var h = window.outerHeight;
+
+window.editor = CodeMirror.fromTextArea(document.getElementById("id_query"), {
+    mode: {name: "python", singleLineStringErrors: false},
+    lineNumbers: true,
+    indentUnit: 4,
+    matchBrackets: true,
+    theme: 'monokai',
+    autofocus: true,
+    extraKeys: {
+        "Tab": function(cm){
+          cm.replaceSelection("    " , "end");
+        }
+    }
+});
+
+window.editor.on("keydown", function (cm, event) {
+  event = {
+    type: "keydown",
+    keyCode: event.keyCode,
+    ctrlKey: event.ctrlKey,
+    shiftKey: event.shiftKey,
+    altKey: event.altKey,
+    metaKey: event.metaKey
+  };
+            
+  if (event.ctrlKey && event.keyCode == 13) {
+    $("#ejecutar").click()
+  }
+});
+
+
+window.editor.setSize(null, h - 250);
+</script>
+{% endblock %}

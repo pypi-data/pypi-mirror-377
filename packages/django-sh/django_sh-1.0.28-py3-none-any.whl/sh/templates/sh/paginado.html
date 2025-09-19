@@ -1,0 +1,41 @@
+{% load sh_tags %}
+
+<div class="text-center">
+    <nav class="d-inline-block">
+        <ul class="pagination">
+            {% if list.paginator.num_pages > 1 %}
+                {% if list.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link text-dark" data-toggle="tooltip" title="Primer página" href="{% append_to_get pag=1 %}">
+                            «
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-dark" data-toggle="tooltip" title="Anterior" href="{% append_to_get pag=list.previous_page_number %}">
+                            <i class="ion-md-arrow-dropleft"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for page in page_range %}
+                    <li class="page-item {% if page == list.number %} active{% endif %}">
+                        <a class="page-link {% if page != list.number %} text-dark{% endif %}" href="{% append_to_get pag=page %}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-dark" data-toggle="tooltip" title="Siguiente" href="{% append_to_get pag=list.next_page_number %}">
+                            <i class="ion-md-arrow-dropright"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-dark" data-toggle="tooltip" title="Última página" href="{% append_to_get pag=list.paginator.num_pages %}">
+                            »
+                        </a>
+                    </li>
+                 {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
+</div>

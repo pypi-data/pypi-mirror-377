@@ -1,0 +1,40 @@
+<div class="align-bottom d-inline-block">
+	Buscar:
+	{{ filtro_form.q }} 
+	{{ filtro_form.q.errors }}
+</div>
+<div class="align-bottom d-inline-block">
+	Elem pag:
+	{{ filtro_form.page_size }} 
+	{{ filtro_form.page_size.errors }}
+</div>
+<div class="align-bottom d-inline-block">
+	<input id="btnBuscar" type="submit" value="Buscar" class="btn btn-primary">
+	{% if request.GET.f %}
+		<a href="{{ request.path }}" id="btnCerrar" class="btn btn-danger"><i class="icon ion-md-close"></i></a>
+	{% endif %}
+	<input type="hidden" value="1" name="f" />
+</div>
+
+{% if exportar_excel or exportar_pdf %}
+<div class="align-bottom d-inline-block filtro_exportar">
+	<div id="btnClassMenu" class="btn-group" role="group">
+    
+    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="icon ion-md-cloud-download"></i>
+    </button>
+	
+
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+    	{% if exportar_excel %}
+      	<a class="dropdown-item" href="#" data-tipo="excel">Excel</a>
+      	{% endif %}
+
+      	{% if exportar_pdf %}
+      	<a class="dropdown-item" href="#" data-tipo="pdf">PDF</a>
+      	{% endif %}
+
+    </div>
+  </div>
+</div>
+{% endif %}

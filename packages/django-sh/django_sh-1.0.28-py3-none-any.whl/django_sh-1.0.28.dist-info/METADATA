@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: django-sh
+Version: 1.0.28
+Summary: Django shell app for browser
+Home-page: https://gitlab.com/jahazieldom/django-sh
+Author: admintotal-dev
+License: UNKNOWN
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: django (>=1.8) ; python_version >= "3"
+
+# django-sh
+Django shell 
+
+
+## Installation
+```
+pip install django-sh
+```
+
+## Add django-sh to INSTALLED_APPS
+```
+INSTALLED_APPS = [
+    # ...
+    "sh",
+    # ...
+]
+```
+
+## Add the urls
+```
+from django.urls import include
+
+urlpatterns = [
+    # ...
+    path('sh/', include('sh.urls')),
+    # ...
+]
+```
+
+## Migrate 
+```
+python manage.py migrate
+```
+
+## Info
+In order to modify this app, you would need to create a new project and install this app on it to be able to run it, after that you need to include the django_sh into the INSTALLED_APPS and also the URLS to the project.
+
+Create a superuser 
+
+Login into django admin, once you log in go to the url you asigned.
+
+

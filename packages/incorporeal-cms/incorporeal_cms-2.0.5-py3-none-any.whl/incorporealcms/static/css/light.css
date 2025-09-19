@@ -1,0 +1,62 @@
+/*
+ * SPDX-FileCopyrightText: © 2020 Brian S. Stephan <bss@incorporeal.org>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+/* common styling via the base.css, used in light and dark */
+@import '/static/css/base.css';
+
+html {
+    color: #222;
+}
+
+body {
+    background: #EEE;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #811610;
+}
+
+p a, ul a, ol a {
+    color: #222;
+}
+
+footer a {
+    color: #999;
+}
+
+p a:hover, ul a:hover, ol a:hover, footer a:hover {
+    color: #811610;
+}
+
+div.site-wrap {
+    background: white;
+}
+
+div.header, div.header a {
+    color: #AAA;
+    text-decoration: none;
+}
+
+table, th, td {
+    border: 1px solid #CCC;
+}
+
+th {
+    background: #CCC;
+}
+
+blockquote {
+    background-color: rgba(120, 120, 120, 0.1);
+    border: 1px solid #DDD;
+}
+
+figure {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid #CCC;
+}
+
+figcaption {
+    color: #666666;
+}

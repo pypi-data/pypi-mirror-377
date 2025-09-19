@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ami:MeterReadsReplyMessage xmlns:ami="http://www.emeter.com/energyip/amiinterface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ami:header>
+    <ami:verb>create</ami:verb>
+    <ami:noun>MeterData</ami:noun>
+    <ami:revision>1</ami:revision>
+    <ami:dateTime>{{ now }}</ami:dateTime>
+    <ami:source>{{ source_name }}</ami:source>
+    <ami:utilityId>{{ mdm_env }}</ami:utilityId>
+  </ami:header>
+  <ami:payload>
+    <ami:MeterReading>
+      <ami:Meter>
+        <ami:mRID>{{ records[0].meter_serial }}</ami:mRID>
+        <ami:idType>METER_X_ELECTRONIC_ID</ami:idType>
+      </ami:Meter>
+      <ami:IntervalBlock>
+        <ami:readingTypeId>KWH Interval 60 Minutes</ami:readingTypeId>
+        {% for record in records -%}
+        <ami:IReading>
+          <ami:endTime>{{ record.time_end }}</ami:endTime>
+          <ami:value>{{ record.active_energy_imported }}</ami:value>
+          <ami:flags>0</ami:flags>
+        </ami:IReading>
+        {%- endfor %}
+      </ami:IntervalBlock>
+      <ami:IntervalBlock>
+        <ami:readingTypeId>KWH Received Interval 60 Minutes</ami:readingTypeId>
+        {% for record in records -%}
+        <ami:IReading>
+          <ami:endTime>{{ record.time_end }}</ami:endTime>
+          <ami:value>{{ record.active_energy_exported }}</ami:value>
+          <ami:flags>0</ami:flags>
+        </ami:IReading>
+        {%- endfor %}
+      </ami:IntervalBlock>
+      <ami:IntervalBlock>
+        <ami:readingTypeId>KVARH Interval 60 Minutes</ami:readingTypeId>
+        {% for record in records -%}
+        <ami:IReading>
+          <ami:endTime>{{ record.time_end }}</ami:endTime>
+          <ami:value>{{ record.reactive_energy_imported }}</ami:value>
+          <ami:flags>0</ami:flags>
+        </ami:IReading>
+        {%- endfor %}
+      </ami:IntervalBlock>
+      <ami:IntervalBlock>
+        <ami:readingTypeId>KVARH Received Interval 60 Minutes</ami:readingTypeId>
+        {% for record in records -%}
+        <ami:IReading>
+          <ami:endTime>{{ record.time_end }}</ami:endTime>
+          <ami:value>{{ record.reactive_energy_exported }}</ami:value>
+          <ami:flags>0</ami:flags>
+        </ami:IReading>
+        {%- endfor %}
+      </ami:IntervalBlock>
+    </ami:MeterReading>
+  </ami:payload>
+</ami:MeterReadsReplyMessage>

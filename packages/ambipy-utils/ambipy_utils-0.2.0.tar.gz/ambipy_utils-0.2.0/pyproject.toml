@@ -1,0 +1,59 @@
+[project]
+name = "ambipy-utils"
+version = "0.2.0"
+description = "Pacote interno da Ambipar Carbon para manipulação de dados geoespaciais, carbono e tabulares. Inclui suporte para conexão com bancos de dados, templates de e-mail e correção de dados"
+readme = "README.md"
+authors = [{ name = "GeoTech", email = "geotech@ambipar.com" }]
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.40.33",
+    "geoalchemy2>=0.17.1",
+    "geopandas>=1.0.1",
+    "numpy>=2.2.4",
+    "pandas>=2.2.3",
+    "psycopg2>=2.9.10",
+    "requests>=2.32.3",
+    "shapely>=2.0.7",
+    "sqlalchemy>=2.0.39",
+]
+
+[project.scripts]
+ambipy-utils = "ambipy_utils:main"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.11.0",
+    "taskipy>=1.14.1",
+]
+
+[tool.ruff]
+line-length = 79
+
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+pre_format = 'ruff check --fix'
+format = 'ruff format'
+pre_test = 'task lint'
+test = 'pytest -s -x --cov=ambipy_utils -vv'
+post_test = 'coverage html'
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

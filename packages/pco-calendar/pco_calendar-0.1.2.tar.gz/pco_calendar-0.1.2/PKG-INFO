@@ -1,0 +1,34 @@
+Metadata-Version: 2.3
+Name: pco-calendar
+Version: 0.1.2
+Summary: Add your description here
+Author: Dark Decoy
+Author-email: Dark Decoy <darkdecoy@notracking.space>
+Requires-Dist: datetime>=5.5
+Requires-Dist: python-dateutil>=2.9.0.post0
+Requires-Dist: requests>=2.32.5
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+
+# Planning Center API
+
+This Python library provides a seamless wrapper around the Planning Center API with support currently for the Calendar Endpoint.
+
+## Features
+
+- Pull Calendar and Tag information
+
+## Installation
+
+pip3 install pco_calendar
+
+## Quick Start
+
+```python
+from pco_calendar.api import api
+
+client = api(
+    user="user_id",
+    password="api_token",
+)
+```

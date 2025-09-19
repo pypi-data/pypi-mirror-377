@@ -1,0 +1,118 @@
+[project]
+name = "silence_lint_error"
+version = "1.7.0"
+authors = [
+    {name = "Samuel Searles-Bryant", email = "sam@samueljsb.co.uk"},
+]
+description = "silence linting errors by adding ignore/fixme comments"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [  # pragma: alphabetize
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+requires-python = ">=3.9"
+dependencies = [  # pragma: alphabetize[case-insensitive]
+  "attrs",
+  "tokenize-rt",
+]
+
+[project.scripts]
+silence-lint-error = "silence_lint_error.cli.silence_lint_error:main"
+fix-silenced-error = "silence_lint_error.cli.fix_silenced_error:main"
+
+[project.urls]
+Source = "https://github.com/samueljsb/silence-lint-error"
+Changelog = "https://github.com/samueljsb/silence-lint-error/blob/main/CHANGELOG.md"
+
+
+# Packaging
+# ---------
+
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+
+# Development
+# -----------
+
+[dependency-groups]
+test = [
+  "pytest",
+  "pytest-subprocess",
+  "coverage",
+  "covdefaults",
+  # compatible tools we run in tests
+  "fixit",
+  "flake8",
+  "mypy",
+  "ruff",
+  "semgrep",
+]
+mypy = [
+  "mypy",
+  {include-group = "test"},
+]
+
+
+# Mypy
+# ====
+
+[tool.mypy]
+files = "."
+exclude = [
+  "build/",
+  "venv",
+]
+
+pretty = true
+show_error_codes = true
+
+enable_error_code = [  # pragma: alphabetize
+  "ignore-without-code",
+  "possibly-undefined",
+  "truthy-bool",
+  "truthy-iterable",
+]
+strict = true
+no_implicit_optional = true
+strict_equality = true
+warn_unreachable = true
+warn_no_return = true
+
+# Some dependencies do not provide type annotations.
+[[tool.mypy.overrides]]
+module = [
+  "tokenize_rt",
+]
+ignore_missing_imports = true
+
+
+# Pytest
+# ======
+
+[tool.pytest.ini_options]
+addopts = [
+  "--strict-markers",
+]
+filterwarnings = [
+  "error::DeprecationWarning",
+  "error::SyntaxWarning",
+  "error::pytest.PytestCollectionWarning",
+]
+xfail_strict = true
+
+
+# Coverage
+# ========
+
+[tool.coverage.run]
+plugins = ["covdefaults"]

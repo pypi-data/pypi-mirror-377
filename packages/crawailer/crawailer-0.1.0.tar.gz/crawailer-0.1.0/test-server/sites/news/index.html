@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNews Today - Latest Technology Updates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #fff;
+        }
+        
+        .header {
+            background: #1a202c;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            color: #4a90e2;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .articles-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #1a202c;
+            border-bottom: 3px solid #4a90e2;
+            padding-bottom: 0.5rem;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .article-image {
+            height: 200px;
+            background: linear-gradient(45deg, #f0f2f5, #e1e5e9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #6c757d;
+        }
+        
+        .article-content {
+            padding: 1.5rem;
+        }
+        
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        
+        .article-category {
+            background: #4a90e2;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .article-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #1a202c;
+            font-weight: 600;
+        }
+        
+        .article-excerpt {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .read-more {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        
+        .sidebar {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            height: fit-content;
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+        
+        .trending-list {
+            list-style: none;
+        }
+        
+        .trending-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+        
+        .trending-link {
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .trending-link:hover {
+            color: #4a90e2;
+        }
+        
+        .load-more {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .load-more-btn {
+            background: #4a90e2;
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .load-more-btn:hover {
+            background: #357abd;
+        }
+        
+        .load-more-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .newsletter {
+            background: #1a202c;
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .newsletter h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        .newsletter-btn {
+            background: #4a90e2;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Loading animation */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4a90e2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Comments section */
+        .comments-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .comment {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 3px solid #4a90e2;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comment-time {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">TechNews Today</div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#home" class="nav-item">Home</a></li>
+                        <li><a href="#technology" class="nav-item">Technology</a></li>
+                        <li><a href="#ai" class="nav-item">AI & ML</a></li>
+                        <li><a href="#startups" class="nav-item">Startups</a></li>
+                        <li><a href="#reviews" class="nav-item">Reviews</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Latest in Technology</h1>
+            <p>Stay updated with breaking tech news, in-depth analysis, and expert insights</p>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <div class="articles-section">
+                    <h2>Latest Articles</h2>
+                    <div id="articles-container">
+                        <!-- Articles will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="load-more">
+                        <button class="load-more-btn" onclick="loadMoreArticles()" id="load-more-btn">
+                            Load More Articles
+                        </button>
+                    </div>
+                </div>
+                
+                <aside class="sidebar">
+                    <h3>🔥 Trending Now</h3>
+                    <ul class="trending-list" id="trending-list">
+                        <!-- Trending articles will be loaded -->
+                    </ul>
+                    
+                    <div class="newsletter">
+                        <h3>📧 Newsletter</h3>
+                        <p>Get the latest tech news delivered to your inbox</p>
+                        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                            <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                            <button type="submit" class="newsletter-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // News Site Application
+        class NewsApp {
+            constructor() {
+                this.articles = [];
+                this.currentPage = 1;
+                this.articlesPerPage = 5;
+                this.totalArticles = 50; // Simulate large dataset
+                this.categories = ['Technology', 'AI & ML', 'Startups', 'Reviews', 'Security'];
+                
+                this.init();
+            }
+            
+            init() {
+                this.generateArticles();
+                this.renderArticles();
+                this.loadTrendingArticles();
+                this.setupInfiniteScroll();
+                this.simulateRealTimeUpdates();
+            }
+            
+            generateArticles() {
+                const sampleTitles = [
+                    "Revolutionary AI Model Achieves Human-Level Performance in Complex Reasoning",
+                    "Quantum Computing Breakthrough: New Algorithm Solves Previously Impossible Problems",
+                    "The Rise of Edge Computing: How It's Transforming Data Processing",
+                    "Cybersecurity in 2024: New Threats and Defense Strategies",
+                    "Sustainable Technology: Green Innovation in the Digital Age",
+                    "5G Networks: Enabling the Internet of Things Revolution",
+                    "Blockchain Beyond Cryptocurrency: Real-World Applications",
+                    "Augmented Reality in Healthcare: Transforming Medical Training",
+                    "The Future of Work: AI and Automation in the Workplace",
+                    "Space Technology: Private Companies Leading the New Space Race"
+                ];
+                
+                const sampleExcerpts = [
+                    "Researchers have developed a groundbreaking AI system that demonstrates human-level performance across multiple cognitive tasks...",
+                    "Scientists at leading quantum computing laboratories have announced a major breakthrough that could revolutionize computing...",
+                    "Edge computing is rapidly becoming a critical component of modern IT infrastructure, bringing processing power closer to data sources...",
+                    "As cyber threats evolve, organizations must adapt their security strategies to protect against sophisticated attacks...",
+                    "The technology industry is increasingly focusing on sustainable practices and environmentally friendly innovations...",
+                    "The widespread deployment of 5G networks is enabling new possibilities for connected devices and smart cities...",
+                    "Beyond digital currencies, blockchain technology is finding applications in supply chain management, healthcare, and more...",
+                    "Medical professionals are using AR technology to enhance surgical procedures and improve patient outcomes...",
+                    "The integration of AI and automation is reshaping job markets and creating new opportunities for human-AI collaboration...",
+                    "Private space companies are achieving remarkable milestones in space exploration and satellite technology..."
+                ];
+                
+                for (let i = 0; i < this.totalArticles; i++) {
+                    const title = sampleTitles[i % sampleTitles.length];
+                    const excerpt = sampleExcerpts[i % sampleExcerpts.length];
+                    const category = this.categories[i % this.categories.length];
+                    
+                    this.articles.push({
+                        id: i + 1,
+                        title: `${title} ${i > 9 ? `(Part ${Math.floor(i/10) + 1})` : ''}`,
+                        excerpt,
+                        category,
+                        author: ['John Smith', 'Sarah Johnson', 'Mike Chen', 'Emily Davis'][i % 4],
+                        publishDate: new Date(Date.now() - (i * 24 * 60 * 60 * 1000)).toISOString().split('T')[0],
+                        readTime: Math.floor(Math.random() * 10) + 3,
+                        views: Math.floor(Math.random() * 5000) + 500,
+                        comments: Math.floor(Math.random() * 50) + 5,
+                        image: ['🚀', '🔬', '💻', '🤖', '🌐', '📱', '⚡'][i % 7]
+                    });
+                }
+                
+                // Sort by most recent
+                this.articles.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+            }
+            
+            renderArticles() {
+                const container = document.getElementById('articles-container');
+                const startIndex = (this.currentPage - 1) * this.articlesPerPage;
+                const endIndex = startIndex + this.articlesPerPage;
+                const articlesToShow = this.articles.slice(0, endIndex);
+                
+                container.innerHTML = articlesToShow.map(article => `
+                    <article class="article-card" onclick="readArticle(${article.id})">
+                        <div class="article-image">${article.image}</div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-category">${article.category}</span>
+                                <span>By ${article.author}</span>
+                                <span>${article.publishDate}</span>
+                                <span>${article.readTime} min read</span>
+                            </div>
+                            <h3 class="article-title">${article.title}</h3>
+                            <p class="article-excerpt">${article.excerpt}</p>
+                            <a href="#" class="read-more">
+                                Read More →
+                            </a>
+                            <div style="margin-top: 1rem; display: flex; gap: 1rem; font-size: 0.9rem; color: #6c757d;">
+                                <span>👁️ ${article.views}</span>
+                                <span>💬 ${article.comments}</span>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+                
+                // Update load more button
+                const loadMoreBtn = document.getElementById('load-more-btn');
+                if (endIndex >= this.totalArticles) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'inline-block';
+                }
+            }
+            
+            loadTrendingArticles() {
+                const trendingContainer = document.getElementById('trending-list');
+                const trending = this.articles
+                    .sort((a, b) => b.views - a.views)
+                    .slice(0, 8);
+                
+                trendingContainer.innerHTML = trending.map(article => `
+                    <li class="trending-item">
+                        <a href="#" class="trending-link" onclick="readArticle(${article.id})">
+                            ${article.title.length > 60 ? article.title.substring(0, 57) + '...' : article.title}
+                        </a>
+                        <div style="font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem;">
+                            ${article.views} views
+                        </div>
+                    </li>
+                `).join('');
+            }
+            
+            loadMoreArticles() {
+                this.currentPage++;
+                this.renderArticles();
+                
+                // Smooth scroll to new content
+                setTimeout(() => {
+                    const newArticles = document.querySelectorAll('.article-card');
+                    const lastVisible = newArticles[Math.min(this.currentPage * this.articlesPerPage - this.articlesPerPage - 1, newArticles.length - 1)];
+                    if (lastVisible) {
+                        lastVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            }
+            
+            setupInfiniteScroll() {
+                let isLoading = false;
+                
+                window.addEventListener('scroll', () => {
+                    if (isLoading) return;
+                    
+                    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+                    if (scrollTop + clientHeight >= scrollHeight - 1000) {
+                        const loadMoreBtn = document.getElementById('load-more-btn');
+                        if (loadMoreBtn.style.display !== 'none') {
+                            isLoading = true;
+                            this.loadMoreArticles();
+                            setTimeout(() => { isLoading = false; }, 1000);
+                        }
+                    }
+                });
+            }
+            
+            simulateRealTimeUpdates() {
+                setInterval(() => {
+                    // Simulate view count updates
+                    this.articles.forEach(article => {
+                        if (Math.random() < 0.1) { // 10% chance
+                            article.views += Math.floor(Math.random() * 10) + 1;
+                        }
+                    });
+                    
+                    // Update trending articles occasionally
+                    if (Math.random() < 0.2) { // 20% chance
+                        this.loadTrendingArticles();
+                    }
+                }, 5000);
+                
+                // Simulate new articles being published
+                setInterval(() => {
+                    if (Math.random() < 0.3) { // 30% chance
+                        this.addNewArticle();
+                    }
+                }, 30000);
+            }
+            
+            addNewArticle() {
+                const newTitles = [
+                    "Breaking: Major Tech Company Announces Revolutionary Product",
+                    "Latest Research: AI Breakthrough in Natural Language Processing",
+                    "Market Update: Tech Stocks Surge on Innovation News",
+                    "Industry Analysis: The Impact of Emerging Technologies"
+                ];
+                
+                const newArticle = {
+                    id: Date.now(),
+                    title: newTitles[Math.floor(Math.random() * newTitles.length)],
+                    excerpt: "This is a breaking news story that just came in. Our team is gathering more details and will provide updates as they become available...",
+                    category: this.categories[Math.floor(Math.random() * this.categories.length)],
+                    author: "Breaking News Team",
+                    publishDate: new Date().toISOString().split('T')[0],
+                    readTime: 2,
+                    views: Math.floor(Math.random() * 100) + 10,
+                    comments: 0,
+                    image: "🚨"
+                };
+                
+                this.articles.unshift(newArticle);
+                this.totalArticles++;
+                
+                // Show notification
+                this.showNotification("New article published!");
+                
+                // Re-render if on first page
+                if (this.currentPage === 1) {
+                    this.renderArticles();
+                }
+            }
+            
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.textContent = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #4a90e2;
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 6px;
+                    z-index: 1000;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                    animation: slideIn 0.3s ease;
+                `;
+                
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 4000);
+            }
+            
+            searchArticles(query) {
+                return this.articles.filter(article =>
+                    article.title.toLowerCase().includes(query.toLowerCase()) ||
+                    article.excerpt.toLowerCase().includes(query.toLowerCase()) ||
+                    article.category.toLowerCase().includes(query.toLowerCase())
+                );
+            }
+        }
+        
+        // Global functions
+        function loadMoreArticles() {
+            newsApp.loadMoreArticles();
+        }
+        
+        function readArticle(id) {
+            const article = newsApp.articles.find(a => a.id === id);
+            if (article) {
+                // Simulate reading article
+                article.views++;
+                alert(`Reading: ${article.title}\n\nBy ${article.author}\nPublished: ${article.publishDate}\n\n${article.excerpt}`);
+            }
+        }
+        
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input').value;
+            alert(`Thank you for subscribing with email: ${email}`);
+            event.target.reset();
+        }
+        
+        // Initialize news app
+        const newsApp = new NewsApp();
+        
+        // Global test data
+        window.testData = {
+            siteName: 'TechNews Today',
+            version: '1.4.2',
+            totalArticles: () => newsApp.totalArticles,
+            currentPage: () => newsApp.currentPage,
+            articlesLoaded: () => newsApp.currentPage * newsApp.articlesPerPage,
+            categories: () => newsApp.categories,
+            searchArticles: (query) => newsApp.searchArticles(query),
+            getArticleById: (id) => newsApp.articles.find(a => a.id === id),
+            getTrendingArticles: () => newsApp.articles.sort((a, b) => b.views - a.views).slice(0, 5),
+            generateTimestamp: () => new Date().toISOString()
+        };
+        
+        console.log('TechNews Today initialized');
+        console.log('Test data available at window.testData');
+        
+        // Add CSS animation for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Modern SPA Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-item {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Dashboard Page */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        
+        /* Tasks Page */
+        .task-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        
+        .task-item:hover {
+            background: #f8fafc;
+        }
+        
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .task-text {
+            flex: 1;
+        }
+        
+        .task-completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        
+        .task-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .task-delete:hover {
+            background: #dc2626;
+        }
+        
+        /* Analytics Page */
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart {
+            height: 300px;
+            background: linear-gradient(45deg, #f1f5f9, #e2e8f0);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-bars {
+            display: flex;
+            align-items: end;
+            gap: 1rem;
+            height: 200px;
+        }
+        
+        .chart-bar {
+            background: linear-gradient(to top, #3b82f6, #60a5fa);
+            width: 40px;
+            border-radius: 4px 4px 0 0;
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-bar:hover {
+            transform: scaleY(1.1);
+        }
+        
+        /* Loading States */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #6b7280;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .modal-close:hover {
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">TaskFlow</div>
+                <ul class="nav-menu">
+                    <li class="nav-item active" data-page="dashboard">Dashboard</li>
+                    <li class="nav-item" data-page="tasks">Tasks</li>
+                    <li class="nav-item" data-page="analytics">Analytics</li>
+                    <li class="nav-item" data-page="settings">Settings</li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <h1>Dashboard</h1>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Total Tasks</h3>
+                        </div>
+                        <div class="stat-number" id="total-tasks">--</div>
+                        <p class="text-gray-600">Tasks in your workspace</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Completed Today</h3>
+                        </div>
+                        <div class="stat-number" id="completed-today">--</div>
+                        <p class="text-gray-600">Tasks completed today</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Active Projects</h3>
+                        </div>
+                        <div class="stat-number" id="active-projects">--</div>
+                        <p class="text-gray-600">Projects in progress</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Team Members</h3>
+                        </div>
+                        <div class="stat-number" id="team-members">--</div>
+                        <p class="text-gray-600">Active team members</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title">Recent Activity</h3>
+                    <div id="recent-activity" class="loading">
+                        <div class="spinner"></div>
+                        Loading recent activity...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="tasks" class="page">
+                <div class="task-container">
+                    <div class="task-header">
+                        <h1>Tasks</h1>
+                        <button class="btn" onclick="openAddTaskModal()">Add Task</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="task-filter" class="form-input" placeholder="Filter tasks...">
+                    </div>
+                    
+                    <ul id="task-list" class="task-list">
+                        <!-- Tasks will be dynamically loaded -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="analytics" class="page">
+                <h1>Analytics</h1>
+                
+                <div class="chart-container">
+                    <h3>Task Completion Over Time</h3>
+                    <div class="chart">
+                        <div class="chart-bars" id="completion-chart">
+                            <!-- Chart bars will be generated -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3 class="card-title">Average Completion Time</h3>
+                        <div class="stat-number">2.4h</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Productivity Score</h3>
+                        <div class="stat-number">87%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="page">
+                <h1>Settings</h1>
+                
+                <div class="card">
+                    <h3 class="card-title">User Preferences</h3>
+                    <div class="form-group">
+                        <label class="form-label">Theme</label>
+                        <select class="form-input" id="theme-select">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Notifications</label>
+                        <input type="checkbox" id="notifications-enabled" checked> Enable notifications
+                    </div>
+                    
+                    <button class="btn" onclick="saveSettings()">Save Settings</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="add-task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Task</h3>
+                <button class="modal-close" onclick="closeAddTaskModal()">&times;</button>
+            </div>
+            
+            <form id="add-task-form">
+                <div class="form-group">
+                    <label class="form-label">Task Title</label>
+                    <input type="text" id="task-title" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="task-description" class="form-input" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select id="task-priority" class="form-input">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; justify-content: end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddTaskModal()">Cancel</button>
+                    <button type="submit" class="btn">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // SPA Router and State Management
+        class TaskFlowApp {
+            constructor() {
+                this.currentPage = 'dashboard';
+                this.tasks = [
+                    { id: 1, title: 'Setup development environment', completed: true, priority: 'high' },
+                    { id: 2, title: 'Design user interface mockups', completed: false, priority: 'medium' },
+                    { id: 3, title: 'Implement authentication system', completed: false, priority: 'high' },
+                    { id: 4, title: 'Write unit tests', completed: false, priority: 'medium' },
+                    { id: 5, title: 'Deploy to staging', completed: false, priority: 'low' }
+                ];
+                this.settings = {
+                    theme: 'light',
+                    notifications: true
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupNavigation();
+                this.loadDashboardData();
+                this.renderTasks();
+                this.generateChart();
+                this.setupTaskFilter();
+                this.loadSettings();
+                
+                // Simulate real-time updates
+                setInterval(() => this.updateRealtimeData(), 5000);
+            }
+            
+            setupNavigation() {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        const page = e.target.dataset.page;
+                        this.navigateToPage(page);
+                    });
+                });
+                
+                // Handle browser back/forward
+                window.addEventListener('popstate', (e) => {
+                    const page = e.state?.page || 'dashboard';
+                    this.navigateToPage(page, false);
+                });
+                
+                // Set initial URL
+                history.replaceState({ page: 'dashboard' }, '', '/spa/dashboard');
+            }
+            
+            navigateToPage(page, pushState = true) {
+                // Hide current page
+                document.querySelector('.page.active').classList.remove('active');
+                document.querySelector('.nav-item.active').classList.remove('active');
+                
+                // Show new page
+                document.getElementById(page).classList.add('active');
+                document.querySelector(`[data-page="${page}"]`).classList.add('active');
+                
+                this.currentPage = page;
+                
+                // Update URL
+                if (pushState) {
+                    history.pushState({ page }, '', `/spa/${page}`);
+                }
+                
+                // Load page-specific data
+                this.loadPageData(page);
+            }
+            
+            loadPageData(page) {
+                switch (page) {
+                    case 'dashboard':
+                        this.loadDashboardData();
+                        break;
+                    case 'tasks':
+                        this.renderTasks();
+                        break;
+                    case 'analytics':
+                        this.generateChart();
+                        break;
+                    case 'settings':
+                        this.loadSettings();
+                        break;
+                }
+            }
+            
+            loadDashboardData() {
+                // Simulate API loading
+                setTimeout(() => {
+                    document.getElementById('total-tasks').textContent = this.tasks.length;
+                    document.getElementById('completed-today').textContent = 
+                        this.tasks.filter(t => t.completed).length;
+                    document.getElementById('active-projects').textContent = '3';
+                    document.getElementById('team-members').textContent = '12';
+                    
+                    // Load recent activity
+                    const activityEl = document.getElementById('recent-activity');
+                    activityEl.innerHTML = `
+                        <div style="space-y: 0.5rem;">
+                            <div>✅ Task "Setup development environment" completed</div>
+                            <div>📝 New task "Design user interface mockups" created</div>
+                            <div>👥 Team member John joined the project</div>
+                            <div>🚀 Project "Web Application" moved to review</div>
+                        </div>
+                    `;
+                }, 1000);
+            }
+            
+            renderTasks() {
+                const taskList = document.getElementById('task-list');
+                taskList.innerHTML = this.tasks.map(task => `
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" 
+                               ${task.completed ? 'checked' : ''} 
+                               onchange="app.toggleTask(${task.id})">
+                        <span class="task-text ${task.completed ? 'task-completed' : ''}">
+                            ${task.title}
+                        </span>
+                        <span class="task-priority" style="
+                            color: ${task.priority === 'high' ? '#ef4444' : 
+                                    task.priority === 'medium' ? '#f59e0b' : '#6b7280'};
+                            font-size: 0.8rem;
+                            font-weight: 500;
+                        ">${task.priority.toUpperCase()}</span>
+                        <button class="task-delete" onclick="app.deleteTask(${task.id})">Delete</button>
+                    </li>
+                `).join('');
+            }
+            
+            setupTaskFilter() {
+                const filterInput = document.getElementById('task-filter');
+                if (filterInput) {
+                    filterInput.addEventListener('input', (e) => {
+                        const filter = e.target.value.toLowerCase();
+                        const taskItems = document.querySelectorAll('.task-item');
+                        
+                        taskItems.forEach(item => {
+                            const text = item.querySelector('.task-text').textContent.toLowerCase();
+                            item.style.display = text.includes(filter) ? 'flex' : 'none';
+                        });
+                    });
+                }
+            }
+            
+            toggleTask(id) {
+                const task = this.tasks.find(t => t.id === id);
+                if (task) {
+                    task.completed = !task.completed;
+                    this.renderTasks();
+                    this.loadDashboardData(); // Update dashboard stats
+                }
+            }
+            
+            deleteTask(id) {
+                this.tasks = this.tasks.filter(t => t.id !== id);
+                this.renderTasks();
+                this.loadDashboardData();
+            }
+            
+            addTask(title, description, priority) {
+                const newTask = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    priority,
+                    completed: false
+                };
+                this.tasks.push(newTask);
+                this.renderTasks();
+                this.loadDashboardData();
+            }
+            
+            generateChart() {
+                const chartContainer = document.getElementById('completion-chart');
+                if (!chartContainer) return;
+                
+                // Generate random chart data
+                const data = Array.from({ length: 7 }, () => Math.floor(Math.random() * 100) + 20);
+                
+                chartContainer.innerHTML = data.map(value => `
+                    <div class="chart-bar" style="height: ${value}%;" title="${value}%"></div>
+                `).join('');
+            }
+            
+            loadSettings() {
+                const themeSelect = document.getElementById('theme-select');
+                const notificationsCheck = document.getElementById('notifications-enabled');
+                
+                if (themeSelect) themeSelect.value = this.settings.theme;
+                if (notificationsCheck) notificationsCheck.checked = this.settings.notifications;
+            }
+            
+            saveSettings() {
+                const themeSelect = document.getElementById('theme-select');
+                const notificationsCheck = document.getElementById('notifications-enabled');
+                
+                this.settings.theme = themeSelect.value;
+                this.settings.notifications = notificationsCheck.checked;
+                
+                // Simulate save to server
+                alert('Settings saved successfully!');
+            }
+            
+            updateRealtimeData() {
+                // Simulate real-time updates
+                const now = new Date();
+                const timeElement = document.querySelector('.timestamp');
+                if (timeElement) {
+                    timeElement.textContent = now.toLocaleTimeString();
+                }
+                
+                // Add random activity
+                if (Math.random() < 0.3 && this.currentPage === 'dashboard') {
+                    this.loadDashboardData();
+                }
+            }
+        }
+        
+        // Modal functions
+        function openAddTaskModal() {
+            document.getElementById('add-task-modal').classList.add('active');
+        }
+        
+        function closeAddTaskModal() {
+            document.getElementById('add-task-modal').classList.remove('active');
+            document.getElementById('add-task-form').reset();
+        }
+        
+        function saveSettings() {
+            app.saveSettings();
+        }
+        
+        // Handle form submission
+        document.getElementById('add-task-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('task-title').value;
+            const description = document.getElementById('task-description').value;
+            const priority = document.getElementById('task-priority').value;
+            
+            app.addTask(title, description, priority);
+            closeAddTaskModal();
+        });
+        
+        // Initialize app
+        const app = new TaskFlowApp();
+        
+        // Global test data for Crawailer testing
+        window.testData = {
+            appName: 'TaskFlow',
+            version: '2.1.0',
+            framework: 'Vanilla JS SPA',
+            routes: ['dashboard', 'tasks', 'analytics', 'settings'],
+            features: ['routing', 'state-management', 'real-time-updates', 'modals'],
+            totalTasks: () => app.tasks.length,
+            completedTasks: () => app.tasks.filter(t => t.completed).length,
+            getCurrentPage: () => app.currentPage,
+            getSettings: () => app.settings,
+            generateTimestamp: () => new Date().toISOString()
+        };
+        
+        // Console logging for testing
+        console.log('TaskFlow SPA initialized');
+        console.log('Test data available at window.testData');
+        console.log('Current route:', window.location.pathname);
+    </script>
+</body>
+</html>

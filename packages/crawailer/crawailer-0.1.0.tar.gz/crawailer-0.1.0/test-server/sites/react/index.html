@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReactFlow - Modern React Demo</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1c1e21;
+        }
+        
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e4e6ea;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1c1e21;
+        }
+        
+        .metric {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1877f2;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            color: #65676b;
+            font-size: 0.9rem;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .button {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 0.25rem;
+            transition: background 0.2s ease;
+        }
+        
+        .button:hover {
+            background: #166fe5;
+        }
+        
+        .button:disabled {
+            background: #e4e6ea;
+            color: #8a8d91;
+            cursor: not-allowed;
+        }
+        
+        .button.secondary {
+            background: #42b883;
+        }
+        
+        .button.secondary:hover {
+            background: #369870;
+        }
+        
+        .button.danger {
+            background: #e41e3f;
+        }
+        
+        .button.danger:hover {
+            background: #d91b42;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1c1e21;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dddfe2;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+        
+        .todo-list {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e4e6ea;
+            transition: background 0.2s ease;
+        }
+        
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+        
+        .todo-item:hover {
+            background: #f7f8fa;
+        }
+        
+        .todo-item.completed {
+            opacity: 0.6;
+        }
+        
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+        }
+        
+        .todo-checkbox {
+            margin-right: 1rem;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .todo-text {
+            flex: 1;
+            font-size: 1rem;
+        }
+        
+        .todo-delete {
+            background: #e41e3f;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #65676b;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e4e6ea;
+            border-top: 4px solid #1877f2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #42b883;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(66, 184, 131, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .react-component {
+            border: 2px dashed #1877f2;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: rgba(24, 119, 242, 0.05);
+        }
+        
+        .component-label {
+            font-size: 0.8rem;
+            color: #1877f2;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+        // Dashboard Component
+        function Dashboard({ metrics, onRefresh }) {
+            return (
+                <div className="dashboard">
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className="card-title">Active Users</h3>
+                        </div>
+                        <div className="metric">{metrics.activeUsers}</div>
+                        <div className="metric-label">Currently online</div>
+                    </div>
+                    
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className="card-title">Total Tasks</h3>
+                        </div>
+                        <div className="metric">{metrics.totalTasks}</div>
+                        <div className="metric-label">Tasks created</div>
+                    </div>
+                    
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className="card-title">Completion Rate</h3>
+                        </div>
+                        <div className="metric">{metrics.completionRate}%</div>
+                        <div className="metric-label">Tasks completed</div>
+                    </div>
+                    
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className="card-title">Performance Score</h3>
+                        </div>
+                        <div className="metric">{metrics.performanceScore}</div>
+                        <div className="metric-label">Overall system health</div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Todo Item Component
+        function TodoItem({ todo, onToggle, onDelete }) {
+            return (
+                <div className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+                    <input
+                        type="checkbox"
+                        className="todo-checkbox"
+                        checked={todo.completed}
+                        onChange={() => onToggle(todo.id)}
+                    />
+                    <span className="todo-text">{todo.text}</span>
+                    <button 
+                        className="todo-delete"
+                        onClick={() => onDelete(todo.id)}
+                    >
+                        Delete
+                    </button>
+                </div>
+            );
+        }
+
+        // Todo List Component
+        function TodoList({ todos, onToggle, onDelete, onAdd }) {
+            const [newTodo, setNewTodo] = useState('');
+            const inputRef = useRef(null);
+
+            const handleSubmit = useCallback((e) => {
+                e.preventDefault();
+                if (newTodo.trim()) {
+                    onAdd(newTodo.trim());
+                    setNewTodo('');
+                    inputRef.current?.focus();
+                }
+            }, [newTodo, onAdd]);
+
+            const completedCount = useMemo(() => 
+                todos.filter(todo => todo.completed).length, [todos]
+            );
+
+            return (
+                <div className="todo-list">
+                    <div className="react-component">
+                        <div className="component-label">React Component: TodoList</div>
+                        <h3>Task Manager ({completedCount}/{todos.length} completed)</h3>
+                        
+                        <form onSubmit={handleSubmit} style={{ marginBottom: '1.5rem' }}>
+                            <div className="input-group">
+                                <label htmlFor="new-todo">Add New Task:</label>
+                                <input
+                                    ref={inputRef}
+                                    id="new-todo"
+                                    type="text"
+                                    value={newTodo}
+                                    onChange={(e) => setNewTodo(e.target.value)}
+                                    placeholder="Enter a new task..."
+                                />
+                            </div>
+                            <button type="submit" className="button">Add Task</button>
+                        </form>
+                        
+                        {todos.length === 0 ? (
+                            <div className="loading">
+                                <p>No tasks yet. Add one above!</p>
+                            </div>
+                        ) : (
+                            todos.map(todo => (
+                                <TodoItem
+                                    key={todo.id}
+                                    todo={todo}
+                                    onToggle={onToggle}
+                                    onDelete={onDelete}
+                                />
+                            ))
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Controls Component
+        function Controls({ onAction, loading }) {
+            return (
+                <div className="controls">
+                    <div className="react-component">
+                        <div className="component-label">React Component: Controls</div>
+                        <h3>Actions</h3>
+                        <div style={{ marginTop: '1rem' }}>
+                            <button 
+                                className="button" 
+                                onClick={() => onAction('refresh')}
+                                disabled={loading}
+                            >
+                                {loading ? 'Loading...' : 'Refresh Data'}
+                            </button>
+                            <button 
+                                className="button secondary" 
+                                onClick={() => onAction('simulate')}
+                                disabled={loading}
+                            >
+                                Simulate Activity
+                            </button>
+                            <button 
+                                className="button danger" 
+                                onClick={() => onAction('reset')}
+                                disabled={loading}
+                            >
+                                Reset All Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Notification Component
+        function Notification({ message, show, onClose }) {
+            useEffect(() => {
+                if (show) {
+                    const timer = setTimeout(onClose, 3000);
+                    return () => clearTimeout(timer);
+                }
+            }, [show, onClose]);
+
+            return (
+                <div className={`notification ${show ? 'show' : ''}`}>
+                    {message}
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [metrics, setMetrics] = useState({
+                activeUsers: 0,
+                totalTasks: 0,
+                completionRate: 0,
+                performanceScore: 0
+            });
+
+            const [todos, setTodos] = useState([
+                { id: 1, text: 'Setup React development environment', completed: true },
+                { id: 2, text: 'Create component architecture', completed: true },
+                { id: 3, text: 'Implement state management', completed: false },
+                { id: 4, text: 'Add user interactions', completed: false },
+                { id: 5, text: 'Write comprehensive tests', completed: false }
+            ]);
+
+            const [loading, setLoading] = useState(false);
+            const [notification, setNotification] = useState({ message: '', show: false });
+            const [nextId, setNextId] = useState(6);
+
+            // Initialize metrics
+            useEffect(() => {
+                const initializeMetrics = () => {
+                    setMetrics({
+                        activeUsers: Math.floor(Math.random() * 100) + 50,
+                        totalTasks: todos.length,
+                        completionRate: Math.round((todos.filter(t => t.completed).length / todos.length) * 100),
+                        performanceScore: Math.floor(Math.random() * 20) + 80
+                    });
+                };
+
+                initializeMetrics();
+                const interval = setInterval(initializeMetrics, 5000);
+                return () => clearInterval(interval);
+            }, [todos]);
+
+            const showNotification = useCallback((message) => {
+                setNotification({ message, show: true });
+            }, []);
+
+            const hideNotification = useCallback(() => {
+                setNotification(prev => ({ ...prev, show: false }));
+            }, []);
+
+            const handleAction = useCallback(async (action) => {
+                setLoading(true);
+                
+                // Simulate async operation
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                switch (action) {
+                    case 'refresh':
+                        setMetrics(prev => ({
+                            ...prev,
+                            activeUsers: Math.floor(Math.random() * 100) + 50,
+                            performanceScore: Math.floor(Math.random() * 20) + 80
+                        }));
+                        showNotification('Data refreshed successfully!');
+                        break;
+                    
+                    case 'simulate':
+                        setMetrics(prev => ({
+                            ...prev,
+                            activeUsers: prev.activeUsers + Math.floor(Math.random() * 20),
+                            performanceScore: Math.min(100, prev.performanceScore + Math.floor(Math.random() * 10))
+                        }));
+                        showNotification('Activity simulation completed!');
+                        break;
+                    
+                    case 'reset':
+                        setTodos([]);
+                        setMetrics({ activeUsers: 0, totalTasks: 0, completionRate: 0, performanceScore: 0 });
+                        showNotification('All data has been reset!');
+                        break;
+                }
+                
+                setLoading(false);
+            }, [showNotification]);
+
+            const addTodo = useCallback((text) => {
+                const newTodo = { id: nextId, text, completed: false };
+                setTodos(prev => [...prev, newTodo]);
+                setNextId(prev => prev + 1);
+                showNotification(`Task "${text}" added successfully!`);
+            }, [nextId, showNotification]);
+
+            const toggleTodo = useCallback((id) => {
+                setTodos(prev => prev.map(todo => 
+                    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+                ));
+                showNotification('Task status updated!');
+            }, [showNotification]);
+
+            const deleteTodo = useCallback((id) => {
+                setTodos(prev => prev.filter(todo => todo.id !== id));
+                showNotification('Task deleted!');
+            }, [showNotification]);
+
+            return (
+                <div className="app">
+                    <div className="header">
+                        <h1>ReactFlow Dashboard</h1>
+                        <p>Modern React application with hooks, state management, and component interactions</p>
+                    </div>
+
+                    <Dashboard metrics={metrics} onRefresh={() => handleAction('refresh')} />
+                    
+                    <Controls onAction={handleAction} loading={loading} />
+                    
+                    <TodoList 
+                        todos={todos}
+                        onToggle={toggleTodo}
+                        onDelete={deleteTodo}
+                        onAdd={addTodo}
+                    />
+
+                    <Notification 
+                        message={notification.message}
+                        show={notification.show}
+                        onClose={hideNotification}
+                    />
+                </div>
+            );
+        }
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        // Global test data for Crawailer testing
+        window.testData = {
+            framework: 'react',
+            version: React.version,
+            hasReactDOM: typeof ReactDOM !== 'undefined',
+            componentCount: () => {
+                const reactRoot = document.querySelector('#root');
+                return reactRoot ? reactRoot.querySelectorAll('[data-reactroot] *').length : 0;
+            },
+            getAppState: () => {
+                // Access React DevTools if available
+                if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+                    return { hasDevTools: true, fiberVersion: React.version };
+                }
+                return { hasDevTools: false };
+            },
+            getTodoCount: () => {
+                return document.querySelectorAll('.todo-item').length;
+            },
+            getCompletedTodos: () => {
+                return document.querySelectorAll('.todo-item.completed').length;
+            },
+            simulateUserAction: (action) => {
+                switch (action) {
+                    case 'add-todo':
+                        const input = document.querySelector('#new-todo');
+                        const form = input.closest('form');
+                        if (input && form) {
+                            input.value = 'Test task from JavaScript';
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                            form.dispatchEvent(new Event('submit', { bubbles: true }));
+                            return { success: true, action: 'Todo added via JavaScript' };
+                        }
+                        return { success: false, error: 'Form elements not found' };
+                    
+                    case 'toggle-first-todo':
+                        const firstCheckbox = document.querySelector('.todo-checkbox');
+                        if (firstCheckbox) {
+                            firstCheckbox.click();
+                            return { success: true, action: 'First todo toggled' };
+                        }
+                        return { success: false, error: 'No todos found' };
+                    
+                    case 'refresh-data':
+                        const refreshBtn = document.querySelector('.button');
+                        if (refreshBtn && refreshBtn.textContent.includes('Refresh')) {
+                            refreshBtn.click();
+                            return { success: true, action: 'Data refresh triggered' };
+                        }
+                        return { success: false, error: 'Refresh button not found' };
+                    
+                    default:
+                        return { success: false, error: 'Unknown action' };
+                }
+            },
+            getMetrics: () => {
+                const metricElements = document.querySelectorAll('.metric');
+                const metrics = {};
+                metricElements.forEach((el, index) => {
+                    const label = el.parentNode.querySelector('.metric-label')?.textContent || `metric${index}`;
+                    metrics[label.replace(/\s+/g, '_')] = el.textContent;
+                });
+                return metrics;
+            },
+            generateTimestamp: () => new Date().toISOString(),
+            detectReactFeatures: () => {
+                return {
+                    hasHooks: typeof React.useState !== 'undefined',
+                    hasEffects: typeof React.useEffect !== 'undefined',
+                    hasContext: typeof React.createContext !== 'undefined',
+                    hasSuspense: typeof React.Suspense !== 'undefined',
+                    hasFragments: typeof React.Fragment !== 'undefined',
+                    reactVersion: React.version
+                };
+            }
+        };
+
+        // Console logging for debugging
+        console.log('ReactFlow app initialized');
+        console.log('React version:', React.version);
+        console.log('Test data available at window.testData');
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crawailer Test Suite Hub</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+        }
+        .card h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .card p {
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .card a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        .card a:hover {
+            color: #FFF;
+            text-shadow: 0 0 10px #FFD700;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .stat {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            min-width: 100px;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        .nav-links {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .nav-links a {
+            color: #FFD700;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .nav-links a:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕷️ Crawailer Test Suite Hub</h1>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="site-count">8</div>
+                <div>Test Sites</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="api-count">12</div>
+                <div>API Endpoints</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="test-count">280+</div>
+                <div>Test Scenarios</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>🛍️ E-commerce Demo</h3>
+                <p>Complete online store with dynamic pricing, cart functionality, and product filtering. Perfect for testing JavaScript-heavy commerce sites.</p>
+                <a href="/shop/">Visit E-commerce →</a>
+                <br><a href="http://ecommerce.test.crawailer.local:8080">Subdomain Version →</a>
+            </div>
+
+            <div class="card">
+                <h3>⚛️ Single Page Application</h3>
+                <p>React-style SPA with client-side routing, dynamic content loading, and modern JavaScript frameworks simulation.</p>
+                <a href="/spa/">Visit SPA →</a>
+                <br><a href="http://spa.test.crawailer.local:8080">Subdomain Version →</a>
+            </div>
+
+            <div class="card">
+                <h3>📰 News & Blog Platform</h3>
+                <p>Content-heavy site with infinite scroll, comment systems, and dynamic article loading for content extraction testing.</p>
+                <a href="/news/">Visit News Site →</a>
+            </div>
+
+            <div class="card">
+                <h3>📚 Documentation Site</h3>
+                <p>Technical documentation with search, navigation, and code examples. Tests structured content extraction.</p>
+                <a href="/docs/">Visit Docs →</a>
+                <br><a href="http://docs.test.crawailer.local:8080">Subdomain Version →</a>
+            </div>
+
+            <div class="card">
+                <h3>🔌 REST API Endpoints</h3>
+                <p>Various API endpoints with different response times, error scenarios, and data formats for comprehensive testing.</p>
+                <a href="/api/users">Users API →</a>
+                <br><a href="http://api.test.crawailer.local:8080/v1/users">V1 API →</a>
+            </div>
+
+            <div class="card">
+                <h3>📁 Static Assets</h3>
+                <p>Collection of images, documents, and files for testing download capabilities and file handling.</p>
+                <a href="/static/">Browse Files →</a>
+            </div>
+
+            <div class="card">
+                <h3>⚡ Performance Testing</h3>
+                <p>Pages designed to test various performance scenarios including slow loading, large content, and resource-heavy operations.</p>
+                <a href="/api/slow">Slow Response →</a>
+                <br><a href="/api/error">Error Simulation →</a>
+            </div>
+
+            <div class="card">
+                <h3>🔍 JavaScript Scenarios</h3>
+                <p>Specialized pages for testing JavaScript execution, DOM manipulation, and dynamic content generation.</p>
+                <a href="/spa/dynamic-content">Dynamic Content →</a>
+                <br><a href="/shop/cart">Interactive Cart →</a>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="/health">Health Check</a>
+            <a href="/api/users">API Status</a>
+            <a href="https://github.com/anthropics/crawailer">GitHub Repo</a>
+        </div>
+    </div>
+
+    <script>
+        // Add some dynamic behavior for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate counters
+            function animateCounter(element, target) {
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        element.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(current);
+                    }
+                }, 20);
+            }
+
+            // Get current time for dynamic timestamps
+            const now = new Date();
+            const timeStamp = now.toISOString();
+            
+            // Add timestamp to page for testing
+            const timestampEl = document.createElement('div');
+            timestampEl.style.position = 'fixed';
+            timestampEl.style.bottom = '10px';
+            timestampEl.style.right = '10px';
+            timestampEl.style.background = 'rgba(0,0,0,0.5)';
+            timestampEl.style.color = 'white';
+            timestampEl.style.padding = '5px 10px';
+            timestampEl.style.borderRadius = '5px';
+            timestampEl.style.fontSize = '12px';
+            timestampEl.textContent = `Generated: ${timeStamp}`;
+            document.body.appendChild(timestampEl);
+
+            // Add click tracking for testing
+            let clickCount = 0;
+            document.addEventListener('click', function(e) {
+                clickCount++;
+                console.log(`Click ${clickCount} on:`, e.target.tagName);
+            });
+
+            // Simulate some async data loading
+            setTimeout(() => {
+                const siteCount = document.getElementById('site-count');
+                const apiCount = document.getElementById('api-count');
+                const testCount = document.getElementById('test-count');
+                
+                if (siteCount) animateCounter(siteCount, 8);
+                if (apiCount) animateCounter(apiCount, 12);
+                if (testCount) testCount.textContent = '280+';
+            }, 500);
+        });
+
+        // Add global test data
+        window.testData = {
+            hubVersion: '1.0.0',
+            generatedAt: new Date().toISOString(),
+            testSites: [
+                'ecommerce', 'spa', 'news', 'docs', 'api', 'static'
+            ],
+            apiEndpoints: [
+                '/api/users', '/api/products', '/api/slow', '/api/error',
+                '/api/analytics', '/health'
+            ]
+        };
+    </script>
+</body>
+</html>

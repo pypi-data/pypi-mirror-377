@@ -1,0 +1,51 @@
+# Include documentation and metadata files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+
+# Include documentation directory
+recursive-include docs *.md
+
+# Include test configuration (but not tests themselves for distribution)
+include pytest.ini
+include .gitignore
+
+# Exclude development and build files
+exclude .env*
+exclude docker-compose*.yml
+exclude Dockerfile*
+exclude .pre-commit-config.yaml
+exclude benchmark_*.py
+exclude demo_*.py
+exclude simple_*.py
+exclude *_COMPLETE.md
+exclude *_SUMMARY.md
+exclude *_ANALYSIS.md
+exclude CLAUDE.md
+
+# Exclude test server and temporary files
+recursive-exclude test-server *
+recursive-exclude tests *
+recursive-exclude .git *
+recursive-exclude .pytest_cache *
+recursive-exclude __pycache__ *
+recursive-exclude *.egg-info *
+recursive-exclude .coverage *
+recursive-exclude htmlcov *
+exclude .mypy_cache
+exclude .ruff_cache
+
+# Exclude development coordination files
+recursive-exclude coordination *
+recursive-exclude feature *
+
+# Include only essential documentation
+prune coordination
+prune feature
+prune test-server
+prune tests
+prune .git
+prune .pytest_cache
+prune __pycache__
+prune *.egg-info

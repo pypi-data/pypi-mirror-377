@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "bplsdk"
+version = "0.5.0"
+description = "An SDK for a more ergonomic use of the BPL protocol"
+authors = ["Sindre Hansen <sindre.hansen@blueye.no>"]
+maintainers = ["Sindre Hansen <sindre.hansen@blueye.no>"]
+license = "LGPL-3.0-only"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyserial = "^3.4"
+cobs = "^1.1.4"
+crcmod = "^1.7"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+pytest-mock = "^3.6.1"
+black = "^25.1.0"
+
+[build-system]
+build-backend = 'setuptools.build_meta'
+requires = [
+    'setuptools >= 43.0.0',
+]

@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: marathi-jokes
+Version: 0.1.0
+Summary: A fun Marathi Jokes library 😂
+Home-page: https://github.com/yourusername/marathi-jokes
+Author: Aditya Pawar
+Author-email: your_email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+# Marathi Jokes 😂
+
+A fun Python library that gives you random Marathi jokes.  
+Also shows jokes in a mini popup window.
+
+## Installation
+```bash
+pip install marathi-jokes
+```
+
+## Usage
+```python
+import marathi_jokes as mj
+
+# Get one random joke
+print(mj.get_joke())
+
+# Get all jokes
+print(mj.get_all_jokes())
+
+# Show mini popup window with joke
+mj.show_window()
+```
+
+Enjoy Marathi humor in Python! 😅

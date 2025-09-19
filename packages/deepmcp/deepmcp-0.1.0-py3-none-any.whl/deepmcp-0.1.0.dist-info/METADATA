@@ -1,0 +1,146 @@
+Metadata-Version: 2.3
+Name: deepmcp
+Version: 0.1.0
+Summary: Add your description here
+Requires-Dist: fastmcp>=2.12.3
+Requires-Dist: mcp>=1.14.0
+Requires-Dist: openai>=1.108.0
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+
+# DeepMCP
+
+A flexible and powerful Multi-Computer Programming (MCP) framework for building client-server applications with support for natural language interaction and LLM integration.
+
+## Features
+
+- **Asynchronous HTTP Server**: Support for streaming HTTP communication using modern async patterns
+- **Mathematical Calculator Tools**: Built-in arithmetic operations (addition, subtraction, multiplication, division)
+- **Dual-Mode Client**: Can run as both client and server
+- **LLM Integration**: Connect with OpenAI-compatible APIs for natural language processing
+- **Simple Fallback Implementation**: Minimal version that works without external dependencies
+
+## Project Structure
+
+```
+deepmcp/
+├── src/
+│   ├── deepmcp/
+│   │   ├── __init__.py
+│   │   ├── client.py      # MCP client implementation with LLM integration
+│   │   ├── server.py      # MCP server implementation with calculator tools
+│   │   └── main.py        # Main entry point
+│   └── tests/
+├── pyproject.toml        # Project configuration and dependencies
+└── minimal_mcp.py        # Minimal implementation without external dependencies
+```
+
+## Installation
+
+### Prerequisites
+
+- Python 3.12 or higher
+- uv package manager (recommended for faster installations)
+
+### Steps
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd deepmcp
+   ```
+
+2. Install dependencies using uv:
+   ```bash
+   uv pip install -e .
+   ```
+
+   If you encounter issues with dependencies, try installing them directly:
+   ```bash
+   uv pip install fastmcp>=2.12.3 mcp>=1.14.0 openai>=1.108.0
+   ```
+
+## Usage
+
+### Starting the Server
+
+You can start the server in several ways:
+
+1. Using the command-line script:
+   ```bash
+   deepmcp
+   ```
+
+2. Running the server module directly:
+   ```bash
+   python -m deepmcp.server
+   ```
+
+3. Using the client in server mode:
+   ```bash
+   python -m deepmcp.client --server
+   ```
+
+### Starting the Client
+
+To start the client and connect to the server:
+
+```bash
+python -m deepmcp.client
+```
+
+By default, the client connects to `http://localhost:8000`. You can specify a different server URL:
+
+```bash
+python -m deepmcp.client http://your-server-url:port
+```
+
+## Using the Minimal Implementation
+
+If you encounter dependency issues with the main implementation, you can use the minimal version that doesn't rely on external packages:
+
+```bash
+python minimal_mcp.py
+```
+
+This runs a simplified version of the MCP server and client with basic calculator functionality.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **ModuleNotFoundError: No module named 'deepmcp'**
+   - Ensure the package is installed in development mode: `uv pip install -e .`
+   - Check that your Python path includes the project directory
+   - Verify that the `pyproject.toml` has the correct package discovery configuration
+
+2. **ModuleNotFoundError: No module named 'fastmcp' or other dependencies**
+   - Try reinstalling the dependencies: `uv pip install fastmcp mcp openai`
+   - If issues persist, use the minimal implementation: `python minimal_mcp.py`
+
+3. **Connection Issues**
+   - Ensure the server is running before starting the client
+   - Check that the client is connecting to the correct host and port
+   - Verify that no firewall is blocking the connection
+
+## LLM Integration
+
+The client integrates with OpenAI-compatible APIs (via OpenRouter in the current implementation). To use this feature, you'll need to configure your API key:
+
+1. Open `client.py`
+2. Update the `OPENROUTER_API_KEY` variable with your own API key
+3. You can also change the `model` parameter to use a different LLM model
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+
+## Acknowledgements
+
+- Based on the Multi-Computer Programming (MCP) framework
+- Uses FastMCP for asynchronous server implementation
+- Integrates with OpenAI-compatible APIs for natural language processing

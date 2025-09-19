@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easy-cherry"
+version = "1.6.5" 
+authors = [
+  { name="Vinay", email="vinay.me223@gmail.com" },
+]
+description = "Your library's description."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# Add the new dependencies required by the logger code
+dependencies = [
+  "psycopg2-binary",
+  "python-dotenv",
+  "tenacity",
+  "slack_sdk",
+  "html2text"
+]

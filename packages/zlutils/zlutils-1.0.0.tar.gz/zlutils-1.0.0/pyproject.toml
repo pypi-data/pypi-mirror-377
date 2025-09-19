@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zlutils"
+dynamic = ["version"]
+description = "a package of utils"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+classifiers=[
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[[project.authors]]
+name = "zlols"
+email = "zlols@foxmail.com"
+
+[project.urls]
+Repository = "https://gitee.com/zlols/zlutils.py.git"
+
+[tool.setuptools.dynamic]
+version = {attr = "zlutils.version.version"}

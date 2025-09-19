@@ -1,0 +1,176 @@
+Metadata-Version: 2.4
+Name: lightwheel_sdk
+Version: 0.16
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: tqdm
+Requires-Dist: termcolor
+Requires-Dist: pyyaml
+Requires-Dist: click
+
+# Lightwheel SDK Python
+
+A Python SDK for interacting with the Lightwheel API to access Lightwheel assets and services. This SDK provides tools for downloading and caching USD floorplans, 3D objects, and scene data for robotics and simulation applications.
+
+## Features
+
+- **Authentication**: Secure login with credential caching and environment variable support
+- **Floorplan Loading**: Download and cache USD floorplan files with progress tracking
+- **Object Loading**: Load USD and MJCF objects from the Lightwheel registry
+- **Scene Loading**: Access scene configurations and metadata
+- **Registry Queries**: Advanced object discovery with filtering capabilities
+- **Caching**: Automatic caching of downloaded files for improved performance
+- **Concurrent Downloads**: Multi-threaded downloading with configurable workers
+
+## Installation
+
+```bash
+pip install lightwheel_sdk
+```
+
+## Quick Start
+
+### Authentication
+
+```python
+from lightwheel_sdk.loader import login_manager
+
+# Login interactively (will prompt for username/password)
+headers = login_manager.login()
+
+# Or use environment variables for automated authentication
+# Set LW_API_ENDPOINT, LoaderUserName, and LoaderToken
+headers = login_manager.get_headers()
+```
+
+### Loading Floorplans
+
+```python
+from lightwheel_sdk.loader import floorplan_loader
+
+# Load a USD floorplan asynchronously
+future = floorplan_loader.acquire_usd(layout_id=2, style_id=1, scene="robocasakitchen", backend="robocasa")
+usd_file_path = future.result()  # Returns path to downloaded USD file
+
+# Load a floorplan synchronously
+usd_path = floorplan_loader.get_usd(layout_id=1, style_id=1)
+```
+
+### Loading Objects
+
+```python
+from lightwheel_sdk.loader import object_loader
+
+# Load a USD object by path
+usd_path = object_loader.acquire_object("objects/lightwheel/bowl/Bowl008", "USD")
+
+# Load an MJCF object
+mjcf_path = object_loader.acquire_object("objects/level1/level2/object_name", "MJCF")
+
+# Query and load objects from registry
+objects = object_loader.acquire_by_registry("objects", ["alcohol"], file_name="alcohol_7", source=["aigen_objs"])
+```
+
+### Loading Scenes
+
+```python
+from lightwheel_sdk.loader import scene_loader
+
+# Get scene configuration
+scene_data = scene_loader.get_scene("style", 7, "robocasakitchen", backend="robocasa")
+```
+
+## Configuration
+
+### Environment Variables
+
+- `LW_API_ENDPOINT`: API endpoint URL (default: `https://api.lightwheel.net`)
+- `LoaderUserName`: Username for authentication
+- `LoaderToken`: Authentication token
+- `LW_SDK_HEADERS_*`: Custom headers (prefix with `LW_SDK_HEADERS_`)
+
+### Cache Locations
+
+- Login cache: `~/.cache/lightwheel_sdk/login/`
+- Floorplan cache: `~/.cache/lightwheel_sdk/floorplan/`
+- Object cache: `~/.cache/lightwheel_sdk/object/`
+
+## API Reference
+
+### Login Manager
+
+- `login(force_login=False)`: Authenticate with the API
+- `get_headers()`: Get authentication headers
+
+### Floorplan Loader
+
+- `acquire_usd(layout_id, style_id, scene=None, backend=None, cancel_previous_download=True)`: Download USD floorplan asynchronously
+- `get_usd(layout_id, style_id, scene=None, backend=None)`: Synchronous USD download
+
+### Object Loader
+
+- `acquire_object(rel_path, file_type, version=None)`: Download object files (USD or MJCF)
+- `acquire_by_registry(registry_type, registry_name=None, exclude_registry_name=None, file_name=None, source=None, equals=None, contains=None)`: Query and download objects from registry
+
+### Scene Loader
+
+- `get_scene(scene_type, scene_id, scene_name, backend=None)`: Get scene configuration and metadata
+
+### Registry Query
+
+The `RegistryQuery` class provides advanced filtering for object discovery:
+
+```python
+from lightwheel_sdk.loader.object import RegistryQuery
+
+# Create a query for objects
+query = RegistryQuery(
+    registry_type="objects",
+    registry_name=["alcohol", "beverage"],
+    exclude_registry_name=["wine"],
+    equals={"category": "drink"},
+    contains={"description": "bottle"}
+)
+```
+
+## Advanced Usage
+
+### Custom Client Configuration
+
+```python
+from lightwheel_sdk.loader import LightwheelClient
+
+# Create a custom client with specific settings
+client = LightwheelClient(host="https://custom-api.lightwheel.net", base_timeout=30)
+
+# Use with loaders
+from lightwheel_sdk.loader import FloorplanLoader
+floorplan_loader = FloorplanLoader(client, max_workers=8)
+```
+
+### Error Handling
+
+```python
+from lightwheel_sdk.loader.exception import ApiException
+
+try:
+    result = object_loader.acquire_object("invalid/path", "USD")
+except ApiException as e:
+    print(f"API Error: {e}")
+```
+
+## Requirements
+
+- Python 3.10+
+- requests
+- tqdm
+- termcolor
+- pyyaml
+
+## License
+
+Apache License 2.0
+
+## Support
+
+For support and questions, please contact the Lightwheel team.

@@ -1,0 +1,25 @@
+name: Build Wheel
+
+on:
+    push:
+        tags:
+            - "v*.*.*"
+
+permissions:
+    contents: write
+
+jobs:
+    build-and-publish:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Install UV
+              run: curl -LsSf https://astral.sh/uv/install.sh | sh
+            - name: Build
+              run: uv build --wheel
+            - name: Publish wheel
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: dist/*.whl
+                  token: ${{ secrets.GITHUB_TOKEN }}

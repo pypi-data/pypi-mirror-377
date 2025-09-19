@@ -1,0 +1,222 @@
+# Gushwork Logger
+
+A structured logging library with OpenTelemetry support for Gushwork services. This library provides a simple and consistent way to set up logging with OpenTelemetry integration across different Python applications.
+
+## Features
+
+- 🚀 Simple and easy to use logging setup
+- 📊 OpenTelemetry integration for distributed tracing
+- ☁️ AWS Lambda compatibility
+- 🔧 Configurable console and OTLP logging
+- 🎯 Service-specific logging configuration
+- 📝 Structured logging support
+
+## Installation
+
+```bash
+pip install gushwork-logger
+```
+
+## Quick Start
+
+### Basic Usage
+
+```python
+from gushwork_logger import initialize_logging, get_logger
+
+# Initialize logging (call this once at application startup)
+initialize_logging(
+    service_name="my-service",
+    environment="production"
+)
+
+# Get a logger instance
+logger = get_logger(__name__)
+
+# Use the logger
+logger.info("Application started")
+logger.error("Something went wrong", extra={"user_id": 123})
+```
+
+### Advanced Configuration
+
+```python
+from gushwork_logger import initialize_logging, get_logger
+import logging
+
+# Initialize with custom configuration
+initialize_logging(
+    service_name="my-microservice",
+    environment="staging",
+    log_level=logging.DEBUG,
+    enable_console=True,   # Enable console output
+    enable_otlp=True      # Enable OpenTelemetry export
+)
+
+logger = get_logger("my_module")
+logger.debug("Debug information")
+logger.info("Process completed successfully")
+```
+
+### Environment Variables
+
+The library supports configuration through environment variables:
+
+- `OTEL_SERVICE_NAME`: Default service name
+- `ENVIRONMENT`: Default environment (dev, staging, production)
+- `AWS_LAMBDA_FUNCTION_NAME`: Automatically detected for Lambda compatibility
+
+### AWS Lambda Usage
+
+The library automatically detects AWS Lambda environments and adjusts logging accordingly:
+
+```python
+from gushwork_logger import initialize_logging, get_logger
+
+def lambda_handler(event, context):
+    # Initialize logging (console output disabled in Lambda)
+    initialize_logging(service_name="my-lambda-function")
+
+    logger = get_logger(__name__)
+    logger.info("Lambda function started", extra={"request_id": context.aws_request_id})
+
+    # Your Lambda logic here
+
+    return {"statusCode": 200, "body": "Success"}
+```
+
+## API Reference
+
+### `initialize_logging(service_name, environment, log_level, enable_console, enable_otlp)`
+
+Initialize the logging system with OpenTelemetry support.
+
+**Parameters:**
+- `service_name` (str, optional): Name of the service. Defaults to `OTEL_SERVICE_NAME` env var or "gushwork-service"
+- `environment` (str, optional): Environment name. Defaults to `ENVIRONMENT` env var or "dev"
+- `log_level` (int, optional): Logging level. Default: `logging.INFO`
+- `enable_console` (bool, optional): Enable console logging. Default: `True`
+- `enable_otlp` (bool, optional): Enable OpenTelemetry export. Default: `True`
+
+**Returns:**
+- `LoggerProvider` or `None`: OpenTelemetry LoggerProvider instance if OTLP is enabled and successful
+
+### `get_logger(name)`
+
+Get a logger instance.
+
+**Parameters:**
+- `name` (str, optional): Logger name. Defaults to calling module name
+
+**Returns:**
+- `logging.Logger`: Standard Python logger instance
+
+### `shutdown_logging()`
+
+Shutdown the logging system and clean up resources. Call this when your application is shutting down.
+
+### `is_initialized()`
+
+Check if logging has been initialized.
+
+**Returns:**
+- `bool`: True if logging is initialized
+
+### `get_logger_provider()`
+
+Get the current OpenTelemetry logger provider instance.
+
+**Returns:**
+- `LoggerProvider` or `None`: Current logger provider or None if not initialized with OTLP
+
+## Usage in Different Repositories
+
+After publishing to PyPI, you can use this library in any Python project:
+
+### 1. Add to requirements.txt
+
+```
+gushwork-logger>=0.1.0
+```
+
+### 2. Initialize in your main application
+
+```python
+# main.py or app.py
+from gushwork_logger import initialize_logging
+
+def main():
+    initialize_logging(
+        service_name="my-backend-service",
+        environment="production"
+    )
+    # Rest of your application
+```
+
+### 3. Use in any module
+
+```python
+# any_module.py
+from gushwork_logger import get_logger
+
+logger = get_logger(__name__)
+
+def some_function():
+    logger.info("Function called")
+    try:
+        # Some operation
+        pass
+    except Exception as e:
+        logger.error("Operation failed", extra={"error": str(e)})
+```
+
+## Development
+
+### Setting up development environment
+
+```bash
+git clone <repository-url>
+cd gushwork-logger
+pip install -r requirements-dev.txt
+```
+
+### Running tests
+
+```bash
+pytest
+```
+
+### Code formatting
+
+```bash
+black gushwork_logger/
+flake8 gushwork_logger/
+mypy gushwork_logger/
+```
+
+### Building and publishing
+
+```bash
+# Build the package
+python -m build
+
+# Upload to PyPI (requires proper credentials)
+twine upload dist/*
+```
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Run the test suite
+6. Submit a pull request
+
+## Support
+
+For issues and feature requests, please use the [GitHub issue tracker](https://github.com/gushwork/gushwork-logger/issues).

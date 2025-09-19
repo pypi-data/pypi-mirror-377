@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dsd-flyio-nanodjango"
+version = "0.2.0"
+description = "A proof-of-concept django-simple-deploy plugin that deploys nanodjango projects to Fly.io"
+readme = "README.md"
+
+authors = [
+    {name = "Eric Matthes", email = "ehmatthes@gmail.com" },
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+keywords = ["django", "deployment"]
+
+requires-python = ">=3.9"
+
+dependencies = [
+    "django>=4.2",
+    "pluggy>=1.5.0",
+    "toml>=0.10.2",
+    "requests>=2.32.2",
+    "django-simple-deploy>=1.3.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.1.0",
+    "build>=1.2.1",
+    "pytest>=8.3.0",
+    "twine>=5.1.1",
+]
+
+[project.urls]
+"Documentation" = "https://github.com/ehmatthes/dsd-flyio-nanodjango"
+"GitHub" = "https://github.com/ehmatthes/dsd-flyio-nanodjango"
+"Changelog" = "https://github.com/ehmatthes/dsd-flyio-nanodjango/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = [
+    "dsd_flyio_nanodjango",
+    "dsd_flyio_nanodjango.templates",
+]
+include-package-data = true

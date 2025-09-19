@@ -1,0 +1,79 @@
+# pyproject.toml
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2",
+]
+
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "braincloud"
+dynamic = ["version"]
+authors = [
+    {name = "Jeff Moe", email = "moe@spacecruft.org"},
+]
+
+description = "Deep research bring-your-own-keys web application"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+keywords = [
+    "ai",
+    "deepresearch",
+    "fastapi",
+    "inference",
+    "openai",
+    "llm",
+    "research",
+]
+
+license = {text = "Apache 2.0"}
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "fastapi",
+    "httpx",
+    "markdown2[all]",
+    "python-multipart",
+    "uvicorn",
+    "sse-starlette",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "build",
+    "ruff",
+    "setuptools-scm",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://braincloud.moe"
+Documentation = "https://spacecruft.org/deepcrayon/braincloud"
+Repository = "https://spacecruft.org/deepcrayon/braincloud"
+Issues = "https://spacecruft.org/deepcrayon/braincloud"
+Changelog = "https://spacecruft.org/deepcrayon/braincloud/raw/branch/main/CHANGELOG.txt"
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
+[tool.setuptools_scm]
+write_to = "src/braincloud/_version.py"
+
+[project.scripts]
+#braincloud-api = "braincloud.api.launch:run_fastapi"

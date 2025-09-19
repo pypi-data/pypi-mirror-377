@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: braincloud
+Version: 0.2.2
+Summary: Deep research bring-your-own-keys web application
+Author-email: Jeff Moe <moe@spacecruft.org>
+License: Apache 2.0
+Project-URL: Homepage, https://braincloud.moe
+Project-URL: Documentation, https://spacecruft.org/deepcrayon/braincloud
+Project-URL: Repository, https://spacecruft.org/deepcrayon/braincloud
+Project-URL: Issues, https://spacecruft.org/deepcrayon/braincloud
+Project-URL: Changelog, https://spacecruft.org/deepcrayon/braincloud/raw/branch/main/CHANGELOG.txt
+Keywords: ai,deepresearch,fastapi,inference,openai,llm,research
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: <3.11,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE-apache.txt
+Requires-Dist: fastapi
+Requires-Dist: httpx
+Requires-Dist: markdown2[all]
+Requires-Dist: python-multipart
+Requires-Dist: uvicorn
+Requires-Dist: sse-starlette
+Requires-Dist: pydantic>=2.0
+Provides-Extra: dev
+Requires-Dist: black; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: setuptools-scm; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Dynamic: license-file
+
+# BrainCloud
+Deep research bring-your-own-keys web application.
+
+# Upstream
+Based on Apache 2.0 licensed code and model
+from Alibaba Tongyi Lab's DeepResearch:
+
+* https://tongyi-agent.github.io/blog/introducing-tongyi-deep-research/
+* https://github.com/Alibaba-NLP/DeepResearch
+* https://huggingface.co/Alibaba-NLP/Tongyi-DeepResearch-30B-A3B
+
+...and many other free software projects...
+
+# 📄 License
+This project is licensed under the Apache License 2.0.
+See the [LICENSE](LICENSE-apache.txt) file for details.
+
+*Copyright © 2025 Jeff Moe*

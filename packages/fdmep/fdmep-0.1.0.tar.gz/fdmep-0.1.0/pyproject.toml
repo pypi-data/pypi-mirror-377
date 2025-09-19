@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fdmep"
+version = "0.1.0"
+description = "CLI para inicialização rápida de extensões pyRevit"
+readme = "README.md"
+authors = [{ name = "Tiago Lima", email = "tiagolima.r3@outlook.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+  "colorama>=0.4.6"
+]
+
+[project.urls]
+Homepage = "https://github.com/tiagolimar/fdmep"
+Issues = "https://github.com/tiagolimar/fdmep/issues"
+
+[project.scripts]
+fdmep = "fdmep.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

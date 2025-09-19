@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ShrutiAI"
+version = "1.0.1"
+description = "Python SDK for interacting with the shrutiAI API - your AI-powered assistant"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Shri Sai Technology", email = "support@sstus.net"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Communications :: Chat",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+keywords = [
+    "ai",
+    "chat",
+    "assistant",
+    "api",
+    "sdk",
+    "shruti",
+    "artificial-intelligence",
+    "chatbot",
+    "voice",
+    "location",
+    "otp",
+    "verification",
+    "image-analysis",
+    "document-processing",
+    "farming",
+    "travel",
+    "math",
+    "search",
+    "youtube"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.25.0"
+]
+
+[project.urls]
+Homepage = "https://shruti.ai/"
+Documentation = "https://shruti.ai/docs"
+Repository = "https://github.com/shrisai-tech/shruti-ai-sdk"
+"Bug Reports" = "https://github.com/shrisai-tech/shruti-ai-sdk/issues"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages.find]
+exclude = ["test_*", "tests"]

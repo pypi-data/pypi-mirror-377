@@ -1,0 +1,76 @@
+[project]
+name = "odap"
+version = "0.5.1"
+description = "ODAP framework"
+authors = [
+    { name = "Lukas Langr", email = "lukas.langr@datasentics.com" },
+    { name = "Karel Gudera", email = "karel.gudera@datasentics.com" },
+]
+requires-python = "~=3.8"
+readme = "README.md"
+license = { file = "LICENSE" }
+
+[project.scripts]
+check-destinations = "odap.segment_factory.config_checker:check_destinations_exist"
+
+[dependency-groups]
+dev = [
+    "databricks-cli>=0.17.3,<0.18",
+    "pyspark",
+    "delta-spark",
+    "ipython>=8.5.0,<9",
+    "pylint>=2.15,<2.16",
+    "pyre-check>=0.9.16,<0.10",
+    "black>=22.10.0,<23",
+    "poethepoet>=0.16.4,<0.17",
+    "databricks-feature-store>=0.7.0,<0.8",
+    "pytest>=7.1.3,<8",
+    "pytest-mock>=3.10.0,<4",
+    "pyyaml>=6.0.1,<7",
+    "soda-core-spark-df>=3.0.12,<4",
+    "loguru>=0.7.2,<0.8",
+]
+
+[tool.uv]
+
+[tool.uv.sources]
+pyspark = { url = "https://daipe-packages.s3.eu-central-1.amazonaws.com/pyspark-3.2.0-py2.py3-none-any.whl" }
+delta-spark = { url = "https://daipe-packages.s3.eu-central-1.amazonaws.com/delta_spark-1.1.0-py3-none-any.whl" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/odap"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src/odap"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/odap" = "odap"
+
+[tool.black]
+line-length = 120
+
+[tool.pylint.basic]
+module-rgx = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$"
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-docstring",
+    "line-too-long",
+    "too-many-arguments",
+    "too-few-public-methods",
+    "logging-fstring-interpolation"
+]
+good-names = ["e", "i", "k", "n", "f", "v", "df", "sc", "fs"]
+
+[tool.pytest.ini_options]
+python_files = "*_test.py *Test.py"
+
+[tool.poe.tasks]
+black = "black src"
+black-check = "black --check src"
+pylint = "pylint src --max-nested-blocks 2 --max-statements 10"
+pyre = "pyre check"

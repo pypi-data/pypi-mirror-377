@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "olympipe"
+version = "1.5.2"
+description = "A powerful parallel pipelining tool"
+readme = "README.md"
+license = "MIT"
+homepage = "https://gitlab.com/gabraken/olympipe"
+repository = "https://gitlab.com/gabraken/olympipe"
+authors = ["Gabriel Kasser <gabriel.kasser@gmail.com>"]
+keywords = ["pipeline", "multiprocessing"]
+include = ["olympipe/py.typed"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+psutil = "^5.9.5"
+types-psutil = "^5.9.5.16"
+setproctitle = "^1.3.3"
+tqdm = "^4.66.1"
+dpkt = "^1.9.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+coverage = "^6.5.0"
+mypy = "^1.5.1"
+black = "^22.10.0"
+pylint = "^2.16.1"
+graphviz = "^0.20.1"
+pytest-timeout = "^2.2.0"
+types-requests = "^2.31.0.10"
+types-tqdm = "^4.66.0.4"
+requests = "^2.31.0"
+setuptools = "<=80"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

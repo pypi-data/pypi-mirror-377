@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>fireworks.core.tests package &#8212; FireWorks 2.0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=b0beeceb" />
+    <script src="_static/documentation_options.js?v=adc66a14"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+ 
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">FireWorks 2.0.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fireworks.core.tests package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="fireworks-core-tests-package">
+<h1>fireworks.core.tests package<a class="headerlink" href="#fireworks-core-tests-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-fireworks.core.tests.tasks">
+<span id="fireworks-core-tests-tasks-module"></span><h2>fireworks.core.tests.tasks module<a class="headerlink" href="#module-fireworks.core.tests.tasks" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.DetoursTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">DetoursTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.DetoursTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.DetoursTask.optional_params">
+<span class="sig-name descname"><span class="pre">optional_params</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['n_detours',</span> <span class="pre">'data_per_detour']</span></em><a class="headerlink" href="#fireworks.core.tests.tasks.DetoursTask.optional_params" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.DetoursTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.DetoursTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.DoNothingTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">DoNothingTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.DoNothingTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.DoNothingTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.tasks.DoNothingTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.ExceptionTestTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">ExceptionTestTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.ExceptionTestTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.ExceptionTestTask.exec_counter">
+<span class="sig-name descname"><span class="pre">exec_counter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#fireworks.core.tests.tasks.ExceptionTestTask.exec_counter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.ExceptionTestTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.tasks.ExceptionTestTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.ExecutionCounterTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">ExecutionCounterTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.ExecutionCounterTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.ExecutionCounterTask.exec_counter">
+<span class="sig-name descname"><span class="pre">exec_counter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#fireworks.core.tests.tasks.ExecutionCounterTask.exec_counter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.ExecutionCounterTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.tasks.ExecutionCounterTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.MalformedAdditionTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">MalformedAdditionTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.MalformedAdditionTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.MalformedAdditionTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.MalformedAdditionTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SerializableException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">SerializableException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_details</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SerializableException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SerializableException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_details</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.tasks.SerializableException.__init__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SerializableException.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SerializableException.to_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SlowAdditionTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">SlowAdditionTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SlowAdditionTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SlowAdditionTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SlowAdditionTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SlowTodictTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">SlowTodictTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SlowTodictTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SlowTodictTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SlowTodictTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.SlowTodictTask.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.SlowTodictTask.to_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.TodictErrorTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">TodictErrorTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.TodictErrorTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.TodictErrorTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.TodictErrorTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.TodictErrorTask.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.13)"><span class="pre">NoReturn</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.tasks.TodictErrorTask.to_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.WaitWFLockTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.tasks.</span></span><span class="sig-name descname"><span class="pre">WaitWFLockTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.WaitWFLockTask" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="fireworks.core.html#fireworks.core.firework.FiretaskBase" title="fireworks.core.firework.FiretaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FiretaskBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.tasks.WaitWFLockTask.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fw_spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.tasks.WaitWFLockTask.run_task" title="Link to this definition">¶</a></dt>
+<dd><p>This method gets called when the Firetask is run. It can take in a
+Firework spec, perform some task using that data, and then return an
+output in the form of a FWAction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fw_spec</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – A Firework spec. This comes from the master spec.
+In addition, this spec contains a special “_fw_env” key that
+contains the env settings of the FWorker calling this method.
+This provides for abstracting out certain commands or
+settings. For example, “foo” may be named “foo1” in resource
+1 and “foo2” in resource 2. The FWorker env can specify {
+“foo”: “foo1”}, which maps an abstract variable “foo” to the
+relevant “foo1” or “foo2”. You can then write a task that
+uses fw_spec[“_fw_env”][“foo”] that will work across all
+these multiple resources.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(FWAction)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="fireworks-core-tests-test-firework-module">
+<h2>fireworks.core.tests.test_firework module<a class="headerlink" href="#fireworks-core-tests-test-firework-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="fireworks-core-tests-test-launchpad-module">
+<h2>fireworks.core.tests.test_launchpad module<a class="headerlink" href="#fireworks-core-tests-test-launchpad-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-fireworks.core.tests.test_rocket">
+<span id="fireworks-core-tests-test-rocket-module"></span><h2>fireworks.core.tests.test_rocket module<a class="headerlink" href="#module-fireworks.core.tests.test_rocket" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.test_rocket.</span></span><span class="sig-name descname"><span class="pre">RocketTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest.setUp" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest.setUpClass">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest.setUpClass" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest.tearDown" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest.tearDownClass">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tearDownClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest.tearDownClass" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for deconstructing the class fixture after running all tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest.test_postproc_exception">
+<span class="sig-name descname"><span class="pre">test_postproc_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest.test_postproc_exception" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_rocket.RocketTest.test_serializable_exception">
+<span class="sig-name descname"><span class="pre">test_serializable_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_rocket.RocketTest.test_serializable_exception" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fireworks.core.tests.test_tracker">
+<span id="fireworks-core-tests-test-tracker-module"></span><h2>fireworks.core.tests.test_tracker module<a class="headerlink" href="#module-fireworks.core.tests.test_tracker" title="Link to this heading">¶</a></h2>
+<p>Tracker unitest.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fireworks.core.tests.test_tracker.</span></span><span class="sig-name descname"><span class="pre">TrackerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.setUp" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.setUpClass">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.setUpClass" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.tearDown" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.tearDownClass">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tearDownClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.tearDownClass" title="Link to this definition">¶</a></dt>
+<dd><p>Hook method for deconstructing the class fixture after running all tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.test_tracker">
+<span class="sig-name descname"><span class="pre">test_tracker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.test_tracker" title="Link to this definition">¶</a></dt>
+<dd><p>Launch a workflow and track the files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.test_tracker_failed_fw">
+<span class="sig-name descname"><span class="pre">test_tracker_failed_fw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.test_tracker_failed_fw" title="Link to this definition">¶</a></dt>
+<dd><p>Add a bad firetask to workflow and test the tracking.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fireworks.core.tests.test_tracker.TrackerTest.test_tracker_mlaunch">
+<span class="sig-name descname"><span class="pre">test_tracker_mlaunch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#fireworks.core.tests.test_tracker.TrackerTest.test_tracker_mlaunch" title="Link to this definition">¶</a></dt>
+<dd><p>Test the tracker for mlaunch.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fireworks.core.tests">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-fireworks.core.tests" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">fireworks.core.tests package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-fireworks.core.tests.tasks">fireworks.core.tests.tasks module</a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.DetoursTask"><code class="docutils literal notranslate"><span class="pre">DetoursTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.DetoursTask.optional_params"><code class="docutils literal notranslate"><span class="pre">DetoursTask.optional_params</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.DetoursTask.run_task"><code class="docutils literal notranslate"><span class="pre">DetoursTask.run_task()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.DoNothingTask"><code class="docutils literal notranslate"><span class="pre">DoNothingTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.DoNothingTask.run_task"><code class="docutils literal notranslate"><span class="pre">DoNothingTask.run_task()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.ExceptionTestTask"><code class="docutils literal notranslate"><span class="pre">ExceptionTestTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.ExceptionTestTask.exec_counter"><code class="docutils literal notranslate"><span class="pre">ExceptionTestTask.exec_counter</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.ExceptionTestTask.run_task"><code class="docutils literal notranslate"><span class="pre">ExceptionTestTask.run_task()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.ExecutionCounterTask"><code class="docutils literal notranslate"><span class="pre">ExecutionCounterTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.ExecutionCounterTask.exec_counter"><code class="docutils literal notranslate"><span class="pre">ExecutionCounterTask.exec_counter</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.ExecutionCounterTask.run_task"><code class="docutils literal notranslate"><span class="pre">ExecutionCounterTask.run_task()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.MalformedAdditionTask"><code class="docutils literal notranslate"><span class="pre">MalformedAdditionTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.MalformedAdditionTask.run_task"><code class="docutils literal notranslate"><span class="pre">MalformedAdditionTask.run_task()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SerializableException"><code class="docutils literal notranslate"><span class="pre">SerializableException</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SerializableException.__init__"><code class="docutils literal notranslate"><span class="pre">SerializableException.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SerializableException.to_dict"><code class="docutils literal notranslate"><span class="pre">SerializableException.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SlowAdditionTask"><code class="docutils literal notranslate"><span class="pre">SlowAdditionTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SlowAdditionTask.run_task"><code class="docutils literal notranslate"><span class="pre">SlowAdditionTask.run_task()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SlowTodictTask"><code class="docutils literal notranslate"><span class="pre">SlowTodictTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SlowTodictTask.run_task"><code class="docutils literal notranslate"><span class="pre">SlowTodictTask.run_task()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.SlowTodictTask.to_dict"><code class="docutils literal notranslate"><span class="pre">SlowTodictTask.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.TodictErrorTask"><code class="docutils literal notranslate"><span class="pre">TodictErrorTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.TodictErrorTask.run_task"><code class="docutils literal notranslate"><span class="pre">TodictErrorTask.run_task()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.TodictErrorTask.to_dict"><code class="docutils literal notranslate"><span class="pre">TodictErrorTask.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.WaitWFLockTask"><code class="docutils literal notranslate"><span class="pre">WaitWFLockTask</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.tasks.WaitWFLockTask.run_task"><code class="docutils literal notranslate"><span class="pre">WaitWFLockTask.run_task()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fireworks-core-tests-test-firework-module">fireworks.core.tests.test_firework module</a></li>
+<li><a class="reference internal" href="#fireworks-core-tests-test-launchpad-module">fireworks.core.tests.test_launchpad module</a></li>
+<li><a class="reference internal" href="#module-fireworks.core.tests.test_rocket">fireworks.core.tests.test_rocket module</a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest"><code class="docutils literal notranslate"><span class="pre">RocketTest</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest.setUp"><code class="docutils literal notranslate"><span class="pre">RocketTest.setUp()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest.setUpClass"><code class="docutils literal notranslate"><span class="pre">RocketTest.setUpClass()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest.tearDown"><code class="docutils literal notranslate"><span class="pre">RocketTest.tearDown()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest.tearDownClass"><code class="docutils literal notranslate"><span class="pre">RocketTest.tearDownClass()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest.test_postproc_exception"><code class="docutils literal notranslate"><span class="pre">RocketTest.test_postproc_exception()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_rocket.RocketTest.test_serializable_exception"><code class="docutils literal notranslate"><span class="pre">RocketTest.test_serializable_exception()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-fireworks.core.tests.test_tracker">fireworks.core.tests.test_tracker module</a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest"><code class="docutils literal notranslate"><span class="pre">TrackerTest</span></code></a><ul>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.setUp"><code class="docutils literal notranslate"><span class="pre">TrackerTest.setUp()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.setUpClass"><code class="docutils literal notranslate"><span class="pre">TrackerTest.setUpClass()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.tearDown"><code class="docutils literal notranslate"><span class="pre">TrackerTest.tearDown()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.tearDownClass"><code class="docutils literal notranslate"><span class="pre">TrackerTest.tearDownClass()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.test_tracker"><code class="docutils literal notranslate"><span class="pre">TrackerTest.test_tracker()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.test_tracker_failed_fw"><code class="docutils literal notranslate"><span class="pre">TrackerTest.test_tracker_failed_fw()</span></code></a></li>
+<li><a class="reference internal" href="#fireworks.core.tests.test_tracker.TrackerTest.test_tracker_mlaunch"><code class="docutils literal notranslate"><span class="pre">TrackerTest.test_tracker_mlaunch()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-fireworks.core.tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/fireworks.core.tests.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">FireWorks 2.0.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fireworks.core.tests package</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2013, Anubhav Jain.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53488807-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

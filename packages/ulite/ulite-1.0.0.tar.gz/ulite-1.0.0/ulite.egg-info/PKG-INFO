@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: ulite
+Version: 1.0.0
+Summary: Lightweight GUI module
+Author-email: zlols <zlols@foxmail.com>
+License-Expression: MIT
+Project-URL: Repository, https://gitee.com/zlols/ulite.py.git
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Flask>=2.0.0
+Requires-Dist: zlutils>=1.0.0
+Dynamic: license-file
+
+# ulite.py
+
+- 轻量化ui框架
+- 支持构建基于flask的webui
+
+
+# 安装
+```
+git clone https://gitee.com/zlols/ulite.py
+pip install -e ulite.py
+```
+
+# 用法
+
+```
+import ulite
+import random
+
+ui = ulite.createUI(backends='flask', port=5001)
+ui.root.addChild(
+    ulite.Button(text='hello').subscribeEvent('click', lambda e: e.target.setAttributes(text=random.randint(0,100)))
+    )
+ui.show(openbrowser=True)
+```

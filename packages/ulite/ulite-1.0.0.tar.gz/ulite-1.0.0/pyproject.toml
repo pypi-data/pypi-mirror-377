@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ulite"
+dynamic = ["version"]
+description = "Lightweight GUI module"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+classifiers=[
+  "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = [
+"Flask>=2.0.0",
+"zlutils>=1.0.0",
+# "opencv-python>=4.5.5",
+# "Pillow>=9.0.0",
+# "requests>=2.27.0"
+]
+
+[[project.authors]]
+name = "zlols"
+email = "zlols@foxmail.com"
+
+[project.urls]
+Repository = "https://gitee.com/zlols/ulite.py.git"
+
+[dependencies]
+
+[tool.setuptools.dynamic]
+version = {attr = "ulite.version.version"}

@@ -1,0 +1,28 @@
+[project]
+name = "fmeflowclient"
+dynamic = ["version"]
+description = "A Python client for interacting with FME Flow via its REST API"
+authors = [{ name="Sverker Norlander", email="sverker.norlander@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E"]
+keywords = ["FME", "FME Flow", "API", "Client", "REST"]
+dependencies = ["requests"]
+
+[project.urls]
+Homepage = "https://github.com/sverker84/fmeflowclient"
+Issues = "https://github.com/sverker84/fmeflowclient/issues"
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/fmeflowclient/__version__.py"

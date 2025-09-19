@@ -1,0 +1,79 @@
+# Minimal Multi-Market Configuration Example
+# This is a basic configuration to get started with multi-market trading
+
+app_name: "MultiMarketTradingBot"
+version: "2.0.0"
+debug: true
+dry_run: true
+base_currency: "USD"
+environment: "development"
+
+# Crypto Market (enabled with minimal setup)
+crypto:
+  enabled: true
+  default_quote_currency: "USDT"
+  min_trade_amount: 10.0
+  
+  exchanges:
+    binance:
+      exchange_type: "binance"
+      api_key: "${BINANCE_API_KEY}"
+      api_secret: "${BINANCE_API_SECRET}"
+      sandbox: true
+      enabled: true
+
+# Forex Market (disabled by default)
+forex:
+  enabled: false
+  brokers: {}
+  sessions:
+    london:
+      name: "london"
+      start_time: "08:00"
+      end_time: "17:00"
+      timezone: "UTC"
+      enabled: true
+
+# Simple Strategy
+strategies:
+  simple_crypto_strategy:
+    strategy_type: "moving_average"
+    enabled: true
+    symbols: ["BTC/USDT", "ETH/USDT"]
+    timeframe: "1h"
+    parameters:
+      fast_period: 10
+      slow_period: 20
+    max_positions: 2
+
+# Conservative Risk Settings
+risk:
+  max_position_size: 0.05  # 5%
+  max_daily_loss: 0.02     # 2%
+  stop_loss_percentage: 0.02
+  max_open_positions: 3
+  position_sizing_method: "fixed_fraction"
+  risk_per_trade: 0.01
+
+# Cross-Market Risk (conservative defaults)
+cross_market_risk:
+  max_total_exposure: 0.5
+  crypto_max_allocation: 0.5
+  forex_max_allocation: 0.1  # Must be > 0
+  max_cross_market_positions: 3
+
+# Basic Compliance
+compliance:
+  enabled: true
+  generate_reports: false
+  audit_trail_enabled: true
+
+# Simple Database
+database:
+  database_type: "sqlite"
+  database_url: "sqlite:///dev_trading_bot.db"
+
+# Development Logging
+logging:
+  log_level: "DEBUG"
+  log_file: "logs/dev_trading_bot.log"

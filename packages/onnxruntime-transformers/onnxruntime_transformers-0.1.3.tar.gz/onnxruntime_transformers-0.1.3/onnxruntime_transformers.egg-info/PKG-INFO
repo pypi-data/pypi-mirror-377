@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: onnxruntime_transformers
+Version: 0.1.3
+Summary: transformers for production runtime, 3x faster on cpu, no pytorch nor tensorflow included
+Home-page: https://github.com/billju/onnxruntime_transformers
+Author: chuboy
+Author-email: billju666@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: tokenizers
+Requires-Dist: onnxruntime
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# onnxruntime_transformers
+transformers for production runtime, 3x faster on cpu, no pytorch nor tensorflow included
+
+## convert models to onnx
+install converter
+`pip install optimum[exporters]`
+
+convert embedding model to onnx
+```bash
+optimum-cli export onnx --task sentence-similarity --model "infgrad/stella-base-zh-v3-1792d" bert_embed
+```
+
+convert sentence correction model to onnx
+```bash
+optimum-cli export onnx --task fill-mask --model "shibing624/macbert4csc-base-chinese" bert_csc
+```
+
+convert ner model to onnx
+```bash
+optimum-cli export onnx --task token-classification --model "shibing624/bert4ner-base-chinese" bert_ner
+```
+
+## inference with onnx
+generate embeddings
+```python
+from onnxruntime_transformers import OnnxruntimeTransformers
+encoder = OnnxruntimeTransformers("./bert_embed/tokenizer.json", "./bert_embed/model.onnx")
+embeddings = encoder.encode([
+    "how are you",
+    "I'm fine thank you, and you?",
+])
+```

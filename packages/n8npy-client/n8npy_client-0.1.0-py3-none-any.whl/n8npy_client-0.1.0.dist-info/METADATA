@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: n8npy-client
+Version: 0.1.0
+Summary: Python client for the n8n Public REST API
+Author: splifter
+License: Sustainable Use License
+Project-URL: Homepage, https://github.com/splifter/n8npy
+Project-URL: Documentation, https://github.com/splifter/n8npy
+Project-URL: Source, https://github.com/splifter/n8npy
+Keywords: n8n,api,client,automation
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.31.0
+Requires-Dist: python-dotenv>=1.0.0
+
+﻿# n8npy-client
+
+Python client for the n8n Public REST API.
+
+## Installation
+```bash
+pip install n8npy-client
+```
+
+## Usage
+```python
+from n8n_api import N8nClient
+
+client = N8nClient()
+print(client.list_workflows(limit=10))
+```
+
+## Development
+See repository documentation for details.

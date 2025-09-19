@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: waypanel
+Version: 0.9.5
+Summary: A Wayfire panel that behaves like a shell
+Home-page: https://github.com/killown/waypanel
+Author: killown
+Author-email: systemofdown@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp==3.10.5
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: netifaces==0.11.0
+Requires-Dist: numpy==2.1.0
+Requires-Dist: psutil==6.0.0
+Requires-Dist: pulsectl==24.4.0
+Requires-Dist: Requests==2.32.3
+Requires-Dist: setuptools==69.5.1
+Requires-Dist: SoundCard==0.4.3
+Requires-Dist: toml==0.10.2
+Requires-Dist: colorama
+Requires-Dist: dbus-next
+Requires-Dist: dbus-fast
+Requires-Dist: wayfire
+Requires-Dist: pygobject-stubs
+Requires-Dist: orjson
+Requires-Dist: cffi
+Requires-Dist: PyGObject
+Requires-Dist: watchdog
+Requires-Dist: pyperclip
+Requires-Dist: aiosqlite
+Requires-Dist: pillow
+Requires-Dist: structlog
+Requires-Dist: rich
+Requires-Dist: cairosvg
+Requires-Dist: unidecode
+Requires-Dist: pygments
+Provides-Extra: dev
+Requires-Dist: pygobject-stubs[Gdk,Gtk4]; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+## waypanel
+
+<img width="1920" height="1080" alt="waypanel" src="https://github.com/user-attachments/assets/4ec4a102-108b-48c3-8f6a-79f5f12947cc" />
+
+https://github.com/user-attachments/assets/af20b2fe-d821-48a8-957f-58733982a2df
+
+##### _GTK4 panel for sway and wayfire_
+
+Waypanel is a lightweight, modular, and highly customizable status panel designed for the Sway and Wayfire. Built with Python and leveraging GTK 4/Adwaita , it mimics a shell-like interface while prioritizing efficiency and extensibility. Supports multiple panels (top, bottom, left, right) with customizable styling. Plugins can append widgets (e.g., system monitors, app launchers) or manage gestures for interactive workflows.
+
+# How to Install `waypanel`
+
+**_Latest Wayfire and Pywayfire is required_**
+
+##### if using wayfire: configure wayfire.ini
+
+Ensure the following plugins are enabled in your ~/.config/wayfire.ini:
+
+[core]
+
+plugins = ipc ipc-rules
+
+##### if using sway:
+
+install https://github.com/killown/pysway
+
+##### Option 1: aur (archlinux)
+
+yay -S waypanel-git
+
+##### Option 2: manual install (archlinux):
+
+pacman -S gtk4-layer-shell gobject-introspection vala playerctl python-gobject wayland-protocols ninja mesa playerctl libadwaita bluez-tools
+
+## Installing `waypanel` from github Source
+
+### Clone the repository and run waypanel.sh
+
+    git clone https://github.com/killown/waypanel.git
+    cd waypanel
+    sh waypanel.sh # This will set up the venv automatically and run the panel
+
+### Theme Compatibility
+
+yay -S gruvbox-plus-icon-theme-git
+
+gsettings set org.gnome.desktop.interface icon-theme 'Gruvbox-Plus-Dark'
+
+## License
+
+waypanel is licensed under the MIT license. [See LICENSE for more information](https://github.com/killown/waypanel/blob/main/LICENSE).

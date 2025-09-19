@@ -1,0 +1,66 @@
+{
+    "type": "object",
+    "properties":
+    {
+        "invoice_total":
+        {
+            "type": "number",
+            "description": "The invoice total amount, followed by text GROSS TOTAL DUE:"
+        },
+        "line_items":
+        {
+            "type": "array",
+            "description": "List of individual line items included in the invoice.",
+            "items":
+            {
+                "type": "object",
+                "properties":
+                {
+                    "location":
+                    {
+                        "type": "string",
+                        "description": "Location Name"
+                    },
+                    "volume":
+                    {
+                        "type": "number",
+                        "description": "Volumes"
+                    },
+                    "price":
+                    {
+                        "type": "number",
+                        "description": "Price"
+                    },
+                    "amount":
+                    {
+                        "type": "number",
+                        "description": "Amount Value"
+                    },
+                    "buy_sell":
+                    {
+                        "type": "string",
+                        "enum":
+                        [
+                            "Buy",
+                            "Sell"
+                        ],
+                        "description": "Indicates whether this is a buy or sell transaction"
+                    }
+                },
+                "required":
+                [
+                    "location",
+                    "volume",
+                    "price",
+                    "amount",
+                    "buy_sell"
+                ]
+            }
+        }
+    },
+    "required":
+    [
+        "invoiceTotal",
+        "lineItems"
+    ]
+}

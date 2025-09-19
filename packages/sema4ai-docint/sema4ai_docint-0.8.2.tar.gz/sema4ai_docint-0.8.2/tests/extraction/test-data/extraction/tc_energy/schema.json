@@ -1,0 +1,96 @@
+{
+    "type": "object",
+    "properties": {
+        "invoice_number": {
+            "type": "string",
+            "description": "Invoice identifier, e.g. '65380'"
+        },
+        "invoice_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the invoice was issued"
+        },
+        "due_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Payment due date"
+        },
+        "billing_period": {
+            "type": "string",
+            "description": "The billing month, e.g. 'Dec-24'"
+        },
+        "line_items": {
+            "type": "array",
+            "description" : "Make sure to extract all the line items",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "pipeline": {
+                        "type": "string",
+                        "description": "The pipeline through which the transaction is processed or executed. The pipeline is mentioned in Trade Date / Flow Period / Price Information column."
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "Refer to the Location column and extract the full location name exactly as it appears in the document. Be sure to capture the entire location text, including any descriptive words or segments that may be split across multiple lines. Ensure all related parts are grouped together as a single location name."
+                    },
+                    "meter": {
+                        "type": "string"
+                    },
+                    "deal_number": {
+                        "type": "string",
+                        "description": "The deal number of the transaction'"
+                    },
+                    "volume": {
+                        "type": "number",
+                        "description": "The volume of items or units involved in the transaction."
+                    },
+                    "volume_unit": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "The price per unit involved in the transaction."
+                    },
+                    "price_unit": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "The invoice amount involved in the transaction. If the amount is put in parenthesis, it means that the amount is negative."
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "buy_sell": {
+                        "type": "string",
+                        "enum": [
+                            "Buy",
+                            "Sell"
+                        ],
+                        "description": "Buy/Sell indicator e.g Buy or Sell"
+                    }
+                },
+                "required": [
+                    "pipeline",
+                    "location",
+                    "deal_number",
+                    "volume",
+                    "price",
+                    "amount",
+                    "buy_sell"
+                ]
+            }
+        },
+        "invoice_total": {
+            "type": "number",
+            "description": "Total amount due to TC Energy Marketing Inc. If the amount is put in parenthesis, it means that the amount is negative."
+        }
+    },
+    "required": [
+        "invoice_number",
+        "invoice_date",
+        "due_date",
+        "line_items",
+        "invoice_total"
+    ]
+}

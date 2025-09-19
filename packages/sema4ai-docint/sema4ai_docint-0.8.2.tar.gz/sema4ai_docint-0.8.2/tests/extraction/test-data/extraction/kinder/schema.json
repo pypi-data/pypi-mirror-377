@@ -1,0 +1,77 @@
+{
+  "type": "object",
+  "properties": {
+    "statement_number": {
+      "type": "string",
+      "description": "Unique identifier for the statement"
+    },
+    "statement_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date the statement was issued"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "Deal number extracted from the POINT NBR column. It must be numeric only (e.g., '40555', not '40555 - FRANCEY1')."
+          },
+          "gas_day": {
+            "type": "string",
+            "description": "Gas day is the date of the line item transaction. Date is mentioned as date range in TRAN DATES column. Month and year are mentioned in the subheader row."
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": ["Buy", "Sell"],
+            "description": "Buy or sell, can be detected in the subheader as Purchase from KOCH ENERGY SERVICES or Sale to KOCH ENERGY SERVICES"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "Pipeline is the name of the pipeline, it is in the subheader"
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the transaction, given by QUANTITY MMBTU column."
+          },
+          "quantity_mcf": {
+            "type": "number",
+            "description": "Quantity in MCF, given by QUANTITY MCF column."
+          },
+          "price": {
+            "type": "number",
+            "description": "Unit price in USD"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of the transaction. The sign bit of the amount is flipped if the buy_sell is Buy, i.e. if Buy is given as positive, make sure to make it negative."
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction description, found in the DESCRIPTION column. Do not mix with NAME column."
+          },
+          "location": {
+            "type": "string",
+            "description": "Transaction hub or pool location, it is in NAME column"
+          }
+        },
+        "required": ["deal_number", "gas_day", "buy_sell", "pipeline", "volume", "price", "amount", "location", "description"]
+      }
+    },
+    "invoice_subtotal": {
+      "type": "number",
+      "description": "SubTotal of the invoice, followed by 'Subtotal Due KOCH ENERGY SERVICES, LLC/(KINDER MORGAN TEXAS PIPELINE LLC)'"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total of the invoice, followed by 'Total Due to KINDER MORGAN TEXAS PIPELINE LLC/KOCH ENERGY SERVICES, LLC'. If KOCH ENERGY SERVICES, LLC is in parantheses then the total should be positive, e.g. 'Total Due to KINDER MORGAN TEXAS PIPELINE LLC/(KOCH ENERGY SERVICES, LLC)',  else if KINDER MORGAN TEXAS PIPELINE LLC is in parantheses then the total should be negative, e.g. 'Total Due to (KINDER MORGAN TEXAS PIPELINE LLC)/KOCH ENERGY SERVICES, LLC'."
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "Method of payment"
+    }
+  },
+  "required": ["line_items", "invoice_total","invoice_subtotal"]
+}

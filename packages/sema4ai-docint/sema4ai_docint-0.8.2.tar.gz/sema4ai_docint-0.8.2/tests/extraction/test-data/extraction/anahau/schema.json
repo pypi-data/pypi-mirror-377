@@ -1,0 +1,75 @@
+{
+    "type": "object",
+    "properties": {
+        "invoiceNumber": {
+            "type": "string",
+            "description": "Unique invoice identifier"
+        },
+        "invoiceDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the invoice was issued"
+        },
+        "dueDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when payment is due"
+        },
+        "transactions": {
+            "type": "array",
+            "description": "List of individual transaction line items",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "projectName": {
+                        "type": "string",
+                        "description": "Name or label for the project"
+                    },
+                    "transactionType": {
+                        "type": "string",
+                        "enum": ["Sell", "Buy"],
+                        "description": "Type of transaction (e.g., Sell, Buy)"
+                    },
+                    "referenceId": {
+                        "type": "string",
+                        "description": "Internal reference number for transaction"
+                    },
+                    "startDate": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Start date of delivery period"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "End date of delivery period"
+                    },
+                    "pipeline": {
+                        "type": "string",
+                        "description": "Pipeline used for delivery"
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "Delivery location or hub name"
+                    },
+                    "quantityMMBTU": {
+                        "type": "number",
+                        "description": "Quantity of gas in MMBTU"
+                    },
+                    "pricePerMMBTU": {
+                        "type": "number",
+                        "description": "Price per MMBTU in USD"
+                    },
+                    "amountUSD": {
+                        "type": "number",
+                        "description": "Total dollar amount for the transaction"
+                    }
+                }
+            }
+        },
+        "netAmount": {
+            "type": "number",
+            "description": "Total net amount due in USD"
+        }
+    }
+}

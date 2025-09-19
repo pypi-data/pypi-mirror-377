@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+      "capacityTables": {
+      "type": "array",
+      "items": {
+          "type": "object",
+          "properties": {
+          "title": {
+              "type": "string",
+              "description": "Descriptive title of the capacity table"
+          },
+          "units": {
+              "type": "string",
+              "enum": ["US", "Metric"]
+          },
+          "overpressurePercent": {
+              "type": "number",
+              "enum": [10, 25]
+          },
+          "code": {
+              "type": "string",
+              "enum": ["ASME", "Non-Code"]
+          },
+          "valveSeries": {
+              "type": "string"
+          },
+          "data": {
+              "type": "array",
+              "items": {
+              "type": "object",
+              "properties": {
+                  "orifice": {
+                  "type": "string"
+                  },
+                  "setPressure": {
+                  "type": "number"
+                  },
+                  "capacity": {
+                  "type": "number"
+                  },
+                  "unit": {
+                  "type": "string"
+                  }
+              },
+              "required": ["orifice", "setPressure", "capacity", "unit"]
+              }
+          }
+          },
+          "required": ["title", "units", "overpressurePercent", "code", "valveSeries", "data"]
+      }
+      }
+  },
+  "required": ["capacityTables"]
+}

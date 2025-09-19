@@ -1,0 +1,100 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": "string" },
+    "invoice_date": { "type": "string", "format": "date" },
+    "due_date": { "type": "string", "format": "date" },
+    "delivery_period": { "type": "string" },
+    "buyer": { "type": "string" },
+    "seller": { "type": "string" },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found at the bottom follow by Amount due from Mercuria Energy America, LLC. It is negative if enclosed in parenthesis"
+    },
+    "buy_volume_total": { "type": "number" },
+    "sell_volume_total": { "type": "number" },
+    "net_amount_due": { "type": "number" },
+    "line_items": {
+      "type": "array",
+      "description": "Extract all line items from the full document table. DO NOT SKIP ANY ROWS. The table spans across multiple pages. Repeating headers such as 'Deal Num', 'Trade Date', etc., may appear on each new page and should be ignored. Continue extracting all valid line items until the end of the document, even if a new pipeline or page begins.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": ["buy", "sell"],
+            "description": "The type of transaction, can be found in the sub header"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline involved in the transaction, can be found in the sub header"
+          },
+          "charge_type": { 
+            "type": "string",
+            "description": "The charge type of the transaction, can be found in the sub header"
+          },
+          "location": {
+            "type": "string",
+            "description": "The location of the transaction"
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction, it is in Trade Date column"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the transaction, it is in Start Date column"
+          },
+          "end_date": { 
+            "type": "string", 
+            "format": "date",
+            "description": "The end date of the transaction, it is in End Date column"
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of the transaction, it is negative if enclosed in parenthesis"
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit involved in the transaction."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount involved in the transaction. it is negative if enclosed in parenthesis"
+          },
+          "price_type": { 
+            "type": "string", 
+            "enum": ["fixed", "index"],
+            "description": "The type of price of the transaction, can be found in the sub header"
+          },
+          "price_index": { 
+            "type": "string", 
+            "description": "The index of the price of the transaction, it is in Price Index column and it may be null"
+          }
+        },
+        "required": [
+          "deal_number",
+          "buy_sell",
+          "pipeline",
+          "location",
+          "volume",
+          "price",
+          "amount",
+          "gas_day",
+          "price_index",
+          "price_type",
+          "start_date",
+          "end_date",
+          "charge_type"
+        ]
+      }
+    }
+  },
+  "required": ["invoice_total", "line_items"]
+}

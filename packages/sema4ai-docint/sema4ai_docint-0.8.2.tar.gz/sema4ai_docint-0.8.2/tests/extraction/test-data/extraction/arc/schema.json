@@ -1,0 +1,112 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_id": {
+      "type": "string"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "seller": {
+      "type": "string"
+    },
+    "buyer": {
+      "type": "string"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal, exactly as shown, including spaces, e.g. '59930 / 60790'."
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction"
+          },
+          "flow_period_start": {
+            "type": "string",
+            "format": "date",
+            "description": "The first date in the 'Flow Period', separated by a tilde"
+          },
+          "flow_period_end": {
+            "type": "string",
+            "format": "date",
+            "description": "The second date in the 'Flow Period', separated by a tilde"
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of items or units involved in the transaction. If the number is in parentheses, it means the amount is negative."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit involved in the transaction."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The invoice amount involved in the transaction. If the amount is put in parenthesis, it means that the amount is negative."
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline through which the transaction is processed or executed. The pipeline is mentioned in Trade Date / Flow Period / Price Information column."
+          },
+          "buy_sell": {
+            "type": "string",
+            "description": "Buy/Sell indicator, is a part of sub header e.g Buy or Sell"
+          }
+        },
+        "required": [
+          "deal_number",
+          "pipeline",
+          "buy_sell",
+          "gas_day",
+          "volume",
+          "price",
+          "amount"
+        ]
+      }
+    },
+    "total_volume": {
+      "type": "number"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found at the bottom follow by Total Due To ARC Resources"
+    },
+    "bank_details": {
+      "type": "object",
+      "properties": {
+        "beneficiary_bank": {
+          "type": "string"
+        },
+        "intermediary_bank": {
+          "type": "string"
+        },
+        "swift_code": {
+          "type": "string"
+        },
+        "account_number": {
+          "type": "string"
+        },
+        "routing_number": {
+          "type": "string"
+        }
+      }
+    },
+    "tax_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "line_items",
+    "invoice_total"
+  ]
+}

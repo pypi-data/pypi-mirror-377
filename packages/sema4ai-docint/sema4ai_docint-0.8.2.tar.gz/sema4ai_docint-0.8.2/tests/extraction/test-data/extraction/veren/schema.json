@@ -1,0 +1,65 @@
+{
+    "type": "object",
+    "properties": {
+        "line_items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "deal_number": {
+                        "type": "string",
+                        "description": "Deal number of the transaction"
+                    },
+                    "buy_sell": {
+                        "type": "string",
+                        "enum": [
+                            "Buy",
+                            "Sell"
+                        ],
+                        "description": "Buy or Sell of the transaction, it is in Trade Type column"
+                    },
+                    "gas_day": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Delivery date of the transaction"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "pipeline": {
+                        "type": "string",
+                        "description": "Pipeline of the transaction, it is in description column"
+                    },
+                    "volume": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "The monetary amount involved in the transaction, it is negative for Buy and positive for Sell"
+                    }
+                },
+                "required": [
+                    "deal_number",
+                    "buy_sell",
+                    "gas_day",
+                    "location",
+                    "pipeline",
+                    "volume",
+                    "price",
+                    "amount"
+                ]
+            }
+        },
+        "invoice_total": {
+            "type": "number",
+            "description": "Total amount of the invoice, can be found at end of the document follow by Total Payable to Veren U.S. Corp. in US Funds. If the amount is in paranthesis, it is a negative amount."
+        }
+    },
+    "required": [
+        "line_items",
+        "invoice_total"
+    ]
+}

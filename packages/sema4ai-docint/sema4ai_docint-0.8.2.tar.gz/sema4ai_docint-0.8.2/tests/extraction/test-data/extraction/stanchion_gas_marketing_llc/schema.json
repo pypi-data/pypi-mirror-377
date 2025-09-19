@@ -1,0 +1,142 @@
+{
+  "type": "object",
+  "required": [
+    "Invoice_details",
+    "Buyer",
+    "Seller",
+    "Transactions",
+    "Bank_details"
+  ],
+  "properties": {
+    "Buyer": {
+      "type": "object",
+      "required": [
+        "name",
+        "email"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the buyer as shown in the invoice."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email of the buyer as shown in the invoice."
+        }
+      }
+    },
+    "Seller": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the seller as shown in the invoice."
+        }
+      }
+    },
+    "Transactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "deal_id",
+          "location",
+          "date",
+          "price",
+          "volume",
+          "amount"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ],
+            "description": "Transaction type, inferred from 'Gas Purchases' (Buy) or 'Gas Sales' (Sell)."
+          },
+          "deal_id": {
+            "type": "string",
+            "description": "The deal ID of the transaction. Repeat the deal ID for every daily line item under that deal."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location of the transaction. Repeat the same location for every daily line item under the same deal."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The specific daily transaction date. Every row with a date must be extracted, even if multiple rows exist for the same deal."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit ($/MMBtu) for that daily row."
+          },
+          "volume": {
+            "type": "number",
+            "description": "The daily transaction volume (MMBtu), not deal totals. Preserve the sign as it appears, whether positive or negative."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The daily transaction amount in dollars, not roll-up totals. Preserve the sign as it appears, whether positive or negative."
+          }
+        }
+      }
+    },
+    "Invoice_details": {
+      "type": "object",
+      "required": [
+        "invoice_number",
+        "invoice_date",
+        "due_date",
+        "invoice_total"
+      ],
+      "properties": {
+        "invoice_number": {
+          "type": "string",
+          "description": "The invoice number."
+        },
+        "invoice_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date when the invoice was issued."
+        },
+        "due_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The due date of the invoice."
+        },
+        "invoice_total": {
+          "type": "number",
+          "description": "The total amount due for the invoice. It is negative if enclosed in parenthesis."
+        }
+      }
+    },
+    "Bank_details": {
+      "type": "object",
+      "required": [
+        "bank_name",
+        "aba_number",
+        "account_number"
+      ],
+      "properties": {
+        "bank_name": {
+          "type": "string",
+          "description": "The name of the bank for wire instructions."
+        },
+        "aba_number": {
+          "type": "string",
+          "description": "The ABA routing number."
+        },
+        "account_number": {
+          "type": "string",
+          "description": "The account number for payment."
+        }
+      }
+    }
+  }
+}

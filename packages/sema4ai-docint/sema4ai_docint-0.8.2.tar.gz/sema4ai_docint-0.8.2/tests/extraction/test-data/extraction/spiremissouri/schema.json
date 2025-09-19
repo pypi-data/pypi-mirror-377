@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "delivery_period": {
+      "type": "string"
+    },
+    "seller": {
+      "type": "string"
+    },
+    "buyer": {
+      "type": "string"
+    },
+    "total_quantity_mmbtu": {
+      "type": "number"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total Net Invoice"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string"
+          },
+          "pipeline": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "volume": {
+            "type": "number"
+          },
+          "gas_day": {
+            "type": "string",
+            "description": "Gas day is the date of the transaction, it is mentioned as date range in Start/End Dates column"
+          },
+          "price": {
+            "type": "number"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ],
+            "description": "Buy/Sell indicator, can be inferred from Purchase/Sales"
+          }
+        },
+        "required": [
+          "deal_number",
+          "pipeline",
+          "location",
+          "amount",
+          "volume",
+          "gas_day",
+          "price",
+          "buy_sell"
+        ]
+      }
+    },
+    "pipeline_totals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pipeline": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "volume": {
+            "type": "number"
+          },
+          "amount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "pipeline",
+          "location",
+          "volume",
+          "amount"
+        ]
+      }
+    }
+  },
+  "required": [
+    "invoice_number",
+    "invoice_date",
+    "due_date",
+    "delivery_period",
+    "seller",
+    "buyer",
+    "total_quantity_mmbtu",
+    "invoice_total",
+    "line_items",
+    "pipeline_totals"
+  ]
+}

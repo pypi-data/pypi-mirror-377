@@ -1,0 +1,96 @@
+{
+  "description": "Schema for Eco-Energy Natural Gas netting statement with transactions flattened to individual trade lines.",
+  "type": "object",
+  "properties": {
+    "agency": {
+      "type": "string",
+      "const": "Eco-Energy Natural Gas LLC",
+      "description": "Issuing agency of the netting statement"
+    },
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Invoice number from the netting statement"
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of invoice issuance"
+    },
+    "dueDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Payment due date"
+    },
+    "deliveryPeriod": {
+      "type": "string",
+      "description": "Month and year for which the trades apply (e.g., February 2025)"
+    },
+    "netAmount": {
+      "type": "number",
+      "description": "Net amount owed, negative if payable to Eco-Energy"
+    },
+    "counterparty": {
+      "type": "string",
+      "description": "The trading counterparty entity"
+    },
+    "transactions": {
+      "type": "array",
+      "description": "List of individual trades including context and financial data",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["purchase", "sale"],
+            "description": "Transaction type indicating purchase or sale. Determined by the table header above the rows, 'Purchases' or 'Sales'"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "Pipeline associated with the trade"
+          },
+          "point": {
+            "type": "string",
+            "description": "Location or pool for the trade"
+          },
+          "tradeId": {
+            "type": "string",
+            "description": "Unique trade identifier"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Start date of the delivery window"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "End date of the delivery window"
+          },
+          "avgPrice": {
+            "type": "number",
+            "description": "Effective price per unit (MMBtu)"
+          },
+          "volume": {
+            "type": "integer",
+            "description": "Volume of gas transacted in MMBtu"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Total dollar amount of the transaction"
+          }
+        },
+        "required": ["type", "pipeline", "point", "tradeId", "startDate", "endDate", "avgPrice", "volume", "amount"]
+      }
+    }
+  },
+  "required": [
+    "agency",
+    "invoiceNumber",
+    "invoiceDate",
+    "dueDate",
+    "deliveryPeriod",
+    "netAmount",
+    "counterparty",
+    "transactions"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "properties": {
+    "totalAmount": {
+      "type": "number",
+      "description": "The total amount for the invoice, typically found near 'Amount Due:'. If wrapped in parentheses, treat as negative."
+    },
+    "transactions": {
+      "type": "array",
+      "description": "Extract all valid transaction rows. The 'chargeType' is determined solely based on the nearest section header: 'Sales to Koch Energy Services, LLC' means 'Sell'; 'Purchases from Koch Energy Services, LLC' means 'Buy'. This rule applies to all rows until a new header appears.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Extracted from the 'Amount' column. If chargeType is 'Buy', this value must be negative. If chargeType is 'Sell', it must be positive — regardless of how it is displayed. Do not infer charge type from the sign of the number."
+          },
+          "chargeType": {
+            "type": "string",
+            "enum": [
+              "Buy",
+              "Sell"
+            ],
+            "description": "Determined by the section header. Use 'Buy' only if the row appears under the heading 'Purchases from Koch Energy Services, LLC'. Use 'Sell' only if under 'Sales to Koch Energy Services, LLC'. This rule applies to all rows until another header appears."
+          },
+          "dealId": {
+            "type": "string",
+            "description": "Unique identifier for the transaction."
+          },
+          "location": {
+            "type": "string",
+            "description": "Transaction point name and meter info (e.g. 'Z3 Rec : REX Z3 Rec')."
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "Extract the pipeline name from the 'Pipeline:' label that appears above the line items."
+          },
+          "price": {
+            "type": "number",
+            "description": "Price per MMBtu in USD."
+          },
+          "tradeDateStart": {
+            "type": "string",
+            "format": "date",
+            "description": "Start of the transaction range, formatted as YYYY-MM-DD."
+          },
+          "tradeDateEnd": {
+            "type": "string",
+            "format": "date",
+            "description": "End of the transaction range, formatted as YYYY-MM-DD."
+          },
+          "volume": {
+            "type": "number",
+            "description": "Total transaction volume in MMBtu for the row."
+          }
+        },
+        "required": [
+          "amount",
+          "chargeType",
+          "dealId",
+          "location",
+          "pipeline",
+          "price",
+          "tradeDateStart",
+          "tradeDateEnd",
+          "volume"
+        ]
+      }
+    }
+  },
+  "required": [
+    "totalAmount",
+    "transactions"
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": "string" },
+    "statement_date": { "type": "string", "format": "date" },
+    "due_date": { "type": "string", "format": "date" },
+    "buyer": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "address": { "type": "string", "description": "Address of the buyer, may span multiple lines." }
+      },
+      "description": "Buyer information. Found in top-left of document on first page.",
+      "required": ["name", "address"]
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "buy_sell": {
+            "type": "string",
+            "enum": ["Sell", "Buy"],
+            "description": "Buy/Sell indicator, is a part of sub header e.g Buy or Sell"
+          },
+          "Deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal. this is mentioned in Apollo ID column"
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction"
+          },
+          "instrument": { "type": "string" },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount involved in the transaction. If the number is wrapped in parentheses, it means the amount is negative."
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of the transaction. If the number is wrapped in parentheses, it means the volume is negative."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit involved in the transaction. If the number is wrapped in parentheses, it means the price is negative."
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency of the transaction."
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline through which the transaction is processed or executed. The pipeline is mentioned in Pipe column."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location of the transaction. this is mention in Point column"
+          }
+        },
+        "required": [
+          "pipeline",
+          "location",
+          "amount",
+          "volume",
+          "price",
+          "deal_number",
+          "gas_day",
+          "buy_sell"
+        ]
+      },
+      "description": "Line items of the invoice. This is the main table of the invoice. This table is split across multiple pages. Ignore the inner sub total table rows, but don't skip other rows."
+    },
+    "total_purchase_volume": { "type": "number", "description": "Total purchase volume at bottom of document. If the number is wrapped in parentheses, it means the volume is negative." },
+    "total_purchase_amount": { "type": "number", "description": "Total purchase amount at bottom of document. If the number is wrapped in parentheses, it means the volume is negative."  },
+    "total_sale_volume": { "type": "number", "description": "Total sale volume at bottom of document. If the number is wrapped in parentheses, it means the volume is negative."  },
+    "total_sale_amount": { "type": "number", "description": "Total sale volume at bottom of document. If the number is wrapped in parentheses, it means the volume is negative."  },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found at the bottom follow by Total Due From NRG BUSINESS MARKETING LLC"
+    }
+  },
+  "required": ["line_items", "invoice_total"]
+}

@@ -1,0 +1,173 @@
+{
+    "type": "object",
+    "properties": {
+        "invoiceNumber": {
+            "type": "string",
+            "description": "Invoice reference number"
+        },
+        "invoiceDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the invoice was issued"
+        },
+        "dueDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date by which payment is due"
+        },
+        "productionMonth": {
+            "type": "string",
+            "description": "Production month for the natural gas"
+        },
+        "customer": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "address"
+            ]
+        },
+        "line_items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "pipeline": {
+                        "type": "string",
+                        "description": "The pipeline through which the transaction is processed or executed. The pipeline is mentioned in Facility column."
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "gas_day": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Start Date of the transaction"
+                    },
+                    "volume": {
+                        "type": "number",
+                        "description": "The volume of items or units involved in the transaction."
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "The price per unit involved in the transaction."
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "The invoice amount involved in the transaction"
+                    }
+                },
+                "required": [
+                    "pipeline",
+                    "description",
+                    "gas_day",
+                    "volume",
+                    "price",
+                    "amount"
+                ]
+            }
+        },
+        "invoiceDetails": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "facility": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "productionMonth": {
+                        "type": "string"
+                    },
+                    "dailyData": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "day": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 31
+                                },
+                                "volume": {
+                                    "type": "number"
+                                },
+                                "price": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "day",
+                                "volume",
+                                "price"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "facility",
+                    "description",
+                    "productionMonth",
+                    "dailyData"
+                ]
+            }
+        },
+        "invoice_total": {
+            "type": "number",
+            "description": "Total amount of the invoice, can be found at the page bottom follow by Invoice Totals"
+        },
+        "paymentInstructions": {
+            "type": "object",
+            "properties": {
+                "bankName": {
+                    "type": "string"
+                },
+                "aba": {
+                    "type": "string"
+                },
+                "accountName": {
+                    "type": "string"
+                },
+                "accountNumber": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                }
+            },
+            "required": [
+                "bankName",
+                "aba",
+                "accountName",
+                "accountNumber"
+            ]
+        }
+    },
+    "required": [
+        "invoiceNumber",
+        "invoiceDate",
+        "dueDate",
+        "productionMonth",
+        "customer",
+        "line_items",
+        "invoiceDetails",
+        "totalAmount"
+    ]
+}

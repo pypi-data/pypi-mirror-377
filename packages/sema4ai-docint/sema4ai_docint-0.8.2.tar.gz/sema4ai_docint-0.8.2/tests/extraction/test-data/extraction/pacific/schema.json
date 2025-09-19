@@ -1,0 +1,76 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_id": { "type": "string" },
+    "invoice_date": { "type": "string", "format": "date" },
+    "due_date": { "type": "string", "format": "date" },
+    "vendor": { "type": "string" },
+    "buyer": { "type": "string" },
+    "delivery_month": { "type": "string" },
+    "invoice_total": { "type": "number", "description": "if the number is wrapped in parentheses, the number should be negative" },
+    "total_quantity_mmbtu": { "type": "number" },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal"
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "The date of the transaction"
+          },
+          "buy_sell": {
+            "type": "string",
+            "enum": ["Buy", "Sell"],
+            "description": "The type of transaction, can be found in side column"
+          },
+          "start_date": { "type": "string", "format": "date", "description": "the start day is given for the invoice delivery month and year" },
+          "end_date": { "type": "string", "format": "date", "description": "the end day is given for the invoice delivery month and year" },
+          "pipeline": { "type": "string", "description": "Extract only the actual pipeline name from the Pipeline column. Ignore summary lines like 'TETCO Total', 'GTN Total', or any line ending in 'Total'. Do not combine with adjacent lines or subtotals"},
+          "location": {
+            "type": "string",
+            "description": "The location of the transaction, can be found in the Physical Point column"
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of the transaction"
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit involved in the transaction."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount involved in the transaction, If the amount is put in parenthesis, it means that the amount is negative."
+          }
+        },
+        "required": [
+          "deal_number",
+          "gas_day",
+          "buy_sell",
+          "pipeline",
+          "location",
+          "volume",
+          "price",
+          "amount",
+          "start_date",
+          "end_date"
+        ],
+        "description": "The may be sub-totals present in between the line items, but do not include sub-totals in the line items array"
+      }
+    },
+    "bank_instructions": {
+      "type": "object",
+      "properties": {
+        "wire_transfer": { "type": "string" },
+        "ach_transfer": { "type": "string" },
+        "mail_address": { "type": "string" }
+      }
+    }
+  },
+  "required": ["invoice_total", "line_items", "total_quantity_mmbtu"]
+}

@@ -1,0 +1,118 @@
+{
+    "type": "object",
+    "required": [
+      "account_name",
+      "invoice_number",
+      "production_month",
+      "master_contract",
+      "company",
+      "invoice_total",
+      "line_items",
+      "bank_info",
+      "remittance_address"
+    ],
+    "properties": {
+      "company": {
+        "type": "string"
+      },
+      "bank_info": {
+        "type": "object",
+        "required": [
+          "bank_name",
+          "account_number",
+          "aba_number"
+        ],
+        "properties": {
+          "bank_name": {
+            "type": "string"
+          },
+          "aba_number": {
+            "type": "string"
+          },
+          "account_number": {
+            "type": "string"
+          }
+        }
+      },
+      "line_items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "location",
+            "gas_day",
+            "volume",
+            "price",
+            "amount",
+            "deal_number"
+          ],
+          "properties": {
+            "price": {
+              "type": "number",
+              "description": "It is the price of gas sold, it is in {MMBtu}Price column"
+            },
+            "amount": {
+              "type": "number",
+              "description": "It is the amount of gas sold, it is in Total Sales column"
+            },
+            "volume": {
+              "type": "number",
+              "description": "It is the volume of gas sold, it is in the Daily Nom column"
+            },
+            "gas_day": {
+              "type": "string",
+              "format": "date",
+              "description": "It is the day on which trade was executed, it is in column Sales Date. Infer the month and year from earlier in the column"
+            },
+            "location": {
+              "type": "string",
+              "description": "Can be found and inferred from the Sales Point column. Ignore the numbers"
+            },
+            "deal_number": {
+              "type": "string",
+              "description": "It is the deal id for particular transaction, it may or may not be unique"
+            }
+          }
+        },
+        "description": "Make sure to include every single line in the table"
+      },
+      "account_name": {
+        "type": "string"
+      },
+      "invoice_total": {
+        "type": "number"
+      },
+      "invoice_number": {
+        "type": "string"
+      },
+      "master_contract": {
+        "type": "string"
+      },
+      "production_month": {
+        "type": "string"
+      },
+      "remittance_address": {
+        "type": "object",
+        "required": [
+          "recipient",
+          "department",
+          "po_box",
+          "city_state_zip"
+        ],
+        "properties": {
+          "po_box": {
+            "type": "string"
+          },
+          "recipient": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "city_state_zip": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }

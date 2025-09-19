@@ -1,0 +1,155 @@
+{
+    "type": "object",
+    "required": [
+        "Invoice_details",
+        "Buyer",
+        "Seller",
+        "Transactions"
+    ],
+    "properties": {
+        "Buyer": {
+            "type": "object",
+            "required": [
+                "name",
+                "address",
+                "email"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The buyer's name as shown in the Bill To section"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The buyer's email address as provided"
+                },
+                "address": {
+                    "type": "string",
+                    "description": "The buyer's address as displayed in the Bill To section"
+                }
+            }
+        },
+        "Seller": {
+            "type": "object",
+            "required": [
+                "name",
+                "address",
+                "email"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The seller's name as shown in the document header"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The seller's email as shown on the document"
+                },
+                "address": {
+                    "type": "string",
+                    "description": "The seller's address as provided in the document header"
+                }
+            }
+        },
+        "Transactions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "deal_date",
+                    "type",
+                    "amount",
+                    "price",
+                    "volume",
+                    "pipeline",
+                    "location",
+                    "deal_id",
+                    "start_date",
+                    "end_date"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "Transaction type (PURCHASE or SALES)",
+                        "enum": ["PURCHASE", "SALES"]
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "Price per unit in the transaction"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "Total amount for the transaction"
+                    },
+                    "volume": {
+                        "type": "number",
+                        "description": "Volume in MMBTU for the transaction"
+                    },
+                    "deal_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the deal"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "End date of the transaction period"
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "Transaction location or description"
+                    },
+                    "pipeline": {
+                        "type": "string",
+                        "description": "Name of the pipeline involved in the transaction. Make sure to extract the complete pipeline name."
+                    },
+                    "deal_date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Date when the deal was made"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Start date of the transaction period"
+                    }
+                }
+            }
+        },
+        "Invoice_details": {
+            "type": "object",
+            "required": [
+                "invoice_number",
+                "invoice_total",
+                "invoice_date",
+                "due_date",
+                "billing_period"
+            ],
+            "properties": {
+                "due_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The due date for invoice payment"
+                },
+                "invoice_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The date when the invoice was issued"
+                },
+                "invoice_total": {
+                    "type": "number",
+                    "description": "Total payable amount on the invoice. Mentioned besides label 'ExxonMobil Oil Corporation is due to RECEIVE the following net amount:'."
+                },
+                "billing_period": {
+                    "type": "string",
+                    "description": "Billing period for the invoice"
+                },
+                "invoice_number": {
+                    "type": "string",
+                    "description": "Unique number identifying the invoice"
+                }
+            }
+        }
+    }
+}

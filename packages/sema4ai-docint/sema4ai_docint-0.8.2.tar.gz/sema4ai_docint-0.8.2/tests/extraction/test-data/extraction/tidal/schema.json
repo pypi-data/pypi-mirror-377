@@ -1,0 +1,94 @@
+{
+    "type": "object",
+    "properties": {
+        "buyer": {
+            "type": "string"
+        },
+        "seller": {
+            "type": "string"
+        },
+        "contact_email": {
+            "type": "string",
+            "format": "email"
+        },
+        "bank_details": {
+            "type": "object",
+            "properties": {
+                "bank_name": {
+                    "type": "string"
+                },
+                "account_number": {
+                    "type": "string"
+                },
+                "aba_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "line_items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "buy_sell": {
+                        "type": "string",
+                        "enum": [
+                            "Buy",
+                            "Sell"
+                        ],
+                        "description": "Buy/Sell indicator"
+                    },
+                    "deal_number": {
+                        "type": "string",
+                        "description": "The unique identifier for the deal."
+                    },
+                    "volume": {
+                        "type": "number",
+                        "description": "The volume of the transaction. If it is in parenthesis, it means it is a negative value."
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "The price per unit involved in the transaction."
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "The invoice amount involved in the transaction. If the amount is put in parenthesis, it means that the amount is negative."
+                    },
+                    "pipeline": {
+                        "type": "string",
+                        "description": "The pipeline through which the transaction is processed or executed."
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "The geographical location of the transaction, which is mentioned at Point column"
+                    },
+                    "delivery_or_receipt": {
+                        "type": "string",
+                        "enum": [
+                            "Del",
+                            "Rec"
+                        ]
+                    }
+                },
+                "required": [
+                    "pipeline",
+                    "location",
+                    "deal_number",
+                    "volume",
+                    "price",
+                    "amount",
+                    "buy_sell",
+                    "delivery_or_receipt"
+                ]
+            }
+        },
+        "invoice_total": {
+            "type": "number",
+            "description": "Total amount of the invoice, it is followed by Subtotal: in the document. If it is in parenthesis, it means it is a negative value."
+        }
+    },
+    "required": [
+        "line_items",
+        "invoice_total"
+    ]
+}

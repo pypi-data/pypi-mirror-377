@@ -1,0 +1,113 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "payment_due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "payment_method": {
+      "type": "string"
+    },
+    "production_month": {
+      "type": "string"
+    },
+    "seller": {
+      "type": "string"
+    },
+    "buyer": {
+      "type": "string"
+    },
+    "total_quantity_mmbtu": {
+      "type": "number"
+    },
+    "invoice_total": {
+      "type": "number",
+      "description": "Total amount of the invoice, can be found at the top follow by TOTAL AMOUNT DUE"
+    },
+    "payment_instructions": {
+      "type": "object",
+      "properties": {
+        "bank_name": {
+          "type": "string"
+        },
+        "account_number": {
+          "type": "string"
+        },
+        "ach_routing": {
+          "type": "string"
+        },
+        "wire_routing": {
+          "type": "string"
+        },
+        "check_remit_address": {
+          "type": "string"
+        }
+      }
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deal_number": {
+            "type": "string",
+            "description": "The unique identifier for the deal, can be found in the column Trade/Contract"
+          },
+          "gas_day": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the transaction"
+          },
+          "delivery_period_start": {
+            "type": "string",
+            "format": "date"
+          },
+          "delivery_period_end": {
+            "type": "string",
+            "format": "date"
+          },
+          "volume": {
+            "type": "number",
+            "description": "The volume of items or units involved in the transaction."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price per unit of the item or unit involved in the transaction."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The monetary amount involved in the transaction."
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "The pipeline involved in the transaction."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location of the transaction."
+          }
+        },
+        "required": [
+          "deal_number",
+          "gas_day",
+          "volume",
+          "price",
+          "amount",
+          "pipeline",
+          "location"
+        ]
+      }
+    }
+  },
+  "required": [
+    "invoice_total",
+    "line_items"
+  ]
+}

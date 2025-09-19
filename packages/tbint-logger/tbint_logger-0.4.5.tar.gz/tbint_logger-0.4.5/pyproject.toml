@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tbint-logger"
+version = "0.4.5"
+authors = [
+  { name="Marco Kellershoff", email="marco.kellershoff@tbint.de" },
+]
+description = "A simple logger for tbint projects"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+
+license = "MIT"
+
+dependencies = [
+    "aiohttp",
+    "python-dotenv",
+    "requests",
+    "google-cloud-logging",
+]
+
+[project.urls]
+Homepage = "https://bitbucket.org/tbint/tbint-logger-py"
+Issues = "https://bitbucket.org/tbint/tbint-logger-py/issues"

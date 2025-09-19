@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: bump-cli
+Version: 0.5.0
+Summary: A command line tool for bumping git tag versions
+Author-email: luiarthur <luiarthur@gmail.com>
+Maintainer-email: luiarthur <luiarthur@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Arthur Lui
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/luiarthur/bump-cli
+Project-URL: Repository, https://github.com/luiarthur/bump-cli
+Project-URL: Issues, https://github.com/luiarthur/bump-cli/issues
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: gitpython>=3.1.44
+Requires-Dist: semver>=3.0.2
+Requires-Dist: typer>=0.17.4
+Dynamic: license-file
+
+# Bump
+
+A command line tool for bumping git tag versions.
+
+## Install
+
+**pip**
+```
+pip install bump-cli
+```
+
+**uv**
+```
+uv tool install bump-cli
+```
+
+
+## Usage
+
+
+```
+usage: bump [-h] [-r REPO] [-p] {major,minor,patch,prerelease,build}
+
+positional arguments:
+  {major,minor,patch,prerelease,build}
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r REPO, --repo REPO  Path to git repo.
+  -p, --push            If present, perform `git push --tags` after updating tag.
+```
+

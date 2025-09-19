@@ -1,0 +1,6 @@
+from typing import List
+
+
+class __ExtSync:
+    def getOptionIds(self) -> List[str]: ...
+    def selectOption(self, optionId: str) -> None: ...

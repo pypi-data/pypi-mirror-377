@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.extend.subversion &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="CedarBackup3.extend.sysinfo" href="../sysinfo/index.html" />
+    <link rel="prev" title="CedarBackup3.extend.split" href="../split/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.extend.subversion">
+<span id="cedarbackup3-extend-subversion"></span><h1>CedarBackup3.extend.subversion<a class="headerlink" href="#module-CedarBackup3.extend.subversion" title="Link to this heading">¶</a></h1>
+<p>Provides an extension to back up Subversion repositories.</p>
+<p>This is a Cedar Backup extension used to back up Subversion repositories via
+the Cedar Backup command line.  Each Subversion repository can be backed using
+the same collect modes allowed for filesystems in the standard Cedar Backup
+collect action: weekly, daily, incremental.</p>
+<p>This extension requires a new configuration section &lt;subversion&gt; and is
+intended to be run either immediately before or immediately after the standard
+collect action.  Aside from its own configuration, it requires the options and
+collect configuration sections in the standard Cedar Backup configuration file.</p>
+<p>There are two different kinds of Subversion repositories at this writing: BDB
+(Berkeley Database) and FSFS (a “filesystem within a filesystem”).  Although
+the repository type can be specified in configuration, that information is just
+kept around for reference.  It doesn’t affect the backup.  Both kinds of
+repositories are backed up in the same way, using <code class="docutils literal notranslate"><span class="pre">svnadmin</span> <span class="pre">dump</span></code> in an
+incremental mode.</p>
+<p>It turns out that FSFS repositories can also be backed up just like any
+other filesystem directory.  If you would rather do that, then use the normal
+collect action.  This is probably simpler, although it carries its own
+advantages and disadvantages (plus you will have to be careful to exclude
+the working directories Subversion uses when building an update to commit).
+Check the Subversion documentation for more information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.extend.subversion.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SVNLOOK_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">SVNLOOK_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['svnlook']</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.SVNLOOK_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SVNADMIN_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">SVNADMIN_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['svnadmin']</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.SVNADMIN_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.REVISION_PATH_EXTENSION">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">REVISION_PATH_EXTENSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'svnlast'</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.REVISION_PATH_EXTENSION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">RepositoryDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directoryPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relativeExcludePaths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excludePatterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing Subversion repository directory.</p>
+<p>A repository directory is a directory that contains one or more Subversion
+repositories.</p>
+<p>The following restrictions exist on data in this class:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The directory path must be absolute.</p></li>
+<li><p>The collect mode must be one of the values in <a class="reference internal" href="../../config/index.html#id4" title="CedarBackup3.config.VALID_COLLECT_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COLLECT_MODES</span></code></a>.</p></li>
+<li><p>The compress mode must be one of the values in <a class="reference internal" href="../../config/index.html#id6" title="CedarBackup3.config.VALID_COMPRESS_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COMPRESS_MODES</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+<p>The repository type value is kept around just for reference.  It doesn’t
+affect the behavior of the backup.</p>
+<p>Relative exclusions are allowed here.  However, there is no configured
+ignore file, because repository dir backups are not recursive.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.repositoryType">
+<span class="sig-name descname"><span class="pre">repositoryType</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.repositoryType" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.directoryPath">
+<span class="sig-name descname"><span class="pre">directoryPath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.directoryPath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.collectMode">
+<span class="sig-name descname"><span class="pre">collectMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.collectMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.compressMode">
+<span class="sig-name descname"><span class="pre">compressMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.compressMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.relativeExcludePaths">
+<span class="sig-name descname"><span class="pre">relativeExcludePaths</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.relativeExcludePaths" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.excludePatterns">
+<span class="sig-name descname"><span class="pre">excludePatterns</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.excludePatterns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.RepositoryDir.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.RepositoryDir.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">Repository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing generic Subversion repository configuration..</p>
+<p>The following restrictions exist on data in this class:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The respository path must be absolute.</p></li>
+<li><p>The collect mode must be one of the values in <a class="reference internal" href="../../config/index.html#id4" title="CedarBackup3.config.VALID_COLLECT_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COLLECT_MODES</span></code></a>.</p></li>
+<li><p>The compress mode must be one of the values in <a class="reference internal" href="../../config/index.html#id6" title="CedarBackup3.config.VALID_COMPRESS_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COMPRESS_MODES</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+<p>The repository type value is kept around just for reference.  It doesn’t
+affect the behavior of the backup.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.repositoryType">
+<span class="sig-name descname"><span class="pre">repositoryType</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.repositoryType" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.repositoryPath">
+<span class="sig-name descname"><span class="pre">repositoryPath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.repositoryPath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.collectMode">
+<span class="sig-name descname"><span class="pre">collectMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.collectMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.compressMode">
+<span class="sig-name descname"><span class="pre">compressMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.compressMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.Repository.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.Repository.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">SubversionConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repositoryDirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing Subversion configuration.</p>
+<p>Subversion configuration is used for backing up Subversion repositories.</p>
+<p>The following restrictions exist on data in this class:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The collect mode must be one of the values in <a class="reference internal" href="../../config/index.html#id4" title="CedarBackup3.config.VALID_COLLECT_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COLLECT_MODES</span></code></a>.</p></li>
+<li><p>The compress mode must be one of the values in <a class="reference internal" href="../../config/index.html#id6" title="CedarBackup3.config.VALID_COMPRESS_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COMPRESS_MODES</span></code></a>.</p></li>
+<li><p>The repositories list must be a list of <code class="docutils literal notranslate"><span class="pre">Repository</span></code> objects.</p></li>
+<li><p>The repositoryDirs list must be a list of <code class="docutils literal notranslate"><span class="pre">RepositoryDir</span></code> objects.</p></li>
+</ul>
+</div></blockquote>
+<p>For the two lists, validation is accomplished through the
+<a class="reference internal" href="../../util/index.html#CedarBackup3.util.ObjectTypeList" title="CedarBackup3.util.ObjectTypeList"><code class="xref any py py-class docutils literal notranslate"><span class="pre">util.ObjectTypeList</span></code></a> list implementation that overrides common list
+methods and transparently ensures that each element has the correct type.</p>
+<p><em>Note:</em> Lists within this class are “unordered” for equality comparisons.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.collectMode">
+<span class="sig-name descname"><span class="pre">collectMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.collectMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.compressMode">
+<span class="sig-name descname"><span class="pre">compressMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.compressMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.repositories">
+<span class="sig-name descname"><span class="pre">repositories</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.repositories" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.repositoryDirs">
+<span class="sig-name descname"><span class="pre">repositoryDirs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.repositoryDirs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.SubversionConfig.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.SubversionConfig.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+Lists within this class are “unordered” for equality comparisons.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">LocalConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmlPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing this extension’s configuration document.</p>
+<p>This is not a general-purpose configuration object like the main Cedar
+Backup configuration object.  Instead, it just knows how to parse and emit
+Subversion-specific configuration values.  Third parties who need to read
+and write configuration related to this extension should access it through
+the constructor, <code class="docutils literal notranslate"><span class="pre">validate</span></code> and <code class="docutils literal notranslate"><span class="pre">addConfig</span></code> methods.</p>
+<p><em>Note:</em> Lists within this class are “unordered” for equality comparisons.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.subversion">
+<span class="sig-name descname"><span class="pre">subversion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.subversion" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+Lists within this class are “unordered” for equality comparisons.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.validate" title="Link to this definition">¶</a></dt>
+<dd><p>Validates configuration represented by the object.</p>
+<p>Subversion configuration must be filled in.  Within that, the collect
+mode and compress mode are both optional, but the list of repositories
+must contain at least one entry.</p>
+<p>Each repository must contain a repository path, and then must be either
+able to take collect mode and compress mode configuration from the parent
+<code class="docutils literal notranslate"><span class="pre">SubversionConfig</span></code> object, or must set each value on its own.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If one of the validations fails</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.LocalConfig.addConfig">
+<span class="sig-name descname"><span class="pre">addConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.LocalConfig.addConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a &lt;subversion&gt; configuration section as the next child of a parent.</p>
+<p>Third parties should use this function to write configuration related to
+this extension.</p>
+<p>We add the following fields to the document:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">collectMode</span>    <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">subversion</span><span class="o">/</span><span class="n">collectMode</span>
+<span class="n">compressMode</span>   <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">subversion</span><span class="o">/</span><span class="n">compressMode</span>
+</pre></div>
+</div>
+<p>We also add groups of the following items, one list element per
+item:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">repository</span>     <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">subversion</span><span class="o">/</span><span class="n">repository</span>
+<span class="n">repository_dir</span> <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">subversion</span><span class="o">/</span><span class="n">repository_dir</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent that the section should be appended to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.executeAction">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">executeAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">configPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.executeAction" title="Link to this definition">¶</a></dt>
+<dd><p>Executes the Subversion backup action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>configPath</strong> (<em>String representing a path on disk</em>) – Path to configuration file on disk</p></li>
+<li><p><strong>options</strong> (<em>Options object</em>) – Program command-line options</p></li>
+<li><p><strong>config</strong> (<em>Config object</em>) – Program configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Under many generic error conditions</p></li>
+<li><p><strong>IOError</strong> – If a backup could not be written for some reason</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.backupRepository">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">backupRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backupFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startRevision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endRevision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.backupRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Backs up an individual Subversion repository.</p>
+<p>The starting and ending revision values control an incremental backup.  If
+the starting revision is not passed in, then revision zero (the start of the
+repository) is assumed.  If the ending revision is not passed in, then the
+youngest revision in the database will be used as the endpoint.</p>
+<p>The backup data will be written into the passed-in back file.  Normally,
+this would be an object as returned from <code class="docutils literal notranslate"><span class="pre">open</span></code>, but it is possible to use
+something like a <code class="docutils literal notranslate"><span class="pre">GzipFile</span></code> to write compressed output.  The caller is
+responsible for closing the passed-in backup file.</p>
+<p><em>Note:</em> This function should either be run as root or as the owner of the
+Subversion repository.</p>
+<p><em>Note:</em> It is apparently <em>not</em> a good idea to interrupt this function.
+Sometimes, this leaves the repository in a “wedged” state, which requires
+recovery using <code class="docutils literal notranslate"><span class="pre">svnadmin</span> <span class="pre">recover</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repositoryPath</strong> (<em>String path representing Subversion repository on disk</em>) – Path to Subversion repository to back up</p></li>
+<li><p><strong>backupFile</strong> (Python file object as from <code class="docutils literal notranslate"><span class="pre">open</span></code> or <code class="docutils literal notranslate"><span class="pre">file</span></code>) – Python file object to use for writing backup</p></li>
+<li><p><strong>startRevision</strong> (<em>Integer value &gt;= 0</em>) – Starting repository revision to back up (for incremental backups)</p></li>
+<li><p><strong>endRevision</strong> (<em>Integer value &gt;= 0</em>) – Ending repository revision to back up (for incremental backups)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If some value is missing or invalid</p></li>
+<li><p><strong>IOError</strong> – If there is a problem executing the Subversion dump</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.getYoungestRevision">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">getYoungestRevision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.getYoungestRevision" title="Link to this definition">¶</a></dt>
+<dd><p>Gets the youngest (newest) revision in a Subversion repository using <code class="docutils literal notranslate"><span class="pre">svnlook</span></code>.</p>
+<p><em>Note:</em> This function should either be run as root or as the owner of the
+Subversion repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repositoryPath</strong> (<em>String path representing Subversion repository on disk</em>) – Path to Subversion repository to look in</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Youngest revision as an integer</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If there is a problem parsing the <code class="docutils literal notranslate"><span class="pre">svnlook</span></code> output</p></li>
+<li><p><strong>IOError</strong> – If there is a problem executing the <code class="docutils literal notranslate"><span class="pre">svnlook</span></code> command</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.BDBRepository">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">BDBRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.BDBRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.extend.subversion.Repository" title="CedarBackup3.extend.subversion.Repository"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Repository</span></code></a></p>
+<p>Class representing Subversion BDB (Berkeley Database) repository configuration.
+This object is deprecated.  Use a simple <a class="reference internal" href="#CedarBackup3.extend.subversion.Repository" title="CedarBackup3.extend.subversion.Repository"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Repository</span></code></a> instead.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.BDBRepository.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.BDBRepository.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.FSFSRepository">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">FSFSRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.FSFSRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.extend.subversion.Repository" title="CedarBackup3.extend.subversion.Repository"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Repository</span></code></a></p>
+<p>Class representing Subversion FSFS repository configuration.
+This object is deprecated.  Use a simple <a class="reference internal" href="#CedarBackup3.extend.subversion.Repository" title="CedarBackup3.extend.subversion.Repository"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Repository</span></code></a> instead.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.FSFSRepository.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.FSFSRepository.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.backupBDBRepository">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">backupBDBRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backupFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startRevision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endRevision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.backupBDBRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Backs up an individual Subversion BDB repository.
+This function is deprecated.  Use <a class="reference internal" href="#CedarBackup3.extend.subversion.backupRepository" title="CedarBackup3.extend.subversion.backupRepository"><code class="xref any py py-func docutils literal notranslate"><span class="pre">backupRepository</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.extend.subversion.backupFSFSRepository">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.subversion.</span></span><span class="sig-name descname"><span class="pre">backupFSFSRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositoryPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backupFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startRevision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endRevision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.subversion.backupFSFSRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Backs up an individual Subversion FSFS repository.
+This function is deprecated.  Use <a class="reference internal" href="#CedarBackup3.extend.subversion.backupRepository" title="CedarBackup3.extend.subversion.backupRepository"><code class="xref any py py-func docutils literal notranslate"><span class="pre">backupRepository</span></code></a> instead.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">CedarBackup3</a><ul>
+  <li><a href="../index.html">CedarBackup3.extend</a><ul>
+      <li>Previous: <a href="../split/index.html" title="previous chapter">CedarBackup3.extend.split</a></li>
+      <li>Next: <a href="../sysinfo/index.html" title="next chapter">CedarBackup3.extend.sysinfo</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

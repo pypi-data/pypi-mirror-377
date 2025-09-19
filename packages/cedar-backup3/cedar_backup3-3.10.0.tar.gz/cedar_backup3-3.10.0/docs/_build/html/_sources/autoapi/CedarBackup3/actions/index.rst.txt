@@ -1,0 +1,40 @@
+CedarBackup3.actions
+====================
+
+.. py:module:: CedarBackup3.actions
+
+.. autoapi-nested-parse::
+
+   Cedar Backup actions.
+
+   This package code related to the offical Cedar Backup actions (collect,
+   stage, store, purge, rebuild, and validate).
+
+   The action modules consist of mostly "glue" code that uses other lower-level
+   functionality to actually implement a backup.  There is one module for each
+   high-level backup action, plus a module that provides shared constants.
+
+   All of the public action function implement the Cedar Backup Extension
+   Architecture Interface, i.e. the same interface that extensions implement.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/CedarBackup3/actions/collect/index
+   /autoapi/CedarBackup3/actions/constants/index
+   /autoapi/CedarBackup3/actions/initialize/index
+   /autoapi/CedarBackup3/actions/purge/index
+   /autoapi/CedarBackup3/actions/rebuild/index
+   /autoapi/CedarBackup3/actions/stage/index
+   /autoapi/CedarBackup3/actions/store/index
+   /autoapi/CedarBackup3/actions/util/index
+   /autoapi/CedarBackup3/actions/validate/index
+
+

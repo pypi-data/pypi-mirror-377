@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Preface &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="preface">
+<span id="cedar-preface"></span><h1>Preface<a class="headerlink" href="#preface" title="Link to this heading">¶</a></h1>
+<section id="purpose">
+<span id="cedar-preface-purpose"></span><h2>Purpose<a class="headerlink" href="#purpose" title="Link to this heading">¶</a></h2>
+<p>This software manual has been written to document version 2 and version 3 of
+Cedar Backup.  Version 2 was first released in 2005, and version 3 in 2015.</p>
+</section>
+<section id="audience">
+<span id="cedar-preface-audience"></span><h2>Audience<a class="headerlink" href="#audience" title="Link to this heading">¶</a></h2>
+<p>This manual has been written for computer-literate administrators who
+need to use and configure Cedar Backup on their Linux or UNIX-like
+system. The examples in this manual assume the reader is relatively
+comfortable with UNIX and command-line interfaces.</p>
+</section>
+<section id="conventions-used-in-this-book">
+<span id="cedar-preface-conventions"></span><h2>Conventions Used in This Book<a class="headerlink" href="#conventions-used-in-this-book" title="Link to this heading">¶</a></h2>
+<p>This section covers the various conventions used in this manual.</p>
+<section id="typographic-conventions">
+<h3>Typographic Conventions<a class="headerlink" href="#typographic-conventions" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><em>Term</em></dt><dd><p>Used for first use of important terms.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Command</span></code></dt><dd><p>Used for commands, command output, and switches</p>
+</dd>
+<dt><em>Replaceable</em></dt><dd><p>Used for replaceable items in code and text</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Filenames</span></code></dt><dd><p>Used for file and directory names</p>
+</dd>
+</dl>
+</section>
+<section id="icons">
+<span id="cedar-preface-conventions-typo"></span><h3>Icons<a class="headerlink" href="#icons" title="Link to this heading">¶</a></h3>
+<p><img alt="note" src="../_images/note.png" /> This icon designates a note relating to the surrounding text.</p>
+<p><img alt="tip" src="../_images/tip.png" /> This icon designates a helpful tip relating to the surrounding text.</p>
+<p><img alt="warning" src="../_images/warning.png" /> This icon designates a warning relating to the surrounding text.</p>
+</section>
+</section>
+<section id="organization-of-this-manual">
+<span id="cedar-preface-organization"></span><h2>Organization of This Manual<a class="headerlink" href="#organization-of-this-manual" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="intro.html"><span class="doc">Introduction</span></a></dt><dd><p>Provides some some general history about Cedar Backup, what needs it
+is intended to meet, how to get support, and how to migrate from
+version 2 to version 3.</p>
+</dd>
+<dt><a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a>:</dt><dd><p>Discusses the basic concepts of a Cedar Backup infrastructure, and
+specifies terms used throughout the rest of the manual.</p>
+</dd>
+<dt><a class="reference internal" href="install.html"><span class="doc">Installation</span></a></dt><dd><p>Explains how to install Cedar Backup either from the Debian package or from
+the Python package.</p>
+</dd>
+<dt><a class="reference internal" href="commandline.html"><span class="doc">Command Line Tools</span></a>:</dt><dd><p>Discusses the various Cedar Backup command-line tools, including the
+primary <code class="docutils literal notranslate"><span class="pre">cback3</span></code> command.</p>
+</dd>
+<dt><a class="reference internal" href="config.html"><span class="doc">Configuration</span></a>:</dt><dd><p>Provides detailed information about how to configure Cedar Backup.</p>
+</dd>
+<dt><a class="reference internal" href="extensions.html"><span class="doc">Official Extensions</span></a></dt><dd><p>Describes each of the officially-supported Cedar Backup extensions.</p>
+</dd>
+<dt><a class="reference internal" href="extenspec.html"><span class="doc">Extension Architecture Interface</span></a></dt><dd><p>Specifies the Cedar Backup extension architecture interface, through
+which third party developers can write extensions to Cedar Backup.</p>
+</dd>
+<dt><a class="reference internal" href="depends.html"><span class="doc">Dependencies</span></a></dt><dd><p>Provides some additional information about the packages which Cedar
+Backup relies on, including information about how to find
+documentation and packages on non-Debian systems.</p>
+</dd>
+<dt><a class="reference internal" href="recovering.html"><span class="doc">Data Recovery</span></a></dt><dd><p>Cedar Backup provides no facility for restoring backups, assuming the
+administrator can handle this infrequent task. This appendix provides
+some notes for administrators to work from.</p>
+</dd>
+<dt><a class="reference internal" href="securingssh.html"><span class="doc">Securing Password-less SSH Connections</span></a></dt><dd><p>Password-less SSH connections are a necessary evil when remote backup
+processes need to execute without human interaction. This appendix
+describes some ways that you can reduce the risk to your backup pool
+should your master machine be compromised.</p>
+</dd>
+</dl>
+<p><em>Next</em>: <a class="reference internal" href="intro.html"><span class="doc">Introduction</span></a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

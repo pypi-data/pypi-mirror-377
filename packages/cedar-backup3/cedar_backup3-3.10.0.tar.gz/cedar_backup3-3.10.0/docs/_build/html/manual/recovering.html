@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Recovery &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="data-recovery">
+<span id="cedar-recovering"></span><h1>Data Recovery<a class="headerlink" href="#data-recovery" title="Link to this heading">¶</a></h1>
+<section id="finding-your-data">
+<span id="cedar-recovering-finding"></span><h2>Finding your Data<a class="headerlink" href="#finding-your-data" title="Link to this heading">¶</a></h2>
+<p>The first step in data recovery is finding the data that you want to
+recover. You need to decide whether you are going to to restore off
+backup media, or out of some existing staging data that has not yet been
+purged. The only difference is, if you purge staging data less
+frequently than once per week, you might have some data available in the
+staging directories which would not be found on your backup media,
+depending on how you rotate your media. (And of course, if your system
+is trashed or stolen, you probably will not have access to your old
+staging data in any case.)</p>
+<p>Regardless of the data source you choose, you will find the data
+organized in the same way. The remainder of these examples will work off
+an example backup disc, but the contents of the staging directory will
+look pretty much like the contents of the disc, with data organized
+first by date and then by backup peer name.</p>
+<p>This is the root directory of my example disc:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">cdrw</span><span class="c1"># ls -l</span>
+<span class="n">total</span> <span class="mi">4</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">x</span><span class="o">---</span>  <span class="mi">3</span> <span class="n">backup</span> <span class="n">backup</span> <span class="mi">4096</span> <span class="n">Sep</span> <span class="mi">01</span> <span class="mi">06</span><span class="p">:</span><span class="mi">30</span> <span class="mi">2005</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>In this root directory is one subdirectory for each year represented in
+the backup. In this example, the backup represents data entirely from
+the year 2005. If your configured backup week happens to span a year
+boundary, there would be two subdirectories here (for example, one for
+2005 and one for 2006).</p>
+<p>Within each year directory is one subdirectory for each month
+represented in the backup.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">cdrw</span><span class="o">/</span><span class="mi">2005</span><span class="c1"># ls -l</span>
+<span class="n">total</span> <span class="mi">2</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">6</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">2048</span> <span class="n">Sep</span> <span class="mi">11</span> <span class="mi">05</span><span class="p">:</span><span class="mi">30</span> <span class="mi">09</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>In this example, the backup represents data entirely from the month of
+September, 2005. If your configured backup week happens to span a month
+boundary, there would be two subdirectories here (for example, one for
+August 2005 and one for September 2005).</p>
+<p>Within each month directory is one subdirectory for each day represented
+in the backup.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">cdrw</span><span class="o">/</span><span class="mi">2005</span><span class="o">/</span><span class="mi">09</span><span class="c1"># ls -l</span>
+<span class="n">total</span> <span class="mi">8</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">5</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">2048</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">05</span><span class="p">:</span><span class="mi">30</span> <span class="mi">07</span><span class="o">/</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">5</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">2048</span> <span class="n">Sep</span>  <span class="mi">8</span> <span class="mi">05</span><span class="p">:</span><span class="mi">30</span> <span class="mi">08</span><span class="o">/</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">5</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">2048</span> <span class="n">Sep</span>  <span class="mi">9</span> <span class="mi">05</span><span class="p">:</span><span class="mi">30</span> <span class="mi">09</span><span class="o">/</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">5</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">2048</span> <span class="n">Sep</span> <span class="mi">11</span> <span class="mi">05</span><span class="p">:</span><span class="mi">30</span> <span class="mi">11</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Depending on how far into the week your backup media is from, you might
+have as few as one daily directory in here, or as many as seven.</p>
+<p>Within each daily directory is a stage indicator (indicating when the
+directory was staged) and one directory for each peer configured in the
+backup:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">cdrw</span><span class="o">/</span><span class="mi">2005</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">07</span><span class="c1"># ls -l</span>
+<span class="n">total</span> <span class="mi">10</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">2048</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">31</span> <span class="n">host1</span><span class="o">/</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">0</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">03</span><span class="p">:</span><span class="mi">27</span> <span class="n">cback</span><span class="o">.</span><span class="n">stage</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">4096</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">host2</span><span class="o">/</span>
+<span class="n">dr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">4096</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">03</span><span class="p">:</span><span class="mi">23</span> <span class="n">host3</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>In this case, you can see that my backup includes three machines, and
+that the backup data was staged on September 7, 2005 at 03:27.</p>
+<p>Within the directory for a given host are all of the files collected on
+that host. This might just include tarfiles from a normal Cedar Backup
+collect run, and might also include files “collected” from Cedar Backup
+extensions or by other third-party processes on your system.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">cdrw</span><span class="o">/</span><span class="mi">2005</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="n">host1</span><span class="c1"># ls -l</span>
+<span class="n">total</span> <span class="mi">157976</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">11206159</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">boot</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>        <span class="mi">0</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">cback</span><span class="o">.</span><span class="n">collect</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>     <span class="mi">3199</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">dpkg</span><span class="o">-</span><span class="n">selections</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">908325</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">etc</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>      <span class="mi">389</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">fdisk</span><span class="o">-</span><span class="n">l</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>  <span class="mi">1003100</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">ls</span><span class="o">-</span><span class="n">laR</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">19800</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">mysqldump</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>  <span class="mi">4133372</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">opt</span><span class="o">-</span><span class="n">local</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">44794124</span> <span class="n">Sep</span>  <span class="mi">8</span> <span class="mi">23</span><span class="p">:</span><span class="mi">34</span> <span class="n">opt</span><span class="o">-</span><span class="n">public</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">30028057</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">root</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>  <span class="mi">4747070</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">svndump</span><span class="o">-</span><span class="mi">0</span><span class="p">:</span><span class="mi">782</span><span class="o">-</span><span class="n">opt</span><span class="o">-</span><span class="n">svn</span><span class="o">-</span><span class="n">repo1</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">603863</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">svndump</span><span class="o">-</span><span class="mi">0</span><span class="p">:</span><span class="mi">136</span><span class="o">-</span><span class="n">opt</span><span class="o">-</span><span class="n">svn</span><span class="o">-</span><span class="n">repo2</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">113484</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">var</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">jspwiki</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">19556660</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">var</span><span class="o">-</span><span class="n">log</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span>  <span class="mi">1</span> <span class="n">root</span> <span class="n">root</span> <span class="mi">14753855</span> <span class="n">Sep</span>  <span class="mi">7</span> <span class="mi">02</span><span class="p">:</span><span class="mi">30</span> <span class="n">var</span><span class="o">-</span><span class="n">mail</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+</pre></div>
+</div>
+<p>As you can see, I back up variety of different things on host1. I run
+the normal collect action, as well as the sysinfo, mysql and subversion
+extensions. The resulting backup files are named in a way that makes it
+easy to determine what they represent.</p>
+<p>Files of the form <code class="docutils literal notranslate"><span class="pre">*.tar.bz2</span></code> represent directories backed up by the
+collect action. The first part of the name (before “.tar.bz2”),
+represents the path to the directory. For example, <code class="docutils literal notranslate"><span class="pre">boot.tar.gz</span></code>
+contains data from <code class="docutils literal notranslate"><span class="pre">/boot</span></code>, and <code class="docutils literal notranslate"><span class="pre">var-lib-jspwiki.tar.bz2</span></code> contains
+data from <code class="docutils literal notranslate"><span class="pre">/var/lib/jspwiki</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fdisk-l.txt.bz2</span></code>, <code class="docutils literal notranslate"><span class="pre">ls-laR.tar.bz2</span></code> and
+<code class="docutils literal notranslate"><span class="pre">dpkg-selections.tar.bz2</span></code> files are produced by the sysinfo extension.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mysqldump.txt.bz2</span></code> file is produced by the mysql extension. It
+represents a system-wide database dump, because I use the “all” flag in
+configuration. If I were to configure Cedar Backup to dump individual
+datbases, then the filename would contain the database name (something
+like <code class="docutils literal notranslate"><span class="pre">mysqldump-bugs.txt.bz2</span></code>).</p>
+<p>Finally, the files of the form <code class="docutils literal notranslate"><span class="pre">svndump-*.txt.bz2</span></code> are produced by the
+subversion extension. There is one dump file for each configured
+repository, and the dump file name represents the name of the repository
+and the revisions in that dump. So, the file
+<code class="docutils literal notranslate"><span class="pre">svndump-0:782-opt-svn-repo1.txt.bz2</span></code> represents revisions 0-782 of
+the repository at <code class="docutils literal notranslate"><span class="pre">/opt/svn/repo1</span></code>. You can tell that this file
+contains a full backup of the repository to this point, because the
+starting revision is zero. Later incremental backups would have a
+non-zero starting revision, i.e. perhaps 783-785, followed by 786-800,
+etc.</p>
+</section>
+<section id="recovering-filesystem-data">
+<span id="cedar-recovering-filesystem"></span><h2>Recovering Filesystem Data<a class="headerlink" href="#recovering-filesystem-data" title="Link to this heading">¶</a></h2>
+<p>Filesystem data is gathered by the standard Cedar Backup collect action.
+This data is placed into files of the form <code class="docutils literal notranslate"><span class="pre">*.tar</span></code>. The first part of
+the name (before “.tar”), represents the path to the directory. For
+example, <code class="docutils literal notranslate"><span class="pre">boot.tar</span></code> would contain data from <code class="docutils literal notranslate"><span class="pre">/boot</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">var-lib-jspwiki.tar</span></code> would contain data from <code class="docutils literal notranslate"><span class="pre">/var/lib/jspwiki</span></code>.
+(As a special case, data from the root directory would be placed in
+<code class="docutils literal notranslate"><span class="pre">-.tar</span></code>). Remember that your tarfile might have a bzip2 (<code class="docutils literal notranslate"><span class="pre">.bz2</span></code>) or
+gzip (<code class="docutils literal notranslate"><span class="pre">.gz</span></code>) extension, depending on what compression you specified in
+configuration.</p>
+<p>If you are using full backups every day, the latest backup data is
+always within the latest daily directory stored on your backup media or
+within your staging directory. If you have some or all of your
+directories configured to do incremental backups, then the first day of
+the week holds the full backups and the other days represent incremental
+differences relative to that first day of the week.</p>
+<p>If you are restoring a home directory or some other non-system directory
+as part of a full restore, it is probably fine to extract the backup
+directly into the filesystem.</p>
+<p>If you are restoring a system directory like <code class="docutils literal notranslate"><span class="pre">/etc</span></code> as part of a full
+restore, extracting directly into the filesystem is likely to break
+things, especially if you re-installed a newer version of your operating
+system than the one you originally backed up. It’s better to extract
+directories like this to a temporary location and pick out only the
+files you find you need.</p>
+<p>When doing a partial restore, I suggest <em>always</em> extracting to a
+temporary location. Doing it this way gives you more control over what
+you restore, and helps you avoid compounding your original problem with
+another one (like overwriting the wrong file, oops).</p>
+</section>
+<section id="full-restore">
+<span id="cedar-recovering-filesystem-full"></span><h2>Full Restore<a class="headerlink" href="#full-restore" title="Link to this heading">¶</a></h2>
+<p>To do a full system restore, find the newest applicable full backup and
+extract it. If you have some incremental backups, extract them into the
+same place as the full backup, one by one starting from oldest to
+newest. (This way, if a file changed every day you will always get the
+latest one.)</p>
+<p>All of the backed-up files are stored in the tar file in a relative
+fashion, so you can extract from the tar file either directly into the
+filesystem, or into a temporary location.</p>
+<p>For example, to restore <code class="docutils literal notranslate"><span class="pre">boot.tar.bz2</span></code> directly into <code class="docutils literal notranslate"><span class="pre">/boot</span></code>,
+execute <code class="docutils literal notranslate"><span class="pre">tar</span></code> from your root directory (<code class="docutils literal notranslate"><span class="pre">/</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="c1"># bzcat boot.tar.bz2 | tar xvf -</span>
+</pre></div>
+</div>
+<p>Of course, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code>, depending on what kind of
+compression is in use.</p>
+<p>If you want to extract <code class="docutils literal notranslate"><span class="pre">boot.tar.gz</span></code> into a temporary location like
+<code class="docutils literal notranslate"><span class="pre">/tmp/boot</span></code> instead, just change directories first. In this case,
+you’d execute the <code class="docutils literal notranslate"><span class="pre">tar</span></code> command from within <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> instead of <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># bzcat boot.tar.bz2 | tar xvf -</span>
+</pre></div>
+</div>
+<p>Again, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code> as appropriate.</p>
+<p>For more information, you might want to check out the manpage or GNU
+info documentation for the <code class="docutils literal notranslate"><span class="pre">tar</span></code> command.</p>
+</section>
+<section id="partial-restore">
+<span id="cedar-recovering-filesystem-partial"></span><h2>Partial Restore<a class="headerlink" href="#partial-restore" title="Link to this heading">¶</a></h2>
+<p>Most users will need to do a partial restore much more frequently than a
+full restore. Perhaps you accidentally removed your home directory, or
+forgot to check in some version of a file before deleting it. Or,
+perhaps the person who packaged Apache for your system blew away your
+web server configuration on upgrade (it happens). The solution to these
+and other kinds of problems is a partial restore (assuming you’ve backed
+up the proper things).</p>
+<p>The procedure is similar to a full restore. The specific steps depend on
+how much information you have about the file you are looking for. Where
+with a full restore, you can confidently extract the full backup
+followed by each of the incremental backups, this might not be what you
+want when doing a partial restore. You may need to take more care in
+finding the right version of a file — since the same file, if
+changed frequently, would appear in more than one backup.</p>
+<p>Start by finding the backup media that contains the file you are looking
+for. If you rotate your backup media, and your last known “contact” with
+the file was a while ago, you may need to look on older media to find
+it. This may take some effort if you are not sure when the change you
+are trying to correct took place.</p>
+<p>Once you have decided to look at a particular piece of backup media,
+find the correct peer (host), and look for the file in the full backup:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># bzcat boot.tar.bz2 | tar tvf - path/to/file</span>
+</pre></div>
+</div>
+<p>Of course, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code>, depending on what kind of
+compression is in use.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">tvf</span></code> tells <code class="docutils literal notranslate"><span class="pre">tar</span></code> to search for the file in question and just
+list the results rather than extracting the file. Note that the filename
+is relative (with no starting <code class="docutils literal notranslate"><span class="pre">/</span></code>). Alternately, you can omit the
+<code class="docutils literal notranslate"><span class="pre">path/to/file</span></code> and search through the output using <code class="docutils literal notranslate"><span class="pre">more</span></code> or
+<code class="docutils literal notranslate"><span class="pre">less</span></code></p>
+<p>If you haven’t found what you are looking for, work your way through the
+incremental files for the directory in question. One of them may also
+have the file if it changed during the course of the backup. Or, move to
+older or newer media and see if you can find the file there.</p>
+<p>Once you have found your file, extract it using <code class="docutils literal notranslate"><span class="pre">xvf</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># bzcat boot.tar.bz2 | tar xvf - path/to/file</span>
+</pre></div>
+</div>
+<p>Again, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code> as appropriate.</p>
+<p>Inspect the file and make sure it’s what you’re looking for. Again, you
+may need to move to older or newer media to find the exact version of
+your file.</p>
+<p>For more information, you might want to check out the manpage or GNU
+info documentation for the <code class="docutils literal notranslate"><span class="pre">tar</span></code> command.</p>
+</section>
+<section id="recovering-mysql-data">
+<span id="cedar-recovering-mysql"></span><h2>Recovering MySQL Data<a class="headerlink" href="#recovering-mysql-data" title="Link to this heading">¶</a></h2>
+<p>MySQL data is gathered by the Cedar Backup mysql extension. This
+extension always creates a full backup each time it runs. This wastes
+some space, but makes it easy to restore database data. The following
+procedure describes how to restore your MySQL database from the backup.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>I am not a MySQL expert. I am providing this information for
+reference. I have tested these procedures on my own MySQL
+installation; however, I only have a single database for use by
+Bugzilla, and I may have misunderstood something with regard to
+restoring individual databases as a user other than root. If you have
+any doubts, test the procedure below before relying on it!</p>
+<p>MySQL experts and/or knowledgable Cedar Backup users: feel free to
+write me and correct any part of this procedure.</p>
+</div></blockquote>
+<p>First, find the backup you are interested in. If you have specified “all
+databases” in configuration, you will have a single backup file, called
+<code class="docutils literal notranslate"><span class="pre">mysqldump.txt</span></code>. If you have specified individual databases in
+configuration, then you will have files with names like
+<code class="docutils literal notranslate"><span class="pre">mysqldump-database.txt</span></code> instead. In either case, your file might have
+a <code class="docutils literal notranslate"><span class="pre">.gz</span></code> or <code class="docutils literal notranslate"><span class="pre">.bz2</span></code> extension depending on what kind of compression
+you specified in configuration.</p>
+<p>If you are restoring an “all databases” backup, make sure that you have
+correctly created the root user and know its password. Then, execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">daystrom</span><span class="p">:</span><span class="o">/</span><span class="c1"># bzcat mysqldump.txt.bz2 | mysql -p -u root</span>
+</pre></div>
+</div>
+<p>Of course, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code>, depending on what kind of
+compression is in use.</p>
+<p>Because the database backup includes <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">DATABASE</span></code> SQL statements, this
+command should take care of creating all of the databases within the backup, as
+well as populating them.</p>
+<p>If you are restoring a backup for a specific database, you have two
+choices. If you have a root login, you can use the same command as
+above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">daystrom</span><span class="p">:</span><span class="o">/</span><span class="c1"># bzcat mysqldump-database.txt.bz2 | mysql -p -u root</span>
+</pre></div>
+</div>
+<p>Otherwise, you can create the database and its login first (or have
+someone create it) and then use a database-specific login to execute the
+restore:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">daystrom</span><span class="p">:</span><span class="o">/</span><span class="c1"># bzcat mysqldump-database.txt.bz2 | mysql -p -u user database</span>
+</pre></div>
+</div>
+<p>Again, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code> as appropriate.</p>
+<p>For more information on using MySQL, see the documentation on the MySQL
+web site, <a class="reference external" href="http://mysql.org/">http://mysql.org/</a>, or the manpages for the <code class="docutils literal notranslate"><span class="pre">mysql</span></code>
+and <code class="docutils literal notranslate"><span class="pre">mysqldump</span></code> commands.</p>
+</section>
+<section id="recovering-subversion-data">
+<span id="cedar-recovering-subversion"></span><h2>Recovering Subversion Data<a class="headerlink" href="#recovering-subversion-data" title="Link to this heading">¶</a></h2>
+<p>Subversion data is gathered by the Cedar Backup subversion extension.
+Cedar Backup will create either full or incremental backups, but the
+procedure for restoring is the same for both. Subversion backups are
+always taken on a per-repository basis. If you need to restore more than
+one repository, follow the procedures below for each repository you are
+interested in.</p>
+<p>First, find the backup or backups you are interested in. Typically, you
+will need the full backup from the first day of the week and each
+incremental backup from the other days of the week.</p>
+<p>The subversion extension creates files of the form <code class="docutils literal notranslate"><span class="pre">svndump-*.txt</span></code>.
+These files might have a <code class="docutils literal notranslate"><span class="pre">.gz</span></code> or <code class="docutils literal notranslate"><span class="pre">.bz2</span></code> extension depending on what
+kind of compression you specified in configuration. There is one dump
+file for each configured repository, and the dump file name represents
+the name of the repository and the revisions in that dump. So, the file
+<code class="docutils literal notranslate"><span class="pre">svndump-0:782-opt-svn-repo1.txt.bz2</span></code> represents revisions 0-782 of
+the repository at <code class="docutils literal notranslate"><span class="pre">/opt/svn/repo1</span></code>. You can tell that this file
+contains a full backup of the repository to this point, because the
+starting revision is zero. Later incremental backups would have a
+non-zero starting revision, i.e. perhaps 783-785, followed by 786-800,
+etc.</p>
+<p>Next, if you still have the old Subversion repository around, you might
+want to just move it off (rename the top-level directory) before
+executing the restore. Or, you can restore into a temporary directory
+and rename it later to its real name once you’ve checked it out. That is
+what my example below will show.</p>
+<p>Next, you need to create a new Subversion repository to hold the
+restored data. This example shows an FSFS repository, but that is an
+arbitrary choice. You can restore from an FSFS backup into a FSFS
+repository or a BDB repository. The Subversion dump format is
+“backend-agnostic”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># svnadmin create --fs-type=fsfs testrepo</span>
+</pre></div>
+</div>
+<p>Next, load the full backup into the repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># bzcat svndump-0:782-opt-svn-repo1.txt.bz2 | svnadmin load testrepo</span>
+</pre></div>
+</div>
+<p>Of course, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code>, depending on what kind of
+compression is in use.</p>
+<p>Follow that with loads for each of the incremental backups:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># bzcat svndump-783:785-opt-svn-repo1.txt.bz2 | svnadmin load testrepo</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># bzcat svndump-786:800-opt-svn-repo1.txt.bz2 | svnadmin load testrepo</span>
+</pre></div>
+</div>
+<p>Again, use <code class="docutils literal notranslate"><span class="pre">zcat</span></code> or just <code class="docutils literal notranslate"><span class="pre">cat</span></code> as appropriate.</p>
+<p>When this is done, your repository will be restored to the point of the
+last commit indicated in the svndump file (in this case, to revision
+800).</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p><em>Note:</em> don’t be surprised if, when you test this, the restored
+directory doesn’t have exactly the same contents as the original
+directory. I can’t explain why this happens, but if you execute
+<code class="docutils literal notranslate"><span class="pre">svnadmin</span> <span class="pre">dump</span></code> on both old and new repositories, the results are
+identical. This means that the repositories do contain the same
+content.</p>
+</div></blockquote>
+<p>For more information on using Subversion, see the book Version Control
+with Subversion (<a class="reference external" href="http://svnbook.red-bean.com/">http://svnbook.red-bean.com/</a>) or the Subversion
+FAQ (<a class="reference external" href="http://subversion.tigris.org/faq.html">http://subversion.tigris.org/faq.html</a>).</p>
+</section>
+<section id="recovering-mailbox-data">
+<span id="cedar-recovering-mbox"></span><h2>Recovering Mailbox Data<a class="headerlink" href="#recovering-mailbox-data" title="Link to this heading">¶</a></h2>
+<p>Mailbox data is gathered by the Cedar Backup mbox extension. Cedar
+Backup will create either full or incremental backups, but both kinds of
+backups are treated identically when restoring.</p>
+<p>Individual mbox files and mbox directories are treated a little
+differently, since individual files are just compressed, but directories
+are collected into a tar archive.</p>
+<p>First, find the backup or backups you are interested in. Typically, you
+will need the full backup from the first day of the week and each
+incremental backup from the other days of the week.</p>
+<p>The mbox extension creates files of the form <code class="docutils literal notranslate"><span class="pre">mbox-*</span></code>. Backup files
+for individual mbox files might have a <code class="docutils literal notranslate"><span class="pre">.gz</span></code> or <code class="docutils literal notranslate"><span class="pre">.bz2</span></code> extension
+depending on what kind of compression you specified in configuration.
+Backup files for mbox directories will have a <code class="docutils literal notranslate"><span class="pre">.tar</span></code>, <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> or
+<code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> extension, again depending on what kind of compression you
+specified in configuration.</p>
+<p>There is one backup file for each configured mbox file or directory. The
+backup file name represents the name of the file or directory and the
+date it was backed up. So, the file
+<code class="docutils literal notranslate"><span class="pre">mbox-20060624-home-user-mail-greylist</span></code> represents the backup for
+<code class="docutils literal notranslate"><span class="pre">/home/user/mail/greylist</span></code> run on 24 Jun 2006. Likewise,
+<code class="docutils literal notranslate"><span class="pre">mbox-20060624-home-user-mail.tar</span></code> represents the backup for the
+<code class="docutils literal notranslate"><span class="pre">/home/user/mail</span></code> directory run on that same date.</p>
+<p>Once you have found the files you are looking for, the restoration
+procedure is fairly simple. First, concatenate all of the backup files
+together. Then, use grepmail to eliminate duplicate messages (if any).</p>
+<p>Here is an example for a single backed-up file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># rm restore.mbox # make sure it&#39;s not left over</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># cat mbox-20060624-home-user-mail-greylist &gt;&gt; restore.mbox</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># cat mbox-20060625-home-user-mail-greylist &gt;&gt; restore.mbox</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># cat mbox-20060626-home-user-mail-greylist &gt;&gt; restore.mbox</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># grepmail -a -u restore.mbox &gt; nodups.mbox</span>
+</pre></div>
+</div>
+<p>At this point, <code class="docutils literal notranslate"><span class="pre">nodups.mbox</span></code> contains all of the backed-up messages
+from <code class="docutils literal notranslate"><span class="pre">/home/user/mail/greylist</span></code>.</p>
+<p>Of course, if your backups are compressed, you’ll have to use <code class="docutils literal notranslate"><span class="pre">zcat</span></code>
+or <code class="docutils literal notranslate"><span class="pre">bzcat</span></code> rather than just <code class="docutils literal notranslate"><span class="pre">cat</span></code>.</p>
+<p>If you are backing up mbox directories rather than individual files, see
+the filesystem instructions for notes on now to extract the individual
+files from inside tar archives. Extract the files you are interested in,
+and then concatenate them together just like shown above for the
+individual case.</p>
+</section>
+<section id="recovering-data-split-by-the-split-extension">
+<span id="cedar-recovering-split"></span><h2>Recovering Data split by the Split Extension<a class="headerlink" href="#recovering-data-split-by-the-split-extension" title="Link to this heading">¶</a></h2>
+<p>The Split extension takes large files and splits them up into smaller
+files. Typically, it would be used in conjunction with the
+<code class="docutils literal notranslate"><span class="pre">cback3-span</span></code> command.</p>
+<p>The split up files are not difficult to work with. Simply find all of
+the files — which could be split between multiple discs — and
+concatenate them together.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># rm usr-src-software.tar.gz  # make sure it&#39;s not there</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># cat usr-src-software.tar.gz_00001 &gt;&gt; usr-src-software.tar.gz</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># cat usr-src-software.tar.gz_00002 &gt;&gt; usr-src-software.tar.gz</span>
+<span class="n">root</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="c1"># cat usr-src-software.tar.gz_00003 &gt;&gt; usr-src-software.tar.gz</span>
+</pre></div>
+</div>
+<p>Then, use the resulting file like usual.</p>
+<p>Remember, you need to have <em>all</em> of the files that the original large
+file was split into before this will work. If you are missing a file,
+the result of the concatenation step will be either a corrupt file or a
+truncated file (depending on which chunks you did not include).</p>
+<hr class="docutils" />
+<p><em>Previous</em>: <a class="reference internal" href="depends.html"><span class="doc">Dependencies</span></a> • <em>Next</em>: <a class="reference internal" href="securingssh.html"><span class="doc">Securing Password-less SSH Connections</span></a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

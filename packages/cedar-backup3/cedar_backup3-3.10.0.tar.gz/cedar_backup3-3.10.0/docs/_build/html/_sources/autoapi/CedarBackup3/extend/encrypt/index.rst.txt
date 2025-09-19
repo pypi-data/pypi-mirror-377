@@ -1,0 +1,212 @@
+CedarBackup3.extend.encrypt
+===========================
+
+.. py:module:: CedarBackup3.extend.encrypt
+
+.. autoapi-nested-parse::
+
+   Provides an extension to encrypt staging directories.
+
+   When this extension is executed, all backed-up files in the configured Cedar
+   Backup staging directory will be encrypted using gpg.  Any directory which has
+   already been encrypted (as indicated by the ``cback.encrypt`` file) will be
+   ignored.
+
+   This extension requires a new configuration section <encrypt> and is intended
+   to be run immediately after the standard stage action or immediately before the
+   standard store action.  Aside from its own configuration, it requires the
+   options and staging configuration sections in the standard Cedar Backup
+   configuration file.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: GPG_COMMAND
+   :value: ['gpg']
+
+
+.. py:data:: VALID_ENCRYPT_MODES
+   :value: ['gpg']
+
+
+.. py:data:: ENCRYPT_INDICATOR
+   :value: 'cback.encrypt'
+
+
+.. py:class:: EncryptConfig(encryptMode=None, encryptTarget=None)
+
+   Class representing encrypt configuration.
+
+   Encrypt configuration is used for encrypting staging directories.
+
+   The following restrictions exist on data in this class:
+
+      - The encrypt mode must be one of the values in ``VALID_ENCRYPT_MODES``
+      - The encrypt target value must be a non-empty string
+
+
+
+   .. py:attribute:: encryptMode
+      :value: None
+
+
+
+   .. py:attribute:: encryptTarget
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: LocalConfig(xmlData=None, xmlPath=None, validate=True)
+
+   Class representing this extension's configuration document.
+
+   This is not a general-purpose configuration object like the main Cedar
+   Backup configuration object.  Instead, it just knows how to parse and emit
+   encrypt-specific configuration values.  Third parties who need to read and
+   write configuration related to this extension should access it through the
+   constructor, ``validate`` and ``addConfig`` methods.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: encrypt
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: validate()
+
+      Validates configuration represented by the object.
+
+      Encrypt configuration must be filled in.  Within that, both the encrypt
+      mode and encrypt target must be filled in.
+
+      :raises ValueError: If one of the validations fails
+
+
+
+   .. py:method:: addConfig(xmlDom, parentNode)
+
+      Adds an <encrypt> configuration section as the next child of a parent.
+
+      Third parties should use this function to write configuration related to
+      this extension.
+
+      We add the following fields to the document::
+
+         encryptMode    //cb_config/encrypt/encrypt_mode
+         encryptTarget  //cb_config/encrypt/encrypt_target
+
+      :param xmlDom: DOM tree as from ``impl.createDocument()``
+      :param parentNode: Parent that the section should be appended to
+
+
+
+.. py:function:: executeAction(configPath, options, config)
+
+   Executes the encrypt backup action.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: Under many generic error conditions
+   :raises IOError: If there are I/O problems reading or writing files
+
+

@@ -1,0 +1,331 @@
+CedarBackup3.peer
+=================
+
+.. py:module:: CedarBackup3.peer
+
+.. autoapi-nested-parse::
+
+   Provides backup peer-related objects and utility functions.
+
+   Module Attributes
+   =================
+
+   .. attribute:: DEF_COLLECT_INDICATOR
+
+      Name of the default collect indicator file
+
+   .. attribute:: DEF_STAGE_INDICATOR
+
+      Name of the default stage indicator file
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: DEF_RCP_COMMAND
+   :value: ['/usr/bin/scp', '-B', '-q', '-C']
+
+
+.. py:data:: DEF_RSH_COMMAND
+   :value: ['/usr/bin/ssh']
+
+
+.. py:data:: DEF_CBACK_COMMAND
+   :value: '/usr/bin/cback3'
+
+
+.. py:data:: DEF_COLLECT_INDICATOR
+   :value: 'cback.collect'
+
+
+.. py:data:: DEF_STAGE_INDICATOR
+   :value: 'cback.stage'
+
+
+.. py:data:: SU_COMMAND
+   :value: ['su']
+
+
+.. py:class:: LocalPeer(name, collectDir, ignoreFailureMode=None)
+
+   Backup peer representing a local peer in a backup pool.
+
+   This is a class representing a local (non-network) peer in a backup pool.
+   Local peers are backed up by simple filesystem copy operations.  A local
+   peer has associated with it a name (typically, but not necessarily, a
+   hostname) and a collect directory.
+
+   The public methods other than the constructor are part of a "backup peer"
+   interface shared with the ``RemotePeer`` class.
+
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: collectDir
+
+
+   .. py:attribute:: ignoreFailureMode
+      :value: None
+
+
+
+   .. py:method:: stagePeer(targetDir, ownership=None, permissions=None)
+
+      Stages data from the peer into the indicated local target directory.
+
+      The collect and target directories must both already exist before this
+      method is called.  If passed in, ownership and permissions will be
+      applied to the files that are copied.
+
+      *Note:* The caller is responsible for checking that the indicator exists,
+      if they care.  This function only stages the files within the directory.
+
+      *Note:* If you have user/group as strings, call the :any:`util.getUidGid` function
+      to get the associated uid/gid as an ownership tuple.
+
+      :param targetDir: Target directory to write data into
+      :param ownership: Owner and group that files should have, tuple of numeric ``(uid, gid)``
+      :param permissions: Unix permissions mode that the staged files should have, in octal like ``0640``
+
+      :returns: Number of files copied from the source directory to the target directory
+
+      :raises ValueError: If collect directory is not a directory or does not exist
+      :raises ValueError: If target directory is not a directory, does not exist or is not absolute
+      :raises ValueError: If a path cannot be encoded properly
+      :raises IOError: If there were no files to stage (i.e. the directory was empty)
+      :raises IOError: If there is an IO error copying a file
+      :raises OSError: If there is an OS error copying or changing permissions on a file
+
+
+
+   .. py:method:: checkCollectIndicator(collectIndicator=None)
+
+      Checks the collect indicator in the peer's staging directory.
+
+      When a peer has completed collecting its backup files, it will write an
+      empty indicator file into its collect directory.  This method checks to
+      see whether that indicator has been written.  We're "stupid" here - if
+      the collect directory doesn't exist, you'll naturally get back ``False``.
+
+      If you need to, you can override the name of the collect indicator file
+      by passing in a different name.
+
+      :param collectIndicator: Name of the collect indicator file to check
+
+      :returns: Boolean true/false depending on whether the indicator exists
+
+      :raises ValueError: If a path cannot be encoded properly
+
+
+
+   .. py:method:: writeStageIndicator(stageIndicator=None, ownership=None, permissions=None)
+
+      Writes the stage indicator in the peer's staging directory.
+
+      When the master has completed collecting its backup files, it will write
+      an empty indicator file into the peer's collect directory.  The presence
+      of this file implies that the staging process is complete.
+
+      If you need to, you can override the name of the stage indicator file by
+      passing in a different name.
+
+      *Note:* If you have user/group as strings, call the :any:`util.getUidGid`
+      function to get the associated uid/gid as an ownership tuple.
+
+      :param stageIndicator: Name of the indicator file to write
+      :param ownership: Owner and group that files should have, tuple of numeric ``(uid, gid)``
+      :param permissions: Unix permissions mode that the staged files should have, in octal like ``0640``
+
+      :raises ValueError: If collect directory is not a directory or does not exist
+      :raises ValueError: If a path cannot be encoded properly
+      :raises IOError: If there is an IO error creating the file
+      :raises OSError: If there is an OS error creating or changing permissions on the file
+
+
+
+.. py:class:: RemotePeer(name=None, collectDir=None, workingDir=None, remoteUser=None, rcpCommand=None, localUser=None, rshCommand=None, cbackCommand=None, ignoreFailureMode=None)
+
+   Backup peer representing a remote peer in a backup pool.
+
+   This is a class representing a remote (networked) peer in a backup pool.
+   Remote peers are backed up using an rcp-compatible copy command.  A remote
+   peer has associated with it a name (which must be a valid hostname), a
+   collect directory, a working directory and a copy method (an rcp-compatible
+   command).
+
+   You can also set an optional local user value.  This username will be used
+   as the local user for any remote copies that are required.  It can only be
+   used if the root user is executing the backup.  The root user will ``su`` to
+   the local user and execute the remote copies as that user.
+
+   The copy method is associated with the peer and not with the actual request
+   to copy, because we can envision that each remote host might have a
+   different connect method.
+
+   The public methods other than the constructor are part of a "backup peer"
+   interface shared with the ``LocalPeer`` class.
+
+
+
+   .. py:attribute:: name
+      :value: None
+
+
+
+   .. py:attribute:: collectDir
+      :value: None
+
+
+
+   .. py:attribute:: workingDir
+      :value: None
+
+
+
+   .. py:attribute:: remoteUser
+      :value: None
+
+
+
+   .. py:attribute:: localUser
+      :value: None
+
+
+
+   .. py:attribute:: rcpCommand
+      :value: None
+
+
+
+   .. py:attribute:: rshCommand
+      :value: None
+
+
+
+   .. py:attribute:: cbackCommand
+      :value: None
+
+
+
+   .. py:attribute:: ignoreFailureMode
+      :value: None
+
+
+
+   .. py:method:: stagePeer(targetDir, ownership=None, permissions=None)
+
+      Stages data from the peer into the indicated local target directory.
+
+      The target directory must already exist before this method is called.  If
+      passed in, ownership and permissions will be applied to the files that
+      are copied.
+
+      *Note:* The returned count of copied files might be inaccurate if some of
+      the copied files already existed in the staging directory prior to the
+      copy taking place.  We don't clear the staging directory first, because
+      some extension might also be using it.
+
+      *Note:* If you have user/group as strings, call the :any:`util.getUidGid` function
+      to get the associated uid/gid as an ownership tuple.
+
+      *Note:* Unlike the local peer version of this method, an I/O error might
+      or might not be raised if the directory is empty.  Since we're using a
+      remote copy method, we just don't have the fine-grained control over our
+      exceptions that's available when we can look directly at the filesystem,
+      and we can't control whether the remote copy method thinks an empty
+      directory is an error.
+
+      :param targetDir: Target directory to write data into
+      :param ownership: Owner and group that files should have, tuple of numeric ``(uid, gid)``
+      :param permissions: Unix permissions mode that the staged files should have, in octal like ``0640``
+
+      :returns: Number of files copied from the source directory to the target directory
+
+      :raises ValueError: If target directory is not a directory, does not exist or is not absolute
+      :raises ValueError: If a path cannot be encoded properly
+      :raises IOError: If there were no files to stage (i.e. the directory was empty)
+      :raises IOError: If there is an IO error copying a file
+      :raises OSError: If there is an OS error copying or changing permissions on a file
+
+
+
+   .. py:method:: checkCollectIndicator(collectIndicator=None)
+
+      Checks the collect indicator in the peer's staging directory.
+
+      When a peer has completed collecting its backup files, it will write an
+      empty indicator file into its collect directory.  This method checks to
+      see whether that indicator has been written.  If the remote copy command
+      fails, we return ``False`` as if the file weren't there.
+
+      If you need to, you can override the name of the collect indicator file
+      by passing in a different name.
+
+      *Note:* Apparently, we can't count on all rcp-compatible implementations
+      to return sensible errors for some error conditions.  As an example, the
+      ``scp`` command in Debian 'woody' returns a zero (normal) status even when
+      it can't find a host or if the login or path is invalid.  Because of
+      this, the implementation of this method is rather convoluted.
+
+      :param collectIndicator: Name of the collect indicator file to check
+
+      :returns: Boolean true/false depending on whether the indicator exists
+
+      :raises ValueError: If a path cannot be encoded properly
+
+
+
+   .. py:method:: writeStageIndicator(stageIndicator=None)
+
+      Writes the stage indicator in the peer's staging directory.
+
+      When the master has completed collecting its backup files, it will write
+      an empty indicator file into the peer's collect directory.  The presence
+      of this file implies that the staging process is complete.
+
+      If you need to, you can override the name of the stage indicator file by
+      passing in a different name.
+
+      *Note:* If you have user/group as strings, call the :any:`util.getUidGid` function
+      to get the associated uid/gid as an ownership tuple.
+
+      :param stageIndicator: Name of the indicator file to write
+
+      :raises ValueError: If a path cannot be encoded properly
+      :raises IOError: If there is an IO error creating the file
+      :raises OSError: If there is an OS error creating or changing permissions on the file
+
+
+
+   .. py:method:: executeRemoteCommand(command)
+
+      Executes a command on the peer via remote shell.
+
+      :param command: Command to execute
+
+      :raises IOError: If there is an error executing the command on the remote peer
+
+
+
+   .. py:method:: executeManagedAction(action, fullBackup)
+
+      Executes a managed action on this peer.
+
+      :param action: Name of the action to execute
+      :param fullBackup: Whether a full backup should be executed
+
+      :raises IOError: If there is an error executing the action on the remote peer
+
+
+

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.peer &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="CedarBackup3.release" href="../release/index.html" />
+    <link rel="prev" title="CedarBackup3.knapsack" href="../knapsack/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.peer">
+<span id="cedarbackup3-peer"></span><h1>CedarBackup3.peer<a class="headerlink" href="#module-CedarBackup3.peer" title="Link to this heading">¶</a></h1>
+<p>Provides backup peer-related objects and utility functions.</p>
+<section id="module-attributes">
+<h2>Module Attributes<a class="headerlink" href="#module-attributes" title="Link to this heading">¶</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.DEF_COLLECT_INDICATOR">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_COLLECT_INDICATOR</span></span><a class="headerlink" href="#CedarBackup3.peer.DEF_COLLECT_INDICATOR" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the default collect indicator file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.DEF_STAGE_INDICATOR">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_STAGE_INDICATOR</span></span><a class="headerlink" href="#CedarBackup3.peer.DEF_STAGE_INDICATOR" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the default stage indicator file</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.peer.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.peer.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.peer.DEF_RCP_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_RCP_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['/usr/bin/scp',</span> <span class="pre">'-B',</span> <span class="pre">'-q',</span> <span class="pre">'-C']</span></em><a class="headerlink" href="#CedarBackup3.peer.DEF_RCP_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.peer.DEF_RSH_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_RSH_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['/usr/bin/ssh']</span></em><a class="headerlink" href="#CedarBackup3.peer.DEF_RSH_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.peer.DEF_CBACK_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_CBACK_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/usr/bin/cback3'</span></em><a class="headerlink" href="#CedarBackup3.peer.DEF_CBACK_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_COLLECT_INDICATOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cback.collect'</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">DEF_STAGE_INDICATOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cback.stage'</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.peer.SU_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">SU_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['su']</span></em><a class="headerlink" href="#CedarBackup3.peer.SU_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">LocalPeer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectDir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignoreFailureMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.LocalPeer" title="Link to this definition">¶</a></dt>
+<dd><p>Backup peer representing a local peer in a backup pool.</p>
+<p>This is a class representing a local (non-network) peer in a backup pool.
+Local peers are backed up by simple filesystem copy operations.  A local
+peer has associated with it a name (typically, but not necessarily, a
+hostname) and a collect directory.</p>
+<p>The public methods other than the constructor are part of a “backup peer”
+interface shared with the <code class="docutils literal notranslate"><span class="pre">RemotePeer</span></code> class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#CedarBackup3.peer.LocalPeer.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer.collectDir">
+<span class="sig-name descname"><span class="pre">collectDir</span></span><a class="headerlink" href="#CedarBackup3.peer.LocalPeer.collectDir" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer.ignoreFailureMode">
+<span class="sig-name descname"><span class="pre">ignoreFailureMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.LocalPeer.ignoreFailureMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer.stagePeer">
+<span class="sig-name descname"><span class="pre">stagePeer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targetDir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ownership</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.LocalPeer.stagePeer" title="Link to this definition">¶</a></dt>
+<dd><p>Stages data from the peer into the indicated local target directory.</p>
+<p>The collect and target directories must both already exist before this
+method is called.  If passed in, ownership and permissions will be
+applied to the files that are copied.</p>
+<p><em>Note:</em> The caller is responsible for checking that the indicator exists,
+if they care.  This function only stages the files within the directory.</p>
+<p><em>Note:</em> If you have user/group as strings, call the <a class="reference internal" href="../util/index.html#CedarBackup3.util.getUidGid" title="CedarBackup3.util.getUidGid"><code class="xref any py py-func docutils literal notranslate"><span class="pre">util.getUidGid</span></code></a> function
+to get the associated uid/gid as an ownership tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>targetDir</strong> – Target directory to write data into</p></li>
+<li><p><strong>ownership</strong> – Owner and group that files should have, tuple of numeric <code class="docutils literal notranslate"><span class="pre">(uid,</span> <span class="pre">gid)</span></code></p></li>
+<li><p><strong>permissions</strong> – Unix permissions mode that the staged files should have, in octal like <code class="docutils literal notranslate"><span class="pre">0640</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of files copied from the source directory to the target directory</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If collect directory is not a directory or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If target directory is not a directory, does not exist or is not absolute</p></li>
+<li><p><strong>ValueError</strong> – If a path cannot be encoded properly</p></li>
+<li><p><strong>IOError</strong> – If there were no files to stage (i.e. the directory was empty)</p></li>
+<li><p><strong>IOError</strong> – If there is an IO error copying a file</p></li>
+<li><p><strong>OSError</strong> – If there is an OS error copying or changing permissions on a file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer.checkCollectIndicator">
+<span class="sig-name descname"><span class="pre">checkCollectIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collectIndicator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.LocalPeer.checkCollectIndicator" title="Link to this definition">¶</a></dt>
+<dd><p>Checks the collect indicator in the peer’s staging directory.</p>
+<p>When a peer has completed collecting its backup files, it will write an
+empty indicator file into its collect directory.  This method checks to
+see whether that indicator has been written.  We’re “stupid” here - if
+the collect directory doesn’t exist, you’ll naturally get back <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>If you need to, you can override the name of the collect indicator file
+by passing in a different name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collectIndicator</strong> – Name of the collect indicator file to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean true/false depending on whether the indicator exists</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If a path cannot be encoded properly</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.LocalPeer.writeStageIndicator">
+<span class="sig-name descname"><span class="pre">writeStageIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stageIndicator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ownership</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.LocalPeer.writeStageIndicator" title="Link to this definition">¶</a></dt>
+<dd><p>Writes the stage indicator in the peer’s staging directory.</p>
+<p>When the master has completed collecting its backup files, it will write
+an empty indicator file into the peer’s collect directory.  The presence
+of this file implies that the staging process is complete.</p>
+<p>If you need to, you can override the name of the stage indicator file by
+passing in a different name.</p>
+<p><em>Note:</em> If you have user/group as strings, call the <a class="reference internal" href="../util/index.html#CedarBackup3.util.getUidGid" title="CedarBackup3.util.getUidGid"><code class="xref any py py-func docutils literal notranslate"><span class="pre">util.getUidGid</span></code></a>
+function to get the associated uid/gid as an ownership tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stageIndicator</strong> – Name of the indicator file to write</p></li>
+<li><p><strong>ownership</strong> – Owner and group that files should have, tuple of numeric <code class="docutils literal notranslate"><span class="pre">(uid,</span> <span class="pre">gid)</span></code></p></li>
+<li><p><strong>permissions</strong> – Unix permissions mode that the staged files should have, in octal like <code class="docutils literal notranslate"><span class="pre">0640</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If collect directory is not a directory or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If a path cannot be encoded properly</p></li>
+<li><p><strong>IOError</strong> – If there is an IO error creating the file</p></li>
+<li><p><strong>OSError</strong> – If there is an OS error creating or changing permissions on the file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.peer.</span></span><span class="sig-name descname"><span class="pre">RemotePeer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workingDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remoteUser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcpCommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">localUser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rshCommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbackCommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignoreFailureMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.RemotePeer" title="Link to this definition">¶</a></dt>
+<dd><p>Backup peer representing a remote peer in a backup pool.</p>
+<p>This is a class representing a remote (networked) peer in a backup pool.
+Remote peers are backed up using an rcp-compatible copy command.  A remote
+peer has associated with it a name (which must be a valid hostname), a
+collect directory, a working directory and a copy method (an rcp-compatible
+command).</p>
+<p>You can also set an optional local user value.  This username will be used
+as the local user for any remote copies that are required.  It can only be
+used if the root user is executing the backup.  The root user will <code class="docutils literal notranslate"><span class="pre">su</span></code> to
+the local user and execute the remote copies as that user.</p>
+<p>The copy method is associated with the peer and not with the actual request
+to copy, because we can envision that each remote host might have a
+different connect method.</p>
+<p>The public methods other than the constructor are part of a “backup peer”
+interface shared with the <code class="docutils literal notranslate"><span class="pre">LocalPeer</span></code> class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.collectDir">
+<span class="sig-name descname"><span class="pre">collectDir</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.collectDir" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.workingDir">
+<span class="sig-name descname"><span class="pre">workingDir</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.workingDir" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.remoteUser">
+<span class="sig-name descname"><span class="pre">remoteUser</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.remoteUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.localUser">
+<span class="sig-name descname"><span class="pre">localUser</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.localUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.rcpCommand">
+<span class="sig-name descname"><span class="pre">rcpCommand</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.rcpCommand" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.rshCommand">
+<span class="sig-name descname"><span class="pre">rshCommand</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.rshCommand" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.cbackCommand">
+<span class="sig-name descname"><span class="pre">cbackCommand</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.cbackCommand" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.ignoreFailureMode">
+<span class="sig-name descname"><span class="pre">ignoreFailureMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.ignoreFailureMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.stagePeer">
+<span class="sig-name descname"><span class="pre">stagePeer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targetDir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ownership</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permissions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.stagePeer" title="Link to this definition">¶</a></dt>
+<dd><p>Stages data from the peer into the indicated local target directory.</p>
+<p>The target directory must already exist before this method is called.  If
+passed in, ownership and permissions will be applied to the files that
+are copied.</p>
+<p><em>Note:</em> The returned count of copied files might be inaccurate if some of
+the copied files already existed in the staging directory prior to the
+copy taking place.  We don’t clear the staging directory first, because
+some extension might also be using it.</p>
+<p><em>Note:</em> If you have user/group as strings, call the <a class="reference internal" href="../util/index.html#CedarBackup3.util.getUidGid" title="CedarBackup3.util.getUidGid"><code class="xref any py py-func docutils literal notranslate"><span class="pre">util.getUidGid</span></code></a> function
+to get the associated uid/gid as an ownership tuple.</p>
+<p><em>Note:</em> Unlike the local peer version of this method, an I/O error might
+or might not be raised if the directory is empty.  Since we’re using a
+remote copy method, we just don’t have the fine-grained control over our
+exceptions that’s available when we can look directly at the filesystem,
+and we can’t control whether the remote copy method thinks an empty
+directory is an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>targetDir</strong> – Target directory to write data into</p></li>
+<li><p><strong>ownership</strong> – Owner and group that files should have, tuple of numeric <code class="docutils literal notranslate"><span class="pre">(uid,</span> <span class="pre">gid)</span></code></p></li>
+<li><p><strong>permissions</strong> – Unix permissions mode that the staged files should have, in octal like <code class="docutils literal notranslate"><span class="pre">0640</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of files copied from the source directory to the target directory</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If target directory is not a directory, does not exist or is not absolute</p></li>
+<li><p><strong>ValueError</strong> – If a path cannot be encoded properly</p></li>
+<li><p><strong>IOError</strong> – If there were no files to stage (i.e. the directory was empty)</p></li>
+<li><p><strong>IOError</strong> – If there is an IO error copying a file</p></li>
+<li><p><strong>OSError</strong> – If there is an OS error copying or changing permissions on a file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.checkCollectIndicator">
+<span class="sig-name descname"><span class="pre">checkCollectIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collectIndicator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.checkCollectIndicator" title="Link to this definition">¶</a></dt>
+<dd><p>Checks the collect indicator in the peer’s staging directory.</p>
+<p>When a peer has completed collecting its backup files, it will write an
+empty indicator file into its collect directory.  This method checks to
+see whether that indicator has been written.  If the remote copy command
+fails, we return <code class="docutils literal notranslate"><span class="pre">False</span></code> as if the file weren’t there.</p>
+<p>If you need to, you can override the name of the collect indicator file
+by passing in a different name.</p>
+<p><em>Note:</em> Apparently, we can’t count on all rcp-compatible implementations
+to return sensible errors for some error conditions.  As an example, the
+<code class="docutils literal notranslate"><span class="pre">scp</span></code> command in Debian ‘woody’ returns a zero (normal) status even when
+it can’t find a host or if the login or path is invalid.  Because of
+this, the implementation of this method is rather convoluted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collectIndicator</strong> – Name of the collect indicator file to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean true/false depending on whether the indicator exists</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If a path cannot be encoded properly</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.writeStageIndicator">
+<span class="sig-name descname"><span class="pre">writeStageIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stageIndicator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.writeStageIndicator" title="Link to this definition">¶</a></dt>
+<dd><p>Writes the stage indicator in the peer’s staging directory.</p>
+<p>When the master has completed collecting its backup files, it will write
+an empty indicator file into the peer’s collect directory.  The presence
+of this file implies that the staging process is complete.</p>
+<p>If you need to, you can override the name of the stage indicator file by
+passing in a different name.</p>
+<p><em>Note:</em> If you have user/group as strings, call the <a class="reference internal" href="../util/index.html#CedarBackup3.util.getUidGid" title="CedarBackup3.util.getUidGid"><code class="xref any py py-func docutils literal notranslate"><span class="pre">util.getUidGid</span></code></a> function
+to get the associated uid/gid as an ownership tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stageIndicator</strong> – Name of the indicator file to write</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If a path cannot be encoded properly</p></li>
+<li><p><strong>IOError</strong> – If there is an IO error creating the file</p></li>
+<li><p><strong>OSError</strong> – If there is an OS error creating or changing permissions on the file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.executeRemoteCommand">
+<span class="sig-name descname"><span class="pre">executeRemoteCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.executeRemoteCommand" title="Link to this definition">¶</a></dt>
+<dd><p>Executes a command on the peer via remote shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>command</strong> – Command to execute</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>IOError</strong> – If there is an error executing the command on the remote peer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.peer.RemotePeer.executeManagedAction">
+<span class="sig-name descname"><span class="pre">executeManagedAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullBackup</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.peer.RemotePeer.executeManagedAction" title="Link to this definition">¶</a></dt>
+<dd><p>Executes a managed action on this peer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> – Name of the action to execute</p></li>
+<li><p><strong>fullBackup</strong> – Whether a full backup should be executed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>IOError</strong> – If there is an error executing the action on the remote peer</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">CedarBackup3</a><ul>
+      <li>Previous: <a href="../knapsack/index.html" title="previous chapter">CedarBackup3.knapsack</a></li>
+      <li>Next: <a href="../release/index.html" title="next chapter">CedarBackup3.release</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

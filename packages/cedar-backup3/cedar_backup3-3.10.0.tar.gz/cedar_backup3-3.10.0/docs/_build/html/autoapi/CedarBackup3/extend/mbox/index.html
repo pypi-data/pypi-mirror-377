@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.extend.mbox &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="CedarBackup3.extend.mysql" href="../mysql/index.html" />
+    <link rel="prev" title="CedarBackup3.extend.encrypt" href="../encrypt/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.extend.mbox">
+<span id="cedarbackup3-extend-mbox"></span><h1>CedarBackup3.extend.mbox<a class="headerlink" href="#module-CedarBackup3.extend.mbox" title="Link to this heading">¶</a></h1>
+<p>Provides an extension to back up mbox email files.</p>
+<section id="backing-up-email">
+<h2>Backing up email<a class="headerlink" href="#backing-up-email" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>Email folders (often stored as mbox flatfiles) are not well-suited being backed
+up with an incremental backup like the one offered by Cedar Backup.  This is
+because mbox files often change on a daily basis, forcing the incremental
+backup process to back them up every day in order to avoid losing data.  This
+can result in quite a bit of wasted space when backing up large folders.  (Note
+that the alternative maildir format does not share this problem, since it
+typically uses one file per message.)</p>
+<p>One solution to this problem is to design a smarter incremental backup process,
+which backs up baseline content on the first day of the week, and then backs up
+only new messages added to that folder on every other day of the week.  This way,
+the backup for any single day is only as large as the messages placed into the
+folder on that day.  The backup isn’t as “perfect” as the incremental backup
+process, because it doesn’t preserve information about messages deleted from
+the backed-up folder.  However, it should be much more space-efficient, and
+in a recovery situation, it seems better to restore too much data rather
+than too little.</p>
+</div></blockquote>
+</section>
+<section id="what-is-this-extension">
+<h2>What is this extension?<a class="headerlink" href="#what-is-this-extension" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>This is a Cedar Backup extension used to back up mbox email files via the Cedar
+Backup command line.  Individual mbox files or directories containing mbox
+files can be backed up using the same collect modes allowed for filesystems in
+the standard Cedar Backup collect action: weekly, daily, incremental.  It
+implements the “smart” incremental backup process discussed above, using
+functionality provided by the <code class="docutils literal notranslate"><span class="pre">grepmail</span></code> utility.</p>
+<p>This extension requires a new configuration section &lt;mbox&gt; and is intended to
+be run either immediately before or immediately after the standard collect
+action.  Aside from its own configuration, it requires the options and collect
+configuration sections in the standard Cedar Backup configuration file.</p>
+<p>The mbox action is conceptually similar to the standard collect action,
+except that mbox directories are not collected recursively.  This implies
+some configuration changes (i.e. there’s no need for global exclusions or an
+ignore file).  If you back up a directory, all of the mbox files in that
+directory are backed up into a single tar file using the indicated
+compression method.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.extend.mbox.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.GREPMAIL_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">GREPMAIL_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['grepmail']</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.GREPMAIL_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.REVISION_PATH_EXTENSION">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">REVISION_PATH_EXTENSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'mboxlast'</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.REVISION_PATH_EXTENSION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">MboxFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absolutePath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing mbox file configuration..</p>
+<p>The following restrictions exist on data in this class:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The absolute path must be absolute.</p></li>
+<li><p>The collect mode must be one of the values in <a class="reference internal" href="../../config/index.html#id4" title="CedarBackup3.config.VALID_COLLECT_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COLLECT_MODES</span></code></a>.</p></li>
+<li><p>The compress mode must be one of the values in <a class="reference internal" href="../../config/index.html#id6" title="CedarBackup3.config.VALID_COMPRESS_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COMPRESS_MODES</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.absolutePath">
+<span class="sig-name descname"><span class="pre">absolutePath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.absolutePath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.collectMode">
+<span class="sig-name descname"><span class="pre">collectMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.collectMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.compressMode">
+<span class="sig-name descname"><span class="pre">compressMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.compressMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxFile.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxFile.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">MboxDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absolutePath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relativeExcludePaths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excludePatterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing mbox directory configuration..</p>
+<p>The following restrictions exist on data in this class:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The absolute path must be absolute.</p></li>
+<li><p>The collect mode must be one of the values in <a class="reference internal" href="../../config/index.html#id4" title="CedarBackup3.config.VALID_COLLECT_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COLLECT_MODES</span></code></a>.</p></li>
+<li><p>The compress mode must be one of the values in <a class="reference internal" href="../../config/index.html#id6" title="CedarBackup3.config.VALID_COMPRESS_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COMPRESS_MODES</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+<p>Unlike collect directory configuration, this is the only place exclusions
+are allowed (no global exclusions at the &lt;mbox&gt; configuration level).  Also,
+we only allow relative exclusions and there is no configured ignore file.
+This is because mbox directory backups are not recursive.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.absolutePath">
+<span class="sig-name descname"><span class="pre">absolutePath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.absolutePath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.collectMode">
+<span class="sig-name descname"><span class="pre">collectMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.collectMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.compressMode">
+<span class="sig-name descname"><span class="pre">compressMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.compressMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.relativeExcludePaths">
+<span class="sig-name descname"><span class="pre">relativeExcludePaths</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.relativeExcludePaths" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.excludePatterns">
+<span class="sig-name descname"><span class="pre">excludePatterns</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.excludePatterns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxDir.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxDir.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">MboxConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collectMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mboxFiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mboxDirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing mbox configuration.</p>
+<p>Mbox configuration is used for backing up mbox email files.</p>
+<p>The following restrictions exist on data in this class:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The collect mode must be one of the values in <a class="reference internal" href="../../config/index.html#id4" title="CedarBackup3.config.VALID_COLLECT_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COLLECT_MODES</span></code></a>.</p></li>
+<li><p>The compress mode must be one of the values in <a class="reference internal" href="../../config/index.html#id6" title="CedarBackup3.config.VALID_COMPRESS_MODES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_COMPRESS_MODES</span></code></a>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">mboxFiles</span></code> list must be a list of <code class="docutils literal notranslate"><span class="pre">MboxFile</span></code> objects</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">mboxDirs</span></code> list must be a list of <code class="docutils literal notranslate"><span class="pre">MboxDir</span></code> objects</p></li>
+</ul>
+</div></blockquote>
+<p>For the <code class="docutils literal notranslate"><span class="pre">mboxFiles</span></code> and <code class="docutils literal notranslate"><span class="pre">mboxDirs</span></code> lists, validation is accomplished
+through the <a class="reference internal" href="../../util/index.html#CedarBackup3.util.ObjectTypeList" title="CedarBackup3.util.ObjectTypeList"><code class="xref any py py-class docutils literal notranslate"><span class="pre">util.ObjectTypeList</span></code></a> list implementation that overrides common
+list methods and transparently ensures that each element is of the proper
+type.</p>
+<p>Unlike collect configuration, no global exclusions are allowed on this
+level.  We only allow relative exclusions at the mbox directory level.
+Also, there is no configured ignore file.  This is because mbox directory
+backups are not recursive.</p>
+<p><em>Note:</em> Lists within this class are “unordered” for equality comparisons.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.collectMode">
+<span class="sig-name descname"><span class="pre">collectMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.collectMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.compressMode">
+<span class="sig-name descname"><span class="pre">compressMode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.compressMode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.mboxFiles">
+<span class="sig-name descname"><span class="pre">mboxFiles</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.mboxFiles" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.mboxDirs">
+<span class="sig-name descname"><span class="pre">mboxDirs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.mboxDirs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.MboxConfig.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.MboxConfig.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+Lists within this class are “unordered” for equality comparisons.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">LocalConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmlPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing this extension’s configuration document.</p>
+<p>This is not a general-purpose configuration object like the main Cedar
+Backup configuration object.  Instead, it just knows how to parse and emit
+Mbox-specific configuration values.  Third parties who need to read and
+write configuration related to this extension should access it through the
+constructor, <code class="docutils literal notranslate"><span class="pre">validate</span></code> and <code class="docutils literal notranslate"><span class="pre">addConfig</span></code> methods.</p>
+<p><em>Note:</em> Lists within this class are “unordered” for equality comparisons.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.mbox">
+<span class="sig-name descname"><span class="pre">mbox</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.mbox" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+Lists within this class are “unordered” for equality comparisons.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.validate" title="Link to this definition">¶</a></dt>
+<dd><p>Validates configuration represented by the object.</p>
+<p>Mbox configuration must be filled in.  Within that, the collect mode and
+compress mode are both optional, but the list of repositories must
+contain at least one entry.</p>
+<p>Each configured file or directory must contain an absolute path, and then
+must be either able to take collect mode and compress mode configuration
+from the parent <code class="docutils literal notranslate"><span class="pre">MboxConfig</span></code> object, or must set each value on its own.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If one of the validations fails</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.LocalConfig.addConfig">
+<span class="sig-name descname"><span class="pre">addConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.LocalConfig.addConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Adds an &lt;mbox&gt; configuration section as the next child of a parent.</p>
+<p>Third parties should use this function to write configuration related to
+this extension.</p>
+<p>We add the following fields to the document:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">collectMode</span>    <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">mbox</span><span class="o">/</span><span class="n">collectMode</span>
+<span class="n">compressMode</span>   <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">mbox</span><span class="o">/</span><span class="n">compressMode</span>
+</pre></div>
+</div>
+<p>We also add groups of the following items, one list element per
+item:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mboxFiles</span>      <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">mbox</span><span class="o">/</span><span class="n">file</span>
+<span class="n">mboxDirs</span>       <span class="o">//</span><span class="n">cb_config</span><span class="o">/</span><span class="n">mbox</span><span class="o">/</span><span class="nb">dir</span>
+</pre></div>
+</div>
+<p>The mbox files and mbox directories are added by <code class="docutils literal notranslate"><span class="pre">_addMboxFile</span></code> and
+<code class="docutils literal notranslate"><span class="pre">_addMboxDir</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent that the section should be appended to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.extend.mbox.executeAction">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.extend.mbox.</span></span><span class="sig-name descname"><span class="pre">executeAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">configPath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.extend.mbox.executeAction" title="Link to this definition">¶</a></dt>
+<dd><p>Executes the mbox backup action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>configPath</strong> (<em>String representing a path on disk</em>) – Path to configuration file on disk</p></li>
+<li><p><strong>options</strong> (<em>Options object</em>) – Program command-line options</p></li>
+<li><p><strong>config</strong> (<em>Config object</em>) – Program configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Under many generic error conditions</p></li>
+<li><p><strong>IOError</strong> – If a backup could not be written for some reason</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">CedarBackup3</a><ul>
+  <li><a href="../index.html">CedarBackup3.extend</a><ul>
+      <li>Previous: <a href="../encrypt/index.html" title="previous chapter">CedarBackup3.extend.encrypt</a></li>
+      <li>Next: <a href="../mysql/index.html" title="next chapter">CedarBackup3.extend.mysql</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

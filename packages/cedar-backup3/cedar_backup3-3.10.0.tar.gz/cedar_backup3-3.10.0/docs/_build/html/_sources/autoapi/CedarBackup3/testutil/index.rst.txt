@@ -1,0 +1,230 @@
+CedarBackup3.testutil
+=====================
+
+.. py:module:: CedarBackup3.testutil
+
+.. autoapi-nested-parse::
+
+   Provides unit-testing utilities.
+
+   These utilities are kept here, separate from util.py, because they provide
+   common functionality that I do not want exported "publicly" once Cedar Backup
+   is installed on a system.  They are only used for unit testing, and are only
+   useful within the source tree.
+
+   Many of these functions are in here because they are "good enough" for unit
+   test work but are not robust enough to be real public functions.  Others (like
+   :any:`removedir`) do what they are supposed to, but I don't want responsibility for
+   making them available to others.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: setupDebugLogger()
+
+   Sets up a screen logger for debugging purposes.
+
+   Normally, the CLI functionality configures the logger so that
+   things get written to the right place.  However, for debugging
+   it's sometimes nice to just get everything -- debug information
+   and output -- dumped to the screen.  This function takes care
+   of that.
+
+
+.. py:function:: configureLogging()
+
+   Optionally disable system logging based on configuration in the environment.
+
+
+.. py:function:: setupOverrides()
+
+   Set up any platform-specific overrides that might be required.
+
+   When packages are built, this is done manually (hardcoded) in customize.py
+   and the overrides are set up in cli.cli().  This way, no runtime checks need
+   to be done.  This is safe, because the package maintainer knows exactly
+   which platform (Debian or not) the package is being built for.
+
+   Unit tests are different, because they might be run anywhere.  So, we
+   attempt to make a guess about plaform using platformDebian(), and use that
+   to set up the custom overrides so that platform-specific unit tests continue
+   to work.
+
+
+.. py:function:: findResources(resources, dataDirs)
+
+   Returns a dictionary of locations for various resources.
+   :param resources: List of required resources
+   :param dataDirs: List of data directories to search within for resources
+
+   :returns: Dictionary mapping resource name to resource path
+
+   :raises Exception: If some resource cannot be found
+
+
+.. py:function:: commandAvailable(command)
+
+   Indicates whether a command is available on $PATH somewhere.
+   This should work on both Windows and UNIX platforms.
+   :param command: Commang to search for
+
+   :returns: Boolean true/false depending on whether command is available
+
+
+.. py:function:: buildPath(components)
+
+   Builds a complete path from a list of components.
+   For instance, constructs ``"/a/b/c"`` from ``["/a", "b", "c"]``.
+   :param components: List of components
+
+   :returns: String path constructed from components
+
+   :raises ValueError: If a path cannot be encoded properly
+
+
+.. py:function:: removedir(tree)
+
+   Recursively removes an entire directory.
+   This is basically taken from an example on python.com.
+   :param tree: Directory tree to remove
+
+   :raises ValueError: If a path cannot be encoded properly
+
+
+.. py:function:: extractTar(tmpdir, filepath)
+
+   Extracts the indicated tar file to the indicated tmpdir.
+   :param tmpdir: Temp directory to extract to
+   :param filepath: Path to tarfile to extract
+
+   :raises ValueError: If a path cannot be encoded properly
+
+
+.. py:function:: changeFileAge(filename, subtract=None)
+
+   Changes a file age using the ``os.utime`` function.
+
+   *Note:* Some platforms don't seem to be able to set an age precisely.  As a
+   result, whereas we might have intended to set an age of 86400 seconds, we
+   actually get an age of 86399.375 seconds.  When util.calculateFileAge()
+   looks at that the file, it calculates an age of 0.999992766204 days, which
+   then gets truncated down to zero whole days.  The tests get very confused.
+   To work around this, I always subtract off one additional second as a fudge
+   factor.  That way, the file age will be *at least* as old as requested
+   later on.
+
+   :param filename: File to operate on
+   :param subtract: Number of seconds to subtract from the current time
+
+   :raises ValueError: If a path cannot be encoded properly
+
+
+.. py:function:: getMaskAsMode()
+
+   Returns the user's current umask inverted to a mode.
+   A mode is mostly a bitwise inversion of a mask, i.e. mask 002 is mode 775.
+   :returns: Umask converted to a mode, as an integer
+
+
+.. py:function:: getLogin()
+
+   Returns the name of the currently-logged in user.  This might fail under
+   some circumstances - but if it does, our tests would fail anyway.
+
+
+.. py:function:: randomFilename(length, prefix=None, suffix=None)
+
+   Generates a random filename with the given length.
+   @return Random filename
+
+
+.. py:function:: failUnlessAssignRaises(testCase, exception, obj, prop, value)
+
+   Equivalent of ``failUnlessRaises``, but used for property assignments instead.
+
+   It's nice to be able to use ``failUnlessRaises`` to check that a method call
+   raises the exception that you expect.  Unfortunately, this method can't be
+   used to check Python propery assignments, even though these property
+   assignments are actually implemented underneath as methods.
+
+   This function (which can be easily called by unit test classes) provides an
+   easy way to wrap the assignment checks.  It's not pretty, or as intuitive as
+   the original check it's modeled on, but it does work.
+
+   Let's assume you make this method call::
+
+      testCase.failUnlessAssignRaises(ValueError, collectDir, "absolutePath", absolutePath)
+
+   If you do this, a test case failure will be raised unless the assignment::
+
+      collectDir.absolutePath = absolutePath
+
+   fails with a ``ValueError`` exception.  The failure message differentiates
+   between the case where no exception was raised and the case where the wrong
+   exception was raised.
+
+   *Note:* Internally, the ``missed`` and ``instead`` variables are used rather
+   than directly calling ``testCase.fail`` upon noticing a problem because the
+   act of "failure" itself generates an exception that would be caught by the
+   general ``except`` clause.
+
+   :param testCase: PyUnit test case object (i.e. self)
+   :param exception: Exception that is expected to be raised
+   :param obj: Object whose property is to be assigned to
+   :param prop: Name of the property, as a string
+   :param value: Value that is to be assigned to the property
+
+   @see: ``unittest.TestCase.failUnlessRaises``
+
+
+.. py:function:: captureOutput(c)
+
+   Captures the output (stdout, stderr) of a function or a method.
+
+   Some of our functions don't do anything other than just print output.  We
+   need a way to test these functions (at least nominally) but we don't want
+   any of the output spoiling the test suite output.
+
+   This function just creates a dummy file descriptor that can be used as a
+   target by the callable function, rather than ``stdout`` or ``stderr``.
+
+   *Note:* This method assumes that ``callable`` doesn't take any arguments
+   besides keyword argument ``fd`` to specify the file descriptor.
+
+   :param c: Callable function or method
+
+   :returns: Output of function, as one big string
+
+
+.. py:function:: platformDebian()
+
+   Returns boolean indicating whether this is the Debian platform.
+
+
+.. py:function:: platformMacOsX()
+
+   Returns boolean indicating whether this is the Mac OS X platform.
+
+
+.. py:function:: platformWindows()
+
+   Returns boolean indicating whether this is the Windows platform.
+
+
+.. py:function:: platformSupportsLinks()
+
+   Whether the platform supports soft links
+
+
+.. py:function:: availableLocales()
+
+   Returns a list of available locales on the system
+   :returns: List of string locale names
+
+

@@ -1,0 +1,44 @@
+CedarBackup3.actions.rebuild
+============================
+
+.. py:module:: CedarBackup3.actions.rebuild
+
+.. autoapi-nested-parse::
+
+   Implements the standard 'rebuild' action.
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: executeRebuild(configPath, options, config)
+
+   Executes the rebuild backup action.
+
+   This function exists mainly to recreate a disc that has been "trashed" due
+   to media or hardware problems.  Note that the "stage complete" indicator
+   isn't checked for this action.
+
+   Note that the rebuild action and the store action are very similar.  The
+   main difference is that while store only stores a single day's staging
+   directory, the rebuild action operates on multiple staging directories.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: Under many generic error conditions
+   :raises IOError: If there are problems reading or writing files
+
+

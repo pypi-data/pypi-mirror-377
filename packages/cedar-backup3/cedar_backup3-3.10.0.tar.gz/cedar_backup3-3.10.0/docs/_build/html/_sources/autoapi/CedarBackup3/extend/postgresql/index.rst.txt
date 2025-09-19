@@ -1,0 +1,269 @@
+CedarBackup3.extend.postgresql
+==============================
+
+.. py:module:: CedarBackup3.extend.postgresql
+
+.. autoapi-nested-parse::
+
+   Provides an extension to back up PostgreSQL databases.
+
+   This is a Cedar Backup extension used to back up PostgreSQL databases via the
+   Cedar Backup command line.  It requires a new configurations section
+   <postgresql> and is intended to be run either immediately before or immediately
+   after the standard collect action.  Aside from its own configuration, it
+   requires the options and collect configuration sections in the standard Cedar
+   Backup configuration file.
+
+   The backup is done via the ``pg_dump`` or ``pg_dumpall`` commands included with
+   the PostgreSQL product.  Output can be compressed using ``gzip`` or ``bzip2``.
+   Administrators can configure the extension either to back up all databases or
+   to back up only specific databases.  The extension assumes that the current
+   user has passwordless access to the database since there is no easy way to pass
+   a password to the ``pg_dump`` client. This can be accomplished using appropriate
+   voodoo in the ``pg_hda.conf`` file.
+
+   Note that this code always produces a full backup.  There is currently no
+   facility for making incremental backups.
+
+   You should always make ``/etc/cback3.conf`` unreadble to non-root users once you
+   place postgresql configuration into it, since postgresql configuration will
+   contain information about available PostgreSQL databases and usernames.
+
+   Use of this extension *may* expose usernames in the process listing (via
+   ``ps``) when the backup is running if the username is specified in the
+   configuration.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+   :author: Antoine Beaupre <anarcat@koumbit.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: POSTGRESQLDUMP_COMMAND
+   :value: ['pg_dump']
+
+
+.. py:data:: POSTGRESQLDUMPALL_COMMAND
+   :value: ['pg_dumpall']
+
+
+.. py:class:: PostgresqlConfig(user=None, compressMode=None, all=None, databases=None)
+
+   Class representing PostgreSQL configuration.
+
+   The PostgreSQL configuration information is used for backing up PostgreSQL databases.
+
+   The following restrictions exist on data in this class:
+
+      - The compress mode must be one of the values in :any:`VALID_COMPRESS_MODES`.
+      - The 'all' flag must be 'Y' if no databases are defined.
+      - The 'all' flag must be 'N' if any databases are defined.
+      - Any values in the databases list must be strings.
+
+
+
+   .. py:attribute:: user
+      :value: None
+
+
+
+   .. py:attribute:: compressMode
+      :value: None
+
+
+
+   .. py:attribute:: all
+      :value: None
+
+
+
+   .. py:attribute:: databases
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: LocalConfig(xmlData=None, xmlPath=None, validate=True)
+
+   Class representing this extension's configuration document.
+
+   This is not a general-purpose configuration object like the main Cedar
+   Backup configuration object.  Instead, it just knows how to parse and emit
+   PostgreSQL-specific configuration values.  Third parties who need to read and
+   write configuration related to this extension should access it through the
+   constructor, ``validate`` and ``addConfig`` methods.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: postgresql
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: validate()
+
+      Validates configuration represented by the object.
+
+      The compress mode must be filled in.  Then, if the 'all' flag
+      *is* set, no databases are allowed, and if the 'all' flag is
+      *not* set, at least one database is required.
+
+      :raises ValueError: If one of the validations fails
+
+
+
+   .. py:method:: addConfig(xmlDom, parentNode)
+
+      Adds a <postgresql> configuration section as the next child of a parent.
+
+      Third parties should use this function to write configuration related to
+      this extension.
+
+      We add the following fields to the document::
+
+         user           //cb_config/postgresql/user
+         compressMode   //cb_config/postgresql/compress_mode
+         all            //cb_config/postgresql/all
+
+      We also add groups of the following items, one list element per
+      item::
+
+         database       //cb_config/postgresql/database
+
+      :param xmlDom: DOM tree as from ``impl.createDocument()``
+      :param parentNode: Parent that the section should be appended to
+
+
+
+.. py:function:: executeAction(configPath, options, config)
+
+   Executes the PostgreSQL backup action.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: Under many generic error conditions
+   :raises IOError: If a backup could not be written for some reason
+
+
+.. py:function:: backupDatabase(user, backupFile, database=None)
+
+   Backs up an individual PostgreSQL database, or all databases.
+
+   This function backs up either a named local PostgreSQL database or all local
+   PostgreSQL databases, using the passed in user for connectivity.
+   This is *always* a full backup.  There is no facility for incremental
+   backups.
+
+   The backup data will be written into the passed-in back file.  Normally,
+   this would be an object as returned from ``open``, but it is possible to
+   use something like a ``GzipFile`` to write compressed output.  The caller is
+   responsible for closing the passed-in backup file.
+
+   *Note:* Typically, you would use the ``root`` user to back up all databases.
+
+   :param user: User to use for connecting to the database
+   :type user: String representing PostgreSQL username
+   :param backupFile: File use for writing backup
+   :type backupFile: Python file object as from ``open`` or ``file``
+   :param database: Name of the database to be backed up
+   :type database: String representing database name, or ``None`` for all databases
+
+   :raises ValueError: If some value is missing or invalid
+   :raises IOError: If there is a problem executing the PostgreSQL dump
+
+

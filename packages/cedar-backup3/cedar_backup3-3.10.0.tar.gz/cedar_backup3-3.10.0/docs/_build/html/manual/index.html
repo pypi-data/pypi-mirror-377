@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cedar Backup v3 Software Manual &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="cedar-backup-v3-software-manual">
+<h1>Cedar Backup v3 Software Manual<a class="headerlink" href="#cedar-backup-v3-software-manual" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="preface.html">Preface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#audience">Audience</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#conventions-used-in-this-book">Conventions Used in This Book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#organization-of-this-manual">Organization of This Manual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-cedar-backup">What is Cedar Backup?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#migrating-from-version-2-to-version-3">Migrating from Version 2 to Version 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#how-to-get-support">How to Get Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#history">History</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basic.html">Basic Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#general-architecture">General Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#data-recovery">Data Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#cedar-backup-pools">Cedar Backup Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#the-backup-process">The Backup Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#coordination-between-master-and-clients">Coordination between Master and Clients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#managed-backups">Managed Backups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#media-and-device-types">Media and Device Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#incremental-backups">Incremental Backups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic.html#extensions">Extensions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-on-a-debian-system">Installing on a Debian System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-the-python-package">Installing the Python Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commandline.html">Command Line Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#the-cback3-command">The <code class="docutils literal notranslate"><span class="pre">cback3</span></code> command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#the-cback3-amazons3-sync-command">The <code class="docutils literal notranslate"><span class="pre">cback3-amazons3-sync</span></code> command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commandline.html#the-cback3-span-command">The <code class="docutils literal notranslate"><span class="pre">cback3-span</span></code> command</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#configuration-file-format">Configuration File Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#setting-up-a-pool-of-one">Setting up a Pool of One</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#setting-up-a-client-peer-node">Setting up a Client Peer Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#setting-up-a-master-peer-node">Setting up a Master Peer Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#configuring-your-writer-device">Configuring your Writer Device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#optimized-blanking-stategy">Optimized Blanking Stategy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Official Extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#system-information-extension">System Information Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#amazon-s3-extension">Amazon S3 Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#subversion-extension">Subversion Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#mysql-extension">MySQL Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#postgresql-extension">PostgreSQL Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#mbox-extension">Mbox Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#encrypt-extension">Encrypt Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#split-extension">Split Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions.html#capacity-extension">Capacity Extension</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extenspec.html">Extension Architecture Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="depends.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recovering.html">Data Recovery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#finding-your-data">Finding your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#recovering-filesystem-data">Recovering Filesystem Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#full-restore">Full Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#partial-restore">Partial Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#recovering-mysql-data">Recovering MySQL Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#recovering-subversion-data">Recovering Subversion Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#recovering-mailbox-data">Recovering Mailbox Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovering.html#recovering-data-split-by-the-split-extension">Recovering Data split by the Split Extension</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="securingssh.html">Securing Password-less SSH Connections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright</a></li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

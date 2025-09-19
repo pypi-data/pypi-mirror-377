@@ -1,0 +1,425 @@
+CedarBackup3.extend.mbox
+========================
+
+.. py:module:: CedarBackup3.extend.mbox
+
+.. autoapi-nested-parse::
+
+   Provides an extension to back up mbox email files.
+
+   Backing up email
+   ================
+
+      Email folders (often stored as mbox flatfiles) are not well-suited being backed
+      up with an incremental backup like the one offered by Cedar Backup.  This is
+      because mbox files often change on a daily basis, forcing the incremental
+      backup process to back them up every day in order to avoid losing data.  This
+      can result in quite a bit of wasted space when backing up large folders.  (Note
+      that the alternative maildir format does not share this problem, since it
+      typically uses one file per message.)
+
+      One solution to this problem is to design a smarter incremental backup process,
+      which backs up baseline content on the first day of the week, and then backs up
+      only new messages added to that folder on every other day of the week.  This way,
+      the backup for any single day is only as large as the messages placed into the
+      folder on that day.  The backup isn't as "perfect" as the incremental backup
+      process, because it doesn't preserve information about messages deleted from
+      the backed-up folder.  However, it should be much more space-efficient, and
+      in a recovery situation, it seems better to restore too much data rather
+      than too little.
+
+   What is this extension?
+   =======================
+
+      This is a Cedar Backup extension used to back up mbox email files via the Cedar
+      Backup command line.  Individual mbox files or directories containing mbox
+      files can be backed up using the same collect modes allowed for filesystems in
+      the standard Cedar Backup collect action: weekly, daily, incremental.  It
+      implements the "smart" incremental backup process discussed above, using
+      functionality provided by the ``grepmail`` utility.
+
+      This extension requires a new configuration section <mbox> and is intended to
+      be run either immediately before or immediately after the standard collect
+      action.  Aside from its own configuration, it requires the options and collect
+      configuration sections in the standard Cedar Backup configuration file.
+
+      The mbox action is conceptually similar to the standard collect action,
+      except that mbox directories are not collected recursively.  This implies
+      some configuration changes (i.e. there's no need for global exclusions or an
+      ignore file).  If you back up a directory, all of the mbox files in that
+      directory are backed up into a single tar file using the indicated
+      compression method.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: GREPMAIL_COMMAND
+   :value: ['grepmail']
+
+
+.. py:data:: REVISION_PATH_EXTENSION
+   :value: 'mboxlast'
+
+
+.. py:class:: MboxFile(absolutePath=None, collectMode=None, compressMode=None)
+
+   Class representing mbox file configuration..
+
+   The following restrictions exist on data in this class:
+
+      - The absolute path must be absolute.
+      - The collect mode must be one of the values in :any:`VALID_COLLECT_MODES`.
+      - The compress mode must be one of the values in :any:`VALID_COMPRESS_MODES`.
+
+
+
+   .. py:attribute:: absolutePath
+      :value: None
+
+
+
+   .. py:attribute:: collectMode
+      :value: None
+
+
+
+   .. py:attribute:: compressMode
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: MboxDir(absolutePath=None, collectMode=None, compressMode=None, relativeExcludePaths=None, excludePatterns=None)
+
+   Class representing mbox directory configuration..
+
+   The following restrictions exist on data in this class:
+
+      - The absolute path must be absolute.
+      - The collect mode must be one of the values in :any:`VALID_COLLECT_MODES`.
+      - The compress mode must be one of the values in :any:`VALID_COMPRESS_MODES`.
+
+   Unlike collect directory configuration, this is the only place exclusions
+   are allowed (no global exclusions at the <mbox> configuration level).  Also,
+   we only allow relative exclusions and there is no configured ignore file.
+   This is because mbox directory backups are not recursive.
+
+
+
+   .. py:attribute:: absolutePath
+      :value: None
+
+
+
+   .. py:attribute:: collectMode
+      :value: None
+
+
+
+   .. py:attribute:: compressMode
+      :value: None
+
+
+
+   .. py:attribute:: relativeExcludePaths
+      :value: None
+
+
+
+   .. py:attribute:: excludePatterns
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: MboxConfig(collectMode=None, compressMode=None, mboxFiles=None, mboxDirs=None)
+
+   Class representing mbox configuration.
+
+   Mbox configuration is used for backing up mbox email files.
+
+   The following restrictions exist on data in this class:
+
+      - The collect mode must be one of the values in :any:`VALID_COLLECT_MODES`.
+      - The compress mode must be one of the values in :any:`VALID_COMPRESS_MODES`.
+      - The ``mboxFiles`` list must be a list of ``MboxFile`` objects
+      - The ``mboxDirs`` list must be a list of ``MboxDir`` objects
+
+   For the ``mboxFiles`` and ``mboxDirs`` lists, validation is accomplished
+   through the :any:`util.ObjectTypeList` list implementation that overrides common
+   list methods and transparently ensures that each element is of the proper
+   type.
+
+   Unlike collect configuration, no global exclusions are allowed on this
+   level.  We only allow relative exclusions at the mbox directory level.
+   Also, there is no configured ignore file.  This is because mbox directory
+   backups are not recursive.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: collectMode
+      :value: None
+
+
+
+   .. py:attribute:: compressMode
+      :value: None
+
+
+
+   .. py:attribute:: mboxFiles
+      :value: None
+
+
+
+   .. py:attribute:: mboxDirs
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: LocalConfig(xmlData=None, xmlPath=None, validate=True)
+
+   Class representing this extension's configuration document.
+
+   This is not a general-purpose configuration object like the main Cedar
+   Backup configuration object.  Instead, it just knows how to parse and emit
+   Mbox-specific configuration values.  Third parties who need to read and
+   write configuration related to this extension should access it through the
+   constructor, ``validate`` and ``addConfig`` methods.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: mbox
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: validate()
+
+      Validates configuration represented by the object.
+
+      Mbox configuration must be filled in.  Within that, the collect mode and
+      compress mode are both optional, but the list of repositories must
+      contain at least one entry.
+
+      Each configured file or directory must contain an absolute path, and then
+      must be either able to take collect mode and compress mode configuration
+      from the parent ``MboxConfig`` object, or must set each value on its own.
+
+      :raises ValueError: If one of the validations fails
+
+
+
+   .. py:method:: addConfig(xmlDom, parentNode)
+
+      Adds an <mbox> configuration section as the next child of a parent.
+
+      Third parties should use this function to write configuration related to
+      this extension.
+
+      We add the following fields to the document::
+
+         collectMode    //cb_config/mbox/collectMode
+         compressMode   //cb_config/mbox/compressMode
+
+      We also add groups of the following items, one list element per
+      item::
+
+         mboxFiles      //cb_config/mbox/file
+         mboxDirs       //cb_config/mbox/dir
+
+      The mbox files and mbox directories are added by ``_addMboxFile`` and
+      ``_addMboxDir``.
+
+      :param xmlDom: DOM tree as from ``impl.createDocument()``
+      :param parentNode: Parent that the section should be appended to
+
+
+
+.. py:function:: executeAction(configPath, options, config)
+
+   Executes the mbox backup action.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: Under many generic error conditions
+   :raises IOError: If a backup could not be written for some reason
+
+

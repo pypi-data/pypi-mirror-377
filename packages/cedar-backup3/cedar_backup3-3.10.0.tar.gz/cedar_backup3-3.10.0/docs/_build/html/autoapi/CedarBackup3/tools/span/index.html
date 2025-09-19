@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.tools.span &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="CedarBackup3.util" href="../../util/index.html" />
+    <link rel="prev" title="CedarBackup3.tools.amazons3" href="../amazons3/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.tools.span">
+<span id="cedarbackup3-tools-span"></span><h1>CedarBackup3.tools.span<a class="headerlink" href="#module-CedarBackup3.tools.span" title="Link to this heading">¶</a></h1>
+<p>Spans staged data among multiple discs</p>
+<p>This is the Cedar Backup span tool.  It is intended for use by people who stage
+more data than can fit on a single disc.  It allows a user to split staged data
+among more than one disc.  It can’t be an extension because it requires user
+input when switching media.</p>
+<p>Most configuration is taken from the Cedar Backup configuration file,
+specifically the store section.  A few pieces of configuration are taken
+directly from the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.tools.span.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.span.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.tools.span.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.tools.span.SpanOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.span.</span></span><span class="sig-name descname"><span class="pre">SpanOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argumentList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argumentString</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.span.SpanOptions" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../cli/index.html#CedarBackup3.cli.Options" title="CedarBackup3.cli.Options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CedarBackup3.cli.Options</span></code></a></p>
+<p>Tool-specific command-line options.</p>
+<p>Most of the cback3 command-line options are exactly what we need here –
+logfile path, permissions, verbosity, etc.  However, we need to make a few
+tweaks since we don’t accept any actions.</p>
+<p>Also, a few extra command line options that we accept are really ignored
+underneath.  I just don’t care about that for a tool like this.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.span.SpanOptions.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.span.SpanOptions.validate" title="Link to this definition">¶</a></dt>
+<dd><p>Validates command-line options represented by the object.
+There are no validations here, because we don’t use any actions.
+:raises ValueError: If one of the validations fails</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.tools.span.cli">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.span.</span></span><span class="sig-name descname"><span class="pre">cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.span.cli" title="Link to this definition">¶</a></dt>
+<dd><p>Implements the command-line interface for the <code class="docutils literal notranslate"><span class="pre">cback3-span</span></code> script.</p>
+<p>Essentially, this is the “main routine” for the cback3-span script.  It does
+all of the argument processing for the script, and then also implements the
+tool functionality.</p>
+<p>This function looks pretty similiar to <code class="docutils literal notranslate"><span class="pre">CedarBackup3.cli.cli()</span></code>.  It’s not
+easy to refactor this code to make it reusable and also readable, so I’ve
+decided to just live with the duplication.</p>
+<p>A different error code is returned for each type of failure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: The Python interpreter version is not supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Error processing command-line arguments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code>: Error configuring logging</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code>: Error parsing indicated configuration file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code>: Backup was interrupted with a CTRL-C or similar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">6</span></code>: Error executing other parts of the script</p></li>
+</ul>
+</div></blockquote>
+<p><em>Note:</em> This script uses print rather than logging to the INFO level, because
+it is interactive.  Underlying Cedar Backup functionality uses the logging
+mechanism exclusively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error code as described above</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">CedarBackup3</a><ul>
+  <li><a href="../index.html">CedarBackup3.tools</a><ul>
+      <li>Previous: <a href="../amazons3/index.html" title="previous chapter">CedarBackup3.tools.amazons3</a></li>
+      <li>Next: <a href="../../util/index.html" title="next chapter">CedarBackup3.util</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

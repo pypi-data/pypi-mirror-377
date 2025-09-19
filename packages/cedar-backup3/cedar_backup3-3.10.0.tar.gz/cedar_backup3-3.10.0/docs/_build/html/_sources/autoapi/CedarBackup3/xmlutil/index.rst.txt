@@ -1,0 +1,352 @@
+CedarBackup3.xmlutil
+====================
+
+.. py:module:: CedarBackup3.xmlutil
+
+.. autoapi-nested-parse::
+
+   Provides general XML-related functionality.
+
+   What I'm trying to do here is abstract much of the functionality that directly
+   accesses the DOM tree.  This is not so much to "protect" the other code from
+   the DOM, but to standardize the way it's used.  It will also help extension
+   authors write code that easily looks more like the rest of Cedar Backup.
+
+   Module Attributes
+   =================
+
+   .. attribute:: TRUE_BOOLEAN_VALUES
+
+      List of boolean values in XML representing ``True``
+
+   .. attribute:: FALSE_BOOLEAN_VALUES
+
+      List of boolean values in XML representing ``False``
+
+   .. attribute:: VALID_BOOLEAN_VALUES
+
+      List of valid boolean values in XML
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: TRUE_BOOLEAN_VALUES
+   :value: ['Y', 'y']
+
+
+.. py:data:: FALSE_BOOLEAN_VALUES
+   :value: ['N', 'n']
+
+
+.. py:data:: VALID_BOOLEAN_VALUES
+   :value: ['Y', 'y', 'N', 'n']
+
+
+.. py:function:: createInputDom(xmlData, name='cb_config')
+
+   Creates a DOM tree based on reading an XML string.
+   :returns: Tuple (xmlDom, parentNode) for the parsed document
+
+   :raises ValueError: If the document can't be parsed
+
+
+.. py:function:: createOutputDom(name='cb_config')
+
+   Creates a DOM tree used for writing an XML document.
+   :param name: Base name of the document (root node name)
+
+   :returns: Tuple (xmlDom, parentNode) for the new document
+
+
+.. py:function:: isElement(node)
+
+   Returns True or False depending on whether the XML node is an element node.
+
+
+.. py:function:: readChildren(parent, name)
+
+   Returns a list of nodes with a given name immediately beneath the
+   parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   Underneath, we use the Python ``getElementsByTagName`` method, which is
+   pretty cool, but which (surprisingly?) returns a list of all children
+   with a given name below the parent, at any level.  We just prune that
+   list to include only children whose ``parentNode`` matches the passed-in
+   parent.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of nodes to search for
+
+   :returns: List of child nodes with correct parent, or an empty list if
+
+   no matching nodes are found.
+
+
+.. py:function:: readFirstChild(parent, name)
+
+   Returns the first child with a given name immediately beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: First properly-named child of parent, or ``None`` if no matching nodes are found
+
+
+.. py:function:: readStringList(parent, name)
+
+   Returns a list of the string contents associated with nodes with a given
+   name immediately beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   First, we find all of the nodes using :any:`readChildren`, and then we
+   retrieve the "string contents" of each of those nodes.  The returned list
+   has one entry per matching node.  We assume that string contents of a
+   given node belong to the first ``TEXT_NODE`` child of that node.  Nodes
+   which have no ``TEXT_NODE`` children are not represented in the returned
+   list.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: List of strings as described above, or ``None`` if no matching nodes are found
+
+
+.. py:function:: readString(parent, name)
+
+   Returns string contents of the first child with a given name immediately
+   beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.  We assume that string
+   contents of a given node belong to the first ``TEXT_NODE`` child of that
+   node.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: String contents of node or ``None`` if no matching nodes are found
+
+
+.. py:function:: readInteger(parent, name)
+
+   Returns integer contents of the first child with a given name immediately
+   beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: Integer contents of node or ``None`` if no matching nodes are found
+
+   :raises ValueError: If the string at the location can't be converted to an integer
+
+
+.. py:function:: readLong(parent, name)
+
+   Returns long integer contents of the first child with a given name immediately
+   beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: Long integer contents of node or ``None`` if no matching nodes are found
+
+   :raises ValueError: If the string at the location can't be converted to an integer
+
+
+.. py:function:: readFloat(parent, name)
+
+   Returns float contents of the first child with a given name immediately
+   beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: Float contents of node or ``None`` if no matching nodes are found
+
+   :raises ValueError: If the string at the location can't be converted to a
+
+   float value.
+
+
+.. py:function:: readBoolean(parent, name)
+
+   Returns boolean contents of the first child with a given name immediately
+   beneath the parent.
+
+   By "immediately beneath" the parent, we mean from among nodes that are
+   direct children of the passed-in parent node.
+
+   The string value of the node must be one of the values in :any:`VALID_BOOLEAN_VALUES`.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: Boolean contents of node or ``None`` if no matching nodes are found
+
+   :raises ValueError: If the string at the location can't be converted to a boolean
+
+
+.. py:function:: addContainerNode(xmlDom, parentNode, nodeName)
+
+   Adds a container node as the next child of a parent node.
+
+   :param xmlDom: DOM tree as from ``impl.createDocument()``
+   :param parentNode: Parent node to create child for
+   :param nodeName: Name of the new container node
+
+   :returns: Reference to the newly-created node
+
+
+.. py:function:: addStringNode(xmlDom, parentNode, nodeName, nodeValue)
+
+   Adds a text node as the next child of a parent, to contain a string.
+
+   If the ``nodeValue`` is None, then the node will be created, but will be
+   empty (i.e. will contain no text node child).
+
+   :param xmlDom: DOM tree as from ``impl.createDocument()``
+   :param parentNode: Parent node to create child for
+   :param nodeName: Name of the new container node
+   :param nodeValue: The value to put into the node
+
+   :returns: Reference to the newly-created node
+
+
+.. py:function:: addIntegerNode(xmlDom, parentNode, nodeName, nodeValue)
+
+   Adds a text node as the next child of a parent, to contain an integer.
+
+   If the ``nodeValue`` is None, then the node will be created, but will be
+   empty (i.e. will contain no text node child).
+
+   The integer will be converted to a string using "%d".  The result will be
+   added to the document via :any:`addStringNode`.
+
+   :param xmlDom: DOM tree as from ``impl.createDocument()``
+   :param parentNode: Parent node to create child for
+   :param nodeName: Name of the new container node
+   :param nodeValue: The value to put into the node
+
+   :returns: Reference to the newly-created node
+
+
+.. py:function:: addLongNode(xmlDom, parentNode, nodeName, nodeValue)
+
+   Adds a text node as the next child of a parent, to contain a long integer.
+
+   If the ``nodeValue`` is None, then the node will be created, but will be
+   empty (i.e. will contain no text node child).
+
+   The integer will be converted to a string using "%d".  The result will be
+   added to the document via :any:`addStringNode`.
+
+   :param xmlDom: DOM tree as from ``impl.createDocument()``
+   :param parentNode: Parent node to create child for
+   :param nodeName: Name of the new container node
+   :param nodeValue: The value to put into the node
+
+   :returns: Reference to the newly-created node
+
+
+.. py:function:: addBooleanNode(xmlDom, parentNode, nodeName, nodeValue)
+
+   Adds a text node as the next child of a parent, to contain a boolean.
+
+   If the ``nodeValue`` is None, then the node will be created, but will be
+   empty (i.e. will contain no text node child).
+
+   Boolean ``True``, or anything else interpreted as ``True`` by Python, will
+   be converted to a string "Y".  Anything else will be converted to a
+   string "N".  The result is added to the document via :any:`addStringNode`.
+
+   :param xmlDom: DOM tree as from ``impl.createDocument()``
+   :param parentNode: Parent node to create child for
+   :param nodeName: Name of the new container node
+   :param nodeValue: The value to put into the node
+
+   :returns: Reference to the newly-created node
+
+
+.. py:function:: serializeDom(xmlDom, indent=3)
+
+   Serializes a DOM tree and returns the result in a string.
+   :param xmlDom: XML DOM tree to serialize
+   :param indent: Number of spaces to indent, as an integer
+
+   :returns: String form of DOM tree, pretty-printed
+
+
+.. py:class:: Serializer(stream=sys.stdout, encoding='UTF-8', indent=3)
+
+   XML serializer class.
+
+   This is a customized serializer that I hacked together based on what I found
+   in the PyXML distribution.  Basically, around release 2.7.0, the only reason
+   I still had around a dependency on PyXML was for the PrettyPrint
+   functionality, and that seemed pointless.  So, I stripped the PrettyPrint
+   code out of PyXML and hacked bits of it off until it did just what I needed
+   and no more.
+
+   This code started out being called PrintVisitor, but I decided it makes more
+   sense just calling it a serializer.  I've made nearly all of the methods
+   private, and I've added a new high-level serialize() method rather than
+   having clients call ``visit()``.
+
+   Anyway, as a consequence of my hacking with it, this can't quite be called a
+   complete XML serializer any more.  I ripped out support for HTML and XHTML,
+   and there is also no longer any support for namespaces (which I took out
+   because this dragged along a lot of extra code, and Cedar Backup doesn't use
+   namespaces).  However, everything else should pretty much work as expected.
+
+   @copyright: This code, prior to customization, was part of the PyXML
+   codebase, and before that was part of the 4DOM suite developed by
+   Fourthought, Inc.  It its original form, it was Copyright (c) 2000
+   Fourthought Inc, USA; All Rights Reserved.
+
+
+   .. py:attribute:: stream
+
+
+   .. py:attribute:: encoding
+      :value: 'UTF-8'
+
+
+
+   .. py:method:: serialize(xmlDom)
+
+      Serialize the passed-in XML document.
+      :param xmlDom: XML DOM tree to serialize
+
+      :raises ValueError: If there's an unknown node type in the document
+
+
+

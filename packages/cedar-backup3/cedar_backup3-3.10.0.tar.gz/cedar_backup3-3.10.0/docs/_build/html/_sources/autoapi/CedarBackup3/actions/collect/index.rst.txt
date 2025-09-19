@@ -1,0 +1,41 @@
+CedarBackup3.actions.collect
+============================
+
+.. py:module:: CedarBackup3.actions.collect
+
+.. autoapi-nested-parse::
+
+   Implements the standard 'collect' action.
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: executeCollect(configPath, options, config)
+
+   Executes the collect backup action.
+
+   *Note:* When the collect action is complete, we will write a collect
+   indicator to the collect directory, so it's obvious that the collect action
+   has completed.  The stage process uses this indicator to decide whether a
+   peer is ready to be staged.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: Under many generic error conditions
+   :raises TarError: If there is a problem creating a tar file
+
+

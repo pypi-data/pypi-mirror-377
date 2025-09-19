@@ -1,0 +1,1292 @@
+CedarBackup3.util
+=================
+
+.. py:module:: CedarBackup3.util
+
+.. autoapi-nested-parse::
+
+   Provides general-purpose utilities.
+
+   Module Attributes
+   =================
+
+   .. attribute:: ISO_SECTOR_SIZE
+
+      Size of an ISO image sector, in bytes
+
+   .. attribute:: BYTES_PER_SECTOR
+
+      Number of bytes (B) per ISO sector
+
+   .. attribute:: BYTES_PER_KBYTE
+
+      Number of bytes (B) per kilobyte (kB)
+
+   .. attribute:: BYTES_PER_MBYTE
+
+      Number of bytes (B) per megabyte (MB)
+
+   .. attribute:: BYTES_PER_GBYTE
+
+      Number of bytes (B) per megabyte (GB)
+
+   .. attribute:: KBYTES_PER_MBYTE
+
+      Number of kilobytes (kB) per megabyte (MB)
+
+   .. attribute:: MBYTES_PER_GBYTE
+
+      Number of megabytes (MB) per gigabyte (GB)
+
+   .. attribute:: SECONDS_PER_MINUTE
+
+      Number of seconds per minute
+
+   .. attribute:: MINUTES_PER_HOUR
+
+      Number of minutes per hour
+
+   .. attribute:: HOURS_PER_DAY
+
+      Number of hours per day
+
+   .. attribute:: SECONDS_PER_DAY
+
+      Number of seconds per day
+
+   .. attribute:: UNIT_BYTES
+
+      Constant representing the byte (B) unit for conversion
+
+   .. attribute:: UNIT_KBYTES
+
+      Constant representing the kilobyte (kB) unit for conversion
+
+   .. attribute:: UNIT_MBYTES
+
+      Constant representing the megabyte (MB) unit for conversion
+
+   .. attribute:: UNIT_GBYTES
+
+      Constant representing the gigabyte (GB) unit for conversion
+
+   .. attribute:: UNIT_SECTORS
+
+      Constant representing the ISO sector unit for conversion
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: outputLogger
+
+.. py:data:: ISO_SECTOR_SIZE
+   :value: 2048.0
+
+
+.. py:data:: BYTES_PER_SECTOR
+   :value: 2048.0
+
+
+.. py:data:: BYTES_PER_KBYTE
+   :value: 1024.0
+
+
+.. py:data:: KBYTES_PER_MBYTE
+   :value: 1024.0
+
+
+.. py:data:: MBYTES_PER_GBYTE
+   :value: 1024.0
+
+
+.. py:data:: BYTES_PER_MBYTE
+   :value: 1048576.0
+
+
+.. py:data:: BYTES_PER_GBYTE
+   :value: 1073741824.0
+
+
+.. py:data:: SECONDS_PER_MINUTE
+   :value: 60.0
+
+
+.. py:data:: MINUTES_PER_HOUR
+   :value: 60.0
+
+
+.. py:data:: HOURS_PER_DAY
+   :value: 24.0
+
+
+.. py:data:: SECONDS_PER_DAY
+   :value: 86400.0
+
+
+.. py:data:: UNIT_BYTES
+   :value: 0
+
+
+.. py:data:: UNIT_KBYTES
+   :value: 1
+
+
+.. py:data:: UNIT_MBYTES
+   :value: 2
+
+
+.. py:data:: UNIT_GBYTES
+   :value: 4
+
+
+.. py:data:: UNIT_SECTORS
+   :value: 3
+
+
+.. py:data:: MTAB_FILE
+   :value: '/etc/mtab'
+
+
+.. py:data:: MOUNT_COMMAND
+   :value: ['mount']
+
+
+.. py:data:: UMOUNT_COMMAND
+   :value: ['umount']
+
+
+.. py:data:: DEFAULT_LANGUAGE
+   :value: 'C'
+
+
+.. py:data:: LANG_VAR
+   :value: 'LANG'
+
+
+.. py:data:: LOCALE_VARS
+   :value: ['LC_ADDRESS', 'LC_ALL', 'LC_COLLATE', 'LC_CTYPE', 'LC_IDENTIFICATION', 'LC_MEASUREMENT',...
+
+
+.. py:class:: UnorderedList
+
+   Bases: :py:obj:`list`
+
+
+   Class representing an "unordered list".
+
+   An "unordered list" is a list in which only the contents matter, not the
+   order in which the contents appear in the list.
+
+   For instance, we might be keeping track of set of paths in a list, because
+   it's convenient to have them in that form.  However, for comparison
+   purposes, we would only care that the lists contain exactly the same
+   contents, regardless of order.
+
+   I have come up with two reasonable ways of doing this, plus a couple more
+   that would work but would be a pain to implement.  My first method is to
+   copy and sort each list, comparing the sorted versions.  This will only work
+   if two lists with exactly the same members are guaranteed to sort in exactly
+   the same order.  The second way would be to create two Sets and then compare
+   the sets.  However, this would lose information about any duplicates in
+   either list.  I've decided to go with option #1 for now.  I'll modify this
+   code if I run into problems in the future.
+
+   We override the original ``__eq__``, ``__ne__``, ``__ge__``, ``__gt__``,
+   ``__le__`` and ``__lt__`` list methods to change the definition of the various
+   comparison operators.  In all cases, the comparison is changed to return the
+   result of the original operation *but instead comparing sorted lists*.
+   This is going to be quite a bit slower than a normal list, so you probably
+   only want to use it on small lists.
+
+
+   .. py:method:: __eq__(other)
+
+      Definition of ``==`` operator for this class.
+      :param other: Other object to compare to
+
+      :returns: True/false depending on whether ``self == other``
+
+
+
+   .. py:method:: __ne__(other)
+
+      Definition of ``!=`` operator for this class.
+      :param other: Other object to compare to
+
+      :returns: True/false depending on whether ``self != other``
+
+
+
+   .. py:method:: __ge__(other)
+
+      Definition of S{>=} operator for this class.
+      :param other: Other object to compare to
+
+      :returns: True/false depending on whether ``self >= other``
+
+
+
+   .. py:method:: __gt__(other)
+
+      Definition of ``>`` operator for this class.
+      :param other: Other object to compare to
+
+      :returns: True/false depending on whether ``self > other``
+
+
+
+   .. py:method:: __le__(other)
+
+      Definition of S{<=} operator for this class.
+      :param other: Other object to compare to
+
+      :returns: True/false depending on whether ``self <= other``
+
+
+
+   .. py:method:: __lt__(other)
+
+      Definition of ``<`` operator for this class.
+      :param other: Other object to compare to
+
+      :returns: True/false depending on whether ``self < other``
+
+
+
+   .. py:method:: mixedsort(value)
+      :staticmethod:
+
+
+      Sort a list, making sure we don't blow up if the list happens to include mixed values.
+      @see: http://stackoverflow.com/questions/26575183/how-can-i-get-2-x-like-sorting-behaviour-in-python-3-x
+
+
+
+   .. py:method:: mixedkey(value)
+      :staticmethod:
+
+
+      Provide a key for use by mixedsort()
+
+
+
+.. py:class:: AbsolutePathList
+
+   Bases: :py:obj:`UnorderedList`
+
+
+   Class representing a list of absolute paths.
+
+   This is an unordered list.
+
+   We override the ``append``, ``insert`` and ``extend`` methods to ensure that
+   any item added to the list is an absolute path.
+
+   Each item added to the list is encoded using :any:`encodePath`.  If we don't do
+   this, we have problems trying certain operations between strings and unicode
+   objects, particularly for "odd" filenames that can't be encoded in standard
+   ASCII.
+
+
+   .. py:method:: append(item)
+
+      Overrides the standard ``append`` method.
+      :raises ValueError: If item is not an absolute path
+
+
+
+   .. py:method:: insert(index, item)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If item is not an absolute path
+
+
+
+   .. py:method:: extend(seq)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If any item is not an absolute path
+
+
+
+.. py:class:: ObjectTypeList(objectType, objectName)
+
+   Bases: :py:obj:`UnorderedList`
+
+
+   Class representing a list containing only objects with a certain type.
+
+   This is an unordered list.
+
+   We override the ``append``, ``insert`` and ``extend`` methods to ensure that
+   any item added to the list matches the type that is requested.  The
+   comparison uses the built-in ``isinstance``, which should allow subclasses of
+   of the requested type to be added to the list as well.
+
+   The ``objectName`` value will be used in exceptions, i.e. C{"Item must be a
+   CollectDir object."} if ``objectName`` is ``"CollectDir"``.
+
+
+   .. py:attribute:: objectType
+
+
+   .. py:attribute:: objectName
+
+
+   .. py:method:: append(item)
+
+      Overrides the standard ``append`` method.
+      :raises ValueError: If item does not match requested type
+
+
+
+   .. py:method:: insert(index, item)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If item does not match requested type
+
+
+
+   .. py:method:: extend(seq)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If item does not match requested type
+
+
+
+.. py:class:: RestrictedContentList(valuesList, valuesDescr, prefix=None)
+
+   Bases: :py:obj:`UnorderedList`
+
+
+   Class representing a list containing only object with certain values.
+
+   This is an unordered list.
+
+   We override the ``append``, ``insert`` and ``extend`` methods to ensure that
+   any item added to the list is among the valid values.  We use a standard
+   comparison, so pretty much anything can be in the list of valid values.
+
+   The ``valuesDescr`` value will be used in exceptions, i.e. C{"Item must be
+   one of values in VALID_ACTIONS"} if ``valuesDescr`` is ``"VALID_ACTIONS"``.
+
+   *Note:*  This class doesn't make any attempt to trap for nonsensical
+   arguments.  All of the values in the values list should be of the same type
+   (i.e. strings).  Then, all list operations also need to be of that type
+   (i.e. you should always insert or append just strings).  If you mix types --
+   for instance lists and strings -- you will likely see AttributeError
+   exceptions or other problems.
+
+
+   .. py:attribute:: prefix
+      :value: 'Item'
+
+
+
+   .. py:attribute:: valuesList
+
+
+   .. py:attribute:: valuesDescr
+
+
+   .. py:method:: append(item)
+
+      Overrides the standard ``append`` method.
+      :raises ValueError: If item is not in the values list
+
+
+
+   .. py:method:: insert(index, item)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If item is not in the values list
+
+
+
+   .. py:method:: extend(seq)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If item is not in the values list
+
+
+
+.. py:class:: RegexMatchList(valuesRegex, emptyAllowed=True, prefix=None)
+
+   Bases: :py:obj:`UnorderedList`
+
+
+   Class representing a list containing only strings that match a regular expression.
+
+   If ``emptyAllowed`` is passed in as ``False``, then empty strings are
+   explicitly disallowed, even if they happen to match the regular expression.
+   (``None`` values are always disallowed, since string operations are not
+   permitted on ``None``.)
+
+   This is an unordered list.
+
+   We override the ``append``, ``insert`` and ``extend`` methods to ensure that
+   any item added to the list matches the indicated regular expression.
+
+   *Note:* If you try to put values that are not strings into the list, you will
+   likely get either TypeError or AttributeError exceptions as a result.
+
+
+   .. py:attribute:: prefix
+      :value: 'Item'
+
+
+
+   .. py:attribute:: valuesRegex
+
+
+   .. py:attribute:: emptyAllowed
+      :value: True
+
+
+
+   .. py:attribute:: pattern
+
+
+   .. py:method:: append(item)
+
+      Overrides the standard ``append`` method.
+
+      :raises ValueError: If item is None
+      :raises ValueError: If item is empty and empty values are not allowed
+      :raises ValueError: If item does not match the configured regular expression
+
+
+
+   .. py:method:: insert(index, item)
+
+      Overrides the standard ``insert`` method.
+
+      :raises ValueError: If item is None
+      :raises ValueError: If item is empty and empty values are not allowed
+      :raises ValueError: If item does not match the configured regular expression
+
+
+
+   .. py:method:: extend(seq)
+
+      Overrides the standard ``insert`` method.
+
+      :raises ValueError: If any item is None
+      :raises ValueError: If any item is empty and empty values are not allowed
+      :raises ValueError: If any item does not match the configured regular expression
+
+
+
+.. py:class:: RegexList
+
+   Bases: :py:obj:`UnorderedList`
+
+
+   Class representing a list of valid regular expression strings.
+
+   This is an unordered list.
+
+   We override the ``append``, ``insert`` and ``extend`` methods to ensure that
+   any item added to the list is a valid regular expression.
+
+
+   .. py:method:: append(item)
+
+      Overrides the standard ``append`` method.
+      :raises ValueError: If item is not an absolute path
+
+
+
+   .. py:method:: insert(index, item)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If item is not an absolute path
+
+
+
+   .. py:method:: extend(seq)
+
+      Overrides the standard ``insert`` method.
+      :raises ValueError: If any item is not an absolute path
+
+
+
+.. py:class:: DirectedGraph(name)
+
+   Represents a directed graph.
+
+   A graph **G=(V,E)** consists of a set of vertices **V** together with a set
+   **E** of vertex pairs or edges.  In a directed graph, each edge also has an
+   associated direction (from vertext **v1** to vertex **v2**).  A ``DirectedGraph``
+   object provides a way to construct a directed graph and execute a depth-
+   first search.
+
+   This data structure was designed based on the graphing chapter in
+   U{The Algorithm Design Manual<http://www2.toki.or.id/book/AlgDesignManual/>},
+   by Steven S. Skiena.
+
+   This class is intended to be used by Cedar Backup for dependency ordering.
+   Because of this, it's not quite general-purpose.  Unlike a "general" graph,
+   every vertex in this graph has at least one edge pointing to it, from a
+   special "start" vertex.  This is so no vertices get "lost" either because
+   they have no dependencies or because nothing depends on them.
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:attribute:: name
+
+
+   .. py:method:: createVertex(name)
+
+      Creates a named vertex.
+      :param name: vertex name
+
+      :raises ValueError: If the vertex name is ``None`` or empty
+
+
+
+   .. py:method:: createEdge(start, finish)
+
+      Adds an edge with an associated direction, from ``start`` vertex to ``finish`` vertex.
+      :param start: Name of start vertex
+      :param finish: Name of finish vertex
+
+      :raises ValueError: If one of the named vertices is unknown
+
+
+
+   .. py:method:: topologicalSort()
+
+      Implements a topological sort of the graph.
+
+      This method also enforces that the graph is a directed acyclic graph,
+      which is a requirement of a topological sort.
+
+      A directed acyclic graph (or "DAG") is a directed graph with no directed
+      cycles.  A topological sort of a DAG is an ordering on the vertices such
+      that all edges go from left to right.  Only an acyclic graph can have a
+      topological sort, but any DAG has at least one topological sort.
+
+      Since a topological sort only makes sense for an acyclic graph, this
+      method throws an exception if a cycle is found.
+
+      A depth-first search only makes sense if the graph is acyclic.  If the
+      graph contains any cycles, it is not possible to determine a consistent
+      ordering for the vertices.
+
+      *Note:* If a particular vertex has no edges, then its position in the
+      final list depends on the order in which the vertices were created in the
+      graph.  If you're using this method to determine a dependency order, this
+      makes sense: a vertex with no dependencies can go anywhere (and will).
+
+      :returns: Ordering on the vertices so that all edges go from left to right
+
+      :raises ValueError: If a cycle is found in the graph
+
+
+
+.. py:class:: PathResolverSingleton
+
+   Singleton used for resolving executable paths.
+
+   Various functions throughout Cedar Backup (including extensions) need a way
+   to resolve the path of executables that they use.  For instance, the image
+   functionality needs to find the ``mkisofs`` executable, and the Subversion
+   extension needs to find the ``svnlook`` executable.  Cedar Backup's original
+   behavior was to assume that the simple name (``"svnlook"`` or whatever) was
+   available on the caller's ``$PATH``, and to fail otherwise.   However, this
+   turns out to be less than ideal, since for instance the root user might not
+   always have executables like ``svnlook`` in its path.
+
+   One solution is to specify a path (either via an absolute path or some sort
+   of path insertion or path appending mechanism) that would apply to the
+   ``executeCommand()`` function.  This is not difficult to implement, but it
+   seem like kind of a "big hammer" solution.  Besides that, it might also
+   represent a security flaw (for instance, I prefer not to mess with root's
+   ``$PATH`` on the application level if I don't have to).
+
+   The alternative is to set up some sort of configuration for the path to
+   certain executables, i.e. "find ``svnlook`` in ``/usr/local/bin/svnlook``" or
+   whatever.  This PathResolverSingleton aims to provide a good solution to the
+   mapping problem.  Callers of all sorts (extensions or not) can get an
+   instance of the singleton.  Then, they call the ``lookup`` method to try and
+   resolve the executable they are looking for.  Through the ``lookup`` method,
+   the caller can also specify a default to use if a mapping is not found.
+   This way, with no real effort on the part of the caller, behavior can neatly
+   degrade to something equivalent to the current behavior if there is no
+   special mapping or if the singleton was never initialized in the first
+   place.
+
+   Even better, extensions automagically get access to the same resolver
+   functionality, and they don't even need to understand how the mapping
+   happens.  All extension authors need to do is document what executables
+   their code requires, and the standard resolver configuration section will
+   meet their needs.
+
+   The class should be initialized once through the constructor somewhere in
+   the main routine.  Then, the main routine should call the :any:`fill` method to
+   fill in the resolver's internal structures.  Everyone else who needs to
+   resolve a path will get an instance of the class using :any:`getInstance` and
+   will then just call the :any:`lookup` method.
+
+   .. attribute:: _instance
+
+      Holds a reference to the singleton
+
+   .. attribute:: _mapping
+
+      Internal mapping from resource name to path
+
+
+   .. py:attribute:: getInstance
+
+
+   .. py:method:: lookup(name, default=None)
+
+      Looks up name and returns the resolved path associated with the name.
+      :param name: Name of the path resource to resolve
+      :param default: Default to return if resource cannot be resolved
+
+      :returns: Resolved path associated with name, or default if name can't be resolved
+
+
+
+   .. py:method:: fill(mapping)
+
+      Fills in the singleton's internal mapping from name to resource.
+      :param mapping: Mapping from resource name to path
+      :type mapping: Dictionary mapping name to path, both as strings
+
+
+
+.. py:class:: Pipe(cmd, bufsize=-1, ignoreStderr=False)
+
+   Bases: :py:obj:`subprocess.Popen`
+
+
+   Specialized pipe class for use by ``executeCommand``.
+
+   The :any:`executeCommand` function needs a specialized way of interacting
+   with a pipe.  First, ``executeCommand`` only reads from the pipe, and
+   never writes to it.  Second, ``executeCommand`` needs a way to discard all
+   output written to ``stderr``, as a means of simulating the shell
+   ``2>/dev/null`` construct.
+
+
+.. py:class:: Diagnostics
+
+   Class holding runtime diagnostic information.
+
+   Diagnostic information is information that is useful to get from users for
+   debugging purposes.  I'm consolidating it all here into one object.
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: getValues()
+
+      Get a map containing all of the diagnostic values.
+      :returns: Map from diagnostic name to diagnostic value
+
+
+
+   .. py:method:: printDiagnostics(fd=sys.stdout, prefix='')
+
+      Pretty-print diagnostic information to a file descriptor.
+      :param fd: File descriptor used to print information
+      :param prefix: Prefix string (if any) to place onto printed lines
+
+      *Note:* The ``fd`` is used rather than ``print`` to facilitate unit testing.
+
+
+
+   .. py:method:: logDiagnostics(method, prefix='')
+
+      Pretty-print diagnostic information using a logger method.
+      :param method: Logger method to use for logging (i.e. logger.info)
+      :param prefix: Prefix string (if any) to place onto printed lines
+
+
+
+   .. py:attribute:: version
+
+
+   .. py:attribute:: interpreter
+
+
+   .. py:attribute:: platform
+
+
+   .. py:attribute:: encoding
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: timestamp
+
+
+.. py:function:: sortDict(d)
+
+   Returns the keys of the dictionary sorted by value.
+   :param d: Dictionary to operate on
+
+   :returns: List of dictionary keys sorted in order by dictionary value
+
+
+.. py:function:: removeKeys(d, keys)
+
+   Removes all of the keys from the dictionary.
+   The dictionary is altered in-place.
+   Each key must exist in the dictionary.
+   :param d: Dictionary to operate on
+   :param keys: List of keys to remove
+
+   :raises KeyError: If one of the keys does not exist
+
+
+.. py:function:: convertSize(size, fromUnit, toUnit)
+
+   Converts a size in one unit to a size in another unit.
+
+   This is just a convenience function so that the functionality can be
+   implemented in just one place.  Internally, we convert values to bytes and
+   then to the final unit.
+
+   The available units are:
+
+      - ``UNIT_BYTES`` - Bytes
+      - ``UNIT_KBYTES`` - Kilobytes, where 1 kB = 1024 B
+      - ``UNIT_MBYTES`` - Megabytes, where 1 MB = 1024 kB
+      - ``UNIT_GBYTES`` - Gigabytes, where 1 GB = 1024 MB
+      - ``UNIT_SECTORS`` - Sectors, where 1 sector = 2048 B
+
+   :param size: Size to convert
+   :type size: Integer or float value in units of ``fromUnit``
+   :param fromUnit: Unit to convert from
+   :type fromUnit: One of the units listed above
+   :param toUnit: Unit to convert to
+   :type toUnit: One of the units listed above
+
+   :returns: Number converted to new unit, as a float
+
+   :raises ValueError: If one of the units is invalid
+
+
+.. py:function:: displayBytes(bytes, digits=2)
+
+   Format a byte quantity so it can be sensibly displayed.
+
+   It's rather difficult to look at a number like "72372224 bytes" and get any
+   meaningful information out of it.  It would be more useful to see something
+   like "69.02 MB".  That's what this function does.  Any time you want to display
+   a byte value, i.e.::
+
+      print "Size: %s bytes" % bytes
+
+   Call this function instead::
+
+      print "Size: %s" % displayBytes(bytes)
+
+   What comes out will be sensibly formatted.  The indicated number of digits
+   will be listed after the decimal point, rounded based on whatever rules are
+   used by Python's standard ``%f`` string format specifier. (Values less than 1
+   kB will be listed in bytes and will not have a decimal point, since the
+   concept of a fractional byte is nonsensical.)
+
+   :param bytes: Byte quantity
+   :type bytes: Integer number of bytes
+   :param digits: Number of digits to display after the decimal point
+   :type digits: Integer value, typically 2-5
+
+   :returns: String, formatted for sensible display
+
+
+.. py:function:: getFunctionReference(module, function)
+
+   Gets a reference to a named function.
+
+   This does some hokey-pokey to get back a reference to a dynamically named
+   function.  For instance, say you wanted to get a reference to the
+   ``os.path.isdir`` function.  You could use::
+
+      myfunc = getFunctionReference("os.path", "isdir")
+
+   Although we won't bomb out directly, behavior is pretty much undefined if
+   you pass in ``None`` or ``""`` for either ``module`` or ``function``.
+
+   The only validation we enforce is that whatever we get back must be
+   callable.
+
+   I derived this code based on the internals of the Python unittest
+   implementation.  I don't claim to completely understand how it works.
+
+   :param module: Name of module associated with function
+   :type module: Something like "os.path" or "CedarBackup3.util"
+   :param function: Name of function
+   :type function: Something like "isdir" or "getUidGid"
+
+   :returns: Reference to function associated with name
+
+   :raises ImportError: If the function cannot be found
+   :raises ValueError: If the resulting reference is not callable
+
+   @copyright: Some of this code, prior to customization, was originally part
+   of the Python 2.3 codebase.  Python code is copyright (c) 2001, 2002 Python
+   Software Foundation; All Rights Reserved.
+
+
+.. py:function:: getUidGid(user, group)
+
+   Get the uid/gid associated with a user/group pair
+
+   This is a no-op if user/group functionality is not available on the platform.
+
+   :param user: User name
+   :type user: User name as a string
+   :param group: Group name
+   :type group: Group name as a string
+
+   :returns: Tuple ``(uid, gid)`` matching passed-in user and group
+
+   :raises ValueError: If the ownership user/group values are invalid
+
+
+.. py:function:: changeOwnership(path, user, group)
+
+   Changes ownership of path to match the user and group.
+
+   This is a no-op if user/group functionality is not available on the
+   platform, or if the either passed-in user or group is ``None``.  Further, we
+   won't even try to do it unless running as root, since it's unlikely to work.
+
+   :param path: Path whose ownership to change
+   :param user: User which owns file
+   :param group: Group which owns file
+
+
+.. py:function:: isRunningAsRoot()
+
+   Indicates whether the program is running as the root user.
+
+
+.. py:function:: splitCommandLine(commandLine)
+
+   Splits a command line string into a list of arguments.
+
+   Unfortunately, there is no "standard" way to parse a command line string,
+   and it's actually not an easy problem to solve portably (essentially, we
+   have to emulate the shell argument-processing logic).  This code only
+   respects double quotes (``"``) for grouping arguments, not single quotes
+   (``'``).  Make sure you take this into account when building your command
+   line.
+
+   Incidentally, I found this particular parsing method while digging around in
+   Google Groups, and I tweaked it for my own use.
+
+   :param commandLine: Command line string
+   :type commandLine: String, i.e. "cback3 --verbose stage store"
+
+   :returns: List of arguments, suitable for passing to ``popen2``
+
+   :raises ValueError: If the command line is None
+
+
+.. py:function:: resolveCommand(command)
+
+   Resolves the real path to a command through the path resolver mechanism.
+
+   Both extensions and standard Cedar Backup functionality need a way to
+   resolve the "real" location of various executables.  Normally, they assume
+   that these executables are on the system path, but some callers need to
+   specify an alternate location.
+
+   Ideally, we want to handle this configuration in a central location.  The
+   Cedar Backup path resolver mechanism (a singleton called
+   :any:`PathResolverSingleton`) provides the central location to store the
+   mappings.  This function wraps access to the singleton, and is what all
+   functions (extensions or standard functionality) should call if they need to
+   find a command.
+
+   The passed-in command must actually be a list, in the standard form used by
+   all existing Cedar Backup code (something like ``["svnlook", ]``).  The
+   lookup will actually be done on the first element in the list, and the
+   returned command will always be in list form as well.
+
+   If the passed-in command can't be resolved or no mapping exists, then the
+   command itself will be returned unchanged.  This way, we neatly fall back on
+   default behavior if we have no sensible alternative.
+
+   :param command: Command to resolve
+   :type command: List form of command, i.e. ``["svnlook", ]``
+
+   :returns: Path to command or just command itself if no mapping exists
+
+
+.. py:function:: executeCommand(command, args, returnOutput=False, ignoreStderr=False, doNotLog=False, outputFile=None)
+
+   Executes a shell command, hopefully in a safe way.
+
+   This function exists to replace direct calls to ``os.popen`` in the Cedar
+   Backup code.  It's not safe to call a function such as ``os.popen()`` with
+   untrusted arguments, since that can cause problems if the string contains
+   non-safe variables or other constructs (imagine that the argument is
+   ``$WHATEVER``, but ``$WHATEVER`` contains something like C{"; rm -fR ~/;
+   echo"} in the current environment).
+
+   Instead, it's safer to pass a list of arguments in the style supported bt
+   ``popen2`` or ``popen4``.  This function actually uses a specialized ``Pipe``
+   class implemented using either ``subprocess.Popen`` or ``popen2.Popen4``.
+
+   Under the normal case, this function will return a tuple of C{(status,
+   None)} where the status is the wait-encoded return status of the call per
+   the ``popen2.Popen4`` documentation.  If ``returnOutput`` is passed in as
+   ``True``, the function will return a tuple of ``(status, output)`` where
+   ``output`` is a list of strings, one entry per line in the output from the
+   command.  Output is always logged to the ``outputLogger.info()`` target,
+   regardless of whether it's returned.
+
+   By default, ``stdout`` and ``stderr`` will be intermingled in the output.
+   However, if you pass in ``ignoreStderr=True``, then only ``stdout`` will be
+   included in the output.
+
+   The ``doNotLog`` parameter exists so that callers can force the function to
+   not log command output to the debug log.  Normally, you would want to log.
+   However, if you're using this function to write huge output files (i.e.
+   database backups written to ``stdout``) then you might want to avoid putting
+   all that information into the debug log.
+
+   The ``outputFile`` parameter exists to make it easier for a caller to push
+   output into a file, i.e. as a substitute for redirection to a file.  If this
+   value is passed in, each time a line of output is generated, it will be
+   written to the file using ``outputFile.write()``.  At the end, the file
+   descriptor will be flushed using ``outputFile.flush()``.  The caller
+   maintains responsibility for closing the file object appropriately.
+
+   *Note:* I know that it's a bit confusing that the command and the arguments
+   are both lists.  I could have just required the caller to pass in one big
+   list.  However, I think it makes some sense to keep the command (the
+   constant part of what we're executing, i.e. ``"scp -B"``) separate from its
+   arguments, even if they both end up looking kind of similar.
+
+   *Note:* You cannot redirect output via shell constructs (i.e. ``>file``,
+   ``2>/dev/null``, etc.) using this function.  The redirection string would be
+   passed to the command just like any other argument.  However, you can
+   implement the equivalent to redirection using ``ignoreStderr`` and
+   ``outputFile``, as discussed above.
+
+   *Note:* The operating system environment is partially sanitized before
+   the command is invoked.  See :any:`sanitizeEnvironment` for details.
+
+   :param command: Shell command to execute
+   :type command: List of individual arguments that make up the command
+   :param args: List of arguments to the command
+   :type args: List of additional arguments to the command
+   :param returnOutput: Indicates whether to return the output of the command
+   :type returnOutput: Boolean ``True`` or ``False``
+   :param ignoreStderr: Whether stderr should be discarded
+   :type ignoreStderr: Boolean True or False
+   :param doNotLog: Indicates that output should not be logged
+   :type doNotLog: Boolean ``True`` or ``False``
+   :param outputFile: File that all output should be written to
+   :type outputFile: File as from ``open`` or ``file``, binary write
+
+   :returns: Tuple of ``(result, output)`` as described above
+
+
+.. py:function:: calculateFileAge(path)
+
+   Calculates the age (in days) of a file.
+
+   The "age" of a file is the amount of time since the file was last used, per
+   the most recent of the file's ``st_atime`` and ``st_mtime`` values.
+
+   Technically, we only intend this function to work with files, but it will
+   probably work with anything on the filesystem.
+
+   :param path: Path to a file on disk
+
+   :returns: Age of the file in days (possibly fractional)
+
+   :raises OSError: If the file doesn't exist
+
+
+.. py:function:: mount(devicePath, mountPoint, fsType)
+
+   Mounts the indicated device at the indicated mount point.
+
+   For instance, to mount a CD, you might use device path ``/dev/cdrw``, mount
+   point ``/media/cdrw`` and filesystem type ``iso9660``.  You can safely use any
+   filesystem type that is supported by ``mount`` on your platform.  If the type
+   is ``None``, we'll attempt to let ``mount`` auto-detect it.  This may or may
+   not work on all systems.
+
+   *Note:* This only works on platforms that have a concept of "mounting" a
+   filesystem through a command-line ``"mount"`` command, like UNIXes.  It
+   won't work on Windows.
+
+   :param devicePath: Path of device to be mounted
+   :param mountPoint: Path that device should be mounted at
+   :param fsType: Type of the filesystem assumed to be available via the device
+
+   :raises IOError: If the device cannot be mounted
+
+
+.. py:function:: unmount(mountPoint, removeAfter=False, attempts=1, waitSeconds=0)
+
+   Unmounts whatever device is mounted at the indicated mount point.
+
+   Sometimes, it might not be possible to unmount the mount point immediately,
+   if there are still files open there.  Use the ``attempts`` and ``waitSeconds``
+   arguments to indicate how many unmount attempts to make and how many seconds
+   to wait between attempts.  If you pass in zero attempts, no attempts will be
+   made (duh).
+
+   If the indicated mount point is not really a mount point per
+   ``os.path.ismount()``, then it will be ignored.  This seems to be a safer
+   check then looking through ``/etc/mtab``, since ``ismount()`` is already in
+   the Python standard library and is documented as working on all POSIX
+   systems.
+
+   If ``removeAfter`` is ``True``, then the mount point will be removed using
+   ``os.rmdir()`` after the unmount action succeeds.  If for some reason the
+   mount point is not a directory, then it will not be removed.
+
+   *Note:* This only works on platforms that have a concept of "mounting" a
+   filesystem through a command-line ``"mount"`` command, like UNIXes.  It
+   won't work on Windows.
+
+   :param mountPoint: Mount point to be unmounted
+   :param removeAfter: Remove the mount point after unmounting it
+   :param attempts: Number of times to attempt the unmount
+   :param waitSeconds: Number of seconds to wait between repeated attempts
+
+   :raises IOError: If the mount point is still mounted after attempts are exhausted
+
+
+.. py:function:: deviceMounted(devicePath)
+
+   Indicates whether a specific filesystem device is currently mounted.
+
+   We determine whether the device is mounted by looking through the system's
+   ``mtab`` file.  This file shows every currently-mounted filesystem, ordered
+   by device.  We only do the check if the ``mtab`` file exists and is readable.
+   Otherwise, we assume that the device is not mounted.
+
+   *Note:* This only works on platforms that have a concept of an mtab file
+   to show mounted volumes, like UNIXes.  It won't work on Windows.
+
+   :param devicePath: Path of device to be checked
+
+   :returns: True if device is mounted, false otherwise
+
+
+.. py:function:: encodePath(path)
+
+   Safely encodes a filesystem path as a Unicode string, converting bytes to fileystem encoding if necessary.
+   :param path: Path to encode
+
+   :returns: Path, as a string, encoded appropriately
+
+   :raises ValueError: If the path cannot be encoded properly
+
+   @see: http://lucumr.pocoo.org/2013/7/2/the-updated-guide-to-unicode/
+
+
+.. py:function:: pathJoin(path, *paths)
+
+   Wraps os.path.join(), normalizing slashes in the result.
+
+   On Windows in particular, we often end up with mixed slashes, where parts of a path
+   have forward slash and parts have backward slash.  This makes it difficult to construct
+   exclusions in configuration, because you never know what part of a path will have
+   what kind of slash.  I've decided to standardize on forward slashes.
+
+   :returns: Result as from os.path.join() but always with forward slashes.
+
+
+.. py:function:: nullDevice()
+
+   Attempts to portably return the null device on this system.
+
+   The null device is something like ``/dev/null`` on a UNIX system.  The name
+   varies on other platforms.
+
+
+.. py:function:: deriveDayOfWeek(dayName)
+
+   Converts English day name to numeric day of week as from ``time.localtime``.
+
+   For instance, the day ``monday`` would be converted to the number ``0``.
+
+   :param dayName: Day of week to convert
+   :type dayName: string, i.e. ``"monday"``, ``"tuesday"``, etc
+
+   :returns: Integer, where Monday is 0 and Sunday is 6; or -1 if no conversion is possible
+
+
+.. py:function:: isStartOfWeek(startingDay)
+
+   Indicates whether "today" is the backup starting day per configuration.
+
+   If the current day's English name matches the indicated starting day, then
+   today is a starting day.
+
+   :param startingDay: Configured starting day
+   :type startingDay: string, i.e. ``"monday"``, ``"tuesday"``, etc
+
+   :returns: Boolean indicating whether today is the starting day
+
+
+.. py:function:: buildNormalizedPath(path)
+
+   Returns a "normalized" path based on a path name.
+
+   A normalized path is a representation of a path that is also a valid file
+   name.  To make a valid file name out of a complete path, we have to convert
+   or remove some characters that are significant to the filesystem -- in
+   particular, the path separator, the Windows drive separator, and any
+   leading ``'.'`` character (which would cause the file to be hidden in
+   a file listing).
+
+   Note that this is a one-way transformation -- you can't safely derive the
+   original path from the normalized path.
+
+   To normalize a path, we begin by looking at the first character.  If the
+   first character is ``'/'`` or ``'\'``, it gets removed.  If the first
+   character is ``'.'``, it gets converted to ``'_'``.  Then, we look through the
+   rest of the path and convert all remaining ``'/'`` or ``'\'`` characters
+   ``'-'``, and all remaining whitespace or ``':'`` characters to ``'_'``.
+
+   As a special case, a path consisting only of a single ``'/'`` or ``'\'``
+   character will be converted to ``'_'``.  That's better than ``'-'``, because
+   a dash tends to get interpreted by shell commands as a switch.
+
+   As a special case, anything that looks like a leading Windows drive letter
+   combination (like ``c:\`` or ``c:/``) will be converted to something like
+   ``c-``.  This is needed because a colon isn't a valid filename character
+   on Windows.
+
+   :param path: Path to normalize
+
+   :returns: Normalized path as described above
+
+   :raises ValueError: If the path is None
+
+
+.. py:function:: sanitizeEnvironment()
+
+   Sanitizes the operating system environment.
+
+   The operating system environment is contained in ``os.environ``.  This method
+   sanitizes the contents of that dictionary.
+
+   Currently, all it does is reset the locale (removing ``$LC_*``) and set the
+   default language (``$LANG``) to ``DEFAULT_LANGUAGE``.  This way, we can count
+   on consistent localization regardless of what the end-user has configured.
+   This is important for code that needs to parse program output.
+
+   The ``os.environ`` dictionary is modifed in-place.  If ``$LANG`` is already
+   set to the proper value, it is not re-set, so we can avoid the memory leaks
+   that are documented to occur on BSD-based systems.
+
+   :returns: Copy of the sanitized environment
+
+
+.. py:function:: dereferenceLink(path, absolute=True)
+
+   Deference a soft link, optionally normalizing it to an absolute path.
+   :param path: Path of link to dereference
+   :param absolute: Whether to normalize the result to an absolute path
+
+   :returns: Dereferenced path, or original path if original is not a link
+
+
+.. py:function:: checkUnique(prefix, values)
+
+   Checks that all values are unique.
+
+   The values list is checked for duplicate values.  If there are
+   duplicates, an exception is thrown.  All duplicate values are listed in
+   the exception.
+
+   :param prefix: Prefix to use in the thrown exception
+   :param values: List of values to check
+
+   :raises ValueError: If there are duplicates in the list
+
+
+.. py:function:: parseCommaSeparatedString(commaString)
+
+   Parses a list of values out of a comma-separated string.
+
+   The items in the list are split by comma, and then have whitespace
+   stripped.  As a special case, if ``commaString`` is ``None``, then ``None``
+   will be returned.
+
+   :param commaString: List of values in comma-separated string format
+
+   :returns: Values from commaString split into a list, or ``None``
+
+

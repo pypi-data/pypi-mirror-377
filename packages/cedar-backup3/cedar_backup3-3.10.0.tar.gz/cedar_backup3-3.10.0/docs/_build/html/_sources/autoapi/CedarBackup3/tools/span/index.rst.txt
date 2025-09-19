@@ -1,0 +1,84 @@
+CedarBackup3.tools.span
+=======================
+
+.. py:module:: CedarBackup3.tools.span
+
+.. autoapi-nested-parse::
+
+   Spans staged data among multiple discs
+
+   This is the Cedar Backup span tool.  It is intended for use by people who stage
+   more data than can fit on a single disc.  It allows a user to split staged data
+   among more than one disc.  It can't be an extension because it requires user
+   input when switching media.
+
+   Most configuration is taken from the Cedar Backup configuration file,
+   specifically the store section.  A few pieces of configuration are taken
+   directly from the user.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: SpanOptions(argumentList=None, argumentString=None, validate=True)
+
+   Bases: :py:obj:`CedarBackup3.cli.Options`
+
+
+   Tool-specific command-line options.
+
+   Most of the cback3 command-line options are exactly what we need here --
+   logfile path, permissions, verbosity, etc.  However, we need to make a few
+   tweaks since we don't accept any actions.
+
+   Also, a few extra command line options that we accept are really ignored
+   underneath.  I just don't care about that for a tool like this.
+
+
+   .. py:method:: validate()
+
+      Validates command-line options represented by the object.
+      There are no validations here, because we don't use any actions.
+      :raises ValueError: If one of the validations fails
+
+
+
+.. py:function:: cli()
+
+   Implements the command-line interface for the ``cback3-span`` script.
+
+   Essentially, this is the "main routine" for the cback3-span script.  It does
+   all of the argument processing for the script, and then also implements the
+   tool functionality.
+
+   This function looks pretty similiar to ``CedarBackup3.cli.cli()``.  It's not
+   easy to refactor this code to make it reusable and also readable, so I've
+   decided to just live with the duplication.
+
+   A different error code is returned for each type of failure:
+
+      - ``1``: The Python interpreter version is not supported
+      - ``2``: Error processing command-line arguments
+      - ``3``: Error configuring logging
+      - ``4``: Error parsing indicated configuration file
+      - ``5``: Backup was interrupted with a CTRL-C or similar
+      - ``6``: Error executing other parts of the script
+
+   *Note:* This script uses print rather than logging to the INFO level, because
+   it is interactive.  Underlying Cedar Backup functionality uses the logging
+   mechanism exclusively.
+
+   :returns: Error code as described above
+
+

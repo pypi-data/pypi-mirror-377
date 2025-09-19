@@ -1,0 +1,272 @@
+CedarBackup3.tools.amazons3
+===========================
+
+.. py:module:: CedarBackup3.tools.amazons3
+
+.. autoapi-nested-parse::
+
+   Synchonizes a local directory with an Amazon S3 bucket.
+
+   No configuration is required; all necessary information is taken from the
+   command-line.  The only thing configuration would help with is the path
+   resolver interface, and it doesn't seem worth it to require configuration just
+   to get that.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: AWS_COMMAND
+   :value: ['aws']
+
+
+.. py:data:: SHORT_SWITCHES
+   :value: 'hVbql:o:m:OdsDvuw'
+
+
+.. py:data:: LONG_SWITCHES
+   :value: ['help', 'version', 'verbose', 'quiet', 'logfile=', 'owner=', 'mode=', 'output', 'debug',...
+
+
+.. py:class:: Options(argumentList=None, argumentString=None, validate=True)
+
+   Class representing command-line options for the cback3-amazons3-sync script.
+
+   The ``Options`` class is a Python object representation of the command-line
+   options of the cback3-amazons3-sync script.
+
+   The object representation is two-way: a command line string or a list of
+   command line arguments can be used to create an ``Options`` object, and then
+   changes to the object can be propogated back to a list of command-line
+   arguments or to a command-line string.  An ``Options`` object can even be
+   created from scratch programmatically (if you have a need for that).
+
+   There are two main levels of validation in the ``Options`` class.  The first
+   is field-level validation.  Field-level validation comes into play when a
+   given field in an object is assigned to or updated.  We use Python's
+   ``property`` functionality to enforce specific validations on field values,
+   and in some places we even use customized list classes to enforce
+   validations on list members.  You should expect to catch a ``ValueError``
+   exception when making assignments to fields if you are programmatically
+   filling an object.
+
+   The second level of validation is post-completion validation.  Certain
+   validations don't make sense until an object representation of options is
+   fully "complete".  We don't want these validations to apply all of the time,
+   because it would make building up a valid object from scratch a real pain.
+   For instance, we might have to do things in the right order to keep from
+   throwing exceptions, etc.
+
+   All of these post-completion validations are encapsulated in the
+   :any:`Options.validate` method.  This method can be called at any time by a
+   client, and will always be called immediately after creating a ``Options``
+   object from a command line and before exporting a ``Options`` object back to
+   a command line.  This way, we get acceptable ease-of-use but we also don't
+   accept or emit invalid command lines.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, iplemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:attribute:: help
+
+
+   .. py:attribute:: version
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: quiet
+
+
+   .. py:attribute:: logfile
+
+
+   .. py:attribute:: owner
+
+
+   .. py:attribute:: mode
+
+
+   .. py:attribute:: output
+
+
+   .. py:attribute:: debug
+
+
+   .. py:attribute:: stacktrace
+
+
+   .. py:attribute:: diagnostics
+
+
+   .. py:attribute:: verifyOnly
+
+
+   .. py:attribute:: uploadOnly
+
+
+   .. py:attribute:: ignoreWarnings
+
+
+   .. py:attribute:: sourceDir
+
+
+   .. py:attribute:: s3BucketUrl
+
+
+   .. py:method:: validate()
+
+      Validates command-line options represented by the object.
+
+      Unless ``--help`` or ``--version`` are supplied, at least one action must
+      be specified.  Other validations (as for allowed values for particular
+      options) will be taken care of at assignment time by the properties
+      functionality.
+
+      *Note:* The command line format is specified by the ``_usage`` function.
+      Call ``_usage`` to see a usage statement for the cback3-amazons3-sync script.
+
+      :raises ValueError: If one of the validations fails
+
+
+
+   .. py:method:: buildArgumentList(validate=True)
+
+      Extracts options into a list of command line arguments.
+
+      The original order of the various arguments (if, indeed, the object was
+      initialized with a command-line) is not preserved in this generated
+      argument list.   Besides that, the argument list is normalized to use the
+      long option names (i.e. --version rather than -V).  The resulting list
+      will be suitable for passing back to the constructor in the
+      ``argumentList`` parameter.  Unlike :any:`buildArgumentString`, string
+      arguments are not quoted here, because there is no need for it.
+
+      Unless the ``validate`` parameter is ``False``, the :any:`Options.validate`
+      method will be called (with its default arguments) against the
+      options before extracting the command line.  If the options are not valid,
+      then an argument list will not be extracted.
+
+      *Note:* It is strongly suggested that the ``validate`` option always be set
+      to ``True`` (the default) unless there is a specific need to extract an
+      invalid command line.
+
+      :param validate: Validate the options before extracting the command line
+      :type validate: Boolean true/false
+
+      :returns: List representation of command-line arguments
+
+      :raises ValueError: If options within the object are invalid
+
+
+
+   .. py:method:: buildArgumentString(validate=True)
+
+      Extracts options into a string of command-line arguments.
+
+      The original order of the various arguments (if, indeed, the object was
+      initialized with a command-line) is not preserved in this generated
+      argument string.   Besides that, the argument string is normalized to use
+      the long option names (i.e. --version rather than -V) and to quote all
+      string arguments with double quotes (``"``).  The resulting string will be
+      suitable for passing back to the constructor in the ``argumentString``
+      parameter.
+
+      Unless the ``validate`` parameter is ``False``, the :any:`Options.validate`
+      method will be called (with its default arguments) against the options
+      before extracting the command line.  If the options are not valid, then
+      an argument string will not be extracted.
+
+      *Note:* It is strongly suggested that the ``validate`` option always be set
+      to ``True`` (the default) unless there is a specific need to extract an
+      invalid command line.
+
+      :param validate: Validate the options before extracting the command line
+      :type validate: Boolean true/false
+
+      :returns: String representation of command-line arguments
+
+      :raises ValueError: If options within the object are invalid
+
+
+
+.. py:function:: cli()
+
+   Implements the command-line interface for the ``cback3-amazons3-sync`` script.
+
+   Essentially, this is the "main routine" for the cback3-amazons3-sync script.  It does
+   all of the argument processing for the script, and then also implements the
+   tool functionality.
+
+   This function looks pretty similiar to ``CedarBackup3.cli.cli()``.  It's not
+   easy to refactor this code to make it reusable and also readable, so I've
+   decided to just live with the duplication.
+
+   A different error code is returned for each type of failure:
+
+      - ``1``: The Python interpreter version is not supported
+      - ``2``: Error processing command-line arguments
+      - ``3``: Error configuring logging
+      - ``5``: Backup was interrupted with a CTRL-C or similar
+      - ``6``: Error executing other parts of the script
+
+   *Note:* This script uses print rather than logging to the INFO level, because
+   it is interactive.  Underlying Cedar Backup functionality uses the logging
+   mechanism exclusively.
+
+   :returns: Error code as described above
+
+

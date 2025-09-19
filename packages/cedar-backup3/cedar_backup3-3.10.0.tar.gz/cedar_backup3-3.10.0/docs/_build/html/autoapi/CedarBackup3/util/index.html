@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.util &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="CedarBackup3.writer" href="../writer/index.html" />
+    <link rel="prev" title="CedarBackup3.tools.span" href="../tools/span/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.util">
+<span id="cedarbackup3-util"></span><h1>CedarBackup3.util<a class="headerlink" href="#module-CedarBackup3.util" title="Link to this heading">¶</a></h1>
+<p>Provides general-purpose utilities.</p>
+<section id="module-attributes">
+<h2>Module Attributes<a class="headerlink" href="#module-attributes" title="Link to this heading">¶</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.ISO_SECTOR_SIZE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">ISO_SECTOR_SIZE</span></span><a class="headerlink" href="#CedarBackup3.util.ISO_SECTOR_SIZE" title="Link to this definition">¶</a></dt>
+<dd><p>Size of an ISO image sector, in bytes</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.BYTES_PER_SECTOR">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_SECTOR</span></span><a class="headerlink" href="#CedarBackup3.util.BYTES_PER_SECTOR" title="Link to this definition">¶</a></dt>
+<dd><p>Number of bytes (B) per ISO sector</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.BYTES_PER_KBYTE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_KBYTE</span></span><a class="headerlink" href="#CedarBackup3.util.BYTES_PER_KBYTE" title="Link to this definition">¶</a></dt>
+<dd><p>Number of bytes (B) per kilobyte (kB)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.BYTES_PER_MBYTE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_MBYTE</span></span><a class="headerlink" href="#CedarBackup3.util.BYTES_PER_MBYTE" title="Link to this definition">¶</a></dt>
+<dd><p>Number of bytes (B) per megabyte (MB)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.BYTES_PER_GBYTE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_GBYTE</span></span><a class="headerlink" href="#CedarBackup3.util.BYTES_PER_GBYTE" title="Link to this definition">¶</a></dt>
+<dd><p>Number of bytes (B) per megabyte (GB)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.KBYTES_PER_MBYTE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">KBYTES_PER_MBYTE</span></span><a class="headerlink" href="#CedarBackup3.util.KBYTES_PER_MBYTE" title="Link to this definition">¶</a></dt>
+<dd><p>Number of kilobytes (kB) per megabyte (MB)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.MBYTES_PER_GBYTE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">MBYTES_PER_GBYTE</span></span><a class="headerlink" href="#CedarBackup3.util.MBYTES_PER_GBYTE" title="Link to this definition">¶</a></dt>
+<dd><p>Number of megabytes (MB) per gigabyte (GB)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.SECONDS_PER_MINUTE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">SECONDS_PER_MINUTE</span></span><a class="headerlink" href="#CedarBackup3.util.SECONDS_PER_MINUTE" title="Link to this definition">¶</a></dt>
+<dd><p>Number of seconds per minute</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.MINUTES_PER_HOUR">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">MINUTES_PER_HOUR</span></span><a class="headerlink" href="#CedarBackup3.util.MINUTES_PER_HOUR" title="Link to this definition">¶</a></dt>
+<dd><p>Number of minutes per hour</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.HOURS_PER_DAY">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">HOURS_PER_DAY</span></span><a class="headerlink" href="#CedarBackup3.util.HOURS_PER_DAY" title="Link to this definition">¶</a></dt>
+<dd><p>Number of hours per day</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.SECONDS_PER_DAY">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">SECONDS_PER_DAY</span></span><a class="headerlink" href="#CedarBackup3.util.SECONDS_PER_DAY" title="Link to this definition">¶</a></dt>
+<dd><p>Number of seconds per day</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.UNIT_BYTES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_BYTES</span></span><a class="headerlink" href="#CedarBackup3.util.UNIT_BYTES" title="Link to this definition">¶</a></dt>
+<dd><p>Constant representing the byte (B) unit for conversion</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.UNIT_KBYTES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_KBYTES</span></span><a class="headerlink" href="#CedarBackup3.util.UNIT_KBYTES" title="Link to this definition">¶</a></dt>
+<dd><p>Constant representing the kilobyte (kB) unit for conversion</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.UNIT_MBYTES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_MBYTES</span></span><a class="headerlink" href="#CedarBackup3.util.UNIT_MBYTES" title="Link to this definition">¶</a></dt>
+<dd><p>Constant representing the megabyte (MB) unit for conversion</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.UNIT_GBYTES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_GBYTES</span></span><a class="headerlink" href="#CedarBackup3.util.UNIT_GBYTES" title="Link to this definition">¶</a></dt>
+<dd><p>Constant representing the gigabyte (GB) unit for conversion</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.UNIT_SECTORS">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_SECTORS</span></span><a class="headerlink" href="#CedarBackup3.util.UNIT_SECTORS" title="Link to this definition">¶</a></dt>
+<dd><p>Constant representing the ISO sector unit for conversion</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.util.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.outputLogger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">outputLogger</span></span><a class="headerlink" href="#CedarBackup3.util.outputLogger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">ISO_SECTOR_SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2048.0</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_SECTOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2048.0</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_KBYTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1024.0</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">KBYTES_PER_MBYTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1024.0</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">MBYTES_PER_GBYTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1024.0</span></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_MBYTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1048576.0</span></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">BYTES_PER_GBYTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1073741824.0</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">SECONDS_PER_MINUTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60.0</span></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">MINUTES_PER_HOUR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60.0</span></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">HOURS_PER_DAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24.0</span></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">SECONDS_PER_DAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">86400.0</span></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_BYTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_KBYTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_MBYTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#id13" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_GBYTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#id14" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UNIT_SECTORS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#id15" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.MTAB_FILE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">MTAB_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/etc/mtab'</span></em><a class="headerlink" href="#CedarBackup3.util.MTAB_FILE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.MOUNT_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">MOUNT_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['mount']</span></em><a class="headerlink" href="#CedarBackup3.util.MOUNT_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.UMOUNT_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UMOUNT_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['umount']</span></em><a class="headerlink" href="#CedarBackup3.util.UMOUNT_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.DEFAULT_LANGUAGE">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_LANGUAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'C'</span></em><a class="headerlink" href="#CedarBackup3.util.DEFAULT_LANGUAGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.LANG_VAR">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">LANG_VAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LANG'</span></em><a class="headerlink" href="#CedarBackup3.util.LANG_VAR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.util.LOCALE_VARS">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">LOCALE_VARS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['LC_ADDRESS',</span> <span class="pre">'LC_ALL',</span> <span class="pre">'LC_COLLATE',</span> <span class="pre">'LC_CTYPE',</span> <span class="pre">'LC_IDENTIFICATION',</span> <span class="pre">'LC_MEASUREMENT',...</span></em><a class="headerlink" href="#CedarBackup3.util.LOCALE_VARS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">UnorderedList</span></span><a class="headerlink" href="#CedarBackup3.util.UnorderedList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>Class representing an “unordered list”.</p>
+<p>An “unordered list” is a list in which only the contents matter, not the
+order in which the contents appear in the list.</p>
+<p>For instance, we might be keeping track of set of paths in a list, because
+it’s convenient to have them in that form.  However, for comparison
+purposes, we would only care that the lists contain exactly the same
+contents, regardless of order.</p>
+<p>I have come up with two reasonable ways of doing this, plus a couple more
+that would work but would be a pain to implement.  My first method is to
+copy and sort each list, comparing the sorted versions.  This will only work
+if two lists with exactly the same members are guaranteed to sort in exactly
+the same order.  The second way would be to create two Sets and then compare
+the sets.  However, this would lose information about any duplicates in
+either list.  I’ve decided to go with option #1 for now.  I’ll modify this
+code if I run into problems in the future.</p>
+<p>We override the original <code class="docutils literal notranslate"><span class="pre">__eq__</span></code>, <code class="docutils literal notranslate"><span class="pre">__ne__</span></code>, <code class="docutils literal notranslate"><span class="pre">__ge__</span></code>, <code class="docutils literal notranslate"><span class="pre">__gt__</span></code>,
+<code class="docutils literal notranslate"><span class="pre">__le__</span></code> and <code class="docutils literal notranslate"><span class="pre">__lt__</span></code> list methods to change the definition of the various
+comparison operators.  In all cases, the comparison is changed to return the
+result of the original operation <em>but instead comparing sorted lists</em>.
+This is going to be quite a bit slower than a normal list, so you probably
+only want to use it on small lists.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Definition of <code class="docutils literal notranslate"><span class="pre">==</span></code> operator for this class.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True/false depending on whether <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">==</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.__ne__" title="Link to this definition">¶</a></dt>
+<dd><p>Definition of <code class="docutils literal notranslate"><span class="pre">!=</span></code> operator for this class.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True/false depending on whether <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">!=</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.__ge__" title="Link to this definition">¶</a></dt>
+<dd><p>Definition of S{&gt;=} operator for this class.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True/false depending on whether <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">&gt;=</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Definition of <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> operator for this class.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True/false depending on whether <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">&gt;</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.__le__">
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.__le__" title="Link to this definition">¶</a></dt>
+<dd><p>Definition of S{&lt;=} operator for this class.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True/false depending on whether <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">&lt;=</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Definition of <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> operator for this class.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True/false depending on whether <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">&lt;</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.mixedsort">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mixedsort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.mixedsort" title="Link to this definition">¶</a></dt>
+<dd><p>Sort a list, making sure we don’t blow up if the list happens to include mixed values.
+&#64;see: <a class="reference external" href="http://stackoverflow.com/questions/26575183/how-can-i-get-2-x-like-sorting-behaviour-in-python-3-x">http://stackoverflow.com/questions/26575183/how-can-i-get-2-x-like-sorting-behaviour-in-python-3-x</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.UnorderedList.mixedkey">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mixedkey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.UnorderedList.mixedkey" title="Link to this definition">¶</a></dt>
+<dd><p>Provide a key for use by mixedsort()</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.AbsolutePathList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">AbsolutePathList</span></span><a class="headerlink" href="#CedarBackup3.util.AbsolutePathList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.util.UnorderedList" title="CedarBackup3.util.UnorderedList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnorderedList</span></code></a></p>
+<p>Class representing a list of absolute paths.</p>
+<p>This is an unordered list.</p>
+<p>We override the <code class="docutils literal notranslate"><span class="pre">append</span></code>, <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">extend</span></code> methods to ensure that
+any item added to the list is an absolute path.</p>
+<p>Each item added to the list is encoded using <a class="reference internal" href="#CedarBackup3.util.encodePath" title="CedarBackup3.util.encodePath"><code class="xref any py py-func docutils literal notranslate"><span class="pre">encodePath</span></code></a>.  If we don’t do
+this, we have problems trying certain operations between strings and unicode
+objects, particularly for “odd” filenames that can’t be encoded in standard
+ASCII.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.AbsolutePathList.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.AbsolutePathList.append" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">append</span></code> method.
+:raises ValueError: If item is not an absolute path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.AbsolutePathList.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.AbsolutePathList.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If item is not an absolute path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.AbsolutePathList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.AbsolutePathList.extend" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If any item is not an absolute path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.ObjectTypeList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">ObjectTypeList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objectType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objectName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.ObjectTypeList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.util.UnorderedList" title="CedarBackup3.util.UnorderedList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnorderedList</span></code></a></p>
+<p>Class representing a list containing only objects with a certain type.</p>
+<p>This is an unordered list.</p>
+<p>We override the <code class="docutils literal notranslate"><span class="pre">append</span></code>, <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">extend</span></code> methods to ensure that
+any item added to the list matches the type that is requested.  The
+comparison uses the built-in <code class="docutils literal notranslate"><span class="pre">isinstance</span></code>, which should allow subclasses of
+of the requested type to be added to the list as well.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">objectName</span></code> value will be used in exceptions, i.e. C{“Item must be a
+CollectDir object.”} if <code class="docutils literal notranslate"><span class="pre">objectName</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;CollectDir&quot;</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.ObjectTypeList.objectType">
+<span class="sig-name descname"><span class="pre">objectType</span></span><a class="headerlink" href="#CedarBackup3.util.ObjectTypeList.objectType" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.ObjectTypeList.objectName">
+<span class="sig-name descname"><span class="pre">objectName</span></span><a class="headerlink" href="#CedarBackup3.util.ObjectTypeList.objectName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.ObjectTypeList.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.ObjectTypeList.append" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">append</span></code> method.
+:raises ValueError: If item does not match requested type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.ObjectTypeList.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.ObjectTypeList.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If item does not match requested type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.ObjectTypeList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.ObjectTypeList.extend" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If item does not match requested type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">RestrictedContentList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valuesList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuesDescr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.util.UnorderedList" title="CedarBackup3.util.UnorderedList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnorderedList</span></code></a></p>
+<p>Class representing a list containing only object with certain values.</p>
+<p>This is an unordered list.</p>
+<p>We override the <code class="docutils literal notranslate"><span class="pre">append</span></code>, <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">extend</span></code> methods to ensure that
+any item added to the list is among the valid values.  We use a standard
+comparison, so pretty much anything can be in the list of valid values.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">valuesDescr</span></code> value will be used in exceptions, i.e. C{“Item must be
+one of values in VALID_ACTIONS”} if <code class="docutils literal notranslate"><span class="pre">valuesDescr</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;VALID_ACTIONS&quot;</span></code>.</p>
+<p><em>Note:</em>  This class doesn’t make any attempt to trap for nonsensical
+arguments.  All of the values in the values list should be of the same type
+(i.e. strings).  Then, all list operations also need to be of that type
+(i.e. you should always insert or append just strings).  If you mix types –
+for instance lists and strings – you will likely see AttributeError
+exceptions or other problems.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Item'</span></em><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList.prefix" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList.valuesList">
+<span class="sig-name descname"><span class="pre">valuesList</span></span><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList.valuesList" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList.valuesDescr">
+<span class="sig-name descname"><span class="pre">valuesDescr</span></span><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList.valuesDescr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList.append" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">append</span></code> method.
+:raises ValueError: If item is not in the values list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If item is not in the values list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RestrictedContentList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RestrictedContentList.extend" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If item is not in the values list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">RegexMatchList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valuesRegex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emptyAllowed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexMatchList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.util.UnorderedList" title="CedarBackup3.util.UnorderedList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnorderedList</span></code></a></p>
+<p>Class representing a list containing only strings that match a regular expression.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">emptyAllowed</span></code> is passed in as <code class="docutils literal notranslate"><span class="pre">False</span></code>, then empty strings are
+explicitly disallowed, even if they happen to match the regular expression.
+(<code class="docutils literal notranslate"><span class="pre">None</span></code> values are always disallowed, since string operations are not
+permitted on <code class="docutils literal notranslate"><span class="pre">None</span></code>.)</p>
+<p>This is an unordered list.</p>
+<p>We override the <code class="docutils literal notranslate"><span class="pre">append</span></code>, <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">extend</span></code> methods to ensure that
+any item added to the list matches the indicated regular expression.</p>
+<p><em>Note:</em> If you try to put values that are not strings into the list, you will
+likely get either TypeError or AttributeError exceptions as a result.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Item'</span></em><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.prefix" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.valuesRegex">
+<span class="sig-name descname"><span class="pre">valuesRegex</span></span><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.valuesRegex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.emptyAllowed">
+<span class="sig-name descname"><span class="pre">emptyAllowed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.emptyAllowed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.pattern">
+<span class="sig-name descname"><span class="pre">pattern</span></span><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.pattern" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.append" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">append</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If item is None</p></li>
+<li><p><strong>ValueError</strong> – If item is empty and empty values are not allowed</p></li>
+<li><p><strong>ValueError</strong> – If item does not match the configured regular expression</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If item is None</p></li>
+<li><p><strong>ValueError</strong> – If item is empty and empty values are not allowed</p></li>
+<li><p><strong>ValueError</strong> – If item does not match the configured regular expression</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexMatchList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexMatchList.extend" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If any item is None</p></li>
+<li><p><strong>ValueError</strong> – If any item is empty and empty values are not allowed</p></li>
+<li><p><strong>ValueError</strong> – If any item does not match the configured regular expression</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">RegexList</span></span><a class="headerlink" href="#CedarBackup3.util.RegexList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.util.UnorderedList" title="CedarBackup3.util.UnorderedList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnorderedList</span></code></a></p>
+<p>Class representing a list of valid regular expression strings.</p>
+<p>This is an unordered list.</p>
+<p>We override the <code class="docutils literal notranslate"><span class="pre">append</span></code>, <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">extend</span></code> methods to ensure that
+any item added to the list is a valid regular expression.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexList.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexList.append" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">append</span></code> method.
+:raises ValueError: If item is not an absolute path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexList.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexList.insert" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If item is not an absolute path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.RegexList.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.RegexList.extend" title="Link to this definition">¶</a></dt>
+<dd><p>Overrides the standard <code class="docutils literal notranslate"><span class="pre">insert</span></code> method.
+:raises ValueError: If any item is not an absolute path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">DirectedGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph" title="Link to this definition">¶</a></dt>
+<dd><p>Represents a directed graph.</p>
+<p>A graph <strong>G=(V,E)</strong> consists of a set of vertices <strong>V</strong> together with a set
+<strong>E</strong> of vertex pairs or edges.  In a directed graph, each edge also has an
+associated direction (from vertext <strong>v1</strong> to vertex <strong>v2</strong>).  A <code class="docutils literal notranslate"><span class="pre">DirectedGraph</span></code>
+object provides a way to construct a directed graph and execute a depth-
+first search.</p>
+<p>This data structure was designed based on the graphing chapter in
+U{The Algorithm Design Manual&lt;<a class="reference external" href="http://www2.toki.or.id/book/AlgDesignManual/">http://www2.toki.or.id/book/AlgDesignManual/</a>&gt;},
+by Steven S. Skiena.</p>
+<p>This class is intended to be used by Cedar Backup for dependency ordering.
+Because of this, it’s not quite general-purpose.  Unlike a “general” graph,
+every vertex in this graph has at least one edge pointing to it, from a
+special “start” vertex.  This is so no vertices get “lost” either because
+they have no dependencies or because nothing depends on them.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, implemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, implemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, implemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.createVertex">
+<span class="sig-name descname"><span class="pre">createVertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.createVertex" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a named vertex.
+:param name: vertex name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the vertex name is <code class="docutils literal notranslate"><span class="pre">None</span></code> or empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.createEdge">
+<span class="sig-name descname"><span class="pre">createEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.createEdge" title="Link to this definition">¶</a></dt>
+<dd><p>Adds an edge with an associated direction, from <code class="docutils literal notranslate"><span class="pre">start</span></code> vertex to <code class="docutils literal notranslate"><span class="pre">finish</span></code> vertex.
+:param start: Name of start vertex
+:param finish: Name of finish vertex</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If one of the named vertices is unknown</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.DirectedGraph.topologicalSort">
+<span class="sig-name descname"><span class="pre">topologicalSort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.DirectedGraph.topologicalSort" title="Link to this definition">¶</a></dt>
+<dd><p>Implements a topological sort of the graph.</p>
+<p>This method also enforces that the graph is a directed acyclic graph,
+which is a requirement of a topological sort.</p>
+<p>A directed acyclic graph (or “DAG”) is a directed graph with no directed
+cycles.  A topological sort of a DAG is an ordering on the vertices such
+that all edges go from left to right.  Only an acyclic graph can have a
+topological sort, but any DAG has at least one topological sort.</p>
+<p>Since a topological sort only makes sense for an acyclic graph, this
+method throws an exception if a cycle is found.</p>
+<p>A depth-first search only makes sense if the graph is acyclic.  If the
+graph contains any cycles, it is not possible to determine a consistent
+ordering for the vertices.</p>
+<p><em>Note:</em> If a particular vertex has no edges, then its position in the
+final list depends on the order in which the vertices were created in the
+graph.  If you’re using this method to determine a dependency order, this
+makes sense: a vertex with no dependencies can go anywhere (and will).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ordering on the vertices so that all edges go from left to right</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If a cycle is found in the graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.PathResolverSingleton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">PathResolverSingleton</span></span><a class="headerlink" href="#CedarBackup3.util.PathResolverSingleton" title="Link to this definition">¶</a></dt>
+<dd><p>Singleton used for resolving executable paths.</p>
+<p>Various functions throughout Cedar Backup (including extensions) need a way
+to resolve the path of executables that they use.  For instance, the image
+functionality needs to find the <code class="docutils literal notranslate"><span class="pre">mkisofs</span></code> executable, and the Subversion
+extension needs to find the <code class="docutils literal notranslate"><span class="pre">svnlook</span></code> executable.  Cedar Backup’s original
+behavior was to assume that the simple name (<code class="docutils literal notranslate"><span class="pre">&quot;svnlook&quot;</span></code> or whatever) was
+available on the caller’s <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, and to fail otherwise.   However, this
+turns out to be less than ideal, since for instance the root user might not
+always have executables like <code class="docutils literal notranslate"><span class="pre">svnlook</span></code> in its path.</p>
+<p>One solution is to specify a path (either via an absolute path or some sort
+of path insertion or path appending mechanism) that would apply to the
+<code class="docutils literal notranslate"><span class="pre">executeCommand()</span></code> function.  This is not difficult to implement, but it
+seem like kind of a “big hammer” solution.  Besides that, it might also
+represent a security flaw (for instance, I prefer not to mess with root’s
+<code class="docutils literal notranslate"><span class="pre">$PATH</span></code> on the application level if I don’t have to).</p>
+<p>The alternative is to set up some sort of configuration for the path to
+certain executables, i.e. “find <code class="docutils literal notranslate"><span class="pre">svnlook</span></code> in <code class="docutils literal notranslate"><span class="pre">/usr/local/bin/svnlook</span></code>” or
+whatever.  This PathResolverSingleton aims to provide a good solution to the
+mapping problem.  Callers of all sorts (extensions or not) can get an
+instance of the singleton.  Then, they call the <code class="docutils literal notranslate"><span class="pre">lookup</span></code> method to try and
+resolve the executable they are looking for.  Through the <code class="docutils literal notranslate"><span class="pre">lookup</span></code> method,
+the caller can also specify a default to use if a mapping is not found.
+This way, with no real effort on the part of the caller, behavior can neatly
+degrade to something equivalent to the current behavior if there is no
+special mapping or if the singleton was never initialized in the first
+place.</p>
+<p>Even better, extensions automagically get access to the same resolver
+functionality, and they don’t even need to understand how the mapping
+happens.  All extension authors need to do is document what executables
+their code requires, and the standard resolver configuration section will
+meet their needs.</p>
+<p>The class should be initialized once through the constructor somewhere in
+the main routine.  Then, the main routine should call the <a class="reference internal" href="#CedarBackup3.util.PathResolverSingleton.fill" title="CedarBackup3.util.PathResolverSingleton.fill"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fill</span></code></a> method to
+fill in the resolver’s internal structures.  Everyone else who needs to
+resolve a path will get an instance of the class using <a class="reference internal" href="#CedarBackup3.util.PathResolverSingleton.getInstance" title="CedarBackup3.util.PathResolverSingleton.getInstance"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">getInstance</span></code></a> and
+will then just call the <a class="reference internal" href="#CedarBackup3.util.PathResolverSingleton.lookup" title="CedarBackup3.util.PathResolverSingleton.lookup"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">lookup</span></code></a> method.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.PathResolverSingleton._instance">
+<span class="sig-name descname"><span class="pre">_instance</span></span><a class="headerlink" href="#CedarBackup3.util.PathResolverSingleton._instance" title="Link to this definition">¶</a></dt>
+<dd><p>Holds a reference to the singleton</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.PathResolverSingleton._mapping">
+<span class="sig-name descname"><span class="pre">_mapping</span></span><a class="headerlink" href="#CedarBackup3.util.PathResolverSingleton._mapping" title="Link to this definition">¶</a></dt>
+<dd><p>Internal mapping from resource name to path</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.PathResolverSingleton.getInstance">
+<span class="sig-name descname"><span class="pre">getInstance</span></span><a class="headerlink" href="#CedarBackup3.util.PathResolverSingleton.getInstance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.PathResolverSingleton.lookup">
+<span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.PathResolverSingleton.lookup" title="Link to this definition">¶</a></dt>
+<dd><p>Looks up name and returns the resolved path associated with the name.
+:param name: Name of the path resource to resolve
+:param default: Default to return if resource cannot be resolved</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Resolved path associated with name, or default if name can’t be resolved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.PathResolverSingleton.fill">
+<span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.PathResolverSingleton.fill" title="Link to this definition">¶</a></dt>
+<dd><p>Fills in the singleton’s internal mapping from name to resource.
+:param mapping: Mapping from resource name to path
+:type mapping: Dictionary mapping name to path, both as strings</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.Pipe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">Pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bufsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignoreStderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.Pipe" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">subprocess.Popen</span></code></p>
+<p>Specialized pipe class for use by <code class="docutils literal notranslate"><span class="pre">executeCommand</span></code>.</p>
+<p>The <a class="reference internal" href="#CedarBackup3.util.executeCommand" title="CedarBackup3.util.executeCommand"><code class="xref any py py-func docutils literal notranslate"><span class="pre">executeCommand</span></code></a> function needs a specialized way of interacting
+with a pipe.  First, <code class="docutils literal notranslate"><span class="pre">executeCommand</span></code> only reads from the pipe, and
+never writes to it.  Second, <code class="docutils literal notranslate"><span class="pre">executeCommand</span></code> needs a way to discard all
+output written to <code class="docutils literal notranslate"><span class="pre">stderr</span></code>, as a means of simulating the shell
+<code class="docutils literal notranslate"><span class="pre">2&gt;/dev/null</span></code> construct.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">Diagnostics</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics" title="Link to this definition">¶</a></dt>
+<dd><p>Class holding runtime diagnostic information.</p>
+<p>Diagnostic information is information that is useful to get from users for
+debugging purposes.  I’m consolidating it all here into one object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.getValues">
+<span class="sig-name descname"><span class="pre">getValues</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.getValues" title="Link to this definition">¶</a></dt>
+<dd><p>Get a map containing all of the diagnostic values.
+:returns: Map from diagnostic name to diagnostic value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.printDiagnostics">
+<span class="sig-name descname"><span class="pre">printDiagnostics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.printDiagnostics" title="Link to this definition">¶</a></dt>
+<dd><p>Pretty-print diagnostic information to a file descriptor.
+:param fd: File descriptor used to print information
+:param prefix: Prefix string (if any) to place onto printed lines</p>
+<p><em>Note:</em> The <code class="docutils literal notranslate"><span class="pre">fd</span></code> is used rather than <code class="docutils literal notranslate"><span class="pre">print</span></code> to facilitate unit testing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.logDiagnostics">
+<span class="sig-name descname"><span class="pre">logDiagnostics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.logDiagnostics" title="Link to this definition">¶</a></dt>
+<dd><p>Pretty-print diagnostic information using a logger method.
+:param method: Logger method to use for logging (i.e. logger.info)
+:param prefix: Prefix string (if any) to place onto printed lines</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.interpreter">
+<span class="sig-name descname"><span class="pre">interpreter</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.interpreter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.platform">
+<span class="sig-name descname"><span class="pre">platform</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.platform" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.encoding">
+<span class="sig-name descname"><span class="pre">encoding</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.encoding" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.locale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.util.Diagnostics.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#CedarBackup3.util.Diagnostics.timestamp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.sortDict">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">sortDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.sortDict" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the keys of the dictionary sorted by value.
+:param d: Dictionary to operate on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionary keys sorted in order by dictionary value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.removeKeys">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">removeKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.removeKeys" title="Link to this definition">¶</a></dt>
+<dd><p>Removes all of the keys from the dictionary.
+The dictionary is altered in-place.
+Each key must exist in the dictionary.
+:param d: Dictionary to operate on
+:param keys: List of keys to remove</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – If one of the keys does not exist</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.convertSize">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">convertSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fromUnit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toUnit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.convertSize" title="Link to this definition">¶</a></dt>
+<dd><p>Converts a size in one unit to a size in another unit.</p>
+<p>This is just a convenience function so that the functionality can be
+implemented in just one place.  Internally, we convert values to bytes and
+then to the final unit.</p>
+<p>The available units are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UNIT_BYTES</span></code> - Bytes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UNIT_KBYTES</span></code> - Kilobytes, where 1 kB = 1024 B</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UNIT_MBYTES</span></code> - Megabytes, where 1 MB = 1024 kB</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UNIT_GBYTES</span></code> - Gigabytes, where 1 GB = 1024 MB</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UNIT_SECTORS</span></code> - Sectors, where 1 sector = 2048 B</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (Integer or float value in units of <code class="docutils literal notranslate"><span class="pre">fromUnit</span></code>) – Size to convert</p></li>
+<li><p><strong>fromUnit</strong> (<em>One</em><em> of </em><em>the units listed above</em>) – Unit to convert from</p></li>
+<li><p><strong>toUnit</strong> (<em>One</em><em> of </em><em>the units listed above</em>) – Unit to convert to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number converted to new unit, as a float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If one of the units is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.displayBytes">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">displayBytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.displayBytes" title="Link to this definition">¶</a></dt>
+<dd><p>Format a byte quantity so it can be sensibly displayed.</p>
+<p>It’s rather difficult to look at a number like “72372224 bytes” and get any
+meaningful information out of it.  It would be more useful to see something
+like “69.02 MB”.  That’s what this function does.  Any time you want to display
+a byte value, i.e.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s2">&quot;Size: </span><span class="si">%s</span><span class="s2"> bytes&quot;</span> <span class="o">%</span> <span class="nb">bytes</span>
+</pre></div>
+</div>
+<p>Call this function instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s2">&quot;Size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">displayBytes</span><span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What comes out will be sensibly formatted.  The indicated number of digits
+will be listed after the decimal point, rounded based on whatever rules are
+used by Python’s standard <code class="docutils literal notranslate"><span class="pre">%f</span></code> string format specifier. (Values less than 1
+kB will be listed in bytes and will not have a decimal point, since the
+concept of a fractional byte is nonsensical.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bytes</strong> (<em>Integer number</em><em> of </em><em>bytes</em>) – Byte quantity</p></li>
+<li><p><strong>digits</strong> (<em>Integer value</em><em>, </em><em>typically 2-5</em>) – Number of digits to display after the decimal point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String, formatted for sensible display</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.getFunctionReference">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">getFunctionReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.getFunctionReference" title="Link to this definition">¶</a></dt>
+<dd><p>Gets a reference to a named function.</p>
+<p>This does some hokey-pokey to get back a reference to a dynamically named
+function.  For instance, say you wanted to get a reference to the
+<code class="docutils literal notranslate"><span class="pre">os.path.isdir</span></code> function.  You could use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myfunc</span> <span class="o">=</span> <span class="n">getFunctionReference</span><span class="p">(</span><span class="s2">&quot;os.path&quot;</span><span class="p">,</span> <span class="s2">&quot;isdir&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Although we won’t bomb out directly, behavior is pretty much undefined if
+you pass in <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> for either <code class="docutils literal notranslate"><span class="pre">module</span></code> or <code class="docutils literal notranslate"><span class="pre">function</span></code>.</p>
+<p>The only validation we enforce is that whatever we get back must be
+callable.</p>
+<p>I derived this code based on the internals of the Python unittest
+implementation.  I don’t claim to completely understand how it works.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<em>Something like &quot;os.path&quot;</em><em> or </em><em>&quot;CedarBackup3.util&quot;</em>) – Name of module associated with function</p></li>
+<li><p><strong>function</strong> (<em>Something like &quot;isdir&quot;</em><em> or </em><em>&quot;getUidGid&quot;</em>) – Name of function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to function associated with name</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ImportError</strong> – If the function cannot be found</p></li>
+<li><p><strong>ValueError</strong> – If the resulting reference is not callable</p></li>
+</ul>
+</dd>
+</dl>
+<p>&#64;copyright: Some of this code, prior to customization, was originally part
+of the Python 2.3 codebase.  Python code is copyright (c) 2001, 2002 Python
+Software Foundation; All Rights Reserved.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.getUidGid">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">getUidGid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.getUidGid" title="Link to this definition">¶</a></dt>
+<dd><p>Get the uid/gid associated with a user/group pair</p>
+<p>This is a no-op if user/group functionality is not available on the platform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>User name as a string</em>) – User name</p></li>
+<li><p><strong>group</strong> (<em>Group name as a string</em>) – Group name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple <code class="docutils literal notranslate"><span class="pre">(uid,</span> <span class="pre">gid)</span></code> matching passed-in user and group</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the ownership user/group values are invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.changeOwnership">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">changeOwnership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.changeOwnership" title="Link to this definition">¶</a></dt>
+<dd><p>Changes ownership of path to match the user and group.</p>
+<p>This is a no-op if user/group functionality is not available on the
+platform, or if the either passed-in user or group is <code class="docutils literal notranslate"><span class="pre">None</span></code>.  Further, we
+won’t even try to do it unless running as root, since it’s unlikely to work.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Path whose ownership to change</p></li>
+<li><p><strong>user</strong> – User which owns file</p></li>
+<li><p><strong>group</strong> – Group which owns file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.isRunningAsRoot">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">isRunningAsRoot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.isRunningAsRoot" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates whether the program is running as the root user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.splitCommandLine">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">splitCommandLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commandLine</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.splitCommandLine" title="Link to this definition">¶</a></dt>
+<dd><p>Splits a command line string into a list of arguments.</p>
+<p>Unfortunately, there is no “standard” way to parse a command line string,
+and it’s actually not an easy problem to solve portably (essentially, we
+have to emulate the shell argument-processing logic).  This code only
+respects double quotes (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) for grouping arguments, not single quotes
+(<code class="docutils literal notranslate"><span class="pre">'</span></code>).  Make sure you take this into account when building your command
+line.</p>
+<p>Incidentally, I found this particular parsing method while digging around in
+Google Groups, and I tweaked it for my own use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>commandLine</strong> (<em>String</em><em>, </em><em>i.e. &quot;cback3 --verbose stage store&quot;</em>) – Command line string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of arguments, suitable for passing to <code class="docutils literal notranslate"><span class="pre">popen2</span></code></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the command line is None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.resolveCommand">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">resolveCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.resolveCommand" title="Link to this definition">¶</a></dt>
+<dd><p>Resolves the real path to a command through the path resolver mechanism.</p>
+<p>Both extensions and standard Cedar Backup functionality need a way to
+resolve the “real” location of various executables.  Normally, they assume
+that these executables are on the system path, but some callers need to
+specify an alternate location.</p>
+<p>Ideally, we want to handle this configuration in a central location.  The
+Cedar Backup path resolver mechanism (a singleton called
+<a class="reference internal" href="#CedarBackup3.util.PathResolverSingleton" title="CedarBackup3.util.PathResolverSingleton"><code class="xref any py py-class docutils literal notranslate"><span class="pre">PathResolverSingleton</span></code></a>) provides the central location to store the
+mappings.  This function wraps access to the singleton, and is what all
+functions (extensions or standard functionality) should call if they need to
+find a command.</p>
+<p>The passed-in command must actually be a list, in the standard form used by
+all existing Cedar Backup code (something like <code class="docutils literal notranslate"><span class="pre">[&quot;svnlook&quot;,</span> <span class="pre">]</span></code>).  The
+lookup will actually be done on the first element in the list, and the
+returned command will always be in list form as well.</p>
+<p>If the passed-in command can’t be resolved or no mapping exists, then the
+command itself will be returned unchanged.  This way, we neatly fall back on
+default behavior if we have no sensible alternative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>command</strong> (List form of command, i.e. <code class="docutils literal notranslate"><span class="pre">[&quot;svnlook&quot;,</span> <span class="pre">]</span></code>) – Command to resolve</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to command or just command itself if no mapping exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.executeCommand">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">executeCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnOutput</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignoreStderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doNotLog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputFile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.executeCommand" title="Link to this definition">¶</a></dt>
+<dd><p>Executes a shell command, hopefully in a safe way.</p>
+<p>This function exists to replace direct calls to <code class="docutils literal notranslate"><span class="pre">os.popen</span></code> in the Cedar
+Backup code.  It’s not safe to call a function such as <code class="docutils literal notranslate"><span class="pre">os.popen()</span></code> with
+untrusted arguments, since that can cause problems if the string contains
+non-safe variables or other constructs (imagine that the argument is
+<code class="docutils literal notranslate"><span class="pre">$WHATEVER</span></code>, but <code class="docutils literal notranslate"><span class="pre">$WHATEVER</span></code> contains something like C{”; rm -fR ~/;
+echo”} in the current environment).</p>
+<p>Instead, it’s safer to pass a list of arguments in the style supported bt
+<code class="docutils literal notranslate"><span class="pre">popen2</span></code> or <code class="docutils literal notranslate"><span class="pre">popen4</span></code>.  This function actually uses a specialized <code class="docutils literal notranslate"><span class="pre">Pipe</span></code>
+class implemented using either <code class="docutils literal notranslate"><span class="pre">subprocess.Popen</span></code> or <code class="docutils literal notranslate"><span class="pre">popen2.Popen4</span></code>.</p>
+<p>Under the normal case, this function will return a tuple of C{(status,
+None)} where the status is the wait-encoded return status of the call per
+the <code class="docutils literal notranslate"><span class="pre">popen2.Popen4</span></code> documentation.  If <code class="docutils literal notranslate"><span class="pre">returnOutput</span></code> is passed in as
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, the function will return a tuple of <code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">output)</span></code> where
+<code class="docutils literal notranslate"><span class="pre">output</span></code> is a list of strings, one entry per line in the output from the
+command.  Output is always logged to the <code class="docutils literal notranslate"><span class="pre">outputLogger.info()</span></code> target,
+regardless of whether it’s returned.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">stdout</span></code> and <code class="docutils literal notranslate"><span class="pre">stderr</span></code> will be intermingled in the output.
+However, if you pass in <code class="docutils literal notranslate"><span class="pre">ignoreStderr=True</span></code>, then only <code class="docutils literal notranslate"><span class="pre">stdout</span></code> will be
+included in the output.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">doNotLog</span></code> parameter exists so that callers can force the function to
+not log command output to the debug log.  Normally, you would want to log.
+However, if you’re using this function to write huge output files (i.e.
+database backups written to <code class="docutils literal notranslate"><span class="pre">stdout</span></code>) then you might want to avoid putting
+all that information into the debug log.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">outputFile</span></code> parameter exists to make it easier for a caller to push
+output into a file, i.e. as a substitute for redirection to a file.  If this
+value is passed in, each time a line of output is generated, it will be
+written to the file using <code class="docutils literal notranslate"><span class="pre">outputFile.write()</span></code>.  At the end, the file
+descriptor will be flushed using <code class="docutils literal notranslate"><span class="pre">outputFile.flush()</span></code>.  The caller
+maintains responsibility for closing the file object appropriately.</p>
+<p><em>Note:</em> I know that it’s a bit confusing that the command and the arguments
+are both lists.  I could have just required the caller to pass in one big
+list.  However, I think it makes some sense to keep the command (the
+constant part of what we’re executing, i.e. <code class="docutils literal notranslate"><span class="pre">&quot;scp</span> <span class="pre">-B&quot;</span></code>) separate from its
+arguments, even if they both end up looking kind of similar.</p>
+<p><em>Note:</em> You cannot redirect output via shell constructs (i.e. <code class="docutils literal notranslate"><span class="pre">&gt;file</span></code>,
+<code class="docutils literal notranslate"><span class="pre">2&gt;/dev/null</span></code>, etc.) using this function.  The redirection string would be
+passed to the command just like any other argument.  However, you can
+implement the equivalent to redirection using <code class="docutils literal notranslate"><span class="pre">ignoreStderr</span></code> and
+<code class="docutils literal notranslate"><span class="pre">outputFile</span></code>, as discussed above.</p>
+<p><em>Note:</em> The operating system environment is partially sanitized before
+the command is invoked.  See <a class="reference internal" href="#CedarBackup3.util.sanitizeEnvironment" title="CedarBackup3.util.sanitizeEnvironment"><code class="xref any py py-func docutils literal notranslate"><span class="pre">sanitizeEnvironment</span></code></a> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>List</em><em> of </em><em>individual arguments that make up the command</em>) – Shell command to execute</p></li>
+<li><p><strong>args</strong> (<em>List</em><em> of </em><em>additional arguments to the command</em>) – List of arguments to the command</p></li>
+<li><p><strong>returnOutput</strong> (Boolean <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>) – Indicates whether to return the output of the command</p></li>
+<li><p><strong>ignoreStderr</strong> (<em>Boolean True</em><em> or </em><em>False</em>) – Whether stderr should be discarded</p></li>
+<li><p><strong>doNotLog</strong> (Boolean <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>) – Indicates that output should not be logged</p></li>
+<li><p><strong>outputFile</strong> (File as from <code class="docutils literal notranslate"><span class="pre">open</span></code> or <code class="docutils literal notranslate"><span class="pre">file</span></code>, binary write) – File that all output should be written to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of <code class="docutils literal notranslate"><span class="pre">(result,</span> <span class="pre">output)</span></code> as described above</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.calculateFileAge">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">calculateFileAge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.calculateFileAge" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the age (in days) of a file.</p>
+<p>The “age” of a file is the amount of time since the file was last used, per
+the most recent of the file’s <code class="docutils literal notranslate"><span class="pre">st_atime</span></code> and <code class="docutils literal notranslate"><span class="pre">st_mtime</span></code> values.</p>
+<p>Technically, we only intend this function to work with files, but it will
+probably work with anything on the filesystem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – Path to a file on disk</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Age of the file in days (possibly fractional)</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If the file doesn’t exist</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.mount">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">mount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devicePath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mountPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fsType</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.mount" title="Link to this definition">¶</a></dt>
+<dd><p>Mounts the indicated device at the indicated mount point.</p>
+<p>For instance, to mount a CD, you might use device path <code class="docutils literal notranslate"><span class="pre">/dev/cdrw</span></code>, mount
+point <code class="docutils literal notranslate"><span class="pre">/media/cdrw</span></code> and filesystem type <code class="docutils literal notranslate"><span class="pre">iso9660</span></code>.  You can safely use any
+filesystem type that is supported by <code class="docutils literal notranslate"><span class="pre">mount</span></code> on your platform.  If the type
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>, we’ll attempt to let <code class="docutils literal notranslate"><span class="pre">mount</span></code> auto-detect it.  This may or may
+not work on all systems.</p>
+<p><em>Note:</em> This only works on platforms that have a concept of “mounting” a
+filesystem through a command-line <code class="docutils literal notranslate"><span class="pre">&quot;mount&quot;</span></code> command, like UNIXes.  It
+won’t work on Windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>devicePath</strong> – Path of device to be mounted</p></li>
+<li><p><strong>mountPoint</strong> – Path that device should be mounted at</p></li>
+<li><p><strong>fsType</strong> – Type of the filesystem assumed to be available via the device</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>IOError</strong> – If the device cannot be mounted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.unmount">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">unmount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mountPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removeAfter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attempts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waitSeconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.unmount" title="Link to this definition">¶</a></dt>
+<dd><p>Unmounts whatever device is mounted at the indicated mount point.</p>
+<p>Sometimes, it might not be possible to unmount the mount point immediately,
+if there are still files open there.  Use the <code class="docutils literal notranslate"><span class="pre">attempts</span></code> and <code class="docutils literal notranslate"><span class="pre">waitSeconds</span></code>
+arguments to indicate how many unmount attempts to make and how many seconds
+to wait between attempts.  If you pass in zero attempts, no attempts will be
+made (duh).</p>
+<p>If the indicated mount point is not really a mount point per
+<code class="docutils literal notranslate"><span class="pre">os.path.ismount()</span></code>, then it will be ignored.  This seems to be a safer
+check then looking through <code class="docutils literal notranslate"><span class="pre">/etc/mtab</span></code>, since <code class="docutils literal notranslate"><span class="pre">ismount()</span></code> is already in
+the Python standard library and is documented as working on all POSIX
+systems.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">removeAfter</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the mount point will be removed using
+<code class="docutils literal notranslate"><span class="pre">os.rmdir()</span></code> after the unmount action succeeds.  If for some reason the
+mount point is not a directory, then it will not be removed.</p>
+<p><em>Note:</em> This only works on platforms that have a concept of “mounting” a
+filesystem through a command-line <code class="docutils literal notranslate"><span class="pre">&quot;mount&quot;</span></code> command, like UNIXes.  It
+won’t work on Windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mountPoint</strong> – Mount point to be unmounted</p></li>
+<li><p><strong>removeAfter</strong> – Remove the mount point after unmounting it</p></li>
+<li><p><strong>attempts</strong> – Number of times to attempt the unmount</p></li>
+<li><p><strong>waitSeconds</strong> – Number of seconds to wait between repeated attempts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>IOError</strong> – If the mount point is still mounted after attempts are exhausted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.deviceMounted">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">deviceMounted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devicePath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.deviceMounted" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates whether a specific filesystem device is currently mounted.</p>
+<p>We determine whether the device is mounted by looking through the system’s
+<code class="docutils literal notranslate"><span class="pre">mtab</span></code> file.  This file shows every currently-mounted filesystem, ordered
+by device.  We only do the check if the <code class="docutils literal notranslate"><span class="pre">mtab</span></code> file exists and is readable.
+Otherwise, we assume that the device is not mounted.</p>
+<p><em>Note:</em> This only works on platforms that have a concept of an mtab file
+to show mounted volumes, like UNIXes.  It won’t work on Windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>devicePath</strong> – Path of device to be checked</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if device is mounted, false otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.encodePath">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">encodePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.encodePath" title="Link to this definition">¶</a></dt>
+<dd><p>Safely encodes a filesystem path as a Unicode string, converting bytes to fileystem encoding if necessary.
+:param path: Path to encode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path, as a string, encoded appropriately</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the path cannot be encoded properly</p>
+</dd>
+</dl>
+<p>&#64;see: <a class="reference external" href="http://lucumr.pocoo.org/2013/7/2/the-updated-guide-to-unicode/">http://lucumr.pocoo.org/2013/7/2/the-updated-guide-to-unicode/</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.pathJoin">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">pathJoin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">paths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.pathJoin" title="Link to this definition">¶</a></dt>
+<dd><p>Wraps os.path.join(), normalizing slashes in the result.</p>
+<p>On Windows in particular, we often end up with mixed slashes, where parts of a path
+have forward slash and parts have backward slash.  This makes it difficult to construct
+exclusions in configuration, because you never know what part of a path will have
+what kind of slash.  I’ve decided to standardize on forward slashes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result as from os.path.join() but always with forward slashes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.nullDevice">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">nullDevice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.nullDevice" title="Link to this definition">¶</a></dt>
+<dd><p>Attempts to portably return the null device on this system.</p>
+<p>The null device is something like <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code> on a UNIX system.  The name
+varies on other platforms.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.deriveDayOfWeek">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">deriveDayOfWeek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dayName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.deriveDayOfWeek" title="Link to this definition">¶</a></dt>
+<dd><p>Converts English day name to numeric day of week as from <code class="docutils literal notranslate"><span class="pre">time.localtime</span></code>.</p>
+<p>For instance, the day <code class="docutils literal notranslate"><span class="pre">monday</span></code> would be converted to the number <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dayName</strong> (string, i.e. <code class="docutils literal notranslate"><span class="pre">&quot;monday&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tuesday&quot;</span></code>, etc) – Day of week to convert</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer, where Monday is 0 and Sunday is 6; or -1 if no conversion is possible</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.isStartOfWeek">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">isStartOfWeek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startingDay</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.isStartOfWeek" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates whether “today” is the backup starting day per configuration.</p>
+<p>If the current day’s English name matches the indicated starting day, then
+today is a starting day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>startingDay</strong> (string, i.e. <code class="docutils literal notranslate"><span class="pre">&quot;monday&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tuesday&quot;</span></code>, etc) – Configured starting day</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean indicating whether today is the starting day</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.buildNormalizedPath">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">buildNormalizedPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.buildNormalizedPath" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a “normalized” path based on a path name.</p>
+<p>A normalized path is a representation of a path that is also a valid file
+name.  To make a valid file name out of a complete path, we have to convert
+or remove some characters that are significant to the filesystem – in
+particular, the path separator, the Windows drive separator, and any
+leading <code class="docutils literal notranslate"><span class="pre">'.'</span></code> character (which would cause the file to be hidden in
+a file listing).</p>
+<p>Note that this is a one-way transformation – you can’t safely derive the
+original path from the normalized path.</p>
+<p>To normalize a path, we begin by looking at the first character.  If the
+first character is <code class="docutils literal notranslate"><span class="pre">'/'</span></code> or <code class="docutils literal notranslate"><span class="pre">'\'</span></code>, it gets removed.  If the first
+character is <code class="docutils literal notranslate"><span class="pre">'.'</span></code>, it gets converted to <code class="docutils literal notranslate"><span class="pre">'_'</span></code>.  Then, we look through the
+rest of the path and convert all remaining <code class="docutils literal notranslate"><span class="pre">'/'</span></code> or <code class="docutils literal notranslate"><span class="pre">'\'</span></code> characters
+<code class="docutils literal notranslate"><span class="pre">'-'</span></code>, and all remaining whitespace or <code class="docutils literal notranslate"><span class="pre">':'</span></code> characters to <code class="docutils literal notranslate"><span class="pre">'_'</span></code>.</p>
+<p>As a special case, a path consisting only of a single <code class="docutils literal notranslate"><span class="pre">'/'</span></code> or <code class="docutils literal notranslate"><span class="pre">'\'</span></code>
+character will be converted to <code class="docutils literal notranslate"><span class="pre">'_'</span></code>.  That’s better than <code class="docutils literal notranslate"><span class="pre">'-'</span></code>, because
+a dash tends to get interpreted by shell commands as a switch.</p>
+<p>As a special case, anything that looks like a leading Windows drive letter
+combination (like <code class="docutils literal notranslate"><span class="pre">c:\</span></code> or <code class="docutils literal notranslate"><span class="pre">c:/</span></code>) will be converted to something like
+<code class="docutils literal notranslate"><span class="pre">c-</span></code>.  This is needed because a colon isn’t a valid filename character
+on Windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – Path to normalize</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normalized path as described above</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the path is None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.sanitizeEnvironment">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">sanitizeEnvironment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.sanitizeEnvironment" title="Link to this definition">¶</a></dt>
+<dd><p>Sanitizes the operating system environment.</p>
+<p>The operating system environment is contained in <code class="docutils literal notranslate"><span class="pre">os.environ</span></code>.  This method
+sanitizes the contents of that dictionary.</p>
+<p>Currently, all it does is reset the locale (removing <code class="docutils literal notranslate"><span class="pre">$LC_*</span></code>) and set the
+default language (<code class="docutils literal notranslate"><span class="pre">$LANG</span></code>) to <code class="docutils literal notranslate"><span class="pre">DEFAULT_LANGUAGE</span></code>.  This way, we can count
+on consistent localization regardless of what the end-user has configured.
+This is important for code that needs to parse program output.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">os.environ</span></code> dictionary is modifed in-place.  If <code class="docutils literal notranslate"><span class="pre">$LANG</span></code> is already
+set to the proper value, it is not re-set, so we can avoid the memory leaks
+that are documented to occur on BSD-based systems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Copy of the sanitized environment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.dereferenceLink">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">dereferenceLink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.dereferenceLink" title="Link to this definition">¶</a></dt>
+<dd><p>Deference a soft link, optionally normalizing it to an absolute path.
+:param path: Path of link to dereference
+:param absolute: Whether to normalize the result to an absolute path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dereferenced path, or original path if original is not a link</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.checkUnique">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">checkUnique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.checkUnique" title="Link to this definition">¶</a></dt>
+<dd><p>Checks that all values are unique.</p>
+<p>The values list is checked for duplicate values.  If there are
+duplicates, an exception is thrown.  All duplicate values are listed in
+the exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> – Prefix to use in the thrown exception</p></li>
+<li><p><strong>values</strong> – List of values to check</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If there are duplicates in the list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.util.parseCommaSeparatedString">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.util.</span></span><span class="sig-name descname"><span class="pre">parseCommaSeparatedString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commaString</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.util.parseCommaSeparatedString" title="Link to this definition">¶</a></dt>
+<dd><p>Parses a list of values out of a comma-separated string.</p>
+<p>The items in the list are split by comma, and then have whitespace
+stripped.  As a special case, if <code class="docutils literal notranslate"><span class="pre">commaString</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then <code class="docutils literal notranslate"><span class="pre">None</span></code>
+will be returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>commaString</strong> – List of values in comma-separated string format</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Values from commaString split into a list, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">CedarBackup3</a><ul>
+      <li>Previous: <a href="../tools/span/index.html" title="previous chapter">CedarBackup3.tools.span</a></li>
+      <li>Next: <a href="../writer/index.html" title="next chapter">CedarBackup3.writer</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

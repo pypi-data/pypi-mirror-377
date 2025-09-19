@@ -1,0 +1,37 @@
+CedarBackup3.actions.initialize
+===============================
+
+.. py:module:: CedarBackup3.actions.initialize
+
+.. autoapi-nested-parse::
+
+   Implements the standard 'initialize' action.
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: executeInitialize(configPath, options, config)
+
+   Executes the initialize action.
+
+   The initialize action initializes the media currently in the writer
+   device so that Cedar Backup can recognize it later.  This is an optional
+   step; it's only required if checkMedia is set on the store configuration.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+

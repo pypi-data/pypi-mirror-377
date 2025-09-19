@@ -1,0 +1,2364 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Configuration &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="configuration">
+<span id="cedar-config"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<span id="cedar-config-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Configuring Cedar Backup is unfortunately somewhat complicated. The good
+news is that once you get through the initial configuration process,
+you’ll hardly ever have to change anything. Even better, the most
+typical changes (i.e. adding and removing directories from a backup) are
+easy.</p>
+<p>First, familiarize yourself with the concepts in <a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a>.
+In particular, be sure that you understand the differences between a
+master and a client. (If you only have one machine, then your machine
+will act as both a master and a client, and we’ll refer to your setup as
+a pool of one.) Then, install Cedar Backup per the instructions in
+<a class="reference internal" href="install.html"><span class="doc">Installation</span></a>.</p>
+<p>Once everything has been installed, you are ready to begin configuring Cedar
+Backup. Look over <a class="reference internal" href="commandline.html"><span class="doc">Command Line Tools</span></a> to become familiar with the command line
+interface. Then, look over <em>Configuration File Format</em> (below) and create a
+configuration file for each peer in your backup pool. To start with, create a
+very simple configuration file, then expand it later. Decide now whether you
+will store the configuration file in the standard place (<code class="docutils literal notranslate"><span class="pre">/etc/cback3.conf</span></code>)
+or in some other location.</p>
+<p>After you have all of the configuration files in place, configure each
+of your machines, following the instructions in the appropriate section
+below (for master, client or pool of one). Since the master and
+client(s) must communicate over the network, you won’t be able to fully
+configure the master without configuring each client and vice-versa. The
+instructions are clear on what needs to be done.</p>
+<p>Cedar Backup has been designed for use on all UNIX-like systems.
+However, since it was developed on a Debian GNU/Linux system, and
+because I am a Debian developer, the packaging is prettier and the setup
+is somewhat simpler on a Debian system than on a system where you
+install from source.</p>
+<p>The configuration instructions below have been generalized so they
+should work well regardless of what platform you are running (i.e.
+RedHat, Gentoo, FreeBSD, etc.). If instructions vary for a particular
+platform, you will find a note related to that platform.</p>
+<p>I am always open to adding more platform-specific hints and notes, so
+write me if you find problems with these instructions.</p>
+</section>
+<section id="configuration-file-format">
+<span id="cedar-config-configfile"></span><h2>Configuration File Format<a class="headerlink" href="#configuration-file-format" title="Link to this heading">¶</a></h2>
+<p>Cedar Backup is configured through an XML  <a class="footnote-reference brackets" href="#id22" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> configuration file,
+usually called <code class="docutils literal notranslate"><span class="pre">/etc/cback3.conf</span></code>. The configuration file contains the
+following sections: reference, options, collect, stage, store, purge and
+extensions.</p>
+<p>All configuration files must contain the two general configuration
+sections, the reference section and the options section. Besides that,
+administrators need only configure actions they intend to use. For
+instance, on a client machine, administrators will generally only
+configure the collect and purge sections, while on a master machine they
+will have to configure all four action-related sections.  <a class="footnote-reference brackets" href="#id23" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> The
+extensions section is always optional and can be omitted unless
+extensions are in use.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>Even though the Mac OS X (darwin) filesystem is <em>not</em> case-sensitive,
+Cedar Backup configuration <em>is</em> generally case-sensitive on that
+platform, just like on all other platforms. For instance, even though
+the files “Ken” and “ken” might be the same on the Mac OS X
+filesystem, an exclusion in Cedar Backup configuration for “ken” will
+only match the file if it is actually on the filesystem with a
+lower-case “k” as its first letter. This won’t surprise the typical
+UNIX user, but might surprise someone who’s gotten into the “Mac
+Mindset”.</p>
+</div></blockquote>
+<section id="sample-configuration-file">
+<span id="cedar-config-configfile-sample"></span><h3>Sample Configuration File<a class="headerlink" href="#sample-configuration-file" title="Link to this heading">¶</a></h3>
+<p>Both the Python source distribution and the Debian package come with a
+sample configuration file. The Debian package includes its sample in
+<code class="docutils literal notranslate"><span class="pre">/usr/share/doc/cedar-backup3/examples/cback3.conf.sample</span></code>.</p>
+<p>This is a sample configuration file similar to the one provided in the
+source package. Documentation below provides more information about each
+of the individual configuration sections.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;cb_config&gt;
+   &lt;reference&gt;
+      &lt;author&gt;Kenneth J. Pronovici&lt;/author&gt;
+      &lt;revision&gt;1.3&lt;/revision&gt;
+      &lt;description&gt;Sample&lt;/description&gt;
+   &lt;/reference&gt;
+   &lt;options&gt;
+      &lt;starting_day&gt;tuesday&lt;/starting_day&gt;
+      &lt;working_dir&gt;/opt/backup/tmp&lt;/working_dir&gt;
+      &lt;backup_user&gt;backup&lt;/backup_user&gt;
+      &lt;backup_group&gt;group&lt;/backup_group&gt;
+      &lt;rcp_command&gt;/usr/bin/scp -O -B&lt;/rcp_command&gt;
+   &lt;/options&gt;
+   &lt;peers&gt;
+      &lt;peer&gt;
+         &lt;name&gt;debian&lt;/name&gt;
+         &lt;type&gt;local&lt;/type&gt;
+         &lt;collect_dir&gt;/opt/backup/collect&lt;/collect_dir&gt;
+      &lt;/peer&gt;
+   &lt;/peers&gt;
+   &lt;collect&gt;
+      &lt;collect_dir&gt;/opt/backup/collect&lt;/collect_dir&gt;
+      &lt;collect_mode&gt;daily&lt;/collect_mode&gt;
+      &lt;archive_mode&gt;targz&lt;/archive_mode&gt;
+      &lt;ignore_file&gt;.cbignore&lt;/ignore_file&gt;
+      &lt;dir&gt;
+         &lt;abs_path&gt;/etc&lt;/abs_path&gt;
+         &lt;collect_mode&gt;incr&lt;/collect_mode&gt;
+      &lt;/dir&gt;
+      &lt;file&gt;
+         &lt;abs_path&gt;/home/root/.profile&lt;/abs_path&gt;
+         &lt;collect_mode&gt;weekly&lt;/collect_mode&gt;
+      &lt;/file&gt;
+   &lt;/collect&gt;
+   &lt;stage&gt;
+      &lt;staging_dir&gt;/opt/backup/staging&lt;/staging_dir&gt;
+   &lt;/stage&gt;
+   &lt;store&gt;
+      &lt;source_dir&gt;/opt/backup/staging&lt;/source_dir&gt;
+      &lt;media_type&gt;cdrw-74&lt;/media_type&gt;
+      &lt;device_type&gt;cdwriter&lt;/device_type&gt;
+      &lt;target_device&gt;/dev/cdrw&lt;/target_device&gt;
+      &lt;target_scsi_id&gt;0,0,0&lt;/target_scsi_id&gt;
+      &lt;drive_speed&gt;4&lt;/drive_speed&gt;
+      &lt;check_data&gt;Y&lt;/check_data&gt;
+      &lt;check_media&gt;Y&lt;/check_media&gt;
+      &lt;warn_midnite&gt;Y&lt;/warn_midnite&gt;
+   &lt;/store&gt;
+   &lt;purge&gt;
+      &lt;dir&gt;
+         &lt;abs_path&gt;/opt/backup/stage&lt;/abs_path&gt;
+         &lt;retain_days&gt;7&lt;/retain_days&gt;
+      &lt;/dir&gt;
+      &lt;dir&gt;
+         &lt;abs_path&gt;/opt/backup/collect&lt;/abs_path&gt;
+         &lt;retain_days&gt;0&lt;/retain_days&gt;
+      &lt;/dir&gt;
+   &lt;/purge&gt;
+&lt;/cb_config&gt;
+</pre></div>
+</div>
+</section>
+<section id="reference-configuration">
+<span id="cedar-config-configfile-reference"></span><h3>Reference Configuration<a class="headerlink" href="#reference-configuration" title="Link to this heading">¶</a></h3>
+<p>The reference configuration section contains free-text elements that
+exist only for reference.. The section itself is required, but the
+individual elements may be left blank if desired.</p>
+<p>This is an example reference configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">reference</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">author</span><span class="o">&gt;</span><span class="n">Kenneth</span> <span class="n">J</span><span class="o">.</span> <span class="n">Pronovici</span><span class="o">&lt;/</span><span class="n">author</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">revision</span><span class="o">&gt;</span><span class="n">Revision</span> <span class="mf">1.3</span><span class="o">&lt;/</span><span class="n">revision</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">description</span><span class="o">&gt;</span><span class="n">Sample</span><span class="o">&lt;/</span><span class="n">description</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">generator</span><span class="o">&gt;</span><span class="n">Yet</span> <span class="n">to</span> <span class="n">be</span> <span class="n">Written</span> <span class="n">Config</span> <span class="n">Tool</span> <span class="p">(</span><span class="n">tm</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">description</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">reference</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the reference configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">author</span></code></dt><dd><p>Author of the configuration file.</p>
+<p><em>Restrictions:</em> None</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">revision</span></code></dt><dd><p>Revision of the configuration file.</p>
+<p><em>Restrictions:</em> None</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">description</span></code></dt><dd><p>Description of the configuration file.</p>
+<p><em>Restrictions:</em> None</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">generator</span></code></dt><dd><p>Tool that generated the configuration file, if any.</p>
+<p><em>Restrictions:</em> None</p>
+</dd>
+</dl>
+</section>
+<section id="options-configuration">
+<span id="cedar-config-configfile-options"></span><h3>Options Configuration<a class="headerlink" href="#options-configuration" title="Link to this heading">¶</a></h3>
+<p>The options configuration section contains configuration options that
+are not specific to any one action.</p>
+<p>This is an example options configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">options</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">starting_day</span><span class="o">&gt;</span><span class="n">tuesday</span><span class="o">&lt;/</span><span class="n">starting_day</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">working_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">tmp</span><span class="o">&lt;/</span><span class="n">working_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">backup_user</span><span class="o">&gt;</span><span class="n">backup</span><span class="o">&lt;/</span><span class="n">backup_user</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">backup_group</span><span class="o">&gt;</span><span class="n">backup</span><span class="o">&lt;/</span><span class="n">backup_group</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">rcp_command</span><span class="o">&gt;/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">scp</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span><span class="n">B</span><span class="o">&lt;/</span><span class="n">rcp_command</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">rsh_command</span><span class="o">&gt;/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ssh</span><span class="o">&lt;/</span><span class="n">rsh_command</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">cback_command</span><span class="o">&gt;/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">cback</span><span class="o">&lt;/</span><span class="n">cback_command</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">managed_actions</span><span class="o">&gt;</span><span class="n">collect</span><span class="p">,</span> <span class="n">purge</span><span class="o">&lt;/</span><span class="n">managed_actions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">override</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="n">cdrecord</span><span class="o">&lt;/</span><span class="n">command</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">cdrecord</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">override</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">override</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="n">mkisofs</span><span class="o">&lt;/</span><span class="n">command</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mkisofs</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">override</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">pre_action_hook</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="n">echo</span> <span class="s2">&quot;I AM A PRE-ACTION HOOK RELATED TO COLLECT&quot;</span><span class="o">&lt;/</span><span class="n">command</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">pre_action_hook</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">post_action_hook</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="n">echo</span> <span class="s2">&quot;I AM A POST-ACTION HOOK RELATED TO COLLECT&quot;</span><span class="o">&lt;/</span><span class="n">command</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">post_action_hook</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">options</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the options configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">starting_day</span></code></dt><dd><p>Day that starts the week.</p>
+<p>Cedar Backup is built around the idea of weekly backups. The starting
+day of week is the day that media will be rebuilt from scratch and
+that incremental backup information will be cleared.</p>
+<p><em>Restrictions:</em> Must be a day of the week in English, i.e.
+<code class="docutils literal notranslate"><span class="pre">monday</span></code>, <code class="docutils literal notranslate"><span class="pre">tuesday</span></code>, etc. The validation is case-sensitive.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">working_dir</span></code></dt><dd><p>Working (temporary) directory to use for backups.</p>
+<p>This directory is used for writing temporary files, such as tar file
+or ISO filesystem images as they are being built. It is also used to
+store day-to-day information about incremental backups.</p>
+<p>The working directory should contain enough free space to hold
+temporary tar files (on a client) or to build an ISO filesystem image
+(on a master).</p>
+<p><em>Restrictions:</em> Must be an absolute path</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">backup_user</span></code></dt><dd><p>Effective user that backups should run as.</p>
+<p>This user must exist on the machine which is being configured and
+should not be root (although that restriction is not enforced).</p>
+<p>This value is also used as the default remote backup user for remote
+peers.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">backup_group</span></code></dt><dd><p>Effective group that backups should run as.</p>
+<p>This group must exist on the machine which is being configured, and
+should not be root or some other “powerful” group (although that
+restriction is not enforced).</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rcp_command</span></code></dt><dd><p>Default rcp-compatible copy command for staging.</p>
+<p>The rcp command should be the exact command used for remote copies,
+including any required options. If you are using <code class="docutils literal notranslate"><span class="pre">scp</span></code>, you should
+pass it the <code class="docutils literal notranslate"><span class="pre">-B</span></code> option, so <code class="docutils literal notranslate"><span class="pre">scp</span></code> will not ask for any user input
+(which could hang the backup). A common example is something like
+<code class="docutils literal notranslate"><span class="pre">/usr/bin/scp</span> <span class="pre">-B</span></code>.  If you are following the instructions in the
+appendix to restrict SSH access, then use <code class="docutils literal notranslate"><span class="pre">/usr/bin/scp</span> <span class="pre">-O</span> <span class="pre">-B</span></code>
+instead.</p>
+<p>This value is used as the default value for all remote peers.
+Technically, this value is not needed by clients, but we require it
+for all config files anyway.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rsh_command</span></code></dt><dd><p>Default rsh-compatible command to use for remote shells.</p>
+<p>The rsh command should be the exact command used for remote shells,
+including any required options.</p>
+<p>This value is used as the default value for all managed clients. It
+is optional, because it is only used when executing actions on
+managed clients. However, each managed client must either be able to
+read the value from options configuration or must set the value
+explicitly.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cback_command</span></code></dt><dd><p>Default cback-compatible command to use on managed remote clients.</p>
+<p>The cback command should be the exact command used for for executing
+<code class="docutils literal notranslate"><span class="pre">cback</span></code> on a remote managed client, including any required
+command-line options. Do <em>not</em> list any actions in the command line,
+and do <em>not</em> include the <code class="docutils literal notranslate"><span class="pre">--full</span></code> command-line option.</p>
+<p>This value is used as the default value for all managed clients. It
+is optional, because it is only used when executing actions on
+managed clients. However, each managed client must either be able to
+read the value from options configuration or must set the value
+explicitly.</p>
+<p><em>Note:</em> if this command-line is complicated, it is often better to
+create a simple shell script on the remote host to encapsulate all of
+the options. Then, just reference the shell script in configuration.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">managed_actions</span></code></dt><dd><p>Default set of actions that are managed on remote clients.</p>
+<p>This is a comma-separated list of actions that the master will manage
+on behalf of remote clients. Typically, it would include only
+collect-like actions and purge.</p>
+<p>This value is used as the default value for all managed clients. It
+is optional, because it is only used when executing actions on
+managed clients. However, each managed client must either be able to
+read the value from options configuration or must set the value
+explicitly.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">override</span></code></dt><dd><p>Command to override with a customized path.</p>
+<p>This is a subsection which contains a command to override with a
+customized path. This functionality would be used if root’s <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
+does not include a particular required command, or if there is a need
+to use a version of a command that is different than the one listed
+on the <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>. Most users will only use this section when directed
+to, in order to fix a problem.</p>
+<p>This section is optional, and can be repeated as many times as
+necessary.</p>
+<p>This subsection must contain the following two fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">command</span></code></dt><dd><p>Name of the command to be overridden, i.e. “cdrecord”.</p>
+<p><em>Restrictions:</em> Must be a non-empty string.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>The absolute path where the overridden command can be found.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pre_action_hook</span></code></dt><dd><p>Hook configuring a command to be executed before an action.</p>
+<p>This is a subsection which configures a command to be executed
+immediately before a named action. It provides a way for
+administrators to associate their own custom functionality with
+standard Cedar Backup actions or with arbitrary extensions.</p>
+<p>This section is optional, and can be repeated as many times as
+necessary.</p>
+<p>This subsection must contain the following two fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p>Name of the Cedar Backup action that the hook is associated with.
+The action can be a standard backup action (collect, stage, etc.)
+or can be an extension action. No validation is done to ensure
+that the configured action actually exists.</p>
+<p><em>Restrictions:</em> Must be a non-empty string.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">command</span></code></dt><dd><p>Name of the command to be executed. This item can either specify
+the path to a shell script of some sort (the recommended approach)
+or can include a complete shell command.</p>
+<p><em>Note:</em> if you choose to provide a complete shell command rather
+than the path to a script, you need to be aware of some
+limitations of Cedar Backup’s command-line parser. You cannot use
+a subshell (via the <code class="docutils literal notranslate"><span class="pre">`command`</span></code> or <code class="docutils literal notranslate"><span class="pre">$(command)</span></code>
+syntaxes) or any shell variable in your command line.
+Additionally, the command-line parser only recognizes the
+double-quote character (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) to delimit groupings or strings on
+the command-line. The bottom line is, you are probably best off
+writing a shell script of some sort for anything more
+sophisticated than very simple shell commands.</p>
+<p><em>Restrictions:</em> Must be a non-empty string.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">post_action_hook</span></code></dt><dd><p>Hook configuring a command to be executed after an action.</p>
+<p>This is a subsection which configures a command to be executed
+immediately after a named action. It provides a way for
+administrators to associate their own custom functionality with
+standard Cedar Backup actions or with arbitrary extensions.</p>
+<p>This section is optional, and can be repeated as many times as
+necessary.</p>
+<p>This subsection must contain the following two fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p>Name of the Cedar Backup action that the hook is associated with.
+The action can be a standard backup action (collect, stage, etc.)
+or can be an extension action. No validation is done to ensure
+that the configured action actually exists.</p>
+<p><em>Restrictions:</em> Must be a non-empty string.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">command</span></code></dt><dd><p>Name of the command to be executed. This item can either specify
+the path to a shell script of some sort (the recommended approach)
+or can include a complete shell command.</p>
+<p><em>Note:</em> if you choose to provide a complete shell command rather
+than the path to a script, you need to be aware of some
+limitations of Cedar Backup’s command-line parser. You cannot use
+a subshell (via the <code class="docutils literal notranslate"><span class="pre">`command`</span></code> or <code class="docutils literal notranslate"><span class="pre">$(command)</span></code>
+syntaxes) or any shell variable in your command line.
+Additionally, the command-line parser only recognizes the
+double-quote character (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) to delimit groupings or strings on
+the command-line. The bottom line is, you are probably best off
+writing a shell script of some sort for anything more
+sophisticated than very simple shell commands.</p>
+<p><em>Restrictions:</em> Must be a non-empty string.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="peers-configuration">
+<span id="cedar-config-configfile-peers"></span><h3>Peers Configuration<a class="headerlink" href="#peers-configuration" title="Link to this heading">¶</a></h3>
+<p>The peers configuration section contains a list of the peers managed by
+a master. This section is only required on a master.</p>
+<p>This is an example peers configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">peers</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">peer</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">machine1</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="n">local</span><span class="o">&lt;/</span><span class="nb">type</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">collect_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">peer</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">peer</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">machine2</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="n">remote</span><span class="o">&lt;/</span><span class="nb">type</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">backup_user</span><span class="o">&gt;</span><span class="n">backup</span><span class="o">&lt;/</span><span class="n">backup_user</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">collect_dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">ignore_failures</span><span class="o">&gt;</span><span class="nb">all</span><span class="o">&lt;/</span><span class="n">ignore_failures</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">peer</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">peer</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">machine3</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="n">remote</span><span class="o">&lt;/</span><span class="nb">type</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">managed</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="n">managed</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">backup_user</span><span class="o">&gt;</span><span class="n">backup</span><span class="o">&lt;/</span><span class="n">backup_user</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">collect_dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">rcp_command</span><span class="o">&gt;/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">scp</span><span class="o">&lt;/</span><span class="n">rcp_command</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">rsh_command</span><span class="o">&gt;/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ssh</span><span class="o">&lt;/</span><span class="n">rsh_command</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">cback_command</span><span class="o">&gt;/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">cback</span><span class="o">&lt;/</span><span class="n">cback_command</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">managed_actions</span><span class="o">&gt;</span><span class="n">collect</span><span class="p">,</span> <span class="n">purge</span><span class="o">&lt;/</span><span class="n">managed_actions</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">peer</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">peers</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the peers configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">peer</span></code> (local version)</dt><dd><p>Local client peer in a backup pool.</p>
+<p>This is a subsection which contains information about a specific
+local client peer managed by a master.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one remote or local peer must be configured.</p>
+<p>The local peer subsection must contain the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Name of the peer, typically a valid hostname.</p>
+<p>For local peers, this value is only used for reference. However,
+it is good practice to list the peer’s hostname here, for
+consistency with remote peers.</p>
+<p><em>Restrictions:</em> Must be non-empty, and unique among all peers.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>Type of this peer.</p>
+<p>This value identifies the type of the peer. For a local peer, it
+must always be <code class="docutils literal notranslate"><span class="pre">local</span></code>.</p>
+<p><em>Restrictions:</em> Must be <code class="docutils literal notranslate"><span class="pre">local</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_dir</span></code></dt><dd><p>Collect directory to stage from for this peer.</p>
+<p>The master will copy all files in this directory into the
+appropriate staging directory. Since this is a local peer, the
+directory is assumed to be reachable via normal filesystem
+operations (i.e. <code class="docutils literal notranslate"><span class="pre">cp</span></code>).</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_failures</span></code></dt><dd><p>Ignore failure mode for this peer</p>
+<p>The ignore failure mode indicates whether “not ready to be staged”
+errors should be ignored for this peer. This option is intended to
+be used for peers that are up only intermittently, to cut down on
+the number of error emails received by the Cedar Backup
+administrator.</p>
+<p>The “none” mode means that all errors will be reported. This is
+the default behavior. The “all” mode means to ignore all failures.
+The “weekly” mode means to ignore failures for a start-of-week or
+full backup. The “daily” mode means to ignore failures for any
+backup that is not either a full backup or a start-of-week backup.</p>
+<p><em>Restrictions:</em> If set, must be one of “none”, “all”, “daily”, or
+“weekly”.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">peer</span></code> (remote version)</dt><dd><p>Remote client peer in a backup pool.</p>
+<p>This is a subsection which contains information about a specific
+remote client peer managed by a master. A remote peer is one which
+can be reached via an rsh-based network call.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one remote or local peer must be configured.</p>
+<p>The remote peer subsection must contain the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Hostname of the peer.</p>
+<p>For remote peers, this must be a valid DNS hostname or IP address
+which can be resolved during an rsh-based network call.</p>
+<p><em>Restrictions:</em> Must be non-empty, and unique among all peers.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>Type of this peer.</p>
+<p>This value identifies the type of the peer. For a remote peer, it
+must always be <code class="docutils literal notranslate"><span class="pre">remote</span></code>.</p>
+<p><em>Restrictions:</em> Must be <code class="docutils literal notranslate"><span class="pre">remote</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">managed</span></code></dt><dd><p>Indicates whether this peer is managed.</p>
+<p>A managed peer (or managed client) is a peer for which the master
+manages all of the backup activites via a remote shell.</p>
+<p>This field is optional. If it doesn’t exist, then <code class="docutils literal notranslate"><span class="pre">N</span></code> will be
+assumed.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_dir</span></code></dt><dd><p>Collect directory to stage from for this peer.</p>
+<p>The master will copy all files in this directory into the
+appropriate staging directory. Since this is a remote peer, the
+directory is assumed to be reachable via rsh-based network
+operations (i.e. <code class="docutils literal notranslate"><span class="pre">scp</span></code> or the configured rcp command).</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_failures</span></code></dt><dd><p>Ignore failure mode for this peer</p>
+<p>The ignore failure mode indicates whether “not ready to be staged”
+errors should be ignored for this peer. This option is intended to
+be used for peers that are up only intermittently, to cut down on
+the number of error emails received by the Cedar Backup
+administrator.</p>
+<p>The “none” mode means that all errors will be reported. This is
+the default behavior. The “all” mode means to ignore all failures.
+The “weekly” mode means to ignore failures for a start-of-week or
+full backup. The “daily” mode means to ignore failures for any
+backup that is not either a full backup or a start-of-week backup.</p>
+<p><em>Restrictions:</em> If set, must be one of “none”, “all”, “daily”, or
+“weekly”.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">backup_user</span></code></dt><dd><p>Name of backup user on the remote peer.</p>
+<p>This username will be used when copying files from the remote peer
+via an rsh-based network connection.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default backup user from the options section.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rcp_command</span></code></dt><dd><p>The rcp-compatible copy command for this peer.</p>
+<p>The rcp command should be the exact command used for remote
+copies, including any required options. If you are using <code class="docutils literal notranslate"><span class="pre">scp</span></code>,
+you should pass it the <code class="docutils literal notranslate"><span class="pre">-B</span></code> option, so <code class="docutils literal notranslate"><span class="pre">scp</span></code> will not ask for
+any user input (which could hang the backup). A common example is
+something like <code class="docutils literal notranslate"><span class="pre">/usr/bin/scp</span> <span class="pre">-B</span></code>. If you are following the
+instructions in the appendix to restrict SSH access, then use
+<code class="docutils literal notranslate"><span class="pre">/usr/bin/scp</span> <span class="pre">-O</span> <span class="pre">-B</span></code> instead.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default rcp command from the options section.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rsh_command</span></code></dt><dd><p>The rsh-compatible command for this peer.</p>
+<p>The rsh command should be the exact command used for remote
+shells, including any required options.</p>
+<p>This value only applies if the peer is managed.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default rsh command from the options section.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cback_command</span></code></dt><dd><p>The cback-compatible command for this peer.</p>
+<p>The cback command should be the exact command used for for
+executing cback on the peer as part of a managed backup. This
+value must include any required command-line options. Do <em>not</em>
+list any actions in the command line, and do <em>not</em> include the
+<code class="docutils literal notranslate"><span class="pre">--full</span></code> command-line option.</p>
+<p>This value only applies if the peer is managed.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default cback command from the options section.</p>
+<p><em>Note:</em> if this command-line is complicated, it is often better to
+create a simple shell script on the remote host to encapsulate all
+of the options. Then, just reference the shell script in
+configuration.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">managed_actions</span></code></dt><dd><p>Set of actions that are managed for this peer.</p>
+<p>This is a comma-separated list of actions that the master will
+manage on behalf this peer. Typically, it would include only
+collect-like actions and purge.</p>
+<p>This value only applies if the peer is managed.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default list of managed actions from the options section.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="collect-configuration">
+<span id="cedar-config-configfile-collect"></span><h3>Collect Configuration<a class="headerlink" href="#collect-configuration" title="Link to this heading">¶</a></h3>
+<p>The collect configuration section contains configuration options related
+the the collect action. This section contains a variable number of
+elements, including an optional exclusion section and a repeating
+subsection used to specify which directories and/or files to collect.
+You can also configure an ignore indicator file, which lets users mark
+their own directories as not backed up.</p>
+<p>Sometimes, it’s not very convenient to list directories one by one in
+the Cedar Backup configuration file. For instance, when backing up your
+home directory, you often exclude as many directories as you include.
+The ignore file mechanism can be of some help, but it still isn’t very
+convenient if there are a lot of directories to ignore (or if new
+directories pop up all of the time).</p>
+<p>In this situation, one option is to use a link farm rather than listing
+all of the directories in configuration. A link farm is a directory that
+contains nothing but a set of soft links to other files and directories.
+Normally, Cedar Backup does not follow soft links, but you can override
+this behavior for individual directories using the <code class="docutils literal notranslate"><span class="pre">link_depth</span></code> and
+<code class="docutils literal notranslate"><span class="pre">dereference</span></code> options (see below).</p>
+<p>When using a link farm, you still have to deal with each backed-up
+directory individually, but you don’t have to modify configuration. Some
+users find that this works better for them.</p>
+<p>In order to actually execute the collect action, you must have
+configured at least one collect directory or one collect file. However,
+if you are only including collect configuration for use by an extension,
+then it’s OK to leave out these sections. The validation will take place
+only when the collect action is executed.</p>
+<p>This is an example collect configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">collect</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">collect_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">collect_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">daily</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">archive_mode</span><span class="o">&gt;</span><span class="n">targz</span><span class="o">&lt;/</span><span class="n">archive_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">ignore_file</span><span class="o">&gt;.</span><span class="n">cbignore</span><span class="o">&lt;/</span><span class="n">ignore_file</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">exclude</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">etc</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;.*</span>\<span class="o">.</span><span class="n">conf</span><span class="o">&lt;/</span><span class="n">pattern</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">exclude</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">home</span><span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">profile</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">file</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">etc</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">incr</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">weekly</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">exclude</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">large</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">rel_path</span><span class="o">&gt;</span><span class="n">backup</span><span class="o">&lt;/</span><span class="n">rel_path</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;.*</span><span class="n">tmp</span><span class="o">&lt;/</span><span class="n">pattern</span><span class="o">&gt;</span>
+      <span class="o">&lt;/</span><span class="n">exclude</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">collect</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the collect configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_dir</span></code></dt><dd><p>Directory to collect files into.</p>
+<p>On a client, this is the directory which tarfiles for individual
+collect directories are written into. The master then stages files
+from this directory into its own staging directory.</p>
+<p>This field is always required. It must contain enough free space to
+collect all of the backed-up files on the machine in a compressed
+form.</p>
+<p><em>Restrictions:</em> Must be an absolute path</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Default collect mode.</p>
+<p>The collect mode describes how frequently a directory is backed up.
+See <a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a> for more information.</p>
+<p>This value is the collect mode that will be used by default during
+the collect process. Individual collect directories (below) may
+override this value. If <em>all</em> individual directories provide their
+own value, then this default value may be omitted from configuration.</p>
+<p><em>Note:</em> if your backup device does not suppport multisession discs,
+then you should probably use the <code class="docutils literal notranslate"><span class="pre">daily</span></code> collect mode to avoid
+losing data.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">archive_mode</span></code></dt><dd><p>Default archive mode for collect files.</p>
+<p>The archive mode maps to the way that a backup file is stored. A
+value <code class="docutils literal notranslate"><span class="pre">tar</span></code> means just a tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar</span></code>); a value <code class="docutils literal notranslate"><span class="pre">targz</span></code>
+means a gzipped tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar.gz</span></code>); and a value <code class="docutils literal notranslate"><span class="pre">tarbz2</span></code>
+means a bzipped tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar.bz2</span></code>)</p>
+<p>This value is the archive mode that will be used by default during
+the collect process. Individual collect directories (below) may
+override this value. If <em>all</em> individual directories provide their
+own value, then this default value may be omitted from configuration.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">targz</span></code> or <code class="docutils literal notranslate"><span class="pre">tarbz2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_file</span></code></dt><dd><p>Default ignore file name.</p>
+<p>The ignore file is an indicator file. If it exists in a given
+directory, then that directory will be recursively excluded from the
+backup as if it were explicitly excluded in configuration.</p>
+<p>The ignore file provides a way for individual users (who might not
+have access to Cedar Backup configuration) to control which of their
+own directories get backed up. For instance, users with a <code class="docutils literal notranslate"><span class="pre">~/tmp</span></code>
+directory might not want it backed up. If they create an ignore file
+in their directory (e.g. <code class="docutils literal notranslate"><span class="pre">~/tmp/.cbignore</span></code>), then Cedar Backup will
+ignore it.</p>
+<p>This value is the ignore file name that will be used by default
+during the collect process. Individual collect directories (below)
+may override this value. If <em>all</em> individual directories provide
+their own value, then this default value may be omitted from
+configuration.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recursion_level</span></code></dt><dd><p>Recursion level to use when collecting directories.</p>
+<p>This is an integer value that Cedar Backup will consider when
+generating archive files for a configured collect directory.</p>
+<p>Normally, Cedar Backup generates one archive file per collect
+directory. So, if you collect <code class="docutils literal notranslate"><span class="pre">/etc</span></code> you get <code class="docutils literal notranslate"><span class="pre">etc.tar.gz</span></code>. Most
+of the time, this is what you want. However, you may sometimes wish
+to generate multiple archive files for a single collect directory.</p>
+<p>The most obvious example is for <code class="docutils literal notranslate"><span class="pre">/home</span></code>. By default, Cedar Backup
+will generate <code class="docutils literal notranslate"><span class="pre">home.tar.gz</span></code>. If instead, you want one archive file
+per home directory you can set a recursion level of <code class="docutils literal notranslate"><span class="pre">1</span></code>. Cedar
+Backup will generate <code class="docutils literal notranslate"><span class="pre">home-user1.tar.gz</span></code>, <code class="docutils literal notranslate"><span class="pre">home-user2.tar.gz</span></code>,
+etc.</p>
+<p>Higher recursion levels (<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, etc.) are legal, and it
+doesn’t matter if the configured recursion level is deeper than the
+directory tree that is being collected. You can use a negative
+recursion level (like <code class="docutils literal notranslate"><span class="pre">-1</span></code>) to specify an infinite level of
+recursion. This will exhaust the tree in the same way as if the
+recursion level is set too high.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use the
+default recursion level of zero.</p>
+<p><em>Restrictions:</em> Must be an integer.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exclude</span></code></dt><dd><p>List of paths or patterns to exclude from the backup.</p>
+<p>This is a subsection which contains a set of absolute paths and
+patterns to be excluded across all configured directories. For a
+given directory, the set of absolute paths and patterns to exclude is
+built from this list and any list that exists on the directory
+itself. Directories <em>cannot</em> override or remove entries that are in
+this list, however.</p>
+<p>This section is optional, and if it exists can also be empty.</p>
+<p>The exclude subsection can contain one or more of each of the
+following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>An absolute path to be recursively excluded from the backup.</p>
+<p>If a directory is excluded, then all of its children are also
+recursively excluded. For instance, a value <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code>
+would exclude any files within <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code> as well as
+files within other directories under <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pattern</span></code></dt><dd><p>A pattern to be recursively excluded from the backup.</p>
+<p>The pattern must be a Python regular expression.  <a class="footnote-reference brackets" href="#id24" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> It is
+assumed to be bounded at front and back by the beginning and end
+of the string (i.e. it is treated as if it begins with <code class="docutils literal notranslate"><span class="pre">^</span></code> and
+ends with <code class="docutils literal notranslate"><span class="pre">$</span></code>).</p>
+<p>If the pattern causes a directory to be excluded, then all of the
+children of that directory are also recursively excluded. For
+instance, a value <code class="docutils literal notranslate"><span class="pre">.*apache.*</span></code> might match the
+<code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code> directory. This would exclude any files within
+<code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code> as well as files within other directories
+under <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">file</span></code></dt><dd><p>A file to be collected.</p>
+<p>This is a subsection which contains information about a specific file
+to be collected (backed up).</p>
+<p>This section can be repeated as many times as is necessary. At least
+one collect directory or collect file must be configured when the
+collect action is executed.</p>
+<p>The collect file subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the file to collect.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Collect mode for this file</p>
+<p>The collect mode describes how frequently a file is backed up. See
+<a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a> for more information.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default collect mode.</p>
+<p><em>Note:</em> if your backup device does not suppport multisession discs,
+then you should probably confine yourself to the <code class="docutils literal notranslate"><span class="pre">daily</span></code> collect
+mode, to avoid losing data.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">archive_mode</span></code></dt><dd><p>Archive mode for this file.</p>
+<p>The archive mode maps to the way that a backup file is stored. A
+value <code class="docutils literal notranslate"><span class="pre">tar</span></code> means just a tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar</span></code>); a value
+<code class="docutils literal notranslate"><span class="pre">targz</span></code> means a gzipped tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar.gz</span></code>); and a value
+<code class="docutils literal notranslate"><span class="pre">tarbz2</span></code> means a bzipped tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar.bz2</span></code>)</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default archive mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">targz</span></code> or <code class="docutils literal notranslate"><span class="pre">tarbz2</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dir</span></code></dt><dd><p>A directory to be collected.</p>
+<p>This is a subsection which contains information about a specific
+directory to be collected (backed up).</p>
+<p>This section can be repeated as many times as is necessary. At least
+one collect directory or collect file must be configured when the
+collect action is executed.</p>
+<p>The collect directory subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the directory to collect.</p>
+<p>The path may be either a directory, a soft link to a directory, or
+a hard link to a directory. All three are treated the same at this
+level.</p>
+<p>The contents of the directory will be recursively collected. The
+backup will contain all of the files in the directory, as well as
+the contents of all of the subdirectories within the directory,
+etc.</p>
+<p>Soft links <em>within</em> the directory are treated as files, i.e. they
+are copied verbatim (as a link) and their contents are not backed
+up.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Collect mode for this directory</p>
+<p>The collect mode describes how frequently a directory is backed
+up. See <a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a> for more information.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default collect mode.</p>
+<p><em>Note:</em> if your backup device does not suppport multisession discs,
+then you should probably confine yourself to the <code class="docutils literal notranslate"><span class="pre">daily</span></code> collect
+mode, to avoid losing data.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">archive_mode</span></code></dt><dd><p>Archive mode for this directory.</p>
+<p>The archive mode maps to the way that a backup file is stored. A
+value <code class="docutils literal notranslate"><span class="pre">tar</span></code> means just a tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar</span></code>); a value
+<code class="docutils literal notranslate"><span class="pre">targz</span></code> means a gzipped tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar.gz</span></code>); and a value
+<code class="docutils literal notranslate"><span class="pre">tarbz2</span></code> means a bzipped tarfile (<code class="docutils literal notranslate"><span class="pre">file.tar.bz2</span></code>)</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default archive mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">targz</span></code> or <code class="docutils literal notranslate"><span class="pre">tarbz2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ignore_file</span></code></dt><dd><p>Ignore file name for this directory.</p>
+<p>The ignore file is an indicator file. If it exists in a given
+directory, then that directory will be recursively excluded from
+the backup as if it were explicitly excluded in configuration.</p>
+<p>The ignore file provides a way for individual users (who might not
+have access to Cedar Backup configuration) to control which of
+their own directories get backed up. For instance, users with a
+<code class="docutils literal notranslate"><span class="pre">~/tmp</span></code> directory might not want it backed up. If they create an
+ignore file in their directory (e.g. <code class="docutils literal notranslate"><span class="pre">~/tmp/.cbignore</span></code>), then
+Cedar Backup will ignore it.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default ignore file name.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">link_depth</span></code></dt><dd><p>Link depth value to use for this directory.</p>
+<p>The link depth is maximum depth of the tree at which soft links
+should be followed. So, a depth of 0 does not follow any soft
+links within the collect directory, a depth of 1 follows only
+links immediately within the collect directory, a depth of 2
+follows the links at the next level down, etc.</p>
+<p>This field is optional. If it doesn’t exist, the backup will
+assume a value of zero, meaning that soft links within the collect
+directory will never be followed.</p>
+<p><em>Restrictions:</em> If set, must be an integer GE 0.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dereference</span></code></dt><dd><p>Whether to dereference soft links.</p>
+<p>If this flag is set, links that are being followed will be
+dereferenced before being added to the backup. The link will be
+added (as a link), and then the directory or file that the link
+points at will be added as well.</p>
+<p>This value only applies to a directory where soft links are being
+followed (per the <code class="docutils literal notranslate"><span class="pre">link_depth</span></code> configuration option). It never
+applies to a configured collect directory itself, only to other
+directories within the collect directory.</p>
+<p>This field is optional. If it doesn’t exist, the backup will
+assume that links should never be dereferenced.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exclude</span></code></dt><dd><p>List of paths or patterns to exclude from the backup.</p>
+<p>This is a subsection which contains a set of paths and patterns to
+be excluded within this collect directory. This list is combined
+with the program-wide list to build a complete list for the
+directory.</p>
+<p>This section is entirely optional, and if it exists can also be
+empty.</p>
+<p>The exclude subsection can contain one or more of each of the
+following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>An absolute path to be recursively excluded from the backup.</p>
+<p>If a directory is excluded, then all of its children are also
+recursively excluded. For instance, a value <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code>
+would exclude any files within <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code> as well as
+files within other directories under <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rel_path</span></code></dt><dd><p>A relative path to be recursively excluded from the backup.</p>
+<p>The path is assumed to be relative to the collect directory
+itself. For instance, if the configured directory is
+<code class="docutils literal notranslate"><span class="pre">/opt/web</span></code> a configured relative path of <code class="docutils literal notranslate"><span class="pre">something/else</span></code>
+would exclude the path <code class="docutils literal notranslate"><span class="pre">/opt/web/something/else</span></code>.</p>
+<p>If a directory is excluded, then all of its children are also
+recursively excluded. For instance, a value <code class="docutils literal notranslate"><span class="pre">something/else</span></code>
+would exclude any files within <code class="docutils literal notranslate"><span class="pre">something/else</span></code> as well as
+files within other directories under <code class="docutils literal notranslate"><span class="pre">something/else</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pattern</span></code></dt><dd><p>A pattern to be excluded from the backup.</p>
+<p>The pattern must be a Python regular expression. It is assumed
+to be bounded at front and back by the beginning and end of the
+string (i.e. it is treated as if it begins with <code class="docutils literal notranslate"><span class="pre">^</span></code> and ends
+with <code class="docutils literal notranslate"><span class="pre">$</span></code>).</p>
+<p>If the pattern causes a directory to be excluded, then all of
+the children of that directory are also recursively excluded.
+For instance, a value <code class="docutils literal notranslate"><span class="pre">.*apache.*</span></code> might match the
+<code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code> directory. This would exclude any files
+within <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code> as well as files within other
+directories under <code class="docutils literal notranslate"><span class="pre">/var/log/apache</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="stage-configuration">
+<span id="cedar-config-configfile-stage"></span><h3>Stage Configuration<a class="headerlink" href="#stage-configuration" title="Link to this heading">¶</a></h3>
+<p>The stage configuration section contains configuration options related
+the the stage action. The section indicates where date from peers can be
+staged to.</p>
+<p>This section can also (optionally) override the list of peers so that
+not all peers are staged. If you provide <em>any</em> peers in this section,
+then the list of peers here completely replaces the list of peers in the
+peers configuration section for the purposes of staging.</p>
+<p>This is an example stage configuration section for the simple case where
+the list of peers is taken from peers configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">stage</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">staging_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">stage</span><span class="o">&lt;/</span><span class="n">staging_dir</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">stage</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This is an example stage configuration section that overrides the
+default list of peers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">stage</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">staging_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">stage</span><span class="o">&lt;/</span><span class="n">staging_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">peer</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">machine1</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="n">local</span><span class="o">&lt;/</span><span class="nb">type</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">collect_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">peer</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">peer</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">machine2</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="n">remote</span><span class="o">&lt;/</span><span class="nb">type</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">backup_user</span><span class="o">&gt;</span><span class="n">backup</span><span class="o">&lt;/</span><span class="n">backup_user</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">collect_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">peer</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">stage</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the stage configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">staging_dir</span></code></dt><dd><p>Directory to stage files into.</p>
+<p>This is the directory into which the master stages collected data
+from each of the clients. Within the staging directory, data is
+staged into date-based directories by peer name. For instance, peer
+“daystrom” backed up on 19 Feb 2005 would be staged into something
+like <code class="docutils literal notranslate"><span class="pre">2005/02/19/daystrom</span></code> relative to the staging directory
+itself.</p>
+<p>This field is always required. The directory must contain enough free
+space to stage all of the files collected from all of the various
+machines in a backup pool. Many administrators set up purging to keep
+staging directories around for a week or more, which requires even
+more space.</p>
+<p><em>Restrictions:</em> Must be an absolute path</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">peer</span></code> (local version)</dt><dd><p>Local client peer in a backup pool.</p>
+<p>This is a subsection which contains information about a specific
+local client peer to be staged (backed up). A local peer is one whose
+collect directory can be reached without requiring any rsh-based
+network calls. It is possible that a remote peer might be staged as a
+local peer if its collect directory is mounted to the master via NFS,
+AFS or some other method.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one remote or local peer must be configured.</p>
+<p><em>Remember</em>, if you provide <em>any</em> local or remote peer in staging
+configuration, the global peer configuration is completely replaced
+by the staging peer configuration.</p>
+<p>The local peer subsection must contain the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Name of the peer, typically a valid hostname.</p>
+<p>For local peers, this value is only used for reference. However,
+it is good practice to list the peer’s hostname here, for
+consistency with remote peers.</p>
+<p><em>Restrictions:</em> Must be non-empty, and unique among all peers.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>Type of this peer.</p>
+<p>This value identifies the type of the peer. For a local peer, it
+must always be <code class="docutils literal notranslate"><span class="pre">local</span></code>.</p>
+<p><em>Restrictions:</em> Must be <code class="docutils literal notranslate"><span class="pre">local</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_dir</span></code></dt><dd><p>Collect directory to stage from for this peer.</p>
+<p>The master will copy all files in this directory into the
+appropriate staging directory. Since this is a local peer, the
+directory is assumed to be reachable via normal filesystem
+operations (i.e. <code class="docutils literal notranslate"><span class="pre">cp</span></code>).</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">peer</span></code> (remote version)</dt><dd><p>Remote client peer in a backup pool.</p>
+<p>This is a subsection which contains information about a specific
+remote client peer to be staged (backed up). A remote peer is one
+whose collect directory can only be reached via an rsh-based network
+call.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one remote or local peer must be configured.</p>
+<p><em>Remember</em>, if you provide <em>any</em> local or remote peer in staging
+configuration, the global peer configuration is completely replaced
+by the staging peer configuration.</p>
+<p>The remote peer subsection must contain the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Hostname of the peer.</p>
+<p>For remote peers, this must be a valid DNS hostname or IP address
+which can be resolved during an rsh-based network call.</p>
+<p><em>Restrictions:</em> Must be non-empty, and unique among all peers.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>Type of this peer.</p>
+<p>This value identifies the type of the peer. For a remote peer, it
+must always be <code class="docutils literal notranslate"><span class="pre">remote</span></code>.</p>
+<p><em>Restrictions:</em> Must be <code class="docutils literal notranslate"><span class="pre">remote</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_dir</span></code></dt><dd><p>Collect directory to stage from for this peer.</p>
+<p>The master will copy all files in this directory into the
+appropriate staging directory. Since this is a remote peer, the
+directory is assumed to be reachable via rsh-based network
+operations (i.e. <code class="docutils literal notranslate"><span class="pre">scp</span></code> or the configured rcp command).</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">backup_user</span></code></dt><dd><p>Name of backup user on the remote peer.</p>
+<p>This username will be used when copying files from the remote peer
+via an rsh-based network connection.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default backup user from the options section.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rcp_command</span></code></dt><dd><p>The rcp-compatible copy command for this peer.</p>
+<p>The rcp command should be the exact command used for remote
+copies, including any required options. If you are using <code class="docutils literal notranslate"><span class="pre">scp</span></code>,
+you should pass it the <code class="docutils literal notranslate"><span class="pre">-B</span></code> option, so <code class="docutils literal notranslate"><span class="pre">scp</span></code> will not ask for
+any user input (which could hang the backup). A common example is
+something like <code class="docutils literal notranslate"><span class="pre">/usr/bin/scp</span> <span class="pre">-B</span></code>.  If you are following the
+instructions in the appendix to restrict SSH access, then use
+<code class="docutils literal notranslate"><span class="pre">/usr/bin/scp</span> <span class="pre">-O</span> <span class="pre">-B</span></code> instead.</p>
+<p>This field is optional. if it doesn’t exist, the backup will use
+the default rcp command from the options section.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="store-configuration">
+<span id="cedar-config-configfile-store"></span><h3>Store Configuration<a class="headerlink" href="#store-configuration" title="Link to this heading">¶</a></h3>
+<p>The store configuration section contains configuration options related
+the the store action. This section contains several optional fields.
+Most fields control the way media is written using the writer device.</p>
+<p>This is an example store configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">store</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">source_dir</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">stage</span><span class="o">&lt;/</span><span class="n">source_dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">media_type</span><span class="o">&gt;</span><span class="n">cdrw</span><span class="o">-</span><span class="mi">74</span><span class="o">&lt;/</span><span class="n">media_type</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">device_type</span><span class="o">&gt;</span><span class="n">cdwriter</span><span class="o">&lt;/</span><span class="n">device_type</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">target_device</span><span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">cdrw</span><span class="o">&lt;/</span><span class="n">target_device</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">target_scsi_id</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">target_scsi_id</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">drive_speed</span><span class="o">&gt;</span><span class="mi">4</span><span class="o">&lt;/</span><span class="n">drive_speed</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">check_data</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="n">check_data</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">check_media</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="n">check_media</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">warn_midnite</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="n">warn_midnite</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">no_eject</span><span class="o">&gt;</span><span class="n">N</span><span class="o">&lt;/</span><span class="n">no_eject</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">refresh_media_delay</span><span class="o">&gt;</span><span class="mi">15</span><span class="o">&lt;/</span><span class="n">refresh_media_delay</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">eject_delay</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&lt;/</span><span class="n">eject_delay</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">blank_behavior</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">mode</span><span class="o">&gt;</span><span class="n">weekly</span><span class="o">&lt;/</span><span class="n">mode</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">factor</span><span class="o">&gt;</span><span class="mf">1.3</span><span class="o">&lt;/</span><span class="n">factor</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">blank_behavior</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">store</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the store configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">source_dir</span></code></dt><dd><p>Directory whose contents should be written to media.</p>
+<p>This directory <em>must</em> be a Cedar Backup staging directory, as
+configured in the staging configuration section. Only certain data
+from that directory (typically, data from the current day) will be
+written to disc.</p>
+<p><em>Restrictions:</em> Must be an absolute path</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">device_type</span></code></dt><dd><p>Type of the device used to write the media.</p>
+<p>This field controls which type of writer device will be used by Cedar
+Backup. Currently, Cedar Backup supports CD writers (<code class="docutils literal notranslate"><span class="pre">cdwriter</span></code>)
+and DVD writers (<code class="docutils literal notranslate"><span class="pre">dvdwriter</span></code>).</p>
+<p>This field is optional. If it doesn’t exist, the <code class="docutils literal notranslate"><span class="pre">cdwriter</span></code> device
+type is assumed.</p>
+<p><em>Restrictions:</em> If set, must be either <code class="docutils literal notranslate"><span class="pre">cdwriter</span></code> or <code class="docutils literal notranslate"><span class="pre">dvdwriter</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">media_type</span></code></dt><dd><p>Type of the media in the device.</p>
+<p>Unless you want to throw away a backup disc every week, you are
+probably best off using rewritable media.</p>
+<p>You must choose a media type that is appropriate for the device type
+you chose above. For more information on media types, see
+<a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a>.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">cdr-74</span></code>, <code class="docutils literal notranslate"><span class="pre">cdrw-74</span></code>, <code class="docutils literal notranslate"><span class="pre">cdr-80</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cdrw-80</span></code> if device type is <code class="docutils literal notranslate"><span class="pre">cdwriter</span></code>; or one of <code class="docutils literal notranslate"><span class="pre">dvd+r</span></code> or
+<code class="docutils literal notranslate"><span class="pre">dvd+rw</span></code> if device type is <code class="docutils literal notranslate"><span class="pre">dvdwriter</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">target_device</span></code></dt><dd><p>Filesystem device name for writer device.</p>
+<p>This value is required for both CD writers and DVD writers.</p>
+<p>This is the UNIX device name for the writer drive, for instance
+<code class="docutils literal notranslate"><span class="pre">/dev/scd0</span></code> or a symlink like <code class="docutils literal notranslate"><span class="pre">/dev/cdrw</span></code>.</p>
+<p>In some cases, this device name is used to directly write to media.
+This is true all of the time for DVD writers, and is true for CD
+writers when a SCSI id (see below) has not been specified.</p>
+<p>Besides this, the device name is also needed in order to do several
+pre-write checks (such as whether the device might already be
+mounted) as well as the post-write consistency check, if enabled.</p>
+<p><em>Note:</em> some users have reported intermittent problems when using a
+symlink as the target device on Linux, especially with DVD media. If
+you experience problems, try using the real device name rather than
+the symlink.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">target_scsi_id</span></code></dt><dd><p>SCSI id for the writer device.</p>
+<p>This value is optional for CD writers and is ignored for DVD writers.</p>
+<p>If you have configured your CD writer hardware to work through the
+normal filesystem device path, then you can leave this parameter
+unset. Cedar Backup will just use the target device (above) when
+talking to <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code>.</p>
+<p>Otherwise, if you have SCSI CD writer hardware or you have configured
+your non-SCSI hardware to operate like a SCSI device, then you need
+to provide Cedar Backup with a SCSI id it can use when talking with
+<code class="docutils literal notranslate"><span class="pre">cdrecord</span></code>.</p>
+<p>For the purposes of Cedar Backup, a valid SCSI identifier must either
+be in the standard SCSI identifier form <code class="docutils literal notranslate"><span class="pre">scsibus,target,lun</span></code> or in
+the specialized-method form <code class="docutils literal notranslate"><span class="pre">&lt;method&gt;:scsibus,target,lun</span></code>.</p>
+<p>An example of a standard SCSI identifier is <code class="docutils literal notranslate"><span class="pre">1,6,2</span></code>. Today, the two
+most common examples of the specialized-method form are
+<code class="docutils literal notranslate"><span class="pre">ATA:scsibus,target,lun</span></code> and <code class="docutils literal notranslate"><span class="pre">ATAPI:scsibus,target,lun</span></code>, but you
+may occassionally see other values (like <code class="docutils literal notranslate"><span class="pre">OLDATAPI</span></code> in some forks
+of <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code>).</p>
+<p>See <em>Configuring your Writer Device</em> for more information on writer devices
+and how they are configured.</p>
+<p><em>Restrictions:</em> If set, must be a valid SCSI identifier.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drive_speed</span></code></dt><dd><p>Speed of the drive, i.e. <code class="docutils literal notranslate"><span class="pre">2</span></code> for a 2x device.</p>
+<p>This field is optional. If it doesn’t exist, the underlying
+device-related functionality will use the default drive speed.</p>
+<p>For DVD writers, it is best to leave this value unset, so
+<code class="docutils literal notranslate"><span class="pre">growisofs</span></code> can pick an appropriate speed. For CD writers, since
+media can be speed-sensitive, it is probably best to set a sensible
+value based on your specific writer and media.</p>
+<p><em>Restrictions:</em> If set, must be an integer GE 1.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check_data</span></code></dt><dd><p>Whether the media should be validated.</p>
+<p>This field indicates whether a resulting image on the media should be
+validated after the write completes, by running a consistency check
+against it. If this check is enabled, the contents of the staging
+directory are directly compared to the media, and an error is
+reported if there is a mismatch.</p>
+<p>Practice shows that some drives can encounter an error when writing a
+multisession disc, but not report any problems. This consistency
+check allows us to catch the problem. By default, the consistency
+check is disabled, but most users should choose to enable it unless
+they have a good reason not to.</p>
+<p>This field is optional. If it doesn’t exist, then <code class="docutils literal notranslate"><span class="pre">N</span></code> will be
+assumed.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check_media</span></code></dt><dd><p>Whether the media should be checked before writing to it.</p>
+<p>By default, Cedar Backup does not check its media before writing to
+it. It will write to any media in the backup device. If you set this
+flag to Y, Cedar Backup will make sure that the media has been
+initialized before writing to it. (Rewritable media is initialized
+using the initialize action.)</p>
+<p>If the configured media is not rewritable (like CD-R), then this
+behavior is modified slightly. For this kind of media, the check
+passes either if the media has been initialized <em>or</em> if the media
+appears unused.</p>
+<p>This field is optional. If it doesn’t exist, then <code class="docutils literal notranslate"><span class="pre">N</span></code> will be
+assumed.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">warn_midnite</span></code></dt><dd><p>Whether to generate warnings for crossing midnite.</p>
+<p>This field indicates whether warnings should be generated if the
+store operation has to cross a midnite boundary in order to find data
+to write to disc. For instance, a warning would be generated if valid
+store data was only found in the day before or day after the current
+day.</p>
+<p>Configuration for some users is such that the store operation will
+always cross a midnite boundary, so they will not care about this
+warning. Other users will expect to never cross a boundary, and want
+to be notified that something “strange” might have happened.</p>
+<p>This field is optional. If it doesn’t exist, then <code class="docutils literal notranslate"><span class="pre">N</span></code> will be
+assumed.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">no_eject</span></code></dt><dd><p>Indicates that the writer device should not be ejected.</p>
+<p>Under some circumstances, Cedar Backup ejects (opens and closes) the
+writer device. This is done because some writer devices need to
+re-load the media before noticing a media state change (like a new
+session).</p>
+<p>For most writer devices this is safe, because they have a tray that
+can be opened and closed. If your writer device does not have a tray
+<em>and</em> Cedar Backup does not properly detect this, then set this flag.
+Cedar Backup will not ever issue an eject command to your writer.</p>
+<p><em>Note:</em> this could cause problems with your backup. For instance, with
+many writers, the check data step may fail if the media is not
+reloaded first. If this happens to you, you may need to get a
+different writer device.</p>
+<p>This field is optional. If it doesn’t exist, then <code class="docutils literal notranslate"><span class="pre">N</span></code> will be
+assumed.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">refresh_media_delay</span></code></dt><dd><p>Number of seconds to delay after refreshing media</p>
+<p>This field is optional. If it doesn’t exist, no delay will occur.</p>
+<p>Some devices seem to take a little while to stablize after refreshing
+the media (i.e. closing and opening the tray). During this period,
+operations on the media may fail. If your device behaves like this,
+you can try setting a delay of 10-15 seconds.</p>
+<p><em>Restrictions:</em> If set, must be an integer GE 1.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eject_delay</span></code></dt><dd><p>Number of seconds to delay after ejecting the tray</p>
+<p>This field is optional. If it doesn’t exist, no delay will occur.</p>
+<p>If your system seems to have problems opening and closing the tray,
+one possibility is that the open/close sequence is happening too
+quickly — either the tray isn’t fully open when Cedar Backup
+tries to close it, or it doesn’t report being open. To work around
+that problem, set an eject delay of a few seconds.</p>
+<p><em>Restrictions:</em> If set, must be an integer GE 1.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">blank_behavior</span></code></dt><dd><p>Optimized blanking strategy.</p>
+<p>For more information about Cedar Backup’s optimized blanking
+strategy, see <a class="reference internal" href="#"><span class="doc">Configuration</span></a>.</p>
+<p>This entire configuration section is optional. However, if you choose
+to provide it, you must configure both a blanking mode and a blanking
+factor.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">blank_mode</span></code></dt><dd><p>Blanking mode.</p>
+<p><em>Restrictions:</em>Must be one of “daily” or “weekly”.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">blank_factor</span></code></dt><dd><p>Blanking factor.</p>
+<p><em>Restrictions:</em>Must be a floating point number GE 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="purge-configuration">
+<span id="cedar-config-configfile-purge"></span><h3>Purge Configuration<a class="headerlink" href="#purge-configuration" title="Link to this heading">¶</a></h3>
+<p>The purge configuration section contains configuration options related
+the the purge action. This section contains a set of directories to be
+purged, along with information about the schedule at which they should
+be purged.</p>
+<p>Typically, Cedar Backup should be configured to purge collect
+directories daily (retain days of <code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+<p>If you are tight on space, staging directories can also be purged daily.
+However, if you have space to spare, you should consider purging about
+once per week. That way, if your backup media is damaged, you will be
+able to recreate the week’s backup using the rebuild action.</p>
+<p>You should also purge the working directory periodically, once every few
+weeks or once per month. This way, if any unneeded files are left
+around, perhaps because a backup was interrupted or because
+configuration changed, they will eventually be removed. <em>The working
+directory should not be purged any more frequently than once per week,
+otherwise you will risk destroying data used for incremental backups.</em></p>
+<p>This is an example purge configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">purge</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">stage</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">retain_days</span><span class="o">&gt;</span><span class="mi">7</span><span class="o">&lt;/</span><span class="n">retain_days</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">collect</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">retain_days</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">retain_days</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">purge</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the purge configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">dir</span></code></dt><dd><p>A directory to purge within.</p>
+<p>This is a subsection which contains information about a specific
+directory to purge within.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one purge directory must be configured.</p>
+<p>The purge directory subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the directory to purge within.</p>
+<p>The contents of the directory will be purged based on age. The
+purge will remove any files that were last modified more than
+“retain days” days ago. Empty directories will also eventually be
+removed. The purge directory itself will never be removed.</p>
+<p>The path may be either a directory, a soft link to a directory, or
+a hard link to a directory. Soft links <em>within</em> the directory (if
+any) are treated as files.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retain_days</span></code></dt><dd><p>Number of days to retain old files.</p>
+<p>Once it has been more than this many days since a file was last
+modified, it is a candidate for removal.</p>
+<p><em>Restrictions:</em> Must be an integer GE 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="extensions-configuration">
+<span id="cedar-config-configfile-extensions"></span><h3>Extensions Configuration<a class="headerlink" href="#extensions-configuration" title="Link to this heading">¶</a></h3>
+<p>The extensions configuration section is used to configure third-party
+extensions to Cedar Backup. If you don’t intend to use any extensions,
+or don’t know what extensions are, then you can safely leave this
+section out of your configuration file. It is optional.</p>
+<p>Extensions configuration is used to specify “extended actions”
+implemented by code external to Cedar Backup. An administrator can use
+this section to map command-line Cedar Backup actions to third-party
+extension functions.</p>
+<p>Each extended action has a name, which is mapped to a Python function
+within a particular module. Each action also has an index associated
+with it. This index is used to properly order execution when more than
+one action is specified on the command line. The standard actions have
+predefined indexes, and extended actions are interleaved into the normal
+order of execution using those indexes. The collect action has index
+100, the stage index has action 200, the store action has index 300 and
+the purge action has index 400.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Extended actions should always be configured to run <em>before</em> the
+standard action they are associated with. This is because of the way
+indicator files are used in Cedar Backup. For instance, the staging
+process considers the collect action to be complete for a peer if the
+file <code class="docutils literal notranslate"><span class="pre">cback.collect</span></code> can be found in that peer’s collect directory.</p>
+<p>If you were to run the standard collect action before your other
+collect-like actions, the indicator file would be written after the
+collect action completes but <em>before</em> all of the other actions even
+run. Because of this, there’s a chance the stage process might back
+up the collect directory before the entire set of collect-like
+actions have completed — and you would get no warning about this
+in your email!</p>
+</div></blockquote>
+<p>So, imagine that a third-party developer provided a Cedar Backup
+extension to back up a certain kind of database repository, and you
+wanted to map that extension to the “database” command-line action. You
+have been told that this function is called “foo.bar()”. You think of
+this backup as a “collect” kind of action, so you want it to be
+performed immediately before the collect action.</p>
+<p>To configure this extension, you would list an action with a name
+“database”, a module “foo”, a function name “bar” and an index of “99”.</p>
+<p>This is how the hypothetical action would be configured:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">database</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">foo</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">bar</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">99</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the extensions configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p>This is a subsection that contains configuration related to a single
+extended action.</p>
+<p>This section can be repeated as many times as is necessary.</p>
+<p>The action subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Name of the extended action.</p>
+<p><em>Restrictions:</em> Must be a non-empty string consisting of only
+lower-case letters and digits.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">module</span></code></dt><dd><p>Name of the Python module associated with the extension function.</p>
+<p><em>Restrictions:</em> Must be a non-empty string and a valid Python
+identifier.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">function</span></code></dt><dd><p>Name of the Python extension function within the module.</p>
+<p><em>Restrictions:</em> Must be a non-empty string and a valid Python
+identifier.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">index</span></code></dt><dd><p>Index of action, for execution ordering.</p>
+<p><em>Restrictions:</em> Must be an integer GE 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="setting-up-a-pool-of-one">
+<span id="cedar-config-poolofone"></span><h2>Setting up a Pool of One<a class="headerlink" href="#setting-up-a-pool-of-one" title="Link to this heading">¶</a></h2>
+<p>Cedar Backup has been designed primarily for situations where there is a
+single master and a set of other clients that the master interacts with.
+However, it will just as easily work for a single machine (a backup pool
+of one).</p>
+<p>Once you complete all of these configuration steps, your backups will
+run as scheduled out of cron. Any errors that occur will be reported in
+daily emails to your root user (or the user that receives root’s email).
+If you don’t receive any emails, then you know your backup worked.</p>
+<p><em>Note:</em> all of these configuration steps should be run as the root user,
+unless otherwise indicated.</p>
+<blockquote>
+<div><p><img alt="tip" src="../_images/tip.png" /></p>
+<p>This setup procedure discusses how to set up Cedar Backup in the
+“normal case” for a pool of one. If you would like to modify the way
+Cedar Backup works (for instance, by ignoring the store stage and
+just letting your backup sit in a staging directory), you can do
+that. You’ll just have to modify the procedure below based on
+information in the remainder of the manual.</p>
+</div></blockquote>
+<section id="step-1-decide-when-you-will-run-your-backup">
+<h3>Step 1: Decide when you will run your backup.<a class="headerlink" href="#step-1-decide-when-you-will-run-your-backup" title="Link to this heading">¶</a></h3>
+<p>There are four parts to a Cedar Backup run: collect, stage, store and
+purge. The usual way of setting off these steps is through a set of cron
+jobs. Although you won’t create your cron jobs just yet, you should
+decide now when you will run your backup so you are prepared for later.</p>
+<p>Backing up large directories and creating ISO filesystem images can be
+intensive operations, and could slow your computer down significantly.
+Choose a backup time that will not interfere with normal use of your
+computer. Usually, you will want the backup to occur every day, but it
+is possible to configure cron to execute the backup only one day per
+week, three days per week, etc.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Because of the way Cedar Backup works, you must ensure that your
+backup <em>always</em> runs on the first day of your configured week. This
+is because Cedar Backup will only clear incremental backup
+information and re-initialize your media when running on the first
+day of the week. If you skip running Cedar Backup on the first day of
+the week, your backups will likely be “confused” until the next week
+begins, or until you re-run the backup using the <code class="docutils literal notranslate"><span class="pre">--full</span></code> flag.</p>
+</div></blockquote>
+</section>
+<section id="step-2-make-sure-email-works">
+<h3>Step 2: Make sure email works.<a class="headerlink" href="#step-2-make-sure-email-works" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup relies on email for problem notification. This notification
+works through the magic of cron. Cron will email any output from each
+job it executes to the user associated with the job. Since by default
+Cedar Backup only writes output to the terminal if errors occur, this
+ensures that notification emails will only be sent out if errors occur.</p>
+<p>In order to receive problem notifications, you must make sure that email
+works for the user which is running the Cedar Backup cron jobs
+(typically root). Refer to your distribution’s documentation for
+information on how to configure email on your system. Note that you may
+prefer to configure root’s email to forward to some other user, so you
+do not need to check the root user’s mail in order to see Cedar Backup
+errors.</p>
+</section>
+<section id="step-3-configure-your-writer-device">
+<h3>Step 3: Configure your writer device.<a class="headerlink" href="#step-3-configure-your-writer-device" title="Link to this heading">¶</a></h3>
+<p>Before using Cedar Backup, your writer device must be properly
+configured. If you have configured your CD/DVD writer hardware to work
+through the normal filesystem device path, then you just need to know
+the path to the device on disk (something like <code class="docutils literal notranslate"><span class="pre">/dev/cdrw</span></code>). Cedar
+Backup will use the this device path both when talking to a command like
+<code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> and when doing filesystem operations like running media
+validation.</p>
+<p>Your other option is to configure your CD writer hardware like a SCSI
+device (either because it <em>is</em> a SCSI device or because you are using
+some sort of interface that makes it look like one). In this case, Cedar
+Backup will use the SCSI id when talking to <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> and the device
+path when running filesystem operations.</p>
+<p>See <a class="reference internal" href="#"><span class="doc">Configuration</span></a> for more information on writer devices and how they are
+configured.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>There is no need to set up your CD/DVD device if you have decided not
+to execute the store action.</p>
+<p>Due to the underlying utilities that Cedar Backup uses, the SCSI id
+may only be used for CD writers, <em>not</em> DVD writers.</p>
+</div></blockquote>
+</section>
+<section id="step-4-configure-your-backup-user">
+<h3>Step 4: Configure your backup user.<a class="headerlink" href="#step-4-configure-your-backup-user" title="Link to this heading">¶</a></h3>
+<p>Choose a user to be used for backups. Some platforms may come with a
+“ready made” backup user. For other platforms, you may have to create a
+user yourself. You may choose any id you like, but a descriptive name
+such as <code class="docutils literal notranslate"><span class="pre">backup</span></code> or <code class="docutils literal notranslate"><span class="pre">cback</span></code> is a good choice. See your
+distribution’s documentation for information on how to add a user.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>Standard Debian systems come with a user named <code class="docutils literal notranslate"><span class="pre">backup</span></code>. You may
+choose to stay with this user or create another one.</p>
+</div></blockquote>
+</section>
+<section id="step-5-create-your-backup-tree">
+<h3>Step 5: Create your backup tree.<a class="headerlink" href="#step-5-create-your-backup-tree" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup requires a backup directory tree on disk. This directory
+tree must be roughly three times as big as the amount of data that will
+be backed up on a nightly basis, to allow for the data to be collected,
+staged, and then placed into an ISO filesystem image on disk. (This is
+one disadvantage to using Cedar Backup in single-machine pools, but in
+this day of really large hard drives, it might not be an issue.) Note
+that if you elect not to purge the staging directory every night, you
+will need even more space.</p>
+<p>You should create a collect directory, a staging directory and a working
+(temporary) directory. One recommended layout is this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span>
+     <span class="n">backup</span><span class="o">/</span>
+            <span class="n">collect</span><span class="o">/</span>
+            <span class="n">stage</span><span class="o">/</span>
+            <span class="n">tmp</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>If you will be backing up sensitive information (i.e. password files),
+it is recommended that these directories be owned by the backup user
+(whatever you named it), with permissions <code class="docutils literal notranslate"><span class="pre">700</span></code>.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>You don’t have to use <code class="docutils literal notranslate"><span class="pre">/opt</span></code> as the root of your directory
+structure. Use anything you would like. I use <code class="docutils literal notranslate"><span class="pre">/opt</span></code> because it is
+my “dumping ground” for filesystems that Debian does not manage.</p>
+<p>Some users have requested that the Debian packages set up a more
+“standard” location for backups right out-of-the-box. I have resisted
+doing this because it’s difficult to choose an appropriate backup
+location from within the package. If you would prefer, you can create
+the backup directory structure within some existing Debian directory
+such as <code class="docutils literal notranslate"><span class="pre">/var/backups</span></code> or <code class="docutils literal notranslate"><span class="pre">/var/tmp</span></code>.</p>
+</div></blockquote>
+</section>
+<section id="step-6-create-the-cedar-backup-configuration-file">
+<h3>Step 6: Create the Cedar Backup configuration file.<a class="headerlink" href="#step-6-create-the-cedar-backup-configuration-file" title="Link to this heading">¶</a></h3>
+<p>Following the instructions in <em>Configuration File Format</em> (above) create a
+configuration file for your machine. Since you are working with a pool of one,
+you must configure all four action-specific sections: collect, stage, store and
+purge.</p>
+<p>The usual location for the Cedar Backup config file is
+<code class="docutils literal notranslate"><span class="pre">/etc/cback3.conf</span></code>. If you change the location, make sure you edit
+your cronjobs (below) to point the <code class="docutils literal notranslate"><span class="pre">cback3</span></code> script at the correct
+config file (using the <code class="docutils literal notranslate"><span class="pre">--config</span></code> option).</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Configuration files should always be writable only by root (or by the
+file owner, if the owner is not root).</p>
+<p>If you intend to place confidential information into the Cedar Backup
+configuration file, make sure that you set the filesystem permissions
+on the file appropriately. For instance, if you configure any
+extensions that require passwords or other similar information, you
+should make the file readable only to root or to the file owner (if
+the owner is not root).</p>
+</div></blockquote>
+</section>
+<section id="step-7-validate-the-cedar-backup-configuration-file">
+<h3>Step 7: Validate the Cedar Backup configuration file.<a class="headerlink" href="#step-7-validate-the-cedar-backup-configuration-file" title="Link to this heading">¶</a></h3>
+<p>Use the command <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">validate</span></code> to validate your configuration file.
+This command checks that the configuration file can be found and parsed,
+and also checks for typical configuration problems, such as invalid
+CD/DVD device entries.</p>
+<p><em>Note:</em> the most common cause of configuration problems is in not closing
+XML tags properly. Any XML tag that is “opened” must be “closed”
+appropriately.</p>
+</section>
+<section id="step-8-test-your-backup">
+<h3>Step 8: Test your backup.<a class="headerlink" href="#step-8-test-your-backup" title="Link to this heading">¶</a></h3>
+<p>Place a valid CD/DVD disc in your drive, and then use the command
+<code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">--full</span> <span class="pre">all</span></code>. You should execute this command as root. If the
+command completes with no output, then the backup was run successfully.</p>
+<p>Just to be sure that everything worked properly, check the logfile
+(<code class="docutils literal notranslate"><span class="pre">/var/log/cback3.log</span></code>) for errors and also mount the CD/DVD disc to
+be sure it can be read.</p>
+<p><em>If Cedar Backup ever completes “normally” but the disc that is created is not
+usable, please report this as a bug.  To be safe, always enable the consistency
+check option in the store configuration section.</em> <a class="footnote-reference brackets" href="#id25" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p>
+</section>
+<section id="step-9-modify-the-backup-cron-jobs">
+<h3>Step 9: Modify the backup cron jobs.<a class="headerlink" href="#step-9-modify-the-backup-cron-jobs" title="Link to this heading">¶</a></h3>
+<p>Since Cedar Backup should be run as root, one way to configure the cron
+job is to add a line like this to your <code class="docutils literal notranslate"><span class="pre">/etc/crontab</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">30</span> <span class="mi">00</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="nb">all</span>
+</pre></div>
+</div>
+<p>Or, you can create an executable script containing just these lines and
+place that file in the <code class="docutils literal notranslate"><span class="pre">/etc/cron.daily</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#/bin/sh</span>
+<span class="n">cback3</span> <span class="nb">all</span>
+</pre></div>
+</div>
+<p>You should consider adding the <code class="docutils literal notranslate"><span class="pre">--output</span></code> or <code class="docutils literal notranslate"><span class="pre">-O</span></code> switch to your
+<code class="docutils literal notranslate"><span class="pre">cback3</span></code> command-line in cron. This will result in larger logs, but
+could help diagnose problems when commands like <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> or
+<code class="docutils literal notranslate"><span class="pre">mkisofs</span></code> fail mysteriously.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>For general information about using cron, see the manpage for
+crontab(5).</p>
+<p>On a Debian system, execution of daily backups is controlled by the
+file <code class="docutils literal notranslate"><span class="pre">/etc/cron.d/cedar-backup3</span></code>. As installed, this file contains
+several different settings, all commented out. Uncomment the “Single
+machine (pool of one)” entry in the file, and change the line so that
+the backup goes off when you want it to.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="setting-up-a-client-peer-node">
+<span id="cedar-config-client"></span><h2>Setting up a Client Peer Node<a class="headerlink" href="#setting-up-a-client-peer-node" title="Link to this heading">¶</a></h2>
+<p>Cedar Backup has been designed to backup entire “pools” of machines. In
+any given pool, there is one master and some number of clients. Most of
+the work takes place on the master, so configuring a client is a little
+simpler than configuring a master.</p>
+<p>Backups are designed to take place over an RSH or SSH connection.
+Because RSH is generally considered insecure, you are encouraged to use
+SSH rather than RSH. This document will only describe how to configure
+Cedar Backup to use SSH; if you want to use RSH, you’re on your own.</p>
+<p>Once you complete all of these configuration steps, your backups will
+run as scheduled out of cron. Any errors that occur will be reported in
+daily emails to your root user (or the user that receives root’s email).
+If you don’t receive any emails, then you know your backup worked.</p>
+<p><em>Note:</em> all of these configuration steps should be run as the root user,
+unless otherwise indicated.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>See <a class="reference internal" href="securingssh.html"><span class="doc">Securing Password-less SSH Connections</span></a> for some important notes on how to optionally further
+secure password-less SSH connections to your clients.</p>
+</div></blockquote>
+<section id="id5">
+<h3>Step 1: Decide when you will run your backup.<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<p>There are four parts to a Cedar Backup run: collect, stage, store and
+purge. The usual way of setting off these steps is through a set of cron
+jobs. Although you won’t create your cron jobs just yet, you should
+decide now when you will run your backup so you are prepared for later.</p>
+<p>Backing up large directories and creating ISO filesystem images can be
+intensive operations, and could slow your computer down significantly.
+Choose a backup time that will not interfere with normal use of your
+computer. Usually, you will want the backup to occur every day, but it
+is possible to configure cron to execute the backup only one day per
+week, three days per week, etc.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Because of the way Cedar Backup works, you must ensure that your
+backup <em>always</em> runs on the first day of your configured week. This
+is because Cedar Backup will only clear incremental backup
+information and re-initialize your media when running on the first
+day of the week. If you skip running Cedar Backup on the first day of
+the week, your backups will likely be “confused” until the next week
+begins, or until you re-run the backup using the <code class="docutils literal notranslate"><span class="pre">--full</span></code> flag.</p>
+</div></blockquote>
+</section>
+<section id="id6">
+<h3>Step 2: Make sure email works.<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup relies on email for problem notification. This notification
+works through the magic of cron. Cron will email any output from each
+job it executes to the user associated with the job. Since by default
+Cedar Backup only writes output to the terminal if errors occur, this
+neatly ensures that notification emails will only be sent out if errors
+occur.</p>
+<p>In order to receive problem notifications, you must make sure that email
+works for the user which is running the Cedar Backup cron jobs
+(typically root). Refer to your distribution’s documentation for
+information on how to configure email on your system. Note that you may
+prefer to configure root’s email to forward to some other user, so you
+do not need to check the root user’s mail in order to see Cedar Backup
+errors.</p>
+</section>
+<section id="step-3-configure-the-master-in-your-backup-pool">
+<h3>Step 3: Configure the master in your backup pool.<a class="headerlink" href="#step-3-configure-the-master-in-your-backup-pool" title="Link to this heading">¶</a></h3>
+<p>You will not be able to complete the client configuration until at least
+step 3 of the master’s configuration has been completed. In particular,
+you will need to know the master’s public SSH identity to fully
+configure a client.</p>
+<p>To find the master’s public SSH identity, log in as the backup user on
+the master and <code class="docutils literal notranslate"><span class="pre">cat</span></code> the public identity file <code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa.pub</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span><span class="nd">@machine</span><span class="o">&gt;</span> <span class="n">cat</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span><span class="n">pub</span>
+<span class="n">ssh</span><span class="o">-</span><span class="n">rsa</span> <span class="n">AAAAB3NzaC1yc2EAAAABIwAAAIEA0vOKjlfwohPg1oPRdrmwHk75l3mI9Tb</span><span class="o">/</span><span class="n">WRZfVnu2Pw69</span>
+<span class="n">uyphM9wBLRo6QfOC2T8vZCB8o</span><span class="o">/</span><span class="n">ZIgtAM3tkM0UgQHxKBXAZ</span><span class="o">+</span><span class="n">H36TOgg7BcI20I93iGtzpsMA</span><span class="o">/</span><span class="n">uXQy8kH</span>
+<span class="n">HgZooYqQ9pw</span><span class="o">+</span><span class="n">ZduXgmPcAAv2b5eTm07wRqFt</span><span class="o">/</span><span class="n">U84k6bhTzs</span><span class="o">=</span> <span class="n">user</span><span class="nd">@machine</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>Step 4: Configure your backup user.<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<p>Choose a user to be used for backups. Some platforms may come with a
+“ready made” backup user. For other platforms, you may have to create a
+user yourself. You may choose any id you like, but a descriptive name
+such as <code class="docutils literal notranslate"><span class="pre">backup</span></code> or <code class="docutils literal notranslate"><span class="pre">cback</span></code> is a good choice. See your
+distribution’s documentation for information on how to add a user.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>Standard Debian systems come with a user named <code class="docutils literal notranslate"><span class="pre">backup</span></code>. You may
+choose to stay with this user or create another one.</p>
+</div></blockquote>
+<p>Once you have created your backup user, you must create an SSH keypair
+for it. Log in as your backup user, and then run the command
+<code class="docutils literal notranslate"><span class="pre">ssh-keygen</span> <span class="pre">-t</span> <span class="pre">rsa</span> <span class="pre">-N</span> <span class="pre">&quot;&quot;</span> <span class="pre">-f</span> <span class="pre">~/.ssh/id_rsa</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span><span class="nd">@machine</span><span class="o">&gt;</span> <span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">N</span> <span class="s2">&quot;&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span>
+<span class="n">Generating</span> <span class="n">public</span><span class="o">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="o">.</span>
+<span class="n">Created</span> <span class="n">directory</span> <span class="s1">&#39;/home/user/.ssh&#39;</span><span class="o">.</span>
+<span class="n">Your</span> <span class="n">identification</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span>
+<span class="n">Your</span> <span class="n">public</span> <span class="n">key</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span><span class="n">pub</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">key</span> <span class="n">fingerprint</span> <span class="ow">is</span><span class="p">:</span>
+<span class="mi">11</span><span class="p">:</span><span class="mi">3</span><span class="n">e</span><span class="p">:</span><span class="n">ad</span><span class="p">:</span><span class="mi">72</span><span class="p">:</span><span class="mi">95</span><span class="p">:</span><span class="n">fe</span><span class="p">:</span><span class="mi">96</span><span class="p">:</span><span class="n">dc</span><span class="p">:</span><span class="mi">1</span><span class="n">e</span><span class="p">:</span><span class="mi">3</span><span class="n">b</span><span class="p">:</span><span class="n">f4</span><span class="p">:</span><span class="n">cc</span><span class="p">:</span><span class="mi">2</span><span class="n">c</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">9</span><span class="n">e</span> <span class="n">user</span><span class="nd">@machine</span>
+</pre></div>
+</div>
+<p>The default permissions for this directory should be fine. However, if
+the directory existed before you ran <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code>, then you may need
+to modify the permissions. Make sure that the <code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code> directory is
+readable only by the backup user (i.e. mode <code class="docutils literal notranslate"><span class="pre">700</span></code>), that the
+<code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa</span></code> file is only readable and writable only by the backup
+user (i.e. mode <code class="docutils literal notranslate"><span class="pre">600</span></code>) and that the <code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa.pub</span></code> file is
+writable only by the backup user (i.e. mode <code class="docutils literal notranslate"><span class="pre">600</span></code> or mode <code class="docutils literal notranslate"><span class="pre">644</span></code>).</p>
+<p>Finally, take the master’s public SSH identity (which you found in step
+2) and cut-and-paste it into the file <code class="docutils literal notranslate"><span class="pre">~/.ssh/authorized_keys</span></code>. Make
+sure the identity value is pasted into the file <em>all on one line</em>, and
+that the <code class="docutils literal notranslate"><span class="pre">authorized_keys</span></code> file is owned by your backup user and has
+permissions <code class="docutils literal notranslate"><span class="pre">600</span></code>.</p>
+<p>If you have other preferences or standard ways of setting up your users’
+SSH configuration (i.e. different key type, etc.), feel free to do
+things your way. The important part is that the master must be able to
+SSH into a client <em>with no password entry required</em>.</p>
+</section>
+<section id="id8">
+<h3>Step 5: Create your backup tree.<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup requires a backup directory tree on disk. This directory
+tree must be roughly as big as the amount of data that will be backed up
+on a nightly basis (more if you elect not to purge it all every night).</p>
+<p>You should create a collect directory and a working (temporary)
+directory. One recommended layout is this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span>
+     <span class="n">backup</span><span class="o">/</span>
+            <span class="n">collect</span><span class="o">/</span>
+            <span class="n">tmp</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>If you will be backing up sensitive information (i.e. password files),
+it is recommended that these directories be owned by the backup user
+(whatever you named it), with permissions <code class="docutils literal notranslate"><span class="pre">700</span></code>.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>You don’t have to use <code class="docutils literal notranslate"><span class="pre">/opt</span></code> as the root of your directory
+structure. Use anything you would like. I use <code class="docutils literal notranslate"><span class="pre">/opt</span></code> because it is
+my “dumping ground” for filesystems that Debian does not manage.</p>
+<p>Some users have requested that the Debian packages set up a more
+“standard” location for backups right out-of-the-box. I have resisted
+doing this because it’s difficult to choose an appropriate backup
+location from within the package. If you would prefer, you can create
+the backup directory structure within some existing Debian directory
+such as <code class="docutils literal notranslate"><span class="pre">/var/backups</span></code> or <code class="docutils literal notranslate"><span class="pre">/var/tmp</span></code>.</p>
+</div></blockquote>
+</section>
+<section id="id9">
+<h3>Step 6: Create the Cedar Backup configuration file.<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<p>Following the instructions in <em>Configuration File Format</em> (above), create a
+configuration file for your machine. Since you are working with a client, you
+must configure all action-specific sections for the collect and purge actions.</p>
+<p>The usual location for the Cedar Backup config file is
+<code class="docutils literal notranslate"><span class="pre">/etc/cback3.conf</span></code>. If you change the location, make sure you edit
+your cronjobs (below) to point the <code class="docutils literal notranslate"><span class="pre">cback3</span></code> script at the correct
+config file (using the <code class="docutils literal notranslate"><span class="pre">--config</span></code> option).</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Configuration files should always be writable only by root (or by the
+file owner, if the owner is not root).</p>
+<p>If you intend to place confidental information into the Cedar Backup
+configuration file, make sure that you set the filesystem permissions
+on the file appropriately. For instance, if you configure any
+extensions that require passwords or other similar information, you
+should make the file readable only to root or to the file owner (if
+the owner is not root).</p>
+</div></blockquote>
+</section>
+<section id="id10">
+<h3>Step 7: Validate the Cedar Backup configuration file.<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<p>Use the command <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">validate</span></code> to validate your configuration file.
+This command checks that the configuration file can be found and parsed,
+and also checks for typical configuration problems. This command <em>only</em>
+validates configuration on the one client, not the master or any other
+clients in a pool.</p>
+<p><em>Note:</em> the most common cause of configuration problems is in not closing
+XML tags properly. Any XML tag that is “opened” must be “closed”
+appropriately.</p>
+</section>
+<section id="id11">
+<h3>Step 8: Test your backup.<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<p>Use the command <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">--full</span> <span class="pre">collect</span> <span class="pre">purge</span></code>. If the command
+completes with no output, then the backup was run successfully. Just to
+be sure that everything worked properly, check the logfile
+(<code class="docutils literal notranslate"><span class="pre">/var/log/cback3.log</span></code>) for errors.</p>
+</section>
+<section id="id12">
+<h3>Step 9: Modify the backup cron jobs.<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<p>Since Cedar Backup should be run as root, you should add a set of lines
+like this to your <code class="docutils literal notranslate"><span class="pre">/etc/crontab</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">30</span> <span class="mi">00</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="n">collect</span>
+<span class="mi">30</span> <span class="mi">06</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="n">purge</span>
+</pre></div>
+</div>
+<p>You should consider adding the <code class="docutils literal notranslate"><span class="pre">--output</span></code> or <code class="docutils literal notranslate"><span class="pre">-O</span></code> switch to your
+<code class="docutils literal notranslate"><span class="pre">cback3</span></code> command-line in cron. This will result in larger logs, but
+could help diagnose problems when commands like <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> or
+<code class="docutils literal notranslate"><span class="pre">mkisofs</span></code> fail mysteriously.</p>
+<p>You will need to coordinate the collect and purge actions on the client
+so that the collect action completes before the master attempts to
+stage, and so that the purge action does not begin until after the
+master has completed staging. Usually, allowing an hour or two between
+steps should be sufficient.  <a class="footnote-reference brackets" href="#id26" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>For general information about using cron, see the manpage for
+crontab(5).</p>
+<p>On a Debian system, execution of daily backups is controlled by the
+file <code class="docutils literal notranslate"><span class="pre">/etc/cron.d/cedar-backup3</span></code>. As installed, this file contains
+several different settings, all commented out. Uncomment the “Client
+machine” entries in the file, and change the lines so that the backup
+goes off when you want it to.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="setting-up-a-master-peer-node">
+<span id="cedar-config-master"></span><h2>Setting up a Master Peer Node<a class="headerlink" href="#setting-up-a-master-peer-node" title="Link to this heading">¶</a></h2>
+<p>Cedar Backup has been designed to backup entire “pools” of machines. In
+any given pool, there is one master and some number of clients. Most of
+the work takes place on the master, so configuring a master is somewhat
+more complicated than configuring a client.</p>
+<p>Backups are designed to take place over an RSH or SSH connection.
+Because RSH is generally considered insecure, you are encouraged to use
+SSH rather than RSH. This document will only describe how to configure
+Cedar Backup to use SSH; if you want to use RSH, you’re on your own.</p>
+<p>Once you complete all of these configuration steps, your backups will
+run as scheduled out of cron. Any errors that occur will be reported in
+daily emails to your root user (or whichever other user receives root’s
+email). If you don’t receive any emails, then you know your backup
+worked.</p>
+<p><em>Note:</em> all of these configuration steps should be run as the root user,
+unless otherwise indicated.</p>
+<blockquote>
+<div><p><img alt="tip" src="../_images/tip.png" /></p>
+<p>This setup procedure discusses how to set up Cedar Backup in the
+“normal case” for a master. If you would like to modify the way Cedar
+Backup works (for instance, by ignoring the store stage and just
+letting your backup sit in a staging directory), you can do that.
+You’ll just have to modify the procedure below based on information
+in the remainder of the manual.</p>
+</div></blockquote>
+<section id="id14">
+<h3>Step 1: Decide when you will run your backup.<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<p>There are four parts to a Cedar Backup run: collect, stage, store and
+purge. The usual way of setting off these steps is through a set of cron
+jobs. Although you won’t create your cron jobs just yet, you should
+decide now when you will run your backup so you are prepared for later.</p>
+<p>Keep in mind that you do not necessarily have to run the collect action
+on the master. See notes further below for more information.</p>
+<p>Backing up large directories and creating ISO filesystem images can be
+intensive operations, and could slow your computer down significantly.
+Choose a backup time that will not interfere with normal use of your
+computer. Usually, you will want the backup to occur every day, but it
+is possible to configure cron to execute the backup only one day per
+week, three days per week, etc.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Because of the way Cedar Backup works, you must ensure that your
+backup <em>always</em> runs on the first day of your configured week. This
+is because Cedar Backup will only clear incremental backup
+information and re-initialize your media when running on the first
+day of the week. If you skip running Cedar Backup on the first day of
+the week, your backups will likely be “confused” until the next week
+begins, or until you re-run the backup using the <code class="docutils literal notranslate"><span class="pre">--full</span></code> flag.</p>
+</div></blockquote>
+</section>
+<section id="id15">
+<h3>Step 2: Make sure email works.<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup relies on email for problem notification. This notification
+works through the magic of cron. Cron will email any output from each
+job it executes to the user associated with the job. Since by default
+Cedar Backup only writes output to the terminal if errors occur, this
+neatly ensures that notification emails will only be sent out if errors
+occur.</p>
+<p>In order to receive problem notifications, you must make sure that email
+works for the user which is running the Cedar Backup cron jobs
+(typically root). Refer to your distribution’s documentation for
+information on how to configure email on your system. Note that you may
+prefer to configure root’s email to forward to some other user, so you
+do not need to check the root user’s mail in order to see Cedar Backup
+errors.</p>
+</section>
+<section id="id16">
+<h3>Step 3: Configure your writer device.<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<p>Before using Cedar Backup, your writer device must be properly
+configured. If you have configured your CD/DVD writer hardware to work
+through the normal filesystem device path, then you just need to know
+the path to the device on disk (something like <code class="docutils literal notranslate"><span class="pre">/dev/cdrw</span></code>). Cedar
+Backup will use the this device path both when talking to a command like
+<code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> and when doing filesystem operations like running media
+validation.</p>
+<p>Your other option is to configure your CD writer hardware like a SCSI
+device (either because it <em>is</em> a SCSI device or because you are using
+some sort of interface that makes it look like one). In this case, Cedar
+Backup will use the SCSI id when talking to <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> and the device
+path when running filesystem operations.</p>
+<p>See <em>Configuring your Writer Device</em> for more information on writer devices and
+how they are configured.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>There is no need to set up your CD/DVD device if you have decided not
+to execute the store action.</p>
+<p>Due to the underlying utilities that Cedar Backup uses, the SCSI id
+may only be used for CD writers, <em>not</em> DVD writers.</p>
+</div></blockquote>
+</section>
+<section id="id17">
+<h3>Step 4: Configure your backup user.<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<p>Choose a user to be used for backups. Some platforms may come with a
+“ready made” backup user. For other platforms, you may have to create a
+user yourself. You may choose any id you like, but a descriptive name
+such as <code class="docutils literal notranslate"><span class="pre">backup</span></code> or <code class="docutils literal notranslate"><span class="pre">cback</span></code> is a good choice. See your
+distribution’s documentation for information on how to add a user.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>Standard Debian systems come with a user named <code class="docutils literal notranslate"><span class="pre">backup</span></code>. You may
+choose to stay with this user or create another one.</p>
+</div></blockquote>
+<p>Once you have created your backup user, you must create an SSH keypair
+for it. Log in as your backup user, and then run the command
+<code class="docutils literal notranslate"><span class="pre">ssh-keygen</span> <span class="pre">-t</span> <span class="pre">rsa</span> <span class="pre">-N</span> <span class="pre">&quot;&quot;</span> <span class="pre">-f</span> <span class="pre">~/.ssh/id_rsa</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span><span class="nd">@machine</span><span class="o">&gt;</span> <span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">N</span> <span class="s2">&quot;&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span>
+<span class="n">Generating</span> <span class="n">public</span><span class="o">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="o">.</span>
+<span class="n">Created</span> <span class="n">directory</span> <span class="s1">&#39;/home/user/.ssh&#39;</span><span class="o">.</span>
+<span class="n">Your</span> <span class="n">identification</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span>
+<span class="n">Your</span> <span class="n">public</span> <span class="n">key</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span><span class="n">pub</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">key</span> <span class="n">fingerprint</span> <span class="ow">is</span><span class="p">:</span>
+<span class="mi">11</span><span class="p">:</span><span class="mi">3</span><span class="n">e</span><span class="p">:</span><span class="n">ad</span><span class="p">:</span><span class="mi">72</span><span class="p">:</span><span class="mi">95</span><span class="p">:</span><span class="n">fe</span><span class="p">:</span><span class="mi">96</span><span class="p">:</span><span class="n">dc</span><span class="p">:</span><span class="mi">1</span><span class="n">e</span><span class="p">:</span><span class="mi">3</span><span class="n">b</span><span class="p">:</span><span class="n">f4</span><span class="p">:</span><span class="n">cc</span><span class="p">:</span><span class="mi">2</span><span class="n">c</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">9</span><span class="n">e</span> <span class="n">user</span><span class="nd">@machine</span>
+</pre></div>
+</div>
+<p>The default permissions for this directory should be fine. However, if
+the directory existed before you ran <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code>, then you may need
+to modify the permissions. Make sure that the <code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code> directory is
+readable only by the backup user (i.e. mode <code class="docutils literal notranslate"><span class="pre">700</span></code>), that the
+<code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa</span></code> file is only readable and writable by the backup user
+(i.e. mode <code class="docutils literal notranslate"><span class="pre">600</span></code>) and that the <code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa.pub</span></code> file is writable
+only by the backup user (i.e. mode <code class="docutils literal notranslate"><span class="pre">600</span></code> or mode <code class="docutils literal notranslate"><span class="pre">644</span></code>).</p>
+<p>If you have other preferences or standard ways of setting up your users’
+SSH configuration (i.e. different key type, etc.), feel free to do
+things your way. The important part is that the master must be able to
+SSH into a client <em>with no password entry required</em>.</p>
+</section>
+<section id="id18">
+<h3>Step 5: Create your backup tree.<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup requires a backup directory tree on disk. This directory
+tree must be roughly large enough hold twice as much data as will be
+backed up from the entire pool on a given night, plus space for whatever
+is collected on the master itself. This will allow for all three
+operations - collect, stage and store - to have enough space to
+complete. Note that if you elect not to purge the staging directory
+every night, you will need even more space.</p>
+<p>You should create a collect directory, a staging directory and a working
+(temporary) directory. One recommended layout is this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span>
+     <span class="n">backup</span><span class="o">/</span>
+            <span class="n">collect</span><span class="o">/</span>
+            <span class="n">stage</span><span class="o">/</span>
+            <span class="n">tmp</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>If you will be backing up sensitive information (i.e. password files),
+it is recommended that these directories be owned by the backup user
+(whatever you named it), with permissions <code class="docutils literal notranslate"><span class="pre">700</span></code>.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>You don’t have to use <code class="docutils literal notranslate"><span class="pre">/opt</span></code> as the root of your directory
+structure. Use anything you would like. I use <code class="docutils literal notranslate"><span class="pre">/opt</span></code> because it is
+my “dumping ground” for filesystems that Debian does not manage.</p>
+<p>Some users have requested that the Debian packages set up a more
+“standard” location for backups right out-of-the-box. I have resisted
+doing this because it’s difficult to choose an appropriate backup
+location from within the package. If you would prefer, you can create
+the backup directory structure within some existing Debian directory
+such as <code class="docutils literal notranslate"><span class="pre">/var/backups</span></code> or <code class="docutils literal notranslate"><span class="pre">/var/tmp</span></code>.</p>
+</div></blockquote>
+</section>
+<section id="id19">
+<h3>Step 6: Create the Cedar Backup configuration file.<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<p>Following the instructions in <em>Configuration File Foramt*</em> (above), create a
+configuration file for your machine. Since you are working with a master
+machine, you would typically configure all four action-specific sections:
+collect, stage, store and purge.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>Note that the master can treat itself as a “client” peer for certain
+actions. As an example, if you run the collect action on the master,
+then you will stage that data by configuring a local peer
+representing the master.</p>
+<p>Something else to keep in mind is that you do not really have to run
+the collect action on the master. For instance, you may prefer to
+just use your master machine as a “consolidation point” machine that
+just collects data from the other client machines in a backup pool.
+In that case, there is no need to collect data on the master itself.</p>
+</div></blockquote>
+<p>The usual location for the Cedar Backup config file is
+<code class="docutils literal notranslate"><span class="pre">/etc/cback3.conf</span></code>. If you change the location, make sure you edit
+your cronjobs (below) to point the <code class="docutils literal notranslate"><span class="pre">cback3</span></code> script at the correct
+config file (using the <code class="docutils literal notranslate"><span class="pre">--config</span></code> option).</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Configuration files should always be writable only by root (or by the
+file owner, if the owner is not root).</p>
+<p>If you intend to place confidental information into the Cedar Backup
+configuration file, make sure that you set the filesystem permissions
+on the file appropriately. For instance, if you configure any
+extensions that require passwords or other similar information, you
+should make the file readable only to root or to the file owner (if
+the owner is not root).</p>
+</div></blockquote>
+</section>
+<section id="id20">
+<h3>Step 7: Validate the Cedar Backup configuration file.<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<p>Use the command <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">validate</span></code> to validate your configuration file.
+This command checks that the configuration file can be found and parsed,
+and also checks for typical configuration problems, such as invalid
+CD/DVD device entries. This command <em>only</em> validates configuration on
+the master, not any clients that the master might be configured to
+connect to.</p>
+<p><em>Note:</em> the most common cause of configuration problems is in not closing
+XML tags properly. Any XML tag that is “opened” must be “closed”
+appropriately.</p>
+</section>
+<section id="step-8-test-connectivity-to-client-machines">
+<h3>Step 8: Test connectivity to client machines.<a class="headerlink" href="#step-8-test-connectivity-to-client-machines" title="Link to this heading">¶</a></h3>
+<p>This step must wait until after your client machines have been at least
+partially configured. Once the backup user(s) have been configured on
+the client machine(s) in a pool, attempt an SSH connection to each
+client.</p>
+<p>Log in as the backup user on the master, and then use the command
+<code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">user&#64;machine</span></code> where user is the name of backup user <em>on the
+client machine</em>, and machine is the name of the client machine.</p>
+<p>If you are able to log in successfully to each client without entering a
+password, then things have been configured properly. Otherwise,
+double-check that you followed the user setup instructions for the
+master and the clients.</p>
+</section>
+<section id="step-9-test-your-backup">
+<h3>Step 9: Test your backup.<a class="headerlink" href="#step-9-test-your-backup" title="Link to this heading">¶</a></h3>
+<p>Make sure that you have configured all of the clients in your backup
+pool. On all of the clients, execute <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">--full</span> <span class="pre">collect</span></code>. (You will
+probably have already tested this command on each of the clients, so it should
+succeed.)</p>
+<p>When all of the client backups have completed, place a valid CD/DVD disc
+in your drive, and then use the command <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">--full</span> <span class="pre">all</span></code>. You should
+execute this command as root. If the command completes with no output, then the
+backup was run successfully.</p>
+<p>Just to be sure that everything worked properly, check the logfile
+(<code class="docutils literal notranslate"><span class="pre">/var/log/cback3.log</span></code>) on the master and each of the clients, and
+also mount the CD/DVD disc on the master to be sure it can be read.</p>
+<p>You may also want to run <code class="docutils literal notranslate"><span class="pre">cback3</span> <span class="pre">purge</span></code> on the master and each client
+once you have finished validating that everything worked.</p>
+<p><em>If Cedar Backup ever completes “normally” but the disc that is created
+is not usable, please report this as a bug. To be safe, always enable
+the consistency check option in the store configuration section.</em></p>
+</section>
+<section id="step-10-modify-the-backup-cron-jobs">
+<h3>Step 10: Modify the backup cron jobs.<a class="headerlink" href="#step-10-modify-the-backup-cron-jobs" title="Link to this heading">¶</a></h3>
+<p>Since Cedar Backup should be run as root, you should add a set of lines
+like this to your <code class="docutils literal notranslate"><span class="pre">/etc/crontab</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">30</span> <span class="mi">00</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="n">collect</span>
+<span class="mi">30</span> <span class="mi">02</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="n">stage</span>
+<span class="mi">30</span> <span class="mi">04</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="n">store</span>
+<span class="mi">30</span> <span class="mi">06</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="n">root</span>  <span class="n">cback3</span> <span class="n">purge</span>
+</pre></div>
+</div>
+<p>You should consider adding the <code class="docutils literal notranslate"><span class="pre">--output</span></code> or <code class="docutils literal notranslate"><span class="pre">-O</span></code> switch to your
+<code class="docutils literal notranslate"><span class="pre">cback3</span></code> command-line in cron. This will result in larger logs, but
+could help diagnose problems when commands like <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code> or
+<code class="docutils literal notranslate"><span class="pre">mkisofs</span></code> fail mysteriously.</p>
+<p>You will need to coordinate the collect and purge actions on clients so
+that their collect actions complete before the master attempts to stage,
+and so that their purge actions do not begin until after the master has
+completed staging. Usually, allowing an hour or two between steps should
+be sufficient.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>For general information about using cron, see the manpage for
+crontab(5).</p>
+<p>On a Debian system, execution of daily backups is controlled by the
+file <code class="docutils literal notranslate"><span class="pre">/etc/cron.d/cedar-backup3</span></code>. As installed, this file contains
+several different settings, all commented out. Uncomment the “Master
+machine” entries in the file, and change the lines so that the backup
+goes off when you want it to.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="configuring-your-writer-device">
+<span id="cedar-config-writer"></span><h2>Configuring your Writer Device<a class="headerlink" href="#configuring-your-writer-device" title="Link to this heading">¶</a></h2>
+<section id="device-types">
+<h3>Device Types<a class="headerlink" href="#device-types" title="Link to this heading">¶</a></h3>
+<p>In order to execute the store action, you need to know how to identify
+your writer device. Cedar Backup supports two kinds of device types: CD
+writers and DVD writers. DVD writers are always referenced through a
+filesystem device name (i.e. <code class="docutils literal notranslate"><span class="pre">/dev/dvd</span></code>). CD writers can be referenced
+either through a SCSI id, or through a filesystem device name. Which you
+use depends on your operating system and hardware.</p>
+</section>
+<section id="devices-identified-by-by-device-name">
+<h3>Devices identified by by device name<a class="headerlink" href="#devices-identified-by-by-device-name" title="Link to this heading">¶</a></h3>
+<p>For all DVD writers, and for CD writers on certain platforms, you will
+configure your writer device using only a device name. If your writer
+device works this way, you should just specify &lt;target_device&gt; in
+configuration. You can either leave &lt;target_scsi_id&gt; blank or remove it
+completely. The writer device will be used both to write to the device
+and for filesystem operations — for instance, when the media needs
+to be mounted to run the consistency check.</p>
+</section>
+<section id="devices-identified-by-scsi-id">
+<h3>Devices identified by SCSI id<a class="headerlink" href="#devices-identified-by-scsi-id" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup can use devices identified by SCSI id only when configured
+to use the <code class="docutils literal notranslate"><span class="pre">cdwriter</span></code> device type.</p>
+<p>In order to use a SCSI device with Cedar Backup, you must know both the
+SCSI id &lt;target_scsi_id&gt; and the device name &lt;target_device&gt;. The SCSI
+id will be used to write to media using <code class="docutils literal notranslate"><span class="pre">cdrecord</span></code>; and the device
+name will be used for other filesystem operations.</p>
+<p>A true SCSI device will always have an address <code class="docutils literal notranslate"><span class="pre">scsibus,target,lun</span></code>
+(i.e. <code class="docutils literal notranslate"><span class="pre">1,6,2</span></code>). This should hold true on most UNIX-like systems
+including Linux and the various BSDs (although I do not have a BSD
+system to test with currently). The SCSI address represents the location
+of your writer device on the one or more SCSI buses that you have
+available on your system.</p>
+<p>On some platforms, it is possible to reference non-SCSI writer devices
+(i.e. an IDE CD writer) using an emulated SCSI id. If you have
+configured your non-SCSI writer device to have an emulated SCSI id,
+provide the filesystem device path in &lt;target_device&gt; and the SCSI id in
+&lt;target_scsi_id&gt;, just like for a real SCSI device.</p>
+<p>You should note that in some cases, an emulated SCSI id takes the same
+form as a normal SCSI id, while in other cases you might see a method
+name prepended to the normal SCSI id (i.e. “ATA:1,1,1”).</p>
+</section>
+<section id="linux-notes">
+<h3>Linux Notes<a class="headerlink" href="#linux-notes" title="Link to this heading">¶</a></h3>
+<p>On a Linux system, IDE writer devices often have a emulated SCSI
+address, which allows SCSI-based software to access the device through
+an IDE-to-SCSI interface. Under these circumstances, the first IDE
+writer device typically has an address <code class="docutils literal notranslate"><span class="pre">0,0,0</span></code>. However, support for
+the IDE-to-SCSI interface has been deprecated and is not well-supported
+in newer kernels (kernel 2.6.x and later).</p>
+<p>Newer Linux kernels can address ATA or ATAPI drives without SCSI
+emulation by prepending a “method” indicator to the emulated device
+address. For instance, <code class="docutils literal notranslate"><span class="pre">ATA:0,0,0</span></code> or <code class="docutils literal notranslate"><span class="pre">ATAPI:0,0,0</span></code> are typical
+values.</p>
+<p>However, even this interface is deprecated as of late 2006, so with
+relatively new kernels you may be better off using the filesystem device
+path directly rather than relying on any SCSI emulation.</p>
+<p>Here are some hints about how to find your Linux CD writer hardware.
+First, try to reference your device using the filesystem device path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cdrecord</span> <span class="o">-</span><span class="n">prcap</span> <span class="n">dev</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">cdrom</span>
+</pre></div>
+</div>
+<p>Running this command on my hardware gives output that looks like this
+(just the top few lines):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Device</span> <span class="nb">type</span>    <span class="p">:</span> <span class="n">Removable</span> <span class="n">CD</span><span class="o">-</span><span class="n">ROM</span>
+<span class="n">Version</span>        <span class="p">:</span> <span class="mi">0</span>
+<span class="n">Response</span> <span class="n">Format</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">Capabilities</span>   <span class="p">:</span>
+<span class="n">Vendor_info</span>    <span class="p">:</span> <span class="s1">&#39;LITE-ON &#39;</span>
+<span class="n">Identification</span> <span class="p">:</span> <span class="s1">&#39;DVDRW SOHW-1673S&#39;</span>
+<span class="n">Revision</span>       <span class="p">:</span> <span class="s1">&#39;JS02&#39;</span>
+<span class="n">Device</span> <span class="n">seems</span> <span class="n">to</span> <span class="n">be</span><span class="p">:</span> <span class="n">Generic</span> <span class="n">mmc2</span> <span class="n">DVD</span><span class="o">-</span><span class="n">R</span><span class="o">/</span><span class="n">DVD</span><span class="o">-</span><span class="n">RW</span><span class="o">.</span>
+
+<span class="n">Drive</span> <span class="n">capabilities</span><span class="p">,</span> <span class="n">per</span> <span class="n">MMC</span><span class="o">-</span><span class="mi">3</span> <span class="n">page</span> <span class="mi">2</span><span class="n">A</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>If this works, and the identifying information at the top of the output
+looks like your CD writer device, you’ve probably found a working
+configuration. Place the device path into &lt;target_device&gt; and leave
+&lt;target_scsi_id&gt; blank.</p>
+<p>If this doesn’t work, you should try to find an ATA or ATAPI device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cdrecord</span> <span class="o">-</span><span class="n">scanbus</span> <span class="n">dev</span><span class="o">=</span><span class="n">ATA</span>
+<span class="n">cdrecord</span> <span class="o">-</span><span class="n">scanbus</span> <span class="n">dev</span><span class="o">=</span><span class="n">ATAPI</span>
+</pre></div>
+</div>
+<p>On my development system, I get a result that looks something like this
+for ATA:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scsibus1</span><span class="p">:</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">100</span><span class="p">)</span> <span class="s1">&#39;LITE-ON &#39;</span> <span class="s1">&#39;DVDRW SOHW-1673S&#39;</span> <span class="s1">&#39;JS02&#39;</span> <span class="n">Removable</span> <span class="n">CD</span><span class="o">-</span><span class="n">ROM</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">101</span><span class="p">)</span> <span class="o">*</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">102</span><span class="p">)</span> <span class="o">*</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">103</span><span class="p">)</span> <span class="o">*</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">104</span><span class="p">)</span> <span class="o">*</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">105</span><span class="p">)</span> <span class="o">*</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">106</span><span class="p">)</span> <span class="o">*</span>
+        <span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span>   <span class="mi">107</span><span class="p">)</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Again, if you get a result that you recognize, you have again probably
+found a working configuraton. Place the associated device path (in my
+case, <code class="docutils literal notranslate"><span class="pre">/dev/cdrom</span></code>) into &lt;target_device&gt; and put the emulated SCSI id
+(in this case, <code class="docutils literal notranslate"><span class="pre">ATA:1,0,0</span></code>) into &lt;target_scsi_id&gt;.</p>
+<p>Any further discussion of how to configure your CD writer hardware is
+outside the scope of this document. If you have tried the hints above
+and still can’t get things working, you may want to reference the Linux
+CDROM HOWTO (<a class="reference external" href="http://www.tldp.org/HOWTO/CDROM-HOWTO">http://www.tldp.org/HOWTO/CDROM-HOWTO</a>) or the ATA
+RAID HOWTO (<a class="reference external" href="http://www.tldp.org/HOWTO/ATA-RAID-HOWTO/index.html">http://www.tldp.org/HOWTO/ATA-RAID-HOWTO/index.html</a>)
+for more information.</p>
+</section>
+<section id="mac-os-x-notes">
+<h3>Mac OS X Notes<a class="headerlink" href="#mac-os-x-notes" title="Link to this heading">¶</a></h3>
+<p>On a Mac OS X (darwin) system, things get strange. Apple has abandoned
+traditional SCSI device identifiers in favor of a system-wide resource
+id. So, on a Mac, your writer device will have a name something like
+<code class="docutils literal notranslate"><span class="pre">IOCompactDiscServices</span></code> (for a CD writer) or <code class="docutils literal notranslate"><span class="pre">IODVDServices</span></code> (for a
+DVD writer). If you have multiple drives, the second drive probably has
+a number appended, i.e. <code class="docutils literal notranslate"><span class="pre">IODVDServices/2</span></code> for the second DVD writer.
+You can try to figure out what the name of your device is by grepping
+through the output of the command <code class="docutils literal notranslate"><span class="pre">ioreg</span> <span class="pre">-l</span></code>. <a class="footnote-reference brackets" href="#id27" id="id21" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p>
+<p>Unfortunately, even if you can figure out what device to use, I can’t
+really support the store action on this platform. In OS X, the
+“automount” function of the Finder interferes significantly with Cedar
+Backup’s ability to mount and unmount media and write to the CD or DVD
+hardware. The Cedar Backup writer and image functionality does work on
+this platform, but the effort required to fight the operating system
+about who owns the media and the device makes it nearly impossible to
+execute the store action successfully.</p>
+</section>
+</section>
+<section id="optimized-blanking-stategy">
+<span id="cedar-config-blanking"></span><h2>Optimized Blanking Stategy<a class="headerlink" href="#optimized-blanking-stategy" title="Link to this heading">¶</a></h2>
+<p>When the optimized blanking strategy has not been configured, Cedar
+Backup uses a simplistic approach: rewritable media is blanked at the
+beginning of every week, period.</p>
+<p>Since rewritable media can be blanked only a finite number of times
+before becoming unusable, some users — especially users of
+rewritable DVD media with its large capacity — may prefer to blank
+the media less often.</p>
+<p>If the optimized blanking strategy is configured, Cedar Backup will use
+a blanking factor and attempt to determine whether future backups will
+fit on the current media. If it looks like backups will fit, then the
+media will not be blanked.</p>
+<p>This feature will only be useful (assuming single disc is used for the
+whole week’s backups) if the estimated total size of the weekly backup
+is considerably smaller than the capacity of the media (no more than 50%
+of the total media capacity), and only if the size of the backup can be
+expected to remain fairly constant over time (no frequent rapid growth
+expected).</p>
+<p>There are two blanking modes: daily and weekly. If the weekly blanking
+mode is set, Cedar Backup will only estimate future capacity (and
+potentially blank the disc) once per week, on the starting day of the
+week. If the daily blanking mode is set, Cedar Backup will estimate
+future capacity (and potentially blank the disc) every time it is run.
+<em>You should only use the daily blanking mode in conjunction with daily
+collect configuration, otherwise you will risk losing data.</em></p>
+<p>If you are using the daily blanking mode, you can typically set the
+blanking value to 1.0. This will cause Cedar Backup to blank the media
+whenever there is not enough space to store the current day’s backup.</p>
+<p>If you are using the weekly blanking mode, then finding the correct
+blanking factor will require some experimentation. Cedar Backup
+estimates future capacity based on the configured blanking factor. The
+disc will be blanked if the following relationship is true:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bytes</span> <span class="n">available</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">bytes</span> <span class="n">required</span><span class="p">)</span> <span class="n">LE</span> <span class="n">blanking</span> <span class="n">factor</span>
+</pre></div>
+</div>
+<p>Another way to look at this is to consider the blanking factor as a sort
+of (upper) backup growth estimate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Total</span> <span class="n">size</span> <span class="n">of</span> <span class="n">weekly</span> <span class="n">backup</span> <span class="o">/</span> <span class="n">Full</span> <span class="n">backup</span> <span class="n">size</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span> <span class="n">of</span> <span class="n">the</span> <span class="n">week</span>
+</pre></div>
+</div>
+<p>This ratio can be estimated using a week or two of previous backups. For
+instance, take this example, where March 10 is the start of the week and
+March 4 through March 9 represent the incremental backups from the
+previous week:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">backup</span><span class="o">/</span><span class="n">staging</span><span class="c1"># du -s 2007/03/*</span>
+<span class="mi">3040</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">01</span>
+<span class="mi">3044</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">02</span>
+<span class="mi">6812</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">03</span>
+<span class="mi">3044</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">04</span>
+<span class="mi">3152</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">05</span>
+<span class="mi">3056</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">06</span>
+<span class="mi">3060</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">07</span>
+<span class="mi">3056</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">08</span>
+<span class="mi">4776</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">09</span>
+<span class="mi">6812</span>    <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">10</span>
+<span class="mi">11824</span>   <span class="mi">2007</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">11</span>
+</pre></div>
+</div>
+<p>In this case, the ratio is approximately 4:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6812</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3044</span> <span class="o">+</span> <span class="mi">3152</span> <span class="o">+</span> <span class="mi">3056</span> <span class="o">+</span> <span class="mi">3060</span> <span class="o">+</span> <span class="mi">3056</span> <span class="o">+</span> <span class="mi">4776</span><span class="p">)</span> <span class="o">/</span> <span class="mi">6812</span> <span class="o">=</span> <span class="mf">3.9571</span>
+</pre></div>
+</div>
+<p>To be safe, you might choose to configure a factor of 5.0.</p>
+<p>Setting a higher value reduces the risk of exceeding media capacity
+mid-week but might result in blanking the media more often than is
+necessary.</p>
+<p>If you run out of space mid-week, then the solution is to run the
+rebuild action. If this happens frequently, a higher blanking factor
+value should be used.</p>
+<hr class="docutils" />
+<p><em>Previous</em>: <a class="reference internal" href="commandline.html"><span class="doc">Command Line Tools</span></a> • <em>Next</em>: <a class="reference internal" href="extensions.html"><span class="doc">Official Extensions</span></a></p>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id22" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>See <a class="reference external" href="http://www.xml.com/pub/a/98/10/guide0.html">http://www.xml.com/pub/a/98/10/guide0.html</a> for a basic
+introduction to XML.</p>
+</aside>
+<aside class="footnote brackets" id="id23" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>See <a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a></p>
+</aside>
+<aside class="footnote brackets" id="id24" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>See <a class="reference external" href="http://docs.python.org/lib/re-syntax.html">http://docs.python.org/lib/re-syntax.html</a></p>
+</aside>
+<aside class="footnote brackets" id="id25" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p>See <a class="reference external" href="https://github.com/pronovic/cedar-backup3/issues">https://github.com/pronovic/cedar-backup3/issues</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id26" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">5</a><span class="fn-bracket">]</span></span>
+<p>See <a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a></p>
+</aside>
+<aside class="footnote brackets" id="id27" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id21">6</a><span class="fn-bracket">]</span></span>
+<p>Thanks to the file README.macosX in the cdrtools-2.01+01a01 source
+tree for this information</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

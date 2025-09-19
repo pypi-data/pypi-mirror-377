@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.filesystem &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="CedarBackup3.image" href="../image/index.html" />
+    <link rel="prev" title="CedarBackup3.extend.sysinfo" href="../extend/sysinfo/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.filesystem">
+<span id="cedarbackup3-filesystem"></span><h1>CedarBackup3.filesystem<a class="headerlink" href="#module-CedarBackup3.filesystem" title="Link to this heading">¶</a></h1>
+<p>Provides filesystem-related objects.
+:author: Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.filesystem.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">FilesystemList</span></span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>Represents a list of filesystem items.</p>
+<p>This is a generic class that represents a list of filesystem items.  Callers
+can add individual files or directories to the list, or can recursively add
+the contents of a directory.  The class also allows for up-front exclusions
+in several forms (all files, all directories, all items matching a pattern,
+all items whose basename matches a pattern, or all directories containing a
+specific “ignore file”).  Symbolic links are typically backed up
+non-recursively, i.e. the link to a directory is backed up, but not the
+contents of that link (we don’t want to deal with recursive loops, etc.).</p>
+<p>The custom methods such as <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.addFile" title="CedarBackup3.filesystem.FilesystemList.addFile"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">addFile</span></code></a> will only add items if they exist on
+the filesystem and do not match any exclusions that are already in place.
+However, since a FilesystemList is a subclass of Python’s standard list
+class, callers can also add items to the list in the usual way, using
+methods like <code class="docutils literal notranslate"><span class="pre">append()</span></code> or <code class="docutils literal notranslate"><span class="pre">insert()</span></code>.  No validations apply to items
+added to the list in this way; however, many list-manipulation methods deal
+“gracefully” with items that don’t exist in the filesystem, often by
+ignoring them.</p>
+<p>Once a list has been created, callers can remove individual items from the
+list using standard methods like <code class="docutils literal notranslate"><span class="pre">pop()</span></code> or <code class="docutils literal notranslate"><span class="pre">remove()</span></code> or they can use
+custom methods to remove specific types of entries or entries which match a
+particular pattern.</p>
+<p><em>Note:</em> Regular expression patterns that apply to paths are assumed to be
+bounded at front and back by the beginning and end of the string, i.e. they
+are treated as if they begin with <code class="docutils literal notranslate"><span class="pre">^</span></code> and end with <code class="docutils literal notranslate"><span class="pre">$</span></code>.  This is true
+whether we are matching a complete path or a basename.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.excludeFiles">
+<span class="sig-name descname"><span class="pre">excludeFiles</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.excludeFiles" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.excludeLinks">
+<span class="sig-name descname"><span class="pre">excludeLinks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.excludeLinks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.excludeDirs">
+<span class="sig-name descname"><span class="pre">excludeDirs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.excludeDirs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.excludePaths">
+<span class="sig-name descname"><span class="pre">excludePaths</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.excludePaths" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.excludePatterns">
+<span class="sig-name descname"><span class="pre">excludePatterns</span></span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.excludePatterns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.excludeBasenamePatterns">
+<span class="sig-name descname"><span class="pre">excludeBasenamePatterns</span></span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.excludeBasenamePatterns" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.ignoreFile">
+<span class="sig-name descname"><span class="pre">ignoreFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.ignoreFile" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.addFile">
+<span class="sig-name descname"><span class="pre">addFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.addFile" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a file to the list.</p>
+<p>The path must exist and must be a file or a link to an existing file.  It
+will be added to the list subject to any exclusions that are in place.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>String representing a path on disk</em>) – File path to be added to the list</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of items added to the list</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If path is not a file or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If the path could not be encoded properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.addDir">
+<span class="sig-name descname"><span class="pre">addDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.addDir" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a directory to the list.</p>
+<p>The path must exist and must be a directory or a link to an existing
+directory.  It will be added to the list subject to any exclusions that
+are in place.  The <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.ignoreFile" title="CedarBackup3.filesystem.FilesystemList.ignoreFile"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">ignoreFile</span></code></a> does not apply to this method, only to
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.addDirContents" title="CedarBackup3.filesystem.FilesystemList.addDirContents"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">addDirContents</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>String representing a path on disk</em>) – Directory path to be added to the list</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of items added to the list</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If path is not a directory or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If the path could not be encoded properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.addDirContents">
+<span class="sig-name descname"><span class="pre">addDirContents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addSelf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkDepth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dereference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.addDirContents" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the contents of a directory to the list.</p>
+<p>The path must exist and must be a directory or a link to a directory.
+The contents of the directory (as well as the directory path itself) will
+be recursively added to the list, subject to any exclusions that are in
+place.  If you only want the directory and its immediate contents to be
+added, then pass in <code class="docutils literal notranslate"><span class="pre">recursive=False</span></code>.</p>
+<p><em>Note:</em> If a directory’s absolute path matches an exclude pattern or path,
+or if the directory contains the configured ignore file, then the
+directory and all of its contents will be recursively excluded from the
+list.</p>
+<p><em>Note:</em> If the passed-in directory happens to be a soft link, it will be
+recursed.  However, the linkDepth parameter controls whether any soft
+links <em>within</em> the directory will be recursed.  The link depth is
+maximum depth of the tree at which soft links should be followed.  So, a
+depth of 0 does not follow any soft links, a depth of 1 follows only
+links within the passed-in directory, a depth of 2 follows the links at
+the next level down, etc.</p>
+<p><em>Note:</em> Any invalid soft links (i.e.  soft links that point to
+non-existent items) will be silently ignored.</p>
+<p><em>Note:</em> The <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeDirs" title="CedarBackup3.filesystem.FilesystemList.excludeDirs"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeDirs</span></code></a> flag only controls whether any given directory
+path itself is added to the list once it has been discovered.  It does
+<em>not</em> modify any behavior related to directory recursion.</p>
+<p><em>Note:</em> If you call this method <em>on a link to a directory</em> that link will
+never be dereferenced (it may, however, be followed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>String representing a path on disk</em>) – Directory path whose contents should be added to the list</p></li>
+<li><p><strong>recursive</strong> (<em>Boolean value</em>) – Indicates whether directory contents should be added recursively</p></li>
+<li><p><strong>addSelf</strong> (<em>Boolean value</em>) – Indicates whether the directory itself should be added to the list</p></li>
+<li><p><strong>linkDepth</strong> (<em>Integer value</em>) – Maximum depth of the tree at which soft links should be followed, zero means not to folow</p></li>
+<li><p><strong>dereference</strong> (<em>Boolean value</em>) – Indicates whether soft links, if followed, should be dereferenced</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of items recursively added to the list</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If path is not a directory or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If the path could not be encoded properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.removeFiles">
+<span class="sig-name descname"><span class="pre">removeFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.removeFiles" title="Link to this definition">¶</a></dt>
+<dd><p>Removes file entries from the list.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">pattern</span></code> is not passed in or is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then all file entries will
+be removed from the list.  Otherwise, only those file entries matching
+the pattern will be removed.  Any entry which does not exist on disk
+will be ignored (use <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeInvalid" title="CedarBackup3.filesystem.FilesystemList.removeInvalid"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeInvalid</span></code></a> to purge those entries).</p>
+<p>This method might be fairly slow for large lists, since it must check the
+type of each item in the list.  If you know ahead of time that you want
+to exclude all files, then you will be better off setting <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeFiles" title="CedarBackup3.filesystem.FilesystemList.excludeFiles"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeFiles</span></code></a>
+to <code class="docutils literal notranslate"><span class="pre">True</span></code> before adding items to the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – Regular expression pattern representing entries to remove</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of entries removed</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the passed-in pattern is not a valid regular expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.removeDirs">
+<span class="sig-name descname"><span class="pre">removeDirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.removeDirs" title="Link to this definition">¶</a></dt>
+<dd><p>Removes directory entries from the list.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">pattern</span></code> is not passed in or is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then all directory entries
+will be removed from the list.  Otherwise, only those directory entries
+matching the pattern will be removed.  Any entry which does not exist on
+disk will be ignored (use <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeInvalid" title="CedarBackup3.filesystem.FilesystemList.removeInvalid"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeInvalid</span></code></a> to purge those entries).</p>
+<p>This method might be fairly slow for large lists, since it must check the
+type of each item in the list.  If you know ahead of time that you want
+to exclude all directories, then you will be better off setting
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeDirs" title="CedarBackup3.filesystem.FilesystemList.excludeDirs"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeDirs</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code> before adding items to the list (note that this
+will not prevent you from recursively adding the <em>contents</em> of
+directories).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – Regular expression pattern representing entries to remove</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of entries removed</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the passed-in pattern is not a valid regular expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.removeLinks">
+<span class="sig-name descname"><span class="pre">removeLinks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.removeLinks" title="Link to this definition">¶</a></dt>
+<dd><p>Removes soft link entries from the list.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">pattern</span></code> is not passed in or is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then all soft link entries
+will be removed from the list.  Otherwise, only those soft link entries
+matching the pattern will be removed.  Any entry which does not exist on
+disk will be ignored (use <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeInvalid" title="CedarBackup3.filesystem.FilesystemList.removeInvalid"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeInvalid</span></code></a> to purge those entries).</p>
+<p>This method might be fairly slow for large lists, since it must check the
+type of each item in the list.  If you know ahead of time that you want
+to exclude all soft links, then you will be better off setting
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeLinks" title="CedarBackup3.filesystem.FilesystemList.excludeLinks"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeLinks</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code> before adding items to the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – Regular expression pattern representing entries to remove</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of entries removed</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the passed-in pattern is not a valid regular expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.removeMatch">
+<span class="sig-name descname"><span class="pre">removeMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.removeMatch" title="Link to this definition">¶</a></dt>
+<dd><p>Removes from the list all entries matching a pattern.</p>
+<p>This method removes from the list all entries which match the passed in
+<code class="docutils literal notranslate"><span class="pre">pattern</span></code>.  Since there is no need to check the type of each entry, it
+is faster to call this method than to call the <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeFiles" title="CedarBackup3.filesystem.FilesystemList.removeFiles"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeFiles</span></code></a>,
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeDirs" title="CedarBackup3.filesystem.FilesystemList.removeDirs"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeDirs</span></code></a> or <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeLinks" title="CedarBackup3.filesystem.FilesystemList.removeLinks"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeLinks</span></code></a> methods individually.  If you know which
+patterns you will want to remove ahead of time, you may be better off
+setting <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludePatterns" title="CedarBackup3.filesystem.FilesystemList.excludePatterns"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludePatterns</span></code></a> or <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeBasenamePatterns" title="CedarBackup3.filesystem.FilesystemList.excludeBasenamePatterns"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeBasenamePatterns</span></code></a> before adding
+items to the list.</p>
+<p><em>Note:</em> Unlike when using the exclude lists, the pattern here is <em>not</em>
+bounded at the front and the back of the string.  You can use any pattern
+you want.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – Regular expression pattern representing entries to remove</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of entries removed</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the passed-in pattern is not a valid regular expression</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.removeInvalid">
+<span class="sig-name descname"><span class="pre">removeInvalid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.removeInvalid" title="Link to this definition">¶</a></dt>
+<dd><p>Removes from the list all entries that do not exist on disk.</p>
+<p>This method removes from the list all entries which do not currently
+exist on disk in some form.  No attention is paid to whether the entries
+are files or directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of entries removed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.normalize" title="Link to this definition">¶</a></dt>
+<dd><p>Normalizes the list, ensuring that each entry is unique.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.FilesystemList.verify">
+<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.FilesystemList.verify" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies that all entries in the list exist on disk.
+:returns: <code class="docutils literal notranslate"><span class="pre">True</span></code> if all entries exist, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.SpanItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">SpanItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utilization</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.SpanItem" title="Link to this definition">¶</a></dt>
+<dd><p>Item returned by <a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.generateSpan" title="CedarBackup3.filesystem.BackupFileList.generateSpan"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">BackupFileList.generateSpan</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.SpanItem.fileList">
+<span class="sig-name descname"><span class="pre">fileList</span></span><a class="headerlink" href="#CedarBackup3.filesystem.SpanItem.fileList" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.SpanItem.size">
+<span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#CedarBackup3.filesystem.SpanItem.size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.SpanItem.capacity">
+<span class="sig-name descname"><span class="pre">capacity</span></span><a class="headerlink" href="#CedarBackup3.filesystem.SpanItem.capacity" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.SpanItem.utilization">
+<span class="sig-name descname"><span class="pre">utilization</span></span><a class="headerlink" href="#CedarBackup3.filesystem.SpanItem.utilization" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">BackupFileList</span></span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList" title="CedarBackup3.filesystem.FilesystemList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilesystemList</span></code></a></p>
+<p>List of files to be backed up.</p>
+<p>A BackupFileList is a <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList" title="CedarBackup3.filesystem.FilesystemList"><code class="xref any py py-class docutils literal notranslate"><span class="pre">FilesystemList</span></code></a> containing a list of files to be
+backed up.  It only contains files, not directories (soft links are treated
+like files).  On top of the generic functionality provided by
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList" title="CedarBackup3.filesystem.FilesystemList"><code class="xref any py py-class docutils literal notranslate"><span class="pre">FilesystemList</span></code></a>, this class adds functionality to keep a hash (checksum)
+for each file in the list, and it also provides a method to calculate the
+total size of the files in the list and a way to export the list into tar
+form.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.addDir">
+<span class="sig-name descname"><span class="pre">addDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.addDir" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a directory to the list.</p>
+<p>Note that this class does not allow directories to be added by themselves
+(a backup list contains only files).  However, since links to directories
+are technically files, we allow them to be added.</p>
+<p>This method is implemented in terms of the superclass method, with one
+additional validation: the superclass method is only called if the
+passed-in path is both a directory and a link.  All of the superclass’s
+existing validations and restrictions apply.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>String representing a path on disk</em>) – Directory path to be added to the list</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of items added to the list</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If path is not a directory or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If the path could not be encoded properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.totalSize">
+<span class="sig-name descname"><span class="pre">totalSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.totalSize" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the total size among all files in the list.
+Only files are counted.
+Soft links that point at files are ignored.
+Entries which do not exist on disk are ignored.
+:returns: Total size, in bytes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.generateSizeMap">
+<span class="sig-name descname"><span class="pre">generateSizeMap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.generateSizeMap" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a mapping from file to file size in bytes.
+The mapping does include soft links, which are listed with size zero.
+Entries which do not exist on disk are ignored.
+:returns: Dictionary mapping file to file size</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.generateDigestMap">
+<span class="sig-name descname"><span class="pre">generateDigestMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stripPrefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.generateDigestMap" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a mapping from file to file digest.</p>
+<p>Currently, the digest is an SHA hash, which should be pretty secure.  In
+the future, this might be a different kind of hash, but we guarantee that
+the type of the hash will not change unless the library major version
+number is bumped.</p>
+<p>Entries which do not exist on disk are ignored.</p>
+<p>Soft links are ignored.  We would end up generating a digest for the file
+that the soft link points at, which doesn’t make any sense.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">stripPrefix</span></code> is passed in, then that prefix will be stripped from
+each key when the map is generated.  This can be useful in generating two
+“relative” digest maps to be compared to one another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stripPrefix</strong> (<em>String with any contents</em>) – Common prefix to be stripped from paths</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping file to digest value</p>
+</dd>
+</dl>
+<p>&#64;see: <a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.removeUnchanged" title="CedarBackup3.filesystem.BackupFileList.removeUnchanged"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeUnchanged</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.generateFitted">
+<span class="sig-name descname"><span class="pre">generateFitted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capacity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'worst_fit'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.generateFitted" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a list of items that fit in the indicated capacity.</p>
+<p>Sometimes, callers would like to include every item in a list, but are
+unable to because not all of the items fit in the space available.  This
+method returns a copy of the list, containing only the items that fit in
+a given capacity.  A copy is returned so that we don’t lose any
+information if for some reason the fitted list is unsatisfactory.</p>
+<p>The fitting is done using the functions in the knapsack module.  By
+default, the first fit algorithm is used, but you can also choose
+from best fit, worst fit and alternate fit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>capacity</strong> (<em>Integer</em><em>, </em><em>in bytes</em>) – Maximum capacity among the files in the new list</p></li>
+<li><p><strong>algorithm</strong> (<em>One</em><em> of </em><em>&quot;first_fit&quot;</em><em>, </em><em>&quot;best_fit&quot;</em><em>, </em><em>&quot;worst_fit&quot;</em><em>, </em><em>&quot;alternate_fit&quot;</em>) – Knapsack (fit) algorithm to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Copy of list with total size no larger than indicated capacity</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the algorithm is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.generateSpan">
+<span class="sig-name descname"><span class="pre">generateSpan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capacity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'worst_fit'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.generateSpan" title="Link to this definition">¶</a></dt>
+<dd><p>Splits the list of items into sub-lists that fit in a given capacity.</p>
+<p>Sometimes, callers need split to a backup file list into a set of smaller
+lists.  For instance, you could use this to “span” the files across a set
+of discs.</p>
+<p>The fitting is done using the functions in the knapsack module.  By
+default, the first fit algorithm is used, but you can also choose
+from best fit, worst fit and alternate fit.</p>
+<p><em>Note:</em> If any of your items are larger than the capacity, then it won’t
+be possible to find a solution.  In this case, a value error will be
+raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>capacity</strong> (<em>Integer</em><em>, </em><em>in bytes</em>) – Maximum capacity among the files in the new list</p></li>
+<li><p><strong>algorithm</strong> (<em>One</em><em> of </em><em>&quot;first_fit&quot;</em><em>, </em><em>&quot;best_fit&quot;</em><em>, </em><em>&quot;worst_fit&quot;</em><em>, </em><em>&quot;alternate_fit&quot;</em>) – Knapsack (fit) algorithm to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of <a class="reference internal" href="#CedarBackup3.filesystem.SpanItem" title="CedarBackup3.filesystem.SpanItem"><code class="xref any py py-class docutils literal notranslate"><span class="pre">SpanItem</span></code></a> objects</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the algorithm is invalid</p></li>
+<li><p><strong>ValueError</strong> – If it’s not possible to fit some items</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.generateTarfile">
+<span class="sig-name descname"><span class="pre">generateTarfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tar'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.generateTarfile" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a tar file containing the files in the list.</p>
+<p>By default, this method will create uncompressed tar files.  If you pass
+in mode <code class="docutils literal notranslate"><span class="pre">'targz'</span></code>, then it will create gzipped tar files, and if you
+pass in mode <code class="docutils literal notranslate"><span class="pre">'tarbz2'</span></code>, then it will create bzipped tar files.</p>
+<p>The tar file will be created as a GNU tar archive, which enables extended
+file name lengths, etc.  Since GNU tar is so prevalent, I’ve decided that
+the extra functionality out-weighs the disadvantage of not being
+“standard”.</p>
+<p>If you pass in <code class="docutils literal notranslate"><span class="pre">flat=True</span></code>, then a “flat” archive will be created, and
+all of the files will be added to the root of the archive.  So, the file
+<code class="docutils literal notranslate"><span class="pre">/tmp/something/whatever.txt</span></code> would be added as just <code class="docutils literal notranslate"><span class="pre">whatever.txt</span></code>.</p>
+<p>By default, the whole method call fails if there are problems adding any
+of the files to the archive, resulting in an exception.  Under these
+circumstances, callers are advised that they might want to call
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.removeInvalid" title="CedarBackup3.filesystem.FilesystemList.removeInvalid"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">removeInvalid</span></code></a> and then attempt to extract the tar file a second
+time, since the most common cause of failures is a missing file (a file
+that existed when the list was built, but is gone again by the time the
+tar file is built).</p>
+<p>If you want to, you can pass in <code class="docutils literal notranslate"><span class="pre">ignore=True</span></code>, and the method will
+ignore errors encountered when adding individual files to the archive
+(but not errors opening and closing the archive itself).</p>
+<p>We’ll always attempt to remove the tarfile from disk if an exception will
+be thrown.</p>
+<p><em>Note:</em> No validation is done as to whether the entries in the list are
+files, since only files or soft links should be in an object like this.
+However, to be safe, everything is explicitly added to the tar archive
+non-recursively so it’s safe to include soft links to directories.</p>
+<p><em>Note:</em> The Python <code class="docutils literal notranslate"><span class="pre">tarfile</span></code> module, which is used internally here, is
+supposed to deal properly with long filenames and links.  In my testing,
+I have found that it appears to be able to add long really long filenames
+to archives, but doesn’t do a good job reading them back out, even out of
+an archive it created.  Fortunately, all Cedar Backup does is add files
+to archives.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>String representing a path on disk</em>) – Path of tar file to create on disk</p></li>
+<li><p><strong>mode</strong> (One of either <code class="docutils literal notranslate"><span class="pre">'tar'</span></code>, <code class="docutils literal notranslate"><span class="pre">'targz'</span></code> or <code class="docutils literal notranslate"><span class="pre">'tarbz2'</span></code>) – Tar creation mode</p></li>
+<li><p><strong>ignore</strong> (<em>Boolean</em>) – Indicates whether to ignore certain errors</p></li>
+<li><p><strong>flat</strong> (<em>Boolean</em>) – Creates “flat” archive by putting all items in root</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If mode is not valid</p></li>
+<li><p><strong>ValueError</strong> – If list is empty</p></li>
+<li><p><strong>ValueError</strong> – If the path could not be encoded properly</p></li>
+<li><p><strong>TarError</strong> – If there is a problem creating the tar file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.BackupFileList.removeUnchanged">
+<span class="sig-name descname"><span class="pre">removeUnchanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digestMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">captureDigest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.BackupFileList.removeUnchanged" title="Link to this definition">¶</a></dt>
+<dd><p>Removes unchanged entries from the list.</p>
+<p>This method relies on a digest map as returned from <a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.generateDigestMap" title="CedarBackup3.filesystem.BackupFileList.generateDigestMap"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">generateDigestMap</span></code></a>.
+For each entry in <code class="docutils literal notranslate"><span class="pre">digestMap</span></code>, if the entry also exists in the current
+list <em>and</em> the entry in the current list has the same digest value as in
+the map, the entry in the current list will be removed.</p>
+<p>This method offers a convenient way for callers to filter unneeded
+entries from a list.  The idea is that a caller will capture a digest map
+from <code class="docutils literal notranslate"><span class="pre">generateDigestMap</span></code> at some point in time (perhaps the beginning of
+the week), and will save off that map using <code class="docutils literal notranslate"><span class="pre">pickle</span></code> or some other
+method.  Then, the caller could use this method sometime in the future to
+filter out any unchanged files based on the saved-off map.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">captureDigest</span></code> is passed-in as <code class="docutils literal notranslate"><span class="pre">True</span></code>, then digest information will
+be captured for the entire list before the removal step occurs using the
+same rules as in <a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.generateDigestMap" title="CedarBackup3.filesystem.BackupFileList.generateDigestMap"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">generateDigestMap</span></code></a>.  The check will involve a lookup
+into the complete digest map.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">captureDigest</span></code> is passed in as <code class="docutils literal notranslate"><span class="pre">False</span></code>, we will only generate a
+digest value for files we actually need to check, and we’ll ignore any
+entry in the list which isn’t a file that currently exists on disk.</p>
+<p>The return value varies depending on <code class="docutils literal notranslate"><span class="pre">captureDigest</span></code>, as well.  To
+preserve backwards compatibility, if <code class="docutils literal notranslate"><span class="pre">captureDigest</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, then
+we’ll just return a single value representing the number of entries
+removed.  Otherwise, we’ll return a tuple of C{(entries removed, digest
+map)}.  The returned digest map will be in exactly the form returned by
+<a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.generateDigestMap" title="CedarBackup3.filesystem.BackupFileList.generateDigestMap"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">generateDigestMap</span></code></a>.</p>
+<p><em>Note:</em> For performance reasons, this method actually ends up rebuilding
+the list from scratch.  First, we build a temporary dictionary containing
+all of the items from the original list.  Then, we remove items as needed
+from the dictionary (which is faster than the equivalent operation on a
+list).  Finally, we replace the contents of the current list based on the
+keys left in the dictionary.  This should be transparent to the caller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digestMap</strong> (Map as returned from <a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.generateDigestMap" title="CedarBackup3.filesystem.BackupFileList.generateDigestMap"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">generateDigestMap</span></code></a>) – Dictionary mapping file name to digest value</p></li>
+<li><p><strong>captureDigest</strong> (<em>Boolean</em>) – Indicates that digest information should be captured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Results as discussed above (format varies based on arguments)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.PurgeItemList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">PurgeItemList</span></span><a class="headerlink" href="#CedarBackup3.filesystem.PurgeItemList" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList" title="CedarBackup3.filesystem.FilesystemList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilesystemList</span></code></a></p>
+<p>List of files and directories to be purged.</p>
+<p>A PurgeItemList is a <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList" title="CedarBackup3.filesystem.FilesystemList"><code class="xref any py py-class docutils literal notranslate"><span class="pre">FilesystemList</span></code></a> containing a list of files and
+directories to be purged.  On top of the generic functionality provided by
+<a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList" title="CedarBackup3.filesystem.FilesystemList"><code class="xref any py py-class docutils literal notranslate"><span class="pre">FilesystemList</span></code></a>, this class adds functionality to remove items that are
+too young to be purged, and to actually remove each item in the list from
+the filesystem.</p>
+<p>The other main difference is that when you add a directory’s contents to a
+purge item list, the directory itself is not added to the list.  This way,
+if someone asks to purge within in <code class="docutils literal notranslate"><span class="pre">/opt/backup/collect</span></code>, that directory
+doesn’t get removed once all of the files within it is gone.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.PurgeItemList.addDirContents">
+<span class="sig-name descname"><span class="pre">addDirContents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addSelf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkDepth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dereference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.PurgeItemList.addDirContents" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the contents of a directory to the list.</p>
+<p>The path must exist and must be a directory or a link to a directory.
+The contents of the directory (but <em>not</em> the directory path itself) will
+be recursively added to the list, subject to any exclusions that are in
+place.  If you only want the directory and its contents to be added, then
+pass in <code class="docutils literal notranslate"><span class="pre">recursive=False</span></code>.</p>
+<p><em>Note:</em> If a directory’s absolute path matches an exclude pattern or path,
+or if the directory contains the configured ignore file, then the
+directory and all of its contents will be recursively excluded from the
+list.</p>
+<p><em>Note:</em> If the passed-in directory happens to be a soft link, it will be
+recursed.  However, the linkDepth parameter controls whether any soft
+links <em>within</em> the directory will be recursed.  The link depth is
+maximum depth of the tree at which soft links should be followed.  So, a
+depth of 0 does not follow any soft links, a depth of 1 follows only
+links within the passed-in directory, a depth of 2 follows the links at
+the next level down, etc.</p>
+<p><em>Note:</em> Any invalid soft links (i.e.  soft links that point to
+non-existent items) will be silently ignored.</p>
+<p><em>Note:</em> The <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeDirs" title="CedarBackup3.filesystem.FilesystemList.excludeDirs"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeDirs</span></code></a> flag only controls whether any given soft link
+path itself is added to the list once it has been discovered.  It does
+<em>not</em> modify any behavior related to directory recursion.</p>
+<p><em>Note:</em> The <a class="reference internal" href="#CedarBackup3.filesystem.FilesystemList.excludeDirs" title="CedarBackup3.filesystem.FilesystemList.excludeDirs"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">excludeDirs</span></code></a> flag only controls whether any given directory
+path itself is added to the list once it has been discovered.  It does
+<em>not</em> modify any behavior related to directory recursion.</p>
+<p><em>Note:</em> If you call this method <em>on a link to a directory</em> that link will
+never be dereferenced (it may, however, be followed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>String representing a path on disk</em>) – Directory path whose contents should be added to the list</p></li>
+<li><p><strong>recursive</strong> (<em>Boolean value</em>) – Indicates whether directory contents should be added recursively</p></li>
+<li><p><strong>addSelf</strong> – Ignored in this subclass</p></li>
+<li><p><strong>linkDepth</strong> (<em>Integer value</em><em>, </em><em>where zero means not to follow any soft links</em>) – Depth of soft links that should be followed</p></li>
+<li><p><strong>dereference</strong> (<em>Boolean value</em>) – Indicates whether soft links, if followed, should be dereferenced</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of items recursively added to the list</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If path is not a directory or does not exist</p></li>
+<li><p><strong>ValueError</strong> – If the path could not be encoded properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.PurgeItemList.removeYoungFiles">
+<span class="sig-name descname"><span class="pre">removeYoungFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">daysOld</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.PurgeItemList.removeYoungFiles" title="Link to this definition">¶</a></dt>
+<dd><p>Removes from the list files younger than a certain age (in days).</p>
+<p>Any file whose “age” in days is less than (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) the value of the
+<code class="docutils literal notranslate"><span class="pre">daysOld</span></code> parameter will be removed from the list so that it will not be
+purged later when <a class="reference internal" href="#CedarBackup3.filesystem.PurgeItemList.purgeItems" title="CedarBackup3.filesystem.PurgeItemList.purgeItems"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">purgeItems</span></code></a> is called.  Directories and soft links
+will be ignored.</p>
+<p>The “age” of a file is the amount of time since the file was last used,
+per the most recent of the file’s <code class="docutils literal notranslate"><span class="pre">st_atime</span></code> and <code class="docutils literal notranslate"><span class="pre">st_mtime</span></code> values.</p>
+<p><em>Note:</em> Some people find the “sense” of this method confusing or
+“backwards”.  Keep in mind that this method is used to remove items
+<em>from the list</em>, not from the filesystem!  It removes from the list
+those items that you would <em>not</em> want to purge because they are too
+young.  As an example, passing in <code class="docutils literal notranslate"><span class="pre">daysOld</span></code> of zero (0) would remove
+from the list no files, which would result in purging all of the files
+later.  I would be happy to make a synonym of this method with an
+easier-to-understand “sense”, if someone can suggest one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>daysOld</strong> (<em>Integer value &gt;= 0</em>) – Minimum age of files that are to be kept in the list</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of entries removed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.PurgeItemList.purgeItems">
+<span class="sig-name descname"><span class="pre">purgeItems</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.PurgeItemList.purgeItems" title="Link to this definition">¶</a></dt>
+<dd><p>Purges all items in the list.</p>
+<p>Every item in the list will be purged.  Directories in the list will
+<em>not</em> be purged recursively, and hence will only be removed if they are
+empty.  Errors will be ignored.</p>
+<p>To faciliate easy removal of directories that will end up being empty,
+the delete process happens in two passes: files first (including soft
+links), then directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple containing count of (files, dirs) removed</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.normalizeFile">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">normalizeFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.normalizeFile" title="Link to this definition">¶</a></dt>
+<dd><p>Normalizes a file name.</p>
+<p>On Windows in particular, we often end up with mixed slashes, where
+parts of a path have forward slash and parts have backward slash.
+This makes it difficult to construct exclusions in configuration,
+because you never know what part of a path will have what kind of
+slash.  I’ve decided to standardize on forward slashes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>String representing a path on disk</em>) – Path to be normalized</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normalized path, which should be equivalent to the original</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.normalizeDir">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">normalizeDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.normalizeDir" title="Link to this definition">¶</a></dt>
+<dd><p>Normalizes a directory name.</p>
+<p>For our purposes, a directory name is normalized by removing the trailing
+path separator, if any.  This is important because we want directories to
+appear within lists in a consistent way, although from the user’s
+perspective passing in <code class="docutils literal notranslate"><span class="pre">/path/to/dir/</span></code> and <code class="docutils literal notranslate"><span class="pre">/path/to/dir</span></code> are equivalent.</p>
+<p>We also convert slashes.  On Windows in particular, we often end up with
+mixed slashes, where parts of a path have forward slash and parts have
+backward slash.  This makes it difficult to construct exclusions in
+configuration, because you never know what part of a path will have
+what kind of slash.  I’ve decided to standardize on forward slashes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>String representing a path on disk</em>) – Path to be normalized</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normalized path, which should be equivalent to the original</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.compareContents">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">compareContents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.compareContents" title="Link to this definition">¶</a></dt>
+<dd><p>Compares the contents of two directories to see if they are equivalent.</p>
+<p>The two directories are recursively compared.  First, we check whether they
+contain exactly the same set of files.  Then, we check to see every given
+file has exactly the same contents in both directories.</p>
+<p>This is all relatively simple to implement through the magic of
+<a class="reference internal" href="#CedarBackup3.filesystem.BackupFileList.generateDigestMap" title="CedarBackup3.filesystem.BackupFileList.generateDigestMap"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">BackupFileList.generateDigestMap</span></code></a>, which knows how to strip a path prefix
+off the front of each entry in the mapping it generates.  This makes our
+comparison as simple as creating a list for each path, then generating a
+digest map for each path and comparing the two.</p>
+<p>If no exception is thrown, the two directories are considered identical.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">verbose</span></code> flag is <code class="docutils literal notranslate"><span class="pre">True</span></code>, then an alternate (but slower) method is
+used so that any thrown exception can indicate exactly which file caused the
+comparison to fail.  The thrown <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception distinguishes
+between the directories containing different files, and containing the same
+files with differing content.</p>
+<p><em>Note:</em> Symlinks are <em>not</em> followed for the purposes of this comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path1</strong> (<em>String representing a path on disk</em>) – First path to compare</p></li>
+<li><p><strong>path2</strong> (<em>String representing a path on disk</em>) – First path to compare</p></li>
+<li><p><strong>verbose</strong> (<em>Boolean</em>) – Indicates whether a verbose response should be given</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If a directory doesn’t exist or can’t be read</p></li>
+<li><p><strong>ValueError</strong> – If the two directories are not equivalent</p></li>
+<li><p><strong>IOError</strong> – If there is an unusual problem reading the directories</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.filesystem.compareDigestMaps">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.filesystem.</span></span><span class="sig-name descname"><span class="pre">compareDigestMaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.filesystem.compareDigestMaps" title="Link to this definition">¶</a></dt>
+<dd><p>Compares two digest maps and throws an exception if they differ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest1</strong> (<em>Digest as returned from BackupFileList.generateDigestMap</em><em>(</em><em>)</em>) – First digest to compare</p></li>
+<li><p><strong>digest2</strong> (<em>Digest as returned from BackupFileList.generateDigestMap</em><em>(</em><em>)</em>) – Second digest to compare</p></li>
+<li><p><strong>verbose</strong> (<em>Boolean</em>) – Indicates whether a verbose response should be given</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the two directories are not equivalent</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">CedarBackup3</a><ul>
+      <li>Previous: <a href="../extend/sysinfo/index.html" title="previous chapter">CedarBackup3.extend.sysinfo</a></li>
+      <li>Next: <a href="../image/index.html" title="next chapter">CedarBackup3.image</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

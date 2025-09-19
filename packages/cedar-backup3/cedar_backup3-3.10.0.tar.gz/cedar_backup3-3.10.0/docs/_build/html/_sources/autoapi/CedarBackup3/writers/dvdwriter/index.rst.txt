@@ -1,0 +1,429 @@
+CedarBackup3.writers.dvdwriter
+==============================
+
+.. py:module:: CedarBackup3.writers.dvdwriter
+
+.. autoapi-nested-parse::
+
+   Provides functionality related to DVD writer devices.
+
+   Module Attributes
+   =================
+
+   .. attribute:: MEDIA_DVDPLUSR
+
+      Constant representing DVD+R media
+
+   .. attribute:: MEDIA_DVDPLUSRW
+
+      Constant representing DVD+RW media
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+   :author: Dmitry Rutsky <rutsky@inbox.ru>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: MEDIA_DVDPLUSR
+   :value: 1
+
+
+.. py:data:: MEDIA_DVDPLUSRW
+   :value: 2
+
+
+.. py:data:: GROWISOFS_COMMAND
+   :value: ['growisofs']
+
+
+.. py:data:: EJECT_COMMAND
+   :value: ['eject']
+
+
+.. py:class:: MediaDefinition(mediaType)
+
+   Class encapsulating information about DVD media definitions.
+
+   The following media types are accepted:
+
+         - ``MEDIA_DVDPLUSR``: DVD+R media (4.4 GB capacity)
+         - ``MEDIA_DVDPLUSRW``: DVD+RW media (4.4 GB capacity)
+
+   Note that the capacity attribute returns capacity in terms of ISO sectors
+   (``util.ISO_SECTOR_SIZE)``.  This is for compatibility with the CD writer
+   functionality.
+
+   The capacities are 4.4 GB because Cedar Backup deals in "true" gigabytes
+   of 1024*1024*1024 bytes per gigabyte.
+
+
+
+   .. py:attribute:: mediaType
+
+
+   .. py:attribute:: rewritable
+
+
+   .. py:attribute:: capacity
+
+
+.. py:class:: MediaCapacity(bytesUsed, bytesAvailable)
+
+   Class encapsulating information about DVD media capacity.
+
+   Space used and space available do not include any information about media
+   lead-in or other overhead.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:attribute:: bytesUsed
+
+
+   .. py:attribute:: bytesAvailable
+
+
+   .. py:attribute:: totalCapacity
+
+
+   .. py:attribute:: utilized
+
+
+.. py:class:: DvdWriter(device, scsiId=None, driveSpeed=None, mediaType=MEDIA_DVDPLUSRW, noEject=False, refreshMediaDelay=0, ejectDelay=0, unittest=False)
+
+   Class representing a device that knows how to write some kinds of DVD media.
+
+   **Summary**
+
+   This is a class representing a device that knows how to write some kinds
+   of DVD media.  It provides common operations for the device, such as
+   ejecting the media and writing data to the media.
+
+   This class is implemented in terms of the ``eject`` and ``growisofs``
+   utilities, all of which should be available on most UN*X platforms.
+
+   **Image Writer Interface**
+
+   The following methods make up the "image writer" interface shared
+   with other kinds of writers::
+
+      __init__
+      initializeImage()
+      addImageEntry()
+      writeImage()
+      setImageNewDisc()
+      retrieveCapacity()
+      getEstimatedImageSize()
+
+   Only these methods will be used by other Cedar Backup functionality
+   that expects a compatible image writer.
+
+   The media attribute is also assumed to be available.
+
+   Unlike the ``CdWriter``, the ``DvdWriter`` can only operate in terms of
+   filesystem devices, not SCSI devices.  So, although the constructor
+   interface accepts a SCSI device parameter for the sake of compatibility,
+   it's not used.
+
+   **Media Types**
+
+   This class knows how to write to DVD+R and DVD+RW media, represented
+   by the following constants:
+
+      - ``MEDIA_DVDPLUSR``: DVD+R media (4.4 GB capacity)
+      - ``MEDIA_DVDPLUSRW``: DVD+RW media (4.4 GB capacity)
+
+   The difference is that DVD+RW media can be rewritten, while DVD+R media
+   cannot be (although at present, ``DvdWriter`` does not really
+   differentiate between rewritable and non-rewritable media).
+
+   The capacities are 4.4 GB because Cedar Backup deals in "true" gigabytes
+   of 1024*1024*1024 bytes per gigabyte.
+
+   The underlying ``growisofs`` utility does support other kinds of media
+   (including DVD-R, DVD-RW and BlueRay) which work somewhat differently
+   than standard DVD+R and DVD+RW media.  I don't support these other kinds
+   of media because I haven't had any opportunity to work with them.  The
+   same goes for dual-layer media of any type.
+
+   **Device Attributes vs. Media Attributes**
+
+   As with the cdwriter functionality, a given dvdwriter instance has two
+   different kinds of attributes associated with it.  I call these device
+   attributes and media attributes.
+
+   Device attributes are things which can be determined without looking at
+   the media.  Media attributes are attributes which vary depending on the
+   state of the media.  In general, device attributes are available via
+   instance variables and are constant over the life of an object, while
+   media attributes can be retrieved through method calls.
+
+   Compared to cdwriters, dvdwriters have very few attributes.  This is due
+   to differences between the way ``growisofs`` works relative to
+   ``cdrecord``.
+
+   **Media Capacity**
+
+   One major difference between the ``cdrecord``/``mkisofs`` utilities used by
+   the cdwriter class and the ``growisofs`` utility used here is that the
+   process of estimating remaining capacity and image size is more
+   straightforward with ``cdrecord``/``mkisofs`` than with ``growisofs``.
+
+   In this class, remaining capacity is calculated by asking doing a dry run
+   of ``growisofs`` and grabbing some information from the output of that
+   command.  Image size is estimated by asking the ``IsoImage`` class for an
+   estimate and then adding on a "fudge factor" determined through
+   experimentation.
+
+   **Testing**
+
+   It's rather difficult to test this code in an automated fashion, even if
+   you have access to a physical DVD writer drive.  It's even more difficult
+   to test it if you are running on some build daemon (think of a Debian
+   autobuilder) which can't be expected to have any hardware or any media
+   that you could write to.
+
+   Because of this, some of the implementation below is in terms of static
+   methods that are supposed to take defined actions based on their
+   arguments.  Public methods are then implemented in terms of a series of
+   calls to simplistic static methods.  This way, we can test as much as
+   possible of the "difficult" functionality via testing the static methods,
+   while hoping that if the static methods are called appropriately, things
+   will work properly.  It's not perfect, but it's much better than no
+   testing at all.
+
+
+
+   .. py:attribute:: device
+
+
+   .. py:attribute:: scsiId
+
+
+   .. py:attribute:: hardwareId
+
+
+   .. py:attribute:: driveSpeed
+
+
+   .. py:attribute:: media
+
+
+   .. py:attribute:: deviceHasTray
+
+
+   .. py:attribute:: deviceCanEject
+
+
+   .. py:attribute:: refreshMediaDelay
+
+
+   .. py:attribute:: ejectDelay
+
+
+   .. py:method:: isRewritable()
+
+      Indicates whether the media is rewritable per configuration.
+
+
+
+   .. py:method:: retrieveCapacity(entireDisc=False)
+
+      Retrieves capacity for the current media in terms of a ``MediaCapacity``
+      object.
+
+      If ``entireDisc`` is passed in as ``True``, the capacity will be for the
+      entire disc, as if it were to be rewritten from scratch.  The same will
+      happen if the disc can't be read for some reason. Otherwise, the capacity
+      will be calculated by subtracting the sectors currently used on the disc,
+      as reported by ``growisofs`` itself.
+
+      :param entireDisc: Indicates whether to return capacity for entire disc
+      :type entireDisc: Boolean true/false
+
+      :returns: ``MediaCapacity`` object describing the capacity of the media
+
+      :raises ValueError: If there is a problem parsing the ``growisofs`` output
+      :raises IOError: If the media could not be read for some reason
+
+
+
+   .. py:method:: initializeImage(newDisc, tmpdir, mediaLabel=None)
+
+      Initializes the writer's associated ISO image.
+
+      This method initializes the ``image`` instance variable so that the caller
+      can use the ``addImageEntry`` method.  Once entries have been added, the
+      ``writeImage`` method can be called with no arguments.
+
+      :param newDisc: Indicates whether the disc should be re-initialized
+      :type newDisc: Boolean true/false
+      :param tmpdir: Temporary directory to use if needed
+      :type tmpdir: String representing a directory path on disk
+      :param mediaLabel: Media label to be applied to the image, if any
+      :type mediaLabel: String, no more than 25 characters long
+
+
+
+   .. py:method:: addImageEntry(path, graftPoint)
+
+      Adds a filepath entry to the writer's associated ISO image.
+
+      The contents of the filepath -- but not the path itself -- will be added
+      to the image at the indicated graft point.  If you don't want to use a
+      graft point, just pass ``None``.
+
+      *Note:* Before calling this method, you must call :any:`initializeImage`.
+
+      :param path: File or directory to be added to the image
+      :type path: String representing a path on disk
+      :param graftPoint: Graft point to be used when adding this entry
+      :type graftPoint: String representing a graft point path, as described above
+
+      :raises ValueError: If initializeImage() was not previously called
+      :raises ValueError: If the path is not a valid file or directory
+
+
+
+   .. py:method:: setImageNewDisc(newDisc)
+
+      Resets (overrides) the newDisc flag on the internal image.
+      :param newDisc: New disc flag to set
+
+      :raises ValueError: If initializeImage() was not previously called
+
+
+
+   .. py:method:: getEstimatedImageSize()
+
+      Gets the estimated size of the image associated with the writer.
+
+      This is an estimate and is conservative.  The actual image could be as
+      much as 450 blocks (sectors) smaller under some circmstances.
+
+      :returns: Estimated size of the image, in bytes
+
+      :raises IOError: If there is a problem calling ``mkisofs``
+      :raises ValueError: If initializeImage() was not previously called
+
+
+
+   .. py:method:: openTray()
+
+      Opens the device's tray and leaves it open.
+
+      This only works if the device has a tray and supports ejecting its media.
+      We have no way to know if the tray is currently open or closed, so we
+      just send the appropriate command and hope for the best.  If the device
+      does not have a tray or does not support ejecting its media, then we do
+      nothing.
+
+      Starting with Debian wheezy on my backup hardware, I started seeing
+      consistent problems with the eject command.  I couldn't tell whether
+      these problems were due to the device management system or to the new
+      kernel (3.2.0).  Initially, I saw simple eject failures, possibly because
+      I was opening and closing the tray too quickly.  I worked around that
+      behavior with the new ejectDelay flag.
+
+      Later, I sometimes ran into issues after writing an image to a disc:
+      eject would give errors like "unable to eject, last error: Inappropriate
+      ioctl for device".  Various sources online (like Ubuntu bug #875543)
+      suggested that the drive was being locked somehow, and that the
+      workaround was to run 'eject -i off' to unlock it.  Sure enough, that
+      fixed the problem for me, so now it's a normal error-handling strategy.
+
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: unlockTray()
+
+      Unlocks the device's tray via 'eject -i off'.
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: closeTray()
+
+      Closes the device's tray.
+
+      This only works if the device has a tray and supports ejecting its media.
+      We have no way to know if the tray is currently open or closed, so we
+      just send the appropriate command and hope for the best.  If the device
+      does not have a tray or does not support ejecting its media, then we do
+      nothing.
+
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: refreshMedia()
+
+      Opens and then immediately closes the device's tray, to refresh the
+      device's idea of the media.
+
+      Sometimes, a device gets confused about the state of its media.  Often,
+      all it takes to solve the problem is to eject the media and then
+      immediately reload it.  (There are also configurable eject and refresh
+      media delays which can be applied, for situations where this makes a
+      difference.)
+
+      This only works if the device has a tray and supports ejecting its media.
+      We have no way to know if the tray is currently open or closed, so we
+      just send the appropriate command and hope for the best.  If the device
+      does not have a tray or does not support ejecting its media, then we do
+      nothing.  The configured delays still apply, though.
+
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: writeImage(imagePath=None, newDisc=False, writeMulti=True)
+
+      Writes an ISO image to the media in the device.
+
+      If ``newDisc`` is passed in as ``True``, we assume that the entire disc
+      will be re-created from scratch.  Note that unlike ``CdWriter``,
+      ``DvdWriter`` does not blank rewritable media before reusing it; however,
+      ``growisofs`` is called such that the media will be re-initialized as
+      needed.
+
+      If ``imagePath`` is passed in as ``None``, then the existing image
+      configured with ``initializeImage()`` will be used.  Under these
+      circumstances, the passed-in ``newDisc`` flag will be ignored and the
+      value passed in to ``initializeImage()`` will apply instead.
+
+      The ``writeMulti`` argument is ignored.  It exists for compatibility with
+      the Cedar Backup image writer interface.
+
+      *Note:* The image size indicated in the log ("Image size will be...") is
+      an estimate.  The estimate is conservative and is probably larger than
+      the actual space that ``dvdwriter`` will use.
+
+      :param imagePath: Path to an ISO image on disk, or ``None`` to use writer's image
+      :type imagePath: String representing a path on disk
+      :param newDisc: Indicates whether the disc should be re-initialized
+      :type newDisc: Boolean true/false
+      :param writeMulti: Unused
+      :type writeMulti: Boolean true/false
+
+      :raises ValueError: If the image path is not absolute
+      :raises ValueError: If some path cannot be encoded properly
+      :raises IOError: If the media could not be written to for some reason
+      :raises ValueError: If no image is passed in and initializeImage() was not previously called
+
+
+

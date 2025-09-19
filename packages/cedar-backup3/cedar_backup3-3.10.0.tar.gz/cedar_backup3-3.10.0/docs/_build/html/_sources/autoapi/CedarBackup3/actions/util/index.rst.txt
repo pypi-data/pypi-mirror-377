@@ -1,0 +1,125 @@
+CedarBackup3.actions.util
+=========================
+
+.. py:module:: CedarBackup3.actions.util
+
+.. autoapi-nested-parse::
+
+   Implements action-related utilities
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: MEDIA_LABEL_PREFIX
+   :value: 'CEDAR BACKUP'
+
+
+.. py:function:: findDailyDirs(stagingDir, indicatorFile)
+
+   Returns a list of all daily staging directories that do not contain
+   the indicated indicator file.
+   :returns: List of absolute paths to daily staging directories
+
+
+.. py:function:: createWriter(config)
+
+   Creates a writer object based on current configuration.
+
+   This function creates and returns a writer based on configuration.  This is
+   done to abstract action functionality from knowing what kind of writer is in
+   use.  Since all writers implement the same interface, there's no need for
+   actions to care which one they're working with.
+
+   Currently, the ``cdwriter`` and ``dvdwriter`` device types are allowed.  An
+   exception will be raised if any other device type is used.
+
+   This function also checks to make sure that the device isn't mounted before
+   creating a writer object for it.  Experience shows that sometimes if the
+   device is mounted, we have problems with the backup.  We may as well do the
+   check here first, before instantiating the writer.
+
+   :param config: Config object
+
+   :returns: Writer that can be used to write a directory to some media
+
+   :raises ValueError: If there is a problem getting the writer
+   :raises IOError: If there is a problem creating the writer object
+
+
+.. py:function:: writeIndicatorFile(targetDir, indicatorFile, backupUser, backupGroup)
+
+   Writes an indicator file into a target directory.
+   :param targetDir: Target directory in which to write indicator
+   :param indicatorFile: Name of the indicator file
+   :param backupUser: User that indicator file should be owned by
+   :param backupGroup: Group that indicator file should be owned by
+
+   :raises IOException: If there is a problem writing the indicator file
+
+
+.. py:function:: getBackupFiles(targetDir)
+
+   Gets a list of backup files in a target directory.
+
+   Files that match INDICATOR_PATTERN (i.e. ``"cback.store"``, ``"cback.stage"``,
+   etc.) are assumed to be indicator files and are ignored.
+
+   :param targetDir: Directory to look in
+
+   :returns: List of backup files in the directory
+
+   :raises ValueError: If the target directory does not exist
+
+
+.. py:function:: checkMediaState(storeConfig)
+
+   Checks state of the media in the backup device to confirm whether it has
+   been initialized for use with Cedar Backup.
+
+   We can tell whether the media has been initialized by looking at its media
+   label.  If the media label starts with MEDIA_LABEL_PREFIX, then it has been
+   initialized.
+
+   The check varies depending on whether the media is rewritable or not.  For
+   non-rewritable media, we also accept a ``None`` media label, since this kind
+   of media cannot safely be initialized.
+
+   :param storeConfig: Store configuration
+
+   :raises ValueError: If media is not initialized
+
+
+.. py:function:: initializeMediaState(config)
+
+   Initializes state of the media in the backup device so Cedar Backup can
+   recognize it.
+
+   This is done by writing an mostly-empty image (it contains a "Cedar Backup"
+   directory) to the media with a known media label.
+
+   *Note:* Only rewritable media (CD-RW, DVD+RW) can be initialized.  It
+   doesn't make any sense to initialize media that cannot be rewritten (CD-R,
+   DVD+R), since Cedar Backup would then not be able to use that media for a
+   backup.
+
+   :param config: Cedar Backup configuration
+
+   :raises ValueError: If media could not be initialized
+   :raises ValueError: If the configured media type is not rewritable
+
+
+.. py:function:: buildMediaLabel()
+
+   Builds a media label to be used on Cedar Backup media.
+   :returns: Media label as a string
+
+

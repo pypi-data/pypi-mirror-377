@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Installation &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="installation">
+<span id="cedar-install"></span><h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
+<section id="background">
+<span id="cedar-install-background"></span><h2>Background<a class="headerlink" href="#background" title="Link to this heading">¶</a></h2>
+<p>There are two different ways to install Cedar Backup. The easiest way is
+to install the pre-built Debian packages. This method is painless and
+ensures that all of the correct dependencies are available, etc.</p>
+<p>If you are running a Linux distribution other than Debian or you are running
+some other platform like FreeBSD or Mac OS X, then you must install the python
+package.  When using the Python package, you need to manage all of the external
+dependencies yourself.</p>
+<p>Cedar Backup has been developed on a Debian GNU/Linux system and is
+primarily supported on Debian and other Linux systems. However, since it
+is written in portable Python 3, it should run without problems on just
+about any UNIX-like operating system. In particular, full Cedar Backup
+functionality is known to work on Debian and SuSE Linux systems, and
+client functionality is also known to work on FreeBSD and Mac OS X
+systems.</p>
+<p>To run a Cedar Backup client, you really just need a working Python 3
+installation. To run a Cedar Backup master, you will also need a set of
+other executables, most of which are related to building and writing
+CD/DVD images. A full list of dependencies is provided further on in
+this chapter.</p>
+</section>
+<section id="installing-on-a-debian-system">
+<span id="cedar-install-debian"></span><h2>Installing on a Debian System<a class="headerlink" href="#installing-on-a-debian-system" title="Link to this heading">¶</a></h2>
+<p>The easiest way to install Cedar Backup onto a Debian system is by using
+a tool such as <code class="docutils literal notranslate"><span class="pre">apt-get</span></code> or <code class="docutils literal notranslate"><span class="pre">aptitude</span></code>.</p>
+<p>Install Cedar Backup using this set of commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt-get update
+$ apt-get install cedar-backup3 cedar-backup3-doc
+</pre></div>
+</div>
+<p>Several of the Cedar Backup dependencies are listed as “recommended” rather
+than required. If you are installing Cedar Backup on a master machine, you must
+install some or all of the recommended dependencies, depending on which actions
+you intend to execute. The stage action normally requires <em>ssh</em>, and the store
+action requires <em>eject</em> and either <em>cdrecord</em>/<em>mkisofs</em> or <em>dvd+rw-tools</em>.
+Clients must also install some sort of SSH server if a remote master will
+collect backups from them.</p>
+<p>Once the package has been installed, you can proceed to configuration as
+described in <a class="reference internal" href="config.html"><span class="doc">Configuration</span></a>.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>The Debian package-management tools must generally be run as root. It is
+safe to install Cedar Backup to a non-standard location and run it as a
+non-root user. However, to do this, you must install the Python package
+instead of the Debian package.</p>
+</div></blockquote>
+</section>
+<section id="installing-the-python-package">
+<span id="cedar-install-python"></span><h2>Installing the Python Package<a class="headerlink" href="#installing-the-python-package" title="Link to this heading">¶</a></h2>
+<p>On platforms other than Debian, Cedar Backup is installed as a Python package.
+You will have to manage external dependencies on your own.</p>
+<p>The easiest way to install the Python package is using Pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install cedar-backup3
+</pre></div>
+</div>
+<p>There are other ways to install a package, but this is the simplest and is
+probably the mechanism most people will want to use.  If you are an experienced
+Python user, feel free to use whichever mechanism you prefer on your own
+system.</p>
+<section id="installing-dependencies">
+<span id="cedar-install-python-deps"></span><h3>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Link to this heading">¶</a></h3>
+<p>Cedar Backup requires a number of external packages in order to function
+properly. Before installing Cedar Backup, you must make sure that these
+dependencies are met.</p>
+<p>Cedar Backup is written in Python 3 and requires version 3.8 or greater
+of the language.</p>
+<p>Additionally, remote client peer nodes must be running an RSH-compatible
+server, such as the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> server, and master nodes must have an
+RSH-compatible client installed if they need to connect to remote peer
+machines.</p>
+<p>Master machines also require several other system utilities, most having
+to do with writing and validating CD/DVD media. On master machines, you
+must make sure that these utilities are available if you want to to run
+the store action:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mkisofs</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eject</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mount</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unmount</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volname</span></code></p></li>
+</ul>
+<p>Then, you need this utility if you are writing CD media:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cdrecord</span></code></p></li>
+</ul>
+<p><em>or</em> these utilities if you are writing DVD media:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">growisofs</span></code></p></li>
+</ul>
+<p>All of these utilities are common and are easy to find for almost any
+UNIX-like operating system.</p>
+<blockquote>
+<div><p><img alt="tip" src="../_images/tip.png" /></p>
+<p>Many UNIX-like distributions provide an automatic or semi-automatic way to
+install packages like the ones Cedar Backup requires (think RPMs for RedHat,
+Gentoo’s Portage system, Homebrew for Mac, or the BSD ports system). If you
+are not sure how to install these packages on your system, you might want to
+check out <a class="reference internal" href="depends.html"><span class="doc">Dependencies</span></a>. This appendix provides links to “upstream” source
+packages, plus as much information as I have been able to gather about
+packages for non-Debian platforms.</p>
+</div></blockquote>
+<hr class="docutils" />
+<p><em>Previous</em>: <a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a> • <em>Next</em>: <a class="reference internal" href="commandline.html"><span class="doc">Command Line Tools</span></a></p>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

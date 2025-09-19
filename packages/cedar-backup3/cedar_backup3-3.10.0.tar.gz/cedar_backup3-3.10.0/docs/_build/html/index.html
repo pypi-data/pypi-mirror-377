@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cedar Backup v3 &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <script src="_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="cedar-backup-v3">
+<h1>Cedar Backup v3<a class="headerlink" href="#cedar-backup-v3" title="Link to this heading">¶</a></h1>
+<p>Release v3.10.0</p>
+<a class="reference external image-reference" href="https://pypi.org/project/cedar-backup3/"><img alt="https://img.shields.io/pypi/v/cedar-backup3.svg" src="https://img.shields.io/pypi/v/cedar-backup3.svg" />
+</a>
+<a class="reference external image-reference" href="https://github.com/pronovic/cedar-backup3/blob/main/LICENSE"><img alt="https://img.shields.io/pypi/l/cedar-backup3.svg" src="https://img.shields.io/pypi/l/cedar-backup3.svg" />
+</a>
+<a class="reference external image-reference" href="https://pypi.org/project/cedar-backup3/"><img alt="https://img.shields.io/pypi/wheel/cedar-backup3.svg" src="https://img.shields.io/pypi/wheel/cedar-backup3.svg" />
+</a>
+<a class="reference external image-reference" href="https://pypi.org/project/cedar-backup3/"><img alt="https://img.shields.io/pypi/pyversions/cedar-backup3.svg" src="https://img.shields.io/pypi/pyversions/cedar-backup3.svg" />
+</a>
+<a class="reference external image-reference" href="https://github.com/pronovic/cedar-backup3/actions?query=workflow%3A%22Test+Suite%22"><img alt="https://github.com/pronovic/cedar-backup3/workflows/Test%20Suite/badge.svg" src="https://github.com/pronovic/cedar-backup3/workflows/Test%20Suite/badge.svg" />
+</a>
+<a class="reference external image-reference" href="https://cedar-backup3.readthedocs.io/en/stable/"><img alt="https://readthedocs.org/projects/cedar-backup3/badge/?version=stable&amp;style=flat" src="https://readthedocs.org/projects/cedar-backup3/badge/?version=stable&amp;style=flat" />
+</a>
+<a class="reference external image-reference" href="https://coveralls.io/github/pronovic/cedar-backup3?branch=main"><img alt="https://coveralls.io/repos/github/pronovic/cedar-backup3/badge.svg?branch=main" src="https://coveralls.io/repos/github/pronovic/cedar-backup3/badge.svg?branch=main" />
+</a>
+<p>Cedar Backup is a software package designed to manage system backups for a pool
+of local and remote machines.</p>
+<p>Cedar Backup understands how to back up filesystem data as well as MySQL and
+PostgreSQL databases and Subversion repositories. It can also be easily extended
+to support other kinds of data sources.  The backup process is focused around
+weekly backups to a single CD or DVD disc, with the expectation that the disc
+will be changed or overwritten at the beginning of each week. Alternately,
+Cedar Backup can write your backups to the Amazon S3 cloud rather than relying
+on physical media.</p>
+<p>Besides offering command-line utilities to manage the backup process, Cedar
+Backup provides a well-organized library of backup-related functionality,
+written in the Python 3 programming language.</p>
+<p>There are many different backup software systems in the open source world.
+Cedar Backup aims to fill a niche: it aims to be a good fit for people who need
+to back up a limited amount of important data on a regular basis. Cedar Backup
+isn’t for you if you want to back up your huge MP3 collection every night, or
+if you want to back up a few hundred machines.  However, if you administer a
+small set of machines and you want to run daily incremental backups for things
+like system configuration, current email, small web sites, source code
+repositories, or small databases, then Cedar Backup is probably worth your
+time.</p>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<p>See the <a class="reference external" href="https://github.com/pronovic/cedar-backup3/blob/main/Changelog">Changelog</a> for recent changes.</p>
+<p>The <a class="reference internal" href="manual/index.html"><span class="doc">Cedar Backup v3 Software Manual</span></a> documents the process of setting up and using Cedar
+Backup.  In the manual, you can find information about how Cedar Backup works,
+how to install and configure it, how to schedule backups, how to restore data,
+and how to get support.</p>
+</section>
+<section id="package-distributions">
+<h2>Package Distributions<a class="headerlink" href="#package-distributions" title="Link to this heading">¶</a></h2>
+<p>Cedar Backup is primarily distributed as a Python 3 package.  You can install
+it using pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install cedar-backup3
+</pre></div>
+</div>
+<p>In addition to the Python package, Cedar Backup requires a variety of external
+system dependencies.  For more information, see the <a class="reference internal" href="manual/index.html"><span class="doc">Cedar Backup v3 Software Manual</span></a>.</p>
+<p>Debian packages for Cedar Backup v3, called <code class="docutils literal notranslate"><span class="pre">cedar-backup3</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cedar-backup3-doc</span></code>, were first available starting with the Debian ‘stretch’
+release.  Debian derivatives (such as Ubuntu) should also contain the packages.</p>
+</section>
+<section id="library-code">
+<h2>Library Code<a class="headerlink" href="#library-code" title="Link to this heading">¶</a></h2>
+<p>The Cedar Backup v3 has been designed as both an application and a
+library of backup-related functionality.  The <code class="docutils literal notranslate"><span class="pre">CedarBackup3</span></code> Python package
+contains a variety of useful backup-related classes and functions.  For
+instance: the <code class="docutils literal notranslate"><span class="pre">IsoImage</span></code> class represents an ISO CD image; the <code class="docutils literal notranslate"><span class="pre">CdWriter</span></code>
+class represents a CD-R/CD-RW writer device; and the <code class="docutils literal notranslate"><span class="pre">FilesystemList</span></code> class
+represents a list of files and directories on a filesystem.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+</div>
+</section>
+<section id="contributing-improvements">
+<h2>Contributing Improvements<a class="headerlink" href="#contributing-improvements" title="Link to this heading">¶</a></h2>
+<p>Users are welcome to contribute improvements to Cedar Backup.  In the past,
+users have helped out by reporting unit test failures, making suggestions,
+requesting enhancements, updating documentation, submitting patches, and
+beta-testing entire releases or individual bug fixes.  As a result, Cedar
+Backup has evolved into a much more flexible platform than it would otherwise
+have been.</p>
+</section>
+<section id="migrating-from-version-2-to-version-3">
+<h2>Migrating from Version 2 to Version 3<a class="headerlink" href="#migrating-from-version-2-to-version-3" title="Link to this heading">¶</a></h2>
+<p>The main difference between Cedar Backup v2 and Cedar Backup v3 is the targeted
+Python interpreter.  Cedar Backup v2 was designed for Python 2, while v3 is a
+conversion of the original code to Python 3.  Other than that, both versions
+are functionally equivalent.  The configuration format is unchanged, and you
+can mix-and-match masters and clients of different versions in the same backup
+pool.  However, v2 is no longer maintained, so you should convert as soon as
+possible.</p>
+<p>A major design goal for v3 was to facilitate easy migration testing for users,
+by making it possible to install v3 on the same server where v2 was
+already in use.  A side effect of this design choice is that all of the
+executables, configuration files, and logs changed names in v3.  Where v2 used
+<code class="docutils literal notranslate"><span class="pre">cback</span></code>, v3 uses <code class="docutils literal notranslate"><span class="pre">cback3</span></code>: <code class="docutils literal notranslate"><span class="pre">cback3.conf</span></code> instead of <code class="docutils literal notranslate"><span class="pre">cback.conf</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cback3.log</span></code> instead of <code class="docutils literal notranslate"><span class="pre">cback.log</span></code>, etc.</p>
+<p>So, while migrating from v2 to v3 is relatively straightforward, you will have
+to make some changes manually.  You will need to create a new configuration
+file (or soft link to the old one), modify your cron jobs to use the new
+executable name, etc.  You can migrate one server at a time in your pool with
+no ill effects, or even incrementally migrate a single server by using v2 and
+v3 on different days of the week or for different parts of the backup.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="autoapi/index.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

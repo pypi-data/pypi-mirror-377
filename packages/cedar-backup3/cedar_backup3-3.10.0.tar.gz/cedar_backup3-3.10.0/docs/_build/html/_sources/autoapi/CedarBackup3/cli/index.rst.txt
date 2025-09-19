@@ -1,0 +1,456 @@
+CedarBackup3.cli
+================
+
+.. py:module:: CedarBackup3.cli
+
+.. autoapi-nested-parse::
+
+   Provides command-line interface implementation for the cback3 script.
+
+   Summary
+   =======
+
+      The functionality in this module encapsulates the command-line interface for
+      the cback3 script.  The cback3 script itself is very short, basically just an
+      invokation of one function implemented here.  That, in turn, makes it
+      simpler to validate the command line interface (for instance, it's easier to
+      run pychecker against a module, and unit tests are easier, too).
+
+      The objects and functions implemented in this module are probably not useful
+      to any code external to Cedar Backup.   Anyone else implementing their own
+      command-line interface would have to reimplement (or at least enhance) all
+      of this anyway.
+
+   Backwards Compatibility
+   =======================
+
+      The command line interface has changed between Cedar Backup 1.x and Cedar
+      Backup 2.x.  Some new switches have been added, and the actions have become
+      simple arguments rather than switches (which is a much more standard command
+      line format).  Old 1.x command lines are generally no longer valid.
+
+   Module Attributes
+   =================
+
+   .. attribute:: DEFAULT_CONFIG
+
+      The default configuration file
+
+   .. attribute:: DEFAULT_LOGFILE
+
+      The default log file path
+
+   .. attribute:: DEFAULT_OWNERSHIP
+
+      Default ownership for the logfile
+
+   .. attribute:: DEFAULT_MODE
+
+      Default file permissions mode on the logfile
+
+   .. attribute:: VALID_ACTIONS
+
+      List of valid actions
+
+   .. attribute:: COMBINE_ACTIONS
+
+      List of actions which can be combined with other actions
+
+   .. attribute:: NONCOMBINE_ACTIONS
+
+      List of actions which cannot be combined with other actions
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: DISK_LOG_FORMAT
+   :value: '%(asctime)s --> [%(levelname)-7s] %(message)s'
+
+
+.. py:data:: DISK_OUTPUT_FORMAT
+   :value: '%(message)s'
+
+
+.. py:data:: SCREEN_LOG_FORMAT
+   :value: '%(message)s'
+
+
+.. py:data:: SCREEN_LOG_STREAM
+
+.. py:data:: DATE_FORMAT
+   :value: '%Y-%m-%dT%H:%M:%S %Z'
+
+
+.. py:data:: DEFAULT_CONFIG
+   :value: '/etc/cback3.conf'
+
+
+.. py:data:: DEFAULT_LOGFILE
+   :value: '/var/log/cback3.log'
+
+
+.. py:data:: DEFAULT_OWNERSHIP
+   :value: ['root', 'adm']
+
+
+.. py:data:: DEFAULT_MODE
+   :value: 416
+
+
+.. py:data:: REBUILD_INDEX
+   :value: 0
+
+
+.. py:data:: VALIDATE_INDEX
+   :value: 0
+
+
+.. py:data:: INITIALIZE_INDEX
+   :value: 0
+
+
+.. py:data:: COLLECT_INDEX
+   :value: 100
+
+
+.. py:data:: STAGE_INDEX
+   :value: 200
+
+
+.. py:data:: STORE_INDEX
+   :value: 300
+
+
+.. py:data:: PURGE_INDEX
+   :value: 400
+
+
+.. py:data:: VALID_ACTIONS
+   :value: ['collect', 'stage', 'store', 'purge', 'rebuild', 'validate', 'initialize', 'all']
+
+
+.. py:data:: COMBINE_ACTIONS
+   :value: ['collect', 'stage', 'store', 'purge']
+
+
+.. py:data:: NONCOMBINE_ACTIONS
+   :value: ['rebuild', 'validate', 'initialize', 'all']
+
+
+.. py:data:: SHORT_SWITCHES
+   :value: 'hVbqc:fMNl:o:m:OdsD'
+
+
+.. py:data:: LONG_SWITCHES
+   :value: ['help', 'version', 'verbose', 'quiet', 'config=', 'full', 'managed', 'managed-only',...
+
+
+.. py:function:: cli()
+
+   Implements the command-line interface for the ``cback3`` script.
+
+   Essentially, this is the "main routine" for the cback3 script.  It does all
+   of the argument processing for the script, and then sets about executing the
+   indicated actions.
+
+   As a general rule, only the actions indicated on the command line will be
+   executed.   We will accept any of the built-in actions and any of the
+   configured extended actions (which makes action list verification a two-
+   step process).
+
+   The ``'all'`` action has a special meaning: it means that the built-in set of
+   actions (collect, stage, store, purge) will all be executed, in that order.
+   Extended actions will be ignored as part of the ``'all'`` action.
+
+   Raised exceptions always result in an immediate return.  Otherwise, we
+   generally return when all specified actions have been completed.  Actions
+   are ignored if the help, version or validate flags are set.
+
+   A different error code is returned for each type of failure:
+
+      - ``1``: The Python interpreter version is not supported
+      - ``2``: Error processing command-line arguments
+      - ``3``: Error configuring logging
+      - ``4``: Error parsing indicated configuration file
+      - ``5``: Backup was interrupted with a CTRL-C or similar
+      - ``6``: Error executing specified backup actions
+
+   *Note:* This function contains a good amount of logging at the INFO level,
+   because this is the right place to document high-level flow of control (i.e.
+   what the command-line options were, what config file was being used, etc.)
+
+   *Note:* We assume that anything that *must* be seen on the screen is logged
+   at the ERROR level.  Errors that occur before logging can be configured are
+   written to ``sys.stderr``.
+
+   :returns: Error code as described above
+
+
+.. py:function:: setupLogging(options)
+
+   Set up logging based on command-line options.
+
+   There are two kinds of logging: flow logging and output logging.  Output
+   logging contains information about system commands executed by Cedar Backup,
+   for instance the calls to ``mkisofs`` or ``mount``, etc.  Flow logging
+   contains error and informational messages used to understand program flow.
+   Flow log messages and output log messages are written to two different
+   loggers target (``CedarBackup3.log`` and ``CedarBackup3.output``).  Flow log
+   messages are written at the ERROR, INFO and DEBUG log levels, while output
+   log messages are generally only written at the INFO log level.
+
+   By default, output logging is disabled.  When the ``options.output`` or
+   ``options.debug`` flags are set, output logging will be written to the
+   configured logfile.  Output logging is never written to the screen.
+
+   By default, flow logging is enabled at the ERROR level to the screen and at
+   the INFO level to the configured logfile.  If the ``options.quiet`` flag is
+   set, flow logging is enabled at the INFO level to the configured logfile
+   only (i.e. no output will be sent to the screen).  If the ``options.verbose``
+   flag is set, flow logging is enabled at the INFO level to both the screen
+   and the configured logfile.  If the ``options.debug`` flag is set, flow
+   logging is enabled at the DEBUG level to both the screen and the configured
+   logfile.
+
+   :param options: Command-line options
+   :type options: :any:`Options` object
+
+   :returns: Path to logfile on disk
+
+
+.. py:function:: setupPathResolver(config)
+
+   Set up the path resolver singleton based on configuration.
+
+   Cedar Backup's path resolver is implemented in terms of a singleton, the
+   :any:`PathResolverSingleton` class.  This function takes options configuration,
+   converts it into the dictionary form needed by the singleton, and then
+   initializes the singleton.  After that, any function that needs to resolve
+   the path of a command can use the singleton.
+
+   :param config: Configuration
+   :type config: :any:`Config` object
+
+
+.. py:class:: Options(argumentList=None, argumentString=None, validate=True)
+
+   Class representing command-line options for the cback3 script.
+
+   The ``Options`` class is a Python object representation of the command-line
+   options of the cback3 script.
+
+   The object representation is two-way: a command line string or a list of
+   command line arguments can be used to create an ``Options`` object, and then
+   changes to the object can be propogated back to a list of command-line
+   arguments or to a command-line string.  An ``Options`` object can even be
+   created from scratch programmatically (if you have a need for that).
+
+   There are two main levels of validation in the ``Options`` class.  The first
+   is field-level validation.  Field-level validation comes into play when a
+   given field in an object is assigned to or updated.  We use Python's
+   ``property`` functionality to enforce specific validations on field values,
+   and in some places we even use customized list classes to enforce
+   validations on list members.  You should expect to catch a ``ValueError``
+   exception when making assignments to fields if you are programmatically
+   filling an object.
+
+   The second level of validation is post-completion validation.  Certain
+   validations don't make sense until an object representation of options is
+   fully "complete".  We don't want these validations to apply all of the time,
+   because it would make building up a valid object from scratch a real pain.
+   For instance, we might have to do things in the right order to keep from
+   throwing exceptions, etc.
+
+   All of these post-completion validations are encapsulated in the
+   :any:`Options.validate` method.  This method can be called at any time by a
+   client, and will always be called immediately after creating a ``Options``
+   object from a command line and before exporting a ``Options`` object back to
+   a command line.  This way, we get acceptable ease-of-use but we also don't
+   accept or emit invalid command lines.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: actions
+      :value: []
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:attribute:: help
+
+
+   .. py:attribute:: version
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: quiet
+
+
+   .. py:attribute:: config
+
+
+   .. py:attribute:: full
+
+
+   .. py:attribute:: managed
+
+
+   .. py:attribute:: managedOnly
+
+
+   .. py:attribute:: logfile
+
+
+   .. py:attribute:: owner
+
+
+   .. py:attribute:: mode
+
+
+   .. py:attribute:: output
+
+
+   .. py:attribute:: debug
+
+
+   .. py:attribute:: stacktrace
+
+
+   .. py:attribute:: diagnostics
+
+
+   .. py:method:: validate()
+
+      Validates command-line options represented by the object.
+
+      Unless ``--help`` or ``--version`` are supplied, at least one action must
+      be specified.  Other validations (as for allowed values for particular
+      options) will be taken care of at assignment time by the properties
+      functionality.
+
+      *Note:* The command line format is specified by the ``_usage`` function.
+      Call ``_usage`` to see a usage statement for the cback3 script.
+
+      :raises ValueError: If one of the validations fails
+
+
+
+   .. py:method:: buildArgumentList(validate=True)
+
+      Extracts options into a list of command line arguments.
+
+      The original order of the various arguments (if, indeed, the object was
+      initialized with a command-line) is not preserved in this generated
+      argument list.   Besides that, the argument list is normalized to use the
+      long option names (i.e. --version rather than -V).  The resulting list
+      will be suitable for passing back to the constructor in the
+      ``argumentList`` parameter.  Unlike :any:`buildArgumentString`, string
+      arguments are not quoted here, because there is no need for it.
+
+      Unless the ``validate`` parameter is ``False``, the :any:`Options.validate`
+      method will be called (with its default arguments) against the
+      options before extracting the command line.  If the options are not valid,
+      then an argument list will not be extracted.
+
+      *Note:* It is strongly suggested that the ``validate`` option always be set
+      to ``True`` (the default) unless there is a specific need to extract an
+      invalid command line.
+
+      :param validate: Validate the options before extracting the command line
+      :type validate: Boolean true/false
+
+      :returns: List representation of command-line arguments
+
+      :raises ValueError: If options within the object are invalid
+
+
+
+   .. py:method:: buildArgumentString(validate=True)
+
+      Extracts options into a string of command-line arguments.
+
+      The original order of the various arguments (if, indeed, the object was
+      initialized with a command-line) is not preserved in this generated
+      argument string.   Besides that, the argument string is normalized to use
+      the long option names (i.e. --version rather than -V) and to quote all
+      string arguments with double quotes (``"``).  The resulting string will be
+      suitable for passing back to the constructor in the ``argumentString``
+      parameter.
+
+      Unless the ``validate`` parameter is ``False``, the :any:`Options.validate`
+      method will be called (with its default arguments) against the options
+      before extracting the command line.  If the options are not valid, then
+      an argument string will not be extracted.
+
+      *Note:* It is strongly suggested that the ``validate`` option always be set
+      to ``True`` (the default) unless there is a specific need to extract an
+      invalid command line.
+
+      :param validate: Validate the options before extracting the command line
+      :type validate: Boolean true/false
+
+      :returns: String representation of command-line arguments
+
+      :raises ValueError: If options within the object are invalid
+
+
+
+.. py:data:: result
+   :value: 1
+
+

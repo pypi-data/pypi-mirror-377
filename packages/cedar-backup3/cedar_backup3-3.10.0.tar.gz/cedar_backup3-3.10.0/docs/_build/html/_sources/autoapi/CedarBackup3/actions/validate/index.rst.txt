@@ -1,0 +1,49 @@
+CedarBackup3.actions.validate
+=============================
+
+.. py:module:: CedarBackup3.actions.validate
+
+.. autoapi-nested-parse::
+
+   Implements the standard 'validate' action.
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: executeValidate(configPath, options, config)
+
+   Executes the validate action.
+
+   This action validates each of the individual sections in the config file.
+   This is a "runtime" validation.  The config file itself is already valid in
+   a structural sense, so what we check here that is that we can actually use
+   the configuration without any problems.
+
+   There's a separate validation function for each of the configuration
+   sections.  Each validation function returns a true/false indication for
+   whether configuration was valid, and then logs any configuration problems it
+   finds.  This way, one pass over configuration indicates most or all of the
+   obvious problems, rather than finding just one problem at a time.
+
+   Any reported problems will be logged at the ERROR level normally, or at the
+   INFO level if the quiet flag is enabled.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: If some configuration value is invalid
+
+

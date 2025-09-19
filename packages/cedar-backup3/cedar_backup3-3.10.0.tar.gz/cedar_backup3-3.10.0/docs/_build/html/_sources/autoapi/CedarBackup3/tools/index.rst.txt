@@ -1,0 +1,34 @@
+CedarBackup3.tools
+==================
+
+.. py:module:: CedarBackup3.tools
+
+.. autoapi-nested-parse::
+
+   Official Cedar Backup Tools
+
+   This package provides official Cedar Backup tools.  Tools are things that feel
+   a little like extensions, but don't fit the normal mold of extensions.  For
+   instance, they might not be intended to run from cron, or might need to interact
+   dynamically with the user (i.e. accept user input).
+
+   Tools are usually scripts that are run directly from the command line, just
+   like the main ``cback3`` script.  Like the ``cback3`` script, the majority of a
+   tool is implemented in a .py module, and then the script just invokes the
+   module's ``cli()`` function.  The actual scripts for tools are distributed in
+   the util/ directory.
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/CedarBackup3/tools/amazons3/index
+   /autoapi/CedarBackup3/tools/span/index
+
+

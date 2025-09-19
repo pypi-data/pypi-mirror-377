@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Extension Architecture Interface &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="extension-architecture-interface">
+<span id="cedar-extenspec"></span><h1>Extension Architecture Interface<a class="headerlink" href="#extension-architecture-interface" title="Link to this heading">¶</a></h1>
+<p>The Cedar Backup Extension Architecture Interface is the application
+programming interface used by third-party developers to write Cedar
+Backup extensions. This appendix briefly specifies the interface in
+enough detail for someone to succesfully implement an extension.</p>
+<p>Backup extensions are third-party pieces of code which extend Cedar Backup’s
+functionality. Extensions can be invoked from the Cedar Backup command line and
+are allowed to place their configuration in Cedar Backup’s configuration file.</p>
+<p>There is a one-to-one mapping between a command-line extended action and
+an extension function. The mapping is configured in the Cedar Backup
+configuration file using a section something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">database</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">foo</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">bar</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">101</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In this case, the action “database” has been mapped to the extension
+function <code class="docutils literal notranslate"><span class="pre">foo.bar()</span></code>.</p>
+<p>Extension functions can take any actions they would like to once they
+have been invoked, but must abide by these rules:</p>
+<ol class="arabic simple">
+<li><p>Extensions must not write to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> or <code class="docutils literal notranslate"><span class="pre">stderr</span></code> using functions
+such as <code class="docutils literal notranslate"><span class="pre">print</span></code> or <code class="docutils literal notranslate"><span class="pre">sys.write</span></code>.</p></li>
+<li><p>All logging must take place using the Python logging facility.
+Flow-of-control logging should happen on the <code class="docutils literal notranslate"><span class="pre">CedarBackup3.log</span></code>
+topic. Authors can assume that ERROR will always go to the terminal,
+that INFO and WARN will always be logged, and that DEBUG will be
+ignored unless debugging is enabled.</p></li>
+<li><p>Any time an extension invokes a command-line utility, it must be done
+through the <code class="docutils literal notranslate"><span class="pre">CedarBackup3.util.executeCommand</span></code> function. This will
+help keep Cedar Backup safer from format-string attacks, and will
+make it easier to consistently log command-line process output.</p></li>
+<li><p>Extensions may not return any value.</p></li>
+<li><p>Extensions must throw a Python exception containing a descriptive
+message if processing fails. Extension authors can use their
+judgement as to what constitutes failure; however, any problems
+during execution should result in either a thrown exception or a
+logged message.</p></li>
+<li><p>Extensions may rely only on Cedar Backup functionality that is
+advertised as being part of the public interface. This means that
+extensions must not directly make use of methods, functions or values
+starting with with the <code class="docutils literal notranslate"><span class="pre">_</span></code> character. Furthermore, extensions
+should only rely on parts of the public interface that are documented
+in the online interface documentation.</p></li>
+<li><p>Extension authors are encouraged to extend the Cedar Backup public
+interface through normal methods of inheritence. However, no
+extension is allowed to directly change Cedar Backup code in a way
+that would affect how Cedar Backup itself executes when the extension
+has not been invoked. For instance, extensions would not be allowed
+to add new command-line options or new writer types.</p></li>
+<li><p>Extensions must be written to assume an empty locale set (no
+<code class="docutils literal notranslate"><span class="pre">$LC_*</span></code> settings) and <code class="docutils literal notranslate"><span class="pre">$LANG=C</span></code>. For the typical open-source
+software project, this would imply writing output-parsing code
+against the English localization (if any). The <code class="docutils literal notranslate"><span class="pre">executeCommand</span></code>
+function does sanitize the environment to enforce this configuration.</p></li>
+</ol>
+<p>Extension functions take three arguments: the path to configuration on
+disk, a <code class="docutils literal notranslate"><span class="pre">CedarBackup3.cli.Options</span></code> object representing the
+command-line options in effect, and a <code class="docutils literal notranslate"><span class="pre">CedarBackup3.config.Config</span></code>
+object representing parsed standard configuration.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">configPath</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Sample extension function.&quot;&quot;&quot;</span>
+   <span class="k">pass</span>
+</pre></div>
+</div>
+<p>This interface is structured so that simple extensions can use standard
+configuration without having to parse it for themselves, but more
+complicated extensions can get at the configuration file on disk and
+parse it again as needed.</p>
+<p>The interface to the <code class="docutils literal notranslate"><span class="pre">CedarBackup3.cli.Options</span></code> and
+<code class="docutils literal notranslate"><span class="pre">CedarBackup3.config.Config</span></code> classes has been thoroughly documented
+in the online interface documentation.  The interface is guaranteed to change
+only in backwards-compatible ways unless the Cedar Backup major version number
+is bumped (i.e. from 3 to 4).</p>
+<p>If an extension needs to add its own configuration information to the
+Cedar Backup configuration file, this extra configuration must be added
+in a new configuration section using a name that does not conflict with
+standard configuration or other known extensions.</p>
+<p>For instance, our hypothetical database extension might require
+configuration indicating the path to some repositories to back up. This
+information might go into a section something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">repository</span><span class="o">&gt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">repo1</span><span class="o">&lt;/</span><span class="n">repository</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">repository</span><span class="o">&gt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">repo2</span><span class="o">&lt;/</span><span class="n">repository</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">database</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In order to read this new configuration, the extension code can either
+inherit from the <code class="docutils literal notranslate"><span class="pre">Config</span></code> object and create a subclass that knows how
+to parse the new <code class="docutils literal notranslate"><span class="pre">database</span></code> config section, or can write its own code
+to parse whatever it needs out of the file. Either way, the resulting
+code is completely independent of the standard Cedar Backup
+functionality.</p>
+<hr class="docutils" />
+<p><em>Previous</em>: <a class="reference internal" href="extensions.html"><span class="doc">Official Extensions</span></a> • <em>Next</em>: <a class="reference internal" href="depends.html"><span class="doc">Dependencies</span></a></p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

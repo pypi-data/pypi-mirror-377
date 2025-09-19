@@ -1,0 +1,257 @@
+CedarBackup3.writers.util
+=========================
+
+.. py:module:: CedarBackup3.writers.util
+
+.. autoapi-nested-parse::
+
+   Provides utilities related to image writers.
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: MKISOFS_COMMAND
+   :value: ['mkisofs']
+
+
+.. py:data:: VOLNAME_COMMAND
+   :value: ['volname']
+
+
+.. py:function:: validateDevice(device, unittest=False)
+
+   Validates a configured device.
+   The device must be an absolute path, must exist, and must be writable.
+   The unittest flag turns off validation of the device on disk.
+   :param device: Filesystem device path
+   :param unittest: Indicates whether we're unit testing
+
+   :returns: Device as a string, for instance ``"/dev/cdrw"``
+
+   :raises ValueError: If the device value is invalid
+   :raises ValueError: If some path cannot be encoded properly
+
+
+.. py:function:: validateScsiId(scsiId)
+
+   Validates a SCSI id string.
+   SCSI id must be a string in the form ``[<method>:]scsibus,target,lun``.
+   For Mac OS X (Darwin), we also accept the form ``IO.*Services[/N]``.
+   *Note:* For consistency, if ``None`` is passed in, ``None`` will be returned.
+   :param scsiId: SCSI id for the device
+
+   :returns: SCSI id as a string, for instance ``"ATA:1,0,0"``
+
+   :raises ValueError: If the SCSI id string is invalid
+
+
+.. py:function:: validateDriveSpeed(driveSpeed)
+
+   Validates a drive speed value.
+   Drive speed must be an integer which is >= 1.
+   *Note:* For consistency, if ``None`` is passed in, ``None`` will be returned.
+   :param driveSpeed: Speed at which the drive writes
+
+   :returns: Drive speed as an integer
+
+   :raises ValueError: If the drive speed value is invalid
+
+
+.. py:function:: readMediaLabel(devicePath)
+
+   Reads the media label (volume name) from the indicated device.
+   The volume name is read using the ``volname`` command.
+   :param devicePath: Device path to read from
+
+   :returns: Media label as a string, or None if there is no name or it could not be read
+
+
+.. py:class:: IsoImage(device=None, boundaries=None, graftPoint=None)
+
+   Represents an ISO filesystem image.
+
+   **Summary**
+
+   This object represents an ISO 9660 filesystem image.  It is implemented
+   in terms of the ``mkisofs`` program, which has been ported to many
+   operating systems and platforms.  A "sensible subset" of the ``mkisofs``
+   functionality is made available through the public interface, allowing
+   callers to set a variety of basic options such as publisher id,
+   application id, etc. as well as specify exactly which files and
+   directories they want included in their image.
+
+   By default, the image is created using the Rock Ridge protocol (using the
+   ``-r`` option to ``mkisofs``) because Rock Ridge discs are generally more
+   useful on UN*X filesystems than standard ISO 9660 images.  However,
+   callers can fall back to the default ``mkisofs`` functionality by setting
+   the ``useRockRidge`` instance variable to ``False``.  Note, however, that
+   this option is not well-tested.
+
+   **Where Files and Directories are Placed in the Image**
+
+   Although this class is implemented in terms of the ``mkisofs`` program,
+   its standard "image contents" semantics are slightly different than the original
+   ``mkisofs`` semantics.  The difference is that files and directories are
+   added to the image with some additional information about their source
+   directory kept intact.
+
+   As an example, suppose you add the file ``/etc/profile`` to your image and
+   you do not configure a graft point.  The file ``/profile`` will be created
+   in the image.  The behavior for directories is similar.  For instance,
+   suppose that you add ``/etc/X11`` to the image and do not configure a
+   graft point.  In this case, the directory ``/X11`` will be created in the
+   image, even if the original ``/etc/X11`` directory is empty.  I{This
+   behavior differs from the standard ``mkisofs`` behavior!}
+
+   If a graft point is configured, it will be used to modify the point at
+   which a file or directory is added into an image.  Using the examples
+   from above, let's assume you set a graft point of ``base`` when adding
+   ``/etc/profile`` and ``/etc/X11`` to your image.  In this case, the file
+   ``/base/profile`` and the directory ``/base/X11`` would be added to the
+   image.
+
+   I feel that this behavior is more consistent than the original ``mkisofs``
+   behavior.  However, to be fair, it is not quite as flexible, and some
+   users might not like it.  For this reason, the ``contentsOnly`` parameter
+   to the :any:`addEntry` method can be used to revert to the original behavior
+   if desired.
+
+
+
+   .. py:attribute:: entries
+
+
+   .. py:attribute:: device
+      :value: None
+
+
+
+   .. py:attribute:: boundaries
+      :value: None
+
+
+
+   .. py:attribute:: graftPoint
+      :value: None
+
+
+
+   .. py:attribute:: useRockRidge
+      :value: True
+
+
+
+   .. py:attribute:: applicationId
+      :value: None
+
+
+
+   .. py:attribute:: biblioFile
+      :value: None
+
+
+
+   .. py:attribute:: publisherId
+      :value: None
+
+
+
+   .. py:attribute:: preparerId
+      :value: None
+
+
+
+   .. py:attribute:: volumeId
+      :value: None
+
+
+
+   .. py:method:: addEntry(path, graftPoint=None, override=False, contentsOnly=False)
+
+      Adds an individual file or directory into the ISO image.
+
+      The path must exist and must be a file or a directory.  By default, the
+      entry will be placed into the image at the root directory, but this
+      behavior can be overridden using the ``graftPoint`` parameter or instance
+      variable.
+
+      You can use the ``contentsOnly`` behavior to revert to the "original"
+      ``mkisofs`` behavior for adding directories, which is to add only the
+      items within the directory, and not the directory itself.
+
+      *Note:* Things get *odd* if you try to add a directory to an image that
+      will be written to a multisession disc, and the same directory already
+      exists in an earlier session on that disc.  Not all of the data gets
+      written.  You really wouldn't want to do this anyway, I guess.
+
+      *Note:* An exception will be thrown if the path has already been added to
+      the image, unless the ``override`` parameter is set to ``True``.
+
+      *Note:* The method ``graftPoints`` parameter overrides the object-wide
+      instance variable.  If neither the method parameter or object-wide value
+      is set, the path will be written at the image root.  The graft point
+      behavior is determined by the value which is in effect I{at the time this
+      method is called}, so you *must* set the object-wide value before
+      calling this method for the first time, or your image may not be
+      consistent.
+
+      *Note:* You *cannot* use the local ``graftPoint`` parameter to "turn off"
+      an object-wide instance variable by setting it to ``None``.  Python's
+      default argument functionality buys us a lot, but it can't make this
+      method psychic. :)
+
+      :param path: File or directory to be added to the image
+      :type path: String representing a path on disk
+      :param graftPoint: Graft point to be used when adding this entry
+      :type graftPoint: String representing a graft point path, as described above
+      :param override: Override an existing entry with the same path
+      :type override: Boolean true/false
+      :param contentsOnly: Add directory contents only (standard ``mkisofs`` behavior)
+      :type contentsOnly: Boolean true/false
+
+      :raises ValueError: If path is not a file or directory, or does not exist
+      :raises ValueError: If the path has already been added, and override is not set
+      :raises ValueError: If a path cannot be encoded properly
+
+
+
+   .. py:method:: getEstimatedSize()
+
+      Returns the estimated size (in bytes) of the ISO image.
+
+      This is implemented via the ``-print-size`` option to ``mkisofs``, so it
+      might take a bit of time to execute.  However, the result is as accurate
+      as we can get, since it takes into account all of the ISO overhead, the
+      true cost of directories in the structure, etc, etc.
+
+      :returns: Estimated size of the image, in bytes
+
+      :raises IOError: If there is a problem calling ``mkisofs``
+      :raises ValueError: If there are no filesystem entries in the image
+
+
+
+   .. py:method:: writeImage(imagePath)
+
+      Writes this image to disk using the image path.
+
+      :param imagePath: Path to write image out as
+      :type imagePath: String representing a path on disk
+
+      :raises IOError: If there is an error writing the image to disk
+      :raises ValueError: If there are no filesystem entries in the image
+      :raises ValueError: If a path cannot be encoded properly
+
+
+

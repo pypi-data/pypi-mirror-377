@@ -1,0 +1,2067 @@
+CedarBackup3.config
+===================
+
+.. py:module:: CedarBackup3.config
+
+.. autoapi-nested-parse::
+
+   Provides configuration-related objects.
+
+   Summary
+   =======
+
+      Cedar Backup stores all of its configuration in an XML document typically
+      called ``cback3.conf``.  The standard location for this document is in
+      ``/etc``, but users can specify a different location if they want to.
+
+      The ``Config`` class is a Python object representation of a Cedar Backup XML
+      configuration file.  The representation is two-way: XML data can be used to
+      create a ``Config`` object, and then changes to the object can be propogated
+      back to disk.  A ``Config`` object can even be used to create a configuration
+      file from scratch programmatically.
+
+      The ``Config`` class is intended to be the only Python-language interface to
+      Cedar Backup configuration on disk.  Cedar Backup will use the class as its
+      internal representation of configuration, and applications external to Cedar
+      Backup itself (such as a hypothetical third-party configuration tool written
+      in Python or a third party extension module) should also use the class when
+      they need to read and write configuration files.
+
+   Backwards Compatibility
+   =======================
+
+      The configuration file format has changed between Cedar Backup 1.x and Cedar
+      Backup 2.x.  Any Cedar Backup 1.x configuration file is also a valid Cedar
+      Backup 2.x configuration file.  However, it doesn't work to go the other
+      direction, as the 2.x configuration files contains additional configuration
+      is not accepted by older versions of the software.
+
+   XML Configuration Structure
+   ===========================
+
+      A ``Config`` object can either be created "empty", or can be created based on
+      XML input (either in the form of a string or read in from a file on disk).
+      Generally speaking, the XML input *must* result in a ``Config`` object which
+      passes the validations laid out below in the *Validation* section.
+
+      An XML configuration file is composed of seven sections:
+
+         - *reference*: specifies reference information about the file (author, revision, etc)
+         - *extensions*: specifies mappings to Cedar Backup extensions (external code)
+         - *options*: specifies global configuration options
+         - *peers*: specifies the set of peers in a master's backup pool
+         - *collect*: specifies configuration related to the collect action
+         - *stage*: specifies configuration related to the stage action
+         - *store*: specifies configuration related to the store action
+         - *purge*: specifies configuration related to the purge action
+
+      Each section is represented by an class in this module, and then the overall
+      ``Config`` class is a composition of the various other classes.
+
+      Any configuration section that is missing in the XML document (or has not
+      been filled into an "empty" document) will just be set to ``None`` in the
+      object representation.  The same goes for individual fields within each
+      configuration section.  Keep in mind that the document might not be
+      completely valid if some sections or fields aren't filled in - but that
+      won't matter until validation takes place (see the *Validation* section
+      below).
+
+   Unicode vs. String Data
+   =======================
+
+      By default, all string data that comes out of XML documents in Python is
+      unicode data (i.e. ``u"whatever"``).  This is fine for many things, but when
+      it comes to filesystem paths, it can cause us some problems.  We really want
+      strings to be encoded in the filesystem encoding rather than being unicode.
+      So, most elements in configuration which represent filesystem paths are
+      coverted to plain strings using :any:`util.encodePath`.  The main exception is
+      the various ``absoluteExcludePath`` and ``relativeExcludePath`` lists.  These
+      are *not* converted, because they are generally only used for filtering,
+      not for filesystem operations.
+
+   Validation
+   ==========
+
+      There are two main levels of validation in the ``Config`` class and its
+      children.  The first is field-level validation.  Field-level validation
+      comes into play when a given field in an object is assigned to or updated.
+      We use Python's ``property`` functionality to enforce specific validations on
+      field values, and in some places we even use customized list classes to
+      enforce validations on list members.  You should expect to catch a
+      ``ValueError`` exception when making assignments to configuration class
+      fields.
+
+      The second level of validation is post-completion validation.  Certain
+      validations don't make sense until a document is fully "complete".  We don't
+      want these validations to apply all of the time, because it would make
+      building up a document from scratch a real pain.  For instance, we might
+      have to do things in the right order to keep from throwing exceptions, etc.
+
+      All of these post-completion validations are encapsulated in the
+      :any:`Config.validate` method.  This method can be called at any time by a
+      client, and will always be called immediately after creating a ``Config``
+      object from XML data and before exporting a ``Config`` object to XML.  This
+      way, we get decent ease-of-use but we also don't accept or emit invalid
+      configuration files.
+
+      The :any:`Config.validate` implementation actually takes two passes to
+      completely validate a configuration document.  The first pass at validation
+      is to ensure that the proper sections are filled into the document.  There
+      are default requirements, but the caller has the opportunity to override
+      these defaults.
+
+      The second pass at validation ensures that any filled-in section contains
+      valid data.  Any section which is not set to ``None`` is validated according
+      to the rules for that section (see below).
+
+      *Reference Validations*
+
+      No validations.
+
+      *Extensions Validations*
+
+      The list of actions may be either ``None`` or an empty list ``[]`` if desired.
+      Each extended action must include a name, a module and a function.  Then, an
+      extended action must include either an index or dependency information.
+      Which one is required depends on which order mode is configured.
+
+      *Options Validations*
+
+      All fields must be filled in except the rsh command.  The rcp and rsh
+      commands are used as default values for all remote peers.  Remote peers can
+      also rely on the backup user as the default remote user name if they choose.
+
+      *Peers Validations*
+
+      Local peers must be completely filled in, including both name and collect
+      directory.  Remote peers must also fill in the name and collect directory,
+      but can leave the remote user and rcp command unset.  In this case, the
+      remote user is assumed to match the backup user from the options section and
+      rcp command is taken directly from the options section.
+
+      *Collect Validations*
+
+      The target directory must be filled in.  The collect mode, archive mode and
+      ignore file are all optional.  The list of absolute paths to exclude and
+      patterns to exclude may be either ``None`` or an empty list ``[]`` if desired.
+
+      Each collect directory entry must contain an absolute path to collect, and
+      then must either be able to take collect mode, archive mode and ignore file
+      configuration from the parent ``CollectConfig`` object, or must set each
+      value on its own.  The list of absolute paths to exclude, relative paths to
+      exclude and patterns to exclude may be either ``None`` or an empty list ``[]``
+      if desired.  Any list of absolute paths to exclude or patterns to exclude
+      will be combined with the same list in the ``CollectConfig`` object to make
+      the complete list for a given directory.
+
+      *Stage Validations*
+
+      The target directory must be filled in.  There must be at least one peer
+      (remote or local) between the two lists of peers.  A list with no entries
+      can be either ``None`` or an empty list ``[]`` if desired.
+
+      If a set of peers is provided, this configuration completely overrides
+      configuration in the peers configuration section, and the same validations
+      apply.
+
+      *Store Validations*
+
+      The device type and drive speed are optional, and all other values are
+      required (missing booleans will be set to defaults, which is OK).
+
+      The image writer functionality in the ``writer`` module is supposed to be
+      able to handle a device speed of ``None``.  Any caller which needs a "real"
+      (non-``None``) value for the device type can use ``DEFAULT_DEVICE_TYPE``,
+      which is guaranteed to be sensible.
+
+      *Purge Validations*
+
+      The list of purge directories may be either ``None`` or an empty list ``[]``
+      if desired.  All purge directories must contain a path and a retain days
+      value.
+
+   Module Attributes
+   =================
+
+   .. attribute:: DEFAULT_DEVICE_TYPE
+
+      The default device type
+
+   .. attribute:: DEFAULT_MEDIA_TYPE
+
+      The default media type
+
+   .. attribute:: VALID_DEVICE_TYPES
+
+      List of valid device types
+
+   .. attribute:: VALID_MEDIA_TYPES
+
+      List of valid media types
+
+   .. attribute:: VALID_COLLECT_MODES
+
+      List of valid collect modes
+
+   .. attribute:: VALID_COMPRESS_MODES
+
+      List of valid compress modes
+
+   .. attribute:: VALID_ARCHIVE_MODES
+
+      List of valid archive modes
+
+   .. attribute:: VALID_ORDER_MODES
+
+      List of valid extension order modes
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: DEFAULT_DEVICE_TYPE
+   :value: 'cdwriter'
+
+
+.. py:data:: DEFAULT_MEDIA_TYPE
+   :value: 'cdrw-74'
+
+
+.. py:data:: VALID_DEVICE_TYPES
+   :value: ['cdwriter', 'dvdwriter']
+
+
+.. py:data:: VALID_CD_MEDIA_TYPES
+   :value: ['cdr-74', 'cdrw-74', 'cdr-80', 'cdrw-80']
+
+
+.. py:data:: VALID_DVD_MEDIA_TYPES
+   :value: ['dvd+r', 'dvd+rw']
+
+
+.. py:data:: VALID_MEDIA_TYPES
+   :value: ['cdr-74', 'cdrw-74', 'cdr-80', 'cdrw-80', 'dvd+r', 'dvd+rw']
+
+
+.. py:data:: VALID_COLLECT_MODES
+   :value: ['daily', 'weekly', 'incr']
+
+
+.. py:data:: VALID_ARCHIVE_MODES
+   :value: ['tar', 'targz', 'tarbz2']
+
+
+.. py:data:: VALID_COMPRESS_MODES
+   :value: ['none', 'gzip', 'bzip2']
+
+
+.. py:data:: VALID_ORDER_MODES
+   :value: ['index', 'dependency']
+
+
+.. py:data:: VALID_BLANK_MODES
+   :value: ['daily', 'weekly']
+
+
+.. py:data:: VALID_BYTE_UNITS
+
+.. py:data:: VALID_FAILURE_MODES
+   :value: ['none', 'all', 'daily', 'weekly']
+
+
+.. py:data:: REWRITABLE_MEDIA_TYPES
+   :value: ['cdrw-74', 'cdrw-80', 'dvd+rw']
+
+
+.. py:data:: ACTION_NAME_REGEX
+   :value: '^[a-z0-9]*$'
+
+
+.. py:class:: ByteQuantity(quantity=None, units=None)
+
+   Class representing a byte quantity.
+
+   A byte quantity has both a quantity and a byte-related unit.  Units are
+   maintained using the constants from util.py.  If no units are provided,
+   ``UNIT_BYTES`` is assumed.
+
+   The quantity is maintained internally as a string so that issues of
+   precision can be avoided.  It really isn't possible to store a floating
+   point number here while being able to losslessly translate back and forth
+   between XML and object representations.  (Perhaps the Python 2.4 Decimal
+   class would have been an option, but I originally wanted to stay compatible
+   with Python 2.3.)
+
+   Even though the quantity is maintained as a string, the string must be in a
+   valid floating point positive number.  Technically, any floating point
+   string format supported by Python is allowble.  However, it does not make
+   sense to have a negative quantity of bytes in this context.
+
+
+
+   .. py:attribute:: quantity
+      :value: None
+
+
+
+   .. py:attribute:: units
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of Python 2-style compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of Python 2-style compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of Python 2-style compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Python 2-style comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:attribute:: bytes
+
+
+.. py:class:: ActionDependencies(beforeList=None, afterList=None)
+
+   Class representing dependencies associated with an extended action.
+
+   Execution ordering for extended actions is done in one of two ways: either by using
+   index values (lower index gets run first) or by having the extended action specify
+   dependencies in terms of other named actions.  This class encapsulates the dependency
+   information for an extended action.
+
+   The following restrictions exist on data in this class:
+
+      - Any action name must be a non-empty string matching ``ACTION_NAME_REGEX``
+
+
+
+   .. py:attribute:: beforeList
+      :value: None
+
+
+
+   .. py:attribute:: afterList
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: ActionHook(action=None, command=None)
+
+   Class representing a hook associated with an action.
+
+   A hook associated with an action is a shell command to be executed either
+   before or after a named action is executed.
+
+   The following restrictions exist on data in this class:
+
+      - The action name must be a non-empty string matching ``ACTION_NAME_REGEX``
+      - The shell command must be a non-empty string.
+
+   The internal ``before`` and ``after`` instance variables are always set to
+   False in this parent class.
+
+
+
+   .. py:attribute:: action
+      :value: None
+
+
+
+   .. py:attribute:: command
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:attribute:: before
+
+
+   .. py:attribute:: after
+
+
+.. py:class:: PreActionHook(action=None, command=None)
+
+   Bases: :py:obj:`ActionHook`
+
+
+   Class representing a pre-action hook associated with an action.
+
+   A hook associated with an action is a shell command to be executed either
+   before or after a named action is executed.  In this case, a pre-action hook
+   is executed before the named action.
+
+   The following restrictions exist on data in this class:
+
+      - The action name must be a non-empty string consisting of lower-case letters and digits.
+      - The shell command must be a non-empty string.
+
+   The internal ``before`` instance variable is always set to True in this
+   class.
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+.. py:class:: PostActionHook(action=None, command=None)
+
+   Bases: :py:obj:`ActionHook`
+
+
+   Class representing a pre-action hook associated with an action.
+
+   A hook associated with an action is a shell command to be executed either
+   before or after a named action is executed.  In this case, a post-action hook
+   is executed after the named action.
+
+   The following restrictions exist on data in this class:
+
+      - The action name must be a non-empty string consisting of lower-case letters and digits.
+      - The shell command must be a non-empty string.
+
+   The internal ``before`` instance variable is always set to True in this
+   class.
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+.. py:class:: BlankBehavior(blankMode=None, blankFactor=None)
+
+   Class representing optimized store-action media blanking behavior.
+
+   The following restrictions exist on data in this class:
+
+      - The blanking mode must be a one of the values in ``VALID_BLANK_MODES``
+      - The blanking factor must be a positive floating point number
+
+
+
+   .. py:attribute:: blankMode
+      :value: None
+
+
+
+   .. py:attribute:: blankFactor
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: ExtendedAction(name=None, module=None, function=None, index=None, dependencies=None)
+
+   Class representing an extended action.
+
+   Essentially, an extended action needs to allow the following to happen::
+
+      exec("from %s import %s" % (module, function))
+      exec("%s(action, configPath")" % function)
+
+   The following restrictions exist on data in this class:
+
+      - The action name must be a non-empty string consisting of lower-case letters and digits.
+      - The module must be a non-empty string and a valid Python identifier.
+      - The function must be an on-empty string and a valid Python identifier.
+      - If set, the index must be a positive integer.
+      - If set, the dependencies attribute must be an ``ActionDependencies`` object.
+
+
+
+   .. py:attribute:: name
+      :value: None
+
+
+
+   .. py:attribute:: module
+      :value: None
+
+
+
+   .. py:attribute:: function
+      :value: None
+
+
+
+   .. py:attribute:: index
+      :value: None
+
+
+
+   .. py:attribute:: dependencies
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: CommandOverride(command=None, absolutePath=None)
+
+   Class representing a piece of Cedar Backup command override configuration.
+
+   The following restrictions exist on data in this class:
+
+      - The absolute path must be absolute
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: command
+      :value: None
+
+
+
+   .. py:attribute:: absolutePath
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: CollectFile(absolutePath=None, collectMode=None, archiveMode=None)
+
+   Class representing a Cedar Backup collect file.
+
+   The following restrictions exist on data in this class:
+
+      - Absolute paths must be absolute
+      - The collect mode must be one of the values in :any:`VALID_COLLECT_MODES`.
+      - The archive mode must be one of the values in :any:`VALID_ARCHIVE_MODES`.
+
+
+
+   .. py:attribute:: absolutePath
+      :value: None
+
+
+
+   .. py:attribute:: collectMode
+      :value: None
+
+
+
+   .. py:attribute:: archiveMode
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: CollectDir(absolutePath=None, collectMode=None, archiveMode=None, ignoreFile=None, absoluteExcludePaths=None, relativeExcludePaths=None, excludePatterns=None, linkDepth=None, dereference=False, recursionLevel=None)
+
+   Class representing a Cedar Backup collect directory.
+
+   The following restrictions exist on data in this class:
+
+      - Absolute paths must be absolute
+      - The collect mode must be one of the values in :any:`VALID_COLLECT_MODES`.
+      - The archive mode must be one of the values in :any:`VALID_ARCHIVE_MODES`.
+      - The ignore file must be a non-empty string.
+
+   For the ``absoluteExcludePaths`` list, validation is accomplished through the
+   :any:`util.AbsolutePathList` list implementation that overrides common list
+   methods and transparently does the absolute path validation for us.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: absolutePath
+      :value: None
+
+
+
+   .. py:attribute:: collectMode
+      :value: None
+
+
+
+   .. py:attribute:: archiveMode
+      :value: None
+
+
+
+   .. py:attribute:: ignoreFile
+      :value: None
+
+
+
+   .. py:attribute:: linkDepth
+      :value: None
+
+
+
+   .. py:attribute:: dereference
+      :value: False
+
+
+
+   .. py:attribute:: recursionLevel
+      :value: None
+
+
+
+   .. py:attribute:: absoluteExcludePaths
+      :value: None
+
+
+
+   .. py:attribute:: relativeExcludePaths
+      :value: None
+
+
+
+   .. py:attribute:: excludePatterns
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: PurgeDir(absolutePath=None, retainDays=None)
+
+   Class representing a Cedar Backup purge directory.
+
+   The following restrictions exist on data in this class:
+
+      - The absolute path must be an absolute path
+      - The retain days value must be an integer >= 0.
+
+
+
+   .. py:attribute:: absolutePath
+      :value: None
+
+
+
+   .. py:attribute:: retainDays
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: LocalPeer(name=None, collectDir=None, ignoreFailureMode=None)
+
+   Class representing a Cedar Backup peer.
+
+   The following restrictions exist on data in this class:
+
+      - The peer name must be a non-empty string.
+      - The collect directory must be an absolute path.
+      - The ignore failure mode must be one of the values in ``VALID_FAILURE_MODES``.
+
+
+
+   .. py:attribute:: name
+      :value: None
+
+
+
+   .. py:attribute:: collectDir
+      :value: None
+
+
+
+   .. py:attribute:: ignoreFailureMode
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: RemotePeer(name=None, collectDir=None, remoteUser=None, rcpCommand=None, rshCommand=None, cbackCommand=None, managed=False, managedActions=None, ignoreFailureMode=None)
+
+   Class representing a Cedar Backup peer.
+
+   The following restrictions exist on data in this class:
+
+      - The peer name must be a non-empty string.
+      - The collect directory must be an absolute path.
+      - The remote user must be a non-empty string.
+      - The rcp command must be a non-empty string.
+      - The rsh command must be a non-empty string.
+      - The cback command must be a non-empty string.
+      - Any managed action name must be a non-empty string matching ``ACTION_NAME_REGEX``
+      - The ignore failure mode must be one of the values in ``VALID_FAILURE_MODES``.
+
+
+
+   .. py:attribute:: name
+      :value: None
+
+
+
+   .. py:attribute:: collectDir
+      :value: None
+
+
+
+   .. py:attribute:: remoteUser
+      :value: None
+
+
+
+   .. py:attribute:: rcpCommand
+      :value: None
+
+
+
+   .. py:attribute:: rshCommand
+      :value: None
+
+
+
+   .. py:attribute:: cbackCommand
+      :value: None
+
+
+
+   .. py:attribute:: managed
+      :value: False
+
+
+
+   .. py:attribute:: managedActions
+      :value: None
+
+
+
+   .. py:attribute:: ignoreFailureMode
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: ReferenceConfig(author=None, revision=None, description=None, generator=None)
+
+   Class representing a Cedar Backup reference configuration.
+
+   The reference information is just used for saving off metadata about
+   configuration and exists mostly for backwards-compatibility with Cedar
+   Backup 1.x.
+
+
+
+   .. py:attribute:: author
+      :value: None
+
+
+
+   .. py:attribute:: revision
+      :value: None
+
+
+
+   .. py:attribute:: description
+      :value: None
+
+
+
+   .. py:attribute:: generator
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: ExtensionsConfig(actions=None, orderMode=None)
+
+   Class representing Cedar Backup extensions configuration.
+
+   Extensions configuration is used to specify "extended actions" implemented
+   by code external to Cedar Backup.  For instance, a hypothetical third party
+   might write extension code to collect database repository data.  If they
+   write a properly-formatted extension function, they can use the extension
+   configuration to map a command-line Cedar Backup action (i.e. "database")
+   to their function.
+
+   The following restrictions exist on data in this class:
+
+      - If set, the order mode must be one of the values in ``VALID_ORDER_MODES``
+      - The actions list must be a list of ``ExtendedAction`` objects.
+
+
+
+   .. py:attribute:: orderMode
+      :value: None
+
+
+
+   .. py:attribute:: actions
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: OptionsConfig(startingDay=None, workingDir=None, backupUser=None, backupGroup=None, rcpCommand=None, overrides=None, hooks=None, rshCommand=None, cbackCommand=None, managedActions=None)
+
+   Class representing a Cedar Backup global options configuration.
+
+   The options section is used to store global configuration options and
+   defaults that can be applied to other sections.
+
+   The following restrictions exist on data in this class:
+
+      - The working directory must be an absolute path.
+      - The starting day must be a day of the week in English, i.e. ``"monday"``, ``"tuesday"``, etc.
+      - All of the other values must be non-empty strings if they are set to something other than ``None``.
+      - The overrides list must be a list of ``CommandOverride`` objects.
+      - The hooks list must be a list of ``ActionHook`` objects.
+      - The cback command must be a non-empty string.
+      - Any managed action name must be a non-empty string matching ``ACTION_NAME_REGEX``
+
+
+
+   .. py:attribute:: startingDay
+      :value: None
+
+
+
+   .. py:attribute:: workingDir
+      :value: None
+
+
+
+   .. py:attribute:: backupUser
+      :value: None
+
+
+
+   .. py:attribute:: backupGroup
+      :value: None
+
+
+
+   .. py:attribute:: rcpCommand
+      :value: None
+
+
+
+   .. py:attribute:: rshCommand
+      :value: None
+
+
+
+   .. py:attribute:: cbackCommand
+      :value: None
+
+
+
+   .. py:attribute:: overrides
+      :value: None
+
+
+
+   .. py:attribute:: hooks
+      :value: None
+
+
+
+   .. py:attribute:: managedActions
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: addOverride(command, absolutePath)
+
+      If no override currently exists for the command, add one.
+      :param command: Name of command to be overridden
+      :param absolutePath: Absolute path of the overrridden command
+
+
+
+   .. py:method:: replaceOverride(command, absolutePath)
+
+      If override currently exists for the command, replace it; otherwise add it.
+      :param command: Name of command to be overridden
+      :param absolutePath: Absolute path of the overrridden command
+
+
+
+.. py:class:: PeersConfig(localPeers=None, remotePeers=None)
+
+   Class representing Cedar Backup global peer configuration.
+
+   This section contains a list of local and remote peers in a master's backup
+   pool.  The section is optional.  If a master does not define this section,
+   then all peers are unmanaged, and the stage configuration section must
+   explicitly list any peer that is to be staged.  If this section is
+   configured, then peers may be managed or unmanaged, and the stage section
+   peer configuration (if any) completely overrides this configuration.
+
+   The following restrictions exist on data in this class:
+
+      - The list of local peers must contain only ``LocalPeer`` objects
+      - The list of remote peers must contain only ``RemotePeer`` objects
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: localPeers
+      :value: None
+
+
+
+   .. py:attribute:: remotePeers
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: hasPeers()
+
+      Indicates whether any peers are filled into this object.
+      :returns: Boolean true if any local or remote peers are filled in, false otherwise
+
+
+
+.. py:class:: CollectConfig(targetDir=None, collectMode=None, archiveMode=None, ignoreFile=None, absoluteExcludePaths=None, excludePatterns=None, collectFiles=None, collectDirs=None)
+
+   Class representing a Cedar Backup collect configuration.
+
+   The following restrictions exist on data in this class:
+
+      - The target directory must be an absolute path.
+      - The collect mode must be one of the values in :any:`VALID_COLLECT_MODES`.
+      - The archive mode must be one of the values in :any:`VALID_ARCHIVE_MODES`.
+      - The ignore file must be a non-empty string.
+      - Each of the paths in ``absoluteExcludePaths`` must be an absolute path
+      - The collect file list must be a list of ``CollectFile`` objects.
+      - The collect directory list must be a list of ``CollectDir`` objects.
+
+   For the ``absoluteExcludePaths`` list, validation is accomplished through the
+   :any:`util.AbsolutePathList` list implementation that overrides common list
+   methods and transparently does the absolute path validation for us.
+
+   For the ``collectFiles`` and ``collectDirs`` list, validation is accomplished
+   through the :any:`util.ObjectTypeList` list implementation that overrides common
+   list methods and transparently ensures that each element has an appropriate
+   type.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: targetDir
+      :value: None
+
+
+
+   .. py:attribute:: collectMode
+      :value: None
+
+
+
+   .. py:attribute:: archiveMode
+      :value: None
+
+
+
+   .. py:attribute:: ignoreFile
+      :value: None
+
+
+
+   .. py:attribute:: absoluteExcludePaths
+      :value: None
+
+
+
+   .. py:attribute:: excludePatterns
+      :value: None
+
+
+
+   .. py:attribute:: collectFiles
+      :value: None
+
+
+
+   .. py:attribute:: collectDirs
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: StageConfig(targetDir=None, localPeers=None, remotePeers=None)
+
+   Class representing a Cedar Backup stage configuration.
+
+   The following restrictions exist on data in this class:
+
+      - The target directory must be an absolute path
+      - The list of local peers must contain only ``LocalPeer`` objects
+      - The list of remote peers must contain only ``RemotePeer`` objects
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: targetDir
+      :value: None
+
+
+
+   .. py:attribute:: localPeers
+      :value: None
+
+
+
+   .. py:attribute:: remotePeers
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: hasPeers()
+
+      Indicates whether any peers are filled into this object.
+      :returns: Boolean true if any local or remote peers are filled in, false otherwise
+
+
+
+.. py:class:: StoreConfig(sourceDir=None, mediaType=None, deviceType=None, devicePath=None, deviceScsiId=None, driveSpeed=None, checkData=False, warnMidnite=False, noEject=False, checkMedia=False, blankBehavior=None, refreshMediaDelay=None, ejectDelay=None)
+
+   Class representing a Cedar Backup store configuration.
+
+   The following restrictions exist on data in this class:
+
+      - The source directory must be an absolute path.
+      - The media type must be one of the values in :any:`VALID_MEDIA_TYPES`.
+      - The device type must be one of the values in :any:`VALID_DEVICE_TYPES`.
+      - The device path must be an absolute path.
+      - The SCSI id, if provided, must be in the form specified by :any:`validateScsiId`.
+      - The drive speed must be an integer >= 1
+      - The blanking behavior must be a ``BlankBehavior`` object
+      - The refresh media delay must be an integer >= 0
+      - The eject delay must be an integer >= 0
+
+   Note that although the blanking factor must be a positive floating point
+   number, it is stored as a string. This is done so that we can losslessly go
+   back and forth between XML and object representations of configuration.
+
+
+
+   .. py:attribute:: sourceDir
+      :value: None
+
+
+
+   .. py:attribute:: mediaType
+      :value: None
+
+
+
+   .. py:attribute:: deviceType
+      :value: None
+
+
+
+   .. py:attribute:: devicePath
+      :value: None
+
+
+
+   .. py:attribute:: deviceScsiId
+      :value: None
+
+
+
+   .. py:attribute:: driveSpeed
+      :value: None
+
+
+
+   .. py:attribute:: checkData
+      :value: False
+
+
+
+   .. py:attribute:: checkMedia
+      :value: False
+
+
+
+   .. py:attribute:: warnMidnite
+      :value: False
+
+
+
+   .. py:attribute:: noEject
+      :value: False
+
+
+
+   .. py:attribute:: blankBehavior
+      :value: None
+
+
+
+   .. py:attribute:: refreshMediaDelay
+      :value: None
+
+
+
+   .. py:attribute:: ejectDelay
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: PurgeConfig(purgeDirs=None)
+
+   Class representing a Cedar Backup purge configuration.
+
+   The following restrictions exist on data in this class:
+
+      - The purge directory list must be a list of ``PurgeDir`` objects.
+
+   For the ``purgeDirs`` list, validation is accomplished through the
+   :any:`util.ObjectTypeList` list implementation that overrides common list
+   methods and transparently ensures that each element is a ``PurgeDir``.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: purgeDirs
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+.. py:class:: Config(xmlData=None, xmlPath=None, validate=True)
+
+   Class representing a Cedar Backup XML configuration document.
+
+   The ``Config`` class is a Python object representation of a Cedar Backup XML
+   configuration file.  It is intended to be the only Python-language interface
+   to Cedar Backup configuration on disk for both Cedar Backup itself and for
+   external applications.
+
+   The object representation is two-way: XML data can be used to create a
+   ``Config`` object, and then changes to the object can be propogated back to
+   disk.  A ``Config`` object can even be used to create a configuration file
+   from scratch programmatically.
+
+   This class and the classes it is composed from often use Python's
+   ``property`` construct to validate input and limit access to values.  Some
+   validations can only be done once a document is considered "complete"
+   (see module notes for more details).
+
+   Assignments to the various instance variables must match the expected
+   type, i.e. ``reference`` must be a ``ReferenceConfig``.  The internal check
+   uses the built-in ``isinstance`` function, so it should be OK to use
+   subclasses if you want to.
+
+   If an instance variable is not set, its value will be ``None``.  When an
+   object is initialized without using an XML document, all of the values
+   will be ``None``.  Even when an object is initialized using XML, some of
+   the values might be ``None`` because not every section is required.
+
+   *Note:* Lists within this class are "unordered" for equality comparisons.
+
+
+
+   .. py:attribute:: reference
+      :value: None
+
+
+
+   .. py:attribute:: extensions
+      :value: None
+
+
+
+   .. py:attribute:: options
+      :value: None
+
+
+
+   .. py:attribute:: peers
+      :value: None
+
+
+
+   .. py:attribute:: collect
+      :value: None
+
+
+
+   .. py:attribute:: stage
+      :value: None
+
+
+
+   .. py:attribute:: store
+      :value: None
+
+
+
+   .. py:attribute:: purge
+      :value: None
+
+
+
+   .. py:method:: __repr__()
+
+      Official string representation for class instance.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:method:: __eq__(other)
+
+      Equals operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __lt__(other)
+
+      Less-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __gt__(other)
+
+      Greater-than operator, implemented in terms of original Python 2 compare operator.
+
+
+
+   .. py:method:: __cmp__(other)
+
+      Original Python 2 comparison operator.
+      Lists within this class are "unordered" for equality comparisons.
+      :param other: Other object to compare to
+
+      :returns: -1/0/1 depending on whether self is ``<``, ``=`` or ``>`` other
+
+
+
+   .. py:method:: extractXml(xmlPath=None, validate=True)
+
+      Extracts configuration into an XML document.
+
+      If ``xmlPath`` is not provided, then the XML document will be returned as
+      a string.  If ``xmlPath`` is provided, then the XML document will be written
+      to the file and ``None`` will be returned.
+
+      Unless the ``validate`` parameter is ``False``, the :any:`Config.validate`
+      method will be called (with its default arguments) against the
+      configuration before extracting the XML.  If configuration is not valid,
+      then an XML document will not be extracted.
+
+      *Note:* It is strongly suggested that the ``validate`` option always be set
+      to ``True`` (the default) unless there is a specific need to write an
+      invalid configuration file to disk.
+
+      :param xmlPath: Path to an XML file to create on disk
+      :type xmlPath: Absolute path to a file
+      :param validate: Validate the document before extracting it
+      :type validate: Boolean true/false
+
+      :returns: XML string data or ``None`` as described above
+
+      :raises ValueError: If configuration within the object is not valid
+      :raises IOError: If there is an error writing to the file
+      :raises OSError: If there is an error writing to the file
+
+
+
+   .. py:method:: validate(requireOneAction=True, requireReference=False, requireExtensions=False, requireOptions=True, requireCollect=False, requireStage=False, requireStore=False, requirePurge=False, requirePeers=False)
+
+      Validates configuration represented by the object.
+
+      This method encapsulates all of the validations that should apply to a
+      fully "complete" document but are not already taken care of by earlier
+      validations.  It also provides some extra convenience functionality which
+      might be useful to some people.  The process of validation is laid out in
+      the *Validation* section in the class notes (above).
+
+      :param requireOneAction: Require at least one of the collect, stage, store or purge sections
+      :param requireReference: Require the reference section
+      :param requireExtensions: Require the extensions section
+      :param requireOptions: Require the options section
+      :param requirePeers: Require the peers section
+      :param requireCollect: Require the collect section
+      :param requireStage: Require the stage section
+      :param requireStore: Require the store section
+      :param requirePurge: Require the purge section
+
+      :raises ValueError: If one of the validations fails
+
+
+
+.. py:function:: readByteQuantity(parent, name)
+
+   Read a byte size value from an XML document.
+
+   A byte size value is an interpreted string value.  If the string value
+   ends with "MB" or "GB", then the string before that is interpreted as
+   megabytes or gigabytes.  Otherwise, it is intepreted as bytes.
+
+   :param parent: Parent node to search beneath
+   :param name: Name of node to search for
+
+   :returns: ByteQuantity parsed from XML document
+
+
+.. py:function:: addByteQuantityNode(xmlDom, parentNode, nodeName, byteQuantity)
+
+   Adds a text node as the next child of a parent, to contain a byte size.
+
+   If the ``byteQuantity`` is None, then the node will be created, but will
+   be empty (i.e. will contain no text node child).
+
+   The size in bytes will be normalized.  If it is larger than 1.0 GB, it will
+   be shown in GB ("1.0 GB").  If it is larger than 1.0 MB ("1.0 MB"), it will
+   be shown in MB.  Otherwise, it will be shown in bytes ("423413").
+
+   :param xmlDom: DOM tree as from ``impl.createDocument()``
+   :param parentNode: Parent node to create child for
+   :param nodeName: Name of the new container node
+   :param byteQuantity: ByteQuantity object to put into the XML document
+
+   :returns: Reference to the newly-created node
+
+

@@ -1,0 +1,479 @@
+CedarBackup3.writers.cdwriter
+=============================
+
+.. py:module:: CedarBackup3.writers.cdwriter
+
+.. autoapi-nested-parse::
+
+   Provides functionality related to CD writer devices.
+
+   Module Attributes
+   =================
+
+   .. attribute:: MEDIA_CDRW_74
+
+      Constant representing 74-minute CD-RW media
+
+   .. attribute:: MEDIA_CDR_74
+
+      Constant representing 74-minute CD-R media
+
+   .. attribute:: MEDIA_CDRW_80
+
+      Constant representing 80-minute CD-RW media
+
+   .. attribute:: MEDIA_CDR_80
+
+      Constant representing 80-minute CD-R media
+
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: MEDIA_CDRW_74
+   :value: 1
+
+
+.. py:data:: MEDIA_CDR_74
+   :value: 2
+
+
+.. py:data:: MEDIA_CDRW_80
+   :value: 3
+
+
+.. py:data:: MEDIA_CDR_80
+   :value: 4
+
+
+.. py:data:: CDRECORD_COMMAND
+   :value: ['cdrecord']
+
+
+.. py:data:: EJECT_COMMAND
+   :value: ['eject']
+
+
+.. py:data:: MKISOFS_COMMAND
+   :value: ['mkisofs']
+
+
+.. py:class:: MediaDefinition(mediaType)
+
+   Class encapsulating information about CD media definitions.
+
+   The following media types are accepted:
+
+      - ``MEDIA_CDR_74``: 74-minute CD-R media (650 MB capacity)
+      - ``MEDIA_CDRW_74``: 74-minute CD-RW media (650 MB capacity)
+      - ``MEDIA_CDR_80``: 80-minute CD-R media (700 MB capacity)
+      - ``MEDIA_CDRW_80``: 80-minute CD-RW media (700 MB capacity)
+
+   Note that all of the capacities associated with a media definition are in
+   terms of ISO sectors (``util.ISO_SECTOR_SIZE)``.
+
+
+
+   .. py:attribute:: mediaType
+
+
+   .. py:attribute:: rewritable
+
+
+   .. py:attribute:: initialLeadIn
+
+
+   .. py:attribute:: leadIn
+
+
+   .. py:attribute:: capacity
+
+
+.. py:class:: MediaCapacity(bytesUsed, bytesAvailable, boundaries)
+
+   Class encapsulating information about CD media capacity.
+
+   Space used includes the required media lead-in (unless the disk is unused).
+   Space available attempts to provide a picture of how many bytes are
+   available for data storage, including any required lead-in.
+
+   The boundaries value is either ``None`` (if multisession discs are not
+   supported or if the disc has no boundaries) or in exactly the form provided
+   by ``cdrecord -msinfo``.  It can be passed as-is to the ``IsoImage`` class.
+
+
+
+   .. py:method:: __str__()
+
+      Informal string representation for class instance.
+
+
+
+   .. py:attribute:: bytesUsed
+
+
+   .. py:attribute:: bytesAvailable
+
+
+   .. py:attribute:: boundaries
+
+
+   .. py:attribute:: totalCapacity
+
+
+   .. py:attribute:: utilized
+
+
+.. py:class:: CdWriter(device, scsiId=None, driveSpeed=None, mediaType=MEDIA_CDRW_74, noEject=False, refreshMediaDelay=0, ejectDelay=0, unittest=False)
+
+   Class representing a device that knows how to write CD media.
+
+   This is a class representing a device that knows how to write CD media.  It
+   provides common operations for the device, such as ejecting the media,
+   writing an ISO image to the media, or checking for the current media
+   capacity.  It also provides a place to store device attributes, such as
+   whether the device supports writing multisession discs, etc.
+
+   This class is implemented in terms of the ``eject`` and ``cdrecord``
+   programs, both of which should be available on most UN*X platforms.
+
+   **Image Writer Interface**
+
+   The following methods make up the "image writer" interface shared
+   with other kinds of writers (such as DVD writers)::
+
+      __init__
+      initializeImage()
+      addImageEntry()
+      writeImage()
+      setImageNewDisc()
+      retrieveCapacity()
+      getEstimatedImageSize()
+
+   Only these methods will be used by other Cedar Backup functionality
+   that expects a compatible image writer.
+
+   The media attribute is also assumed to be available.
+
+   **Media Types**
+
+   This class knows how to write to two different kinds of media, represented
+   by the following constants:
+
+      - ``MEDIA_CDR_74``: 74-minute CD-R media (650 MB capacity)
+      - ``MEDIA_CDRW_74``: 74-minute CD-RW media (650 MB capacity)
+      - ``MEDIA_CDR_80``: 80-minute CD-R media (700 MB capacity)
+      - ``MEDIA_CDRW_80``: 80-minute CD-RW media (700 MB capacity)
+
+   Most hardware can read and write both 74-minute and 80-minute CD-R and
+   CD-RW media.  Some older drives may only be able to write CD-R media.
+   The difference between the two is that CD-RW media can be rewritten
+   (erased), while CD-R media cannot be.
+
+   I do not support any other configurations for a couple of reasons.  The
+   first is that I've never tested any other kind of media.  The second is
+   that anything other than 74 or 80 minute is apparently non-standard.
+
+   **Device Attributes vs. Media Attributes**
+
+   A given writer instance has two different kinds of attributes associated
+   with it, which I call device attributes and media attributes.  Device
+   attributes are things which can be determined without looking at the
+   media, such as whether the drive supports writing multisession disks or
+   has a tray.  Media attributes are attributes which vary depending on the
+   state of the media, such as the remaining capacity on a disc.  In
+   general, device attributes are available via instance variables and are
+   constant over the life of an object, while media attributes can be
+   retrieved through method calls.
+
+   **Talking to Hardware**
+
+   This class needs to talk to CD writer hardware in two different ways:
+   through cdrecord to actually write to the media, and through the
+   filesystem to do things like open and close the tray.
+
+   Historically, CdWriter has interacted with cdrecord using the scsiId
+   attribute, and with most other utilities using the device attribute.
+   This changed somewhat in Cedar Backup 2.9.0.
+
+   When Cedar Backup was first written, the only way to interact with
+   cdrecord was by using a SCSI device id.  IDE devices were mapped to
+   pseudo-SCSI devices through the kernel.  Later, extended SCSI "methods"
+   arrived, and it became common to see ``ATA:1,0,0`` or ``ATAPI:0,0,0`` as a
+   way to address IDE hardware.  By late 2006, ``ATA`` and ``ATAPI`` had
+   apparently been deprecated in favor of just addressing the IDE device
+   directly by name, i.e. ``/dev/cdrw``.
+
+   Because of this latest development, it no longer makes sense to require a
+   CdWriter to be created with a SCSI id -- there might not be one.  So, the
+   passed-in SCSI id is now optional.  Also, there is now a hardwareId
+   attribute.  This attribute is filled in with either the SCSI id (if
+   provided) or the device (otherwise).  The hardware id is the value that
+   will be passed to cdrecord in the ``dev=`` argument.
+
+   **Testing**
+
+   It's rather difficult to test this code in an automated fashion, even if
+   you have access to a physical CD writer drive.  It's even more difficult
+   to test it if you are running on some build daemon (think of a Debian
+   autobuilder) which can't be expected to have any hardware or any media
+   that you could write to.
+
+   Because of this, much of the implementation below is in terms of static
+   methods that are supposed to take defined actions based on their
+   arguments.  Public methods are then implemented in terms of a series of
+   calls to simplistic static methods.  This way, we can test as much as
+   possible of the functionality via testing the static methods, while
+   hoping that if the static methods are called appropriately, things will
+   work properly.  It's not perfect, but it's much better than no testing at
+   all.
+
+
+
+   .. py:attribute:: device
+
+
+   .. py:attribute:: scsiId
+
+
+   .. py:attribute:: hardwareId
+
+
+   .. py:attribute:: driveSpeed
+
+
+   .. py:attribute:: media
+
+
+   .. py:attribute:: deviceType
+
+
+   .. py:attribute:: deviceVendor
+
+
+   .. py:attribute:: deviceId
+
+
+   .. py:attribute:: deviceBufferSize
+
+
+   .. py:attribute:: deviceSupportsMulti
+
+
+   .. py:attribute:: deviceHasTray
+
+
+   .. py:attribute:: deviceCanEject
+
+
+   .. py:attribute:: refreshMediaDelay
+
+
+   .. py:attribute:: ejectDelay
+
+
+   .. py:method:: isRewritable()
+
+      Indicates whether the media is rewritable per configuration.
+
+
+
+   .. py:method:: retrieveCapacity(entireDisc=False, useMulti=True)
+
+      Retrieves capacity for the current media in terms of a ``MediaCapacity``
+      object.
+
+      If ``entireDisc`` is passed in as ``True`` the capacity will be for the
+      entire disc, as if it were to be rewritten from scratch.  If the drive
+      does not support writing multisession discs or if ``useMulti`` is passed
+      in as ``False``, the capacity will also be as if the disc were to be
+      rewritten from scratch, but the indicated boundaries value will be
+      ``None``.  The same will happen if the disc cannot be read for some
+      reason.  Otherwise, the capacity (including the boundaries) will
+      represent whatever space remains on the disc to be filled by future
+      sessions.
+
+      :param entireDisc: Indicates whether to return capacity for entire disc
+      :type entireDisc: Boolean true/false
+      :param useMulti: Indicates whether a multisession disc should be assumed, if possible
+      :type useMulti: Boolean true/false
+
+      :returns: ``MediaCapacity`` object describing the capacity of the media
+
+      :raises IOError: If the media could not be read for some reason
+
+
+
+   .. py:method:: initializeImage(newDisc, tmpdir, mediaLabel=None)
+
+      Initializes the writer's associated ISO image.
+
+      This method initializes the ``image`` instance variable so that the caller
+      can use the ``addImageEntry`` method.  Once entries have been added, the
+      ``writeImage`` method can be called with no arguments.
+
+      :param newDisc: Indicates whether the disc should be re-initialized
+      :type newDisc: Boolean true/false
+      :param tmpdir: Temporary directory to use if needed
+      :type tmpdir: String representing a directory path on disk
+      :param mediaLabel: Media label to be applied to the image, if any
+      :type mediaLabel: String, no more than 25 characters long
+
+
+
+   .. py:method:: addImageEntry(path, graftPoint)
+
+      Adds a filepath entry to the writer's associated ISO image.
+
+      The contents of the filepath -- but not the path itself -- will be added
+      to the image at the indicated graft point.  If you don't want to use a
+      graft point, just pass ``None``.
+
+      *Note:* Before calling this method, you must call :any:`initializeImage`.
+
+      :param path: File or directory to be added to the image
+      :type path: String representing a path on disk
+      :param graftPoint: Graft point to be used when adding this entry
+      :type graftPoint: String representing a graft point path, as described above
+
+      :raises ValueError: If initializeImage() was not previously called
+
+
+
+   .. py:method:: setImageNewDisc(newDisc)
+
+      Resets (overrides) the newDisc flag on the internal image.
+      :param newDisc: New disc flag to set
+
+      :raises ValueError: If initializeImage() was not previously called
+
+
+
+   .. py:method:: getEstimatedImageSize()
+
+      Gets the estimated size of the image associated with the writer.
+      :returns: Estimated size of the image, in bytes
+
+      :raises IOError: If there is a problem calling ``mkisofs``
+      :raises ValueError: If initializeImage() was not previously called
+
+
+
+   .. py:method:: openTray()
+
+      Opens the device's tray and leaves it open.
+
+      This only works if the device has a tray and supports ejecting its media.
+      We have no way to know if the tray is currently open or closed, so we
+      just send the appropriate command and hope for the best.  If the device
+      does not have a tray or does not support ejecting its media, then we do
+      nothing.
+
+      If the writer was constructed with ``noEject=True``, then this is a no-op.
+
+      Starting with Debian wheezy on my backup hardware, I started seeing
+      consistent problems with the eject command.  I couldn't tell whether
+      these problems were due to the device management system or to the new
+      kernel (3.2.0).  Initially, I saw simple eject failures, possibly because
+      I was opening and closing the tray too quickly.  I worked around that
+      behavior with the new ejectDelay flag.
+
+      Later, I sometimes ran into issues after writing an image to a disc:
+      eject would give errors like "unable to eject, last error: Inappropriate
+      ioctl for device".  Various sources online (like Ubuntu bug #875543)
+      suggested that the drive was being locked somehow, and that the
+      workaround was to run 'eject -i off' to unlock it.  Sure enough, that
+      fixed the problem for me, so now it's a normal error-handling strategy.
+
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: unlockTray()
+
+      Unlocks the device's tray.
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: closeTray()
+
+      Closes the device's tray.
+
+      This only works if the device has a tray and supports ejecting its media.
+      We have no way to know if the tray is currently open or closed, so we
+      just send the appropriate command and hope for the best.  If the device
+      does not have a tray or does not support ejecting its media, then we do
+      nothing.
+
+      If the writer was constructed with ``noEject=True``, then this is a no-op.
+
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: refreshMedia()
+
+      Opens and then immediately closes the device's tray, to refresh the
+      device's idea of the media.
+
+      Sometimes, a device gets confused about the state of its media.  Often,
+      all it takes to solve the problem is to eject the media and then
+      immediately reload it.  (There are also configurable eject and refresh
+      media delays which can be applied, for situations where this makes a
+      difference.)
+
+      This only works if the device has a tray and supports ejecting its media.
+      We have no way to know if the tray is currently open or closed, so we
+      just send the appropriate command and hope for the best.  If the device
+      does not have a tray or does not support ejecting its media, then we do
+      nothing.  The configured delays still apply, though.
+
+      :raises IOError: If there is an error talking to the device
+
+
+
+   .. py:method:: writeImage(imagePath=None, newDisc=False, writeMulti=True)
+
+      Writes an ISO image to the media in the device.
+
+      If ``newDisc`` is passed in as ``True``, we assume that the entire disc
+      will be overwritten, and the media will be blanked before writing it if
+      possible (i.e. if the media is rewritable).
+
+      If ``writeMulti`` is passed in as ``True``, then a multisession disc will
+      be written if possible (i.e. if the drive supports writing multisession
+      discs).
+
+      if ``imagePath`` is passed in as ``None``, then the existing image
+      configured with ``initializeImage`` will be used.  Under these
+      circumstances, the passed-in ``newDisc`` flag will be ignored.
+
+      By default, we assume that the disc can be written multisession and that
+      we should append to the current contents of the disc.  In any case, the
+      ISO image must be generated appropriately (i.e. must take into account
+      any existing session boundaries, etc.)
+
+      :param imagePath: Path to an ISO image on disk, or ``None`` to use writer's image
+      :type imagePath: String representing a path on disk
+      :param newDisc: Indicates whether the entire disc will overwritten
+      :type newDisc: Boolean true/false
+      :param writeMulti: Indicates whether a multisession disc should be written, if possible
+      :type writeMulti: Boolean true/false
+
+      :raises ValueError: If the image path is not absolute
+      :raises ValueError: If some path cannot be encoded properly
+      :raises IOError: If the media could not be written to for some reason
+      :raises ValueError: If no image is passed in and initializeImage() was not previously called
+
+
+

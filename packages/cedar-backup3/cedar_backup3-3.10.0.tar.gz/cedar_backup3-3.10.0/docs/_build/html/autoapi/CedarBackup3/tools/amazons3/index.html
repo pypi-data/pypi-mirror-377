@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.tools.amazons3 &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="CedarBackup3.tools.span" href="../span/index.html" />
+    <link rel="prev" title="CedarBackup3.tools" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.tools.amazons3">
+<span id="cedarbackup3-tools-amazons3"></span><h1>CedarBackup3.tools.amazons3<a class="headerlink" href="#module-CedarBackup3.tools.amazons3" title="Link to this heading">¶</a></h1>
+<p>Synchonizes a local directory with an Amazon S3 bucket.</p>
+<p>No configuration is required; all necessary information is taken from the
+command-line.  The only thing configuration would help with is the path
+resolver interface, and it doesn’t seem worth it to require configuration just
+to get that.</p>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.amazons3.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.AWS_COMMAND">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.amazons3.</span></span><span class="sig-name descname"><span class="pre">AWS_COMMAND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['aws']</span></em><a class="headerlink" href="#CedarBackup3.tools.amazons3.AWS_COMMAND" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.SHORT_SWITCHES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.amazons3.</span></span><span class="sig-name descname"><span class="pre">SHORT_SWITCHES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hVbql:o:m:OdsDvuw'</span></em><a class="headerlink" href="#CedarBackup3.tools.amazons3.SHORT_SWITCHES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.LONG_SWITCHES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.amazons3.</span></span><span class="sig-name descname"><span class="pre">LONG_SWITCHES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['help',</span> <span class="pre">'version',</span> <span class="pre">'verbose',</span> <span class="pre">'quiet',</span> <span class="pre">'logfile=',</span> <span class="pre">'owner=',</span> <span class="pre">'mode=',</span> <span class="pre">'output',</span> <span class="pre">'debug',...</span></em><a class="headerlink" href="#CedarBackup3.tools.amazons3.LONG_SWITCHES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.amazons3.</span></span><span class="sig-name descname"><span class="pre">Options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argumentList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argumentString</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing command-line options for the cback3-amazons3-sync script.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Options</span></code> class is a Python object representation of the command-line
+options of the cback3-amazons3-sync script.</p>
+<p>The object representation is two-way: a command line string or a list of
+command line arguments can be used to create an <code class="docutils literal notranslate"><span class="pre">Options</span></code> object, and then
+changes to the object can be propogated back to a list of command-line
+arguments or to a command-line string.  An <code class="docutils literal notranslate"><span class="pre">Options</span></code> object can even be
+created from scratch programmatically (if you have a need for that).</p>
+<p>There are two main levels of validation in the <code class="docutils literal notranslate"><span class="pre">Options</span></code> class.  The first
+is field-level validation.  Field-level validation comes into play when a
+given field in an object is assigned to or updated.  We use Python’s
+<code class="docutils literal notranslate"><span class="pre">property</span></code> functionality to enforce specific validations on field values,
+and in some places we even use customized list classes to enforce
+validations on list members.  You should expect to catch a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
+exception when making assignments to fields if you are programmatically
+filling an object.</p>
+<p>The second level of validation is post-completion validation.  Certain
+validations don’t make sense until an object representation of options is
+fully “complete”.  We don’t want these validations to apply all of the time,
+because it would make building up a valid object from scratch a real pain.
+For instance, we might have to do things in the right order to keep from
+throwing exceptions, etc.</p>
+<p>All of these post-completion validations are encapsulated in the
+<a class="reference internal" href="#CedarBackup3.tools.amazons3.Options.validate" title="CedarBackup3.tools.amazons3.Options.validate"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Options.validate</span></code></a> method.  This method can be called at any time by a
+client, and will always be called immediately after creating a <code class="docutils literal notranslate"><span class="pre">Options</span></code>
+object from a command line and before exporting a <code class="docutils literal notranslate"><span class="pre">Options</span></code> object back to
+a command line.  This way, we get acceptable ease-of-use but we also don’t
+accept or emit invalid command lines.</p>
+<p><em>Note:</em> Lists within this class are “unordered” for equality comparisons.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.__repr__" title="Link to this definition">¶</a></dt>
+<dd><p>Official string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.__str__" title="Link to this definition">¶</a></dt>
+<dd><p>Informal string representation for class instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.__eq__" title="Link to this definition">¶</a></dt>
+<dd><p>Equals operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.__lt__" title="Link to this definition">¶</a></dt>
+<dd><p>Less-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.__gt__" title="Link to this definition">¶</a></dt>
+<dd><p>Greater-than operator, iplemented in terms of original Python 2 compare operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.__cmp__">
+<span class="sig-name descname"><span class="pre">__cmp__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.__cmp__" title="Link to this definition">¶</a></dt>
+<dd><p>Original Python 2 comparison operator.
+Lists within this class are “unordered” for equality comparisons.
+:param other: Other object to compare to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>-1/0/1 depending on whether self is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> other</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.help">
+<span class="sig-name descname"><span class="pre">help</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.help" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.verbose" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.quiet">
+<span class="sig-name descname"><span class="pre">quiet</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.quiet" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.logfile">
+<span class="sig-name descname"><span class="pre">logfile</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.logfile" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.owner">
+<span class="sig-name descname"><span class="pre">owner</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.owner" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.mode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.output">
+<span class="sig-name descname"><span class="pre">output</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.output" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.debug">
+<span class="sig-name descname"><span class="pre">debug</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.debug" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.stacktrace">
+<span class="sig-name descname"><span class="pre">stacktrace</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.stacktrace" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.diagnostics">
+<span class="sig-name descname"><span class="pre">diagnostics</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.diagnostics" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.verifyOnly">
+<span class="sig-name descname"><span class="pre">verifyOnly</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.verifyOnly" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.uploadOnly">
+<span class="sig-name descname"><span class="pre">uploadOnly</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.uploadOnly" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.ignoreWarnings">
+<span class="sig-name descname"><span class="pre">ignoreWarnings</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.ignoreWarnings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.sourceDir">
+<span class="sig-name descname"><span class="pre">sourceDir</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.sourceDir" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.s3BucketUrl">
+<span class="sig-name descname"><span class="pre">s3BucketUrl</span></span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.s3BucketUrl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.validate" title="Link to this definition">¶</a></dt>
+<dd><p>Validates command-line options represented by the object.</p>
+<p>Unless <code class="docutils literal notranslate"><span class="pre">--help</span></code> or <code class="docutils literal notranslate"><span class="pre">--version</span></code> are supplied, at least one action must
+be specified.  Other validations (as for allowed values for particular
+options) will be taken care of at assignment time by the properties
+functionality.</p>
+<p><em>Note:</em> The command line format is specified by the <code class="docutils literal notranslate"><span class="pre">_usage</span></code> function.
+Call <code class="docutils literal notranslate"><span class="pre">_usage</span></code> to see a usage statement for the cback3-amazons3-sync script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If one of the validations fails</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.buildArgumentList">
+<span class="sig-name descname"><span class="pre">buildArgumentList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.buildArgumentList" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts options into a list of command line arguments.</p>
+<p>The original order of the various arguments (if, indeed, the object was
+initialized with a command-line) is not preserved in this generated
+argument list.   Besides that, the argument list is normalized to use the
+long option names (i.e. –version rather than -V).  The resulting list
+will be suitable for passing back to the constructor in the
+<code class="docutils literal notranslate"><span class="pre">argumentList</span></code> parameter.  Unlike <a class="reference internal" href="#CedarBackup3.tools.amazons3.Options.buildArgumentString" title="CedarBackup3.tools.amazons3.Options.buildArgumentString"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">buildArgumentString</span></code></a>, string
+arguments are not quoted here, because there is no need for it.</p>
+<p>Unless the <code class="docutils literal notranslate"><span class="pre">validate</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">False</span></code>, the <a class="reference internal" href="#CedarBackup3.tools.amazons3.Options.validate" title="CedarBackup3.tools.amazons3.Options.validate"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Options.validate</span></code></a>
+method will be called (with its default arguments) against the
+options before extracting the command line.  If the options are not valid,
+then an argument list will not be extracted.</p>
+<p><em>Note:</em> It is strongly suggested that the <code class="docutils literal notranslate"><span class="pre">validate</span></code> option always be set
+to <code class="docutils literal notranslate"><span class="pre">True</span></code> (the default) unless there is a specific need to extract an
+invalid command line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>validate</strong> (<em>Boolean true/false</em>) – Validate the options before extracting the command line</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List representation of command-line arguments</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If options within the object are invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.Options.buildArgumentString">
+<span class="sig-name descname"><span class="pre">buildArgumentString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.Options.buildArgumentString" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts options into a string of command-line arguments.</p>
+<p>The original order of the various arguments (if, indeed, the object was
+initialized with a command-line) is not preserved in this generated
+argument string.   Besides that, the argument string is normalized to use
+the long option names (i.e. –version rather than -V) and to quote all
+string arguments with double quotes (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>).  The resulting string will be
+suitable for passing back to the constructor in the <code class="docutils literal notranslate"><span class="pre">argumentString</span></code>
+parameter.</p>
+<p>Unless the <code class="docutils literal notranslate"><span class="pre">validate</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">False</span></code>, the <a class="reference internal" href="#CedarBackup3.tools.amazons3.Options.validate" title="CedarBackup3.tools.amazons3.Options.validate"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">Options.validate</span></code></a>
+method will be called (with its default arguments) against the options
+before extracting the command line.  If the options are not valid, then
+an argument string will not be extracted.</p>
+<p><em>Note:</em> It is strongly suggested that the <code class="docutils literal notranslate"><span class="pre">validate</span></code> option always be set
+to <code class="docutils literal notranslate"><span class="pre">True</span></code> (the default) unless there is a specific need to extract an
+invalid command line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>validate</strong> (<em>Boolean true/false</em>) – Validate the options before extracting the command line</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String representation of command-line arguments</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If options within the object are invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.tools.amazons3.cli">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.tools.amazons3.</span></span><span class="sig-name descname"><span class="pre">cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.tools.amazons3.cli" title="Link to this definition">¶</a></dt>
+<dd><p>Implements the command-line interface for the <code class="docutils literal notranslate"><span class="pre">cback3-amazons3-sync</span></code> script.</p>
+<p>Essentially, this is the “main routine” for the cback3-amazons3-sync script.  It does
+all of the argument processing for the script, and then also implements the
+tool functionality.</p>
+<p>This function looks pretty similiar to <code class="docutils literal notranslate"><span class="pre">CedarBackup3.cli.cli()</span></code>.  It’s not
+easy to refactor this code to make it reusable and also readable, so I’ve
+decided to just live with the duplication.</p>
+<p>A different error code is returned for each type of failure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: The Python interpreter version is not supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Error processing command-line arguments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code>: Error configuring logging</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code>: Backup was interrupted with a CTRL-C or similar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">6</span></code>: Error executing other parts of the script</p></li>
+</ul>
+</div></blockquote>
+<p><em>Note:</em> This script uses print rather than logging to the INFO level, because
+it is interactive.  Underlying Cedar Backup functionality uses the logging
+mechanism exclusively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error code as described above</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">CedarBackup3</a><ul>
+  <li><a href="../index.html">CedarBackup3.tools</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">CedarBackup3.tools</a></li>
+      <li>Next: <a href="../span/index.html" title="next chapter">CedarBackup3.tools.span</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

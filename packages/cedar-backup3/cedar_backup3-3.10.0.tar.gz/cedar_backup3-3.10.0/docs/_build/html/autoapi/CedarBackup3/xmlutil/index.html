@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CedarBackup3.xmlutil &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="CedarBackup3.writers.util" href="../writers/util/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-CedarBackup3.xmlutil">
+<span id="cedarbackup3-xmlutil"></span><h1>CedarBackup3.xmlutil<a class="headerlink" href="#module-CedarBackup3.xmlutil" title="Link to this heading">¶</a></h1>
+<p>Provides general XML-related functionality.</p>
+<p>What I’m trying to do here is abstract much of the functionality that directly
+accesses the DOM tree.  This is not so much to “protect” the other code from
+the DOM, but to standardize the way it’s used.  It will also help extension
+authors write code that easily looks more like the rest of Cedar Backup.</p>
+<section id="module-attributes">
+<h2>Module Attributes<a class="headerlink" href="#module-attributes" title="Link to this heading">¶</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.TRUE_BOOLEAN_VALUES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">TRUE_BOOLEAN_VALUES</span></span><a class="headerlink" href="#CedarBackup3.xmlutil.TRUE_BOOLEAN_VALUES" title="Link to this definition">¶</a></dt>
+<dd><p>List of boolean values in XML representing <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.FALSE_BOOLEAN_VALUES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">FALSE_BOOLEAN_VALUES</span></span><a class="headerlink" href="#CedarBackup3.xmlutil.FALSE_BOOLEAN_VALUES" title="Link to this definition">¶</a></dt>
+<dd><p>List of boolean values in XML representing <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.VALID_BOOLEAN_VALUES">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">VALID_BOOLEAN_VALUES</span></span><a class="headerlink" href="#CedarBackup3.xmlutil.VALID_BOOLEAN_VALUES" title="Link to this definition">¶</a></dt>
+<dd><p>List of valid boolean values in XML</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kenneth J. Pronovici &lt;<a class="reference external" href="mailto:pronovic&#37;&#52;&#48;ieee&#46;org">pronovic<span>&#64;</span>ieee<span>&#46;</span>org</a>&gt;</p>
+</dd>
+</dl>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.logger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#CedarBackup3.xmlutil.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">TRUE_BOOLEAN_VALUES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Y',</span> <span class="pre">'y']</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">FALSE_BOOLEAN_VALUES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['N',</span> <span class="pre">'n']</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">VALID_BOOLEAN_VALUES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Y',</span> <span class="pre">'y',</span> <span class="pre">'N',</span> <span class="pre">'n']</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.createInputDom">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">createInputDom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cb_config'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.createInputDom" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a DOM tree based on reading an XML string.
+:returns: Tuple (xmlDom, parentNode) for the parsed document</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the document can’t be parsed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.createOutputDom">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">createOutputDom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cb_config'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.createOutputDom" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a DOM tree used for writing an XML document.
+:param name: Base name of the document (root node name)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple (xmlDom, parentNode) for the new document</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.isElement">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">isElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.isElement" title="Link to this definition">¶</a></dt>
+<dd><p>Returns True or False depending on whether the XML node is an element node.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readChildren">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readChildren" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a list of nodes with a given name immediately beneath the
+parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<p>Underneath, we use the Python <code class="docutils literal notranslate"><span class="pre">getElementsByTagName</span></code> method, which is
+pretty cool, but which (surprisingly?) returns a list of all children
+with a given name below the parent, at any level.  We just prune that
+list to include only children whose <code class="docutils literal notranslate"><span class="pre">parentNode</span></code> matches the passed-in
+parent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of nodes to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of child nodes with correct parent, or an empty list if</p>
+</dd>
+</dl>
+<p>no matching nodes are found.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readFirstChild">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readFirstChild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readFirstChild" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the first child with a given name immediately beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>First properly-named child of parent, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readStringList">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readStringList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readStringList" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a list of the string contents associated with nodes with a given
+name immediately beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<p>First, we find all of the nodes using <a class="reference internal" href="#CedarBackup3.xmlutil.readChildren" title="CedarBackup3.xmlutil.readChildren"><code class="xref any py py-func docutils literal notranslate"><span class="pre">readChildren</span></code></a>, and then we
+retrieve the “string contents” of each of those nodes.  The returned list
+has one entry per matching node.  We assume that string contents of a
+given node belong to the first <code class="docutils literal notranslate"><span class="pre">TEXT_NODE</span></code> child of that node.  Nodes
+which have no <code class="docutils literal notranslate"><span class="pre">TEXT_NODE</span></code> children are not represented in the returned
+list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of strings as described above, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readString">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readString" title="Link to this definition">¶</a></dt>
+<dd><p>Returns string contents of the first child with a given name immediately
+beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.  We assume that string
+contents of a given node belong to the first <code class="docutils literal notranslate"><span class="pre">TEXT_NODE</span></code> child of that
+node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String contents of node or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readInteger">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readInteger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readInteger" title="Link to this definition">¶</a></dt>
+<dd><p>Returns integer contents of the first child with a given name immediately
+beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer contents of node or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the string at the location can’t be converted to an integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readLong">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readLong</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readLong" title="Link to this definition">¶</a></dt>
+<dd><p>Returns long integer contents of the first child with a given name immediately
+beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Long integer contents of node or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the string at the location can’t be converted to an integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readFloat">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readFloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readFloat" title="Link to this definition">¶</a></dt>
+<dd><p>Returns float contents of the first child with a given name immediately
+beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Float contents of node or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the string at the location can’t be converted to a</p>
+</dd>
+</dl>
+<p>float value.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.readBoolean">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">readBoolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.readBoolean" title="Link to this definition">¶</a></dt>
+<dd><p>Returns boolean contents of the first child with a given name immediately
+beneath the parent.</p>
+<p>By “immediately beneath” the parent, we mean from among nodes that are
+direct children of the passed-in parent node.</p>
+<p>The string value of the node must be one of the values in <a class="reference internal" href="#id2" title="CedarBackup3.xmlutil.VALID_BOOLEAN_VALUES"><code class="xref any py py-data docutils literal notranslate"><span class="pre">VALID_BOOLEAN_VALUES</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Parent node to search beneath</p></li>
+<li><p><strong>name</strong> – Name of node to search for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean contents of node or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching nodes are found</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the string at the location can’t be converted to a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.addContainerNode">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">addContainerNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.addContainerNode" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a container node as the next child of a parent node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent node to create child for</p></li>
+<li><p><strong>nodeName</strong> – Name of the new container node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to the newly-created node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.addStringNode">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">addStringNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeValue</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.addStringNode" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a text node as the next child of a parent, to contain a string.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">nodeValue</span></code> is None, then the node will be created, but will be
+empty (i.e. will contain no text node child).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent node to create child for</p></li>
+<li><p><strong>nodeName</strong> – Name of the new container node</p></li>
+<li><p><strong>nodeValue</strong> – The value to put into the node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to the newly-created node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.addIntegerNode">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">addIntegerNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeValue</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.addIntegerNode" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a text node as the next child of a parent, to contain an integer.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">nodeValue</span></code> is None, then the node will be created, but will be
+empty (i.e. will contain no text node child).</p>
+<p>The integer will be converted to a string using “%d”.  The result will be
+added to the document via <a class="reference internal" href="#CedarBackup3.xmlutil.addStringNode" title="CedarBackup3.xmlutil.addStringNode"><code class="xref any py py-func docutils literal notranslate"><span class="pre">addStringNode</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent node to create child for</p></li>
+<li><p><strong>nodeName</strong> – Name of the new container node</p></li>
+<li><p><strong>nodeValue</strong> – The value to put into the node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to the newly-created node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.addLongNode">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">addLongNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeValue</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.addLongNode" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a text node as the next child of a parent, to contain a long integer.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">nodeValue</span></code> is None, then the node will be created, but will be
+empty (i.e. will contain no text node child).</p>
+<p>The integer will be converted to a string using “%d”.  The result will be
+added to the document via <a class="reference internal" href="#CedarBackup3.xmlutil.addStringNode" title="CedarBackup3.xmlutil.addStringNode"><code class="xref any py py-func docutils literal notranslate"><span class="pre">addStringNode</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent node to create child for</p></li>
+<li><p><strong>nodeName</strong> – Name of the new container node</p></li>
+<li><p><strong>nodeValue</strong> – The value to put into the node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to the newly-created node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.addBooleanNode">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">addBooleanNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parentNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeValue</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.addBooleanNode" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a text node as the next child of a parent, to contain a boolean.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">nodeValue</span></code> is None, then the node will be created, but will be
+empty (i.e. will contain no text node child).</p>
+<p>Boolean <code class="docutils literal notranslate"><span class="pre">True</span></code>, or anything else interpreted as <code class="docutils literal notranslate"><span class="pre">True</span></code> by Python, will
+be converted to a string “Y”.  Anything else will be converted to a
+string “N”.  The result is added to the document via <a class="reference internal" href="#CedarBackup3.xmlutil.addStringNode" title="CedarBackup3.xmlutil.addStringNode"><code class="xref any py py-func docutils literal notranslate"><span class="pre">addStringNode</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlDom</strong> – DOM tree as from <code class="docutils literal notranslate"><span class="pre">impl.createDocument()</span></code></p></li>
+<li><p><strong>parentNode</strong> – Parent node to create child for</p></li>
+<li><p><strong>nodeName</strong> – Name of the new container node</p></li>
+<li><p><strong>nodeValue</strong> – The value to put into the node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to the newly-created node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.serializeDom">
+<span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">serializeDom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.serializeDom" title="Link to this definition">¶</a></dt>
+<dd><p>Serializes a DOM tree and returns the result in a string.
+:param xmlDom: XML DOM tree to serialize
+:param indent: Number of spaces to indent, as an integer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String form of DOM tree, pretty-printed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.Serializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CedarBackup3.xmlutil.</span></span><span class="sig-name descname"><span class="pre">Serializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'UTF-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.Serializer" title="Link to this definition">¶</a></dt>
+<dd><p>XML serializer class.</p>
+<p>This is a customized serializer that I hacked together based on what I found
+in the PyXML distribution.  Basically, around release 2.7.0, the only reason
+I still had around a dependency on PyXML was for the PrettyPrint
+functionality, and that seemed pointless.  So, I stripped the PrettyPrint
+code out of PyXML and hacked bits of it off until it did just what I needed
+and no more.</p>
+<p>This code started out being called PrintVisitor, but I decided it makes more
+sense just calling it a serializer.  I’ve made nearly all of the methods
+private, and I’ve added a new high-level serialize() method rather than
+having clients call <code class="docutils literal notranslate"><span class="pre">visit()</span></code>.</p>
+<p>Anyway, as a consequence of my hacking with it, this can’t quite be called a
+complete XML serializer any more.  I ripped out support for HTML and XHTML,
+and there is also no longer any support for namespaces (which I took out
+because this dragged along a lot of extra code, and Cedar Backup doesn’t use
+namespaces).  However, everything else should pretty much work as expected.</p>
+<p>&#64;copyright: This code, prior to customization, was part of the PyXML
+codebase, and before that was part of the 4DOM suite developed by
+Fourthought, Inc.  It its original form, it was Copyright (c) 2000
+Fourthought Inc, USA; All Rights Reserved.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.Serializer.stream">
+<span class="sig-name descname"><span class="pre">stream</span></span><a class="headerlink" href="#CedarBackup3.xmlutil.Serializer.stream" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.Serializer.encoding">
+<span class="sig-name descname"><span class="pre">encoding</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UTF-8'</span></em><a class="headerlink" href="#CedarBackup3.xmlutil.Serializer.encoding" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CedarBackup3.xmlutil.Serializer.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmlDom</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CedarBackup3.xmlutil.Serializer.serialize" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the passed-in XML document.
+:param xmlDom: XML DOM tree to serialize</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If there’s an unknown node type in the document</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">CedarBackup3</a><ul>
+      <li>Previous: <a href="../writers/util/index.html" title="previous chapter">CedarBackup3.writers.util</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../../../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

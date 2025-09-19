@@ -1,0 +1,47 @@
+CedarBackup3.actions.stage
+==========================
+
+.. py:module:: CedarBackup3.actions.stage
+
+.. autoapi-nested-parse::
+
+   Implements the standard 'stage' action.
+   :author: Kenneth J. Pronovici <pronovic@ieee.org>
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: executeStage(configPath, options, config)
+
+   Executes the stage backup action.
+
+   *Note:* The daily directory is derived once and then we stick with it, just
+   in case a backup happens to span midnite.
+
+   *Note:* As portions of the stage action is complete, we will write various
+   indicator files so that it's obvious what actions have been completed.  Each
+   peer gets a stage indicator in its collect directory, and then the master
+   gets a stage indicator in its daily staging directory.  The store process
+   uses the master's stage indicator to decide whether a directory is ready to
+   be stored.  Currently, nothing uses the indicator at each peer, and it
+   exists for reference only.
+
+   :param configPath: Path to configuration file on disk
+   :type configPath: String representing a path on disk
+   :param options: Program command-line options
+   :type options: Options object
+   :param config: Program configuration
+   :type config: Config object
+
+   :raises ValueError: Under many generic error conditions
+   :raises IOError: If there are problems reading or writing files
+
+

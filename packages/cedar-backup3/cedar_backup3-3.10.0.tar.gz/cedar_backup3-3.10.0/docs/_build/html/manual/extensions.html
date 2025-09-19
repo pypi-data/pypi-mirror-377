@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Official Extensions &#8212; cedar-backup3 3.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=ec641305" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <script src="../_static/documentation_options.js?v=f8d09eac"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="official-extensions">
+<span id="cedar-extensions"></span><h1>Official Extensions<a class="headerlink" href="#official-extensions" title="Link to this heading">¶</a></h1>
+<section id="system-information-extension">
+<span id="cedar-extensions-sysinfo"></span><h2>System Information Extension<a class="headerlink" href="#system-information-extension" title="Link to this heading">¶</a></h2>
+<p>The System Information Extension is a simple Cedar Backup extension used
+to save off important system recovery information that might be useful
+when reconstructing a “broken” system. It is intended to be run either
+immediately before or immediately after the standard collect action.</p>
+<p>This extension saves off the following information to the configured
+Cedar Backup collect directory. Saved off data is always compressed
+using <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+<ul class="simple">
+<li><p>Currently-installed Debian packages via <code class="docutils literal notranslate"><span class="pre">dpkg</span> <span class="pre">--get-selections</span></code></p></li>
+<li><p>Disk partition information via <code class="docutils literal notranslate"><span class="pre">fdisk</span> <span class="pre">-l</span></code></p></li>
+<li><p>System-wide mounted filesystem contents, via <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-laR</span></code></p></li>
+</ul>
+<p>The Debian-specific information is only collected on systems where
+<code class="docutils literal notranslate"><span class="pre">/usr/bin/dpkg</span></code> exists.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">sysinfo</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">sysinfo</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">99</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and collect configuration sections
+in the standard Cedar Backup configuration file, but requires no new
+configuration of its own.</p>
+</section>
+<section id="amazon-s3-extension">
+<span id="cedar-extensions-amazons3"></span><h2>Amazon S3 Extension<a class="headerlink" href="#amazon-s3-extension" title="Link to this heading">¶</a></h2>
+<p>The Amazon S3 extension writes data to Amazon S3 cloud storage rather
+than to physical media. It is intended to replace the store action, but
+you can also use it alongside the store action if you’d prefer to backup
+your data in more than one place. This extension must be run after the
+stage action.</p>
+<p>The underlying functionality relies on the <a class="reference external" href="http://aws.amazon.com/documentation/cli/">AWS
+CLI</a> toolset. Before you
+use this extension, you need to set up your Amazon S3 account and
+configure AWS CLI as detailed in Amazon’s <a class="reference external" href="http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html">setup
+guide</a>.
+The extension assumes that the backup is being executed as root, and
+switches over to the configured backup user to run the <code class="docutils literal notranslate"><span class="pre">aws</span></code> program.
+So, make sure you configure the AWS CLI tools as the backup user and not
+root. (This is different than the <code class="docutils literal notranslate"><span class="pre">cback-amazons3-sync</span></code> tool, which
+executes AWS CLI command as the same user that is running the tool.)</p>
+<p>You can use whichever Amazon-supported authentication mechanism you
+would like when setting up connectivity for the AWS CLI. It’s best to
+set up a separate user in the <a class="reference external" href="https://console.aws.amazon.com/iam/home">IAM
+Console</a> rather than using
+your main administrative user.</p>
+<p>You probably want to lock down this user so that it can only take backup
+related actions in the AWS infrastructure. One option is to apply the
+<code class="docutils literal notranslate"><span class="pre">AmazonS3FullAccess</span></code> policy, which grants full access to the S3
+infrastructure. If you would like to lock down the user even further,
+this appears to be the minimum set of permissions required for Cedar
+Backup, written as a JSON policy statement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:ListObjects&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:PutObjectAcl&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:DeleteObject&quot;</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;arn:aws:s3:::my-bucket&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;arn:aws:s3:::my-bucket/*&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Resource</span></code> section, be sure to list the name of your S3 bucket
+instead of <code class="docutils literal notranslate"><span class="pre">my-bucket</span></code>.</p>
+<p>When using physical media via the standard store action, there is an
+implicit limit to the size of a backup, since a backup must fit on a
+single disc. Since there is no physical media, no such limit exists for
+Amazon S3 backups. This leaves open the possibility that Cedar Backup
+might construct an unexpectedly-large backup that the administrator is
+not aware of. Over time, this might become expensive, either in terms of
+network bandwidth or in terms of Amazon S3 storage and I/O charges. To
+mitigate this risk, set a reasonable maximum size using the
+configuration elements shown below. If the backup fails, you have a
+chance to review what made the backup larger than you expected, and you
+can either correct the problem (i.e. remove a large temporary directory
+that got inadvertently included in the backup) or change configuration
+to take into account the new “normal” maximum size.</p>
+<p>You can optionally configure Cedar Backup to encrypt data before sending
+it to S3. To do that, provide a complete command line using the
+<code class="docutils literal notranslate"><span class="pre">${input}</span></code> and <code class="docutils literal notranslate"><span class="pre">${output}</span></code> variables to represent the original input
+file and the encrypted output file. This command will be executed as the
+backup user.</p>
+<p>For instance, you can use something like this with GPG:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/usr/bin/gpg -c --no-use-agent --batch --yes --passphrase-file /home/backup/.passphrase -o ${output} ${input}
+</pre></div>
+</div>
+<p>The GPG mechanism depends on a strong passphrase for security. One way
+to generate a strong passphrase is using your system random number
+generator, i.e.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dd</span> <span class="k">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">urandom</span> <span class="n">count</span><span class="o">=</span><span class="mi">20</span> <span class="n">bs</span><span class="o">=</span><span class="mi">1</span> <span class="o">|</span> <span class="n">xxd</span> <span class="o">-</span><span class="n">ps</span>
+</pre></div>
+</div>
+<p>(See
+<a class="reference external" href="http://security.stackexchange.com/questions/14867/gpg-encryption-security">StackExchange</a>
+for more details about that advice.) If you decide to use encryption,
+make sure you save off the passphrase in a safe place, so you can get at
+your backup data later if you need to. And obviously, make sure to set
+permissions on the passphrase file so it can only be read by the backup
+user.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;extensions&gt;
+   &lt;action&gt;
+      &lt;name&gt;amazons3&lt;/name&gt;
+      &lt;module&gt;CedarBackup3.extend.amazons3&lt;/module&gt;
+      &lt;function&gt;executeAction&lt;/function&gt;
+      &lt;index&gt;201&lt;/index&gt; &lt;!-- just after stage --&gt;
+   &lt;/action&gt;
+&lt;/extensions&gt;
+</pre></div>
+</div>
+<p>This extension relies on the options and staging configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">amazons3</span></code> configuration section. This is an example
+configuration section with encryption disabled:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">amazons3</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">s3_bucket</span><span class="o">&gt;</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">-</span><span class="n">backup</span><span class="o">/</span><span class="n">staging</span><span class="o">&lt;/</span><span class="n">s3_bucket</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">amazons3</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the Amazon S3 configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">warn_midnite</span></code></dt><dd><p>Whether to generate warnings for crossing midnite.</p>
+<p>This field indicates whether warnings should be generated if the
+Amazon S3 operation has to cross a midnite boundary in order to find
+data to write to the cloud. For instance, a warning would be
+generated if valid data was only found in the day before or day after
+the current day.</p>
+<p>Configuration for some users is such that the amazons3 operation will
+always cross a midnite boundary, so they will not care about this
+warning. Other users will expect to never cross a boundary, and want
+to be notified that something “strange” might have happened.</p>
+<p>This field is optional. If it doesn’t exist, then <code class="docutils literal notranslate"><span class="pre">N</span></code> will be
+assumed.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">s3_bucket</span></code></dt><dd><p>The name of the Amazon S3 bucket that data will be written to.</p>
+<p>This field configures the S3 bucket that your data will be written
+to. In S3, buckets are named globally. For uniqueness, you would
+typically use the name of your domain followed by some suffix, such
+as <code class="docutils literal notranslate"><span class="pre">example.com-backup</span></code>. If you want, you can specify a
+subdirectory within the bucket, such as
+<code class="docutils literal notranslate"><span class="pre">example.com-backup/staging</span></code>.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">encrypt</span></code></dt><dd><p>Command used to encrypt backup data before upload to S3</p>
+<p>If this field is provided, then data will be encrypted before it is
+uploaded to Amazon S3. You must provide the entire command used to
+encrypt a file, including the <code class="docutils literal notranslate"><span class="pre">${input}</span></code> and <code class="docutils literal notranslate"><span class="pre">${output}</span></code>
+variables. An example GPG command is shown above, but you can use any
+mechanism you choose. The command will be run as the configured
+backup user.</p>
+<p><em>Restrictions:</em> If provided, must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">full_size_limit</span></code></dt><dd><p>Maximum size of a full backup</p>
+<p>If this field is provided, then a size limit will be applied to full
+backups. If the total size of the selected staging directory is
+greater than the limit, then the backup will fail.</p>
+<p>You can enter this value in two different forms. It can either be a
+simple number, in which case the value is assumed to be in bytes; or
+it can be a number followed by a unit (KB, MB, GB).</p>
+<p>Valid examples are “10240”, “250 MB” or “1.1 GB”.</p>
+<p><em>Restrictions:</em> Must be a value as described above, greater than
+zero.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">incr_size_limit</span></code></dt><dd><p>Maximum size of an incremental backup</p>
+<p>If this field is provided, then a size limit will be applied to
+incremental backups. If the total size of the selected staging
+directory is greater than the limit, then the backup will fail.</p>
+<p>You can enter this value in two different forms. It can either be a
+simple number, in which case the value is assumed to be in bytes; or
+it can be a number followed by a unit (KB, MB, GB).</p>
+<p>Valid examples are “10240”, “250 MB” or “1.1 GB”.</p>
+<p><em>Restrictions:</em> Must be a value as described above, greater than
+zero.</p>
+</dd>
+</dl>
+</section>
+<section id="subversion-extension">
+<span id="cedar-extensions-subversion"></span><h2>Subversion Extension<a class="headerlink" href="#subversion-extension" title="Link to this heading">¶</a></h2>
+<p>The Subversion Extension is a Cedar Backup extension used to back up
+<a class="reference external" href="http://subversion.org">Subversion</a> version control repositories via the Cedar Backup
+command line. It is intended to be run either immediately before or
+immediately after the standard collect action.</p>
+<p>Each configured Subversion repository can be backed using the same
+collect modes allowed for filesystems in the standard Cedar Backup
+collect action (weekly, daily, incremental) and the output can be
+compressed using either <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+<p>There are two different kinds of Subversion repositories at this
+writing: BDB (Berkeley Database) and FSFS (a “filesystem within a
+filesystem”). This extension backs up both kinds of repositories in the
+same way, using <code class="docutils literal notranslate"><span class="pre">svnadmin</span> <span class="pre">dump</span></code> in an incremental mode.</p>
+<p>It turns out that FSFS repositories can also be backed up just like any
+other filesystem directory. If you would rather do the backup that way,
+then use the normal collect action rather than this extension. If you
+decide to do that, be sure to consult the Subversion documentation and
+make sure you understand the limitations of this kind of backup.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">subversion</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">subversion</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">99</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and collect configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">subversion</span></code> configuration section. This is an example
+Subversion configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">subversion</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">incr</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">bzip2</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">repository</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">public</span><span class="o">/</span><span class="n">svn</span><span class="o">/</span><span class="n">docs</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">repository</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">repository</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">public</span><span class="o">/</span><span class="n">svn</span><span class="o">/</span><span class="n">web</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">gzip</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">repository</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">repository_dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">opt</span><span class="o">/</span><span class="n">private</span><span class="o">/</span><span class="n">svn</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">daily</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">repository_dir</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">subversion</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the Subversion configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Default collect mode.</p>
+<p>The collect mode describes how frequently a Subversion repository is
+backed up. The Subversion extension recognizes the same collect modes
+as the standard Cedar Backup collect action (see
+<a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a>).</p>
+<p>This value is the collect mode that will be used by default during
+the backup process. Individual repositories (below) may override this
+value. If <em>all</em> individual repositories provide their own value, then
+this default value may be omitted from configuration.</p>
+<p><em>Note:</em> if your backup device does not suppport multisession discs,
+then you should probably use the <code class="docutils literal notranslate"><span class="pre">daily</span></code> collect mode to avoid
+losing data.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Default compress mode.</p>
+<p>Subversion repositories backups are just specially-formatted text
+files, and often compress quite well using <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>. The
+compress mode describes how the backed-up data will be compressed, if
+at all.</p>
+<p>This value is the compress mode that will be used by default during
+the backup process. Individual repositories (below) may override this
+value. If <em>all</em> individual repositories provide their own value, then
+this default value may be omitted from configuration.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">repository</span></code></dt><dd><p>A Subversion repository be collected.</p>
+<p>This is a subsection which contains information about a specific
+Subversion repository to be backed up.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one repository or repository directory must be configured.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">repository</span></code> subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Collect mode for this repository.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default collect mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Compress mode for this repository.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default compress mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the Subversion repository to back up.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">repository_dir</span></code></dt><dd><p>A Subversion parent repository directory be collected.</p>
+<p>This is a subsection which contains information about a Subversion
+parent repository directory to be backed up. Any subdirectory
+immediately within this directory is assumed to be a Subversion
+repository, and will be backed up.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one repository or repository directory must be configured.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">repository_dir</span></code> subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Collect mode for this repository.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default collect mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Compress mode for this repository.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default compress mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the Subversion repository to back up.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exclude</span></code></dt><dd><p>List of paths or patterns to exclude from the backup.</p>
+<p>This is a subsection which contains a set of paths and patterns to
+be excluded within this subversion parent directory.</p>
+<p>This section is entirely optional, and if it exists can also be
+empty.</p>
+<p>The exclude subsection can contain one or more of each of the
+following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">rel_path</span></code></dt><dd><p>A relative path to be excluded from the backup.</p>
+<p>The path is assumed to be relative to the subversion parent
+directory itself. For instance, if the configured subversion
+parent directory is <code class="docutils literal notranslate"><span class="pre">/opt/svn</span></code> a configured relative path of
+<code class="docutils literal notranslate"><span class="pre">software</span></code> would exclude the path <code class="docutils literal notranslate"><span class="pre">/opt/svn/software</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pattern</span></code></dt><dd><p>A pattern to be excluded from the backup.</p>
+<p>The pattern must be a Python regular expression. It is assumed
+to be bounded at front and back by the beginning and end of the
+string (i.e. it is treated as if it begins with <code class="docutils literal notranslate"><span class="pre">^</span></code> and ends
+with <code class="docutils literal notranslate"><span class="pre">$</span></code>).</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="mysql-extension">
+<span id="cedar-extensions-mysql"></span><h2>MySQL Extension<a class="headerlink" href="#mysql-extension" title="Link to this heading">¶</a></h2>
+<p>The MySQL Extension is a Cedar Backup extension used to back up
+<a class="reference external" href="http://www.mysql.com">MySQL</a> databases via the Cedar Backup command line. It
+is intended to be run either immediately before or immediately after the
+standard collect action.</p>
+<blockquote>
+<div><p><img alt="note" src="../_images/note.png" /></p>
+<p>This extension always produces a full backup. There is currently no
+facility for making incremental backups. If/when someone has a need
+for this and can describe how to do it, I will update this extension
+or provide another.</p>
+</div></blockquote>
+<p>The backup is done via the <code class="docutils literal notranslate"><span class="pre">mysqldump</span></code> command included with the MySQL
+product. Output can be compressed using <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.
+Administrators can configure the extension either to back up all
+databases or to back up only specific databases.</p>
+<p>The extension assumes that all configured databases can be backed up by
+a single user. Often, the “root” database user will be used. An
+alternative is to create a separate MySQL “backup” user and grant that
+user rights to read (but not write) various databases as needed. This
+second option is probably your best choice.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>The extension accepts a username and password in configuration.
+However, you probably do not want to list those values in Cedar
+Backup configuration. This is because Cedar Backup will provide these
+values to <code class="docutils literal notranslate"><span class="pre">mysqldump</span></code> via the command-line <code class="docutils literal notranslate"><span class="pre">--user</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--password</span></code> switches, which will be visible to other users in the
+process listing.</p>
+<p>Instead, you should configure the username and password in one of
+MySQL’s configuration files. Typically, that would be done by putting
+a stanza like this in <code class="docutils literal notranslate"><span class="pre">/root/.my.cnf</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mysqldump</span><span class="p">]</span>
+<span class="n">user</span>     <span class="o">=</span> <span class="n">root</span>
+<span class="n">password</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">secret</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Of course, if you are executing the backup as a user other than root,
+then you would create the file in that user’s home directory instead.</p>
+<p>As a side note, it is also possible to configure <code class="docutils literal notranslate"><span class="pre">.my.cnf</span></code> such
+that Cedar Backup can back up a remote database server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mysqldump</span><span class="p">]</span>
+<span class="n">host</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">host</span>
+</pre></div>
+</div>
+<p>For this to work, you will also need to grant privileges properly for
+the user which is executing the backup. See your MySQL documentation
+for more information about how this can be done.</p>
+<p>Regardless of whether you are using <code class="docutils literal notranslate"><span class="pre">~/.my.cnf</span></code> or
+<code class="docutils literal notranslate"><span class="pre">/etc/cback3.conf</span></code> to store database login and password
+information, you should be careful about who is allowed to view that
+information. Typically, this means locking down permissions so that
+only the file owner can read the file contents (i.e. use mode
+<code class="docutils literal notranslate"><span class="pre">0600</span></code>).</p>
+</div></blockquote>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">mysql</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">mysql</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">99</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and collect configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">mysql</span></code> configuration section. This is an example MySQL
+configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">mysql</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">bzip2</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">all</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="nb">all</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mysql</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If you have decided to configure login information in Cedar Backup
+rather than using MySQL configuration, then you would add the username
+and password fields to configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">mysql</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="n">root</span><span class="o">&lt;/</span><span class="n">user</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="n">password</span><span class="o">&lt;/</span><span class="n">password</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">bzip2</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">all</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="nb">all</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mysql</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the MySQL configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">user</span></code></dt><dd><p>Database user.</p>
+<p>The database user that the backup should be executed as. Even if you
+list more than one database (below) all backups must be done as the
+same user. Typically, this would be <code class="docutils literal notranslate"><span class="pre">root</span></code> (i.e. the database root
+user, not the system root user).</p>
+<p>This value is optional. You should probably configure the username
+and password in MySQL configuration instead, as discussed above.</p>
+<p><em>Restrictions:</em> If provided, must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">password</span></code></dt><dd><p>Password associated with the database user.</p>
+<p>This value is optional. You should probably configure the username
+and password in MySQL configuration instead, as discussed above.</p>
+<p><em>Restrictions:</em> If provided, must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Compress mode.</p>
+<p>MySQL databases dumps are just specially-formatted text files, and
+often compress quite well using <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>. The compress
+mode describes how the backed-up data will be compressed, if at all.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">all</span></code></dt><dd><p>Indicates whether to back up all databases.</p>
+<p>If this value is <code class="docutils literal notranslate"><span class="pre">Y</span></code>, then all MySQL databases will be backed up.
+If this value is <code class="docutils literal notranslate"><span class="pre">N</span></code>, then one or more specific databases must be
+specified (see below).</p>
+<p>If you choose this option, the entire database backup will go into
+one big dump file.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">database</span></code></dt><dd><p>Named database to be backed up.</p>
+<p>If you choose to specify individual databases rather than all
+databases, then each database will be backed up into its own dump
+file.</p>
+<p>This field can be repeated as many times as is necessary. At least
+one database must be configured if the all option (above) is set to
+<code class="docutils literal notranslate"><span class="pre">N</span></code>. You may not configure any individual databases if the all
+option is set to <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+</dl>
+</section>
+<section id="postgresql-extension">
+<span id="cedar-extensions-postgresql"></span><h2>PostgreSQL Extension<a class="headerlink" href="#postgresql-extension" title="Link to this heading">¶</a></h2>
+<p>This is a community-contributed extension provided by Antoine Beaupre
+(“The Anarcat”). I have added regression tests around the configuration
+parsing code and I will maintain this section in the user manual based
+on his source code documentation.</p>
+<p>The PostgreSQL Extension is a Cedar Backup extension used to back up
+<a class="reference external" href="http://www.postgresql.org">PostgreSQL</a>  databases via the Cedar Backup
+command line. It is intended to be run either immediately before or immediately
+after the standard collect action.</p>
+<p>The backup is done via the <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> or <code class="docutils literal notranslate"><span class="pre">pg_dumpall</span></code> commands
+included with the PostgreSQL product. Output can be compressed using
+<code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>. Administrators can configure the extension either
+to back up all databases or to back up only specific databases.</p>
+<p>The extension assumes that the current user has passwordless access to
+the database since there is no easy way to pass a password to the
+<code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> client. This can be accomplished using appropriate
+configuration in the <code class="docutils literal notranslate"><span class="pre">pg_hda.conf</span></code> file.</p>
+<p>This extension always produces a full backup. There is currently no
+facility for making incremental backups.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>Once you place PostgreSQL configuration into the Cedar Backup
+configuration file, you should be careful about who is allowed to see
+that information. This is because PostgreSQL configuration will
+contain information about available PostgreSQL databases and
+usernames. Typically, you might want to lock down permissions so that
+only the file owner can read the file contents (i.e. use mode
+<code class="docutils literal notranslate"><span class="pre">0600</span></code>).</p>
+</div></blockquote>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">postgresql</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">postgresql</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">99</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and collect configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> configuration section. This is an example
+PostgreSQL configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">postgresql</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">bzip2</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="n">username</span><span class="o">&lt;/</span><span class="n">user</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">all</span><span class="o">&gt;</span><span class="n">Y</span><span class="o">&lt;/</span><span class="nb">all</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">postgresql</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If you decide to back up specific databases, then you would list them
+individually, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">postgresql</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">bzip2</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="n">username</span><span class="o">&lt;/</span><span class="n">user</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">all</span><span class="o">&gt;</span><span class="n">N</span><span class="o">&lt;/</span><span class="nb">all</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span><span class="n">db1</span><span class="o">&lt;/</span><span class="n">database</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span><span class="n">db2</span><span class="o">&lt;/</span><span class="n">database</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">postgresql</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the PostgreSQL configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">user</span></code></dt><dd><p>Database user.</p>
+<p>The database user that the backup should be executed as. Even if you
+list more than one database (below) all backups must be done as the
+same user.</p>
+<p>This value is optional.</p>
+<p>Consult your PostgreSQL documentation for information on how to
+configure a default database user outside of Cedar Backup, and for
+information on how to specify a database password when you configure
+a user within Cedar Backup. You will probably want to modify
+<code class="docutils literal notranslate"><span class="pre">pg_hda.conf</span></code>.</p>
+<p><em>Restrictions:</em> If provided, must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Compress mode.</p>
+<p>PostgreSQL databases dumps are just specially-formatted text files,
+and often compress quite well using <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>. The
+compress mode describes how the backed-up data will be compressed, if
+at all.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">all</span></code></dt><dd><p>Indicates whether to back up all databases.</p>
+<p>If this value is <code class="docutils literal notranslate"><span class="pre">Y</span></code>, then all PostgreSQL databases will be backed
+up. If this value is <code class="docutils literal notranslate"><span class="pre">N</span></code>, then one or more specific databases must
+be specified (see below).</p>
+<p>If you choose this option, the entire database backup will go into
+one big dump file.</p>
+<p><em>Restrictions:</em> Must be a boolean (<code class="docutils literal notranslate"><span class="pre">Y</span></code> or <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">database</span></code></dt><dd><p>Named database to be backed up.</p>
+<p>If you choose to specify individual databases rather than all
+databases, then each database will be backed up into its own dump
+file.</p>
+<p>This field can be repeated as many times as is necessary. At least
+one database must be configured if the all option (above) is set to
+<code class="docutils literal notranslate"><span class="pre">N</span></code>. You may not configure any individual databases if the all
+option is set to <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+</dl>
+</section>
+<section id="mbox-extension">
+<span id="cedar-extensions-mbox"></span><h2>Mbox Extension<a class="headerlink" href="#mbox-extension" title="Link to this heading">¶</a></h2>
+<p>The Mbox Extension is a Cedar Backup extension used to incrementally
+back up UNIX-style “mbox” mail folders via the Cedar Backup command
+line. It is intended to be run either immediately before or immediately
+after the standard collect action.</p>
+<p>Mbox mail folders are not well-suited to being backed up by the normal
+Cedar Backup incremental backup process. This is because active folders
+are typically appended to on a daily basis. This forces the incremental
+backup process to back them up every day in order to avoid losing data.
+This can result in quite a bit of wasted space when backing up large
+mail folders.</p>
+<p>The Mbox extension leverages the <code class="docutils literal notranslate"><span class="pre">grepmail</span></code> utility to back up only email
+messages which have been received since the last incremental backup. This way,
+even if a folder is added to every day, only the recently-added messages are
+is backed up. This can potentially save a lot of space.</p>
+<p>Each configured mbox file or directory can be backed using the same
+collect modes allowed for filesystems in the standard Cedar Backup
+collect action (weekly, daily, incremental) and the output can be
+compressed using either <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">mbox</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">mbox</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">99</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and collect configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">mbox</span></code> configuration section. This is an example mbox
+configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">mbox</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">incr</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">compress_mode</span><span class="o">&gt;</span><span class="n">gzip</span><span class="o">&lt;/</span><span class="n">compress_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">home</span><span class="o">/</span><span class="n">user1</span><span class="o">/</span><span class="n">mail</span><span class="o">/</span><span class="n">greylist</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">collect_mode</span><span class="o">&gt;</span><span class="n">daily</span><span class="o">&lt;/</span><span class="n">collect_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">file</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">home</span><span class="o">/</span><span class="n">user2</span><span class="o">/</span><span class="n">mail</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">abs_path</span><span class="o">&gt;/</span><span class="n">home</span><span class="o">/</span><span class="n">user3</span><span class="o">/</span><span class="n">mail</span><span class="o">&lt;/</span><span class="n">abs_path</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">exclude</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">rel_path</span><span class="o">&gt;</span><span class="n">spam</span><span class="o">&lt;/</span><span class="n">rel_path</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;.*</span><span class="n">debian</span><span class="o">.*&lt;/</span><span class="n">pattern</span><span class="o">&gt;</span>
+      <span class="o">&lt;/</span><span class="n">exclude</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="nb">dir</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">mbox</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Configuration is much like the standard collect action. Differences come
+from the fact that mbox directories are <em>not</em> collected recursively.</p>
+<p>Unlike collect configuration, exclusion information can only be
+configured at the mbox directory level (there are no global exclusions).
+Another difference is that no absolute exclusion paths are allowed —
+only relative path exclusions and patterns.</p>
+<p>The following elements are part of the mbox configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Default collect mode.</p>
+<p>The collect mode describes how frequently an mbox file or directory
+is backed up. The mbox extension recognizes the same collect modes as
+the standard Cedar Backup collect action (see
+<a class="reference internal" href="basic.html"><span class="doc">Basic Concepts</span></a>).</p>
+<p>This value is the collect mode that will be used by default during
+the backup process. Individual files or directories (below) may
+override this value. If <em>all</em> individual files or directories provide
+their own value, then this default value may be omitted from
+configuration.</p>
+<p><em>Note:</em> if your backup device does not suppport multisession discs,
+then you should probably use the <code class="docutils literal notranslate"><span class="pre">daily</span></code> collect mode to avoid
+losing data.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Default compress mode.</p>
+<p>Mbox file or directory backups are just text, and often compress
+quite well using <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>. The compress mode describes
+how the backed-up data will be compressed, if at all.</p>
+<p>This value is the compress mode that will be used by default during
+the backup process. Individual files or directories (below) may
+override this value. If <em>all</em> individual files or directories provide
+their own value, then this default value may be omitted from
+configuration.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">file</span></code></dt><dd><p>An individual mbox file to be collected.</p>
+<p>This is a subsection which contains information about an individual
+mbox file to be backed up.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one mbox file or directory must be configured.</p>
+<p>The file subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Collect mode for this file.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default collect mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Compress mode for this file.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default compress mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the mbox file to back up.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dir</span></code></dt><dd><p>An mbox directory to be collected.</p>
+<p>This is a subsection which contains information about an mbox
+directory to be backed up. An mbox directory is a directory
+containing mbox files. Every file in an mbox directory is assumed to
+be an mbox file. Mbox directories are <em>not</em> collected recursively.
+Only the files immediately within the configured directory will be
+backed-up and any subdirectories will be ignored.</p>
+<p>This section can be repeated as many times as is necessary. At least
+one mbox file or directory must be configured.</p>
+<p>The dir subsection contains the following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collect_mode</span></code></dt><dd><p>Collect mode for this file.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default collect mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">daily</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code> or <code class="docutils literal notranslate"><span class="pre">incr</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compress_mode</span></code></dt><dd><p>Compress mode for this file.</p>
+<p>This field is optional. If it doesn’t exist, the backup will use
+the default compress mode.</p>
+<p><em>Restrictions:</em> Must be one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">bzip2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abs_path</span></code></dt><dd><p>Absolute path of the mbox directory to back up.</p>
+<p><em>Restrictions:</em> Must be an absolute path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exclude</span></code></dt><dd><p>List of paths or patterns to exclude from the backup.</p>
+<p>This is a subsection which contains a set of paths and patterns to
+be excluded within this mbox directory.</p>
+<p>This section is entirely optional, and if it exists can also be
+empty.</p>
+<p>The exclude subsection can contain one or more of each of the
+following fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">rel_path</span></code></dt><dd><p>A relative path to be excluded from the backup.</p>
+<p>The path is assumed to be relative to the mbox directory
+itself. For instance, if the configured mbox directory is
+<code class="docutils literal notranslate"><span class="pre">/home/user2/mail</span></code> a configured relative path of <code class="docutils literal notranslate"><span class="pre">SPAM</span></code>
+would exclude the path <code class="docutils literal notranslate"><span class="pre">/home/user2/mail/SPAM</span></code>.</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pattern</span></code></dt><dd><p>A pattern to be excluded from the backup.</p>
+<p>The pattern must be a Python regular expression. It is assumed
+to be bounded at front and back by the beginning and end of the
+string (i.e. it is treated as if it begins with <code class="docutils literal notranslate"><span class="pre">^</span></code> and ends
+with <code class="docutils literal notranslate"><span class="pre">$</span></code>).</p>
+<p>This field can be repeated as many times as is necessary.</p>
+<p><em>Restrictions:</em> Must be non-empty</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="encrypt-extension">
+<span id="cedar-extensions-encrypt"></span><h2>Encrypt Extension<a class="headerlink" href="#encrypt-extension" title="Link to this heading">¶</a></h2>
+<p>The Encrypt Extension is a Cedar Backup extension used to encrypt
+backups. It does this by encrypting the contents of a master’s staging
+directory each day after the stage action is run. This way, backed-up
+data is encrypted both when sitting on the master and when written to
+disc. This extension must be run before the standard store action,
+otherwise unencrypted data will be written to disc.</p>
+<p>There are several differents ways encryption could have been built in to
+or layered on to Cedar Backup. I asked the mailing list for opinions on
+the subject in January 2007 and did not get a lot of feedback, so I
+chose the option that was simplest to understand and simplest to
+implement. If other encryption use cases make themselves known in the
+future, this extension can be enhanced or replaced.</p>
+<p>Currently, this extension supports only GPG. However, it would be
+straightforward to support other public-key encryption mechanisms, such
+as OpenSSL.</p>
+<blockquote>
+<div><p><img alt="warning" src="../_images/warning.png" /></p>
+<p>If you decide to encrypt your backups, be <em>absolutely sure</em> that you
+have your GPG secret key saved off someplace safe — someplace
+other than on your backup disc. If you lose your secret key, your
+backup will be useless.</p>
+<p>I suggest that before you rely on this extension, you should execute
+a dry run and make sure you can successfully decrypt the backup that
+is written to disc.</p>
+</div></blockquote>
+<p>Before configuring the Encrypt extension, you must configure GPG. Either
+create a new keypair or use an existing one. Determine which user will
+execute your backup (typically root) and have that user import <em>and
+lsign</em> the public half of the keypair. Then, save off the secret half of
+the keypair someplace safe, apart from your backup (i.e. on a floppy
+disk or USB drive). Make sure you know the recipient name associated
+with the public key because you’ll need it to configure Cedar Backup.
+(If you can run <code class="docutils literal notranslate"><span class="pre">gpg</span> <span class="pre">-e</span> <span class="pre">-r</span> <span class="pre">&quot;Recipient</span> <span class="pre">Name&quot;</span> <span class="pre">file.txt</span></code> and it executes
+cleanly with no user interaction required, you should be OK.)</p>
+<p>An encrypted backup has the same file structure as a normal backup, so
+all of the instructions in <a class="reference internal" href="recovering.html"><span class="doc">Data Recovery</span></a> apply. The only
+difference is that encrypted files will have an additional <code class="docutils literal notranslate"><span class="pre">.gpg</span></code>
+extension (so for instance <code class="docutils literal notranslate"><span class="pre">file.tar.gz</span></code> becomes <code class="docutils literal notranslate"><span class="pre">file.tar.gz.gpg</span></code>).
+To recover decrypted data, simply log on as a user which has access to
+the secret key and decrypt the <code class="docutils literal notranslate"><span class="pre">.gpg</span></code> file that you are interested in.
+Then, recover the data as usual.</p>
+<p><em>Note:</em> I am being intentionally vague about how to configure and use GPG,
+because I do not want to encourage neophytes to blindly use this
+extension. If you do not already understand GPG well enough to follow
+the two paragraphs above, <em>do not use this extension</em>. Instead, before
+encrypting your backups, check out the excellent GNU Privacy Handbook at
+<a class="reference external" href="http://www.gnupg.org/gph/en/manual.html">http://www.gnupg.org/gph/en/manual.html</a> and gain an understanding
+of how encryption can help you or hurt you.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">encrypt</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">encrypt</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">301</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and staging configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">encrypt</span></code> configuration section. This is an example Encrypt
+configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">encrypt</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">encrypt_mode</span><span class="o">&gt;</span><span class="n">gpg</span><span class="o">&lt;/</span><span class="n">encrypt_mode</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">encrypt_target</span><span class="o">&gt;</span><span class="n">Backup</span> <span class="n">User</span><span class="o">&lt;/</span><span class="n">encrypt_target</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">encrypt</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the Encrypt configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">encrypt_mode</span></code></dt><dd><p>Encryption mode.</p>
+<p>This value specifies which encryption mechanism will be used by the
+extension.</p>
+<p>Currently, only the GPG public-key encryption mechanism is supported.</p>
+<p><em>Restrictions:</em> Must be <code class="docutils literal notranslate"><span class="pre">gpg</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">encrypt_target</span></code></dt><dd><p>Encryption target.</p>
+<p>The value in this field is dependent on the encryption mode. For the
+<code class="docutils literal notranslate"><span class="pre">gpg</span></code> mode, this is the name of the recipient whose public key will
+be used to encrypt the backup data, i.e. the value accepted by
+<code class="docutils literal notranslate"><span class="pre">gpg</span> <span class="pre">-r</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="split-extension">
+<span id="cedar-extensions-split"></span><h2>Split Extension<a class="headerlink" href="#split-extension" title="Link to this heading">¶</a></h2>
+<p>The Split Extension is a Cedar Backup extension used to split up large
+files within staging directories. It is probably only useful in
+combination with the <code class="docutils literal notranslate"><span class="pre">cback3-span</span></code> command, which requires individual
+files within staging directories to each be smaller than a single disc.</p>
+<p>You would normally run this action immediately after the standard stage
+action, but you could also choose to run it by hand immediately before
+running <code class="docutils literal notranslate"><span class="pre">cback3-span</span></code>.</p>
+<p>The split extension uses the standard UNIX <code class="docutils literal notranslate"><span class="pre">split</span></code> tool to split the
+large files up. This tool simply splits the files on bite-size
+boundaries. It has no knowledge of file formats.</p>
+<p><em>Note: this means that in order to recover the data in your original
+large file, you must have every file that the original file was split
+into.</em> Think carefully about whether this is what you want. It doesn’t
+sound like a huge limitation. However, <code class="docutils literal notranslate"><span class="pre">cback3-span</span></code> might put an
+indivdual file on <em>any</em> disc in a set — the files split from one
+larger file will not necessarily be together. That means you will
+probably need every disc in your backup set in order to recover any data
+from the backup set.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">split</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">split</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">299</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and staging configuration sections
+in the standard Cedar Backup configuration file, and then also requires
+its own <code class="docutils literal notranslate"><span class="pre">split</span></code> configuration section. This is an example Split
+configuration section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">split</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">size_limit</span><span class="o">&gt;</span><span class="mi">250</span> <span class="n">MB</span><span class="o">&lt;/</span><span class="n">size_limit</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">split_size</span><span class="o">&gt;</span><span class="mi">100</span> <span class="n">MB</span><span class="o">&lt;/</span><span class="n">split_size</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">split</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the Split configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">size_limit</span></code></dt><dd><p>Size limit.</p>
+<p>Files with a size strictly larger than this limit will be split by
+the extension.</p>
+<p>You can enter this value in two different forms. It can either be a
+simple number, in which case the value is assumed to be in bytes; or
+it can be a number followed by a unit (KB, MB, GB).</p>
+<p>Valid examples are “10240”, “250 MB” or “1.1 GB”.</p>
+<p><em>Restrictions:</em> Must be a size as described above.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">split_size</span></code></dt><dd><p>Split size.</p>
+<p>This is the size of the chunks that a large file will be split into.
+The final chunk may be smaller if the split size doesn’t divide
+evenly into the file size.</p>
+<p>You can enter this value in two different forms. It can either be a
+simple number, in which case the value is assumed to be in bytes; or
+it can be a number followed by a unit (KB, MB, GB).</p>
+<p>Valid examples are “10240”, “250 MB” or “1.1 GB”.</p>
+<p><em>Restrictions:</em> Must be a size as described above.</p>
+</dd>
+</dl>
+</section>
+<section id="capacity-extension">
+<span id="cedar-extensions-capacity"></span><h2>Capacity Extension<a class="headerlink" href="#capacity-extension" title="Link to this heading">¶</a></h2>
+<p>The capacity extension checks the current capacity of the media in the
+writer and prints a warning if the media exceeds an indicated capacity.
+The capacity is indicated either by a maximum percentage utilized or by
+a minimum number of bytes that must remain unused.</p>
+<p>This action can be run at any time, but is probably best run as the last
+action on any given day, so you get as much notice as possible that your
+media is full and needs to be replaced.</p>
+<p>To enable this extension, add the following section to the Cedar Backup
+configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">extensions</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">capacity</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="n">CedarBackup3</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">capacity</span><span class="o">&lt;/</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="n">executeAction</span><span class="o">&lt;/</span><span class="n">function</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span><span class="mi">299</span><span class="o">&lt;/</span><span class="n">index</span><span class="o">&gt;</span>
+   <span class="o">&lt;/</span><span class="n">action</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">extensions</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This extension relies on the options and store configuration sections in
+the standard Cedar Backup configuration file, and then also requires its
+own <code class="docutils literal notranslate"><span class="pre">capacity</span></code> configuration section. This is an example Capacity
+configuration section that configures the extension to warn if the media
+is more than 95.5% full:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">capacity</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">max_percentage</span><span class="o">&gt;</span><span class="mf">95.5</span><span class="o">&lt;/</span><span class="n">max_percentage</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">capacity</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This example configures the extension to warn if the media has fewer
+than 16 MB free:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">capacity</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="n">min_bytes</span><span class="o">&gt;</span><span class="mi">16</span> <span class="n">MB</span><span class="o">&lt;/</span><span class="n">min_bytes</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">capacity</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The following elements are part of the Capacity configuration section:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">max_percentage</span></code></dt><dd><p>Maximum percentage of the media that may be utilized.</p>
+<p>You must provide either this value <em>or</em> the <code class="docutils literal notranslate"><span class="pre">min_bytes</span></code> value.</p>
+<p><em>Restrictions:</em> Must be a floating point number between 0.0 and 100.0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">min_bytes</span></code></dt><dd><p>Minimum number of free bytes that must be available.</p>
+<p>You can enter this value in two different forms. It can either be a
+simple number, in which case the value is assumed to be in bytes; or
+it can be a number followed by a unit (KB, MB, GB).</p>
+<p>Valid examples are “10240”, “250 MB” or “1.1 GB”.</p>
+<p>You must provide either this value <em>or</em> the <code class="docutils literal notranslate"><span class="pre">max_percentage</span></code> value.</p>
+<p><em>Restrictions:</em> Must be a byte quantity as described above.</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<p><em>Previous</em>: <a class="reference internal" href="config.html"><span class="doc">Configuration</span></a> • <em>Next</em>: <a class="reference internal" href="extenspec.html"><span class="doc">Extension Architecture Interface</span></a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">cedar-backup3</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pronovic&repo=cedar-backup3&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;(c) Kenneth J. Pronovici.
+      
+    </div>
+
+    
+    <a href="https://github.com/pronovic/cedar-backup3" class="github">
+        <img src="../_static/github-banner.svg" alt="Fork me on GitHub" class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

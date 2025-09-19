@@ -1,0 +1,46 @@
+Metadata-Version: 2.4
+Name: robotframework-browser-batteries
+Version: 0.0.1
+Summary: Robot Framework Browser batteries package which contains all necessary NodeJS side components for using the Browser library.
+Author: MarketSquare - Robot Framework community
+Maintainer-email: Tatu Aalto <aalto.aalto@gmail.com>, Mikko Korpela <mikko.korpela@gmail.com>, Kerkko Pelttari <kerk.pelt@gmail.com>, René Rohner <rene@robotframework.org>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://robotframework-browser.org/
+Project-URL: Documentation, https://marketsquare.github.io/robotframework-browser/Browser.html
+Project-URL: Repository, https://github.com/MarketSquare/robotframework-browser
+Project-URL: Issues, https://github.com/MarketSquare/robotframework-browser/issues
+Project-URL: Changelog, https://github.com/MarketSquare/robotframework-browser/tree/main/docs/releasenotes
+Keywords: robotframework,playwright,testing,automation,web,browser
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Testing
+Classifier: Framework :: Robot Framework
+Classifier: Framework :: Robot Framework :: Library
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: robotframework-browser==0.0.1
+Dynamic: license-file
+
+# Robot Framework Browser Batteries
+Robot Framework Browser Batteries Python package contains all the required NodeJS dependencies
+prebuilt inside of the the Python wheel. The only thing user needs to do, is to install
+the Playwright browser binaries and then run tests.
+
+When using Browser Batteries package, user can skip NodeJS installation and does not
+need to install the NodeJS dependencies, like Playwright and GRPC. All those are
+packed inside of a prebuilt binary which project build for following OS and
+architectures:
+
+| Node | Platform | Architecture |
+----------------------------------
+| 22   | Linux    | x64          |
+| 22   | Linux    | arm64        |
+| 22   | Windows  | x64          |
+| 22   | Windows  | arm64        |
+| 22   | MacOs    | arm64        |
+
+Build process relies on [yao-pkg](https://github.com/yao-pkg/pkg) and
+[pkg-fetch](https://github.com/yao-pkg/pkg-fetch) for NodeJS binary
+building.

@@ -1,0 +1,125 @@
+---
+name: phycat
+namespace: pc  #this defines the namespace used for functions and types in the code. This allows multiple protocols to be used in a project
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+include:
+  - ./i2c.yml     # Support for I2C interfaces
+  - ./uart.yml    # Support for UART interfaces
+  - ./tim.yml     # Support for TIM interfaces
+  - ./can.yml     # Support for CAN interfaces
+  - ./spi.yml     # Support for SPI interfaces
+  - ./gpio.yml    # Support for GPIO interfaces
+  - ./device.yml  # Support for emulated devices/memory
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+
+  - handleType: 
+      type: enum
+      format: hex
+      desc: Type of handle
+      vals:
+        - RESERVED: { desc: Reserved handle }
+        - PORT: { desc: Port handle }
+        - I2C: { desc: I2C handle }
+        - SPI: { desc: SPI handle }
+        - UART: { desc: UART handle }
+        - CAN: { desc: CAN handle }
+        - GPIO: { desc: GPIO handle }
+        - TIM: { desc: TIM handle }
+        - DISPLAY: { desc: Display handle }
+
+
+  - busRole: 
+      type: enum
+      format: hex
+      desc: Role of node
+      vals:
+        - master: { desc: Master node on a bus }
+        - slave: { desc: Slave node on a bus }
+        - passive: { desc: Passive node (just listens and reports traffic) }
+
+  - requestType: 
+      type: enum 
+      format: hex
+      desc: Type of request
+      vals:
+        - SYSTEM: { desc: Request for system information }
+        - PORT: { desc: Request for ports and port labels }
+        - CAPABILITIES: { desc: Request for capabilities }
+        - RESET: { desc: Request for reset }
+
+  - status:
+      type: enum
+      format: hex
+      desc: Status of the request
+      vals:
+        - OK: { desc: Request was successful }
+        - ERROR: { desc: Request failed }
+        - INVALID_HANDLE: { desc: Invalid handle }
+        - INVALID_INDEX: { desc: Invalid index }
+        - INVALID_CONFIG: { desc: Invalid configuration }
+        - INVALID_REQUEST: { desc: Invalid request }
+        - MISSING_FIELD: { desc: Missing field in request }
+
+
+  #common 
+  - handle: {type: uint32, format: hex, desc: Unique handle for interface}
+  - index: {type: uint32, desc: Index of request}
+  - portCount: {type: uint32, desc: Number of ports}
+  - interfaceCount: {type: uint32, desc: Number of interfaces}
+  - label: {type: 'string*16', desc: Label for the interface}
+  - clockSpeed: {type: uint32, desc: Speed of the interface in Hz}
+  - data: {type: 'uint8*256', desc: Data to send or receive}
+  - token: {type: uint32, desc: Transaction token}
+  - max_baudrate: {type: uint32, desc: Maximum communication speed in bits per second}
+  - baudrates: {type: uint32*16, desc: List of supported baudrates if not continuous}
+  - baudrate: {type: uint32, desc: Desired CAN bus speed in Hertz}
+  - address: {type: uint16, desc: I2C address}
+  - cs_pin: {type: uint64, desc: CS port and pin, first 32 bits are port, last 32 bits are pin}
+  - memAddr: {type: uint32, desc: I2C register address}
+  - memAddrSize: {type: uint8, desc: Size of memory address in bits}
+  - size: {type: uint32, desc: Size of data in bytes}
+
+###########################################################################################################
+#                                   PACKETS                                                               #
+###########################################################################################################
+
+packets: 
+
+
+
+  - Request:
+      desc: Request packet
+      fields:
+        - handle: {desc: handle for interface if requesting a specific node}
+        - requestType
+        - index: {desc: Index of request}
+  
+  - System:
+      desc: System information packet
+      fields:
+        - label: {req : true}
+        - clockSpeed: {desc: Clock speed of CPU in Hz}
+        - interfaceCount : { req: true}
+        - portCount : { req: true}
+
+
+
+  - Port:
+      desc: Port packet
+      fields:
+        - handle: {type: uint32, desc: handle for interface}
+        - label: {type: label, desc: Label for the port}
+
+  - Status:
+      desc: Status packet
+      fields:
+        - handle: {type: uint32, desc: handle for interface}
+        - status: {type: status, desc: Status of the request}
+

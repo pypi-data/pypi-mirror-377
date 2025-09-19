@@ -1,0 +1,373 @@
+# Production Configuration Example
+# This configuration is optimized for production trading
+
+version: "1.0.0"
+environment: "production"
+
+# Application Settings
+app:
+  name: "TradingBot-Prod"
+  log_level: "INFO"  # Less verbose logging for production
+  timezone: "UTC"
+  data_retention_days: 90  # Longer retention for analysis
+  max_concurrent_strategies: 10  # Higher limit for production
+
+# Database Configuration (PostgreSQL for production)
+database:
+  url: "${DATABASE_URL}"  # PostgreSQL connection string
+  pool_size: 20
+  max_overflow: 40
+  echo: false  # Disable SQL query logging in production
+  
+# Exchange Configuration (Live trading)
+exchanges:
+  binance:
+    enabled: true
+    api_key: "${BINANCE_API_KEY}"
+    api_secret: "${BINANCE_API_SECRET}"
+    sandbox: false  # Live trading
+    rate_limit: 1200
+    timeout: 30
+    
+  coinbase:
+    enabled: true
+    api_key: "${COINBASE_API_KEY}"
+    api_secret: "${COINBASE_API_SECRET}"
+    passphrase: "${COINBASE_PASSPHRASE}"
+    sandbox: false  # Live trading
+    rate_limit: 600
+    timeout: 30
+    
+  kraken:
+    enabled: false  # Can be enabled as needed
+    api_key: "${KRAKEN_API_KEY}"
+    api_secret: "${KRAKEN_API_SECRET}"
+    sandbox: false
+    rate_limit: 300
+    timeout: 30
+
+# Strategy Configuration (Production-ready strategies)
+strategies:
+  moving_average_btc:
+    enabled: true
+    class: "MovingAverageStrategy"
+    parameters:
+      short_period: 12
+      long_period: 26
+      confidence_threshold: 0.75  # Higher confidence threshold
+    symbols:
+      - "BTC/USDT"
+    timeframes:
+      - "1h"
+      - "4h"
+    
+  moving_average_eth:
+    enabled: true
+    class: "MovingAverageStrategy"
+    parameters:
+      short_period: 10
+      long_period: 21
+      confidence_threshold: 0.75
+    symbols:
+      - "ETH/USDT"
+    timeframes:
+      - "1h"
+      - "4h"
+    
+  rsi_mean_reversion:
+    enabled: true
+    class: "RSIStrategy"
+    parameters:
+      period: 14
+      oversold_threshold: 25   # More conservative thresholds
+      overbought_threshold: 75
+      confidence_multiplier: 1.2
+    symbols:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "ADA/USDT"
+    timeframes:
+      - "1h"
+      - "4h"
+    
+  multi_indicator:
+    enabled: true
+    class: "MultiIndicatorStrategy"
+    parameters:
+      ma_short: 10
+      ma_long: 20
+      rsi_period: 14
+      macd_fast: 12
+      macd_slow: 26
+      macd_signal: 9
+      confidence_threshold: 0.8
+    symbols:
+      - "BTC/USDT"
+      - "ETH/USDT"
+    timeframes:
+      - "4h"
+      - "1d"
+
+# Risk Management (Conservative production settings)
+risk_management:
+  global:
+    max_portfolio_risk: 0.01   # 1% risk per trade
+    max_daily_loss: 0.03       # 3% daily loss limit
+    max_drawdown: 0.10         # 10% maximum drawdown
+    position_sizing_method: "fixed_fractional"
+    
+  stop_loss:
+    enabled: true
+    default_percentage: 0.05   # 5% stop loss
+    trailing_stop: true
+    trailing_percentage: 0.03  # 3% trailing stop
+    
+  position_limits:
+    max_position_size: 0.05    # 5% of portfolio per position
+    max_positions: 8           # Maximum 8 positions
+    min_trade_amount: 50       # $50 minimum trade
+    
+  # Advanced risk controls
+  correlation_limits:
+    max_correlated_positions: 3
+    correlation_threshold: 0.7
+    
+  volatility_controls:
+    max_volatility_threshold: 0.05  # 5% daily volatility limit
+    volatility_lookback_days: 30
+
+# Data Collection (Comprehensive for production)
+data:
+  collection:
+    enabled: true
+    symbols:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    
+  storage:
+    compress_data: true
+    backup_enabled: true
+    backup_interval_hours: 6
+    backup_retention_days: 30
+    
+  validation:
+    check_data_integrity: true
+    remove_outliers: true
+    outlier_threshold: 3.0
+    
+  # Data redundancy
+  redundancy:
+    enabled: true
+    backup_exchanges: ["coinbase", "kraken"]  # Backup data sources
+    cross_validation: true
+
+# Monitoring (Full production monitoring)
+monitoring:
+  enabled: true
+  metrics_port: 8000
+  health_check_port: 8001
+  
+  prometheus:
+    enabled: true
+    port: 9090
+    scrape_interval: "15s"
+    retention: "30d"
+    
+  alerting:
+    enabled: true
+    channels:
+      - type: "email"
+        smtp_server: "${SMTP_SERVER}"
+        smtp_port: 587
+        username: "${SMTP_USERNAME}"
+        password: "${SMTP_PASSWORD}"
+        recipients:
+          - "admin@yourcompany.com"
+          - "trading-team@yourcompany.com"
+      
+      - type: "slack"
+        webhook_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#trading-alerts"
+        
+      - type: "pagerduty"
+        integration_key: "${PAGERDUTY_INTEGRATION_KEY}"
+    
+    rules:
+      - name: "critical_loss"
+        condition: "daily_pnl < -0.05"
+        severity: "critical"
+        message: "Daily loss exceeds 5% - immediate attention required"
+        
+      - name: "high_loss"
+        condition: "daily_pnl < -0.03"
+        severity: "high"
+        message: "Daily loss exceeds 3%"
+        
+      - name: "drawdown_warning"
+        condition: "max_drawdown > 0.08"
+        severity: "warning"
+        message: "Maximum drawdown approaching limit"
+        
+      - name: "strategy_failure"
+        condition: "strategy_errors > 3"
+        severity: "warning"
+        message: "Strategy generating multiple errors"
+        
+      - name: "exchange_connectivity"
+        condition: "exchange_connection_failures > 2"
+        severity: "high"
+        message: "Exchange connectivity issues detected"
+        
+      - name: "position_limit"
+        condition: "open_positions >= max_positions"
+        severity: "warning"
+        message: "Maximum position limit reached"
+
+# Backtesting Configuration
+backtesting:
+  default_capital: 100000  # $100k for realistic backtesting
+  commission: 0.001        # 0.1% commission
+  slippage: 0.0005         # 0.05% slippage
+  
+  performance_metrics:
+    - "total_return"
+    - "annualized_return"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_factor"
+    - "calmar_ratio"
+    - "var_95"
+    - "cvar_95"
+
+# Logging Configuration (Production-optimized)
+logging:
+  version: 1
+  disable_existing_loggers: false
+  
+  formatters:
+    json:
+      format: '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": "%(message)s", "module": "%(module)s", "function": "%(funcName)s", "line": %(lineno)d}'
+    standard:
+      format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  
+  handlers:
+    console:
+      class: "logging.StreamHandler"
+      level: "INFO"
+      formatter: "json"
+      stream: "ext://sys.stdout"
+    
+    file:
+      class: "logging.handlers.RotatingFileHandler"
+      level: "INFO"
+      formatter: "json"
+      filename: "/var/log/trading_bot/trading_bot.log"
+      maxBytes: 52428800  # 50MB
+      backupCount: 10
+    
+    error_file:
+      class: "logging.handlers.RotatingFileHandler"
+      level: "ERROR"
+      formatter: "json"
+      filename: "/var/log/trading_bot/errors.log"
+      maxBytes: 52428800  # 50MB
+      backupCount: 10
+    
+    # Separate log for trades
+    trade_file:
+      class: "logging.handlers.RotatingFileHandler"
+      level: "INFO"
+      formatter: "json"
+      filename: "/var/log/trading_bot/trades.log"
+      maxBytes: 52428800  # 50MB
+      backupCount: 20  # Keep more trade history
+  
+  loggers:
+    "":
+      level: "INFO"
+      handlers: ["console", "file"]
+      propagate: false
+    
+    "trading_bot.errors":
+      level: "ERROR"
+      handlers: ["error_file"]
+      propagate: false
+    
+    "trading_bot.trades":
+      level: "INFO"
+      handlers: ["trade_file"]
+      propagate: false
+    
+    # Reduce noise from external libraries
+    "ccxt":
+      level: "WARNING"
+      handlers: ["file"]
+      propagate: false
+    
+    "urllib3":
+      level: "WARNING"
+      handlers: ["file"]
+      propagate: false
+
+# Production-specific settings
+production:
+  # Security settings
+  security:
+    encrypt_api_keys: true
+    api_key_rotation_days: 90
+    require_2fa: true
+    
+  # Performance settings
+  performance:
+    max_worker_threads: 8
+    strategy_execution_timeout: 60
+    
+    # Caching
+    cache:
+      enabled: true
+      type: "redis"
+      redis_url: "${REDIS_URL}"
+      ttl_seconds: 300
+      max_size: 10000
+    
+    # Connection pooling
+    connection_pool:
+      max_connections: 50
+      connection_timeout: 30
+      
+  # Compliance and auditing
+  compliance:
+    audit_logging: true
+    trade_reporting: true
+    position_reporting: true
+    
+  # Disaster recovery
+  disaster_recovery:
+    backup_frequency: "hourly"
+    backup_retention: "30d"
+    failover_enabled: true
+    
+  # Circuit breakers
+  circuit_breakers:
+    enabled: true
+    failure_threshold: 5
+    recovery_timeout: 300  # 5 minutes
+    
+  # Rate limiting
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 1000
+    burst_limit: 100

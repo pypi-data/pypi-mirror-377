@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: zutil
+Version: 2025.9.12915
+Summary: "Python utilities for zCFD users"
+Home-page: https://github.com/zCFD/zutil
+Author: "Zenotech"
+Author-email: "support@zenotech.com"
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipython
+Requires-Dist: fabric>=2.5
+Requires-Dist: ipywidgets
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: PyYAML
+Requires-Dist: dill
+Requires-Dist: ipympl
+Requires-Dist: jupyterlab
+Requires-Dist: jupyterlab-widgets
+Requires-Dist: tqdm
+Requires-Dist: pytransform3d
+Requires-Dist: ipykernel
+Provides-Extra: mpi
+Requires-Dist: mpi4py; extra == "mpi"
+Dynamic: license-file
+
+# zutil
+
+[![PyPI version fury.io](https://badge.fury.io/py/zutil.svg)](https://pypi.python.org/pypi/zutil/)
+
+Note: This library sets Paraview compatibility to version >= 5.4

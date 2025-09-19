@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "zodchy-inbox"
+version = "0.1.1"
+description = "Inbox pattern for zodchy architecture"
+authors = ["Smairon <man@smairon.ru>"]
+readme = "README.md"
+repository = "https://github.com/smairon/zodchy-inbox"
+packages = [{ include = "zodchy_inbox" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+zodchy = "^0"
+pydantic = "^2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+disable_error_code = "import-untyped"

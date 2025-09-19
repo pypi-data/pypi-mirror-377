@@ -1,0 +1,558 @@
+{{Release_validation_instructions|testtype=Desktop|release=32|milestone=Branched|compose=|date=20200322.n.0}}
+
+{{anchor|results}}
+== '''Test Matrix''' ==
+
+<onlyinclude>
+==== Release-blocking desktops: '''x86 / x86_64''' ====
+
+{| class="wikitable sortable mw-collapsible" width=100%
+! Milestone !! Test Case  !! [[Workstation]] !! [[KDE]]
+|-
+| Basic
+| [[QA:Testcase_desktop_browser]]
+| {{result|pass|tablepc}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_desktop_terminal]]
+| {{result|pass|tablepc}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_desktop_login]]
+| {{result|pass|tablepc}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_audio_basic]]
+| {{result|pass|tablepc}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_panel_basic]]
+| {{result|pass|tablepc}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_automount]]
+| {{result|pass|tablepc}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_workstation_core_applications]]
+| {{result|none}}
+| style="background:lightgrey;"|
+|-
+| Beta
+| [[QA:Testcase_desktop_update_graphical]]
+| {{result|none}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (real printer)]]
+| {{result|pass|nielsenb}}{{result|pass|tablepc}}
+| {{result|pass|nielsenb}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (virtual printer)]]
+| {{result|none}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Final
+| [[QA:Testcase_desktop_update_notification]]
+| {{result|pass|tablepc}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_error_checks]]
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_menus]]
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_panel_advanced]]
+| {{result|pass|tablepc}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_keyring]]
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_workstation_theming]]
+| {{result|none}}
+| style="background:lightgrey;"|
+|-
+|}
+<references/>
+
+==== Release-blocking desktops: '''ARM''' ====
+
+{| class="wikitable sortable mw-collapsible" width=100%
+! Milestone !! Test Case  !! [[Workstation]]
+|-
+| Basic
+| [[QA:Testcase_desktop_browser]]
+| {{result|pass|pwhalen}}
+|-
+| Basic
+| [[QA:Testcase_desktop_terminal]]
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_desktop_login]]
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_audio_basic]]
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_panel_basic]]
+| {{result|pass|pwhalen}}
+|-
+| Beta
+| [[QA:Testcase_desktop_automount]]
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_workstation_core_applications]]
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_update_graphical]]
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (real printer)]]
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (virtual printer)]]
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_update_notification]]
+| {{result|pass|pwhalen}}
+|-
+| Final
+| [[QA:Testcase_desktop_error_checks]]
+| {{result|pass|pwhalen}}
+|-
+| Final
+| [[QA:Testcase_desktop_menus]]
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_panel_advanced]]
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_keyring]]
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_workstation_theming]]
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== Non release-blocking desktops: '''x86 / x86_64''' ====
+
+{| class="wikitable sortable mw-collapsible" width=100%
+! Milestone !! Test Case !! [[Xfce]] !! [[LXQt_SIG|LXQt]] !! [[LXDE]] !! MATE !! Cinnamon !! GNOME Classic !! Silverblue
+|-
+| Basic
+| [[QA:Testcase_desktop_browser]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Basic
+| [[QA:Testcase_desktop_terminal]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|pass|coconut|bot=true}}
+|-
+| Beta
+| [[QA:Testcase_desktop_login]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_audio_basic]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_panel_basic]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_automount]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_workstation_core_applications]]
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_update_graphical]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (real printer)]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (virtual printer)]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_update_notification]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_error_checks]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_menus]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_panel_advanced]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_keyring]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_workstation_theming]]
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== Non release-blocking desktops: '''ARM''' ====
+
+{| class="wikitable sortable mw-collapsible" width=100%
+! Milestone !! Test Case !! [[KDE]] !! [[Xfce]] !! [[LXQt_SIG|LXQt]] !! [[LXDE]] !! MATE !! Cinnamon !! GNOME Classic !! Silverblue
+|-
+| Basic
+| [[QA:Testcase_desktop_browser]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Basic
+| [[QA:Testcase_desktop_terminal]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_login]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_audio_basic]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_panel_basic]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_automount]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_workstation_core_applications]]
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_desktop_update_graphical]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (real printer)]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Beta
+| [[QA:Testcase_Printing_New_Printer|QA:Testcase_Printing_New_Printer (virtual printer)]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_update_notification]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_error_checks]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_menus]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_panel_advanced]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Final
+| [[QA:Testcase_desktop_keyring]]
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+| {{result|none}}
+|-
+| Optional
+| [[QA:Testcase_workstation_theming]]
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| style="background:lightgrey;"|
+| {{result|none}}
+|-
+|}
+<references/>
+
+==== Sugar (non-blocking, all arches) ====
+
+{{admon/note|Sugar test cases|The Sugar desktop differs significantly from a typical desktop, so it gets its own test cases. At present these live [http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases on the Sugar wiki].}}
+
+{| class="wikitable sortable mw-collapsible" width=100%
+! Test Case !! x86 !! ARM
+|-
+| QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#1_-_SoaS_boots_to_the_.28name.29_selection_screen. SoaS boots to the (name) selection screen]
+| {{result|none}}
+| {{result|none}}
+|-
+|QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#2_-_SoaS_installed_to_hard_disk_with_liveinst_from_root_terminal.2C SoaS installed to hard disk with {{Code|liveinst}} from root terminal]
+| {{result|none}}
+| {{result|none}}
+|-
+|QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#3_-_Jabber.sugarlabs.org_should_connect_and_display_XO_.22Buddies.22 Jabber.sugarlabs.org should connect and display XO "Buddies"]
+| {{result|none}}
+| {{result|none}}
+|-
+|QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#4_-_When_a_USB_storage_device_is_inserted.2C_it_should_show_up_in_the_Frame. When a USB storage device is inserted, it should show up in the Frame]
+| {{result|none}}
+| {{result|none}}
+|-
+|QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#5_-Functions_in_My_Settings_.28Sugar_control_panel.29. Functions in My Settings (Sugar control panel)]
+| {{result|none}}
+| {{result|none}}
+|-
+|QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#6_-_Applications_in_the_Home_Screen Applications in the ''Home Screen'']
+| {{result|none}}
+| {{result|none}}
+|-
+|QA:Testcase_[http://wiki.sugarlabs.org/go/Fedora/Sugar_test_cases#7_-Sugar-desktop_installed_in_another_Desktop Sugar-desktop installed in another Desktop]
+| {{result|none}}
+| {{result|none}}
+|-
+|}
+<references/></onlyinclude>
+
+[[Category:Desktop_validation_testing]]
+{{#if:20200322.n.0|[[Category:Fedora_32_Nightly_Test_Results|Desktop]]|[[Category:Fedora_32_Branched_Test_Results|Desktop]]}}

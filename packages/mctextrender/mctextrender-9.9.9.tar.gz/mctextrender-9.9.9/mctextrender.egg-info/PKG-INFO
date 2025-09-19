@@ -1,0 +1,120 @@
+Metadata-Version: 2.4
+Name: mctextrender
+Version: 9.9.9
+Summary: A rendering library for Minecraft-style text and images
+Author-email: Ventros <ventros.development@gmail.com>
+License: MIT
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Pillow
+Dynamic: license-file
+
+# Minecraft-Style Text Rendering  
+This library provides utilities to render **Minecraft-style text** onto images with support for colors, alignment, and shadows. It also makes it easy to combine background and overlay images.
+
+Currently, **bold**, **italic**, and **bold italic** formatting are **not supported**.  
+
+## Features
+- Load and render background images.  
+- Draw text with Minecraft color codes.  
+- Draw multiple text entries with different positions/alignments.  
+- Add overlay images on top of backgrounds.  
+- Export the final result to a file or bytes.  
+
+## Usage Examples  
+
+### 1. Draw Text onto a Background and Save
+```python
+from mctextrender import BackgroundImageLoader, ImageRender
+
+# Load the background image from file
+bg = BackgroundImageLoader("path_to_your_img.png")
+
+# Initialize an ImageRender instance with the loaded background 
+img = ImageRender(bg.load_image())
+
+# Draw text onto the image
+img.text.draw(
+    "&aHello &bMinecraft!",
+    {
+        "position": (50, 50), 
+        "font_size": 24, 
+        "shadow_offset": (2, 2)
+    }
+)
+
+# Save the final image
+img.save("path_to_save_img.png")
+```
+
+### 2. Draw Multiple Texts onto a Background and Save
+```python
+from mctextrender import BackgroundImageLoader, ImageRender
+
+# Load the background image from file
+bg = BackgroundImageLoader("path_to_your_img.png")
+
+# Initialize an ImageRender instance with the loaded background 
+img = ImageRender(bg.load_image())
+
+# Draw multiple texts
+img.text.draw_many([
+    ("&cRed Left", {"position": (20, 40), "align": "left", "font_size": 20}),
+    ("&9Blue Centered", {"position": (200, 90), "align": "center", "font_size": 22}),
+    ("&aGreen Right", {"position": (380, 140), "align": "right", "font_size": 20}),
+],
+    {"shadow_offset": (2, 2)}
+)
+
+# Save the final image
+img.save("path_to_save_img.png")
+```
+
+### 3. Draw Text and Overlay an Image, then Save
+```python
+from mctextrender import BackgroundImageLoader, ImageRender
+
+# Load the background image from file
+bg = BackgroundImageLoader("path_to_your_img.png")
+
+# Initialize an ImageRender instance with the loaded background 
+img = ImageRender(bg.load_image())
+
+# Draw multiple texts
+img.text.draw_many([
+    ("&cRed Left", {"position": (20, 40), "align": "left", "font_size": 20}),
+    ("&9Blue Centered", {"position": (200, 90), "align": "center", "font_size": 22}),
+    ("&aGreen Right", {"position": (380, 140), "align": "right", "font_size": 20}),
+],
+    {"shadow_offset": (2, 2)}
+)
+
+# Overlay another image on top of the background
+im.overlay_image(bg.load_image("path_to_your_overlay_img.png"))
+
+# Save the final image
+img.save("path_to_save_img.png")
+```
+
+# Minecraft Color Codes
+| Code | Name         | RGB Value       | HEX       |
+|------|--------------|-----------------|-----------|
+| &0   | Black        | (0, 0, 0)       | #000000   |
+| &1   | Dark Blue    | (0, 0, 170)     | #0000AA   |
+| &2   | Dark Green   | (0, 170, 0)     | #00AA00   |
+| &3   | Dark Aqua    | (0, 170, 170)   | #00AAAA   |
+| &4   | Dark Red     | (170, 0, 0)     | #AA0000   |
+| &5   | Dark Purple  | (170, 0, 170)   | #AA00AA   |
+| &6   | Gold         | (255, 170, 0)   | #FFAA00   |
+| &7   | Gray         | (170, 170, 170) | #AAAAAA   |
+| &8   | Dark Gray    | (85, 85, 85)    | #555555   |
+| &9   | Blue         | (85, 85, 255)   | #5555FF   |
+| &a   | Green        | (85, 255, 85)   | #55FF55   |
+| &b   | Aqua         | (85, 255, 255)  | #55FFFF   |
+| &c   | Red          | (255, 85, 85)   | #FF5555   |
+| &d   | Light Purple | (255, 85, 255)  | #FF55FF   |
+| &e   | Yellow       | (255, 255, 85)  | #FFFF55   |
+| &f   | White        | (255, 255, 255) | #FFFFFF   |
+
+# Support
+If you run into any issues, bugs, or have other questions, feel free to DM me on Discord `@ventros.` thanks!

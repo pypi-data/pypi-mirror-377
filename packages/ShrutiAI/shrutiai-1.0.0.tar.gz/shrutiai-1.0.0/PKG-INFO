@@ -1,0 +1,398 @@
+Metadata-Version: 2.4
+Name: ShrutiAI
+Version: 1.0.0
+Summary: Python SDK for interacting with the shrutiAI API - your AI-powered assistant
+Home-page: https://github.com/shrisai-tech/shruti-ai-sdk
+Author: Shri Sai Technology
+Author-email: Shri Sai Technology <support@sstus.net>
+License: MIT License
+        
+        Copyright (c) 2024 Shri Sai Technology (SST) India
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://shruti.ai/
+Project-URL: Documentation, https://shruti.ai/docs
+Project-URL: Repository, https://github.com/shrisai-tech/shruti-ai-sdk
+Project-URL: Bug Reports, https://github.com/shrisai-tech/shruti-ai-sdk/issues
+Keywords: ai,chat,assistant,api,sdk,shruti,artificial-intelligence,chatbot,voice,location,otp,verification,image-analysis,document-processing,farming,travel,math,search,youtube
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.25.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# shrutiAI SDK
+
+A Python SDK for interacting with the shrutiAI API - your AI-powered assistant for chat, location services, OTP verification, and more.
+
+## Installation
+
+```bash
+pip install ShrutiAI
+```
+## 🔐 Authentication
+
+**All API requests require authentication.** The SDK automatically handles this for you:
+
+```python
+from ShrutiAI import ShrutiAIClient
+
+client = ShrutiAIClient(api_key="your-secret-api-key")
+```
+
+**Direct API access is not permitted.** All requests must go through the authenticated SDK client.
+
+## Quick Start
+
+```python
+from ShrutiAI import ShrutiAIClient
+
+# Initialize the client
+client = ShrutiAIClient(api_key="your-api-key")
+
+# Send a chat message
+response = client.chat(message="Hello, how are you?")
+print(response['response'])
+```
+
+## Features
+
+- 🤖 **AI Chat**: Natural language conversations with AI assistant
+- 📱 **OTP Verification**: Send OTP via AWS SNS, Twilio, or MSG91
+- 📍 **Location Services**: Location-based queries and place searches
+- 🖼️ **Image Analysis**: Analyze images with AI
+- 📄 **Document Processing**: Extract and analyze text from documents
+- 🌾 **Farming Assistant**: Specialized agricultural advice
+- ✈️ **Travel Information**: Flight and train tracking
+- 🔍 **Web Search**: Intelligent web search capabilities
+- 📊 **Math & Graphs**: Mathematical problem solving and plotting
+- 🎥 **YouTube Integration**: Find relevant video content
+
+## Authentication
+
+You need an API key to use the shrutiAI SDK. Contact Shri Sai Technology to obtain your API key.
+
+```python
+client = ShrutiAIClient(
+    api_key="your-api-key",
+    base_url="https://api.shruti.ai"  # Optional: defaults to localhost
+)
+```
+
+## Usage Examples
+
+### Basic Chat
+
+```python
+from ShrutiAI import ShrutiAIClient
+
+client = ShrutiAIClient(api_key="your-api-key")
+
+# Everything goes through the single chat() method!
+# AI automatically determines which tools to use based on your message
+
+# Simple conversation
+response = client.chat(message="Hello, how are you?")
+print(response['response'])
+
+# Location-based queries
+response = client.chat(
+    message="Find pizza restaurants near me",
+    latitude="12.9716",
+    longitude="77.5946",
+    language="english"
+)
+print(response['response'])
+
+# Any type of query - AI handles it all!
+response = client.chat(message="What's the weather in Bangalore?")
+response = client.chat(message="Get train status for Rajdhani Express")
+response = client.chat(message="Solve this math problem: 2x + 3 = 7")
+response = client.chat(message="Find hospitals nearby", latitude="12.9716", longitude="77.5946")
+
+### OTP Verification
+
+```python
+# Send OTP via AWS SNS
+result = client.verify_otp_aws("+1234567890")
+print(f"OTP sent: {result['otp']}")
+
+# Send OTP via Twilio
+result = client.verify_otp_twilio("+1234567890")
+print(f"OTP sent: {result['otp']}")
+
+# Send OTP via MSG91
+result = client.verify_otp_msg91("+1234567890")
+print(f"OTP sent: {result['otp']}")
+```
+
+### Image Analysis
+
+```python
+# Analyze an image
+response = client.chat(
+    message="What's in this image?",
+    image_path="/path/to/your/image.jpg"
+)
+print(response['response'])
+```
+
+### Document Processing
+
+```python
+# Process a PDF document
+response = client.chat(
+    message="Summarize this document",
+    file_path="/path/to/document.pdf"
+)
+print(response['response'])
+```
+
+### Context Manager Usage
+
+```python
+from ShrutiAI import ShrutiAIClient
+
+# Use as context manager for automatic cleanup
+with ShrutiAIClient(api_key="your-api-key") as client:
+    response = client.chat(message="Hello!")
+    print(response['response'])
+    # Session automatically closed
+```
+
+### Conversation Management
+
+```python
+# Maintain conversation context
+conversation_id = None
+
+# First message
+response = client.chat(
+    message="Hi, I need help with farming",
+    conversation_id=conversation_id
+)
+conversation_id = response.get('conversation_id')
+
+# Follow-up message
+response = client.chat(
+    message="What crops should I grow in winter?",
+    conversation_id=conversation_id
+)
+print(response['response'])
+```
+
+## Error Handling
+
+The SDK provides specific exception types for different error conditions:
+
+```python
+from ShrutiAI import (
+    ShrutiAIClient,
+    AuthenticationError,
+    RateLimitError,
+    NotFoundError,
+    ValidationError,
+    ServerError,
+    NetworkError
+)
+
+try:
+    client = ShrutiAIClient(api_key="your-api-key")
+    response = client.chat(message="Hello!")
+except AuthenticationError as e:
+    print(f"Authentication failed: {e}")
+except RateLimitError as e:
+    print(f"Rate limit exceeded: {e}")
+except ValidationError as e:
+    print(f"Invalid input: {e}")
+except ServerError as e:
+    print(f"Server error: {e}")
+except NetworkError as e:
+    print(f"Network error: {e}")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+```
+
+## Advanced Configuration
+
+### Custom Timeout
+
+```python
+client = ShrutiAIClient(
+    api_key="your-api-key",
+    base_url="https://api.shruti.ai",
+    timeout=60  # 60 seconds timeout
+)
+```
+
+### Multi-language Support
+
+```python
+# Chat in different languages
+response = client.chat(
+    message="¿Cómo estás?",
+    language="spanish"
+)
+
+response = client.chat(
+    message="Comment allez-vous?",
+    language="french"
+)
+
+response = client.chat(
+    message="Wie geht es dir?",
+    language="german"
+)
+```
+
+## API Methods
+
+### Core Methods
+
+- `chat()` - Send messages to AI assistant
+- `verify_otp_aws()` - Send OTP via AWS SNS
+- `verify_otp_twilio()` - Send OTP via Twilio
+- `verify_otp_msg91()` - Send OTP via MSG91
+- `health_check()` - Check API health
+- `get_api_info()` - Get API information
+
+### Helper Methods
+
+The SDK provides a few helper methods for common use cases, but everything ultimately uses the single `chat()` method:
+
+**Helper Methods:**
+- `ask_about_restaurants()` - Helper for restaurant queries
+- `ask_about_hospitals()` - Helper for hospital queries
+- `ask_about_weather()` - Helper for weather queries
+
+**Single Entry Point Philosophy:**
+All functionality goes through the `chat()` method - just like your backend's `/api/chat-tool` endpoint! The AI backend automatically determines which tools to use based on your message content. Simply ask questions naturally and the AI will handle the rest!
+
+**Example Usage:**
+```python
+# Everything uses the same chat() method
+client.chat(message="Find pizza restaurants near me")
+client.chat(message="What's the weather in Bangalore?")
+client.chat(message="Get train status for Rajdhani Express")
+client.chat(message="Solve: 2x + 3 = 7")
+client.chat(message="What crops should I grow in winter?")
+```
+
+### Parameters
+
+#### Chat Method Parameters
+
+- `message` (str): The message to send to the AI
+- `user_id` (str, optional): User identifier for conversation tracking
+- `conversation_id` (str, optional): Conversation identifier
+- `latitude` (str, optional): Latitude for location-based queries
+- `longitude` (str, optional): Longitude for location-based queries
+- `language` (str): Response language (default: "english")
+- `image_path` (str, optional): Path to image file for analysis
+- `file_path` (str, optional): Path to document file for analysis
+
+## Response Format
+
+All methods return a dictionary with the following structure:
+
+```python
+{
+    "response": "AI response text",
+    "conversation_id": "conversation-identifier",
+    "urls": {
+        "restaurants": [...],
+        "places": [...],
+        "hospitals": [...],
+        "pharmacies": [...],
+        "groceries": [...],
+        "accomodations": [...],
+        "travel_info": {
+            "trains": [...],
+            "buses": [...],
+            "cabs": [...],
+            "flights": [...]
+        },
+        "flight_details": {...},
+        "soil_details": {...},
+        "math_graph_plotter": {...},
+        "train_details": {...},
+        "repair_service_result": [...],
+        "items": [...],
+        "extra_info": {...},
+        "youtube_result": [...]
+    }
+}
+```
+
+## Supported Languages
+
+The SDK supports multiple languages for responses:
+- English (default)
+- Spanish
+- French
+- German
+- Hindi
+- And many more...
+
+## Rate Limits
+
+The API has rate limits to ensure fair usage. The SDK automatically handles rate limit errors and raises `RateLimitError` exceptions when limits are exceeded.
+
+## Contributing
+
+Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- 📧 Email: support@sstus.net
+- 🌐 Website: https://shruti.ai/
+- 🏢 Company: Shri Sai Technology (SST) India
+
+## Changelog
+
+### Version 1.0.0
+- Initial release
+- Basic chat functionality
+- OTP verification (AWS, Twilio, MSG91)
+- Image and document processing
+- Location-based services
+- Multi-language support
+- Comprehensive error handling

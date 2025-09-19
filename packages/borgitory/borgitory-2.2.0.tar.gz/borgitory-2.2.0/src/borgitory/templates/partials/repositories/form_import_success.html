@@ -1,0 +1,20 @@
+<!-- HTMX Success Notification Trigger -->
+<div hx-get="/api/shared/notification?message=Repository '{{ repository_name }}' imported successfully!&type=success"
+     hx-target="body"
+     hx-swap="beforeend"
+     hx-trigger="load">
+</div>
+
+<!-- Clear the selected form and reset scan results -->
+<div hx-get="/api/repositories/import-form-clear"
+     hx-target="#selected-repo-form"
+     hx-swap="innerHTML"
+     hx-trigger="load delay:100ms">
+</div>
+
+<!-- Reset scan results dropdown -->
+<div hx-get="/api/repositories/scan"
+     hx-target="#scan-results"
+     hx-swap="innerHTML"
+     hx-trigger="load delay:200ms">
+</div>

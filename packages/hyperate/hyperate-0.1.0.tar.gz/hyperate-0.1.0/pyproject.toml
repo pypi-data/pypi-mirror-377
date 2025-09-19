@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hyperate"
+version = "0.1.0"
+description = "Python client for the HypeRate WebSocket API"
+authors = [
+    { name = "Your Name" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "websockets>=10.0"
+]

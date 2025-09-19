@@ -1,0 +1,91 @@
+# This file contains the parameters for the commercial alloy density models.
+# The parameters correspond to the original equation form:
+# rho = A - B * (T_C - T_ref_C) - C_si * (wt% Si)
+# where T_C is temperature in Celsius.
+
+grey_cast_iron:
+  name: "Grey Cast Iron"
+  source: "Mills - Fe-C Grey Cast Iron"
+  composition_wt_pct:
+    C: 3.72
+    Fe: 91.9
+    Si: 1.89
+    Cr: 0.95
+    Mn: 0.66
+    Mg: 0.002
+    Mo: 0.59
+    Ni: 0.19
+    P: 0.09
+    S: 0.032
+  T_range_K:
+    min: 1463.15  # Liquidus temperature: 1190 °C
+    max: 1773.15  # Assumed upper limit
+  parameters:
+    # Original equation: 6829 - 0.50 * (T_C - 1550) - 130 * Si
+    A_kg_m3: 6829.0
+    B_kg_m3_C: 0.50
+    T_ref_C: 1550.0
+    C_si_kg_m3_wt: 130.0
+
+ductile_iron:
+  name: "Ductile Iron"
+  source: "Mills - Fe-C Ductile Iron"
+  composition_wt_pct:
+    C: 3.61
+    Fe: 92.4
+    Si: 2.91
+    Mn: 0.65
+    Mg: 0.002
+    Ni: 0.13
+    P: 0.12
+    Cr: 0.08
+    S: 0.076
+  T_range_K:
+    min: 1451.15  # Liquidus temperature: 1178 °C
+    max: 1773.15  # Assumed upper limit
+  parameters:
+    # Original equation: 6836 - 0.513 * (T_C - 1550) - 130 * Si
+    A_kg_m3: 6836.0
+    B_kg_m3_C: 0.513
+    T_ref_C: 1550.0
+    C_si_kg_m3_wt: 130.0
+
+stainless_steel_304:
+  name: "Stainless Steel 304"
+  source: "Mills - Fe-304 Stainless Steel"
+  composition_wt_pct:
+    C: 0.08
+    Cr: 19.0
+    Fe: 69
+    Ni: 9.5
+    Mn: 2.0
+    Cu: 0.3
+  T_range_K:
+    min: 1727.15  # Liquidus temperature: 1454 °C
+    max: 1873.15   # Assumed upper limit
+  parameters:
+    # Original equation: 6900 - 0.80 * (T_C - 1454)
+    A_kg_m3: 6900.0
+    B_kg_m3_C: 0.80
+    T_ref_C: 1454.0
+
+stainless_steel_316:
+  name: "Stainless Steel 316"
+  source: "Mills - Fe-316 Stainless Steel"
+  composition_wt_pct:
+    C: 0.08
+    Cr: 17.0
+    Fe: 65
+    Ni: 12.0
+    Mn: 2.0
+    Mo: 2.5
+    Si: 1.0
+    Cu: 0.3
+  T_range_K:
+    min: 1723.15  # Liquidus temperature: 1450 °C
+    max: 1873.15   # Assumed upper limit
+  parameters:
+    # Original equation: 6881 - 0.77 * (T_C - 1450)
+    A_kg_m3: 6881.0
+    B_kg_m3_C: 0.77
+    T_ref_C: 1450.0

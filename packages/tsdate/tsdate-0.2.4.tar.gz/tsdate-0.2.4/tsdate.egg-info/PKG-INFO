@@ -1,0 +1,111 @@
+Metadata-Version: 2.4
+Name: tsdate
+Version: 0.2.4
+Summary: Infer node ages from a tree sequence topology.
+Author-email: tsdate Developers <admin@tskit.dev>
+License: MIT
+Project-URL: Homepage, http://pypi.python.org/pypi/tsdate
+Project-URL: Documentation, https://tskit.dev/tsdate/docs/
+Project-URL: Changelog, https://github.com/tskit-dev/tsdate/blob/main/CHANGELOG.rst
+Project-URL: Bug Tracker, https://github.com/tskit-dev/tsdate/issues
+Project-URL: GitHub, https://github.com/tskit-dev/tsdate
+Keywords: population genetics,tree sequence,ancestral recombination graph,evolutionary tree,inference,dating,tsdate
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: tskit>=0.5.8
+Requires-Dist: numpy
+Requires-Dist: scipy>=1.13.0
+Requires-Dist: numba>=0.58.1
+Requires-Dist: mpmath
+Requires-Dist: tqdm
+Requires-Dist: appdirs
+Provides-Extra: test
+Requires-Dist: numcodecs<0.15.1,>=0.6; extra == "test"
+Requires-Dist: pytest==8.4.2; extra == "test"
+Requires-Dist: pytest-xdist==3.8.0; extra == "test"
+Requires-Dist: pytest-cov==7.0.0; extra == "test"
+Requires-Dist: msprime==1.3.4; extra == "test"
+Requires-Dist: tsinfer==0.4.1; extra == "test"
+Requires-Dist: mpmath==1.3.0; extra == "test"
+Requires-Dist: numdifftools==0.9.41; extra == "test"
+Requires-Dist: matplotlib==3.10.6; extra == "test"
+Requires-Dist: build==1.3.0; extra == "test"
+Provides-Extra: docs
+Requires-Dist: numcodecs<0.15.1,>=0.6; extra == "docs"
+Requires-Dist: demesdraw==0.4.0; extra == "docs"
+Requires-Dist: attrs==25.3.0; extra == "docs"
+Requires-Dist: matplotlib==3.10.6; extra == "docs"
+Requires-Dist: mpmath==1.3.0; extra == "docs"
+Requires-Dist: numba==0.61.2; extra == "docs"
+Requires-Dist: pandas==2.3.2; extra == "docs"
+Requires-Dist: stdpopsim==0.3.0; extra == "docs"
+Requires-Dist: tsinfer==0.4.1; extra == "docs"
+Requires-Dist: tskit==0.6.4; extra == "docs"
+Requires-Dist: jupyter-book==1.0.4.post1; extra == "docs"
+Requires-Dist: sphinx-issues==5.0.1; extra == "docs"
+Requires-Dist: sphinx-argparse==0.5.2; extra == "docs"
+Requires-Dist: sphinxcontrib-bibtex==2.6.5; extra == "docs"
+Requires-Dist: humanize==4.13.0; extra == "docs"
+Requires-Dist: msprime==1.3.4; extra == "docs"
+Requires-Dist: ipywidgets==8.1.7; extra == "docs"
+Requires-Dist: sphinx-book-theme==1.1.4; extra == "docs"
+Provides-Extra: dev
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: msprime; extra == "dev"
+Requires-Dist: mpmath; extra == "dev"
+Requires-Dist: numdifftools; extra == "dev"
+Requires-Dist: matplotlib; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: demesdraw; extra == "dev"
+Requires-Dist: attrs; extra == "dev"
+Requires-Dist: pandas; extra == "dev"
+Requires-Dist: stdpopsim; extra == "dev"
+Requires-Dist: jupyter-book; extra == "dev"
+Requires-Dist: sphinx-issues; extra == "dev"
+Requires-Dist: sphinx-argparse; extra == "dev"
+Requires-Dist: sphinxcontrib-bibtex; extra == "dev"
+Requires-Dist: humanize; extra == "dev"
+Requires-Dist: ipywidgets; extra == "dev"
+Requires-Dist: sphinx-book-theme; extra == "dev"
+Dynamic: license-file
+
+# tsdate <img align="right" width="145" height="90" src="https://github.com/tskit-dev/tsdate/blob/main/docs/tsdate_logo.svg">
+
+[![CircleCI](https://circleci.com/gh/tskit-dev/tsdate.svg?style=svg)](https://circleci.com/gh/tskit-dev/tsdate)
+[![codecov](https://codecov.io/gh/tskit-dev/tsdate/branch/master/graph/badge.svg)](https://codecov.io/gh/tskit-dev/tsdate)
+
+``tsdate`` is a scalable method for estimating the age of ancestral nodes in a 
+[tree sequence](https://tskit.dev/tutorials/what_is.html). The method uses a coalescent prior and updates node times on the basis of the number of mutations along each edge of the tree sequence (i.e. using the "molecular clock").
+
+The method is frequently combined with the [tsinfer](https://tsinfer.readthedocs.io/en/latest/) algorithm, which efficiently infers tree sequence *topologies* from large genetic datasets.
+
+Please refer to the [documentation](https://tskit.dev/tsdate/docs/latest/) for information on installing and using the software.
+
+The algorithms for the original `inside_outside` and `maximization` [methods](https://tskit.dev/tsdate/docs/latest/methods.html) are described [in this Science paper](https://www.science.org/doi/10.1126/science.abi8264) (citation below, preprint [here](https://www.biorxiv.org/content/10.1101/2021.02.16.431497v2), evaluations in [another repository](https://github.com/awohns/unified_genealogy_paper)). The new `variational_gamma` method, the default from version 0.2 onwards, has not yet been described in print. For the moment, please cite this github repository if you need a citable reference.
+
+The citation to use for the original tsdate algorithms is:
+
+> Anthony Wilder Wohns, Yan Wong, Ben Jeffery, Ali Akbari, Swapan Mallick, Ron Pinhasi, Nick Patterson, David Reich, Jerome Kelleher, and Gil McVean (2022) _A unified genealogy of modern and ancient genomes_. Science **375**: eabi8264; doi: https://doi.org/10.1126/science.abi8264
+

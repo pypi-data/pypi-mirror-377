@@ -1,0 +1,24 @@
+🚨Warning message on purge (#1984)
+
+# Description
+
+We had a user purging the space instead of instances, leading to data
+loss. This is a stop-gap solution to try to avoid this happening again.
+Once #1977 and #1978 are merged, I will add a better solution for it in
+the reimplementation of this command.
+
+## Changelog
+
+- [x] Patch
+- [ ] Skip
+
+## cdf
+
+### Improved
+
+- When running the `cdf purge space` command, the user will now get an
+extra warning.
+
+## templates
+
+No changes.

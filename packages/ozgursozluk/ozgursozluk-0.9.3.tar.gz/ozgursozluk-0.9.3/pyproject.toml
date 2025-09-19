@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ozgursozluk"
+dynamic = ["version", "readme"]
+description = "Free alternative Ekşi Sözlük front-end"
+authors = [
+  {name = "beucismis", email = "beucismis@tutamail.com"}
+]
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+keywords = []
+classifiers = [
+  "Topic :: Internet",
+  "Framework :: Flask",
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["flask==3.1.2", "limoon"]
+
+[project.urls]
+Homepage = "https://github.com/beucismis/ozgursozluk"
+Repository = "https://github.com/beucismis/ozgursozluk"
+Changelog = "https://github.com/beucismis/ozgursozluk/releases"
+Documentation = "https://github.com/beucismis/ozgursozluk/blob/main/README.md"
+
+[tool.hatch.version]
+path = "src/ozgursozluk/__init__.py"
+
+[tool.poetry]
+include = ["ozgursozluk/static/*", "ozgursozluk/templates/*"]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[project.optional-dependencies]
+dev = ["black", "djlint"]
+
+[tool.hatch.envs.default.scripts]
+dev = "flask --app src.ozgursozluk.main run --debug"
+format = "black -l 120 . && djlint . --reformat --format-css"

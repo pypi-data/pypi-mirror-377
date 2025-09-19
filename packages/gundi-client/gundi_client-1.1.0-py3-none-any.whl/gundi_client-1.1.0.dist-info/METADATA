@@ -1,0 +1,82 @@
+Metadata-Version: 2.3
+Name: gundi-client
+Version: 1.1.0
+Summary: An async client for Gundi's API
+License: Apache-2.0
+Author: Rohit Chaudhri
+Author-email: rohitc@vulcan.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: environs (>=9.5,<10.0)
+Requires-Dist: gundi-core (>=1.0.0,<2.0.0)
+Requires-Dist: httpx (>=0.28.0,<0.29.0)
+Requires-Dist: pydantic (>=1.10,<2.0)
+Requires-Dist: respx (>=0,<1)
+Description-Content-Type: text/markdown
+
+# Gundi Client
+## Introduction
+[Gundi](https://www.earthranger.com/), a.k.a "The Portal" is a platform to manage integrations.
+The gundi-client is an async python client to interact with Gundi's REST API.
+
+## Installation
+```
+pip install gundi-client
+```
+
+## Usage
+
+```
+from gundi_client import PortalApi
+import httpx
+
+# You can use it as an async context-managed client
+async with PortalApi() as portal:
+   try:
+    response = await portal.get_outbound_integration_list(
+        session=session, inbound_id=str(inbound_id), device_id=str(device_id)
+    )
+    except httpx.RequestError as e:
+        logger.exception("Request Error")   
+        ...
+    except httpx.TimeoutException as e:
+        logger.exception("Request timed out")
+        ...
+    except httpx.HTTPStatusError as e:
+        logger.exception("Response returned error")
+    else:
+        # response contains a list configs as dicts
+        for integration in response:  
+            ...
+   ...
+
+# Or create an instance and close the client explicitly later
+portal = PortalApi()
+try:
+    response = await portal.get_outbound_integration_list(
+        session=session, inbound_id=str(inbound_id), device_id=str(device_id)
+    )
+    except httpx.RequestError as e:
+        logger.exception("Request Error")   
+        ...
+    except httpx.TimeoutException as e:
+        logger.exception("Request timed out")
+        ...
+    except httpx.HTTPStatusError as e:
+        logger.exception("Response returned error")
+    else:
+        # response contains a list configs as dicts
+        for integration in response:  
+            ...
+   ...
+   await portal.close()  # Close the session used to send requests to ER API
+```
+

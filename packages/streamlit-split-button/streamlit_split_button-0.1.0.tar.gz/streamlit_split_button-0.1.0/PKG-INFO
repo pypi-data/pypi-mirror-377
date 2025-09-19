@@ -1,0 +1,226 @@
+Metadata-Version: 2.4
+Name: streamlit-split-button
+Version: 0.1.0
+Summary: A beautiful split button component for Streamlit that combines a primary action button with a dropdown menu. Perfect for providing users with a main action while offering alternative options in an elegant, space-efficient design.
+License: Apache-2.0
+License-File: LICENSE
+Keywords: streamlit,python,material,button,component
+Author: Jonathan Alles
+Author-email: Jonathan.Alles@evo-byte.com
+Requires-Python: >=3.11
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Programming Language :: Python :: 3.15
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Browsers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: streamlit (>=1.43)
+Project-URL: Homepage, https://www.evo-byte.com
+Project-URL: Repository, https://github.com/EvobyteDigitalBiology/streamlit-redirect
+Description-Content-Type: text/markdown
+
+# streamlit-split-button
+
+A beautiful split button component for Streamlit that combines a primary action button with a dropdown menu. Perfect for providing users with a main action while offering alternative options in an elegant, space-efficient design.
+
+
+
+<img src="docs/streamlit_redirect_video.gif" alt="streamlit-split-button demo">
+
+## Features
+
+- 🎯 **Primary + Secondary Actions**: Main button for primary action, dropdown for alternatives
+- 🎨 **Material Design 3**: Beautiful styling inspired by Google's Material Design
+- 🌈 **Theme Integration**: Automatically adapts to your Streamlit theme colors
+- 🔧 **Customizable**: Support for icons, custom keys, and flexible option lists
+- ⚡ **Lightweight**: Pure Python implementation with minimal dependencies
+
+## Installation
+
+```bash
+pip install streamlit-split-button
+```
+
+## Quick Start
+
+```python
+import streamlit as st
+from streamlit_split_button import split_button
+
+# Create a split button with primary action and alternatives
+result = split_button(
+    label="Save Document",
+    options=["Save As Copy", "Save As Template", "Export PDF"],
+    icon=":material/save:"
+)
+
+if result == "Save Document":
+    st.success("Document saved!")
+elif result == "Save As Copy":
+    st.info("Document saved as copy")
+elif result == "Save As Template":
+    st.info("Document saved as template")
+elif result == "Export PDF":
+    st.info("Document exported as PDF")
+```
+
+## API Reference
+
+### `split_button(label, options, icon=None, key=None)`
+
+Creates a split button component with a primary action button and dropdown menu.
+
+**Parameters:**
+- `label` (str): The label for the primary action button
+- `options` (List[str]): List of alternative options in the dropdown menu
+- `icon` (str, optional): Icon to display on the primary button (uses Streamlit icon format)
+- `key` (str, optional): Unique key for the component. Auto-generated if not provided
+
+**Returns:**
+- `str` or `None`: The label of the clicked button or selected dropdown option, or None if no action taken
+
+**Raises:**
+- `ValueError`: If the options list is empty
+
+## Examples
+
+### File Operations Split Button
+
+```python
+import streamlit as st
+from streamlit_split_button import split_button
+
+st.title("Document Editor")
+
+# File operations with primary save action
+file_action = split_button(
+    label="Save",
+    options=["Save As...", "Save Copy", "Save Template"],
+    icon=":material/save:",
+    key="file_operations"
+)
+
+if file_action:
+    if file_action == "Save":
+        st.success("✅ Document saved successfully!")
+    elif file_action == "Save As...":
+        filename = st.text_input("Enter filename:")
+        if filename:
+            st.success(f"✅ Document saved as {filename}")
+    elif file_action == "Save Copy":
+        st.success("✅ Copy created successfully!")
+    elif file_action == "Save Template":
+        st.success("✅ Template saved successfully!")
+```
+
+### Email Actions Split Button
+
+```python
+import streamlit as st
+from streamlit_split_button import split_button
+
+st.title("Email Composer")
+
+# Email actions with primary send
+email_action = split_button(
+    label="Send Email",
+    options=["Send Later", "Save Draft", "Send Copy to Me"],
+    icon=":material/send:",
+    key="email_actions"
+)
+
+if email_action:
+    if email_action == "Send Email":
+        st.balloons()
+        st.success("📧 Email sent immediately!")
+    elif email_action == "Send Later":
+        schedule_time = st.time_input("Schedule for:")
+        st.info(f"📅 Email scheduled for {schedule_time}")
+    elif email_action == "Save Draft":
+        st.info("💾 Email saved as draft")
+    elif email_action == "Send Copy to Me":
+        st.info("📧 Email sent with copy to you")
+```
+
+### Multiple Split Buttons
+
+```python
+import streamlit as st
+from streamlit_split_button import split_button
+
+st.title("Multi-Action Interface")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("User Actions")
+    user_action = split_button(
+        label="Create User",
+        options=["Import Users", "Invite User", "Bulk Create"],
+        icon=":material/person_add:",
+        key="user_actions"
+    )
+    
+    if user_action:
+        st.write(f"Selected: {user_action}")
+
+with col2:
+    st.subheader("Report Actions")
+    report_action = split_button(
+        label="Generate Report",
+        options=["Schedule Report", "Custom Report", "Quick Summary"],
+        icon=":material/analytics:",
+        key="report_actions"
+    )
+    
+    if report_action:
+        st.write(f"Selected: {report_action}")
+```
+
+## Design Principles
+
+The split button follows Material Design 3 guidelines:
+
+- **Primary Action**: The main button shows the most common or important action
+- **Visual Hierarchy**: Primary button is visually prominent, dropdown is subtle but accessible
+- **Consistent Spacing**: Proper padding and margins for touch-friendly interaction
+- **Theme Integration**: Colors automatically adapt to your Streamlit theme
+- **Hover States**: Subtle feedback when hovering over interactive elements
+
+## Styling Details
+
+- **Border Radius**: Rounded corners following Material Design patterns
+- **Color Adaptation**: Primary color from Streamlit theme with calculated hover states
+- **Typography**: Inherits Streamlit's font family and sizing
+- **Shadows**: Subtle focus shadows for accessibility
+- **Responsive**: Works well across different screen sizes
+
+## Best Practices
+
+1. **Logical Grouping**: Put related actions together in the dropdown
+2. **Primary Action**: Choose the most common action as the main button
+3. **Clear Labels**: Use descriptive, action-oriented labels
+4. **Icon Usage**: Use icons that clearly represent the action
+5. **Limit Options**: Keep dropdown options to 3-7 items for best UX
+
+## Requirements
+
+- Python >= 3.11
+- Streamlit >= 1.43
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the Apache-2.0 License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you encounter any issues or have questions, please file an issue on the [GitHub repository](https://github.com/EvobyteDigitalBiology/streamlit-split-button).

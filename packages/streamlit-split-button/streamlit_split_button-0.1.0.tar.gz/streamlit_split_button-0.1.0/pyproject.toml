@@ -1,0 +1,44 @@
+[project]
+name = "streamlit-split-button"
+version = "0.1.0"
+description = "A beautiful split button component for Streamlit that combines a primary action button with a dropdown menu. Perfect for providing users with a main action while offering alternative options in an elegant, space-efficient design."
+authors = [
+    {name = "Jonathan Alles",email = "Jonathan.Alles@evo-byte.com"}
+]
+dynamic = [ "classifiers" ]
+
+license = { text = "Apache-2.0" }
+
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit (>=1.43)"
+]
+
+keywords = [ "streamlit", "python", "material", "button", "component" ]
+
+[tool.poetry.group.dev.dependencies]
+pytest = { version = "^7.0.0" }
+playwright = { version = "^1.0.0" }
+pytest-playwright = { version = "^0.7.0" }
+
+[tool.poetry]
+classifiers = [
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+homepage = "https://www.evo-byte.com"
+repository = "https://github.com/EvobyteDigitalBiology/streamlit-redirect"

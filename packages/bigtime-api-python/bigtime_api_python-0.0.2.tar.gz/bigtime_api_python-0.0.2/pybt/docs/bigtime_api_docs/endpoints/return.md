@@ -1,0 +1,16 @@
+# Return
+- [ ] **GET** `/Detail`
+- [ ] **GET** `/DetailByTaskSid`
+- [ ] **POST** `/Detail`
+- [ ] **DEL** `/Detail`
+- [ ] **POST** `/Deactivate`
+- [ ] **GET** `/Details`
+- [ ] **GET** `/TaxLinkDetails`
+- [ ] **GET** `/TaxLink`
+- [ ] **GET** `/List`
+- [ ] **POST** `/List`
+- [ ] **POST** `/Details`
+- [ ] **GET** `/Statuses`
+- [ ] **POST** `/Statuses`
+- [ ] **POST** `/SyncStatus`
+- [ ] **POST** `/Preparers`

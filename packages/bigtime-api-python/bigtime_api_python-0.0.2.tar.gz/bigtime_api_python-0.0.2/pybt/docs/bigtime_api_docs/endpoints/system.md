@@ -1,0 +1,2 @@
+# System
+- [ ] **GET** `/Status`

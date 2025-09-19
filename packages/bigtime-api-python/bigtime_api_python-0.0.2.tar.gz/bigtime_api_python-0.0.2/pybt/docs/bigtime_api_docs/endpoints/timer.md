@@ -1,0 +1,13 @@
+# Timer
+- [ ] **GET** `/Item`
+- [ ] **POST** `/Item`
+- [ ] **DEL** `/Item`
+- [ ] **POST** `/SaveAsTime`
+- [ ] **POST** `/CloseAllTimers`
+- [ ] **GET** `/Sheet`
+- [ ] **GET** `/Total`
+- [ ] **POST** `/Add`
+- [ ] **POST** `/Start`
+- [ ] **POST** `/Pause`
+- [ ] **POST** `/PauseAll`
+- [ ] **POST** `/ActiveItem`

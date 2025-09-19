@@ -1,0 +1,17 @@
+# Staff
+- [X] **GET** `/Index`
+- [X] **GET** `/Detail`
+- [ ] **POST** `/Detail`
+- [ ] **POST** `/Add`
+- [ ] **GET** `/UDFlist`
+- [ ] **POST** `/UDFlistByName`
+- [ ] **POST** `/UDFlist`
+- [ ] **POST** `/Invite`
+- [ ] **GET** `/StaffAllocations`
+- [ ] **GET** `/SkillTypes`
+- [ ] **GET** `/Skill`
+- [ ] **POST** `/Skill`
+- [ ] **DEL** `/Skill`
+- [ ] **GET** `/SkillAssignment`
+- [ ] **POST** `/SkillAssignment`
+- [ ] **DEL** `/SkillAssignment`

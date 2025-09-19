@@ -1,0 +1,31 @@
+# Project
+- [ ] **GET** `/Templates`
+- [ ] **GET** `/Template`
+- [ ] **POST** `/Template`
+- [ ] **DEL** `/Template`
+- [X] **GET** `/Contacts`
+- [ ] **GET** `/Contact`
+- [X] **POST** `/Contact`
+- [X] **DEL** `/Contact`
+- [ ] **GET** `/Index`
+- [X] **GET** `/Detail`
+- [X] **POST** `/Detail`
+- [ ] **DEL** `/Detail`
+- [X] **GET** `/Team`
+- [X] **POST** `/Team`
+- [ ] **GET** `/StaffTeams`
+- [ ] **POST** `/StaffTeams`
+- [X] **GET** `/CustomFields`
+- [ ] **POST** `/CustomFieldsByName`
+- [ ] **POST** `/CustomFields`
+- [X] **GET** `/Rates`
+- [ ] **GET** `/Rate`
+- [X] **POST** `/Rate`
+- [ ] **DEL** `/Rate`
+- [ ] **GET** `/Activity`
+- [ ] **POST** `/Activity`
+- [ ] **DEL** `/Activity`
+- [ ] **GET** `/LaborCodeTypes`
+- [ ] **GET** `/LaborCode`
+- [ ] **POST** `/LaborCode`
+- [ ] **DEL** `/LaborCode`

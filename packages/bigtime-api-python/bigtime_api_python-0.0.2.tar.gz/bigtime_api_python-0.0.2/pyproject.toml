@@ -1,0 +1,35 @@
+[build-system]
+requires = [
+    "hatchling >= 1.26",
+    "requests>=2.32.3",
+    "urllib3>=2.3.0",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "bigtime-api-python"
+version = "0.0.2"
+authors = [
+    { name = "Noel Moyer III", email = "moyer.noel@gmail.com" }
+]
+description = "bigtime-api-python is an API wrapper for the BigTime API"
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E*"]
+keywords = ["BigTime", "API Wrapper"]
+
+[project.urls]
+Homepage = "https://github.com/N3RM/bigtime-api-python"
+Issues = "https://github.com/N3RM/bigtime-api-python/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pybt/api_wrapper"]

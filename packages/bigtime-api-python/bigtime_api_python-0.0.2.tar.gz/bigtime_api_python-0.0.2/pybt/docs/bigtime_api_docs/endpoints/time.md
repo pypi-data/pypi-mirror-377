@@ -1,0 +1,13 @@
+# Time
+- [ ] **POST** `/AuditLogDetail`
+- [ ] **GET** `/AuditLogDetailsByStaffer`
+- [ ] **GET** `/AuditLogDetailsByProject`
+- [ ] **GET** `/AuditLogDetails`
+- [ ] **GET** `/AuditLogDetailsBySid`
+- [X] **GET** `/Sheet`
+- [X] **GET** `/ByProject`
+- [ ] **GET** `/PeriodContainingDate`
+- [ ] **GET** `/TotalByDay`
+- [ ] **GET** `/Index`
+- [ ] **DEL** `/Index`
+- [ ] **POST** `/Index`

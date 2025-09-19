@@ -1,0 +1,243 @@
+Metadata-Version: 2.4
+Name: mosaicx
+Version: 1.0.2
+Summary: Medical cOmputational Suite for Advanced Intelligent eXtraction - Intelligent radiology report extraction using local LLMs
+Project-URL: Homepage, https://github.com/LalithShiyam/MOSAICX
+Project-URL: Repository, https://github.com/LalithShiyam/MOSAICX
+Project-URL: Documentation, https://github.com/LalithShiyam/MOSAICX#readme
+Project-URL: Bug Tracker, https://github.com/LalithShiyam/MOSAICX/issues
+Author-email: Lalith Kumar Shiyam Sundar <lalith.shiyam@med.uni-muenchen.de>
+License: DUAL LICENSING NOTICE
+        ====================
+        
+        MOSAICX is dual-licensed under the terms of both the GNU Affero General Public License v3.0 (AGPL-3.0) and a Commercial License.
+        
+        OPEN SOURCE LICENSE
+        ===================
+        
+        This software is available under the GNU Affero General Public License v3.0 (AGPL-3.0).
+        
+        Under this license, you are free to use, modify, and distribute this software, provided that:
+        - Any derivative work or application that uses this software must also be open-sourced under AGPL-3.0
+        - If you run this software on a server and provide it as a service, you must make the complete source code of your application (including modifications) available to your users
+        - You must include this license notice and copyright information in all copies
+        
+        For the complete AGPL-3.0 license terms, see LICENSE-AGPL-3.0.txt
+        
+        COMMERCIAL LICENSE
+        ==================
+        
+        If you wish to use this software in a commercial product or service without the open-source requirements of AGPL-3.0, you must obtain a commercial license.
+        
+        Commercial licenses are available from:
+        
+            Zenta GmbH
+            
+            For commercial licensing inquiries, please contact:
+            Email: info@zenta.solutions
+            Subject: MOSAICX Commercial License Request
+        
+        Commercial licensing allows you to:
+        - Use this software in proprietary applications
+        - Distribute applications containing this software without open-source obligations
+        - Customize and modify the software without sharing changes
+        - Receive commercial support and maintenance
+        
+        COPYRIGHT AND ATTRIBUTION
+        ==========================
+        
+        Copyright (c) 2024 DIGITX Lab, Department of Radiology, LMU Munich University Hospital
+        Developed by Lalith Kumar Shiyam Sundar, PhD
+        
+        Commercial licensing managed by Zenta GmbH
+        
+        IMPORTANT NOTICE
+        ================
+        
+        By using this software, you agree to comply with the terms of one of the above licenses.
+        If you are unsure which license applies to your use case, please contact Zenta GmbH for clarification.
+License-File: LICENSE
+Keywords: extraction,llm,medical,nlp,pdf,radiology
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.11
+Requires-Dist: click>=8.1.0
+Requires-Dist: docling>=2.0.0
+Requires-Dist: dspy-ai>=2.4.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: instructor>=1.0.0
+Requires-Dist: ollama>=0.3.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-cfonts>=1.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: rich-click>=1.8.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: typing-extensions>=4.8.0
+Provides-Extra: dev
+Requires-Dist: black>=23.7.0; extra == 'dev'
+Requires-Dist: isort>=5.12.0; extra == 'dev'
+Requires-Dist: mypy>=1.5.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.3.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.21.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.1.0; extra == 'dev'
+Requires-Dist: pytest>=7.4.0; extra == 'dev'
+Requires-Dist: ruff>=0.0.280; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# MOSAICX
+
+**Medical cOmputational Suite for Advanced Intelligent eXtraction**
+
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+MOSAICX is an intelligent radiology report extraction tool that uses local Large Language Models (LLMs) to extract structured data from medical reports. It supports both PDF and text inputs, provides configurable output formats, and offers both programmatic and command-line interfaces.
+
+## Features
+
+🔬 **Intelligent Extraction**: Uses local LLMs (Ollama) for context-aware data extraction  
+📄 **Advanced Document Processing**: Powered by Docling for superior PDF and document parsing  
+⚙️ **Configurable Schemas**: Define custom extraction schemas with interactive brainstorming  
+📊 **Flexible Outputs**: Export to JSON, CSV, or custom formats  
+🔄 **Multi-Report Analysis**: Process multiple reports for patient history synthesis  
+🖥️ **Dual Interface**: Use as Python library or CLI tool  
+🏠 **Local Processing**: All processing happens locally using Ollama - no cloud dependencies  
+⚡ **Fast Development**: Built with uv for lightning-fast dependency management  
+
+## Quick Start
+
+### Installation
+
+```bash
+pip install mosaicx
+```
+
+**For Development (with uv - recommended):**
+
+```bash
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Clone and setup
+git clone https://github.com/LalithShiyam/MOSAICX.git
+cd MOSAICX
+uv sync --dev
+uv run pre-commit install
+```
+
+### Basic Usage
+
+#### Command Line Interface
+
+```bash
+# Extract from a single PDF report  
+uv run mosaicx extract report.pdf --config extraction_config.yaml --output results.json
+
+# Interactive schema building
+uv run mosaicx brainstorm --report sample_report.pdf --schema-output custom_schema.yaml
+
+# Batch processing multiple reports
+uv run mosaicx extract-batch reports/ --config config.yaml --output-dir results/
+```
+
+#### Python Library
+
+```python
+from mosaicx import ReportExtractor, ExtractionConfig
+
+# Initialize extractor
+extractor = ReportExtractor()
+
+# Extract from PDF
+config = ExtractionConfig.from_file('config.yaml')
+results = extractor.extract_from_pdf('report.pdf', config)
+
+# Extract from text
+text_content = "Patient shows signs of pneumonia..."
+results = extractor.extract_from_text(text_content, config)
+
+# Multi-report analysis
+patient_reports = ['report1.pdf', 'report2.pdf', 'report3.pdf']
+timeline = extractor.analyze_patient_history(patient_reports, config)
+```
+
+## Configuration
+
+Create a YAML configuration file to define extraction schemas:
+
+```yaml
+schema:
+  findings:
+    - field: "primary_diagnosis"
+      type: "string"
+      description: "Main diagnosis from the report"
+    - field: "severity"
+      type: "enum"
+      options: ["mild", "moderate", "severe"]
+    - field: "follow_up_required"
+      type: "boolean"
+
+output:
+  format: "json"
+  include_confidence: true
+  include_source_text: true
+
+llm:
+  model: "llama2"
+  temperature: 0.1
+  max_tokens: 1000
+```
+
+## Documentation
+
+- [Installation Guide](docs/installation.md)
+- [Configuration Reference](docs/configuration.md)
+- [API Documentation](docs/api.md)
+- [Examples](examples/)
+
+## Development
+
+MOSAICX is developed by the DIGITX Lab at the Department of Radiology, LMU Munich University Hospital.
+
+### Requirements
+
+- Python 3.11+
+- Ollama installed locally
+- Local LLM model (e.g., Llama2, CodeLlama)
+
+### Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## License
+
+Apache License 2.0 - see [LICENSE](LICENSE) for details.
+
+## Authors
+
+**Lalith Kumar Shiyam Sundar, PhD**  
+DIGITX Lab, Department of Radiology  
+LMU Munich University Hospital  
+📧 lalith.shiyam@med.uni-muenchen.de
+
+## Citation
+
+If you use MOSAICX in your research, please cite:
+
+```bibtex
+@software{mosaicx2024,
+  title={MOSAICX: Medical cOmputational Suite for Advanced Intelligent eXtraction},
+  author={Sundar, Lalith Kumar Shiyam},
+  year={2024},
+  institution={DIGITX Lab, Department of Radiology, LMU Munich University Hospital},
+  url={https://github.com/LalithShiyam/MOSAICX}
+}
+```

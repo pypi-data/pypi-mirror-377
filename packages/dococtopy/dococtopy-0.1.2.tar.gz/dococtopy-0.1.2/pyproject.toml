@@ -1,0 +1,194 @@
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dococtopy"
+version = "0.1.2"
+description = "A language-agnostic docstyle compliance & remediation tool"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Michael", email = "your-email@example.com" }]
+maintainers = [{ name = "Michael", email = "your-email@example.com" }]
+keywords = ["docstring", "documentation", "linting", "compliance", "llm", "ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "ast-tools>=0.1.8",
+    "docstring-parser>=0.17.0",
+    "pathspec>=0.12.1",
+    "pydantic>=2.11.7",
+    "rich>=14.1.0",
+    "typer>=0.16.1",
+    "tomli>=2.0.0; python_version < '3.11'",
+    "dspy-ai>=3.0.3",
+]
+
+[project.optional-dependencies]
+llm = ["anthropic>=0.66.0", "openai>=1.107.0", "dspy-ai>=2.4.0"]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "hypothesis>=6.138.15",
+    "isort>=6.0.1",
+    "mypy>=1.17.1",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "pytest-xdist>=3.8.0",
+    "taskipy>=1.12.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.scripts]
+dococtopy = "dococtopy.cli.main:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--cov=src/dococtopy",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--strict-markers",
+    "-v",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/playground/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["dococtopy"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false       # Relaxed for initial release
+disallow_incomplete_defs = false    # Relaxed for initial release
+check_untyped_defs = true
+disallow_untyped_decorators = false # Relaxed for initial release
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = false         # Disabled for initial release
+warn_no_return = true
+warn_unreachable = false            # Disabled for initial release
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = ["docstring_parser.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["dspy.*", "tomllib", "tomli"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["dococtopy.remediation.*"]
+ignore_errors = true
+
+[tool.taskipy.tasks]
+# Linting tasks
+lint = "task lint:black && task lint:isort && task lint:mypy"
+"lint:black" = "black --check src/ tests/"
+"lint:isort" = "isort --check-only src/ tests/"
+"lint:mypy" = "mypy src/"
+
+# Formatting tasks
+format = "task format:black && task format:isort"
+"format:black" = "black src/ tests/"
+"format:isort" = "isort src/ tests/"
+
+# Testing tasks
+test = "pytest tests/ -v"
+"test:cov" = "pytest --cov=src/dococtopy --cov-report=term-missing --cov-report=html tests/"
+"test:fast" = "pytest tests/ -v --maxfail=1"
+"test:unit" = "pytest tests/unit/ -v"
+"test:integration" = "pytest tests/integration/ -v"
+
+# Build and publish tasks
+build = "uv build -o dist"
+check = "uv tool run twine check dist/*"
+publish = "uv tool run twine upload dist/*"
+
+# Development tasks
+dev = "task format && task lint && task test"
+clean = "rm -rf dist/ build/ *.egg-info/ .pytest_cache/ .coverage htmlcov/ .mypy_cache/"
+install = "uv sync --dev"
+"install:llm" = "uv sync --dev --extra llm"
+
+# LLM environment tasks
+"llm:setup" = "uv sync --dev --extra llm && echo 'LLM environment ready!'"
+"llm:test" = "uv run --active python -c 'import dspy; print(\"DSPy available:\", dspy is not None)'"
+"llm:clean" = "uv sync --dev && echo 'LLM dependencies removed'"
+
+# CI/CD tasks
+ci = "task lint && task test:cov"
+pre-commit = "task format && task lint && task test:fast"
+"pre-commit:install" = "pre-commit install"
+"pre-commit:run" = "pre-commit run --all-files"
+"pre-commit:update" = "pre-commit autoupdate"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dococtopy"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/README.md", "/pyproject.toml"]
+
+[tool.hatch.envs.default]
+dependencies = ["coverage[toml]>=6.5", "pytest>=6.0", "pytest-cov>=4.0"]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/dococtopy {args:tests}"
+cov-report = "coverage report"
+cov-html = "coverage html"
+cov-lcov = "coverage lcov"
+cov-json = "coverage json"

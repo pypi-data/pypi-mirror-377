@@ -1,0 +1,32 @@
+[project]
+name = "ztl"
+version = "0.0.3"
+authors = [
+  { name="Patrick Holthaus", email="patrick.holthaus@googlemail.com" },
+]
+description = "A thin library relying on zmq to dispatch tasks"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "oyaml",
+    "pyzmq",
+    "pytest",
+    "pytest-xprocess"
+]
+
+[project.scripts]
+ztl_simple_client = "ztl.example.simple_client:main_cli"
+ztl_simple_server = "ztl.example.simple_server:main_cli"
+ztl_task_server = "ztl.example.task_server:main_cli"
+ztl_task_client = "ztl.example.task_client:main_cli"
+ztl_run_script = "ztl.script.run_script:main_cli"
+
+[project.urls]
+"Homepage" = "https://gitlab.com/robothouse/rh-user/ztl/"
+"Bug Tracker" = "https://gitlab.com/robothouse/rh-user/ztl/issues/"

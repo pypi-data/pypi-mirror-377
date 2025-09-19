@@ -1,0 +1,15 @@
+[project]
+name = "uv-test-zx"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp>=1.14.0",
+]
+[project.scripts]
+uv_test = "main:main"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"

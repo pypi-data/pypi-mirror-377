@@ -1,0 +1,95 @@
+import os
+import sys
+
+from base64 import b64decode, b64encode
+
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
+
+from . import appdirs
+
+def get_key_from_s3fs():
+    '''If user has s3fs-fuse keys,return them
+    '''
+    key_path = os.path.expanduser('~/.passwd-s3fs')
+    if os.path.exists(key_path):
+        with open(key_path, 'r') as kfl:
+            content = kfl.readline()
+            ACCESS_KEY, SECRET_KEY = content.strip().split(':')
+            return ACCESS_KEY, SECRET_KEY
+
+
+def get_key_from_environ():
+    try:
+        ak = os.environ['AWS_ACCESS_KEY'],
+        sk = os.environ['AWS_SECRET_KEY']
+        return ak, sk
+    except:
+        return
+
+
+def get_keys():
+    '''try to find the user keys in the machine
+    '''
+    # try to outload keys
+    resulta = get_key_from_s3fs()
+    resultb = get_key_from_environ()
+    result = resultb if (resulta is None) else resulta
+    return result
+
+
+def get_config():
+    config = configparser.ConfigParser()
+    with open(os.path.join(cwd, 'defaults.cfg'), 'r') as defaults_file:
+        if sys.version_info.major == 2:
+            config.readfp(defaults_file)
+        else:
+            config.read_file(defaults_file)
+    return config
+
+cwd = os.path.split(os.path.abspath(__file__))[0]
+userdir = appdirs.user_data_dir("cottoncandy",appauthor="cottoncandy")
+usercfg = os.path.join(userdir, "options.cfg")
+config = get_config()
+
+# case no user config file
+if len(config.read(usercfg)) == 0:
+    if not os.path.exists(userdir):
+        os.makedirs(userdir)
+
+    prompt = '''
+############################################################
+Hi! Looks like this is your first time using cottoncandy.
+
+Your cottoncandy configuration file will be stored in:
+{path}
+
+You can store your S3 or Google Drive credentials there,
+and many other options.
+
+Thanks for using cottoncandy!
+'''
+    print(prompt.format(path=usercfg))
+
+    with open(usercfg, 'w') as fp:
+        config.write(fp)
+
+
+# add things to old versions of config if needed
+else:
+    needs_update = False
+
+    try:	# gdrive section
+        secrets = config.get('gdrive', 'secrets')
+        credentials = config.get('gdrive', 'credentials')
+    except configparser.NoSectionError:
+        config.add_section('gdrive')
+        config.set('gdrive', 'secrets', 'client_secrets.json')
+        config.set('gdrive', 'credentials', 'credentials.txt')
+        needs_update = True
+
+    if needs_update:
+        with open(usercfg, 'w') as configfile:
+            config.write(configfile)

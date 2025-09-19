@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: rsamal-di-mcp-server
+Version: 0.1.0
+Summary: MCP server testing
+Author-email: Ramakanta Samal <rsamal@us.ibm.com>
+License-Expression: Apache-2.0
+Keywords: mcp,model-context-protocol,server,ai,fastmcp,watsonx-data-intelligence
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.11
+Requires-Dist: fastmcp>=2.11.3
+Requires-Dist: pydantic>=2
+Requires-Dist: pyyaml>=6
+Requires-Dist: async-lru>=2.0.0
+Provides-Extra: dev
+Requires-Dist: ruff>=0.12.10; extra == "dev"
+Requires-Dist: mcp>=1.0.0; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=7.0.0; extra == "test"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "test"
+Requires-Dist: pytest-cov>=7.0.0; extra == "test"
+Requires-Dist: httpx>=0.24.0; extra == "test"

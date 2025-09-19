@@ -1,0 +1,46 @@
+# Folder where backups is saved locally.
+SAVE_BACKUPS_TO = '/root/backups'
+
+# Folder used for temporary storage.
+TMP_FOLDER = '/root/backups/tmp'
+
+# Full path to tar binary.
+TAR_BIN = '/usr/bin/tar'
+
+# How many backups should be saved locally.
+BACKUPS_TO_SAVE_LOCAL = 7
+
+# Full path to secure-delete binary
+SRM_BIN = '/usr/bin/srm'
+
+[DATA]
+# Set to true if we should take backups of folders and/or files else false.
+USE = true
+# Space separated string containing the folders and/or files that should be backed up.
+DATA_TO_BACKUP = '/var/mail /var/lib/rspamd/dkim/'
+
+[MARIADB]
+# Set to true if we should take backups of all mariadb databases else false.
+USE = true
+MARIADBDUMP_BIN = '/usr/bin/mariadb-dump'
+ROOT_PASSWORD = 'change_me'
+
+[GPG_ENCRYPTION]
+# Set to true if we should encrypt the backup file with gpg using a public key else false.
+USE = true
+PUBKEY_FINGERPRINT = 'change_me'
+GPG_BIN = '/usr/bin/gpg'
+
+[BACKUP_RECEIVER]
+# Set to true if we should send the backup to a remote server using ddmail_backup_receiver else false.
+USE = true
+URL = 'https://change_me:change_me/receive_backup'
+PASSWORD = 'change_me'
+
+[LOGGING]
+LOGLEVEL = 'INFO'
+LOG_TO_CONSOLE = true
+LOG_TO_FILE = true
+LOGFILE = '/var/log/ddmail_backup_taker.log'
+LOG_TO_SYSLOG = true
+SYSLOG_SERVER = '/dev/log'

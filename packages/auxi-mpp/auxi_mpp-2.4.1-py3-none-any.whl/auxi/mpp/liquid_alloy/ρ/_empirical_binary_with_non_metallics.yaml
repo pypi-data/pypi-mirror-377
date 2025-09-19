@@ -1,0 +1,50 @@
+# Data for EmpiricalBinaryWithNonMetallics Models
+Fe-S:
+    non-metallic: S
+    reference: nagamori1969
+    method: rho_Fe_S_Nagamori
+    parameters:
+        T_K: 1473.15 # 1200°C
+        wt_pct_s_min: 28
+        wt_pct_s_max: 37
+        c0: 6.95
+        c1: 7.523e-2
+        c2: 2.997e-4
+
+Ni-S:
+    non-metallic: S
+    reference: nagamori1969
+    method: rho_Ni_S_Nagamori
+    parameters:
+        T_min_C: 1000
+        T_max_C: 1200
+        wt_pct_s_min: 18
+        wt_pct_s_max: 30
+        c0: 7.24
+        c1: 2.254e-2
+        c2: 1.795e-3
+        d0: -2.4e-3
+        d1: 8.0e-5
+Cu-S:
+    non-metallic: S
+    reference: nagamori1969
+    method: rho_Cu_S_Nagamori
+    parameters:
+        T_K: 1473.15 # 1200°C
+        wt_pct_s_min: 19.6
+        wt_pct_s_max: 20.6
+        c0: 7.9
+        c1: 1.348e-1
+C-Fe:
+    non-metallic: C
+    reference: jimbocramb1993
+    method: rho_Fe_C_jimbo_cramb
+    parameters:
+        T_min_C: 1250
+        T_max_C: 1550
+        wt_pct_c_min: 0
+        wt_pct_c_max: 4
+        a0: 7.10
+        a1: 0.0732
+        b0: 8.28
+        b1: 0.874

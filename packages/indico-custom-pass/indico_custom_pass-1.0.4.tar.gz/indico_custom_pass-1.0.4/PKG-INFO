@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: indico-custom-pass
+Version: 1.0.4
+Summary: Grants admins the ability to customize Indico Google Wallet & Apple Pay passes.
+Project-URL: GitHub, https://github.com/RobotHanzo/IndicoCustomPass
+Author-email: RobotHanzo <admin@robothanzo.dev>
+License: MIT License
+License-File: LICENSE
+Classifier: Environment :: Plugins
+Classifier: Environment :: Web Environment
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: <3.13,>=3.12
+Requires-Dist: indico-patcher>=0.2.1
+Requires-Dist: indico>=3.3
+Requires-Dist: pygments<3,>=2.7.2
+Description-Content-Type: text/markdown
+
+# indico-custom-pass
+
+This plugin grants admins the ability to customize Indico Google Wallet & Apple Pay passes.
+
+## Installation
+
+Install the plugin [package](https://pypi.org/project/indico-custom-pass/) from PyPI
+```bash
+pip install indico-custom-pass
+```
+
+Open `indico.conf` of your indico installation then add `custom_pass` on `PLUGIN`.
+```python
+PLUGINS = { ... , 'custom_pass'}
+```
+
+## Install for development for contributing to this plugin
+
+Clone this repository on `~/dev/indico/plugins`
+```bash
+git clone https://github.com/RobotHanzo/IndicoCustomPass.git
+```
+
+With python virtual environment of Indico development installation enabled, enter the cloned directory then run following command to install the plugin.
+```bash
+pip install -e .
+```
+
+Open `indico.conf` which should be located in `~/dev/indico/src/indico` then add `custom_pass` on `PLUGIN`.
+```python
+PLUGINS = { ... , 'custom_pass'}
+```
+
+You can now test you modification on your development indico environment.

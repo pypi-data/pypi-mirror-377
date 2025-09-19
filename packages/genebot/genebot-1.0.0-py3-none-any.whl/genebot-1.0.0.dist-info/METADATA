@@ -1,0 +1,467 @@
+Metadata-Version: 2.4
+Name: genebot
+Version: 1.0.0
+Summary: Advanced Multi-Market Trading Bot with Crypto & Forex Support
+Author-email: GeneBot Development Team <support@genebot.ai>
+Maintainer-email: GeneBot Core Team <maintainers@genebot.ai>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/genebot/genebot
+Project-URL: Documentation, https://docs.genebot.ai
+Project-URL: Repository, https://github.com/genebot/genebot.git
+Project-URL: Bug Tracker, https://github.com/genebot/genebot/issues
+Project-URL: Feature Requests, https://github.com/genebot/genebot/discussions
+Project-URL: Changelog, https://github.com/genebot/genebot/blob/main/CHANGELOG.md
+Project-URL: Release Notes, https://github.com/genebot/genebot/releases
+Project-URL: Security Policy, https://github.com/genebot/genebot/security/policy
+Project-URL: Contributing, https://github.com/genebot/genebot/blob/main/CONTRIBUTING.md
+Project-URL: Code of Conduct, https://github.com/genebot/genebot/blob/main/CODE_OF_CONDUCT.md
+Keywords: trading,bot,crypto,forex,algorithmic-trading,multi-market,risk-management,backtesting,portfolio,arbitrage,strategy,automation,finance,investment
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: ccxt>=4.0.0
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: requests>=2.28.0
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: websockets>=11.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: alembic>=1.12.0
+Requires-Dist: colorama>=0.4.6
+Requires-Dist: tabulate>=0.9.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: matplotlib>=3.6.0
+Requires-Dist: seaborn>=0.12.0
+Requires-Dist: scipy>=1.9.0
+Requires-Dist: TA-Lib>=0.4.25
+Requires-Dist: psutil>=5.9.0
+Requires-Dist: asyncio-mqtt>=0.13.0
+Requires-Dist: structlog>=23.0.0
+Requires-Dist: cryptography>=41.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Requires-Dist: pytest-mock>=3.10; extra == "dev"
+Requires-Dist: pytest-xdist>=3.0; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.5; extra == "dev"
+Requires-Dist: pre-commit>=3.0; extra == "dev"
+Requires-Dist: isort>=5.12; extra == "dev"
+Requires-Dist: bandit>=1.7; extra == "dev"
+Requires-Dist: safety>=2.3; extra == "dev"
+Provides-Extra: monitoring
+Requires-Dist: prometheus-client>=0.17.0; extra == "monitoring"
+Requires-Dist: grafana-api>=1.0.3; extra == "monitoring"
+Requires-Dist: opentelemetry-api>=1.20.0; extra == "monitoring"
+Requires-Dist: opentelemetry-sdk>=1.20.0; extra == "monitoring"
+Requires-Dist: opentelemetry-instrumentation>=0.41b0; extra == "monitoring"
+Provides-Extra: ml
+Requires-Dist: scikit-learn>=1.3.0; extra == "ml"
+Requires-Dist: tensorflow>=2.13.0; extra == "ml"
+Requires-Dist: torch>=2.0.0; extra == "ml"
+Requires-Dist: xgboost>=1.7.0; extra == "ml"
+Requires-Dist: lightgbm>=4.0.0; extra == "ml"
+Requires-Dist: optuna>=3.4.0; extra == "ml"
+Provides-Extra: forex
+Requires-Dist: MetaTrader5>=5.0.45; extra == "forex"
+Requires-Dist: ib-insync>=0.9.86; extra == "forex"
+Requires-Dist: oandapyV20>=0.6.3; extra == "forex"
+Requires-Dist: fxcmpy>=1.3.0; extra == "forex"
+Provides-Extra: performance
+Requires-Dist: numba>=0.58.0; extra == "performance"
+Requires-Dist: cython>=3.0.0; extra == "performance"
+Requires-Dist: uvloop>=0.17.0; sys_platform != "win32" and extra == "performance"
+Requires-Dist: orjson>=3.9.0; extra == "performance"
+Provides-Extra: docs
+Requires-Dist: sphinx>=7.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.3; extra == "docs"
+Requires-Dist: myst-parser>=2.0; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=1.24; extra == "docs"
+Provides-Extra: test
+Requires-Dist: pytest>=7.0; extra == "test"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "test"
+Requires-Dist: pytest-cov>=4.0; extra == "test"
+Requires-Dist: pytest-mock>=3.10; extra == "test"
+Requires-Dist: pytest-benchmark>=4.0; extra == "test"
+Requires-Dist: hypothesis>=6.82; extra == "test"
+Requires-Dist: factory-boy>=3.3; extra == "test"
+Provides-Extra: all
+Requires-Dist: pytest>=7.0; extra == "all"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "all"
+Requires-Dist: pytest-cov>=4.0; extra == "all"
+Requires-Dist: pytest-mock>=3.10; extra == "all"
+Requires-Dist: pytest-xdist>=3.0; extra == "all"
+Requires-Dist: black>=23.0; extra == "all"
+Requires-Dist: ruff>=0.1.0; extra == "all"
+Requires-Dist: mypy>=1.5; extra == "all"
+Requires-Dist: pre-commit>=3.0; extra == "all"
+Requires-Dist: isort>=5.12; extra == "all"
+Requires-Dist: bandit>=1.7; extra == "all"
+Requires-Dist: safety>=2.3; extra == "all"
+Requires-Dist: prometheus-client>=0.17.0; extra == "all"
+Requires-Dist: grafana-api>=1.0.3; extra == "all"
+Requires-Dist: opentelemetry-api>=1.20.0; extra == "all"
+Requires-Dist: opentelemetry-sdk>=1.20.0; extra == "all"
+Requires-Dist: scikit-learn>=1.3.0; extra == "all"
+Requires-Dist: tensorflow>=2.13.0; extra == "all"
+Requires-Dist: torch>=2.0.0; extra == "all"
+Requires-Dist: xgboost>=1.7.0; extra == "all"
+Requires-Dist: MetaTrader5>=5.0.45; extra == "all"
+Requires-Dist: ib-insync>=0.9.86; extra == "all"
+Requires-Dist: oandapyV20>=0.6.3; extra == "all"
+Requires-Dist: numba>=0.58.0; extra == "all"
+Requires-Dist: uvloop>=0.17.0; sys_platform != "win32" and extra == "all"
+Requires-Dist: orjson>=3.9.0; extra == "all"
+
+# 🤖 GeneBot - Advanced Multi-Market Trading Bot
+
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/genebot/genebot)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/genebot/genebot/releases)
+
+```
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║                                                               ║
+    ║   ██████╗ ███████╗███╗   ██╗███████╗██████╗  ██████╗ ████████╗║
+    ║  ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝║
+    ║  ██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝██║   ██║   ██║   ║
+    ║  ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██║   ██║   ██║   ║
+    ║  ╚██████╔╝███████╗██║ ╚████║███████╗██████╔╝╚██████╔╝   ██║   ║
+    ║   ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═════╝  ╚═════╝    ╚═╝   ║
+    ║                                                               ║
+    ║              Advanced Multi-Market Trading Bot               ║
+    ║                        Version 1.0.0                         ║
+    ║                                                               ║
+    ╚═══════════════════════════════════════════════════════════════╝
+```
+
+**GeneBot** is a sophisticated, multi-market trading bot that supports both cryptocurrency exchanges and forex brokers. Built with advanced risk management, comprehensive strategy orchestration, and real-time monitoring capabilities.
+
+## 🚀 Key Features
+
+### 🌐 Multi-Market Trading
+- **Crypto Exchanges**: Binance, Coinbase, Kraken, KuCoin, Bybit
+- **Forex Brokers**: OANDA, MetaTrader 5, Interactive Brokers
+- **Cross-Market Arbitrage**: Exploit price differences across markets
+- **Unified Portfolio Management**: Manage positions across all markets
+
+### 🧠 Advanced Strategy Engine
+- **50+ Built-in Strategies**: Technical indicators, ML patterns, arbitrage
+- **Custom Strategy Development**: Easy-to-use strategy framework
+- **Multi-Strategy Orchestration**: Run multiple strategies simultaneously
+- **Strategy Performance Analytics**: Comprehensive backtesting and analysis
+
+### 🛡️ Comprehensive Risk Management
+- **Real-Time Risk Monitoring**: Position sizing, drawdown protection
+- **Cross-Market Risk Assessment**: Correlation analysis and exposure limits
+- **Anti-Greed System**: Prevents emotional trading decisions
+- **Dynamic Stop-Loss Management**: Adaptive risk controls
+
+### 🔐 Enterprise-Grade Security
+- **Live API Validation**: Comprehensive credential testing before trading
+- **Secure Configuration Management**: Encrypted credential storage
+- **Audit Trails**: Complete trading history and compliance reporting
+- **Regulatory Compliance**: Built-in compliance frameworks
+
+### 📊 Advanced Analytics & Monitoring
+- **Real-Time Dashboards**: Grafana integration with custom metrics
+- **Performance Analytics**: Detailed P&L analysis and reporting
+- **Alert System**: Email, SMS, and webhook notifications
+- **Backtesting Engine**: Historical strategy validation
+
+## 🛠️ Installation
+
+### Quick Install (Recommended)
+```bash
+# Clone the repository
+git clone https://github.com/genebot/genebot.git
+cd genebot
+
+# Run the installation script
+./install.sh
+```
+
+### Manual Installation
+```bash
+# Create virtual environment
+python3 -m venv genebot-env
+source genebot-env/bin/activate
+
+# Install GeneBot
+pip install -e .
+
+# Install optional features
+pip install -e ".[all]"  # All features
+pip install -e ".[dev]"  # Development tools
+pip install -e ".[monitoring]"  # Monitoring tools
+pip install -e ".[ml]"  # Machine Learning tools
+```
+
+### Verify Installation
+```bash
+genebot --version
+genebot --help
+```
+
+## 🚀 Quick Start
+
+### 1. Set Up Demo Accounts (Safe Testing)
+```bash
+# Set up demo accounts for testing
+genebot setup-demo
+
+# Validate demo accounts
+genebot validate
+```
+
+### 2. Add Your Trading Accounts
+```bash
+# Add crypto exchange (interactive)
+genebot add-crypto
+
+# Add forex broker (interactive)
+genebot add-forex
+
+# List all accounts
+genebot list
+```
+
+### 3. Start Trading
+```bash
+# Start the trading bot with live API validation
+genebot start
+
+# Check bot status
+genebot status
+
+# Generate trading reports
+genebot report-summary
+```
+
+## 📋 Command Reference
+
+### Account Management
+```bash
+genebot add-crypto              # Add crypto exchange account
+genebot add-forex               # Add forex broker account
+genebot edit-crypto <name>      # Edit crypto account
+genebot edit-forex <name>       # Edit forex account
+genebot list                    # List all accounts
+genebot validate                # Validate all accounts
+genebot remove <name> <type>    # Remove specific account
+genebot remove-all              # Remove all accounts
+genebot remove-by-exchange <ex> # Remove by exchange type
+genebot remove-by-type <type>   # Remove by account type
+```
+
+### Bot Control
+```bash
+genebot start                   # Start trading bot
+genebot stop                    # Stop trading bot
+genebot restart                 # Restart trading bot
+genebot status                  # Show bot status
+```
+
+### Reporting & Analytics
+```bash
+genebot report-summary          # Generate summary report
+genebot report-detailed         # Generate detailed report
+genebot report-performance      # Generate performance report
+genebot report-compliance       # Generate compliance report
+```
+
+### Utilities
+```bash
+genebot setup-demo              # Setup demo accounts
+genebot cleanup-demo            # Remove demo accounts
+genebot health-check            # System health check
+genebot reset                   # Clean up all data
+genebot backup-config           # Backup configurations
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+```bash
+# Copy example environment file
+cp .env.example .env
+
+# Edit configuration
+nano .env
+```
+
+### Trading Configuration
+```yaml
+# config/trading_bot_config.yaml
+trading:
+  max_position_size: 0.1
+  risk_per_trade: 0.02
+  max_drawdown: 0.15
+  
+strategies:
+  - name: "RSI_Strategy"
+    enabled: true
+    parameters:
+      rsi_period: 14
+      oversold: 30
+      overbought: 70
+```
+
+### Multi-Market Configuration
+```yaml
+# config/multi_market_config.yaml
+multi_market:
+  cross_market_arbitrage: true
+  correlation_threshold: 0.8
+  max_exposure_per_market: 0.5
+```
+
+## 📊 Supported Markets & Exchanges
+
+### Cryptocurrency Exchanges
+| Exchange | Spot Trading | Futures | Sandbox | Status |
+|----------|-------------|---------|---------|--------|
+| Binance | ✅ | ✅ | ✅ | Active |
+| Coinbase | ✅ | ❌ | ✅ | Active |
+| Kraken | ✅ | ✅ | ✅ | Active |
+| KuCoin | ✅ | ✅ | ✅ | Active |
+| Bybit | ✅ | ✅ | ✅ | Active |
+
+### Forex Brokers
+| Broker | Spot Forex | CFDs | Demo | Status |
+|--------|------------|------|------|--------|
+| OANDA | ✅ | ✅ | ✅ | Active |
+| MetaTrader 5 | ✅ | ✅ | ✅ | Active |
+| Interactive Brokers | ✅ | ✅ | ✅ | Active |
+
+## 🧪 Testing & Development
+
+### Run Tests
+```bash
+# Run all tests
+pytest
+
+# Run specific test categories
+pytest tests/test_strategies.py
+pytest tests/test_risk_management.py
+pytest tests/test_multi_market.py
+
+# Run with coverage
+pytest --cov=genebot
+```
+
+### Development Setup
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run code formatting
+black genebot/
+flake8 genebot/
+
+# Type checking
+mypy genebot/
+```
+
+## 📈 Performance & Monitoring
+
+### Grafana Dashboards
+- **Trading Overview**: Real-time P&L, positions, and performance
+- **Risk Monitoring**: Drawdown, exposure, and risk metrics
+- **Multi-Market Analysis**: Cross-market correlations and arbitrage
+- **System Health**: Bot status, API health, and system metrics
+
+### Prometheus Metrics
+- Trading performance metrics
+- Risk management indicators
+- System health and uptime
+- API response times and errors
+
+## 🔒 Security & Compliance
+
+### Security Features
+- **Encrypted Credential Storage**: API keys stored securely
+- **Live API Validation**: Real-time credential verification
+- **Audit Trails**: Complete trading history logging
+- **Access Controls**: Role-based permission system
+
+### Compliance Support
+- **Regulatory Reporting**: Automated compliance reports
+- **Trade Surveillance**: Real-time monitoring for suspicious activity
+- **Risk Limits**: Configurable risk and exposure limits
+- **Documentation**: Comprehensive audit documentation
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Run the test suite
+6. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+### Documentation
+- [User Guide](docs/USER_GUIDE.md)
+- [API Reference](docs/API_REFERENCE.md)
+- [Strategy Development Guide](docs/STRATEGY_DEVELOPMENT_GUIDE.md)
+- [Deployment Guide](docs/DEPLOYMENT_GUIDE.md)
+
+### Community
+- **GitHub Issues**: [Report bugs and request features](https://github.com/genebot/genebot/issues)
+- **Discussions**: [Community discussions and Q&A](https://github.com/genebot/genebot/discussions)
+- **Discord**: [Join our Discord server](https://discord.gg/genebot)
+
+### Professional Support
+- **Email**: support@genebot.ai
+- **Enterprise Support**: enterprise@genebot.ai
+
+## ⚠️ Disclaimer
+
+**IMPORTANT**: Trading involves substantial risk of loss and is not suitable for all investors. Past performance is not indicative of future results. GeneBot is provided for educational and research purposes. Always test strategies thoroughly in demo environments before live trading.
+
+**USE AT YOUR OWN RISK**: The developers of GeneBot are not responsible for any financial losses incurred through the use of this software.
+
+## 🎯 Roadmap
+
+### Version 1.1 (Q2 2024)
+- [ ] Advanced ML strategies
+- [ ] Social trading features
+- [ ] Mobile app companion
+- [ ] Enhanced backtesting
+
+### Version 1.2 (Q3 2024)
+- [ ] Options trading support
+- [ ] Advanced portfolio optimization
+- [ ] Institutional features
+- [ ] API marketplace
+
+---
+
+**Made with ❤️ by the GeneBot Team**
+
+*Empowering traders with advanced automation and intelligence.*

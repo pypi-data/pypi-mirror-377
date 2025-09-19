@@ -1,0 +1,174 @@
+Metadata-Version: 2.4
+Name: chibi_requests
+Version: 1.4.0
+Summary: handle urls in a more easy and human way
+Home-page: https://github.com/dem4ply/chibi_requests
+Author: Dem4ply
+Author-email: dem4ply@gmail.com
+Keywords: chibi_requests
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: Public Domain
+Classifier: Natural Language :: English
+Classifier: Natural Language :: Spanish
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: chibi>=0.10.0
+Requires-Dist: requests>=2.22.0
+Requires-Dist: beautifulsoup4>=4.8.0
+Requires-Dist: marshmallow>=3.26.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+==============
+chibi_requests
+==============
+
+
+.. image:: https://img.shields.io/pypi/v/chibi_requests.svg
+        :target: https://pypi.python.org/pypi/chibi_requests
+
+.. image:: https://img.shields.io/travis/dem4ply/chibi_requests.svg
+        :target: https://travis-ci.org/dem4ply/chibi_requests
+
+.. image:: https://readthedocs.org/projects/chibi-requests/badge/?version=latest
+        :target: https://chibi-requests.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
+
+
+
+handle urls in a more easy and human way
+
+* Free software: WTFPL
+* Documentation: https://chibi-requests.readthedocs.io.
+
+
+==========
+how to use
+==========
+
+
+*********
+Chibi_url
+*********
+
+.. code-block:: python
+
+	from chibi_requests import Chibi_url
+
+	url = Chibi_url( "http://ifconfig.me'" )
+	response = url.get()
+	assert response.status_code == 200
+	assert response.is_text
+	assert isinstance( response.native, str )
+
+	response = url.post()
+	assert response.status_code == 200
+	assert response.json
+	assert isinstance( response.native, dict )
+
+	url = Chibi_url( "https://google.com" )
+	url += "cosa/cosa2'
+	assert "https://google.com/cosa/cosa2" == url
+	url += "cosa3"
+	assert "https://google.com/cosa/cosa2/cosa3" == url
+
+	url = Chibi_url( "https://google.com" )
+	url += { 'param1': 'value1', 'param2': 'value2' }
+	assert url.parmas == { 'param1': 'value1', 'param2': 'value2' }
+
+	url = Chibi_url( "https://google.com" )
+	url += "?param1=value1"
+	assert url.parmas == { 'param1': 'value1' }
+
+	url = Chibi_url( "https://google.com" )
+	assert url.host == 'google.com'
+	assert url.schema == 'https'
+
+
+Features
+--------
+
+* TODO
+
+Credits
+-------
+
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+=======
+History
+=======
+
+********************
+1.4.0 ( 2025-09-18 )
+********************
+
+* se agrega la copia de los status codes de django rest framwork
+  en chibi_requests.status_code
+
+********************
+1.3.1 ( 2025-03-11 )
+********************
+
+* se agrego la funcion parse_like_html
+
+********************
+1.3.0 ( 2025-02-08 )
+********************
+
+* se agrego la funcion `from_response`
+
+********************
+1.2.2 ( 2025-02-01 )
+********************
+
+* se agrego la posibilidad que los response lanzen
+  excepciones segun el codigo de error
+
+********************
+1.2.1 ( 2025-02-01 )
+********************
+
+* dependencia de marshmallow > 2.26
+
+********************
+1.2.0 ( 2024-10-26 )
+********************
+
+* se agrego funcion para sufijos
+
+********************
+1.1.0 ( 2024-10-26 )
+********************
+
+* regresa el tipo correcto con herencia
+
+******************
+0.0.1 (2019-11-14)
+******************
+
+* First release on PyPI.

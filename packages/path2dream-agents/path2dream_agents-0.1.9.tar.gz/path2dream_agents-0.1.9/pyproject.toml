@@ -1,0 +1,38 @@
+[project]
+name = "path2dream-agents"
+version = "0.1.9"
+description = "Path2Dream AI agents"
+requires-python = ">=3.11"
+
+dependencies = [
+    "pytest>=8.4.2",
+    "python-dotenv>=1.0.1",
+]
+
+[project.scripts]
+codex = "agents.providers.codex:main"
+gemini = "agents.providers.gemini:main"
+qwen = "agents.providers.qwen:main"
+
+init_sonnet = "agents.providers.sonnet:init"
+call_sonnet = "agents.providers.sonnet:call"
+resume_sonnet = "agents.providers.sonnet:resume"
+init_glm = "agents.providers.glm:init"
+call_glm = "agents.providers.glm:call"
+resume_glm = "agents.providers.glm:resume"
+init_multi_turn_agent = "agents.pipelines.multi_turn_agent:init"
+call_multi_turn_agent = "agents.pipelines.multi_turn_agent:call"
+resume_multi_turn_agent = "agents.pipelines.multi_turn_agent:resume"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agents"]
+
+[dependency-groups]
+dev = [
+    "pytest-xdist>=3.8.0",
+    "ruff>=0.13.0",
+]

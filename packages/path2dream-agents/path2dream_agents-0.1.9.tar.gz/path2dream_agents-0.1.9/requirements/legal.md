@@ -1,0 +1,16 @@
+- app should be strictly B2C, B2B not allowed
+- avoid highly regulated industries: medicine, legal, consulting...
+- need to provide real value to people buying the app (no scam)
+- need to stay compliant with all related legal regulations, for example:
+  - GDPR
+  - Concents gathering
+  - Product labeling
+    - No false advertizing
+    - Provide Business info and contacts
+  - Proper Terms of Use and Privacy pages
+- security:
+  - keeping users data safe
+  - you will be provided with secret api keys - be very careful with them:
+    - do not commit them
+    - do not reveal them on client
+  - reasonable protection agains hacker attacks

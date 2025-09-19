@@ -1,0 +1,195 @@
+# Development Configuration Example
+# This configuration is optimized for development and testing
+
+version: "1.0.0"
+environment: "development"
+
+# Application Settings
+app:
+  name: "TradingBot-Dev"
+  log_level: "DEBUG"  # Verbose logging for development
+  timezone: "UTC"
+  data_retention_days: 7  # Shorter retention for development
+  max_concurrent_strategies: 2  # Limit for development
+
+# Database Configuration (SQLite for easy development)
+database:
+  url: "sqlite:///trading_bot_dev.db"
+  echo: true  # Enable SQL query logging
+  
+# Exchange Configuration (Sandbox/Testnet only)
+exchanges:
+  binance:
+    enabled: true
+    api_key: "${BINANCE_TESTNET_API_KEY}"
+    api_secret: "${BINANCE_TESTNET_API_SECRET}"
+    sandbox: true  # Always use testnet in development
+    rate_limit: 1200
+    timeout: 30
+    base_url: "https://testnet.binance.vision"  # Testnet URL
+    
+  coinbase:
+    enabled: false  # Disabled by default in development
+    api_key: "${COINBASE_SANDBOX_API_KEY}"
+    api_secret: "${COINBASE_SANDBOX_API_SECRET}"
+    passphrase: "${COINBASE_SANDBOX_PASSPHRASE}"
+    sandbox: true
+    rate_limit: 600
+    timeout: 30
+
+# Strategy Configuration (Conservative settings for development)
+strategies:
+  moving_average_dev:
+    enabled: true
+    class: "MovingAverageStrategy"
+    parameters:
+      short_period: 5   # Shorter periods for faster signals in development
+      long_period: 10
+      confidence_threshold: 0.6
+    symbols:
+      - "BTC/USDT"      # Limited symbols for development
+    timeframes:
+      - "5m"            # Shorter timeframes for faster testing
+      - "15m"
+    
+  rsi_dev:
+    enabled: true
+    class: "RSIStrategy"
+    parameters:
+      period: 14
+      oversold_threshold: 35  # Less extreme thresholds for more signals
+      overbought_threshold: 65
+    symbols:
+      - "ETH/USDT"
+    timeframes:
+      - "5m"
+
+# Risk Management (Very conservative for development)
+risk_management:
+  global:
+    max_portfolio_risk: 0.001  # 0.1% risk per trade (very small)
+    max_daily_loss: 0.01       # 1% daily loss limit
+    max_drawdown: 0.05         # 5% maximum drawdown
+    position_sizing_method: "fixed_fractional"
+    
+  stop_loss:
+    enabled: true
+    default_percentage: 0.02   # 2% stop loss
+    trailing_stop: false       # Disable trailing stop for simplicity
+    
+  position_limits:
+    max_position_size: 0.01    # 1% of portfolio per position
+    max_positions: 3           # Maximum 3 positions
+    min_trade_amount: 1        # $1 minimum trade
+
+# Data Collection (Limited for development)
+data:
+  collection:
+    enabled: true
+    symbols:
+      - "BTC/USDT"
+      - "ETH/USDT"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+    
+  storage:
+    compress_data: false  # No compression for easier debugging
+    backup_enabled: false # No backups in development
+    
+  validation:
+    check_data_integrity: true
+    remove_outliers: false  # Keep all data for analysis
+    outlier_threshold: 3.0
+
+# Monitoring (Simplified for development)
+monitoring:
+  enabled: true
+  metrics_port: 8000
+  health_check_port: 8001
+  
+  prometheus:
+    enabled: false  # Disable Prometheus in development
+    
+  alerting:
+    enabled: false  # Disable alerting in development
+
+# Backtesting Configuration
+backtesting:
+  default_capital: 1000  # Small capital for testing
+  commission: 0.001      # 0.1% commission
+  slippage: 0.0005       # 0.05% slippage
+  
+  performance_metrics:
+    - "total_return"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "win_rate"
+
+# Logging Configuration (Detailed for development)
+logging:
+  version: 1
+  disable_existing_loggers: false
+  
+  formatters:
+    detailed:
+      format: "%(asctime)s [%(levelname)8s] %(name)s:%(lineno)d - %(funcName)s() - %(message)s"
+    simple:
+      format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  
+  handlers:
+    console:
+      class: "logging.StreamHandler"
+      level: "DEBUG"
+      formatter: "detailed"
+      stream: "ext://sys.stdout"
+    
+    file:
+      class: "logging.FileHandler"
+      level: "DEBUG"
+      formatter: "detailed"
+      filename: "logs/trading_bot_dev.log"
+      mode: "w"  # Overwrite log file on each run
+  
+  loggers:
+    "":
+      level: "DEBUG"
+      handlers: ["console", "file"]
+      propagate: false
+    
+    # Reduce noise from external libraries
+    "ccxt":
+      level: "WARNING"
+      handlers: ["console"]
+      propagate: false
+    
+    "urllib3":
+      level: "WARNING"
+      handlers: ["console"]
+      propagate: false
+
+# Development-specific settings
+development:
+  # Enable debug features
+  debug_mode: true
+  
+  # Mock external services for testing
+  mock_exchanges: false  # Set to true to use mock exchanges
+  mock_data_feeds: false # Set to true to use mock data
+  
+  # Development tools
+  enable_profiling: false
+  enable_memory_tracking: false
+  
+  # Testing settings
+  run_integration_tests: false
+  test_data_path: "tests/data/"
+  
+  # Development server settings
+  auto_reload: true
+  hot_reload_config: true
+  
+  # Simulation settings
+  simulate_network_delays: false
+  simulate_exchange_errors: false

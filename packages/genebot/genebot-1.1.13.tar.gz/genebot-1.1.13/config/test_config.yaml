@@ -1,0 +1,203 @@
+# Multi-Market Trading Bot Configuration Template
+# This template provides a complete example of multi-market configuration
+# Copy this file and customize it for your specific needs
+
+# Application Settings
+app_name: "MultiMarketTradingBot"
+version: "2.0.0"
+debug: false
+dry_run: true  # Set to false for live trading
+base_currency: "USD"  # Base currency for P&L calculations
+environment: "development"  # development, staging, production
+
+# Crypto Market Configuration
+crypto:
+  enabled: true
+  default_quote_currency: "USDT"
+  min_trade_amount: 10.0
+  
+  exchanges:
+    binance:
+      exchange_type: "binance"
+      api_key: "${BINANCE_API_KEY}"
+      api_secret: "${BINANCE_API_SECRET}"
+      sandbox: true
+      rate_limit: 1200
+      timeout: 30
+      enabled: true
+    
+    coinbase:
+      exchange_type: "coinbase"
+      api_key: "${COINBASE_API_KEY}"
+      api_secret: "${COINBASE_API_SECRET}"
+      api_passphrase: "${COINBASE_PASSPHRASE}"
+      sandbox: true
+      rate_limit: 600
+      timeout: 30
+      enabled: false
+
+# Forex Market Configuration
+forex:
+  enabled: false  # Enable when ready to trade forex
+  default_lot_size: 0.01
+  max_spread_pips: 5
+  swap_free_account: false
+  
+  brokers:
+    oanda:
+      broker_type: "oanda"
+      api_key: "${OANDA_API_KEY}"
+      account_id: "${OANDA_ACCOUNT_ID}"
+      sandbox: true
+      timeout: 30
+      max_retries: 3
+      enabled: false
+    
+    mt5:
+      broker_type: "mt5"
+      server: "${MT5_SERVER}"
+      login: "${MT5_LOGIN}"
+      password: "${MT5_PASSWORD}"
+      sandbox: true
+      timeout: 30
+      max_retries: 3
+      enabled: false
+    
+    ib:
+      broker_type: "ib"
+      host: "127.0.0.1"
+      port: 7497  # 7497 for paper trading, 7496 for live
+      client_id: 1
+      sandbox: true
+      timeout: 30
+      max_retries: 3
+      enabled: false
+  
+  # Trading Sessions (UTC times)
+  sessions:
+    sydney:
+      name: "sydney"
+      start_time: "22:00"
+      end_time: "07:00"
+      timezone: "UTC"
+      enabled: true
+    
+    tokyo:
+      name: "tokyo"
+      start_time: "00:00"
+      end_time: "09:00"
+      timezone: "UTC"
+      enabled: true
+    
+    london:
+      name: "london"
+      start_time: "08:00"
+      end_time: "17:00"
+      timezone: "UTC"
+      enabled: true
+    
+    new_york:
+      name: "new_york"
+      start_time: "13:00"
+      end_time: "22:00"
+      timezone: "UTC"
+      enabled: true
+  
+  # Market Holidays (examples)
+  holidays:
+    - name: "New Year's Day"
+      date: "2024-01-01"
+      markets: ["forex"]
+    
+    - name: "Christmas Day"
+      date: "2024-12-25"
+      markets: ["forex"]
+
+# Strategy Configurations
+strategies:
+  multi_indicator_crypto:
+    strategy_type: "custom"
+    enabled: true
+    symbols: ["BTC/USDT", "ETH/USDT", "ADA/USDT"]
+    timeframe: "1h"
+    parameters:
+      ma_fast: 10
+      ma_slow: 20
+      rsi_period: 14
+      rsi_oversold: 30
+      rsi_overbought: 70
+      min_confidence: 0.85
+    max_positions: 3
+  
+  forex_session_strategy:
+    strategy_type: "custom"
+    enabled: false  # Enable when forex is configured
+    symbols: ["EUR/USD", "GBP/USD", "USD/JPY"]
+    timeframe: "15m"
+    parameters:
+      session_overlap_only: true
+      min_volatility: 0.0005
+      max_spread_pips: 3
+      min_confidence: 0.80
+    max_positions: 2
+  
+  cross_market_arbitrage:
+    strategy_type: "custom"
+    enabled: false  # Enable when both markets are configured
+    symbols: ["BTC/USD", "EUR/USD"]  # Cross-market pairs
+    timeframe: "5m"
+    parameters:
+      min_arbitrage_opportunity: 0.001
+      max_execution_time: 30
+      correlation_threshold: 0.7
+      min_confidence: 0.90
+    max_positions: 1
+
+# Base Risk Management
+risk:
+  max_position_size: 0.1  # 10% max position size
+  max_daily_loss: 0.05    # 5% max daily loss
+  max_drawdown: 0.15      # 15% max drawdown
+  stop_loss_percentage: 0.02  # 2% stop loss
+  take_profit_percentage: 0.04  # 4% take profit
+  max_open_positions: 10
+  position_sizing_method: "fixed_fraction"
+  risk_per_trade: 0.01    # 1% risk per trade
+
+# Cross-Market Risk Management
+cross_market_risk:
+  max_total_exposure: 0.8         # 80% max total portfolio exposure
+  max_correlation_exposure: 0.5   # 50% max exposure to correlated positions
+  correlation_threshold: 0.7      # 70% correlation threshold
+  crypto_max_allocation: 0.6      # 60% max allocation to crypto
+  forex_max_allocation: 0.4       # 40% max allocation to forex
+  max_cross_market_positions: 10  # Max positions across all markets
+  max_positions_per_market: 5     # Max positions per market type
+
+# Regulatory Compliance
+compliance:
+  enabled: true
+  generate_reports: true
+  report_frequency: "daily"  # hourly, daily, weekly, monthly
+  report_output_dir: "reports/compliance"
+  audit_trail_enabled: true
+  audit_retention_days: 2555  # 7 years
+  fifo_accounting: true
+  position_reporting_threshold: 10000.0  # $10,000 threshold
+
+# Database Configuration
+database:
+  database_type: "sqlite"
+  database_url: "sqlite:///multi_market_trading_bot.db"
+  pool_size: 5
+  max_overflow: 10
+  pool_timeout: 30
+  echo: false  # Set to true for SQL debugging
+
+# Logging Configuration
+logging:
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_format: "standard"  # standard, json
+  log_file: "logs/multi_market_trading_bot.log"
+  max_file_size: 10485760  # 10MB
+  backup_count: 5

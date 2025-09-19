@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "n8npy-client"
+version = "0.1.0"
+description = "Python client for the n8n Public REST API"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "splifter" }
+]
+license = { text = "Sustainable Use License" }
+dependencies = [
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0"
+]
+keywords = ["n8n", "api", "client", "automation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/splifter/n8npy"
+Documentation = "https://github.com/splifter/n8npy"
+Source = "https://github.com/splifter/n8npy"
+
+[tool.setuptools]
+py-modules = ["n8n_api"]
+

@@ -1,0 +1,71 @@
+---
+name: phycat_can
+namespace: pc
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+
+  
+  - canFlags:
+      type: flags
+      desc: CAN bus flags
+      vals:
+        - SUPPORTS_STANDARD: { desc: Supports standard CAN frames }
+        - SUPPORTS_EXTENDED: { desc: Supports extended CAN frames }
+        - SUPPORTS_FD: { desc: Supports CAN FD frames }
+        - SUPPORTS_BRS: { desc: Supports bit rate switching }
+        - SUPPORTS_ESI: { desc: Supports error state indicator }
+
+  - max_filters: {type: uint32, desc: Maximum number of message filters supported}
+  - max_frame_size: {type: uint32, desc: Maximum number of bytes in a CAN frame}
+
+  - filters: {type: uint32*, desc: Array of CAN filters}
+  - id: {type: uint32, desc: CAN frame ID}
+  
+  - frameType:
+      type: enum
+      format: hex
+      desc: CAN frame type
+      vals:
+        - STANDARD: { desc: Standard CAN frame }
+        - EXTENDED: { desc: Extended CAN frame }
+        - FD: { desc: CAN FD frame }
+
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - CanCapabilities:
+      desc: Describes the complete CAN capabilities of a device interface
+      fields:
+        - handle
+        - canFlags
+        - max_baudrate
+        - baudrates
+        - max_filters
+        - max_frame_size
+
+
+  - CanConfig:
+      desc: Message to configure a CAN interface
+      response: Status
+      fields:
+        - handle
+        - baudrate
+        - filters
+        
+
+  - CanData:
+      desc: Message to send data over a CAN interface
+      fields:
+        - handle
+        - id
+        - data
+        - frameType

@@ -1,0 +1,12 @@
+{% load wagtailcore_tags %}
+{% if value.columns %}
+<div class="row{% if value.horizontal_align %} text-{{ value.horizontal_align }}{% endif %}">
+  {% for column in value.columns %}
+    <div class="col-sm">
+      {% for block in column %}
+        {% include_block block %}
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}

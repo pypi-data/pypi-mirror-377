@@ -1,0 +1,24 @@
+<div class="{{ classname }}">
+  {% if help_text %}
+    <div class="c-sf-help">
+      <div class="help">
+        {{ help_text }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="w-field-row">
+    <div class="col4 link-target-block__type" data-contentpath="{{ children.type.block.name }}">
+      {{ children.type.render_form }}
+    </div>
+    <div class="col8">
+      {% for name, child in children.items %}
+        {% if name != "type" %}
+          <div data-contentpath="{{ child.block.name }}">
+            {{ child.render_form }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

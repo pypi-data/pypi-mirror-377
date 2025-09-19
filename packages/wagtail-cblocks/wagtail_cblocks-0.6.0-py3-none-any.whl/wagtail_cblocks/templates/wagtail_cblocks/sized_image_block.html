@@ -1,0 +1,13 @@
+{% load wagtailimages_tags %}
+<figure class="figure d-block text-center">
+  {% if value.link.href %}
+    <a href="{{ value.link.href }}">
+  {% endif %}
+      <img class="figure-img img-fluid mb-0" src="{{ rendition.url }}" alt="{{ rendition.alt }}">
+  {% if value.link.href %}
+    </a>
+  {% endif %}
+  {% if value.caption %}
+    <figcaption class="figure-caption mt-1">{{ value.caption }}</figcaption>
+  {% endif %}
+</figure>

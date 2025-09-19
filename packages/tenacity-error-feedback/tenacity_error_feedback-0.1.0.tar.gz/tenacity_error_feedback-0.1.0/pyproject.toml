@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tenacity-error-feedback"
+version = "0.1.0"
+description = "Propagate error context between tenacity retry attempts"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Bohan Qu"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "tenacity>=8.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/LastRemote/tenacity-error-feedback"
+"Bug Tracker" = "https://github.com/LastRemote/tenacity-error-feedback/issues"
+
+[tool.setuptools]
+packages = ["tenacity_error_feedback"]

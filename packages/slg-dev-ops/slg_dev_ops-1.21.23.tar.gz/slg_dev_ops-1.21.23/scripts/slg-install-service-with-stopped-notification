@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+import socket
+import subprocess
+import os
+import argparse
+from argparse import RawTextHelpFormatter
+from logger_slg import init_logger
+import yaml
+from pprint import pformat
+
+# this section is here because when we pass in a config file we also want to include those variables as potential arguments
+# and required=True in the argparse arguments would not allow that to happen.
+# So from now on I'm using these two sections to verify arguments are up to standard
+REQUIRED_ARGUMENTS = []
+DYNAMIC_DEFAULTS = { # If an argument is defaulted to a derivative of a previous required argument, we can set a lambda of said required argument
+    'config_filepath': lambda user: f'/home/{user}/.config/slg/install-service-with-stopped-notification.yml', # in this case, username is seen as the only required argument that was previously passed
+}
+SENSITIVE_ARGUMENTS = [] # place any passwords or other sensitive arguments in here to not expose them in configuration printing
+SPECIAL_REQUIREMENTS = { # variable must return a truthy value for these lambda functions in order to proceed with running the script; follow the example requirements precedence for setting new requirements
+    # 'config_filepath': [
+    #     {
+    #         'name': 'Filepath is an absolute filepath',
+    #         'requirement': lambda value: value.startswith('/')
+    #     },
+    # ]
+}
+
+def get_arguments():
+    parser = argparse.ArgumentParser(description='''
+Example:
+
+slg-install-service-with-stopped-notification \\
+-u steven \\
+-sn doodlers-website \\
+-sc '/bin/bash -c "cd /home/steven/flask-celery-playground/website && venv/bin/gunicorn --bind 127.0.0.1:5000 -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 wsgi:app --timeout=600 > /var/log/slg/doodlers-website.log 2>&1"'
+
+''', formatter_class=RawTextHelpFormatter)
+
+    parser.add_argument('-u', '--user', help='the user to run the service as', required=True)
+    parser.add_argument('-g', '--group', help='the group to run the service as (defaults to user)')
+    parser.add_argument('-sn', '--service_name', help='the name of the systemd service', required=True)
+    parser.add_argument('-sc', '--service_command', help='the command to run the service', required=True)
+    parser.add_argument('-r', '--restart_delay_in_minutes', help='the command to run the service', default=30)
+
+    parser.add_argument('--config_filepath', help='where the config is found')
+
+    args = parser.parse_args()
+
+    return args
+
+def get_dynamic_default_arg(args, desired_arg):
+    parameters = DYNAMIC_DEFAULTS[desired_arg].__code__.co_varnames
+    parameter_values = [args[arg] for arg in parameters]
+    return DYNAMIC_DEFAULTS[desired_arg](*parameter_values)
+
+def build_true_configuration(args, config_filepath=None):
+    # arguments defined at the command line take precedence over config file variables
+    config = {}
+    if config_filepath:
+        config = read_config_file(config_filepath)
+
+    dict_args = vars(args)
+    for arg in dict_args:
+        if dict_args[arg] is not None:
+            config[arg] = dict_args[arg]
+
+    # handle for dynamic defaults if no value is set
+    for arg in DYNAMIC_DEFAULTS:
+        if not config.get(arg):
+            config[arg] = get_dynamic_default_arg(config, arg)
+
+    return config
+
+def install_cfg():
+    if not os.path.exists(f'/home/steven/.config/slg/slg-send-text-message.yml'):
+        os.makedirs(f'/home/steven/.config/slg')
+        with open(f'/home/steven/.config/slg/slg-send-text-message.yml', 'w') as f:
+            f.write('phone_carrier: "tmobile"\nsending_email: "sgotting21@gmail.com"\nsubject: "Automated Message"\nphone_number: 8139438388\napp: "crhxswwrytfxuzkr"')
+
+def strip_sensitive_arguments(config):
+    return {k: v for k, v in config.items() if k not in SENSITIVE_ARGUMENTS}
+
+def guarantee_requirements_met(config):
+    # config is the config object after assigning arg values to the config file values
+
+    # first iterate over required arguments
+    for argument in REQUIRED_ARGUMENTS:
+        if not config.get(argument):
+            logger.error(f'\n\nRequired argument "{argument}" not found. Exiting...')
+            exit(0)
+
+    # then iterate over the special requirements
+    for argument in SPECIAL_REQUIREMENTS:
+        value = config.get(argument)
+        for requirement_obj in SPECIAL_REQUIREMENTS[argument]:
+            if not requirement_obj['requirement'](value):
+                logger.error(f'\n\nSpecial requirement "{requirement_obj["name"]}" was not met for the argument "{argument}". Exiting...')
+                exit(0)
+
+def read_config_file(filepath):
+    try:
+        with open(filepath, 'r') as stream:
+            try:
+                config = yaml.safe_load(stream)
+                return config
+            except yaml.YAMLError as exc:
+                print(exc)
+                logger.error('\n\nYAML Error. Exiting...')
+                exit(0)
+    except FileNotFoundError:
+        logger.exception('Config file not found. Proceeding with defaults')
+        return {}
+
+if __name__ == '__main__':
+    args = get_arguments()
+
+    try:
+        logger = init_logger(
+            name=__name__,
+            log_path=f'/var/log/slg/{__file__.split("/")[-1]}.log'
+        )
+        config = build_true_configuration(args, args.config_filepath)
+        guarantee_requirements_met(config)
+        sensitive_stripped_config = strip_sensitive_arguments(config)
+        logger.info(f'\nUsing configuration:\n\n{pformat(sensitive_stripped_config)}')
+
+        subprocess.run(["sudo", "apt-get", "install", "-y", "systemd"])
+        subprocess.run(["sudo", "pip", "install", "miscellaneous-slg"])
+        install_cfg()
+        user = config.get("user")
+        group = config.get("group", user)
+        service_name = config.get('service_name')
+        service_command = config.get('service_command')
+        restart_delay_in_minutes = config.get('restart_delay_in_minutes')
+        # Create systemd unit file for service
+        service_unit_file = f"""\
+[Unit]
+Description={service_name}
+StartLimitIntervalSec=60
+StartLimitBurst=2
+OnFailure=failure_handler_{service_name}.service
+
+[Service]
+ExecStart={service_command}
+User={user}
+Group={group}
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+"""
+        with open(f"/etc/systemd/system/{service_name}.service", "w") as f:
+            f.write(service_unit_file)
+
+        # Create systemd unit file for failure handler
+        failure_handler = f"""\
+[Unit]
+Description=Failure Handler (Notification) then restart after delay
+
+[Service]
+Type=oneshot
+# Perform some special action for when {service_name} exits unexpectedly.
+ExecStart=slg-send-text-message -m '{service_name} service just failed on server {socket.gethostname()}! Will attempt to restart again in {restart_delay_in_minutes} minutes'
+ExecStart=/bin/sleep {restart_delay_in_minutes}m
+ExecStart=/bin/systemctl restart {service_name}
+
+[Install]
+WantedBy=multi-user.target
+
+"""
+        with open(f"/etc/systemd/system/failure_handler_{service_name}.service", "w") as f:
+            f.write(failure_handler)
+
+        # Reload systemd configuration and enable services
+        subprocess.run(["sudo", "systemctl", "daemon-reload"])
+        subprocess.run(["sudo", "systemctl", "enable", f"{service_name}.service"])
+        subprocess.run(["sudo", "systemctl", "start", f"{service_name}.service"])
+
+    except:
+        logger.exception('An error occurred')

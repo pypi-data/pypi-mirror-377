@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=77.0.3", "packaging >= 24.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "backspaceAlpha"
+version = "0.1.1"
+description = "A simple backtesting framework to quickly and easily optimise strategies"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "LicenseRef-BackspaceAlpha"
+license-files = ["LICENSE"]
+authors = [
+    { name="Aadi Deepchand", email="aadideepchand8254@gmail.com" }
+]
+dependencies = [
+    "matplotlib",
+    "tqdm",
+    "yfinance",
+    "numpy",
+    "pandas"
+]
+
+[project.urls]
+Homepage = "https://github.com/aadideepchand25/backspaceAlpha"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backspaceAlpha*"]

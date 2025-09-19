@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-micro-services"
+version = "0.2.0"
+description = "Simple toolset for implementing microservices architecture with Fast API"
+authors = [
+    { name="Jakub Stastny", email="xstastnyj@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "fastapi", 
+    "uvicorn",
+    "httpx"
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+"Homepage" = "https://github.com/StastnyJ/pyMicroServices"
+
+[tool.setuptools]
+packages = ["py_micro_services"]

@@ -1,0 +1,51 @@
+[project]
+name = "blab"
+version = "0.2.2"
+authors = [{ name = "djekra", email = "hopsalla@gmail.com" }]
+description = "Various Jupyter Tools"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    'bpyth>=0.2.1',
+    'importlib_resources',
+    'nbformat',
+    'nbconvert',
+    'ipytest',
+    'matplotlib',
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyterlab>=4.3.6"
+]
+
+[project.urls]
+Homepage = "https://github.com/djekra/blab"
+
+[project.scripts]
+blab = "blab.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[tool.setuptools.package-data]
+blab = ['*.txt', '*.ipynb']
+
+[tool.pytest.ini_options]
+markers = [
+    "jetzt: pytest -m jetzt führt nur die mit @pytest.mark.jetzt markierte Tests aus",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]

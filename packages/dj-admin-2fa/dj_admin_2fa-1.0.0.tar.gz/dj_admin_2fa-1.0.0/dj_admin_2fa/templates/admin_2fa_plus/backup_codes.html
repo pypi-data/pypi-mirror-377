@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <h1>Your Backup Codes</h1>
+    <p>Use these codes if you cannot access your authenticator app.</p>
+
+    <ul>
+        {% for code in codes %}
+            <li><code>{{ code }}</code></li>
+        {% endfor %}
+    </ul>
+
+    <p>Each code can be used only once.</p>
+
+    <a href="{% url 'admin:index' %}" class="button default">Okay</a>
+
+{% endblock %}

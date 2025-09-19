@@ -1,0 +1,24 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Enter a Backup Code</h1>
+  <p>Use a backup code to verify your identity.</p>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div>
+      <label for="id_code">Backup Code</label>
+      {{ form.code }}
+    </div>
+
+    <button type="submit">Verify</button>
+  </form>
+{% endblock %}

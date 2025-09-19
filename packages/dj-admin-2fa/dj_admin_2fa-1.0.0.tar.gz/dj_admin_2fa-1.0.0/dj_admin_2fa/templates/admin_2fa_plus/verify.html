@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Two-Factor Authentication Required</h1>
+
+  <p>Please enter the verification code from your authenticator app to continue.</p>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div>
+      <label for="id_token">Verification Code:</label>
+      {{ form.token }}
+    </div>
+
+    {% if show_recovery %}
+      <p>If you have lost access to your authenticator app, you can <a href="{% url 'admin-2fa-recovery' %}">use a recovery code</a>.</p>
+    {% endif %}
+
+    <div>
+      <label>
+        {{ trust_form.trust_device }} Remember this device for future logins
+      </label>
+    </div>
+
+    <button type="submit">Verify</button>
+  </form>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li class="message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Delete Device Confirmation</h1>
+
+  <p>Are you sure you want to delete the device named "{{ device.name }}"?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+[package]
+name = "oidfpolicy"
+version = "0.0.1"
+edition = "2021"
+description = "Python module to merge OIDF policy and applying policy to metadata."
+documentation = "https://github.com/SUNET/oidfpolicy"
+readme = "README.md"
+homepage = "https://github.com/SUNET/oidfpolicy"
+repository = "https://github.com/SUNET/oidfpolicy"
+license-file = "LICENSE"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "oidfpolicy"
+crate-type = ["cdylib"]
+
+
+[dependencies.pyo3]
+version = "0.25.0"
+# "abi3-py38" tells pyo3 (and maturin) to build using the stable ABI with minimum Python version 3.8
+features = ["abi3-py310"]

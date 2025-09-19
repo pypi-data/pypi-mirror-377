@@ -1,0 +1,123 @@
+app_name: LegacyTradingBot
+version: 1.0.0
+debug: false
+dry_run: true
+base_currency: USDT
+environment: development
+crypto:
+  enabled: true
+  default_quote_currency: USDT
+  min_trade_amount: 10.0
+  exchanges:
+    binance:
+      exchange_type: binance
+      api_key: test_binance_key
+      api_secret: test_binance_secret
+      api_passphrase: null
+      sandbox: true
+      rate_limit: 1200
+      timeout: 30
+      enabled: true
+    coinbase:
+      exchange_type: coinbase
+      api_key: test_coinbase_key
+      api_secret: test_coinbase_secret
+      api_passphrase: test_passphrase
+      sandbox: true
+      rate_limit: 1200
+      timeout: 30
+      enabled: false
+forex:
+  enabled: false
+  default_lot_size: 0.01
+  max_spread_pips: 5
+  swap_free_account: false
+  brokers: {}
+  sessions:
+    sydney:
+      name: sydney
+      start_time: '22:00'
+      end_time: 07:00
+      timezone: UTC
+      enabled: true
+    tokyo:
+      name: tokyo
+      start_time: 00:00
+      end_time: 09:00
+      timezone: UTC
+      enabled: true
+    london:
+      name: london
+      start_time: 08:00
+      end_time: '17:00'
+      timezone: UTC
+      enabled: true
+    new_york:
+      name: new_york
+      start_time: '13:00'
+      end_time: '22:00'
+      timezone: UTC
+      enabled: true
+  holidays: []
+strategies:
+  moving_average:
+    strategy_type: moving_average
+    enabled: true
+    symbols:
+    - BTC/USDT
+    - ETH/USDT
+    timeframe: 1h
+    parameters:
+      fast_period: 10
+      slow_period: 20
+    max_positions: 2
+  rsi_strategy:
+    strategy_type: rsi
+    enabled: false
+    symbols:
+    - ADA/USDT
+    timeframe: 15m
+    parameters:
+      rsi_period: 14
+      oversold: 30
+      overbought: 70
+    max_positions: 1
+risk:
+  max_position_size: 0.1
+  max_daily_loss: 0.05
+  max_drawdown: 0.15
+  stop_loss_percentage: 0.02
+  take_profit_percentage: null
+  max_open_positions: 5
+  position_sizing_method: fixed_fraction
+  risk_per_trade: 0.01
+cross_market_risk:
+  max_total_exposure: 0.8
+  max_correlation_exposure: 0.5
+  correlation_threshold: 0.7
+  crypto_max_allocation: 0.6
+  forex_max_allocation: 0.4
+  max_cross_market_positions: 5
+  max_positions_per_market: 5
+compliance:
+  enabled: true
+  generate_reports: true
+  report_frequency: daily
+  report_output_dir: reports/compliance
+  audit_trail_enabled: true
+  audit_retention_days: 2555
+  fifo_accounting: true
+  position_reporting_threshold: 10000.0
+database:
+  database_type: sqlite
+  database_url: sqlite:///legacy_trading_bot.db
+  pool_size: 5
+  max_overflow: 10
+  pool_timeout: 30
+  echo: false
+logging:
+  log_level: INFO
+  log_format: standard
+  log_file: logs/legacy_trading_bot.log
+  max_file_size: 10485760
+  backup_count: 5

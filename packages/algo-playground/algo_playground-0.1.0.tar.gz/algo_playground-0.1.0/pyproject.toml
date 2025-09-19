@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling>=1.24.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "algo-playground"
+version = "0.1.0"
+description = "Interactive terminal playground for classic algorithms (sorting, searching, graphs)"
+readme = "README.md"
+authors = [
+  { name = "Ibrahemassa" }
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+  "click>=8.0",
+  "rich>=13.0",
+]
+keywords = [
+  "algorithms",
+  "sorting",
+  "searching",
+  "graphs",
+  "education",
+  "cli",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Education",
+  "Topic :: Software Development :: Libraries",
+  "Environment :: Console",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourname/algo-playground"
+Repository = "https://github.com/yourname/algo-playground"
+
+[project.scripts]
+algo-playground = "algo_playground.cli:main"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/algo_playground",
+  "/tests",
+  "/README.md",
+  "/LICENSE",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["algo_playground"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = ["E", "F", "I", "UP", "B", "ANN"]
+ignore = ["ANN101", "ANN102", "ANN401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["algo_playground"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["."]

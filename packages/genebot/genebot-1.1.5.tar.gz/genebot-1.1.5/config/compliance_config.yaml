@@ -1,0 +1,210 @@
+# Regulatory Compliance Configuration
+# Configuration for multi-market trading compliance framework
+
+compliance:
+  # Jurisdictions where the bot operates
+  jurisdictions:
+    - US
+    - EU
+    - UK
+  
+  # Global compliance settings
+  global_limits:
+    max_total_exposure: 10000000  # $10M total portfolio exposure
+    max_single_position_concentration: 0.15  # 15% max in single position
+    max_daily_loss_limit: 0.05  # 5% daily loss limit
+    max_correlation_exposure: 0.6  # 60% max correlated exposure
+  
+  # Market-specific compliance settings
+  market_specific:
+    crypto:
+      max_position_size: 1000000  # $1M per position
+      max_leverage: 3
+      requires_kyc: true
+      pattern_day_trading_rules: true
+      
+    forex:
+      max_position_size: 500000  # $500K per position
+      max_leverage_major_pairs: 50
+      max_leverage_minor_pairs: 20
+      max_leverage_exotic_pairs: 10
+      fifo_enforcement: true  # US specific
+      requires_regulatory_reporting: true
+
+# Regulatory Rules Configuration
+regulatory_rules:
+  rules_directory: "config/regulatory_rules"
+  auto_load_custom_rules: true
+  
+  # Default rule enforcement
+  default_enforcement:
+    position_limit_violation: "block"
+    leverage_limit_violation: "block"
+    trading_hours_violation: "warn"
+    reporting_requirement_violation: "report"
+  
+  # Jurisdiction-specific settings
+  jurisdictions:
+    US:
+      pattern_day_trading:
+        enabled: true
+        min_account_equity: 25000
+        max_day_trades_per_week: 3
+      
+      forex_rules:
+        max_leverage: 50
+        fifo_required: true
+        hedging_allowed: false
+      
+      crypto_rules:
+        max_leverage: 3
+        requires_money_transmitter_license: false
+    
+    EU:
+      mifid_ii:
+        enabled: true
+        transaction_reporting_threshold: 10000  # €10,000
+        reporting_timeframe_hours: 24
+        requires_lei: true
+      
+      leverage_limits:
+        forex_major_pairs: 30
+        forex_minor_pairs: 20
+        crypto: 2
+    
+    UK:
+      fca_rules:
+        enabled: true
+        forex_leverage_limit: 30
+        crypto_leverage_limit: 2
+        requires_client_categorization: true
+
+# Audit Trail Configuration
+audit_trail:
+  db_path: "audit_trail.db"
+  enable_checksums: true
+  retention_days: 2555  # 7 years
+  
+  # Performance settings
+  batch_size: 100
+  flush_interval: 60  # seconds
+  
+  # Security settings
+  encryption_enabled: false
+  encryption_key: null  # Set in environment variable
+  
+  # Event types to log
+  logged_events:
+    - trade_executed
+    - order_placed
+    - order_cancelled
+    - position_opened
+    - position_closed
+    - compliance_check
+    - compliance_violation
+    - risk_event
+    - system_event
+    - user_action
+    - configuration_change
+
+# Reporting Engine Configuration
+reporting:
+  output_directory: "reports/compliance"
+  retention_days: 2555  # 7 years
+  
+  # Supported output formats
+  formats:
+    - json
+    - csv
+    - xml
+  
+  # Report generation settings
+  auto_generate_reports:
+    daily_compliance_summary: true
+    weekly_violation_report: true
+    monthly_position_report: true
+    quarterly_regulatory_report: true
+  
+  # Report distribution
+  distribution:
+    email_reports: false
+    email_recipients: []
+    ftp_upload: false
+    ftp_settings: {}
+  
+  # Jurisdiction-specific reporting
+  jurisdiction_reports:
+    US:
+      cftc_reporting: false
+      sec_reporting: false
+      finra_reporting: false
+    
+    EU:
+      mifid_ii_reporting: true
+      esma_reporting: false
+    
+    UK:
+      fca_reporting: false
+
+# Monitoring and Alerting
+monitoring:
+  # Real-time compliance monitoring
+  real_time_monitoring: true
+  
+  # Alert thresholds
+  alert_thresholds:
+    high_severity_violations: 1  # Alert immediately
+    medium_severity_violations: 5  # Alert after 5 violations
+    position_limit_breach: 0.9  # Alert at 90% of limit
+    exposure_limit_breach: 0.8  # Alert at 80% of limit
+  
+  # Alert channels
+  alert_channels:
+    email: false
+    slack: false
+    webhook: false
+    log_only: true
+  
+  # Compliance metrics
+  metrics:
+    track_violation_rates: true
+    track_compliance_scores: true
+    track_regulatory_changes: false
+
+# Integration Settings
+integration:
+  # Risk management integration
+  risk_management:
+    enabled: true
+    block_trades_on_violations: true
+    adjust_position_sizes: true
+  
+  # Trading engine integration
+  trading_engine:
+    pre_trade_compliance_check: true
+    post_trade_compliance_logging: true
+    real_time_monitoring: true
+  
+  # Data management integration
+  data_management:
+    log_all_market_data_access: false
+    log_configuration_changes: true
+    log_user_actions: true
+
+# Development and Testing
+development:
+  # Test mode settings
+  test_mode: false
+  mock_regulatory_apis: false
+  
+  # Compliance testing
+  compliance_testing:
+    enabled: true
+    test_data_directory: "tests/compliance_test_data"
+    generate_test_reports: true
+  
+  # Debugging
+  debug:
+    log_all_compliance_checks: false
+    detailed_violation_logging: true
+    performance_monitoring: false

@@ -1,0 +1,41 @@
+# Development Environment Configuration Overrides
+# This file contains development-specific settings that override the main configuration
+
+environment: "development"
+
+# Development settings
+debug: true
+dry_run: true  # Always use dry run in development
+
+# Logging settings for development
+log_level: "DEBUG"
+log_file: "logs/dev_trading_bot.log"
+
+# Database settings for development
+database_url: "sqlite:///dev_trading_bot.db"
+
+# Risk settings for development (more conservative)
+max_position_size: 0.05  # 5% max position size
+max_daily_loss: 0.02     # 2% max daily loss
+risk_per_trade: 0.005    # 0.5% risk per trade
+
+# Market settings for development
+crypto_enabled: true
+forex_enabled: false  # Disable forex in development by default
+
+# Enable sandbox/testnet for all exchanges and brokers
+crypto:
+  exchanges:
+    binance:
+      sandbox: true
+    coinbase:
+      sandbox: true
+
+forex:
+  brokers:
+    oanda:
+      sandbox: true
+    mt5:
+      sandbox: true
+    ib:
+      sandbox: true

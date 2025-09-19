@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lazycommitpy"
+version = "0.1.0"
+description = "AI-powered Git commit message generator using Groq"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Kartik Labhshetwar" }]
+requires-python = ">=3.9"
+dependencies = [
+  "typer>=0.12",
+  "groq>=0.9",
+  "rich>=13"
+]
+
+[project.scripts]
+lazycommit = "lazycommitpy.cli:entry"
+lzc = "lazycommitpy.cli:entry"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lazycommitpy"]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "pytest-cov>=5",
+  "ruff>=0.5",
+  "mypy>=1.10",
+  "build>=1.2",
+  "twine>=5"
+]
+
+[tool.ruff]
+line-length = 100

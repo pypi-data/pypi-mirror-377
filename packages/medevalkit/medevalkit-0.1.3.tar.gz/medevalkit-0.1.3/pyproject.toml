@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medevalkit"
+version = "0.1.3"  # bump every release
+description = "A toolkit for evaluating machine learning models for healthcare applications."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Wesley Yeung", email = "corona-monody-7e@icloud.com" }]
+license = { text = "MIT" }  # adjust if needed
+
+dependencies = [
+  "lifelines",
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "scikit-survival",
+  "seaborn"
+]
+
+# Optional, but recommended. Adjust to your package’s supported versions.
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+# If you plan to offer optional extras later, define them here.
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "mypy", "build", "twine"]
+
+# If you provide console entry points, define them like this:
+# [project.scripts]
+# medevalkit = "medevalkit.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+# Automatically find all packages under medevalkit*
+[tool.setuptools.packages.find]
+include = ["medevalkit*"]
+
+# If you ship data files inside the package, list patterns here.
+# Ensure these paths actually exist inside the medevalkit package.
+[tool.setuptools.package-data]
+"medevalkit" = ["data/*", "py.typed"]

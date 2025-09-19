@@ -1,0 +1,64 @@
+---
+name: phycat_gpio
+namespace: pc  #this defines the namespace used for functions and types in the code. This allows multiple protocols to be used in a project
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+
+  - gpioCapFlags:
+      type: flags 
+      desc: GPIO port capabilities
+      vals:
+        - INPUT: { desc: Port supports input }
+        - OUTPUT: { desc: Port supports output }
+        - INTERRUPT: { desc: Port supports interrupts }
+        - PULL_UP: { desc: Port supports pull-up resistors }
+        - PULL_DOWN: { desc: Port supports pull-down resistors }
+        - OPEN_DRAIN: { desc: Port supports open-drain configuration }
+
+  - dir: {type: uint32, desc: Bitmask for GPIO direction (1 = output, 0 = input)}
+  - intFalling: {type: uint32, desc: Bitmask for GPIO falling edge interrupts (1 = enabled, 0 = disabled)}
+  - intRising: {type: uint32, desc: Bitmask for GPIO rising edge interrupts (1 = enabled, 0 = disabled)}
+  - pullUp: {type: uint32, desc: Bitmask for GPIO pull-up resistors (1 = enabled, 0 = disabled)}
+  - pullDown: {type: uint32, desc: Bitmask for GPIO pull-down resistors (1 = enabled, 0 = disabled)}
+  - openDrain: {type: uint32, desc: Bitmask for GPIO open-drain configuration (1 = enabled, 0 = disabled)}
+  - pinMask: {type: uint32, desc: Bitmask for GPIO pin data (1 = high, 0 = low)}
+
+
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - GpioCapabilities:
+      desc: GPIO Port capabilities
+      fields: 
+        - handle
+        - gpioCapFlags
+
+  - GpioConfig:
+      desc: GPIO Port 
+      response: Status
+      fields:
+        - handle
+        - dir 
+        - intFalling
+        - intRising
+        - pullUp
+        - pullDown
+        - openDrain
+
+  - GpioData:
+      desc: GPIO Port data
+      response: Status
+      fields:
+        - handle
+        - pinMask
+
+

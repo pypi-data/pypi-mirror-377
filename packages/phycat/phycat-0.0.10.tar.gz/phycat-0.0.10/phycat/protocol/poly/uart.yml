@@ -1,0 +1,69 @@
+---
+name: phycat_uart
+namespace: pc
+desc: This is a protocol for remote interface configuration and interaction using various peripherals (I2C, SPI, UART, GPIO, etc)
+
+
+###########################################################################################################
+#                                   FIELDS                                                                #
+###########################################################################################################
+
+fields:
+  - uartFlags:
+      type: flags
+      desc: UART interface flags
+      vals:
+        - SINGLE_WIRE: { desc: Interface supports single wire mode }
+
+  - tx_pin: {type: uint64, desc: TX port and pin, first 32 bits are port, last 32 bits are pin}
+  - rx_pin: {type: uint64, desc: RX port and pin, first 32 bits are port, last 32 bits are pin}
+
+  - dataBits: {type: uint8, desc: Number of data bits (5-9)}
+  - stopBits: {type: uint8, desc: Number of stop bits (1-2)}
+  - parity: 
+      type: enum
+      desc: Parity type
+      vals:
+        - NONE: {desc: No parity}
+        - ODD: {desc: Odd parity}
+        - EVEN: {desc: Even parity}
+
+
+  - idleTime: {type: uint16, desc: Idle time in milliseconds before sending data}
+  
+
+
+
+###########################################################################################################
+#                                   Packets                                                               #
+###########################################################################################################
+
+packets:
+  - UartCapabilities:
+      desc: UART capabilities
+      fields:
+        - handle
+        - uartFlags
+        - max_baudrate
+        - baudrates
+        - tx_pin
+        - rx_pin
+
+
+  - UartConfig:
+      desc: UART configuration
+      response: Status
+      fields:
+        - handle
+        - uartFlags
+        - idleTime
+        - baudrate
+        - dataBits
+        - stopBits
+        - parity
+
+  - UartData:
+      desc: UART data packet
+      fields:
+        - handle : {req: true}
+        - data: {req: true}
